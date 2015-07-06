@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::controllers([
+    'register' => 'Auth\AuthController',
+    'password' => 'Auth\PasswordController',
+]);

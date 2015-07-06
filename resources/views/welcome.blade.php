@@ -39,7 +39,7 @@
         <div class="container">
             <div class="content">
                 <div class="title">Laravel 5</div>
-                <div class="title">Mezzo test 234567</div>
+                <div class="title">Mezzo test 2345678</div>
             </div>
         </div>
     </body>
