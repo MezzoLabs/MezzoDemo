@@ -144,6 +144,19 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        MezzoLabs\Mezzo\MezzoServiceProvider::class,
+
+        /*
+         * Third party Providers
+         */
+
+        JeroenG\Packager\PackagerServiceProvider::class,
+
+        /*
+         * Mezzo Provider - Mezzo is love
+         */
+        MezzoLabs\Mezzo\MezzoServiceProvider::class
+
     ],
 
     /*

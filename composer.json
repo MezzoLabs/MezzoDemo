@@ -6,7 +6,8 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.1.*"
+        "laravel/framework": "5.1.*",
+        "jeroen-g/laravel-packager": "^0.2.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -16,9 +17,11 @@
     },
     "autoload": {
         "classmap": [
-            "database"
+            "database",
+            "workbench"
         ],
         "psr-4": {
+            "MezzoLabs\\Mezzo\\": "packages/MezzoLabs/Mezzo/src",
             "App\\": "app/"
         }
     },

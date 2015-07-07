@@ -1,2 +1,11 @@
+$brand-success: #123123;
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "workbench/test.scss";
+
+$font-stack: Helvetica, sans-serif;
+$primary-color: magenta;
+
+.app{
+  width: 123px;
+}
 
