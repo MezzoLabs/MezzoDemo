@@ -1,17 +1,21 @@
 {
     "name": "MezzoLabs/Mezzo",
-    "description": ":package_description",
+    "description": "Mezzo - mix your content with a sexy backend.",
     "keywords": [
-        "league",
-        ":package_name"
+        "laravel",
+        "mezzo",
+        "cms",
+        "cmf",
+        "admin",
+        "acp",
+        "generator"
     ],
-    "homepage": "https://github.com/thephpMezzoLabs/Mezzo",
-    "license": "MIT",
+    "homepage": "https://github.com/MezzoLabs/Mezzo",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
-            "homepage": ":author_website",
+            "name": "Simon Schneider",
+            "email": "simon@mezzolabs.io",
+            "homepage": "mezzolabs.io",
             "role": "Developer"
         }
     ],
