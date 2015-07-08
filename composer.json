@@ -18,7 +18,7 @@
     "autoload": {
         "classmap": [
             "database",
-            "workbench"
+            "packages"
         ],
         "psr-4": {
             "MezzoLabs\\Mezzo\\": "packages/MezzoLabs/Mezzo/src",

@@ -12,6 +12,6 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
+    mix.copy('packages/MezzoLabs/Mezzo/resources/assets', 'public/mezzolabs/mezzo');
     mix.sass('app.scss');
-    mix.browserify('index.js');
 });
