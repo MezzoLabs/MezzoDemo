@@ -7,7 +7,7 @@ namespace MezzoLabs\Mezzo\Listeners\Core;
 use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
 use MezzoLabs\Mezzo\Listeners\Listener;
 
-class RegisterThirdParties extends Listener
+class IncludeMezzoRouting extends Listener
 {
      /**
      * Handle the event.
@@ -17,6 +17,9 @@ class RegisterThirdParties extends Listener
      */
     public function handle(MezzoBooted $event)
     {
-        
+        if (! app()->routesAreCached()) {
+            require __DIR__.'../../Http/routes.php';
+        }
+
     }
 }
