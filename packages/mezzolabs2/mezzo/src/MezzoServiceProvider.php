@@ -13,6 +13,8 @@ class MezzoServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        dd(new \Dingo\Api\Provider\LaravelServiceProvider());
+
         if (! $this->app->routesAreCached()) {
             require __DIR__.'/Http/routes.php';
         }
