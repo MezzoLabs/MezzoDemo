@@ -3,6 +3,8 @@
 
 namespace MezzoLabs\Mezzo\Listeners\Core;
 
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
 use MezzoLabs\Mezzo\Listeners\Listener;
@@ -12,7 +14,7 @@ class IncludeMezzoRouting extends Listener
      /**
      * Handle the event.
      *
-     * @param  MezzoBooted  $event
+     * @param  MezzoBooted $event
      * @return void
      */
     public function handle(MezzoBooted $event)
@@ -20,6 +22,5 @@ class IncludeMezzoRouting extends Listener
         if (! app()->routesAreCached()) {
             require __DIR__.'../../Http/routes.php';
         }
-
     }
 }

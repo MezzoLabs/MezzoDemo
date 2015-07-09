@@ -1,12 +1,12 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\ThirdParties\Providers;
+namespace MezzoLabs\Mezzo\Core\ThirdParties\Wrappers;
 
 
 use Dingo\Api\Provider\LaravelServiceProvider as DingoProvider;
 
-class DingoApi implements ThirdPartyContract{
+class DingoApi implements WrapperContract{
 
     public function register()
     {

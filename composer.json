@@ -7,7 +7,8 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
-        "jeroen-g/laravel-packager": "^0.2.1"
+        "jeroen-g/laravel-packager": "^0.2.1",
+        "barryvdh/laravel-ide-helper": "^2.0@dev"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -34,6 +35,7 @@
     "scripts": {
         "post-install-cmd": [
             "php artisan clear-compiled",
+            "php artisan ide-helper:generate",
             "php artisan optimize"
         ],
         "pre-update-cmd": [

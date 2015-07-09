@@ -3,7 +3,9 @@
 namespace MezzoLabs\Mezzo;
 
 use Illuminate\Support\ServiceProvider;
-use MezzoLabs\Mezzo\Events\Core\MezzoHadBooted;
+use MezzoLabs\Mezzo\Core\ThirdParties\Manager;
+use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
+use MezzoLabs\Mezzo\Providers\EventServiceProvider;
 
 class MezzoServiceProvider extends ServiceProvider
 {
@@ -12,15 +14,13 @@ class MezzoServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot($app)
+    public function boot()
     {
-
         require __DIR__.'/../bootstrap/mezzo.php';
 
-        event(new MezzoHadBooted(app('mezzo')));
-
-
+        event(new MezzoBooted(app('mezzo')));
     }
+
 
     /**
      * Register any package services.
@@ -29,6 +29,12 @@ class MezzoServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        app()->register(EventServiceProvider::class);
+        $this->registerThirdParties();
+    }
+
+    protected function registerThirdParties(){
+        $thirdPartyManager = new Manager();
+        $thirdPartyManager->registerWrappers();
     }
 }
