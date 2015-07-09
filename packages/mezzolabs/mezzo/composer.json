@@ -31,12 +31,12 @@
     },
     "autoload": {
         "psr-4": {
-            "mezzolabs\\mezzo\\": "src"
+            "Mezzolabs\\Mezzo\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "mezzoLabs\\mezzo\\Test\\": "tests"
+            "MezzoLabs\\Mezzo\\Test\\": "tests"
         }
     },
     "scripts": {

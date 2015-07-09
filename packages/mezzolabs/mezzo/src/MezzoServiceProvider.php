@@ -3,6 +3,7 @@
 namespace MezzoLabs\Mezzo;
 
 use Illuminate\Support\ServiceProvider;
+use MezzoLabs\Mezzo\Events\Core\MezzoHadBooted;
 
 class MezzoServiceProvider extends ServiceProvider
 {
@@ -11,13 +12,14 @@ class MezzoServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot($app)
     {
-        dd(new \Dingo\Api\Provider\LaravelServiceProvider());
 
-        if (! $this->app->routesAreCached()) {
-            require __DIR__.'/Http/routes.php';
-        }
+        require __DIR__.'/../bootstrap/mezzo.php';
+
+        event(new MezzoHadBooted(app('mezzo')));
+
+
     }
 
     /**
