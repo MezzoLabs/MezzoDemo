@@ -13,9 +13,7 @@
 
 
 Route::get('/', function () {
-
-    Debugbar::info('hello');
-
+    dd(\Config::all());
     return view('welcome');
 });
 
