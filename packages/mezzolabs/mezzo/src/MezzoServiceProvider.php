@@ -4,13 +4,10 @@ namespace MezzoLabs\Mezzo;
 
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Mezzo;
-use MezzoLabs\Mezzo\Core\ThirdParties\Manager;
-use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
-use MezzoLabs\Mezzo\Providers\EventServiceProvider;
+
 
 class MezzoServiceProvider extends ServiceProvider
 {
-
     /**
      * The Mezzo core.
      *
@@ -42,10 +39,21 @@ class MezzoServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mezzo = require __DIR__.'/../bootstrap/mezzo.php';
+        $this->mezzo->serviceProvider = $this;
 
         $this->mezzo->onProviderRegistered();
+        //dd(\Config::get('mezzo:hello'));
 
+    }
 
+    /**
+     * Merge config from application with the one in the config folder.
+     *
+     * @param string $path
+     * @param string $key
+     */
+    public function mergeConfigFrom($path, $key){
+        parent::mergeConfigFrom($path, $key);
     }
 
 }

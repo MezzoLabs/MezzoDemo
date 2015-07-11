@@ -17,7 +17,7 @@ class IncludeMezzoRouting implements Bootstrapper{
     public function bootstrap(Mezzo $mezzo)
     {
         if (! $mezzo->app()->routesAreCached()) {
-            require __DIR__.'../../../Http/routes.php';
+            require __DIR__.'../../../../Http/routes.php';
         }
     }
 }

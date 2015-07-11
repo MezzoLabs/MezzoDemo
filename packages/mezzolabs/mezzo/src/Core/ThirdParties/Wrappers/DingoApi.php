@@ -12,4 +12,14 @@ class DingoApi implements WrapperContract{
     {
         app()->register(DingoProvider::class);
     }
+
+    /**
+     * Prepare the configuration before a new service gets registered
+     *
+     * @return mixed
+     */
+    public function prepareConfig()
+    {
+        // TODO: Implement prepareConfig() method.
+    }
 }

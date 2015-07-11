@@ -6,8 +6,9 @@ namespace MezzoLabs\Mezzo\Core;
 
 use Illuminate\Foundation\Application;
 use MezzoLabs\Mezzo\Core\Booting\BootManager;
+use MezzoLabs\Mezzo\MezzoServiceProvider;
 
-class Mezzo extends Application{
+class Mezzo{
 
     /**
      * Indicates if mezzo has "booted".
@@ -31,6 +32,13 @@ class Mezzo extends Application{
      * @var BootManager
      */
     protected $bootManager;
+
+    /**
+     * The mezzo service provider that starts all this stuff.
+     *
+     * @var MezzoServiceProvider
+     */
+    public $serviceProvider;
 
     public function __construct(Application $app){
         $this->app = $app;
@@ -72,6 +80,17 @@ class Mezzo extends Application{
         $this->bootManager->bootPhase();
 
         $this->booted = true;
+    }
+
+    /**
+     * A quick access for the Laravel IoC Container
+     *
+     * @param $abstract
+     * @param array $parameters
+     * @return mixed
+     */
+    public function make($abstract, $parameters = []){
+        return $this->app->make($abstract, $parameters);
     }
 
 

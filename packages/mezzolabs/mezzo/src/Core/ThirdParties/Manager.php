@@ -12,7 +12,7 @@ class Manager {
 
 
     /**
-     * @var WrapperContract[]
+     * @var string[]
      */
     protected $toLoad = [
         //Wrappers\DingoApi::class
@@ -29,7 +29,7 @@ class Manager {
      * @param $class
      * @return WrapperContract
      */
-    public function createWrapper($class){
+    protected function createWrapper($class){
         $wrapper = app()->make($class);
         $className = get_class($wrapper);
 
