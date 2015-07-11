@@ -9,15 +9,17 @@ use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers\WrapperContract;
 
 class Manager {
 
+
+
     /**
      * @var WrapperContract[]
      */
-    protected $toWrap = [
-        Wrappers\DingoApi::class
+    protected $toLoad = [
+        //Wrappers\DingoApi::class
     ];
 
     public function registerWrappers(){
-        foreach($this->toWrap as $wrapperClass){
+        foreach($this->toLoad as $wrapperClass){
             $wrapper = $this->createWrapper($wrapperClass);
             $wrapper->register();
         }
