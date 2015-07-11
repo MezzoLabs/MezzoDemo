@@ -56,6 +56,7 @@ class MezzoConfig {
         $this->thirdParties->prepareConfigs();
     }
 
+
     /**
      * Get the Laravel config repository.
      *
