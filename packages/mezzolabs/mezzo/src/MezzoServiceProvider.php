@@ -39,9 +39,12 @@ class MezzoServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mezzo = require __DIR__.'/../bootstrap/mezzo.php';
+
         $this->mezzo->serviceProvider = $this;
 
         $this->mezzo->onProviderRegistered();
+
+
         //dd(\Config::get('mezzo:hello'));
 
     }

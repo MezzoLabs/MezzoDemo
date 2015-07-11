@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 
 use Illuminate\Container\Container;
+use Illuminate\Foundation\Application;
 use MezzoLabs\Mezzo\Core\Configuration\Configuration;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\ThirdParties\Manager as ThirdPartyManager;
@@ -36,12 +37,23 @@ class CreateImportantBindings implements Bootstrapper{
 
         // Bind the singletons
         foreach($this->singletons as $key => $class){
-            $app->singleton($key, function(Container $app) use ($class){
-                return $app->make($class);
-            });
-
-            $app->instance($class, $app->make($class));
+            $this->bindSingleton($app, $key, $class);
         }
+
+    }
+
+    /**
+     * Bind a key and the full class name to a single instance.
+     *
+     * @param Application $app
+     * @param $key
+     * @param $class
+     */
+    protected function bindSingleton(Application $app, $key, $class){
+        $instance = $app->make($class);
+
+        $app->instance($key, $instance);
+        $app->instance($class, $instance);
     }
 
 }

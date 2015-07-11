@@ -4,12 +4,12 @@
 namespace MezzoLabs\Mezzo\Core\ThirdParties\Wrappers;
 
 
-interface WrapperContract {
+interface WrapperInterface {
 
     /**
      * Register a third party package.
      *
-     * @return
+     * @return \Illuminate\Support\ServiceProvider
      */
     public function register();
 
