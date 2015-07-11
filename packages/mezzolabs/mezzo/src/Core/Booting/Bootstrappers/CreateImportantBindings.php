@@ -40,6 +40,7 @@ class CreateImportantBindings implements Bootstrapper{
             $this->bindSingleton($app, $key, $class);
         }
 
+
     }
 
     /**
@@ -53,7 +54,8 @@ class CreateImportantBindings implements Bootstrapper{
         $instance = $app->make($class);
 
         $app->instance($key, $instance);
-        $app->instance($class, $instance);
+
+        $app->alias($key, $class);
     }
 
 }

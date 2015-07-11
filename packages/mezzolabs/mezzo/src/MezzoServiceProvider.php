@@ -23,6 +23,7 @@ class MezzoServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        echo "boot";
         $this->mezzo->onProviderBooted();
 
     }
@@ -38,6 +39,7 @@ class MezzoServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        echo "registers";
         $this->mezzo = require __DIR__.'/../bootstrap/mezzo.php';
 
         $this->mezzo->serviceProvider = $this;

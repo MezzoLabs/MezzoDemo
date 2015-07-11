@@ -145,6 +145,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         MezzoLabs\Mezzo\MezzoServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class
 
         /*
          * Third party Providers
@@ -206,7 +207,7 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
-
+        'Debugbar'  => Barryvdh\Debugbar\Facade::class
     ],
 
 ];

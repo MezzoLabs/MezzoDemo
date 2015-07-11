@@ -4,11 +4,10 @@
 namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 
-use MezzoLabs\Mezzo\Core\Configuration\Configuration;
 use MezzoLabs\Mezzo\Core\Mezzo;
+use MezzoLabs\Mezzo\Providers\EventServiceProvider;
 
-class PublishResources implements Bootstrapper{
-
+class RegisterMezzoProviders implements Bootstrapper{
 
     /**
      * Run the booting process for this service.
@@ -18,7 +17,6 @@ class PublishResources implements Bootstrapper{
      */
     public function bootstrap(Mezzo $mezzo)
     {
-        //@TODO
+        $mezzo->app()->register(EventServiceProvider::class);
     }
-
 }
