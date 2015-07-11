@@ -13,7 +13,6 @@
 
 
 Route::get('/', function () {
-    dd(\Config::all());
     return view('welcome');
 });
 

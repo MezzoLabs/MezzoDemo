@@ -5,9 +5,11 @@ return [
 
 
     "api" => [
-        'prefix' => 'mezzo',
-        'version' => '0.1',
-        'vendor' => 'MezzoLabs'
+        'prefix' => 'api',
+        'version' => '1',
+        'vendor' => 'MezzoLabs',
+        'debug' => env('APP_DEBUG', false),
+        'strict' => true
     ]
 ];
   

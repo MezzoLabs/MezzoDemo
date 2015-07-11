@@ -19,4 +19,12 @@ interface WrapperInterface {
      * @return mixed
      */
     public function prepareConfig();
+
+    /**
+     * Called when the package service provider got booted. (We listened carefully)
+     *
+     * @return mixed
+     */
+    public function onProviderBooted();
+
 } 

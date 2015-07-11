@@ -18,6 +18,7 @@ class BootManager
 
     const RegisterPhase = "registerPhase";
     const BootPhase = "bootPhase";
+    const BootedPhase = "bootedPhase";
 
     /**
      * Bootstrappers split into the different phases of the MezzoServiceProvider.
@@ -32,6 +33,9 @@ class BootManager
             IncludeThirdParties::class
         ],
         "bootPhase" => [
+
+        ],
+        "bootedPhase" => [
             IncludeMezzoRouting::class
         ]
     ];
@@ -87,6 +91,14 @@ class BootManager
     public function bootPhase()
     {
         $this->bootForPhase(BootManager::BootPhase);
+    }
+
+    /**
+     * Run the bootstrappers that are needed last.
+     */
+    public function bootedPhase()
+    {
+        $this->bootForPhase(BootManager::BootedPhase);
     }
 
     /**

@@ -70,6 +70,15 @@ class ThirdParties extends Collection
     }
 
     /**
+     * Called when all the providers are booted and ready to take the request
+     */
+    public function onProvidersBooted(){
+        $this->map(function(WrapperInterface $wrapper){
+            $wrapper->onProviderBooted();
+        });
+    }
+
+    /**
      * @param $class
      * @return WrapperInterface
      */

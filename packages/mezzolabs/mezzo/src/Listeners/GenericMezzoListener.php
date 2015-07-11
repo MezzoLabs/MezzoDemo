@@ -4,19 +4,8 @@
 namespace MezzoLabs\Mezzo\Listeners;
 
 
-class GenericMezzoListener extends Listener
+class GenericMezzoListener extends Listener implements ListenerInterface
 {
-
-    /**
-     * @var \Illuminate\Events\Dispatcher
-     */
-    private $dispatcher;
-
-    public function __construct(\Illuminate\Events\Dispatcher $dispatcher)
-    {
-        $this->dispatcher = $dispatcher;
-    }
-
     /**
      * Handle the event.
      *
@@ -25,6 +14,6 @@ class GenericMezzoListener extends Listener
      */
     public function handle($param = null)
     {
-        var_dump($this->dispatcher->firing());
+
     }
 } 

@@ -17,3 +17,12 @@ function mezzo(){
 function mezzo_path(){
     return realpath(__DIR__ . "../../../");
 }
+
+/**
+ * The path of the mezzo folder (...vendor/mezzolabs/mezzo)
+ *
+ * @return string
+ */
+function mezzo_source_path(){
+    return mezzo_path() . '/src/';
+}

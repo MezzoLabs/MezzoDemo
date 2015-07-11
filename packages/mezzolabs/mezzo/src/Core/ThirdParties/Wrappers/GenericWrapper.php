@@ -33,6 +33,13 @@ abstract class GenericWrapper {
     protected $mezzoConfig;
 
     /**
+     * Is true when the package service provider booted
+     *
+     * @var boolean
+     */
+    protected $booted = false;
+
+    /**
      * @param Mezzo $mezzo
      * @param MezzoConfig $mezzoConfig
      * @internal param ConfigRepository $configuration
@@ -52,5 +59,16 @@ abstract class GenericWrapper {
             throw new \RuntimeException("No provider set for wrapper: ". get_called_class());
 
         return $this->mezzo->app()->register($this->provider, $this->providerOptions);
+    }
+
+    /**
+     * Called when the package service provider got booted. (We listened carefully)
+     *
+     * @return mixed
+     */
+    public function onProviderBooted(){
+
+        $this->booted = true;
+
     }
 }

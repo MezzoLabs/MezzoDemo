@@ -9,8 +9,8 @@ use Illuminate\Events\Dispatcher;
 use Illuminate\Foundation\Bootstrap\BootProviders;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
-use MezzoLabs\Mezzo\Listeners\Core\IncludeMezzoRouting;
-use MezzoLabs\Mezzo\Listeners\Core\RegisterThirdParties;
+use MezzoLabs\Mezzo\Listeners\Early\DispatchBeforeProvidersBoot;
+use MezzoLabs\Mezzo\Listeners\Early\DispatchAfterProvidersBooted;
 use MezzoLabs\Mezzo\Listeners\GenericMezzoListener;
 use MezzoLabs\Mezzo\MezzoServiceProvider;
 
@@ -54,9 +54,15 @@ class EventServiceProvider extends ServiceProvider
     {
         $dispatcher = $this->getDispatcher();
 
-        $dispatcher->listen('bootstrapping: ' . BootProviders::class, function($app){
-            $app->make('mezzo.config')->beforeProvidersBoot();
-        });
+        $dispatcher->listen(
+            'bootstrapping: ' . BootProviders::class,
+            DispatchBeforeProvidersBoot::class
+        );
+
+        $dispatcher->listen(
+            'bootstrapped: ' . BootProviders::class,
+            DispatchAfterProvidersBooted::class
+        );
 
         $dispatcher->listen('*', function($parameter) use ($dispatcher){
 

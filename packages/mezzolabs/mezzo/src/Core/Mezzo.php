@@ -72,7 +72,7 @@ class Mezzo{
     }
 
     /**
-     * Run the boot services that we need at the time the when all service providers are booted
+     * Run the boot services that we need at the time the when all service providers are registered
      */
     public function onProviderBooted(){
         if($this->booted) return false;
@@ -80,6 +80,16 @@ class Mezzo{
         $this->bootManager->bootPhase();
 
         $this->booted = true;
+    }
+
+    /**
+     * Run the boot services that we need at the time the when all service providers are booted
+     */
+    public function onAllProvidersBooted(){
+        $this->bootManager->bootedPhase();
+
+
+
     }
 
     /**
