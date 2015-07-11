@@ -55,14 +55,12 @@ class EventServiceProvider extends ServiceProvider
         $dispatcher = $this->getDispatcher();
 
         $dispatcher->listen('bootstrapping: ' . BootProviders::class, function($app){
-            $app->make('mezzo.thirdParties')->beforeProvidersBoot();
+            $app->make('mezzo.config')->beforeProvidersBoot();
         });
 
         $dispatcher->listen('*', function($parameter) use ($dispatcher){
 
         });
-
-
     }
 
     /**

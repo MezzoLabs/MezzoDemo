@@ -4,7 +4,7 @@
 namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 
-use MezzoLabs\Mezzo\Core\Configuration\Configuration;
+use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Mezzo;
 
 class PublishResources implements Bootstrapper{

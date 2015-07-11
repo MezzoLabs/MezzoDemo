@@ -13,6 +13,13 @@ use PhpSpec\Wrapper\Wrapper;
 class ThirdParties extends Collection
 {
     /**
+     * @var string[]
+     */
+    protected $toLoad = [
+        "DingoApi" => Wrappers\DingoApi::class
+    ];
+
+    /**
      * A Collection of the wrappers
      *
      * @var WrapperInterface[]
@@ -32,20 +39,15 @@ class ThirdParties extends Collection
     }
 
     /**
-     * @var string[]
-     */
-    protected $toLoad = [
-        "DingoApi" => Wrappers\DingoApi::class
-    ];
-
-    /**
      * Create the wrapper classes and put them into the collection
      */
-    public function createWrappers(){
+    public function createWrappers()
+    {
         foreach ($this->toLoad as $wrapperKey => $wrapperClass) {
             $wrapper = $this->createWrapper($wrapperClass);
             $this->put($wrapperKey, $wrapper);
         }
+
     }
 
     /**
@@ -61,15 +63,10 @@ class ThirdParties extends Collection
     /**
      * Prepare the configurations for each third party package before they boot.
      */
-    protected function prepareConfigs(){
+    public function prepareConfigs(){
         $this->map(function(WrapperInterface $wrapper){
             $wrapper->prepareConfig();
         });
-    }
-
-    public function beforeProvidersBoot(){
-        echo "before providers boot";
-        $this->prepareConfigs();
     }
 
     /**

@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\ThirdParties\Wrappers;
 
 
 use Illuminate\Config\Repository as ConfigRepository;
+use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Mezzo;
 
 abstract class GenericWrapper {
@@ -24,19 +25,21 @@ abstract class GenericWrapper {
     /**
      * @var Mezzo
      */
-    private $mezzo;
+    protected $mezzo;
+
     /**
-     * @var
+     * @var MezzoConfig
      */
-    private $configuration;
+    protected $mezzoConfig;
 
     /**
      * @param Mezzo $mezzo
-     * @param ConfigRepository $configuration
+     * @param MezzoConfig $mezzoConfig
+     * @internal param ConfigRepository $configuration
      */
-    public function __construct(Mezzo $mezzo, ConfigRepository $configuration){
+    public function __construct(Mezzo $mezzo, MezzoConfig $mezzoConfig){
         $this->mezzo = $mezzo;
-        $this->configuration = $configuration;
+        $this->mezzoConfig = $mezzoConfig;
     }
 
     /**

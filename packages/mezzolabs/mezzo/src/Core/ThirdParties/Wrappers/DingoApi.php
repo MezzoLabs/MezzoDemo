@@ -17,6 +17,6 @@ class DingoApi extends GenericWrapper implements WrapperInterface{
      */
     public function prepareConfig()
     {
-
+        $this->mezzoConfig->overwrite('api', 'mezzo.api');
     }
 }

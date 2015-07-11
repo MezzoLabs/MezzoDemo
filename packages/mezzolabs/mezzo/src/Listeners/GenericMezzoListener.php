@@ -4,15 +4,16 @@
 namespace MezzoLabs\Mezzo\Listeners;
 
 
-class GenericMezzoListener extends Listener{
+class GenericMezzoListener extends Listener
+{
 
     /**
      * @var \Illuminate\Events\Dispatcher
      */
     private $dispatcher;
 
-    public function __construct(\Illuminate\Events\Dispatcher $dispatcher){
-
+    public function __construct(\Illuminate\Events\Dispatcher $dispatcher)
+    {
         $this->dispatcher = $dispatcher;
     }
 
