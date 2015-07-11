@@ -24,8 +24,18 @@ class Mezzo extends Application{
      */
     protected $app;
 
+
+    /**
+     * The core boot service that runs all the bootstrappers we need.
+     *
+     * @var BootManager
+     */
+    protected $bootManager;
+
     public function __construct(Application $app){
         $this->app = $app;
+
+        $this->bootManager = BootManager::make($this);
     }
 
     /**
@@ -43,12 +53,26 @@ class Mezzo extends Application{
     public function bootstrap(){
         if($this->booted) return false;
 
-        $bootManager = BootManager::make();
-        $bootManager->run($this);
+
+    }
+
+    /**
+     * Run the boot services that we need at the time the Mezzo provider is registered
+     */
+    public function onProviderRegistered(){
+        $this->bootManager->registerPhase();
+    }
+
+    /**
+     * Run the boot services that we need at the time the when all service providers are booted
+     */
+    public function onProviderBooted(){
+        if($this->booted) return false;
+
+        $this->bootManager->bootPhase();
 
         $this->booted = true;
     }
-
 
 
 

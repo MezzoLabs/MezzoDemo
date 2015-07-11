@@ -2,10 +2,9 @@
 
 $app = app();
 
-
-$app->singleton('mezzo', function(\Illuminate\Container\Container $app){
-    return $app->make(\MezzoLabs\Mezzo\Core\Mezzo::class);
-});
-
+$mezzo = new MezzoLabs\Mezzo\Core\Mezzo($app);
 
 require __DIR__.'/../src/Core/helpers.php';
+
+return $mezzo;
+

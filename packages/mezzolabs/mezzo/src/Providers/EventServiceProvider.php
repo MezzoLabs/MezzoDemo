@@ -19,12 +19,6 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        "MezzoLabs\\Mezzo\\*" => [
-            GenericMezzoListener::class
-        ],
-         MezzoBooted::class => [
-            IncludeMezzoRouting::class
-        ]
     ];
 
     /**

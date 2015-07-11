@@ -5,17 +5,32 @@ namespace MezzoLabs\Mezzo\Core\Booting;
 
 
 use Illuminate\Contracts\Foundation\Application;
-use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\IncludeThirdParties;
+use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\Bootstrapper;
+use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\IncludeRouting;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\PrepareConfiguration;
+use MezzoLabs\Mezzo\Core\Mezzo;
 
 class BootManager
 {
 
+    const RegisterPhase = "registerPhase";
+    const BootPhase = "bootPhase";
 
+    /**
+     * Bootstrappers split into the different phases of the MezzoServiceProvider.
+     *
+     * @var string[]
+     */
     protected $bootstrappers = [
-        PrepareConfiguration::class,
-        IncludeThirdParties::class,
+        "registerPhase" => [
+            PrepareConfiguration::class,
+            IncludeRouting::class,
+        ],
+        "bootPhase" => [
+
+        ]
     ];
+
 
     /**
      * The Laravel Application
@@ -24,29 +39,65 @@ class BootManager
      */
     protected $app;
 
+    /**
+     * The mezzo instance.
+     *
+     * @var Application
+     */
+    protected $mezzo;
+
 
     /**
-     * @param Application $app
+     * @param Mezzo $mezzo
+     * @internal param Application $app
      */
-    public function __construct(Application $app)
+    public function __construct(Mezzo $mezzo)
     {
-        $this->app = $app;
+        $this->mezzo = $mezzo;
+        $this->app = $mezzo->app();
+    }
+
+    /**
+     * Run the bootstrappers for the current phase
+     *
+     * @param string $phase
+     */
+    public function bootForPhase($phase = BootManager::RegisterPhase){
+        $bootstrappers = $this->bootstrappers[$phase];
+        $this->run($bootstrappers);
+    }
+
+    /**
+     * Run the bootstrappers that are needed during the "register" phase
+     */
+    public function registerPhase()
+    {
+        $this->bootForPhase(BootManager::RegisterPhase);
+    }
+
+
+    /**
+     * Run the bootstrappers that are needed during the "boot" phase
+     */
+    public function bootPhase()
+    {
+        $this->bootForPhase(BootManager::BootPhase);
     }
 
     /**
      * Run the given array of bootstrap classes.
      *
-     * @param  array $bootstrappers
+     * @param  string[] $bootstrappers
      * @return void
      */
-    public function run(array $bootstrappers)
+    protected function run(array $bootstrappers)
     {
         foreach ($bootstrappers as $bootstrapper) {
-            event('bootstrapping: ' . $bootstrapper, [$this]);
+            event('bootstrapping: ' . $bootstrapper, [$this->app]);
 
-            $this->app->make($bootstrapper)->bootstrap($this);
+            $this->app->make($bootstrapper)->bootstrap($this->mezzo);
 
-            event('bootstrapped: ' . $bootstrapper, [$this]);
+            event('bootstrapped: ' . $bootstrapper, [$this->app]);
         }
     }
 
@@ -55,8 +106,9 @@ class BootManager
      *
      * @return BootManager
      */
-    public static function make(){
-        return app()->make(BootManager::class);
+    public static function make($mezzo)
+    {
+        return new BootManager($mezzo);
     }
 
 
