@@ -14,6 +14,7 @@
 
 Route::get('/', function () {
 
+    Debugbar::info('hello');
 
     return view('welcome');
 });
@@ -22,3 +23,4 @@ Route::controllers([
     'register' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
+

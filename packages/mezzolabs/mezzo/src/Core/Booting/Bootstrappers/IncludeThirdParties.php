@@ -5,7 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 
 use MezzoLabs\Mezzo\Core\Mezzo;
-use MezzoLabs\Mezzo\Core\ThirdParties\Manager;
+use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
 
 class IncludeThirdParties implements Bootstrapper{
 
@@ -18,14 +18,15 @@ class IncludeThirdParties implements Bootstrapper{
     public function bootstrap(Mezzo $mezzo)
     {
         $manager = $this->getManagerInstance($mezzo);
+        $manager->createWrappers();
         $manager->registerWrappers();
     }
 
     /**
      * @param Mezzo $mezzo
-     * @return Manager
+     * @return ThirdParties
      */
     private function getManagerInstance(Mezzo $mezzo){
-        return $mezzo->make(Manager::class);
+        return $mezzo->make(ThirdParties::class);
     }
 }

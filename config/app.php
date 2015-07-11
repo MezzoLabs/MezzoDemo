@@ -145,7 +145,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         MezzoLabs\Mezzo\MezzoServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class
+        Barryvdh\Debugbar\ServiceProvider::class,
 
         /*
          * Third party Providers

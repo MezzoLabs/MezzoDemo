@@ -8,7 +8,7 @@ use Illuminate\Container\Container;
 use Illuminate\Foundation\Application;
 use MezzoLabs\Mezzo\Core\Configuration\Configuration;
 use MezzoLabs\Mezzo\Core\Mezzo;
-use MezzoLabs\Mezzo\Core\ThirdParties\Manager as ThirdPartyManager;
+use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
 
 class CreateImportantBindings implements Bootstrapper{
 
@@ -19,7 +19,7 @@ class CreateImportantBindings implements Bootstrapper{
      */
     protected $singletons = [
         'mezzo.configuration' => Configuration::class,
-        'mezzo.thirdParties' => ThirdPartyManager::class
+        'mezzo.thirdParties' => ThirdParties::class
     ];
 
     /**

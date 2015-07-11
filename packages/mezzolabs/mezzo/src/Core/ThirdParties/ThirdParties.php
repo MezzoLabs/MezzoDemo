@@ -8,13 +8,14 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers;
 use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers\WrapperInterface;
+use PhpSpec\Wrapper\Wrapper;
 
-class Manager extends Collection
+class ThirdParties extends Collection
 {
     /**
      * A Collection of the wrappers
      *
-     * @var array
+     * @var WrapperInterface[]
      */
     protected $items = [];
 
@@ -23,9 +24,11 @@ class Manager extends Collection
      */
     private $mezzo;
 
-    public function __construct(Mezzo $mezzo)
+    public function __construct(array $items = [])
     {
-        $this->mezzo = $mezzo;
+        parent::__construct($items);
+
+        $this->mezzo = mezzo();
     }
 
     /**
@@ -35,19 +38,38 @@ class Manager extends Collection
         "DingoApi" => Wrappers\DingoApi::class
     ];
 
-    public function registerWrappers()
-    {
-        foreach ($this->toLoad as $wrapperClass) {
-            $wrapper = $this->createWrapper($wrapperClass);
-            $wrapper->register();
-        }
-    }
-
+    /**
+     * Create the wrapper classes and put them into the collection
+     */
     public function createWrappers(){
         foreach ($this->toLoad as $wrapperKey => $wrapperClass) {
             $wrapper = $this->createWrapper($wrapperClass);
             $this->put($wrapperKey, $wrapper);
         }
+    }
+
+    /**
+     * Register the wrapped package service providers
+     */
+    public function registerWrappers()
+    {
+        $this->map(function(WrapperInterface $wrapper){
+            $wrapper->register();
+        });
+    }
+
+    /**
+     * Prepare the configurations for each third party package before they boot.
+     */
+    protected function prepareConfigs(){
+        $this->map(function(WrapperInterface $wrapper){
+            $wrapper->prepareConfig();
+        });
+    }
+
+    public function beforeProvidersBoot(){
+        echo "before providers boot";
+        $this->prepareConfigs();
     }
 
     /**
