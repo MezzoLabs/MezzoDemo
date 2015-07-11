@@ -18,5 +18,5 @@ interface Bootstrapper {
      * @param Mezzo $mezzo
      * @return mixed
      */
-    public function boot(Mezzo $mezzo);
+    public function bootstrap(Mezzo $mezzo);
 } 

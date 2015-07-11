@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 use MezzoLabs\Mezzo\Core\Mezzo;
 
-class IncludeRouting implements Bootstrapper{
+class IncludeMezzoRouting implements Bootstrapper{
 
     /**
      * Run the booting process for this service.
@@ -14,10 +14,10 @@ class IncludeRouting implements Bootstrapper{
      * @param Mezzo $mezzo
      * @return mixed
      */
-    public function boot(Mezzo $mezzo)
+    public function bootstrap(Mezzo $mezzo)
     {
         if (! $mezzo->app()->routesAreCached()) {
-            require __DIR__.'../../Http/routes.php';
+            require __DIR__.'../../../Http/routes.php';
         }
     }
 }
