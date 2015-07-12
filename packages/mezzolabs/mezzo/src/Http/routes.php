@@ -1,13 +1,18 @@
 <?php
 
+use Dingo\Api\Routing\Router;
+use MezzoLabs\Mezzo\Core\Routing\Router as MezzoRouter;
+use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers\DingoApi;
+
 /*
 |--------------------------------------------------------------------------
 | Get the Dingo API Wrapper back from the IoC Container
 |--------------------------------------------------------------------------
 */
-use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers\DingoApi;
 $wrapper = DingoApi::make();
 $api = $wrapper->getApi();
+
+$mezzoRouter = MezzoRouter::make();
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +23,8 @@ $api = $wrapper->getApi();
 | Accept:  application/vnd.MezzoLabs.v1+json
 |
  */
-$api->version('v1', function ($api) {
+$api->version('v1', function (Router $api) use ($mezzoRouter) {
     $api->get('test', 'App\Http\Controllers\TestController@sayHi');
+
+    $mezzoRouter->generator()->run($api);
 });
