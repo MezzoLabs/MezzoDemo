@@ -7,9 +7,12 @@ namespace MezzoLabs\Mezzo\Core\Booting;
 use Illuminate\Contracts\Foundation\Application;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\Bootstrapper;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\CreateImportantBindings;
+use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\FinishModules;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\IncludeMezzoRouting;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\IncludeThirdParties;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\LoadConfiguration;
+use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterModuleProviders;
+use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RunModelReflection;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RunThirdPartyWrappers;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterMezzoProviders;
 use MezzoLabs\Mezzo\Core\Mezzo;
@@ -31,13 +34,15 @@ class BootManager
             CreateImportantBindings::class,
             LoadConfiguration::class,
             RegisterMezzoProviders::class,
+            RegisterModuleProviders::class,
             IncludeThirdParties::class
         ],
         "bootPhase" => [
-
         ],
         "bootedPhase" => [
             RunThirdPartyWrappers::class,
+            RunModelReflection::class,
+            FinishModules::class,
             IncludeMezzoRouting::class
         ]
     ];

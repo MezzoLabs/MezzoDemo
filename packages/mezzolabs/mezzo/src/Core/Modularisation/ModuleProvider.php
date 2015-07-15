@@ -35,4 +35,11 @@ abstract class ModuleProvider extends ServiceProvider
         $this->mezzo = $mezzo;
     }
 
+    /**
+     * Called when module is ready, model wrappers are loaded.
+     *
+     * @return mixed
+     */
+    abstract public function ready();
+
 }

@@ -53,7 +53,7 @@ class Reflector
     /**
      * Load the class names into the fitting collections.
      */
-    public function boot()
+    public function run()
     {
         if($this->booted) return false;
 

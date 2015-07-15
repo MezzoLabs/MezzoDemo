@@ -13,7 +13,9 @@ use MezzoLabs\Mezzo\MezzoServiceProvider;
 class ModuleCenter
 {
     /**
-     * @var Collection[Module] of all registered modules
+     * A collection of the registered Module providers
+     *
+     * @var Collection
      */
     protected $modules;
 
@@ -29,6 +31,7 @@ class ModuleCenter
 
     /**
      * @param Mezzo $mezzo
+     * @param Reflector $reflector
      */
     public function __construct(Mezzo $mezzo, Reflector $reflector)
     {
@@ -101,6 +104,22 @@ class ModuleCenter
     public function getModule($key){
         return $this->modules->get($key);
     }
+
+    /**
+     * @return Collection
+     */
+    public function modules(){
+        return $this->modules;
+    }
+
+    /**
+     * @return Reflector
+     */
+    public function reflector(){
+        return $this->reflector;
+    }
+
+
 
 
 
