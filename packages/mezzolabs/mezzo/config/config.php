@@ -3,6 +3,9 @@
 return [
     "hello" => "there",
 
+    "moduleProviders" => [
+        \MezzoLabs\Mezzo\Modules\SampleModule\SampleModuleProvider::class
+    ],
 
     "api" => [
         'prefix' => 'api',

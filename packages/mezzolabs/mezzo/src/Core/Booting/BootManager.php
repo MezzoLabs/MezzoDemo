@@ -10,7 +10,7 @@ use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\CreateImportantBindings;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\IncludeMezzoRouting;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\IncludeThirdParties;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\LoadConfiguration;
-use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\PrepareThirdParties;
+use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RunThirdPartyWrappers;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterMezzoProviders;
 use MezzoLabs\Mezzo\Core\Mezzo;
 
@@ -37,7 +37,7 @@ class BootManager
 
         ],
         "bootedPhase" => [
-            PrepareThirdParties::class,
+            RunThirdPartyWrappers::class,
             IncludeMezzoRouting::class
         ]
     ];

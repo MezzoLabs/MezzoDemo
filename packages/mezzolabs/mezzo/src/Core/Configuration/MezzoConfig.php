@@ -34,6 +34,16 @@ class MezzoConfig {
         $this->repository = $repository;
     }
 
+    /**
+     * Get a value from the mezzo config. Just like \Config::get, but the "mezzo" prefix is automatically added.
+     *
+     * @param $key
+     * @param null $default
+     * @return mixed
+     */
+    public function get($key, $default = null){
+        return $this->repository()->get('mezzo.' . $key, $default);
+    }
 
     /**
      * Load the Mezzo specific configuration. Also warm up the third party configuration.

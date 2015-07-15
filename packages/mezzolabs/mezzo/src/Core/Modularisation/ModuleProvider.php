@@ -6,13 +6,19 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Mezzo;
+use MezzoLabs\Mezzo\Core\Modularisation\Collections\ModelWrappers;
 
 abstract class ModuleProvider extends ServiceProvider
 {
     /**
      * @var String[]
      */
-    protected $modules = [];
+    protected $models = [];
+
+    /**
+     * @var ModelWrappers
+     */
+    protected $modelWrappers;
 
     /**
      * @var
@@ -28,6 +34,5 @@ abstract class ModuleProvider extends ServiceProvider
 
         $this->mezzo = $mezzo;
     }
-
 
 }

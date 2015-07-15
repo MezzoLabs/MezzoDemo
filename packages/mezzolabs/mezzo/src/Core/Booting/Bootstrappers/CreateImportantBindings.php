@@ -8,6 +8,7 @@ use Illuminate\Container\Container;
 use Illuminate\Foundation\Application;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Mezzo;
+use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflector;
 use MezzoLabs\Mezzo\Core\Routing\Router;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
@@ -24,6 +25,7 @@ class CreateImportantBindings implements Bootstrapper{
         'mezzo.thirdParties' => ThirdParties::class,
         'mezzo.config' => MezzoConfig::class,
         'mezzo.router' => Router::class,
+        'mezzo.moduleCenter' => ModuleCenter::class,
         'mezzo.modules.general' => GeneralModule::class,
         'mezzo.reflector' => Reflector::class
 
@@ -42,8 +44,17 @@ class CreateImportantBindings implements Bootstrapper{
         $app->instance('mezzo', $mezzo);
         $app->instance(get_class($mezzo), $mezzo);
 
+        $this->bindSingletons($mezzo);
+    }
+
+    /**
+     * Bind the configured singletons
+     *
+     * @param Mezzo $mezzo
+     */
+    protected function bindSingletons(Mezzo $mezzo){
         foreach($this->singletons as $key => $class){
-            $this->bindSingleton($app, $key, $class);
+            $this->bindSingleton($mezzo->app(), $key, $class);
         }
     }
 

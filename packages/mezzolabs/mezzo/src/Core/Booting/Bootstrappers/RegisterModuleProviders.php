@@ -5,9 +5,9 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 
 use MezzoLabs\Mezzo\Core\Mezzo;
-use MezzoLabs\Mezzo\Providers\EventServiceProvider;
 
-class PrepareThirdParties implements Bootstrapper{
+class RegisterModuleProviders implements Bootstrapper
+{
 
     /**
      * Run the booting process for this service.
@@ -17,6 +17,10 @@ class PrepareThirdParties implements Bootstrapper{
      */
     public function bootstrap(Mezzo $mezzo)
     {
-        $mezzo->make('mezzo.thirdParties')->onProvidersBooted();
+        $providerClasses = $mezzo->config()->get('moduleProviders');
+
+        foreach ($providerClasses as $providerClass) {
+            $mezzo->moduleCenter()->register($providerClass);
+        }
     }
 }

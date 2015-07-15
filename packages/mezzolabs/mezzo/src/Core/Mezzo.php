@@ -6,6 +6,8 @@ namespace MezzoLabs\Mezzo\Core;
 
 use Illuminate\Foundation\Application;
 use MezzoLabs\Mezzo\Core\Booting\BootManager;
+use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
+use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
 use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
 use MezzoLabs\Mezzo\Events\Event;
 use MezzoLabs\Mezzo\MezzoServiceProvider;
@@ -42,7 +44,6 @@ class Mezzo{
      */
     public $serviceProvider;
 
-
     /**
      * Create the one and only Mezzo instance
      *
@@ -64,12 +65,28 @@ class Mezzo{
     }
 
     /**
+     * Returns the main Module Center instance
+     *
+     * @return ModuleCenter
+     */
+    public function moduleCenter(){
+        return $this->make(ModuleCenter::class);
+    }
+
+    /**
+     * Returns the main MezzoConfig instance
+     *
+     * @return MezzoConfig
+     */
+    public function config(){
+        return $this->make(MezzoConfig::class);
+    }
+
+    /**
      * Bootstrap Mezzo
      */
     public function bootstrap(){
         if($this->booted) return false;
-
-
     }
 
     /**
@@ -122,6 +139,8 @@ class Mezzo{
     public function fire(Event $event, $payload = [], $halt = false){
         event($event, $payload, $halt);
     }
+
+
 
 
 } 
