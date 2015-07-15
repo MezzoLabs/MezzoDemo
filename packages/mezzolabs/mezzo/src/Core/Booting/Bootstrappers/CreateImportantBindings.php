@@ -10,6 +10,7 @@ use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Routing\Router;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
+use MezzoLabs\Mezzo\Modules\General\Module as GeneralModule;
 
 class CreateImportantBindings implements Bootstrapper{
 
@@ -21,7 +22,8 @@ class CreateImportantBindings implements Bootstrapper{
     protected $singletons = [
         'mezzo.thirdParties' => ThirdParties::class,
         'mezzo.config' => MezzoConfig::class,
-        'mezzo.router' => Router::class
+        'mezzo.router' => Router::class,
+        'mezzo.module.general' => GeneralModule::class
     ];
 
     /**

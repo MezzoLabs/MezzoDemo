@@ -4,6 +4,6 @@
 namespace MezzoLabs\Mezzo\Contracts;
 
 
-class Modell {
+class Model {
 
 } 

@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Contracts\GeneralModule;
 use MezzoLabs\Mezzo\Contracts\Module;
 use MezzoLabs\Mezzo\Core\Mezzo;
 
@@ -28,6 +29,8 @@ class ModuleCenter
         $this->mezzo = $mezzo;
         $this->modules = new Collection();
 
+        $this->registerGeneralModule($mezzo->make('mezzo.module.general'));
+
     }
 
     /**
@@ -50,6 +53,34 @@ class ModuleCenter
      */
     public function isRegistered(Module $module){
         return $this->modules->has(get_class($module));
+    }
+
+    /**
+     * Register the module that catches all the models without any module assiciation
+     *
+     * @param GeneralModule $module
+     */
+    public function registerGeneralModule(GeneralModule $module){
+        $this->modules->put('General', $module);
+    }
+
+    /**
+     * Get the general module
+     *
+     * @return GeneralModule
+     */
+    public function generalModule(){
+        return $this->getModule('General');
+    }
+
+    /**
+     * Get a module from the registration
+     *
+     * @param string $key
+     * @return Module
+     */
+    public function getModule($key){
+        return $this->modules->get($key);
     }
 
 }
