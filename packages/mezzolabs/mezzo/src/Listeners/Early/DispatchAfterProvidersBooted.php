@@ -17,7 +17,6 @@ class DispatchAfterProvidersBooted extends Listener implements ListenerInterface
      */
     public function handle($param = null)
     {
-        mezzo()->make('mezzo.thirdParties')->onProvidersBooted();
         mezzo()->onAllProvidersBooted();
     }
 } 

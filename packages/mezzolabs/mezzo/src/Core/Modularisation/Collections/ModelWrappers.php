@@ -21,6 +21,8 @@ class ModelWrappers extends Collection{
     }
 
     /**
+     * Create a wrapper instance for a class that extends Eloquent and uses the MezzoModel trait.
+     *
      * @param $class
      */
     public function createWrapper($class){

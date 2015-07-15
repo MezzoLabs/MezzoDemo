@@ -37,6 +37,10 @@ class Reflector
      */
     protected $modelWrappers;
 
+    /**
+     * @var boolean
+     */
+    protected $booted = false;
 
     /**
      * @param Mezzo $mezzo
@@ -51,8 +55,27 @@ class Reflector
      */
     public function boot()
     {
+        if($this->booted) return false;
+
         $this->eloquentModels = $this->findEloquentModels();
         $this->modelWrappers = $this->findMezzoModels();
+
+        $this->booted = true;
+    }
+
+
+    /**
+     * @return ModelWrappers
+     */
+    public function wrappers(){
+        return $this->modelWrappers;
+    }
+
+    /**
+     * @return EloquentModels
+     */
+    public function eloquentModels(){
+        return $this->eloquentModels;
     }
 
 
@@ -73,7 +96,7 @@ class Reflector
     {
         $classes = $this->getTraitUsingClasses($this->mezzoModelTrait, $this->eloquentModels);
 
-        $this->modelWrappers = new ModelWrappers($classes);
+        return new ModelWrappers($classes);
     }
 
 
@@ -128,7 +151,6 @@ class Reflector
     {
         $usedTraits = class_uses($class);
         return in_array($trait, $usedTraits);
-
     }
 
 

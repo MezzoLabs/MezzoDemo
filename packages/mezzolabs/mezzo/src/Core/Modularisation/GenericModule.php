@@ -4,11 +4,13 @@
 namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 
-abstract class GenericModule{
+use Illuminate\Support\ServiceProvider;
+
+abstract class GenericModule extends ServiceProvider{
     /**
      * A collection of associated models.
      *
-     * @var Models
+     * @var ModelWrappers
      */
     public $models;
 } 
