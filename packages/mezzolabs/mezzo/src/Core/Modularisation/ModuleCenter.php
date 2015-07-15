@@ -22,15 +22,21 @@ class ModuleCenter
     private $mezzo;
 
     /**
+     * @var Reflector
+     */
+    private $reflector;
+
+    /**
      * @param Mezzo $mezzo
      */
-    public function __construct(Mezzo $mezzo)
+    public function __construct(Mezzo $mezzo, Reflector $reflector)
     {
         $this->mezzo = $mezzo;
         $this->modules = new Collection();
 
-        $this->registerGeneralModule($mezzo->make('mezzo.module.general'));
+        $this->registerGeneralModule($mezzo->make('mezzo.modules.general'));
 
+        $this->reflector = $reflector;
     }
 
     /**

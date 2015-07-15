@@ -8,6 +8,7 @@ use Illuminate\Container\Container;
 use Illuminate\Foundation\Application;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Mezzo;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflector;
 use MezzoLabs\Mezzo\Core\Routing\Router;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
 use MezzoLabs\Mezzo\Modules\General\Module as GeneralModule;
@@ -23,7 +24,9 @@ class CreateImportantBindings implements Bootstrapper{
         'mezzo.thirdParties' => ThirdParties::class,
         'mezzo.config' => MezzoConfig::class,
         'mezzo.router' => Router::class,
-        'mezzo.module.general' => GeneralModule::class
+        'mezzo.modules.general' => GeneralModule::class,
+        'mezzo.reflector' => Reflector::class
+
     ];
 
     /**
