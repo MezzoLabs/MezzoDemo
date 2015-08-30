@@ -25,8 +25,8 @@ class CreateImportantBindings implements Bootstrapper{
         'mezzo.thirdParties' => ThirdParties::class,
         'mezzo.config' => MezzoConfig::class,
         'mezzo.router' => Router::class,
-        'mezzo.moduleCenter' => ModuleCenter::class,
         'mezzo.modules.general' => GeneralModule::class,
+        'mezzo.moduleCenter' => ModuleCenter::class,
         'mezzo.reflector' => Reflector::class
 
     ];
@@ -66,10 +66,15 @@ class CreateImportantBindings implements Bootstrapper{
      * @param $class
      */
     protected function bindSingleton(Application $app, $key, $class){
+        var_dump('bind '. $key);
+
         $instance = $app->make($class);
+
 
         $app->instance($key, $instance);
         $app->alias($key, $class);
+        var_dump('binded '. $key);
+
     }
 
 }

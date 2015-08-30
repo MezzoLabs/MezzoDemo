@@ -119,6 +119,7 @@ class BootManager
         foreach ($bootstrappers as $bootstrapper) {
             event('bootstrapping: ' . $bootstrapper, [$this->app]);
 
+
             $this->app->make($bootstrapper)->bootstrap($this->mezzo);
 
             event('bootstrapped: ' . $bootstrapper, [$this->app]);

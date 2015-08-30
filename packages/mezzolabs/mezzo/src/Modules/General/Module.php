@@ -4,11 +4,24 @@
 namespace MezzoLabs\Mezzo\Modules\General;
 
 
-use MezzoLabs\Mezzo\Contracts\GeneralModule;
-use MezzoLabs\Mezzo\Contracts\Module as ModuleContract;
-use MezzoLabs\Mezzo\Core\Modularisation\GenericModule;
+use MezzoLabs\Mezzo\Core\Modularisation\Generic\GeneralModule;
 
-class Module extends GenericModule implements ModuleContract, GeneralModule
+class Module extends GeneralModule
 {
 
-} 
+    public function __construct()
+    {
+
+
+    }
+
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        // TODO: Implement register() method.
+    }
+}

@@ -5,8 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Contracts\GeneralModule;
-use MezzoLabs\Mezzo\Contracts\Module;
+use MezzoLabs\Mezzo\Core\Modularisation\Generic\GeneralModule;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\MezzoServiceProvider;
 
