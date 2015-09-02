@@ -3,7 +3,9 @@
 
 namespace MezzoLabs\Mezzo\Core\Modularisation;
 
+use App\Tutorial;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
+use Illuminate\Filesystem\ClassFinder;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Collections\EloquentModels;
 use MezzoLabs\Mezzo\Core\Modularisation\Collections\ModelWrappers;
@@ -113,14 +115,12 @@ class Reflector
         $children = [];
 
         //If there is no collection of classes, we will search through all classes
-        if ($childClasses == null) $childClasses = get_declared_classes();
-
+        if ($childClasses == null) $childClasses = $this->classesInAppFolder();
 
 
         foreach ($childClasses as $class) {
             if (is_subclass_of($class, $parentClass)) $children[] = $class;
         }
-
 
         return $children;
 
@@ -133,15 +133,15 @@ class Reflector
      */
     protected function getTraitUsingClasses($traitName, $childClasses = null)
     {
-        if ($childClasses == null) $childClasses = get_declared_classes();
+        if ($childClasses == null) $childClasses = $this->classesInAppFolder();
 
-        $children = [];
+        $usages = [];
 
         foreach ($childClasses as $class) {
-            if ($this->classUsesTrait($traitName, $class)) $children[] = $class;
+            if ($this->classUsesTrait($traitName, $class)) $usages[] = $class;
         }
 
-        return $children;
+        return $usages;
 
     }
 
@@ -156,6 +156,11 @@ class Reflector
     {
         $usedTraits = class_uses($class);
         return in_array($trait, $usedTraits);
+    }
+
+    private function classesInAppFolder(){
+        $finder = app()->make(ClassFinder::class);
+        return $finder->findClasses(app_path());
     }
 
 

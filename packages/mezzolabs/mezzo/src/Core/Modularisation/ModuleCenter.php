@@ -5,9 +5,12 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Modularisation\Collections\ModelWrappers;
 use MezzoLabs\Mezzo\Core\Modularisation\Generic\GeneralModule;
 use MezzoLabs\Mezzo\Core\Mezzo;
+use MezzoLabs\Mezzo\Exceptions\ModelCannotBeGrabbed;
 use MezzoLabs\Mezzo\MezzoServiceProvider;
+use Mockery\CountValidator\Exception;
 
 class ModuleCenter
 {
@@ -27,6 +30,11 @@ class ModuleCenter
      * @var Reflector
      */
     private $reflector;
+
+    /**
+     * @var ModelWrappers
+     */
+    private $grabbedModels;
 
     /**
      * @param Mezzo $mezzo
@@ -119,17 +127,29 @@ class ModuleCenter
     }
 
     public function associateModels(){
-
-        $modelWrappers = $this->reflector()->wrappers();
-
         $this->modules()->map(function(ModuleProvider $module, $key){
 
+            foreach($module->models() as $model){
+                $this->grabModel($model, $module);
+            }
 
 
         });
     }
 
+    /**
+     * Connect a model to this module. It will be blocked for other modules to grab this model afterwards.
+     *
+     * @param $className
+     * @param ModuleProvider $module
+     */
+    public function grabModel($className, ModuleProvider $module){
+        $allModels = $this->reflector()->wrappers();
 
+        if(!$allModels->has($className)){
+            throw new ModelCannotBeGrabbed($className, $module);
+        }
+    }
 
 
 

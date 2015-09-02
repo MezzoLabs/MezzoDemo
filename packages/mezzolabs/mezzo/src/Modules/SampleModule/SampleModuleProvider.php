@@ -4,13 +4,16 @@
 namespace MezzoLabs\Mezzo\Modules\SampleModule;
 
 
+use App\Tutorial;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
 class SampleModuleProvider extends ModuleProvider{
 
     protected $modules = [
-        User::class
+        User::class,
+        Tutorial::class,
+        'DoesNotExist'
     ];
 
     /**

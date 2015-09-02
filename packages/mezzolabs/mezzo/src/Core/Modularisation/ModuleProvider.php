@@ -42,4 +42,10 @@ abstract class ModuleProvider extends ServiceProvider
      */
     abstract public function ready();
 
+    final public function models(){
+        return $this->models;
+    }
+
+
+
 }
