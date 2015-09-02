@@ -10,6 +10,8 @@ use MezzoLabs\Mezzo\Core\Modularisation\Collections\ModelWrappers;
 
 abstract class ModuleProvider extends ServiceProvider
 {
+    public $isGeneral = false;
+
     /**
      * @var String[]
      */
@@ -42,7 +44,7 @@ abstract class ModuleProvider extends ServiceProvider
      */
     abstract public function ready();
 
-    final public function models(){
+    public function models(){
         return $this->models;
     }
 

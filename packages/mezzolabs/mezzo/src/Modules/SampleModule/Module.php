@@ -8,12 +8,10 @@ use App\Tutorial;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
-class SampleModuleProvider extends ModuleProvider{
+class Module extends ModuleProvider{
 
-    protected $modules = [
-        User::class,
-        Tutorial::class,
-        'DoesNotExist'
+    protected $models = [
+        Tutorial::class
     ];
 
     /**

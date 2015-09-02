@@ -27,6 +27,6 @@ class ModelWrappers extends Collection{
      */
     public function createWrapper($class){
         $wrapper = new ModelWrapper($class);
-        $this->add($class, $wrapper);
+        $this->put($class, $wrapper);
     }
 } 

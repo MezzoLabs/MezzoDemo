@@ -102,6 +102,13 @@ class ModuleCenter
         return $this->getModule('general');
     }
 
+    public function isGeneralModule($instance){
+        $className = get_class($instance);
+        $generalClassName = get_class($this->generalModule());
+
+        return $className == $generalClassName;
+    }
+
     /**
      * Get a module from the registration
      *
@@ -129,10 +136,11 @@ class ModuleCenter
     public function associateModels(){
         $this->modules()->map(function(ModuleProvider $module, $key){
 
-            foreach($module->models() as $model){
-                $this->grabModel($model, $module);
-            }
+            if($this->isGeneralModule($module)) return;
 
+            foreach($module->models() as $model){
+                $this->associateModel($model, $module);
+            }
 
         });
     }
@@ -143,12 +151,14 @@ class ModuleCenter
      * @param $className
      * @param ModuleProvider $module
      */
-    public function grabModel($className, ModuleProvider $module){
+    public function associateModel($className, ModuleProvider $module){
         $allModels = $this->reflector()->wrappers();
 
         if(!$allModels->has($className)){
             throw new ModelCannotBeGrabbed($className, $module);
         }
+
+        //TODO: Grab the models and associate it with the
     }
 
 

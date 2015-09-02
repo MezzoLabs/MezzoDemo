@@ -9,6 +9,8 @@ use MezzoLabs\Mezzo\Core\Modularisation\Generic\GeneralModule;
 class Module extends GeneralModule
 {
 
+    protected $models = [];
+
     public function __construct()
     {
 
