@@ -17,16 +17,16 @@ class IncludeThirdParties implements Bootstrapper{
      */
     public function bootstrap(Mezzo $mezzo)
     {
-        $manager = $this->getManagerInstance($mezzo);
-        $manager->createWrappers();
-        $manager->registerWrappers();
+        $thirdParties = $this->getThirdPartiesInstance($mezzo);
+        $thirdParties->createWrappers();
+        $thirdParties->registerWrappers();
     }
 
     /**
      * @param Mezzo $mezzo
      * @return ThirdParties
      */
-    private function getManagerInstance(Mezzo $mezzo){
+    private function getThirdPartiesInstance(Mezzo $mezzo){
         return $mezzo->make(ThirdParties::class);
     }
 }

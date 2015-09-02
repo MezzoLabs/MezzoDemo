@@ -3,6 +3,8 @@
 
 namespace MezzoLabs\Mezzo\Core\Modularisation\Generic;
 
-abstract class GeneralModule extends Model{
+use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+
+abstract class GeneralModule extends ModuleProvider{
 
 } 

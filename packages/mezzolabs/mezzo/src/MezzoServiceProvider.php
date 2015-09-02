@@ -17,19 +17,6 @@ class MezzoServiceProvider extends ServiceProvider
 
 
     /**
-     * Perform post-registration booting of services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-
-        $this->mezzo->onProviderBooted();
-
-    }
-
-
-    /**
      * Register any package services.
      *
      * We have to boot Mezzo here because we will include third party providers during the boot process.
@@ -44,10 +31,20 @@ class MezzoServiceProvider extends ServiceProvider
         $this->mezzo->serviceProvider = $this;
 
         $this->mezzo->onProviderRegistered();
-
-        //dd(\Config::get('mezzo:hello'));
-
     }
+
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->mezzo->onProviderBooted();
+    }
+
+
+
 
     /**
      * Merge config from application with the one in the config folder.

@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 use MezzoLabs\Mezzo\Core\Mezzo;
 
-class RegisterModuleProviders implements Bootstrapper
+class RegisterConfiguredModuleProviders implements Bootstrapper
 {
 
     /**

@@ -18,6 +18,7 @@ class RunModelReflection implements Bootstrapper{
     public function bootstrap(Mezzo $mezzo)
     {
         $mezzo->moduleCenter()->reflector()->run();
-        //@TODO: Fill the model wrappers inside the modules that are registered
+
+        $mezzo->moduleCenter()->associateModels();
     }
 }

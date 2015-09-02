@@ -22,6 +22,16 @@ class Module extends GeneralModule
      */
     public function register()
     {
-        // TODO: Implement register() method.
+
+    }
+
+    /**
+     * Called when module is ready, model wrappers are loaded.
+     *
+     * @return mixed
+     */
+    public function ready()
+    {
+
     }
 }

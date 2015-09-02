@@ -7,7 +7,7 @@ namespace MezzoLabs\Mezzo\Core\ThirdParties\Wrappers;
 use Dingo\Api\Provider\LaravelServiceProvider as DingoProvider;
 use Dingo\Api\Routing\Router;
 
-class DingoApi extends GenericWrapper implements WrapperInterface{
+class DingoApi extends GenericWrapper{
 
     /**
      * The Dingo Api router

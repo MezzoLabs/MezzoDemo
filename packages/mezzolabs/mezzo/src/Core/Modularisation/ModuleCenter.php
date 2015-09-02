@@ -118,6 +118,17 @@ class ModuleCenter
         return $this->reflector;
     }
 
+    public function associateModels(){
+
+        $modelWrappers = $this->reflector()->wrappers();
+
+        $this->modules()->map(function(ModuleProvider $module, $key){
+
+
+
+        });
+    }
+
 
 
 

@@ -64,8 +64,7 @@ class EventServiceProvider extends ServiceProvider
             DispatchAfterProvidersBooted::class
         );
 
-        $dispatcher->listen('*', function($parameter) use ($dispatcher){
-
+        $dispatcher->listen('*', function($param = null, $param2 = null) use ($dispatcher){
         });
     }
 

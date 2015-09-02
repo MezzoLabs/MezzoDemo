@@ -4,23 +4,23 @@
 namespace MezzoLabs\Mezzo\Core\Routing;
 
 
-use Dingo\Api\Routing\Router;
+use Dingo\Api\Routing\Router as DingoRouter;
 
 class RoutesGenerator {
 
     /**
      * The Dingo api router we will fill
      *
-     * @var Router
+     * @var DingoRouter
      */
     public $apiRouter;
 
     /**
      * Fill the api router with the generated routes
      *
-     * @param Router $apiRouter
+     * @param DingoRouter $apiRouter
      */
-    public function run(Router $apiRouter){
+    public function run(DingoRouter $apiRouter){
         $apiRouter->get('cheat', function(){
             return "callback possible";
         });

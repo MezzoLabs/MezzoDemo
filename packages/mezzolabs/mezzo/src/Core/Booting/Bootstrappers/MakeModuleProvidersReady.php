@@ -9,7 +9,7 @@ use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Modules\General\Module;
 use MezzoLabs\Mezzo\Providers\EventServiceProvider;
 
-class FinishModules implements Bootstrapper{
+class MakeModuleProvidersReady implements Bootstrapper{
 
     /**
      * Run the booting process for this service.

@@ -8,7 +8,7 @@ use Illuminate\Config\Repository as ConfigRepository;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Mezzo;
 
-abstract class GenericWrapper {
+abstract class GenericWrapper implements WrapperInterface{
 
     /**
      * The string of the package service provider
@@ -38,6 +38,9 @@ abstract class GenericWrapper {
      * @var boolean
      */
     protected $booted = false;
+
+
+
 
     /**
      * @param Mezzo $mezzo
@@ -69,6 +72,5 @@ abstract class GenericWrapper {
     public function onProviderBooted(){
 
         $this->booted = true;
-
     }
 }

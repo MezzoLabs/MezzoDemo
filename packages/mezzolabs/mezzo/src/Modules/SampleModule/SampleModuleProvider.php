@@ -20,6 +20,14 @@ class SampleModuleProvider extends ModuleProvider{
      */
     public function register()
     {
+    }
 
+    /**
+     * Called when module is ready, model wrappers are loaded.
+     *
+     * @return mixed
+     */
+    public function ready()
+    {
     }
 }

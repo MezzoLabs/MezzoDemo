@@ -73,6 +73,8 @@ class Mezzo{
         return $this->make(ModuleCenter::class);
     }
 
+
+
     /**
      * Returns the main MezzoConfig instance
      *
@@ -131,12 +133,12 @@ class Mezzo{
     /**
      * Throw a Mezzo event
      *
-     * @param Event $event
+     * @param $event
      * @param  mixed $payload
      * @param  bool $halt
      * @return array|null
      */
-    public function fire(Event $event, $payload = [], $halt = false){
+    public function fire( $event, $payload = [], $halt = false){
         event($event, $payload, $halt);
     }
 

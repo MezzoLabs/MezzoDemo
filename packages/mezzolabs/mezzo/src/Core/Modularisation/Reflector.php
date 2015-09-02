@@ -86,6 +86,7 @@ class Reflector
      */
     protected function findEloquentModels()
     {
+
         return new EloquentModels($this->getChildrenOfClass($this->eloquentClass));
     }
 
@@ -109,13 +110,17 @@ class Reflector
      */
     protected function getChildrenOfClass($parentClass, $childClasses = null)
     {
-        if ($childClasses == null) $childClasses = get_declared_classes();
-
         $children = [];
 
+        //If there is no collection of classes, we will search through all classes
+        if ($childClasses == null) $childClasses = get_declared_classes();
+
+
+
         foreach ($childClasses as $class) {
-            if (is_subclass_of($parentClass, $class)) $children[] = $class;
+            if (is_subclass_of($class, $parentClass)) $children[] = $class;
         }
+
 
         return $children;
 
