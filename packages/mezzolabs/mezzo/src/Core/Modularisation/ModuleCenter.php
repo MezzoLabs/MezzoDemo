@@ -104,6 +104,12 @@ class ModuleCenter
         return $this->getModule('general');
     }
 
+    /**
+     * Check if the given instance is the general module.
+     *
+     * @param $instance
+     * @return bool
+     */
     public function isGeneralModule($instance){
         $className = get_class($instance);
         $generalClassName = get_class($this->generalModule());
@@ -135,6 +141,10 @@ class ModuleCenter
         return $this->reflector;
     }
 
+    /**
+     * Check the models that each module requires and associate the models with them.
+     * Make sure there are no conflicts.
+     */
     public function associateModels(){
         $this->modules()->map(function(ModuleProvider $module, $key){
 
@@ -155,6 +165,8 @@ class ModuleCenter
      */
     private function fillGeneralModule(){
         $allModels = $this->reflector()->wrappers();
+
+
 
         $allModels->map(function(ModelWrapper $model, $key){
             if($model->hasModule()) return;
@@ -185,6 +197,7 @@ class ModuleCenter
 
     /**
      * @param $model
+     * @throws MezzoException
      * @throws ModelCannotBeFound
      * @return ModelWrapper
      */

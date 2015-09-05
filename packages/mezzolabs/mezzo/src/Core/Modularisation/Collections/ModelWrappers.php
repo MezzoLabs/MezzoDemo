@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Collections;
 use Illuminate\Database\Eloquent\Collection;
 use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapper;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
+use MezzoLabs\Mezzo\Exceptions\NotAValidModel;
 
 class ModelWrappers extends Collection{
 
@@ -15,7 +16,7 @@ class ModelWrappers extends Collection{
     /**
      * @param array[String] $classes
      */
-    public function __construct(Array $classes){
+    public function __construct(Array $classes = array()){
         foreach($classes as $class){
             $this->add($class);
         }
@@ -23,7 +24,7 @@ class ModelWrappers extends Collection{
 
     /**
      * @param $model
-     * @throws MezzoException
+     * @throws NotAValidModel
      * @return \MezzoLabs\Mezzo\Core\Modularisation\ModelWrapper
      */
     public static function makeWrapper($model){
@@ -34,7 +35,11 @@ class ModelWrappers extends Collection{
         if(ModelWrapper::class == get_class($model))
             return $model;
 
-        throw new MezzoException($model . ' is not a valid model.');
+        if($model == null){
+            return null;
+        }
+
+        throw new NotAValidModel($model);
     }
 
     /**
@@ -45,15 +50,11 @@ class ModelWrappers extends Collection{
      */
     public function add($model){
         $wrapper = $this->makeWrapper($model);
+
+        if(!$wrapper) return parent::add(null);
+
         $this->put($wrapper->className(), $wrapper);
     }
 
-    /**
-     * @param mixed $key
-     * @return ModelWrapper
-     */
-    public function get($key){
-        return parent::get($key);
-    }
 
 } 

@@ -35,6 +35,8 @@ abstract class ModuleProvider extends ServiceProvider
     public function __construct(Mezzo $mezzo){
 
         $this->mezzo = $mezzo;
+
+        $this->modelWrappers = new ModelWrappers();
     }
 
     /**

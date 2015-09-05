@@ -51,6 +51,7 @@ class ModelWrapper
         if($this->hasModule()){
             throw new ModelIsAlreadyAssociated($this, $module);
         }
+
         $this->module = $module;
 
         $this->module->associateModel($this);
