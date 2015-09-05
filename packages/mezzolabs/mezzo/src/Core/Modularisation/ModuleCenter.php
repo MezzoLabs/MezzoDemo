@@ -8,7 +8,9 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Modularisation\Collections\ModelWrappers;
 use MezzoLabs\Mezzo\Core\Modularisation\Generic\GeneralModule;
 use MezzoLabs\Mezzo\Core\Mezzo;
-use MezzoLabs\Mezzo\Exceptions\ModelCannotBeGrabbed;
+use MezzoLabs\Mezzo\Exceptions\MezzoException;
+use MezzoLabs\Mezzo\Exceptions\ModelCannotBeAssociated;
+use MezzoLabs\Mezzo\Exceptions\ModelCannotBeFound;
 use MezzoLabs\Mezzo\MezzoServiceProvider;
 use Mockery\CountValidator\Exception;
 
@@ -141,26 +143,66 @@ class ModuleCenter
             foreach($module->models() as $model){
                 $this->associateModel($model, $module);
             }
-
         });
+
+        $this->fillGeneralModule();
+
+        var_dump($this->modules());
+    }
+
+    /**
+     * Grab the unassociated models and give them to the general module.
+     */
+    private function fillGeneralModule(){
+        $allModels = $this->reflector()->wrappers();
+
+        $allModels->map(function(ModelWrapper $model, $key){
+            if($model->hasModule()) return;
+
+            $this->associateWithGeneralModule($model);
+        });
+    }
+
+    /**
+     * @param ModelWrapper $model
+     */
+    public function associateWithGeneralModule(ModelWrapper $model){
+        $this->associateModel($model, $this->generalModule());
     }
 
     /**
      * Connect a model to this module. It will be blocked for other modules to grab this model afterwards.
      *
-     * @param $className
+     * @param $model
      * @param ModuleProvider $module
+     * @internal param $className
      */
-    public function associateModel($className, ModuleProvider $module){
-        $allModels = $this->reflector()->wrappers();
-
-        if(!$allModels->has($className)){
-            throw new ModelCannotBeGrabbed($className, $module);
-        }
-
-        //TODO: Grab the models and associate it with the
+    public function associateModel($model, ModuleProvider $module){
+        $modelWrapper = $this->findModelWrapper($model);
+        $modelWrapper->setModule($module);
     }
 
 
+    /**
+     * @param $model
+     * @throws ModelCannotBeFound
+     * @return ModelWrapper
+     */
+    public function findModelWrapper($model){
+        if(is_string($model)){
+            $allModels = $this->reflector()->wrappers();
 
+            if(!$allModels->has($model)){
+                throw new ModelCannotBeFound($model);
+            }
+            return $allModels->get($model);
+        }
+
+        if(ModelWrapper::class == get_class($model)){
+            return $model;
+        }
+
+        throw new MezzoException($model . ' is not a valid model.');
+
+    }
 }

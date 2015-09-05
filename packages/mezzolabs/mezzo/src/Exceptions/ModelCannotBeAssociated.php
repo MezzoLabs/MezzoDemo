@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Exceptions;
 
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
-class ModelCannotBeGrabbed extends \Exception{
+class ModelCannotBeAssociated extends \Exception{
 
     /**
      * @param string $model

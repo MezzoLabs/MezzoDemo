@@ -44,10 +44,24 @@ abstract class ModuleProvider extends ServiceProvider
      */
     abstract public function ready();
 
+    /**
+     * @return \String[]
+     */
     public function models(){
         return $this->models;
     }
 
+    public function identifier(){
+        return get_class($this);
+    }
+
+    /**
+     * @param ModelWrapper $model
+     */
+    public function associateModel(ModelWrapper $model)
+    {
+        $this->modelWrappers->add($model);
+    }
 
 
 }
