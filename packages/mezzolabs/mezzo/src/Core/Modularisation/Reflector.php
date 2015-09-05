@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Filesystem\ClassFinder;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Collections\EloquentModels;
-use MezzoLabs\Mezzo\Core\Modularisation\Collections\ModelWrappers;
+use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrappers;
 use MezzoLabs\Mezzo\Core\Traits\MezzoModel;
 
 class Reflector

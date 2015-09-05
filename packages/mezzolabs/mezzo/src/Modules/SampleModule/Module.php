@@ -10,6 +10,8 @@ use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
 class Module extends ModuleProvider{
 
+
+
     protected $models = [
         Tutorial::class
     ];

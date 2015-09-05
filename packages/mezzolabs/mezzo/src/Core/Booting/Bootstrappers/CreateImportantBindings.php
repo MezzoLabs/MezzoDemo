@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 use Illuminate\Container\Container;
 use Illuminate\Foundation\Application;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
+use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflector;
@@ -27,7 +28,8 @@ class CreateImportantBindings implements Bootstrapper{
         'mezzo.router' => Router::class,
         'mezzo.modules.general' => GeneralModule::class,
         'mezzo.moduleCenter' => ModuleCenter::class,
-        'mezzo.reflector' => Reflector::class
+        'mezzo.reflector' => Reflector::class,
+        'mezzo.database.reader' => Reader::class
     ];
 
     /**
@@ -69,6 +71,7 @@ class CreateImportantBindings implements Bootstrapper{
 
         $app->instance($key, $instance);
         $app->alias($key, $class);
+
     }
 
 }

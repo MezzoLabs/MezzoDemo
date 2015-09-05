@@ -1,9 +1,12 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Modularisation;
+namespace MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping;
 
 
+use Illuminate\Database\Eloquent\Model;
+use MezzoLabs\Mezzo\Core\Database\Table;
+use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
 
 class ModelWrapper
@@ -19,12 +22,25 @@ class ModelWrapper
     private $module;
 
     /**
+     * @var Table
+     */
+    protected $databaseTable;
+
+    /**
+     * One example instance of the wrapped model.
+     *
+     * @var Model
+     */
+    protected $instance;
+
+    /**
      * @param $className
      */
     public function __construct($className)
     {
-
         $this->className = $className;
+
+        $this->analyseModel();
     }
 
     /**
@@ -41,6 +57,27 @@ class ModelWrapper
     public function module(){
         return $this->module;
     }
+
+    /**
+     * @return \MezzoLabs\Mezzo\Core\Database\Table
+     */
+    public function table()
+    {
+        return $this->databaseTable;
+    }
+
+    /**
+     * @return Model
+     */
+    public function instance()
+    {
+        if(!$this->instance){
+            $this->instance = mezzo()->make($this->className);
+        }
+
+        return $this->instance;
+    }
+
 
     /**
      * @param ModuleProvider $module
@@ -63,6 +100,13 @@ class ModelWrapper
     public function hasModule(){
        return $this->module != null;
     }
+
+    protected function analyseModel()
+    {
+        $this->databaseTable = Table::fromWrapper($this);
+    }
+
+
 
 
 } 

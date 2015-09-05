@@ -6,7 +6,8 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Mezzo;
-use MezzoLabs\Mezzo\Core\Modularisation\Collections\ModelWrappers;
+use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrappers;
+use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrapper;
 
 abstract class ModuleProvider extends ServiceProvider
 {
@@ -18,12 +19,12 @@ abstract class ModuleProvider extends ServiceProvider
     protected $models = [];
 
     /**
-     * @var ModelWrappers
+     * @var \MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrappers
      */
     protected $modelWrappers;
 
     /**
-     * @var
+     * @var Mezzo
      */
     private $mezzo;
 
@@ -32,9 +33,11 @@ abstract class ModuleProvider extends ServiceProvider
      *
      * @param Mezzo $mezzo
      */
-    public function __construct(Mezzo $mezzo){
-
+    public function __construct(Mezzo $mezzo)
+    {
         $this->mezzo = $mezzo;
+
+        parent::__construct($this->mezzo->app());
 
         $this->modelWrappers = new ModelWrappers();
     }
@@ -49,11 +52,13 @@ abstract class ModuleProvider extends ServiceProvider
     /**
      * @return \String[]
      */
-    public function models(){
+    public function models()
+    {
         return $this->models;
     }
 
-    public function identifier(){
+    public function identifier()
+    {
         return get_class($this);
     }
 

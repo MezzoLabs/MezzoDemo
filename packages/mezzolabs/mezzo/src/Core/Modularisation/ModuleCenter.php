@@ -5,9 +5,10 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Modularisation\Collections\ModelWrappers;
+use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrappers;
 use MezzoLabs\Mezzo\Core\Modularisation\Generic\GeneralModule;
 use MezzoLabs\Mezzo\Core\Mezzo;
+use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrapper;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeAssociated;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeFound;
@@ -157,7 +158,6 @@ class ModuleCenter
 
         $this->fillGeneralModule();
 
-        var_dump($this->modules());
     }
 
     /**

@@ -9,7 +9,7 @@
 namespace MezzoLabs\Mezzo\Core\Traits;
 
 
-use MezzoLabs\Mezzo\Core\Modularisation\Collections\ModelWrappers;
+use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrappers;
 
 trait MezzoModel {
     /**

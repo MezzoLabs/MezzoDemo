@@ -1,11 +1,11 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Collections;
+namespace MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping;
 
 
 use Illuminate\Database\Eloquent\Collection;
-use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapper;
+use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrapper;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\NotAValidModel;
 
@@ -25,7 +25,7 @@ class ModelWrappers extends Collection{
     /**
      * @param $model
      * @throws NotAValidModel
-     * @return \MezzoLabs\Mezzo\Core\Modularisation\ModelWrapper
+     * @return \MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrapper
      */
     public static function makeWrapper($model){
         if(is_string($model)){

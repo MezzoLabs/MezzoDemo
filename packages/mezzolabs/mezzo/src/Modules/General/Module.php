@@ -11,12 +11,6 @@ class Module extends GeneralModule
 
     protected $models = [];
 
-    public function __construct()
-    {
-
-
-    }
-
     /**
      * Register the service provider.
      *
