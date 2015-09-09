@@ -18,7 +18,7 @@ class PublishResources implements Bootstrapper{
      */
     public function bootstrap(Mezzo $mezzo)
     {
-        //@TODO
+
     }
 
 }

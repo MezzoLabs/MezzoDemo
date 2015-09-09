@@ -41,7 +41,9 @@ class Reader {
     {
         $this->manager = $manager;
         $this->connection = $manager->connection();
-       // $this->schemaManager = $this->connection->getDoctrineSchemaManager();
+        $this->schemaManager = $this->connection->getDoctrineSchemaManager();
+
+
     }
 
     /**
