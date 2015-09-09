@@ -41,7 +41,7 @@ class Reader {
     {
         $this->manager = $manager;
         $this->connection = $manager->connection();
-        $this->schemaManager = $this->connection->getDoctrineSchemaManager();
+       // $this->schemaManager = $this->connection->getDoctrineSchemaManager();
     }
 
     /**
@@ -52,7 +52,7 @@ class Reader {
      */
     public function getColumns(Table $table)
     {
-        $columns = $this->schemaManager->listTableColumns($table->name());
+        //$columns = $this->schemaManager->listTableColumns($table->name());
         dd($columns);
     }
 } 

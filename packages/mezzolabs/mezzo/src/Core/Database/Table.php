@@ -33,9 +33,7 @@ class Table {
 
     public function __construct($name){
 
-        $this->name =  $this->wrapper->instance()->getTable();
-
-        $this->readSchema();
+        $this->name =  $name;
     }
 
     public function columns(){

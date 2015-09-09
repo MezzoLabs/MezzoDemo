@@ -39,7 +39,7 @@
         <div class="container">
             <div class="content">
                 <div class="title">Laravel 6</div>
-                Test 3
+
             </div>
         </div>
     </body>
