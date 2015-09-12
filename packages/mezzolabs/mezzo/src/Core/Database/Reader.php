@@ -7,9 +7,15 @@ namespace MezzoLabs\Mezzo\Core\Database;
 use Illuminate\Database\Connection;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Schema\Grammars\Grammar;
+use Illuminate\Support\Facades\Cache;
+use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Database\Table;
+use MezzoLabs\Mezzo\Core\Traits\IsShared;
 
-class Reader {
+class Reader
+{
+    use IsShared;
+
     /**
      * @var DatabaseManager
      */
@@ -49,12 +55,18 @@ class Reader {
     /**
      * Get the column listing for a given table.
      *
-     * @param  string  $table
+     * @param  string $table
      * @return array
      */
     public function getColumns(Table $table)
     {
-        //$columns = $this->schemaManager->listTableColumns($table->name());
+        $columns = Singleton::get(
+            'database.columns.' . $table->name(),
+            function () use ($table) {
+                return $this->schemaManager->listTableColumns($table->name());
+            });
+
         dd($columns);
+
     }
 } 

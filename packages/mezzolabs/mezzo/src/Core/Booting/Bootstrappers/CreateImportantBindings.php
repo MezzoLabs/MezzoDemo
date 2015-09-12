@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 use Illuminate\Container\Container;
 use Illuminate\Foundation\Application;
+use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Mezzo;
@@ -26,10 +27,11 @@ class CreateImportantBindings implements Bootstrapper{
         'mezzo.thirdParties' => ThirdParties::class,
         'mezzo.config' => MezzoConfig::class,
         'mezzo.router' => Router::class,
+        'mezzo.reflector' => Reflector::class,
         'mezzo.modules.general' => GeneralModule::class,
         'mezzo.moduleCenter' => ModuleCenter::class,
-        'mezzo.reflector' => Reflector::class,
-        'mezzo.database.reader' => Reader::class
+        'mezzo.database.reader' => Reader::class,
+        'mezzo.cache.singleton' => Singleton::class
     ];
 
     /**
@@ -49,7 +51,7 @@ class CreateImportantBindings implements Bootstrapper{
     }
 
     /**
-     * Bind the configured singletons
+     * Bind the configured instances
      *
      * @param Mezzo $mezzo
      */

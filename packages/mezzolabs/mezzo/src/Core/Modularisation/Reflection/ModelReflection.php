@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 
 
 use Illuminate\Database\Eloquent\Model;
+use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Database\Table;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
@@ -44,8 +45,6 @@ class ModelReflection
             throw new \ReflectionException('Class ' . $className . ' does not exist');
         }
 
-
-        $this->analyseModel();
     }
 
     /**
@@ -68,6 +67,9 @@ class ModelReflection
      */
     public function table()
     {
+        if(!$this->databaseTable)
+            $this->databaseTable = Table::fromWrapper($this);
+
         return $this->databaseTable;
     }
 
@@ -104,11 +106,6 @@ class ModelReflection
      */
     public function hasModule(){
        return $this->module != null;
-    }
-
-    protected function analyseModel()
-    {
-        $this->databaseTable = Table::fromWrapper($this);
     }
 
 

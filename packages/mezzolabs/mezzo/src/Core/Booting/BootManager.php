@@ -25,6 +25,13 @@ class BootManager
     const BootedPhase = "bootedPhase";
 
     /**
+     * If true this will output the boot order
+     *
+     * @var bool
+     */
+    protected $debug = true;
+
+    /**
      * Bootstrappers split into the different phases of the MezzoServiceProvider.
      *
      * @var string[]
@@ -119,8 +126,11 @@ class BootManager
         foreach ($bootstrappers as $bootstrapper) {
             event('bootstrapping: ' . $bootstrapper, [$this->app]);
 
+            if($this->debug) echo 'bootstrapping: ' . $bootstrapper . '<br/>';
 
             $this->app->make($bootstrapper)->bootstrap($this->mezzo);
+
+            if($this->debug) echo 'bootstrapped<br/>';
 
             event('bootstrapped: ' . $bootstrapper, [$this->app]);
         }

@@ -19,6 +19,5 @@ class RunModelReflection implements Bootstrapper{
     {
         $mezzo->moduleCenter()->reflector()->run();
 
-        $mezzo->moduleCenter()->associateModels();
     }
 }

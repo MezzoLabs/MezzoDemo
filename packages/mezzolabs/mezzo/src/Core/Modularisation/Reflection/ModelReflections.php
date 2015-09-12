@@ -71,4 +71,22 @@ class ModelReflections extends Collection
         else                    return $this->add($model);
     }
 
+    /**
+     * @param mixed $model
+     * @param null $default
+     * @internal param mixed $key
+     * @return ModelReflection
+     */
+    public function get($model, $default = null)
+    {
+        if($this->has($model))
+            return parent::get($model);
+
+        if($this->has('App\\' . $model))
+            return parent::get('App\\' . $model);
+
+        return parent::get($model, $default);
+    }
+
+
 } 

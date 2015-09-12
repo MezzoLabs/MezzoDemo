@@ -39,6 +39,9 @@ class Table {
     private $model;
 
 
+    /**
+     * @param $model
+     */
     public function __construct($model){
         $this->model = $model;
         $this->reflection = Reflector::getReflection($model);
@@ -46,7 +49,13 @@ class Table {
 
     }
 
+    /**
+     * @return Collection
+     */
     public function columns(){
+        if(!$this->columns)
+            $this->columns = Reader::make()->getColumns($this);
+
         return $this->columns;
     }
 

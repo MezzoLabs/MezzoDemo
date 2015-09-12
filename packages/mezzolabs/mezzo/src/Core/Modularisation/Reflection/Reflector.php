@@ -9,10 +9,13 @@ use Illuminate\Filesystem\ClassFinder;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Collections\EloquentModels;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
+use MezzoLabs\Mezzo\Core\Traits\IsShared;
 use MezzoLabs\Mezzo\Core\Traits\MezzoModel;
 
 class Reflector
 {
+
+    use IsShared;
 
     /**
      * @var Mezzo
@@ -65,7 +68,6 @@ class Reflector
         $this->booted = true;
 
     }
-
 
     /**
      * @return ModelReflections
@@ -175,16 +177,23 @@ class Reflector
         return $this->reflections()->getOrCreate($model);
     }
 
-    /**
-     * @return Reflector
-     */
-    public static function make()
-    {
-        return mezzo()->make(get_class(static::class));
-    }
 
+    /**
+     * Static version of modelReflection($model). Just for your comfort :*
+     *
+     * @param $model
+     * @return mixed
+     */
     public static function getReflection($model){
         return static::make()->modelReflection($model);
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isBooted(){
+        return $this->booted;
     }
 
 

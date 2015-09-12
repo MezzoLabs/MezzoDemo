@@ -19,9 +19,9 @@ abstract class ModuleProvider extends ServiceProvider
     protected $models = [];
 
     /**
-     * @var \MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections
+     * @var ModelReflections
      */
-    protected $modelWrappers;
+    protected $modelReflections;
 
     /**
      * @var Mezzo
@@ -39,7 +39,7 @@ abstract class ModuleProvider extends ServiceProvider
 
         parent::__construct($this->mezzo->app());
 
-        $this->modelWrappers = new ModelReflections();
+        $this->modelReflections = new ModelReflections();
     }
 
     /**
@@ -67,8 +67,10 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function associateModel(ModelReflection $model)
     {
-        $this->modelWrappers->add($model);
+        $this->modelReflections->add($model);
     }
+
+
 
 
 }
