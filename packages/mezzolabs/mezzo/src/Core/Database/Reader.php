@@ -66,7 +66,6 @@ class Reader
                 return $this->schemaManager->listTableColumns($table->name());
             });
 
-        dd($columns);
-
+        return $columns;
     }
 } 

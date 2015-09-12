@@ -16,10 +16,7 @@ class Table {
      */
     protected $name;
 
-    /**
-     * @var Collection
-     */
-    protected $columns;
+
 
     /**
      * @var Model
@@ -38,14 +35,22 @@ class Table {
      */
     private $model;
 
+    /**
+     * @var TableSchema
+     */
+    protected $schema;
+
 
     /**
      * @param $model
      */
     public function __construct($model){
         $this->model = $model;
+
+        $this->schema = new TableSchema();
         $this->reflection = Reflector::getReflection($model);
         $this->instance = $this->reflection->instance();
+        $this->name = $this->instance->getTable();
 
     }
 
@@ -53,10 +58,11 @@ class Table {
      * @return Collection
      */
     public function columns(){
-        if(!$this->columns)
-            $this->columns = Reader::make()->getColumns($this);
+        if($this->schema->columns()->count() == 0){
+            $this->schema->readFromDatabase($this);
+        }
 
-        return $this->columns;
+        return $this->schema->columns();
     }
 
     /**

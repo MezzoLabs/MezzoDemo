@@ -35,6 +35,11 @@ class ModelReflection
     protected $instance;
 
     /**
+     * @var \ReflectionClass
+     */
+    protected $reflectionClass;
+
+    /**
      * @param $className
      */
     public function __construct($className)
@@ -106,6 +111,26 @@ class ModelReflection
      */
     public function hasModule(){
        return $this->module != null;
+    }
+
+    /**
+     * Get the ReflectionClass object of the underlying model
+     *
+     * @return \ReflectionClass
+     */
+    public function reflectionClass(){
+        if(!$this->reflectionClass){
+            $this->reflectionClass = new \ReflectionClass($this->className);
+        }
+
+        return $this->reflectionClass;
+    }
+
+    /**
+     * @return string
+     */
+    public function fileName(){
+        return $this->reflectionClass()->getFileName();
     }
 
 

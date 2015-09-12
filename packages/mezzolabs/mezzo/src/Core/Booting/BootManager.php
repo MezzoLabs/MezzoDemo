@@ -29,7 +29,7 @@ class BootManager
      *
      * @var bool
      */
-    protected $debug = true;
+    protected $debug = false;
 
     /**
      * Bootstrappers split into the different phases of the MezzoServiceProvider.

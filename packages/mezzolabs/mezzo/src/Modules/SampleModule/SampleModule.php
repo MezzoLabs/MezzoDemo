@@ -34,11 +34,9 @@ class SampleModule extends ModuleProvider{
      */
     public function ready()
     {
-        var_dump(app()->make('mezzo.reflector')->isBooted());
 
         $tutorialReflection = $this->modelReflections->get(Tutorial::class);
-
-        var_dump(app()->make('mezzo.reflector')->isBooted());
+        dd($tutorialReflection->table()->columns());
 
     }
 }
