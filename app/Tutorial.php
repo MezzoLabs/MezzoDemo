@@ -24,4 +24,8 @@ use MezzoLabs\Mezzo\Core\Traits\MezzoModel;
 class Tutorial extends Model
 {
     use MezzoModel;
+
+    function comments(){
+        return $this->hasMany('Comment');
+    }
 }
