@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Database\Table;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
@@ -12,6 +13,8 @@ use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
 
 class ModelReflection
 {
+
+
     /**
      * @var string Name of the eloquent class that is wrapped
      */
@@ -40,7 +43,18 @@ class ModelReflection
     protected $reflectionClass;
 
     /**
+     * @var Parser
+     */
+    protected $parser;
+
+    /**
+     * @var Collection
+     */
+    protected $relationships;
+
+    /**
      * @param $className
+     * @throws \ReflectionException
      */
     public function __construct($className)
     {
@@ -127,11 +141,36 @@ class ModelReflection
     }
 
     /**
+     * Get the ReflectionClass object of the underlying model
+     *
+     * @return Parser
+     */
+    public function parser(){
+        if(!$this->parser){
+            $this->parser = new Parser($this);
+        }
+
+        return $this->parser;
+    }
+
+    /**
      * @return string
      */
     public function fileName(){
         return $this->reflectionClass()->getFileName();
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection|Collection
+     */
+    public function relationships(){
+        if(!$this->relationships){
+            $this->relationships = $this->parser()->relationships();
+        }
+
+        return $this->relationships;
+    }
+
 
 
 
