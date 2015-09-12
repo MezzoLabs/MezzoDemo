@@ -6,9 +6,9 @@ namespace MezzoLabs\Mezzo\Exceptions;
 
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Modules\SampleModule\Module;
+use MezzoLabs\Mezzo\Modules\SampleModule\SampleModule;
 
-class NotAValidModel extends \Exception{
+class InvalidModel extends \InvalidArgumentException{
 
     /**
      * You can only make a modelWrapper out of a class name (string) or out of an existing modelWrapper

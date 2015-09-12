@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Modularisation;
+namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 
 use App\Tutorial;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
@@ -162,6 +162,29 @@ class Reflector
     private function classesInAppFolder(){
         $finder = app()->make(ClassFinder::class);
         return $finder->findClasses(app_path());
+    }
+
+    /**
+     * Get the reflection of the given model or create one
+     *
+     * @param $model
+     * @return mixed
+     */
+    public function modelReflection($model)
+    {
+        return $this->reflections()->getOrCreate($model);
+    }
+
+    /**
+     * @return Reflector
+     */
+    public static function make()
+    {
+        return mezzo()->make(get_class(static::class));
+    }
+
+    public static function getReflection($model){
+        return static::make()->modelReflection($model);
     }
 
 

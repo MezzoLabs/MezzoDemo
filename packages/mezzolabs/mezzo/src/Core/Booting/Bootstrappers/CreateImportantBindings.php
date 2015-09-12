@@ -10,10 +10,10 @@ use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflector;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
 use MezzoLabs\Mezzo\Core\Routing\Router;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
-use MezzoLabs\Mezzo\Modules\General\Module as GeneralModule;
+use MezzoLabs\Mezzo\Modules\General\GeneralModule as GeneralModule;
 
 class CreateImportantBindings implements Bootstrapper{
 

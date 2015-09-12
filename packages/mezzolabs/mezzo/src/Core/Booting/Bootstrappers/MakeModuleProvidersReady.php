@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Modules\General\Module;
+use MezzoLabs\Mezzo\Modules\General\GeneralModule;
 use MezzoLabs\Mezzo\Providers\EventServiceProvider;
 
 class MakeModuleProvidersReady implements Bootstrapper{

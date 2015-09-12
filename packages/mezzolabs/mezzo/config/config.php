@@ -4,7 +4,7 @@ return [
     "hello" => "there",
 
     "moduleProviders" => [
-        \MezzoLabs\Mezzo\Modules\SampleModule\Module::class
+        \MezzoLabs\Mezzo\Modules\SampleModule\SampleModule::class
     ],
 
     "api" => [

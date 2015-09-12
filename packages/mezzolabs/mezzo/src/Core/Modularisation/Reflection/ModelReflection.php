@@ -40,6 +40,11 @@ class ModelReflection
     {
         $this->className = $className;
 
+        if(!class_exists($className)){
+            throw new \ReflectionException('Class ' . $className . ' does not exist');
+        }
+
+
         $this->analyseModel();
     }
 

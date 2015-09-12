@@ -1,15 +1,20 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Modules\General;
+namespace MezzoLabs\Mezzo\Modules\SampleModule;
 
 
-use MezzoLabs\Mezzo\Core\Modularisation\Generic\GeneralModule;
+use App\Tutorial;
+use App\User;
+use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
-class Module extends GeneralModule
-{
+class SampleModule extends ModuleProvider{
 
-    protected $models = [];
+
+
+    protected $models = [
+        Tutorial::class,
+    ];
 
     /**
      * Register the service provider.
@@ -18,7 +23,6 @@ class Module extends GeneralModule
      */
     public function register()
     {
-
     }
 
     /**
@@ -28,6 +32,5 @@ class Module extends GeneralModule
      */
     public function ready()
     {
-
     }
 }

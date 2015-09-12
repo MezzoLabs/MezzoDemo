@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Database;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
 
 class Table {
 
@@ -28,47 +29,58 @@ class Table {
     /**
      * @var ModelReflection
      */
-    private $wrapper;
+    private $reflection;
+
+    /**
+     * Class name of the model
+     *
+     * @var string
+     */
+    private $model;
 
 
-    public function __construct($name){
+    public function __construct($model){
+        $this->model = $model;
+        $this->reflection = Reflector::getReflection($model);
+        $this->instance = $this->reflection->instance();
 
-        $this->name =  $name;
     }
 
     public function columns(){
         return $this->columns;
     }
 
+    /**
+     * @return string
+     */
     public function name(){
         return $this->name;
     }
 
+    /**
+     * @param ModelReflection $wrapper
+     * @return Table
+     */
     public static function fromWrapper(ModelReflection $wrapper){
-        $name =  $wrapper->instance()->getTable();
         $instance = $wrapper->instance();
-
-        $table = new Table($name);
-        $table->setWrapper($wrapper);
-        $table->instance = $instance;
-
+        $table = new Table(get_class($instance));
         return $table;
     }
 
     /**
      * @return ModelReflection
      */
-    public function getWrapper()
+    public function getReflection()
     {
-        return $this->wrapper;
+        return $this->reflection;
     }
 
     /**
      * @param ModelReflection $wrapper
      */
-    public function setWrapper($wrapper)
+    public function setReflection($wrapper)
     {
-        $this->wrapper = $wrapper;
+        $this->reflection = $wrapper;
     }
 
     /**

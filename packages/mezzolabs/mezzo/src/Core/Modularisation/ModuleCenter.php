@@ -9,6 +9,7 @@ use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
 use MezzoLabs\Mezzo\Core\Modularisation\Generic\GeneralModule;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeAssociated;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeFound;
@@ -189,9 +190,10 @@ class ModuleCenter
      * @internal param $className
      */
     public function associateModel($model, ModuleProvider $module){
-        $modelWrapper = $this->findModelReflection($model);
+        $modelWrapper = $this->getModelReflection($model);
         $modelWrapper->setModule($module);
     }
+
 
 
     /**
@@ -200,21 +202,7 @@ class ModuleCenter
      * @throws ModelCannotBeFound
      * @return ModelReflection
      */
-    public function findModelReflection($model){
-        if(is_string($model)){
-            $allModels = $this->reflector()->reflections();
-
-            if(!$allModels->has($model)){
-                throw new ModelCannotBeFound($model);
-            }
-            return $allModels->get($model);
-        }
-
-        if(ModelReflection::class == get_class($model)){
-            return $model;
-        }
-
-        throw new MezzoException($model . ' is not a valid model.');
-
+    public function getModelReflection($model){
+        return $this->reflector()->modelReflection($model);
     }
 }
