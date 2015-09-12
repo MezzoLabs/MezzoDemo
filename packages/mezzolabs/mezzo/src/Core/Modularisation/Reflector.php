@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Filesystem\ClassFinder;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Collections\EloquentModels;
-use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrappers;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
 use MezzoLabs\Mezzo\Core\Traits\MezzoModel;
 
 class Reflector
@@ -35,9 +35,9 @@ class Reflector
     private $mezzoModelTrait = MezzoModel::class;
 
     /**
-     * @var ModelWrappers
+     * @var ModelReflections
      */
-    protected $modelWrappers;
+    protected $modelReflections;
 
     /**
      * @var boolean
@@ -60,7 +60,7 @@ class Reflector
         if($this->booted) return false;
 
         $this->eloquentModels = $this->findEloquentModels();
-        $this->modelWrappers = $this->findMezzoModels();
+        $this->modelReflections = $this->findMezzoModels();
 
         $this->booted = true;
 
@@ -68,10 +68,10 @@ class Reflector
 
 
     /**
-     * @return ModelWrappers
+     * @return ModelReflections
      */
-    public function wrappers(){
-        return $this->modelWrappers;
+    public function reflections(){
+        return $this->modelReflections;
     }
 
     /**
@@ -100,7 +100,7 @@ class Reflector
     {
         $classes = $this->getTraitUsingClasses($this->mezzoModelTrait, $this->eloquentModels);
 
-        return new ModelWrappers($classes);
+        return new ModelReflections($classes);
     }
 
 

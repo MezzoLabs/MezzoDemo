@@ -5,10 +5,10 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrappers;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
 use MezzoLabs\Mezzo\Core\Modularisation\Generic\GeneralModule;
 use MezzoLabs\Mezzo\Core\Mezzo;
-use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrapper;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeAssociated;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeFound;
@@ -35,7 +35,7 @@ class ModuleCenter
     private $reflector;
 
     /**
-     * @var ModelWrappers
+     * @var ModelReflections
      */
     private $grabbedModels;
 
@@ -164,11 +164,10 @@ class ModuleCenter
      * Grab the unassociated models and give them to the general module.
      */
     private function fillGeneralModule(){
-        $allModels = $this->reflector()->wrappers();
+        $allModels = $this->reflector()->reflections();
 
 
-
-        $allModels->map(function(ModelWrapper $model, $key){
+        $allModels->map(function(ModelReflection $model, $key){
             if($model->hasModule()) return;
 
             $this->associateWithGeneralModule($model);
@@ -176,9 +175,9 @@ class ModuleCenter
     }
 
     /**
-     * @param ModelWrapper $model
+     * @param ModelReflection $model
      */
-    public function associateWithGeneralModule(ModelWrapper $model){
+    public function associateWithGeneralModule(ModelReflection $model){
         $this->associateModel($model, $this->generalModule());
     }
 
@@ -190,7 +189,7 @@ class ModuleCenter
      * @internal param $className
      */
     public function associateModel($model, ModuleProvider $module){
-        $modelWrapper = $this->findModelWrapper($model);
+        $modelWrapper = $this->findModelReflection($model);
         $modelWrapper->setModule($module);
     }
 
@@ -199,11 +198,11 @@ class ModuleCenter
      * @param $model
      * @throws MezzoException
      * @throws ModelCannotBeFound
-     * @return ModelWrapper
+     * @return ModelReflection
      */
-    public function findModelWrapper($model){
+    public function findModelReflection($model){
         if(is_string($model)){
-            $allModels = $this->reflector()->wrappers();
+            $allModels = $this->reflector()->reflections();
 
             if(!$allModels->has($model)){
                 throw new ModelCannotBeFound($model);
@@ -211,7 +210,7 @@ class ModuleCenter
             return $allModels->get($model);
         }
 
-        if(ModelWrapper::class == get_class($model)){
+        if(ModelReflection::class == get_class($model)){
             return $model;
         }
 

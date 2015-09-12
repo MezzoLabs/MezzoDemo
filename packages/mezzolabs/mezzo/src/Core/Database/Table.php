@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Database;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrapper;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 
 class Table {
 
@@ -26,7 +26,7 @@ class Table {
     protected $instance;
 
     /**
-     * @var ModelWrapper
+     * @var ModelReflection
      */
     private $wrapper;
 
@@ -44,7 +44,7 @@ class Table {
         return $this->name;
     }
 
-    public static function fromWrapper(ModelWrapper $wrapper){
+    public static function fromWrapper(ModelReflection $wrapper){
         $name =  $wrapper->instance()->getTable();
         $instance = $wrapper->instance();
 
@@ -56,7 +56,7 @@ class Table {
     }
 
     /**
-     * @return ModelWrapper
+     * @return ModelReflection
      */
     public function getWrapper()
     {
@@ -64,7 +64,7 @@ class Table {
     }
 
     /**
-     * @param ModelWrapper $wrapper
+     * @param ModelReflection $wrapper
      */
     public function setWrapper($wrapper)
     {

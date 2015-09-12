@@ -22,7 +22,7 @@ class Module extends GeneralModule
     }
 
     /**
-     * Called when module is ready, model wrappers are loaded.
+     * Called when module is ready, model reflections are loaded.
      *
      * @return mixed
      */

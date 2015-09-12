@@ -4,7 +4,7 @@
 namespace MezzoLabs\Mezzo\Exceptions;
 
 
-use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrapper;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Modules\SampleModule\Module;
 

@@ -20,7 +20,7 @@ class ThirdParties extends Collection
     ];
 
     /**
-     * A Collection of the wrappers
+     * A Collection of the reflections
      *
      * @var WrapperInterface[]
      */

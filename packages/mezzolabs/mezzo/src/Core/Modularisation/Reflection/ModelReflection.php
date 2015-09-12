@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping;
+namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 
 
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +9,7 @@ use MezzoLabs\Mezzo\Core\Database\Table;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
 
-class ModelWrapper
+class ModelReflection
 {
     /**
      * @var string Name of the eloquent class that is wrapped

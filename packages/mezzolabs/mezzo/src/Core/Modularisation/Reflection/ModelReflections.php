@@ -1,15 +1,15 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping;
+namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 
 
 use Illuminate\Database\Eloquent\Collection;
-use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrapper;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\NotAValidModel;
 
-class ModelWrappers extends Collection{
+class ModelReflections extends Collection{
 
     public $items;
 
@@ -25,14 +25,14 @@ class ModelWrappers extends Collection{
     /**
      * @param $model
      * @throws NotAValidModel
-     * @return \MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrapper
+     * @return \MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection
      */
-    public static function makeWrapper($model){
+    public static function makeReflection($model){
         if(is_string($model)){
-            return new ModelWrapper($model);
+            return new \MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection($model);
         }
 
-        if(ModelWrapper::class == get_class($model))
+        if(\MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection::class == get_class($model))
             return $model;
 
         if($model == null){
@@ -49,7 +49,7 @@ class ModelWrappers extends Collection{
      * @return $this|void
      */
     public function add($model){
-        $wrapper = $this->makeWrapper($model);
+        $wrapper = $this->makeReflection($model);
 
         if(!$wrapper) return parent::add(null);
 

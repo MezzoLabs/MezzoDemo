@@ -6,8 +6,8 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Mezzo;
-use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrappers;
-use MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrapper;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 
 abstract class ModuleProvider extends ServiceProvider
 {
@@ -19,7 +19,7 @@ abstract class ModuleProvider extends ServiceProvider
     protected $models = [];
 
     /**
-     * @var \MezzoLabs\Mezzo\Core\Modularisation\ModelWrapping\ModelWrappers
+     * @var \MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections
      */
     protected $modelWrappers;
 
@@ -39,11 +39,11 @@ abstract class ModuleProvider extends ServiceProvider
 
         parent::__construct($this->mezzo->app());
 
-        $this->modelWrappers = new ModelWrappers();
+        $this->modelWrappers = new ModelReflections();
     }
 
     /**
-     * Called when module is ready, model wrappers are loaded.
+     * Called when module is ready, model reflections are loaded.
      *
      * @return mixed
      */
@@ -63,9 +63,9 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
-     * @param ModelWrapper $model
+     * @param ModelReflection $model
      */
-    public function associateModel(ModelWrapper $model)
+    public function associateModel(ModelReflection $model)
     {
         $this->modelWrappers->add($model);
     }
