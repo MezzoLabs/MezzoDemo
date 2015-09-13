@@ -48,15 +48,16 @@ class Relationship {
 
     private function analyseInstance(){
         $class = get_class($this->instance);
+        var_dump($class);
     }
 
     /**
      * @return Relation
      */
     private function makeInstance(){
-        $class = $this->modelReflection->className();
+        $modelInstance = $this->modelReflection->instance();
         $function = $this->functionName;
-        return $class->$function();
+        return $modelInstance->$function();
     }
 
     /**
@@ -67,6 +68,14 @@ class Relationship {
      */
     public static function isAllowed($string){
         return in_array(camel_case($string), static::$allowed);
+    }
+
+    /**
+     * @return Relation
+     */
+    public function instance()
+    {
+        return $this->instance;
     }
 
 }

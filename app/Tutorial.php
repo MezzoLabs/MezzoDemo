@@ -26,10 +26,12 @@ class Tutorial extends Model
     use MezzoModel;
 
     public function comments(){
-        return $this->hasMany('Comment');
+        return $this->hasMany('App\Comment');
     }
 
     public function owner(){
         return $this->hasOne('App\User');
     }
+
+
 }

@@ -36,6 +36,6 @@ class SampleModule extends ModuleProvider{
     {
 
         $tutorialReflection = $this->modelReflections->get(Tutorial::class);
-        dd($tutorialReflection->relationships());
+        //dd($tutorialReflection->relationships());
     }
 }
