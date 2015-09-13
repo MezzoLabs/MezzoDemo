@@ -7,5 +7,6 @@ use MezzoLabs\Mezzo\Core\Traits\MezzoModel;
 
 class Tag extends Model
 {
+    use MezzoModel;
 
 }

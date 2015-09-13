@@ -190,8 +190,14 @@ class ModuleCenter
      * @internal param $className
      */
     public function associateModel($model, ModuleProvider $module){
-        $modelWrapper = $this->getModelReflection($model);
-        $modelWrapper->setModule($module);
+
+        $modelReflection = $this->getModelReflection($model);
+
+        if(!$modelReflection){
+            throw new ModelCannotBeAssociated($model, $module);
+        }
+
+        $modelReflection->setModule($module);
     }
 
 

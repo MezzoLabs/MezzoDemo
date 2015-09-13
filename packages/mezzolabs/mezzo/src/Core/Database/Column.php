@@ -57,4 +57,20 @@ class Column {
     {
         $this->doctrineColumn = $dbalColumn;
     }
+
+    /**
+     * @return string
+     */
+    public function name()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return Type
+     */
+    public function type()
+    {
+        return $this->type;
+    }
 } 

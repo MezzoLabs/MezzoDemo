@@ -19,6 +19,7 @@ class GeneralModule extends GenericGeneralModule
     public function register()
     {
 
+
     }
 
     /**
@@ -28,6 +29,5 @@ class GeneralModule extends GenericGeneralModule
      */
     public function ready()
     {
-
     }
 }

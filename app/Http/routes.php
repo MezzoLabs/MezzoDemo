@@ -16,6 +16,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('debug/models', function () {
+    $moduleCenter = mezzo()->moduleCenter();
+
+
+    return view('debugmodels', ['moduleCenter' => $moduleCenter]);
+});
+
 Route::controllers([
     'register' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',

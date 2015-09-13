@@ -18,6 +18,5 @@ class RunModelReflection implements Bootstrapper{
     public function bootstrap(Mezzo $mezzo)
     {
         $mezzo->moduleCenter()->reflector()->run();
-
     }
 }

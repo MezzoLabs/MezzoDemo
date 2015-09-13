@@ -14,4 +14,6 @@ class TestController extends Controller{
     public function sayHi(){
         throw new ConflictHttpException('User was updated prior to your request.');
     }
+
+
 } 

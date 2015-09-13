@@ -70,6 +70,10 @@ abstract class ModuleProvider extends ServiceProvider
         $this->modelReflections->add($model);
     }
 
+    public function modelReflections(){
+        return $this->modelReflections;
+    }
+
 
 
 

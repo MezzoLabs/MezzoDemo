@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 
-class Relationship {
+class Relationship
+{
 
     /**
      * Array of function names that are allowed relationships.
@@ -21,7 +22,7 @@ class Relationship {
     /**
      * @var ModelReflection
      */
-    protected  $modelReflection;
+    protected $modelReflection;
 
     /**
      * @var string
@@ -35,9 +36,10 @@ class Relationship {
 
     /**
      * @param ModelReflection $modelReflection
-     * @param string $functionName
+     * @param $functionName
      */
-    public function __construct(ModelReflection $modelReflection, $functionName){
+    public function __construct(ModelReflection $modelReflection, $functionName)
+    {
 
         $this->modelReflection = $modelReflection;
         $this->functionName = $functionName;
@@ -46,15 +48,17 @@ class Relationship {
         $this->analyseInstance();
     }
 
-    private function analyseInstance(){
+    private function analyseInstance()
+    {
         $class = get_class($this->instance);
-        var_dump($class);
+        //TODO: Better analyse
     }
 
     /**
      * @return Relation
      */
-    private function makeInstance(){
+    private function makeInstance()
+    {
         $modelInstance = $this->modelReflection->instance();
         $function = $this->functionName;
         return $modelInstance->$function();
@@ -66,7 +70,8 @@ class Relationship {
      * @param $string
      * @return bool
      */
-    public static function isAllowed($string){
+    public static function isAllowed($string)
+    {
         return in_array(camel_case($string), static::$allowed);
     }
 
@@ -76,6 +81,14 @@ class Relationship {
     public function instance()
     {
         return $this->instance;
+    }
+
+    /**
+     * @return string
+     */
+    public function name()
+    {
+        return $this->functionName;
     }
 
 }

@@ -31,6 +31,7 @@ class ModelReflections extends Collection
      */
     public static function makeReflection($model)
     {
+
         if (is_string($model)) {
             return new \MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection($model);
         }
@@ -53,11 +54,12 @@ class ModelReflections extends Collection
      */
     public function add($model)
     {
-        $wrapper = $this->makeReflection($model);
+        $reflection = $this->makeReflection($model);
 
-        if (!$wrapper) return parent::add(null);
 
-        $this->put($wrapper->className(), $wrapper);
+        if (!$reflection) return parent::add(null);
+
+        $this->put($reflection->className(), $reflection);
     }
 
     /**
@@ -67,7 +69,10 @@ class ModelReflections extends Collection
      */
     public function getOrCreate($model)
     {
-        if ($this->has($model)) return parent::get($model);
+        $key = $this->modelString($model);
+
+
+        if ($this->has($key))   return parent::get($key);
         else                    return $this->add($model);
     }
 
@@ -79,6 +84,7 @@ class ModelReflections extends Collection
      */
     public function get($model, $default = null)
     {
+
         if($this->has($model))
             return parent::get($model);
 
@@ -86,6 +92,14 @@ class ModelReflections extends Collection
             return parent::get('App\\' . $model);
 
         return parent::get($model, $default);
+    }
+
+    public function modelString($model){
+        if(is_object($model) && get_class($model) == ModelReflection::class)
+            return $model->className();
+        if(is_string($model)) return $model;
+
+        throw new InvalidModel($model);
     }
 
 
