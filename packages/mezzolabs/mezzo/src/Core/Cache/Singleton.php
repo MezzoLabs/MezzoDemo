@@ -26,6 +26,16 @@ class Singleton
 
     }
 
+    public static function reflection($class){
+        if(is_object($class))
+            $class = get_class($class);
+
+        return Singleton::get('reflection.' . $class, function() use ($class){
+            return new \ReflectionClass($class);
+        });
+
+    }
+
     public static function instances(){
         if(!static::$instances){
             static::$instances = new Collection();

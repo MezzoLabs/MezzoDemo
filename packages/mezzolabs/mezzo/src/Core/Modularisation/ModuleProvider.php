@@ -9,6 +9,7 @@ use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
+use MezzoLabs\Mezzo\Exceptions\DirectoryNotFound;
 
 abstract class ModuleProvider extends ServiceProvider
 {
@@ -115,10 +116,7 @@ abstract class ModuleProvider extends ServiceProvider
      * @return \ReflectionClass
      */
     public function reflection(){
-        $module = get_class($this);
-        return Singleton::get('moduleReflections.' . get_class($this), function() use ($module){
-                return new \ReflectionClass($module);
-            });
+        return Singleton::reflection(get_class($this));
     }
 
     /**
@@ -126,6 +124,15 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function isCoreModule(){
         return $this->isCoreModule;
+    }
+
+
+
+    public function loadViews(){
+        if(!is_dir($this->path() . '/views'))
+            throw new DirectoryNotFound($this->path() . '/views');
+
+        $this->loadViewsFrom($this->path() . '/views', 'modules.' . $this->slug());
     }
 
 

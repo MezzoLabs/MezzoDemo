@@ -20,8 +20,7 @@ class GeneratorModule extends ModuleProvider{
      */
     public function boot()
     {
-        $this->loadViewsFrom($this->path() . '/Templates', $this->slug());
-
+        $this->loadViews();
 
     }
     

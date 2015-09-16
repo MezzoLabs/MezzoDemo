@@ -29,10 +29,11 @@ Route::get('debug/generator', function () {
     $generator = mezzo()->module(GeneratorModule::class);
 
     //var_dump($generator);
-    dd($generator);
+
+    return View::make('modules.generator::test');
 
 
-    return view('debugmodels', ['generator' => $generator]);
+    //return view('debugmodels', ['generator' => $generator]);
 });
 
 
