@@ -26,13 +26,13 @@ Route::get('debug/models', function () {
 });
 
 Route::get('debug/generator', function () {
-    $generator = mezzo()->moduleCenter()->getModule(GeneratorModule::class);
+    $generator = mezzo()->module(GeneratorModule::class);
 
     //var_dump($generator);
-    dd($generator2);
+    dd($generator);
 
 
-    return view('debugmodels', ['moduleCenter' => $moduleCenter]);
+    return view('debugmodels', ['generator' => $generator]);
 });
 
 

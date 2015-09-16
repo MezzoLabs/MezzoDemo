@@ -13,6 +13,7 @@ use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeAssociated;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeFound;
+use MezzoLabs\Mezzo\Exceptions\ModuleNotFound;
 use MezzoLabs\Mezzo\MezzoServiceProvider;
 use Mockery\CountValidator\Exception;
 
@@ -43,7 +44,7 @@ class ModuleCenter
     /**
      * @var Collection
      */
-    private $slugs;
+    private $slugAliases;
 
     /**
      * @param Mezzo $mezzo
@@ -53,7 +54,7 @@ class ModuleCenter
     {
         $this->mezzo = $mezzo;
         $this->modules = new Collection();
-        $this->slugs = new Collection();
+        $this->slugAliases = new Collection();
 
         $this->registerGeneralModule($mezzo->make('mezzo.modules.general'));
 
@@ -64,18 +65,26 @@ class ModuleCenter
      * Add a new module to the Mezzo module center.
      *
      * @param String $moduleProviderClass
+     * @throws MezzoException
      */
     public function register($moduleProviderClass){
         if($this->isRegistered($moduleProviderClass))
             return false;
 
         $moduleProvider = $this->makeModuleProvider($moduleProviderClass);
+
+        $slug = $moduleProvider->slug();
+        if($this->slugAliases->has($slug))
+            throw new MezzoException('Module with the slug ' . $slug . ' is already registered. ' .
+                'Conflict between ' . $moduleProviderClass . ' and ' . $this->slugAliases->get($slug));
+
+        $this->slugAliases->put($slug, $moduleProviderClass);
+
         $this->mezzo->app()->register($moduleProvider);
         $this->mezzo->app()->instance(get_class($moduleProvider), $moduleProvider);
 
         $this->put($moduleProvider);
     }
-
 
     /**
      * @param $class
@@ -86,9 +95,7 @@ class ModuleCenter
         $provider = $this->mezzo->make($class);
 
         if(!is_subclass_of($provider, ModuleProvider::class))
-            throw new \Exception('Given class is not a valid module provider. ' . $class );
-
-
+            throw new MezzoException('Given class is not a valid module provider. ' . $class );
 
         return $provider;
     }
@@ -150,8 +157,11 @@ class ModuleCenter
      * @return ModuleProvider
      */
     public function getModule($key){
-        return $this->modules->get($key);
+        $moduleClass = $this->moduleClass($key);
+
+        return $this->modules->get($moduleClass);
     }
+
 
     /**
      * @return Collection
@@ -234,6 +244,23 @@ class ModuleCenter
      */
     public function getModelReflection($model){
         return $this->reflector()->modelReflection($model);
+    }
+
+
+    protected function moduleClass($module){
+        if(is_object($module))
+            $module = get_class($module);
+
+        if(!is_string($module))
+            throw new MezzoException('Cannot convert '. gettype($module) .' into a module class.');
+
+        if($this->slugAliases->has($module))
+            return $this->slugAliases->get($module);
+
+        if($this->modules()->has($module))
+            return $module;
+
+        throw new ModuleNotFound($module);
     }
 
 }

@@ -75,6 +75,16 @@ class Mezzo{
     }
 
     /**
+     * Get a module instance by key(slug or class name)
+     *
+     * @param $key
+     * @return \MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider
+     */
+    public function module($key){
+        return $this->moduleCenter()->getModule($key);
+    }
+
+    /**
      * Returns the main MezzoConfig instance
      *
      * @return MezzoConfig
@@ -149,8 +159,6 @@ class Mezzo{
     public function path(){
         return $this->app()->make('mezzo.path');
     }
-
-
 
 
 
