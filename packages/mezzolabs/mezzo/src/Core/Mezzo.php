@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core;
 use Illuminate\Foundation\Application;
 use MezzoLabs\Mezzo\Core\Booting\BootManager;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
+use MezzoLabs\Mezzo\Core\Helpers\Path;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
 use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
 use MezzoLabs\Mezzo\Events\Event;
@@ -72,8 +73,6 @@ class Mezzo{
     public function moduleCenter(){
         return $this->make(ModuleCenter::class);
     }
-
-
 
     /**
      * Returns the main MezzoConfig instance
@@ -141,6 +140,17 @@ class Mezzo{
     public function fire( $event, $payload = [], $halt = false){
         event($event, $payload, $halt);
     }
+
+    /**
+     * Gives you access to the Path helper singleton
+     *
+     * @return Path
+     */
+    public function path(){
+        return $this->app()->make('mezzo.path');
+    }
+
+
 
 
 

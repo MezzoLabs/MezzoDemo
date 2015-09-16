@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Exceptions;
 
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Modules\SampleModule\SampleModule;
+use MezzoLabs\Mezzo\Modules\Sample\SampleModule;
 
 class InvalidModel extends \InvalidArgumentException{
 

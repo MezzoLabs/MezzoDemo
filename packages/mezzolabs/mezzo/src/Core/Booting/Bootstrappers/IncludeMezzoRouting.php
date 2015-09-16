@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 
 use MezzoLabs\Mezzo\Core\Mezzo;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 class IncludeMezzoRouting implements Bootstrapper{
 
@@ -18,7 +19,13 @@ class IncludeMezzoRouting implements Bootstrapper{
     {
         if (! $mezzo->app()->routesAreCached()) {
 
-            require mezzo_source_path() . 'Http/routes.php';
+            $routesPath = mezzo_source_path() . 'Http/routes.php';
+
+            if(!file_exists($routesPath)){
+                throw new \Exception('Mezzo routes file cannot be loaded. Tried to use ' . $routesPath);
+            }
+
+            require $routesPath;
         }
     }
 }

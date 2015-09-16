@@ -15,11 +15,11 @@ function mezzo(){
  * @return string
  */
 function mezzo_path(){
-    return realpath(__DIR__ . "../../../");
+    return realpath(__DIR__ . "/../../");
 }
 
 /**
- * The path of the mezzo folder (...vendor/mezzolabs/mezzo)
+ * The path of the mezzo folder (...vendor/mezzolabs/mezzo/src)
  *
  * @return string
  */

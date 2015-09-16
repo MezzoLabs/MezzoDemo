@@ -41,6 +41,11 @@ class ModuleCenter
     private $grabbedModels;
 
     /**
+     * @var Collection
+     */
+    private $slugs;
+
+    /**
      * @param Mezzo $mezzo
      * @param Reflector $reflector
      */
@@ -48,6 +53,7 @@ class ModuleCenter
     {
         $this->mezzo = $mezzo;
         $this->modules = new Collection();
+        $this->slugs = new Collection();
 
         $this->registerGeneralModule($mezzo->make('mezzo.modules.general'));
 
@@ -63,10 +69,28 @@ class ModuleCenter
         if($this->isRegistered($moduleProviderClass))
             return false;
 
-        $moduleProvider = $this->mezzo->make($moduleProviderClass);
+        $moduleProvider = $this->makeModuleProvider($moduleProviderClass);
         $this->mezzo->app()->register($moduleProvider);
+        $this->mezzo->app()->instance(get_class($moduleProvider), $moduleProvider);
 
         $this->put($moduleProvider);
+    }
+
+
+    /**
+     * @param $class
+     * @throws \Exception
+     * @return ModuleProvider
+     */
+    protected function makeModuleProvider($class){
+        $provider = $this->mezzo->make($class);
+
+        if(!is_subclass_of($provider, ModuleProvider::class))
+            throw new \Exception('Given class is not a valid module provider. ' . $class );
+
+
+
+        return $provider;
     }
 
     /**
@@ -75,7 +99,7 @@ class ModuleCenter
      * @param ModuleProvider $moduleProvider
      */
     protected function put(ModuleProvider $moduleProvider){
-        $this->modules->put(get_class($moduleProvider), $moduleProvider);
+        $this->modules->put($moduleProvider->identifier(), $moduleProvider);
     }
 
     /**
@@ -187,6 +211,8 @@ class ModuleCenter
      *
      * @param $model
      * @param ModuleProvider $module
+     * @throws ModelCannotBeAssociated
+     * @throws \MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated
      * @internal param $className
      */
     public function associateModel($model, ModuleProvider $module){
@@ -200,8 +226,6 @@ class ModuleCenter
         $modelReflection->setModule($module);
     }
 
-
-
     /**
      * @param $model
      * @throws MezzoException
@@ -211,4 +235,5 @@ class ModuleCenter
     public function getModelReflection($model){
         return $this->reflector()->modelReflection($model);
     }
+
 }

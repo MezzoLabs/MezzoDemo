@@ -12,6 +12,8 @@
 */
 
 
+use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,6 +24,17 @@ Route::get('debug/models', function () {
 
     return view('debugmodels', ['moduleCenter' => $moduleCenter]);
 });
+
+Route::get('debug/generator', function () {
+    $generator = mezzo()->moduleCenter()->getModule(GeneratorModule::class);
+
+    //var_dump($generator);
+    dd($generator2);
+
+
+    return view('debugmodels', ['moduleCenter' => $moduleCenter]);
+});
+
 
 Route::controllers([
     'register' => 'Auth\AuthController',

@@ -8,6 +8,7 @@ use MezzoLabs\Mezzo\Core\Modularisation\Generic\GeneralModule as GenericGeneralM
 
 class GeneralModule extends GenericGeneralModule
 {
+    protected $isCoreModule = true;
 
     protected $models = [];
 
