@@ -10,11 +10,15 @@ use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Helpers\Path;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
+use MezzoLabs\Mezzo\Core\Traits\CanFireEvents;
+use MezzoLabs\Mezzo\Core\Traits\CanMakeInstances;
 use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
 use MezzoLabs\Mezzo\Events\Event;
 use MezzoLabs\Mezzo\MezzoServiceProvider;
 
 class Mezzo{
+
+    use CanMakeInstances, CanFireEvents;
 
     /**
      * Indicates if mezzo has "booted".
@@ -23,14 +27,12 @@ class Mezzo{
      */
     protected $booted = false;
 
-
     /**
      * The Laravel Application
      *
      * @var Application
      */
     protected $app;
-
 
     /**
      * The core boot service that runs all the bootstrappers we need.
@@ -67,24 +69,6 @@ class Mezzo{
     }
 
     /**
-     * Returns the main Module Center instance.
-     *
-     * @return ModuleCenter
-     */
-    public function moduleCenter(){
-        return $this->make(ModuleCenter::class);
-    }
-
-    /**
-     * Return the model reflector instance.
-     *
-     * @return Reflector
-     */
-    public function reflector(){
-        return $this->make(Reflector::class);
-    }
-
-    /**
      * Get a module instance by key(slug or class name)
      *
      * @param $key
@@ -94,14 +78,7 @@ class Mezzo{
         return $this->moduleCenter()->getModule($key);
     }
 
-    /**
-     * Returns the main MezzoConfig instance
-     *
-     * @return MezzoConfig
-     */
-    public function config(){
-        return $this->make(MezzoConfig::class);
-    }
+
 
     /**
      * Bootstrap Mezzo
@@ -138,37 +115,9 @@ class Mezzo{
 
     }
 
-    /**
-     * A quick access for the Laravel IoC Container
-     *
-     * @param $abstract
-     * @param array $parameters
-     * @return mixed
-     */
-    public function make($abstract, $parameters = []){
-        return $this->app->make($abstract, $parameters);
-    }
 
-    /**
-     * Throw a Mezzo event
-     *
-     * @param $event
-     * @param  mixed $payload
-     * @param  bool $halt
-     * @return array|null
-     */
-    public function fire( $event, $payload = [], $halt = false){
-        event($event, $payload, $halt);
-    }
 
-    /**
-     * Gives you access to the Path helper singleton
-     *
-     * @return Path
-     */
-    public function path(){
-        return $this->app()->make('mezzo.path');
-    }
+
 
 
 

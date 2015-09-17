@@ -11,7 +11,7 @@ use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Collections\EloquentModels;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
 use MezzoLabs\Mezzo\Core\Traits\IsShared;
-use MezzoLabs\Mezzo\Core\Traits\MezzoModel;
+use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
 class Reflector
 {
@@ -45,7 +45,7 @@ class Reflector
     /**
      * @var string class name of the eloquent mode base class
      */
-    private $mezzoModelTrait = MezzoModel::class;
+    private $mezzoModelTrait = IsMezzoModel::class;
 
     /**
      * @var ModelReflections
@@ -179,7 +179,7 @@ class Reflector
      */
     private function classUsesTrait($trait, $class)
     {
-        $usedTraits = class_uses($class);
+        $usedTraits = trait_uses_recursive($class);
 
         return in_array($trait, $usedTraits);
     }

@@ -4,8 +4,8 @@
 namespace App\Mezzo\Generated\ModelTraits;
 
 
-use MezzoLabs\Mezzo\Core\Traits\MezzoModel;
+use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
 trait MezzoTutorial{
-    use MezzoModel;
+    use IsMezzoModel;
 }

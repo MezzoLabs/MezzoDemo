@@ -11,7 +11,7 @@ namespace MezzoLabs\Mezzo\Core\Traits;
 
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
 
-trait MezzoModel {
+trait IsMezzoModel {
     /**
      * The associated model. Use the complete class name or "Default"
      *
