@@ -7,7 +7,7 @@
  
  
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Attributes\InputTypes;
+namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
 
 class TextArea extends Text{

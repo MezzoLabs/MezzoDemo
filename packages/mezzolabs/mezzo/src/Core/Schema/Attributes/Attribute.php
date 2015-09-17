@@ -1,16 +1,9 @@
 <?php
-/**
- * Created by: simon.schneider
- * Date: 16.09.2015 - 14:05
- * Project: MezzoDemo
- */
- 
- 
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Attributes;
+namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 
 
-use MezzoLabs\Mezzo\Core\Modularisation\Attributes\InputTypes\Type;
+use MezzoLabs\Mezzo\Core\Schema\InputTypes\Type;
 
 class Attribute {
     /**
@@ -29,7 +22,7 @@ class Attribute {
 
     /**
      * @param $name
-     * @param \MezzoLabs\Mezzo\Core\Modularisation\Attributes\InputTypes\Type $inputType
+     * @param \MezzoLabs\Mezzo\Core\Schema\InputTypes\Type $inputType
      * @param \ArrayAccess $options
      */
     public function __construct($name, Type $inputType, \ArrayAccess $options){

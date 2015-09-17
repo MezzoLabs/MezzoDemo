@@ -16,17 +16,10 @@ class Table {
      */
     protected $name;
 
-
-
     /**
      * @var Model
      */
     protected $instance;
-
-    /**
-     * @var ModelReflection
-     */
-    private $reflection;
 
     /**
      * Class name of the model
@@ -82,21 +75,6 @@ class Table {
         return $table;
     }
 
-    /**
-     * @return ModelReflection
-     */
-    public function getReflection()
-    {
-        return $this->reflection;
-    }
-
-    /**
-     * @param ModelReflection $wrapper
-     */
-    public function setReflection($wrapper)
-    {
-        $this->reflection = $wrapper;
-    }
 
     /**
      * @return Model

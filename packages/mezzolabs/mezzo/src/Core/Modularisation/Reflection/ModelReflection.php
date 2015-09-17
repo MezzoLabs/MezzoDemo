@@ -51,6 +51,11 @@ class ModelReflection
     protected $relationships;
 
     /**
+     * @var Collection
+     */
+    protected $attributes;
+
+    /**
      * @param $className
      * @throws \ReflectionException
      */
@@ -166,7 +171,7 @@ class ModelReflection
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection|Collection
+     * @return Collection
      */
     public function relationships(){
         if(!$this->relationships){
@@ -174,6 +179,17 @@ class ModelReflection
         }
 
         return $this->relationships;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function attributes(){
+        if(!$this->attributes){
+            $this->attributes = $this->parser()->relationships();
+        }
+
+        return $this->attributes;
     }
 
 

@@ -1,5 +1,5 @@
 <?php
-namespace MezzoLabs\Mezzo\Core\Modularisation\Attributes\InputTypes;
+namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
 abstract class Text extends Type
 {
