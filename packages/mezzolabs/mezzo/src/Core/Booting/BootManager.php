@@ -93,7 +93,7 @@ class BootManager
     /**
      * Run the bootstrappers that are needed during the "register" phase
      */
-    public function registerPhase()
+    public function runRegisterPhase()
     {
         $this->bootForPhase(BootManager::RegisterPhase);
     }
@@ -102,7 +102,7 @@ class BootManager
     /**
      * Run the bootstrappers that are needed during the "boot" phase
      */
-    public function bootPhase()
+    public function runBootPhase()
     {
         $this->bootForPhase(BootManager::BootPhase);
     }

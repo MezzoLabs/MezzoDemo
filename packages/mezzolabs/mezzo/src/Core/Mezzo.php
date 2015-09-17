@@ -78,8 +78,6 @@ class Mezzo{
         return $this->moduleCenter()->getModule($key);
     }
 
-
-
     /**
      * Bootstrap Mezzo
      */
@@ -91,14 +89,14 @@ class Mezzo{
      * Run the boot services that we need at the time the Mezzo provider is registered
      */
     public function onProviderRegistered(){
-        $this->bootManager->registerPhase();
+        $this->bootManager->runRegisterPhase();
     }
 
     /**
      * Run the boot services that we need at the time the when all service providers are registered
      */
     public function onProviderBooted(){
-        $this->bootManager->bootPhase();
+        $this->bootManager->runBootPhase();
     }
 
     /**
