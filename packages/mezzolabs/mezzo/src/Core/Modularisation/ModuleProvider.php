@@ -14,8 +14,6 @@ use MezzoLabs\Mezzo\Exceptions\DirectoryNotFound;
 abstract class ModuleProvider extends ServiceProvider
 {
 
-    protected $isCoreModule = false;
-
     /**
      * @var String[]
      */
@@ -118,14 +116,6 @@ abstract class ModuleProvider extends ServiceProvider
     public function reflection(){
         return Singleton::reflection(get_class($this));
     }
-
-    /**
-     * @return bool
-     */
-    public function isCoreModule(){
-        return $this->isCoreModule;
-    }
-
 
 
     public function loadViews(){

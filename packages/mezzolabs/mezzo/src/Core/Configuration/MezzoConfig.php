@@ -46,7 +46,7 @@ class MezzoConfig {
     }
 
     /**
-     * Load the Mezzo specific configuration. Also warm up the third party configuration.
+     * Load the Mezzo specific configuration.
      */
     public function load(){
         $this->mergeConfig();
@@ -63,7 +63,7 @@ class MezzoConfig {
      * Called after all the providers registered and before one provider boots.
      */
     public function beforeProvidersBoot(){
-        $this->thirdParties->prepareConfigs();
+        $this->thirdParties->overwriteConfigs();
     }
 
 

@@ -7,7 +7,7 @@ namespace MezzoLabs\Mezzo\Core\ThirdParties\Wrappers;
 use Dingo\Api\Provider\LaravelServiceProvider as DingoProvider;
 use Dingo\Api\Routing\Router;
 
-class DingoApi extends GenericWrapper{
+class DingoApi extends ThirdPartyWrapper{
 
     /**
      * The Dingo Api router
@@ -28,7 +28,7 @@ class DingoApi extends GenericWrapper{
      *
      * @return mixed
      */
-    public function prepareConfig()
+    public function overwriteConfig()
     {
         $this->mezzoConfig->overwrite('api', 'mezzo.api');
     }

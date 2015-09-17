@@ -7,8 +7,7 @@ namespace MezzoLabs\Mezzo\Core\ThirdParties;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers;
-use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers\WrapperInterface;
-use PhpSpec\Wrapper\Wrapper;
+use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers\ThirdPartyWrapper;
 
 class ThirdParties extends Collection
 {
@@ -22,7 +21,7 @@ class ThirdParties extends Collection
     /**
      * A Collection of the reflections
      *
-     * @var WrapperInterface[]
+     * @var ThirdPartyWrapper[]
      */
     protected $items = [];
 
@@ -31,6 +30,11 @@ class ThirdParties extends Collection
      */
     private $mezzo;
 
+    /**
+     * The third party manager.
+     *
+     * @param array $items
+     */
     public function __construct(array $items = [])
     {
         parent::__construct($items);
@@ -53,9 +57,9 @@ class ThirdParties extends Collection
     /**
      * Register the wrapped package service providers
      */
-    public function registerWrappers()
+    public function registerServiceProviders()
     {
-        $this->map(function(WrapperInterface $wrapper){
+        $this->map(function(ThirdPartyWrapper $wrapper){
             $wrapper->register();
         });
     }
@@ -63,9 +67,9 @@ class ThirdParties extends Collection
     /**
      * Prepare the configurations for each third party package before they boot.
      */
-    public function prepareConfigs(){
-        $this->map(function(WrapperInterface $wrapper){
-            $wrapper->prepareConfig();
+    public function overwriteConfigs(){
+        $this->map(function(ThirdPartyWrapper $wrapper){
+            $wrapper->overwriteConfig();
         });
     }
 
@@ -73,21 +77,20 @@ class ThirdParties extends Collection
      * Called when all the providers are booted and ready to take the request
      */
     public function onProvidersBooted(){
-        $this->map(function(WrapperInterface $wrapper){
+        $this->map(function(ThirdPartyWrapper $wrapper){
             $wrapper->onProviderBooted();
         });
     }
 
     /**
      * @param $class
-     * @return WrapperInterface
+     * @return ThirdPartyWrapper
      */
     protected function createWrapper($class)
     {
         $wrapper = $this->mezzo->make($class);
-        $className = get_class($wrapper);
 
-        $this->mezzo->app()->instance('MezzoLabs\Mezzo\ThirdParties\\' . $className, $wrapper);
+        $this->mezzo->app()->instance(get_class($wrapper), $wrapper);
 
         return $wrapper;
 

@@ -19,7 +19,7 @@ class IncludeThirdParties implements Bootstrapper{
     {
         $thirdParties = $this->getThirdPartiesInstance($mezzo);
         $thirdParties->createWrappers();
-        $thirdParties->registerWrappers();
+        $thirdParties->registerServiceProviders();
     }
 
     /**

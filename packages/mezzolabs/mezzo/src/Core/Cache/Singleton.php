@@ -15,6 +15,13 @@ class Singleton
     private static $instances;
 
 
+    /**
+     * Get a existing instance or retrieve one from the singleton cache.
+     *
+     * @param $key
+     * @param callable $closure
+     * @return mixed
+     */
     public static function get($key, Closure $closure){
         $singletons = static::instances();
 
@@ -26,6 +33,12 @@ class Singleton
 
     }
 
+    /**
+     * Gives you the singleton instance of a class reflection.
+     *
+     * @param $class
+     * @return mixed
+     */
     public static function reflection($class){
         if(is_object($class))
             $class = get_class($class);
