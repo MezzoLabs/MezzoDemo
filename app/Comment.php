@@ -11,5 +11,5 @@ use MezzoLabs\Mezzo\Core\Traits\MezzoModel;
  */
 class Comment extends Model
 {
-    use MezzoModel;
+
 }

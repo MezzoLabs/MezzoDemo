@@ -13,8 +13,6 @@ use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
 
 class ModelReflection
 {
-
-
     /**
      * @var string Name of the eloquent class that is wrapped
      */
@@ -158,6 +156,13 @@ class ModelReflection
      */
     public function fileName(){
         return $this->reflectionClass()->getFileName();
+    }
+
+    /**
+     * @return string
+     */
+    public function shortName(){
+        return $this->reflectionClass()->getShortName();
     }
 
     /**

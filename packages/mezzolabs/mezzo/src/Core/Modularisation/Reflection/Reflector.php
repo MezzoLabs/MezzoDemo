@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 use App\Tutorial;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Filesystem\ClassFinder;
+use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Collections\EloquentModels;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
@@ -23,9 +24,18 @@ class Reflector
     private $mezzo;
 
     /**
+     * A collection of strings that represent the class names of all models in the app folder.
+     *
      * @var EloquentModels
      */
     private $eloquentModels;
+
+    /**
+     * A collection of strings that represent the class names of all mezzo models in the app folder.
+     *
+     * @var EloquentModels
+     */
+    private $mezzoModels;
 
     /**
      * @var string class name of the eloquent mode base class
@@ -60,10 +70,11 @@ class Reflector
      */
     public function run()
     {
-        if($this->booted) return false;
+        if ($this->booted) return false;
 
         $this->eloquentModels = $this->findEloquentModels();
-        $this->modelReflections = $this->findMezzoModels();
+        $this->mezzoModels = $this->findMezzoModels();
+        $this->modelReflections = new ModelReflections($this->eloquentModels);
 
         $this->booted = true;
 
@@ -72,15 +83,25 @@ class Reflector
     /**
      * @return ModelReflections
      */
-    public function reflections(){
+    public function reflections()
+    {
         return $this->modelReflections;
     }
 
     /**
      * @return EloquentModels
      */
-    public function eloquentModels(){
+    public function eloquentModels()
+    {
         return $this->eloquentModels;
+    }
+
+    /**
+     * @return EloquentModels
+     */
+    public function mezzoModels()
+    {
+        return $this->mezzoModels;
     }
 
 
@@ -91,18 +112,19 @@ class Reflector
      */
     protected function findEloquentModels()
     {
-
         return new EloquentModels($this->getChildrenOfClass($this->eloquentClass));
     }
 
     /**
+     *  Finds all classes that use the mezzo model trait.
      *
+     * @return EloquentModels
      */
     protected function findMezzoModels()
     {
         $classes = $this->getTraitUsingClasses($this->mezzoModelTrait, $this->eloquentModels);
 
-        return new ModelReflections($classes);
+        return new EloquentModels($classes);
     }
 
 
@@ -158,10 +180,12 @@ class Reflector
     private function classUsesTrait($trait, $class)
     {
         $usedTraits = class_uses($class);
+
         return in_array($trait, $usedTraits);
     }
 
-    private function classesInAppFolder(){
+    private function classesInAppFolder()
+    {
         $finder = app()->make(ClassFinder::class);
         return $finder->findClasses(app_path());
     }
@@ -184,7 +208,8 @@ class Reflector
      * @param $model
      * @return mixed
      */
-    public static function getReflection($model){
+    public static function getReflection($model)
+    {
         return static::make()->modelReflection($model);
     }
 
@@ -192,7 +217,8 @@ class Reflector
     /**
      * @return bool
      */
-    public function isBooted(){
+    public function isBooted()
+    {
         return $this->booted;
     }
 

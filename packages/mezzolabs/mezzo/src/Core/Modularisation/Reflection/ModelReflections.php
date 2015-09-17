@@ -5,22 +5,35 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as IlluminateCollection;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\InvalidModel;
 
 class ModelReflections extends Collection
 {
-
     public $items;
 
     /**
-     * @param array [String] $classes
+     * @var Collection
      */
-    public function __construct(Array $classes = array())
+    public $aliases;
+
+    /**
+     * @param array $classes
+     * @internal param mixed $items
+     */
+    public function __construct($classes = [])
     {
-        foreach ($classes as $class) {
-            $this->add($class);
+        $this->aliases = new Collection();
+
+        if ((is_array($classes) || is_a($classes, IlluminateCollection::class))
+            && count($classes) > 0) {
+            foreach ($classes as $class) {
+                $this->add($class);
+            }
+        } else {
+            parent::__construct($classes);
         }
     }
 
@@ -31,7 +44,6 @@ class ModelReflections extends Collection
      */
     public static function makeReflection($model)
     {
-
         if (is_string($model)) {
             return new \MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection($model);
         }
@@ -55,11 +67,23 @@ class ModelReflections extends Collection
     public function add($model)
     {
         $reflection = $this->makeReflection($model);
-
-
         if (!$reflection) return parent::add(null);
 
         $this->put($reflection->className(), $reflection);
+        $this->addAlias($reflection);
+
+        return $reflection;
+    }
+
+    /**
+     * Add an alias so you can find the models via their short name.
+     * (Tutorial instead of \App\Learning\Tutorial)
+     *
+     * @param ModelReflection $reflection
+     */
+    protected function addAlias(ModelReflection $reflection)
+    {
+        $this->aliases->put(strtolower($reflection->shortName()), $reflection->className());
     }
 
     /**
@@ -70,7 +94,6 @@ class ModelReflections extends Collection
     public function getOrCreate($model)
     {
         $key = $this->modelString($model);
-
 
         if ($this->has($key))   return parent::get($key);
         else                    return $this->add($model);
@@ -84,20 +107,31 @@ class ModelReflections extends Collection
      */
     public function get($model, $default = null)
     {
-
-        if($this->has($model))
+        if ($this->has($model))
             return parent::get($model);
 
-        if($this->has('App\\' . $model))
+        if ($this->has('App\\' . $model))
             return parent::get('App\\' . $model);
+
+        if ($this->aliases->has(strtolower($model)))
+            return parent::get($this->aliases->get(strtolower($model)));
 
         return parent::get($model, $default);
     }
 
-    public function modelString($model){
-        if(is_object($model) && get_class($model) == ModelReflection::class)
+    /**
+     * Normalize the variable to a model string.
+     *
+     * @param $model
+     * @return mixed
+     */
+    public function modelString($model)
+    {
+        if (is_object($model) && get_class($model) == ModelReflection::class)
             return $model->className();
-        if(is_string($model)) return $model;
+
+        if (is_string($model))
+            return $model;
 
         throw new InvalidModel($model);
     }

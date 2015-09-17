@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Mezzo\Generated\ModelTraits\MezzoTutorial;
 use Illuminate\Database\Eloquent\Model;
 use MezzoLabs\Mezzo\Core\Traits\MezzoModel;
 
@@ -23,7 +24,7 @@ use MezzoLabs\Mezzo\Core\Traits\MezzoModel;
  */
 class Tutorial extends Model
 {
-    use MezzoModel;
+    use MezzoTutorial;
 
     public function comments(){
         return $this->hasMany('App\Comment');

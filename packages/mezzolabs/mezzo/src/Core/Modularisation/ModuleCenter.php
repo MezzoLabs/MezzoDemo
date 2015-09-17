@@ -37,11 +37,6 @@ class ModuleCenter
     private $reflector;
 
     /**
-     * @var ModelReflections
-     */
-    private $grabbedModels;
-
-    /**
      * @var Collection
      */
     private $slugAliases;
@@ -164,7 +159,7 @@ class ModuleCenter
 
 
     /**
-     * @return Collection
+     * @return ModuleProvider[]
      */
     public function modules(){
         return $this->modules;
@@ -186,7 +181,7 @@ class ModuleCenter
 
             if($this->isGeneralModule($module)) return;
 
-            foreach($module->models() as $model){
+            foreach($module->modelClasses() as $model){
                 $this->associateModel($model, $module);
             }
         });

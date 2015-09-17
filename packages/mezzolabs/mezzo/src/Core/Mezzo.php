@@ -9,6 +9,7 @@ use MezzoLabs\Mezzo\Core\Booting\BootManager;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Helpers\Path;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
 use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
 use MezzoLabs\Mezzo\Events\Event;
 use MezzoLabs\Mezzo\MezzoServiceProvider;
@@ -66,12 +67,21 @@ class Mezzo{
     }
 
     /**
-     * Returns the main Module Center instance
+     * Returns the main Module Center instance.
      *
      * @return ModuleCenter
      */
     public function moduleCenter(){
         return $this->make(ModuleCenter::class);
+    }
+
+    /**
+     * Return the model reflector instance.
+     *
+     * @return Reflector
+     */
+    public function reflector(){
+        return $this->make(Reflector::class);
     }
 
     /**

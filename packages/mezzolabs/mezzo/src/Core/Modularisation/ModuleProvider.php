@@ -53,9 +53,27 @@ abstract class ModuleProvider extends ServiceProvider
     /**
      * @return \String[]
      */
-    public function models()
+    public function modelClasses()
     {
         return $this->models;
+    }
+
+    /**
+     * The reflections of the associated models
+     *
+     * @internal param bool $key
+     * @return ModelReflections
+     */
+    public function models(){
+        return $this->modelReflections;
+    }
+
+    /**
+     * @param string $key
+     * @return ModelReflection
+     */
+    public function model($key){
+        return $this->modelReflections->get($key);
     }
 
     /**
@@ -77,7 +95,7 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function slug(){
         $class = $this->reflection()->getShortName();
-        $class = rtrim($class, 'Module');
+        $class = preg_replace('/Module/', '', $class);
 
         return str_slug($class);
     }
@@ -88,15 +106,6 @@ abstract class ModuleProvider extends ServiceProvider
     public function associateModel(ModelReflection $model)
     {
         $this->modelReflections->add($model);
-    }
-
-    /**
-     * The reflections of the associated models
-     *
-     * @return ModelReflections
-     */
-    public function modelReflections(){
-        return $this->modelReflections;
     }
 
     /**
