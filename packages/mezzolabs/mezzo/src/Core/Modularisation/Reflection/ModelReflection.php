@@ -7,8 +7,9 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Database\Table;
+use MezzoLabs\Mezzo\Core\Schema\Table;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
 
 class ModelReflection
@@ -56,6 +57,12 @@ class ModelReflection
     protected $attributes;
 
     /**
+     * @var ModelSchema
+     */
+    protected $schema;
+
+
+    /**
      * @param $className
      * @throws \ReflectionException
      */
@@ -85,7 +92,7 @@ class ModelReflection
     }
 
     /**
-     * @return \MezzoLabs\Mezzo\Core\Database\Table
+     * @return \MezzoLabs\Mezzo\Core\Schema\Table
      */
     public function table()
     {
@@ -181,15 +188,16 @@ class ModelReflection
         return $this->relationships;
     }
 
+
     /**
-     * @return Collection
+     * @return ModelSchema
      */
-    public function attributes(){
-        if(!$this->attributes){
-            $this->attributes = $this->parser()->relationships();
+    public function schema(){
+        if(!$this->schema){
+            $this->schema = ModelSchema::fromReflection($this);
         }
 
-        return $this->attributes;
+        return $this->schema;
     }
 
 

@@ -45,26 +45,15 @@ class Attribute {
         return array_filter($attributes);
     }
 
-    public function generateHtml(){
-        $tag = $this->type->htmlTag();
-        $attributes = $this->htmlAttributes();
-
-        $html = '<' . $tag;
-
-        foreach($attributes as $key => $value){
-            if(is_numeric($value))
-                $html .= ' ' . $key . '=' . $value;
-            else
-                $html .= ' ' . $key . '=' . $value;
-        }
-
-        if($this->type->htmlIsVoid()) return $html . ' />';
-
-        return $html . '>'.  $this->content() .'</' . $tag .'>';
-
-    }
-
     public function content(){
         return 'nope';
+    }
+
+    /**
+     * @return string
+     */
+    public function name()
+    {
+        return $this->name;
     }
 } 

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Database;
+namespace MezzoLabs\Mezzo\Core\Schema;
 
 
 use Doctrine\DBAL\Schema\Column as DoctrineColumn;

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Database;
+namespace MezzoLabs\Mezzo\Core\Schema;
 
 
 use Illuminate\Database\Connection;
@@ -9,7 +9,7 @@ use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Schema\Grammars\Grammar;
 use Illuminate\Support\Facades\Cache;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Database\Table;
+use MezzoLabs\Mezzo\Core\Schema\Table;
 use MezzoLabs\Mezzo\Core\Traits\IsShared;
 
 class Reader

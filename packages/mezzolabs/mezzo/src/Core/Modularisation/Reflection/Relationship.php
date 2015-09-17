@@ -51,6 +51,7 @@ class Relationship
     private function analyseInstance()
     {
         $class = get_class($this->instance);
+        
         //TODO: Better analyse
     }
 

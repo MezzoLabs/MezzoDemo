@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Database;
+namespace MezzoLabs\Mezzo\Core\Schema;
 
 
 use Illuminate\Database\Eloquent\Model;
@@ -40,11 +40,10 @@ class Table {
     public function __construct($model){
         $this->model = $model;
 
-        $this->schema = new TableSchema();
         $this->reflection = Reflector::getReflection($model);
         $this->instance = $this->reflection->instance();
         $this->name = $this->instance->getTable();
-
+        $this->schema = new TableSchema($this->name);
     }
 
     /**
@@ -52,7 +51,7 @@ class Table {
      */
     public function columns(){
         if($this->schema->columns()->count() == 0){
-            $this->schema->readFromDatabase($this);
+            $this->schema->fillWithRealTable($this);
         }
 
         return $this->schema->columns();
