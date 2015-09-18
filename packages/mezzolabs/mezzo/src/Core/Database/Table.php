@@ -84,7 +84,7 @@ class Table {
      * @return string
      */
     public function name(){
-        return $this->name;
+        return $this->schema->name();
     }
 
     /**

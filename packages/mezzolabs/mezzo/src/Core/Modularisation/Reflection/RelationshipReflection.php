@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
+use MezzoLabs\Mezzo\Core\Database\Column;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToOne;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOne;
@@ -115,6 +116,24 @@ class RelationshipReflection
     }
 
     /**
+     * Get the name of the model table
+     *
+     * @return string
+     */
+    public function tableName(){
+        return $this->modelReflection->table()->name();
+    }
+
+    /**
+     * Get the name of the foreign table
+     *
+     * @return string
+     */
+    public function foreignTableName(){
+        return $this->instance()->getRelated()->getTable();
+    }
+
+    /**
      * Produces a relation schema.
      *
      * Examples:
@@ -135,12 +154,15 @@ class RelationshipReflection
     protected function makeRelation(){
         switch($this->type){
             case 'BelongsTo':
-                return new OneToOne();
+                //TODO: Can also be one to many
+                $relation = new OneToOne($this->tableName(), $this->foreignTableName());
+                $relation->connectVia($this->instance()->getForeignKey());
+                return $relation;
             case 'BelongsToMany':
-                return new ManyToOne();
+
                 break;
             case 'HasOne':
-                return new OneToOne();
+
                 break;
             case 'HasMany':
 

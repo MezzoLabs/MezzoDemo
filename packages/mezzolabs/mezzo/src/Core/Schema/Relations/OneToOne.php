@@ -11,7 +11,7 @@ class OneToOne extends Relation{
      * @param string $tableName
      * @param string $columnName
      */
-    function connectVia($tableName, $columnName){
+    function connectVia($columnName, $tableName = false){
         $this->connectingTable = $tableName;
         $this->connectingColumn = $columnName;
     }
