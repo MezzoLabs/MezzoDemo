@@ -5,6 +5,9 @@ namespace MezzoLabs\Mezzo\Core\Schema;
 
 
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Database\Column;
+use MezzoLabs\Mezzo\Core\Database\Reader;
+use MezzoLabs\Mezzo\Core\Database\Table;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 

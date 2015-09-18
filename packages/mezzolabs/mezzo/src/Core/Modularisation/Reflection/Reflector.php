@@ -122,7 +122,7 @@ class Reflector
      */
     protected function findMezzoModels()
     {
-        $classes = $this->getTraitUsingClasses($this->mezzoModelTrait, $this->eloquentModels);
+        $classes = $this->getClassesUsingTrait($this->mezzoModelTrait, $this->eloquentModels);
 
         return new EloquentModels($classes);
     }
@@ -156,14 +156,14 @@ class Reflector
      * @param null $childClasses
      * @return array
      */
-    protected function getTraitUsingClasses($traitName, $childClasses = null)
+    protected function getClassesUsingTrait($traitName, $childClasses = null)
     {
         if ($childClasses == null) $childClasses = $this->classesInAppFolder();
 
         $usages = [];
 
         foreach ($childClasses as $class) {
-            if ($this->classUsesTrait($traitName, $class)) $usages[] = $class;
+            if ($this->classUsesTrait($class, $traitName)) $usages[] = $class;
         }
 
         return $usages;
@@ -173,15 +173,30 @@ class Reflector
     /**
      * Helper function that checks if a class uses a trait
      *
-     * @param $trait
      * @param $class
+     * @param string $trait
+     * @param bool $recursively
      * @return bool
      */
-    private function classUsesTrait($trait, $class)
+    public function classUsesTrait($class, $trait = "", $recursively = true)
     {
-        $usedTraits = trait_uses_recursive($class);
+        if(empty($trait)) $trait = $this->mezzoModelTrait;
+
+        if($recursively)
+            $usedTraits = trait_uses_recursive($class);
+        else
+            $usedTraits = class_uses($class);
 
         return in_array($trait, $usedTraits);
+    }
+
+    /**
+     * @param $class
+     * @param bool $recursively
+     * @return bool
+     */
+    public function classUsesMezzoTrait($class, $recursively = true){
+        return $this->classUsesTrait($class, $this->mezzoModelTrait, $recursively);
     }
 
     private function classesInAppFolder()
@@ -221,6 +236,7 @@ class Reflector
     {
         return $this->booted;
     }
+
 
 
 } 

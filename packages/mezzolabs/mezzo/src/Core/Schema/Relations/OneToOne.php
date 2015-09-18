@@ -3,6 +3,17 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 
-class OneToOne {
+class OneToOne extends Relation{
+
+    /**
+     * Set up the connection from one table to another.
+     *
+     * @param string $tableName
+     * @param string $columnName
+     */
+    function connectVia($tableName, $columnName){
+        $this->connectingTable = $tableName;
+        $this->connectingColumn = $columnName;
+    }
 
 } 

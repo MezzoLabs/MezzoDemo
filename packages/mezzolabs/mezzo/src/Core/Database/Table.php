@@ -1,13 +1,15 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Schema;
+namespace MezzoLabs\Mezzo\Core\Database;
 
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Database\Column;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
+use MezzoLabs\Mezzo\Core\Schema\TableSchema;
 
 class Table {
 
@@ -33,6 +35,10 @@ class Table {
      */
     protected $schema;
 
+    /**
+     * @var ModelReflection
+     */
+    protected $reflection;
 
     /**
      * @param $model
@@ -42,8 +48,7 @@ class Table {
 
         $this->reflection = Reflector::getReflection($model);
         $this->instance = $this->reflection->instance();
-        $this->name = $this->instance->getTable();
-        $this->schema = new TableSchema($this->name);
+        $this->schema = new TableSchema($this->instance->getTable());
     }
 
     /**
@@ -55,6 +60,24 @@ class Table {
         }
 
         return $this->schema->columns();
+    }
+
+    public function atomicColumns(){
+        return $this->columns()->filter(function($column){
+            return !$this->columnIsForeignKey($column);
+        });
+    }
+
+    public function foreignKeyColumns(){
+        return $this->columns()->filter(function($column){
+            return $this->columnIsForeignKey($column);
+        });
+    }
+
+    public function columnIsForeignKey(Column $column){
+        foreach($this->relationships() as $relationShip){
+
+        }
     }
 
     /**
@@ -91,4 +114,11 @@ class Table {
         $this->instance = $instance;
     }
 
+
+    /**
+     * @return Collection
+     */
+    public function relationships(){
+        return $this->reflection->relationships();
+    }
 } 

@@ -7,7 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Relationship;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
 
 class Parser
 {
@@ -85,8 +85,8 @@ class Parser
             $name = $tokenSequence[2]['content'];
             $type = $tokenSequence[4]['content'];
 
-            if(Relationship::isAllowed($type))
-                $relationships->put($name, new Relationship($this->modelReflection, $name));
+            if(RelationshipReflection::isAllowed($type))
+                $relationships->put($name, new RelationshipReflection($this->modelReflection, $name));
         }
 
         return $relationships;

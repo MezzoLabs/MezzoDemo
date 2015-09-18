@@ -7,7 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Schema\Table;
+use MezzoLabs\Mezzo\Core\Database\Table;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
@@ -25,7 +25,7 @@ class ModelReflection
     private $module;
 
     /**
-     * @var Table
+     * @var \MezzoLabs\Mezzo\Core\Database\Table
      */
     protected $databaseTable;
 
@@ -61,6 +61,11 @@ class ModelReflection
      */
     protected $schema;
 
+    /**
+     * @var
+     */
+    protected $isMezzoModel = false;
+
 
     /**
      * @param $className
@@ -73,6 +78,9 @@ class ModelReflection
         if(!class_exists($className)){
             throw new \ReflectionException('Class ' . $className . ' does not exist');
         }
+
+        if(Reflector::make()->classUsesMezzoTrait($className))
+            $this->isMezzoModel = true;
 
     }
 
@@ -92,7 +100,7 @@ class ModelReflection
     }
 
     /**
-     * @return \MezzoLabs\Mezzo\Core\Schema\Table
+     * @return \MezzoLabs\Mezzo\Core\Database\Table
      */
     public function table()
     {
@@ -200,8 +208,14 @@ class ModelReflection
         return $this->schema;
     }
 
+    /**
+     * @return mixed
+     */
+    public function isMezzoModel()
+    {
+        return $this->isMezzoModel;
+    }
 
 
 
-
-} 
+}

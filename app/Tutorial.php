@@ -34,5 +34,13 @@ class Tutorial extends Model
         return $this->hasOne('App\User');
     }
 
+    public function categories(){
+        return $this->belongsToMany('App\Category');
+    }
+
+    public function mainCategory(){
+        return $this->belongsTo('App\Category');
+    }
+
 
 }

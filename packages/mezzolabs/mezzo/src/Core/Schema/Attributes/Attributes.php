@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 
 class Attributes extends Collection{
@@ -33,16 +34,24 @@ class Attributes extends Collection{
     }
 
     /**
-     * @param AtomicAttribute $attribute
+     * @param AtomicAttribute|RelationAttribute $attribute
      */
-    public function addRelation(AtomicAttribute $attribute){
+    public function addRelation(RelationAttribute $attribute){
         $this->put($attribute->name(), $attribute);
+    }
+
+    public function addAttribute(Attribute $attribute){
+        if(get_class($attribute) == AtomicAttribute::class)
+            $this->addAtomic($attribute);
+
+        if(get_class($attribute) == RelationAttribute::class)
+            $this->addRelation($attribute);
     }
 
     /**
      * @return Collection
      */
-    public function atomic()
+    public function atomics()
     {
         return $this->atomicAttributes;
     }

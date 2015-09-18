@@ -1,11 +1,12 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Schema;
+namespace MezzoLabs\Mezzo\Core\Database;
 
 
 use Doctrine\DBAL\Schema\Column as DoctrineColumn;
 use Doctrine\DBAL\Types\Type;
+use MezzoLabs\Mezzo\Core\Schema\DbalColumn;
 
 class Column {
 

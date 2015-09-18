@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Cache;
 
 use Closure;
 use Illuminate\Support\Collection;
+use ReflectionClass;
 
 class Singleton
 {
@@ -37,7 +38,7 @@ class Singleton
      * Gives you the singleton instance of a class reflection.
      *
      * @param $class
-     * @return mixed
+     * @return ReflectionClass
      */
     public static function reflection($class){
         if(is_object($class))
