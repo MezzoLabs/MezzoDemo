@@ -248,8 +248,6 @@ class Reflector
     public function buildRelations(){
         $relationReflections = $this->relationReflections();
 
-        //dd($relationReflections);
-
         $relationReflections->each(function(RelationshipReflection $reflection){
             $reflection->counterpart();
         });
@@ -267,8 +265,12 @@ class Reflector
 
             /** @var ModelReflection $modelReflection */
             foreach($this->reflections() as $modelReflection){
-                $allRelations = $allRelations->merge($modelReflection->relationships()->toArray());
+                /** @var RelationshipReflection $relationshipReflection */
+                foreach($modelReflection->relationships() as $relationshipReflection){
+                    $allRelations->put($relationshipReflection->qualifiedName(), $relationshipReflection);
+                }
             }
+
 
             return $allRelations;
         });

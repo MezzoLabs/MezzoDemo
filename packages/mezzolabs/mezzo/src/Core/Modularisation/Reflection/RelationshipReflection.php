@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationConverter;
+use MezzoLabs\Mezzo\Core\Schema\Relations\Relation as MezzoRelation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Database\Column;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
@@ -245,38 +247,12 @@ class RelationshipReflection
     /**
      * Produces a relation schema.
      *
-     * Examples:
-     * One To One
-     * $women->belongsTo('Man')  --> womens.man_id + man.id
-     * $man->hasOne('Woman')     --> man.id + womens.man_id
-     *
-     * One To Many
-     * $event->belongsTo('Course')  --> events.course_id + courses.id
-     * $course->hasMany('Event')    --> courses.id + events.course_id
-     *
-     * Many To Many
-     * $user->belongsToMany('Role') --> user_roles.role_id + user_roles.user_id
-     * $role->belongsToMany('User') --> user_roles.role_id + user_roles.user_id
-     *
+     * @throws MezzoException
+     * @throws \Reflectionxception
      * @return Relation
      */
     protected function makeRelation(){
-        switch($this->type){
-            case 'BelongsTo':
-                //TODO: Can also be one to many
-                $relation = new OneToOne($this->tableName(), $this->relatedTableName());
-                $relation->connectVia($this->relatedColumn());
-                return $relation;
-            case 'BelongsToMany':
-
-                break;
-            case 'HasOne':
-
-                break;
-            case 'HasMany':
-
-                break;
-        }
+        return RelationConverter::fromReflectionToRelation($this);
     }
 
 

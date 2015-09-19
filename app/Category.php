@@ -9,7 +9,9 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
 class Category extends Model
 {
-
+    public function tutorials(){
+        return $this->belongsToMany(Tutorial::class);
+    }
 
 
 
