@@ -14,6 +14,7 @@ use MezzoLabs\Mezzo\Core\Database\Column;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToOne;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOne;
+use MezzoLabs\Mezzo\Exceptions\MezzoException;
 
 class RelationshipReflection
 {
@@ -156,17 +157,26 @@ class RelationshipReflection
      *
      * @return string
      */
-    public function foreignTableName(){
+    public function relatedTableName(){
         return $this->instance()->getRelated()->getTable();
     }
 
     /**
      * Get the foreign column name without the name of the table.
      *
+     * @throws MezzoException
      * @return string
      */
-    public function foreignColumn(){
-        return $this->instance()->getPlainForeignKey();
+    public function relatedColumn(){
+        switch($this->type()){
+            case 'BelongsTo':       $column = $this->instance()->getOtherKey(); break;
+            case 'BelongsToMany':   $column = $this->instance()->getRelated()->getKeyName(); break;
+            case 'HasOne':          $column = $this->instance()->getForeignKey(); break;
+            case 'HasMany':         $column = $this->instance()->getForeignKey(); break;
+            default:                throw new MezzoException('Relationship ' . $this->qualifiedName() . ' is not supported. ');
+        }
+
+        return $this->disqualifyColumn($column);
     }
 
     /**
@@ -176,14 +186,28 @@ class RelationshipReflection
      * @return string
      */
     public function localColumn(){
-        if(method_exists($this->instance(), 'getOtherKey'))
-            return $this->instance()->getOtherKey();
+        switch($this->type()){
+            case 'BelongsTo':       $column = $this->instance()->getForeignKey(); break;
+            case 'BelongsToMany':   $column = $this->instance()->getParent()->getKeyName(); break;
+            case 'HasOne':          $column = $this->instance()->getQualifiedParentKeyName(); break;
+            case 'HasMany':         $column = $this->instance()->getQualifiedParentKeyName(); break;
+            default:                throw new MezzoException('Relationship ' . $this->qualifiedName() . ' is not supported. ');
+        }
 
-        //Taylor why is there no getParentKey (-.-)?
-        if(method_exists($this->instance(), 'getQualifiedParentKeyName'))
-            return explode('.', $this->instance()->getQualifiedParentKeyName())[1];
+        return $this->disqualifyColumn($column);
+    }
 
-        throw new \Exception('Cannot get local column of this relationship reflection. ' . $this->functionName);
+    /**
+     * Remove the table name from a column.
+     *
+     * @param string $columnName
+     * @return string
+     */
+    private function disqualifyColumn($columnName){
+        if(strstr($columnName, '.'))
+            return explode('.', $columnName)[1];
+
+        return $columnName;
     }
 
     /**
@@ -195,16 +219,15 @@ class RelationshipReflection
         if(!$this->counterpart){
             $counterpartModel = $this->relatedModelReflection();
 
-            $possibleCounterparts = $counterpartModel->relationships();
-
+            $this->counterpart = $counterpartModel->relationships()->findCounterpartTo($this);
         }
 
         return $this->counterpart;
     }
 
     public function isCounterpart(RelationshipReflection $check){
-        $correctTables = $check->tableName() == $this->foreignTableName();
-        $correctColumns = $check->localColumn() == $this->foreignColumn();
+        $correctTables = $check->tableName() == $this->relatedTableName();
+        $correctColumns = $check->localColumn() == $this->relatedColumn();
 
         return $correctTables && $correctColumns;
     }
@@ -241,8 +264,8 @@ class RelationshipReflection
         switch($this->type){
             case 'BelongsTo':
                 //TODO: Can also be one to many
-                $relation = new OneToOne($this->tableName(), $this->foreignTableName());
-                $relation->connectVia($this->foreignColumn());
+                $relation = new OneToOne($this->tableName(), $this->relatedTableName());
+                $relation->connectVia($this->relatedColumn());
                 return $relation;
             case 'BelongsToMany':
 

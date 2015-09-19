@@ -248,7 +248,7 @@ class Reflector
     public function buildRelations(){
         $relationReflections = $this->relationReflections();
 
-        dd($relationReflections);
+        //dd($relationReflections);
 
         $relationReflections->each(function(RelationshipReflection $reflection){
             $reflection->counterpart();

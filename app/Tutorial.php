@@ -26,12 +26,20 @@ class Tutorial extends Model
 {
     use MezzoTutorial;
 
+    public function mainImage(){
+        return $this->hasOne('App\Image');
+    }
+
+    public function parent(){
+        return $this->hasOne('App\Tutorial', 'parent');
+    }
+
     public function comments(){
         return $this->hasMany('App\Comment');
     }
 
     public function owner(){
-        return $this->hasOne('App\User');
+        return $this->belongsTo('App\User');
     }
 
     public function categories(){
@@ -39,7 +47,7 @@ class Tutorial extends Model
     }
 
     public function mainCategory(){
-        return $this->belongsTo('App\Category');
+        return $this->belongsTo('App\Category', 'main_category');
     }
 
 

@@ -25,7 +25,7 @@ class RelationshipReflections extends Collection{
                 $test = false;
             }
 
-            if(isset($options['foreignColumn']) && $options['foreignColumn'] != $reflection->localColumn()){
+            if(isset($options['relatedColumn']) && $options['relatedColumn'] != $reflection->localColumn()){
                 $test = false;
             }
 
@@ -41,10 +41,15 @@ class RelationshipReflections extends Collection{
      * @return RelationshipReflection | null
      * @throws \ReflectionException
      */
-    public function findCounterpart(RelationshipReflection $check){
+    public function findCounterpartTo(RelationshipReflection $check){
+        debug('find counterpart to ' . $check->qualifiedName() . ' '. $check->type());
+
+
         $counterparts = $this->filter(function(RelationshipReflection $reflection) use ($check){
             return $reflection->isCounterpart($check);
         });
+
+
 
         if($counterparts->count() > 1)
             throw new \ReflectionException('Found more than one counterpart for one relationship. ' . $check->qualifiedName());
@@ -52,6 +57,11 @@ class RelationshipReflections extends Collection{
         if($counterparts->count() == 0){
             return null;
         }
+
+        debug('found ' . $counterparts->first()->qualifiedName(). ' '. $counterparts->first()->type());
+
+
+
 
         return $counterparts->first();
     }
