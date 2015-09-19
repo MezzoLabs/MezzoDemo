@@ -15,7 +15,8 @@ class ThirdParties extends Collection
      * @var string[]
      */
     protected $toLoad = [
-        "DingoApi" => Wrappers\DingoApi::class
+        "DingoApi" => Wrappers\DingoApi::class,
+        "Html" => Wrappers\Html::class
     ];
 
     /**

@@ -48,10 +48,10 @@ class TableSchema {
     }
 
     /**
-     * @param Table $table
+     * @param \MezzoLabs\Mezzo\Core\Database\Table $table
      * @return \Illuminate\Support\Collection
      */
-    public function fillWithRealTable(Table $table)
+    public function fillWithRealTable(\MezzoLabs\Mezzo\Core\Database\Table $table)
     {
         $array = Reader::make()->getColumns($table);
 

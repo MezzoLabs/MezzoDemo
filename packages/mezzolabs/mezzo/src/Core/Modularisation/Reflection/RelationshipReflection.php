@@ -5,6 +5,9 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Database\Column;
@@ -33,7 +36,7 @@ class RelationshipReflection
     protected $functionName;
 
     /**
-     * @var Relation
+     * @var BelongsTo|BelongsToMany|HasOneOrMany
      */
     protected $instance;
 
@@ -41,6 +44,11 @@ class RelationshipReflection
      * @var string
      */
     protected $type;
+
+    /**
+     * @var RelationshipReflection
+     */
+    protected $counterpart;
 
 
     /**
@@ -79,11 +87,21 @@ class RelationshipReflection
     }
 
     /**
-     * @return Relation
+     * @return BelongsTo|BelongsToMany|HasOneOrMany|Relation
      */
     public function instance()
     {
         return $this->instance;
+    }
+
+    /**
+     * Get a qualified name for this relationship.
+     *
+     * @return string
+     */
+    public function qualifiedName()
+    {
+        return $this->modelReflection->className() . '.' . $this->functionName;
     }
 
     /**
@@ -99,6 +117,15 @@ class RelationshipReflection
      */
     public function type(){
         return $this->type;
+    }
+
+    /**
+     * Checks if the relation is a 'hasMany', 'hasOne'...
+     *
+     * @param string $type
+     */
+    public function is($type){
+        return strtolower($type) == strtolower($this->type());
     }
 
     /**
@@ -134,6 +161,65 @@ class RelationshipReflection
     }
 
     /**
+     * Get the foreign column name without the name of the table.
+     *
+     * @return string
+     */
+    public function foreignColumn(){
+        return $this->instance()->getPlainForeignKey();
+    }
+
+    /**
+     * Get the unqualified name of the local column.
+     *
+     * @throws \Exception
+     * @return string
+     */
+    public function localColumn(){
+        if(method_exists($this->instance(), 'getOtherKey'))
+            return $this->instance()->getOtherKey();
+
+        //Taylor why is there no getParentKey (-.-)?
+        if(method_exists($this->instance(), 'getQualifiedParentKeyName'))
+            return explode('.', $this->instance()->getQualifiedParentKeyName())[1];
+
+        throw new \Exception('Cannot get local column of this relationship reflection. ' . $this->functionName);
+    }
+
+    /**
+     * Get the counterpart if this relationship reflection
+     *
+     * @return RelationshipReflection
+     */
+    public function counterpart(){
+        if(!$this->counterpart){
+            $counterpartModel = $this->relatedModelReflection();
+
+            $possibleCounterparts = $counterpartModel->relationships();
+
+        }
+
+        return $this->counterpart;
+    }
+
+    public function isCounterpart(RelationshipReflection $check){
+        $correctTables = $check->tableName() == $this->foreignTableName();
+        $correctColumns = $check->localColumn() == $this->foreignColumn();
+
+        return $correctTables && $correctColumns;
+    }
+
+    /**
+     *
+     *
+     * @return ModelReflection
+     */
+    public function relatedModelReflection(){
+        return Reflector::getReflection($this->instance()->getRelated());
+
+    }
+
+    /**
      * Produces a relation schema.
      *
      * Examples:
@@ -149,14 +235,14 @@ class RelationshipReflection
      * $user->belongsToMany('Role') --> user_roles.role_id + user_roles.user_id
      * $role->belongsToMany('User') --> user_roles.role_id + user_roles.user_id
      *
-     * @return ManyToOne|OneToOne
+     * @return Relation
      */
     protected function makeRelation(){
         switch($this->type){
             case 'BelongsTo':
                 //TODO: Can also be one to many
                 $relation = new OneToOne($this->tableName(), $this->foreignTableName());
-                $relation->connectVia($this->instance()->getForeignKey());
+                $relation->connectVia($this->foreignColumn());
                 return $relation;
             case 'BelongsToMany':
 

@@ -77,10 +77,10 @@ class Parser
     }
 
     /**
-     * @return Collection
+     * @return RelationshipReflections
      */
     public function relationships(){
-        $relationships = new Collection();
+        $relationships = new RelationshipReflections();
         foreach($this->publicFunctions() as $tokenSequence){
             $name = $tokenSequence[2]['content'];
             $type = $tokenSequence[4]['content'];

@@ -19,6 +19,8 @@ class ModelReflections extends Collection
      */
     public $aliases;
 
+
+
     /**
      * @param array $classes
      * @internal param mixed $items
@@ -130,11 +132,16 @@ class ModelReflections extends Collection
         if (is_object($model) && get_class($model) == ModelReflection::class)
             return $model->className();
 
+        if (is_object($model))
+            return get_class($model);
+
         if (is_string($model))
             return $model;
 
         throw new InvalidModel($model);
     }
+
+
 
 
 } 

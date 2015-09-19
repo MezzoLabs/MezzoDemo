@@ -7,6 +7,7 @@ use App\Tutorial;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Filesystem\ClassFinder;
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Collections\EloquentModels;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
@@ -75,6 +76,8 @@ class Reflector
         $this->eloquentModels = $this->findEloquentModels();
         $this->mezzoModels = $this->findMezzoModels();
         $this->modelReflections = new ModelReflections($this->eloquentModels);
+
+        $this->buildRelations();
 
         $this->booted = true;
 
@@ -235,6 +238,40 @@ class Reflector
     public function isBooted()
     {
         return $this->booted;
+    }
+
+    /**
+     * Check the relations after the reflector ran through the models.
+     * We have to do this afterwards so we can tell the difference between one to one and one to many relations.
+     * Therefore we check
+     */
+    public function buildRelations(){
+        $relationReflections = $this->relationReflections();
+
+        dd($relationReflections);
+
+        $relationReflections->each(function(RelationshipReflection $reflection){
+            $reflection->counterpart();
+        });
+
+    }
+
+    /**
+     * Get all relationReflections
+     *
+     * @return Collection
+     */
+    public function relationReflections(){
+        return Singleton::get('relationReflections', function(){
+            $allRelations = new Collection();
+
+            /** @var ModelReflection $modelReflection */
+            foreach($this->reflections() as $modelReflection){
+                $allRelations = $allRelations->merge($modelReflection->relationships()->toArray());
+            }
+
+            return $allRelations;
+        });
     }
 
 

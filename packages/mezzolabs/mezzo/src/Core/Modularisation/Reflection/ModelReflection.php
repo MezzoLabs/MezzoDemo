@@ -66,6 +66,11 @@ class ModelReflection
      */
     protected $isMezzoModel = false;
 
+    /**
+     * @var ModelReflection
+     */
+    protected $counterPart;
+
 
     /**
      * @param $className
@@ -186,7 +191,7 @@ class ModelReflection
     }
 
     /**
-     * @return Collection
+     * @return RelationshipReflections
      */
     public function relationships(){
         if(!$this->relationships){

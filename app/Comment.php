@@ -11,5 +11,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  */
 class Comment extends Model
 {
-
+    public function tutorial(){
+        $this->belongsTo(Tutorial::class);
+    }
 }
