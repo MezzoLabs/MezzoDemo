@@ -36,5 +36,7 @@ abstract class Relation {
         $this->fromTable = $fromTable;
     }
 
+    abstract public function qualifiedName();
+
 
 } 

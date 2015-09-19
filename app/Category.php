@@ -13,6 +13,10 @@ class Category extends Model
         return $this->belongsToMany(Tutorial::class);
     }
 
+    public function mainTutorials(){
+        return $this->hasMany(Tutorial::class, 'main_category');
+    }
+
 
 
 }

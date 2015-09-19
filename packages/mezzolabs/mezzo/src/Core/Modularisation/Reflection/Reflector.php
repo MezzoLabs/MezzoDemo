@@ -11,6 +11,7 @@ use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Collections\EloquentModels;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
+use MezzoLabs\Mezzo\Core\Schema\RelationsSchema;
 use MezzoLabs\Mezzo\Core\Traits\IsShared;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
@@ -59,6 +60,11 @@ class Reflector
     protected $booted = false;
 
     /**
+     * @var RelationsSchema
+     */
+    protected $relationsSchema;
+
+    /**
      * @param Mezzo $mezzo
      */
     public function __construct(Mezzo $mezzo)
@@ -77,7 +83,7 @@ class Reflector
         $this->mezzoModels = $this->findMezzoModels();
         $this->modelReflections = new ModelReflections($this->eloquentModels);
 
-        $this->buildRelations();
+        $this->relationsSchema = $this->buildRelations();
 
         $this->booted = true;
 
@@ -270,7 +276,6 @@ class Reflector
                     $allRelations->put($relationshipReflection->qualifiedName(), $relationshipReflection);
                 }
             }
-
 
             return $allRelations;
         });

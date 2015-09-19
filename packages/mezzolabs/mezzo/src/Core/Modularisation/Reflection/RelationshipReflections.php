@@ -42,8 +42,6 @@ class RelationshipReflections extends Collection{
      * @throws \ReflectionException
      */
     public function findCounterpartTo(RelationshipReflection $check){
-        debug('find counterpart to ' . $check->qualifiedName() . ' '. $check->type());
-
 
         $counterparts = $this->filter(function(RelationshipReflection $reflection) use ($check){
             return $reflection->isCounterpart($check);
@@ -51,8 +49,17 @@ class RelationshipReflections extends Collection{
 
 
 
-        if($counterparts->count() > 1)
-            throw new \ReflectionException('Found more than one counterpart for one relationship. ' . $check->qualifiedName());
+        if($counterparts->count() > 1) {
+            echo $check->qualifiedName() . ': ' . $check->qualifiedLocalColumn() . ' -> ' . $check->qualifiedRelatedColumn() . '<br/><br/>';
+
+            /** @var RelationshipReflection $counterpart */
+            foreach($counterparts as $counterpart){
+                echo $counterpart->qualifiedName() . ': ' . $counterpart->qualifiedLocalColumn() . ' -> ' . $counterpart->qualifiedRelatedColumn() . '<br/>';
+            }
+            dd($counterparts);
+            throw new \ReflectionException('Found more than one counterpart for one relationship: ' .
+                                            $check->qualifiedName());
+        }
 
         if($counterparts->count() == 0){
             return null;

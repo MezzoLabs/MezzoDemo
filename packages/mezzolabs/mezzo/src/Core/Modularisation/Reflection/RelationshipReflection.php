@@ -182,6 +182,16 @@ class RelationshipReflection
     }
 
     /**
+     * Get the qualified column of the related table.
+     *
+     * @return string
+     * @throws MezzoException
+     */
+    public function qualifiedRelatedColumn(){
+        return $this->relatedTableName() . '.' . $this->relatedColumn();
+    }
+
+    /**
      * Get the unqualified name of the local column.
      *
      * @throws \Exception
@@ -197,6 +207,16 @@ class RelationshipReflection
         }
 
         return $this->disqualifyColumn($column);
+    }
+
+    /**
+     * Get the qualified local column.
+     *
+     * @return string
+     * @throws MezzoException
+     */
+    public function qualifiedLocalColumn(){
+        return $this->tableName() . '.' . $this->localColumn();
     }
 
     /**
@@ -229,7 +249,8 @@ class RelationshipReflection
 
     public function isCounterpart(RelationshipReflection $check){
         $correctTables = $check->tableName() == $this->relatedTableName();
-        $correctColumns = $check->localColumn() == $this->relatedColumn();
+        $correctColumns = $check->localColumn() == $this->relatedColumn() &&
+                            $check->relatedColumn() == $this->localColumn();
 
         return $correctTables && $correctColumns;
     }
