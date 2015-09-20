@@ -16,9 +16,9 @@ class RelationsSchema {
     /**
      * Creates a new relation schema for a couple of relations.
      *
-     * @param Collection $relations
+     * @param array|Collection $relations
      */
-    public function __construct(Collection $relations){
+    public function __construct($relations = []){
         $this->relations = new Collection();
 
         foreach($relations as $relation){

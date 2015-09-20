@@ -53,6 +53,11 @@ class RelationshipReflection
      */
     protected $counterpart;
 
+    /**
+     * @var Relation
+     */
+    protected $relationSchema;
+
 
     /**
      * @param ModelReflection $modelReflection
@@ -108,6 +113,8 @@ class RelationshipReflection
     }
 
     /**
+     * Get the unqualified name of this relationship (the name of the function)
+     *
      * @return string
      */
     public function name()
@@ -126,6 +133,7 @@ class RelationshipReflection
      * Checks if the relation is a 'hasMany', 'hasOne'...
      *
      * @param string $type
+     * @return bool
      */
     public function is($type){
         return strtolower($type) == strtolower($this->type());
@@ -226,10 +234,7 @@ class RelationshipReflection
      * @return string
      */
     private function disqualifyColumn($columnName){
-        if(strstr($columnName, '.'))
-            return explode('.', $columnName)[1];
-
-        return $columnName;
+        return Column::disqualifyName($columnName);
     }
 
     /**
@@ -247,7 +252,16 @@ class RelationshipReflection
         return $this->counterpart;
     }
 
+    /**
+     * Check if a relationship reflection is the inverse part of this.
+     *
+     * @param RelationshipReflection $check
+     * @return bool
+     * @throws MezzoException
+     */
     public function isCounterpart(RelationshipReflection $check){
+
+
         $correctTables = $check->tableName() == $this->relatedTableName();
         $correctColumns = $check->localColumn() == $this->relatedColumn() &&
                             $check->relatedColumn() == $this->localColumn();
@@ -256,13 +270,24 @@ class RelationshipReflection
     }
 
     /**
-     *
+     * Get the reflection of the related model.
      *
      * @return ModelReflection
      */
     public function relatedModelReflection(){
         return Reflector::getReflection($this->instance()->getRelated());
 
+    }
+
+    /**
+     * Get the abstract schema of this relation reflection.
+     *
+     * @return MezzoRelation
+     */
+    public function relationSchema(){
+        if(!$this->relationSchema) $this->relationSchema = $this->makeRelation();
+
+        return $this->relationSchema;
     }
 
     /**

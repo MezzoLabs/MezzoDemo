@@ -4,6 +4,8 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 
+use MezzoLabs\Mezzo\Core\Database\Column;
+
 class ManyToMany extends Relation{
 
     protected $pivotTable;
@@ -20,7 +22,12 @@ class ManyToMany extends Relation{
     public function setPivot($tableName, $columnFrom, $columnTo){
         $this->pivotTable = $tableName;
 
-        $this->connectingColumn = $columnFrom;
-        $this->connectingColumn2 = $columnTo;
+        $this->connectingColumn = Column::disqualifyName($columnFrom);
+        $this->connectingColumn2 = Column::disqualifyName($columnTo);
     }
-} 
+
+    public function qualifiedName()
+    {
+        return $this->pivotTable;
+    }
+}

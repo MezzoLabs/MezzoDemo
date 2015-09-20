@@ -39,11 +39,15 @@ class Tutorial extends Model
     }
 
     public function owner(){
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'user_id');
     }
 
     public function categories(){
         return $this->belongsToMany('App\Category');
+    }
+
+    public function plannedCategories(){
+        return $this->belongsToMany(Category::class, 'planned_tutorial_category');
     }
 
     public function mainCategory(){

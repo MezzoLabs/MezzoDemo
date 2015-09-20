@@ -10,7 +10,8 @@ use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOne;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgument;
 
-class RelationConverter {
+class RelationConverter
+{
 
     /**
      * Convert RelationshipReflection to Relation
@@ -33,15 +34,17 @@ class RelationConverter {
      * @throws \ReflectionException
      * @return Relation
      */
-    public static function fromReflectionToRelation(RelationshipReflection $reflection){
-        switch($reflection->type()){
+    public static function fromReflectionToRelation(RelationshipReflection $reflection)
+    {
+        switch ($reflection->type()) {
             case 'BelongsTo':
-                return static::fromBelongsTo($reflection);
+                $relation = static::fromBelongsTo($reflection);
+                break;
             case 'BelongsToMany':
                 $relation = new ManyToMany($reflection->tableName(), $reflection->relatedTableName());
                 $relation->setPivot($reflection->instance()->getTable(),
-                                    $reflection->instance()->getForeignKey(),
-                                    $reflection->instance()->getOtherKey());
+                    $reflection->instance()->getForeignKey(),
+                    $reflection->instance()->getOtherKey());
                 break;
             case 'HasOne':
                 $relation = new OneToOne($reflection->relatedTableName(), $reflection->tableName());
@@ -51,8 +54,11 @@ class RelationConverter {
                 $relation = new OneToMany($reflection->relatedTableName(), $reflection->tableName());
                 $relation->manySide($reflection->relatedColumn());
                 break;
-            default: throw new \ReflectionException('Relation is not supported '. $reflection->qualifiedName());
+            default:
+                throw new \ReflectionException('Relation is not supported ' . $reflection->qualifiedName());
         }
+
+        return $relation;
     }
 
     /**
@@ -72,7 +78,7 @@ class RelationConverter {
         $counterpart = $reflection->counterpart();
 
         if (!$counterpart) {
-            throw new \ReflectionException('Cannot find a counterpart to ' . $reflection->qualifiedName() . '.' .
+            throw new \ReflectionException('Cannot find a counterpart to ' . $reflection->qualifiedName() . '. ' .
                 'Please set up the inverse relation in ' . get_class($reflection->instance()->getRelated()));
         }
 

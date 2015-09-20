@@ -18,16 +18,6 @@ abstract class Relation {
     protected $toTable;
 
     /**
-     * @var string
-     */
-    protected $connectingTable;
-
-    /**
-     * @var string
-     */
-    protected $connectingColumn;
-
-    /**
      * @param $fromTable
      * @param $toTable
      */
@@ -37,6 +27,5 @@ abstract class Relation {
     }
 
     abstract public function qualifiedName();
-
 
 } 

@@ -74,4 +74,17 @@ class Column {
     {
         return $this->type;
     }
+
+    /**
+     * Remove the table name from a column.
+     *
+     * @param $columnName
+     * @return mixed
+     */
+    public static function disqualifyName($columnName){
+        if(strstr($columnName, '.'))
+            return explode('.', $columnName)[1];
+
+        return $columnName;
+    }
 } 

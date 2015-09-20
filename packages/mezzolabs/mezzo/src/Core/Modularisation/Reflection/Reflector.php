@@ -83,7 +83,7 @@ class Reflector
         $this->mezzoModels = $this->findMezzoModels();
         $this->modelReflections = new ModelReflections($this->eloquentModels);
 
-        $this->relationsSchema = $this->buildRelations();
+        $this->relationsSchema = $this->buildRelationsSchema();
 
         $this->booted = true;
 
@@ -189,9 +189,9 @@ class Reflector
      */
     public function classUsesTrait($class, $trait = "", $recursively = true)
     {
-        if(empty($trait)) $trait = $this->mezzoModelTrait;
+        if (empty($trait)) $trait = $this->mezzoModelTrait;
 
-        if($recursively)
+        if ($recursively)
             $usedTraits = trait_uses_recursive($class);
         else
             $usedTraits = class_uses($class);
@@ -204,7 +204,8 @@ class Reflector
      * @param bool $recursively
      * @return bool
      */
-    public function classUsesMezzoTrait($class, $recursively = true){
+    public function classUsesMezzoTrait($class, $recursively = true)
+    {
         return $this->classUsesTrait($class, $this->mezzoModelTrait, $recursively);
     }
 
@@ -249,14 +250,20 @@ class Reflector
     /**
      * Check the relations after the reflector ran through the models.
      * We have to do this afterwards so we can tell the difference between one to one and one to many relations.
-     * Therefore we check
+     *
      */
-    public function buildRelations(){
+    protected function buildRelationsSchema()
+    {
         $relationReflections = $this->relationReflections();
 
-        $relationReflections->each(function(RelationshipReflection $reflection){
-            $reflection->counterpart();
-        });
+        $relationsSchema = new RelationsSchema();
+
+        $relationReflections->each(
+            function (RelationshipReflection $reflection) use ($relationsSchema) {
+                $relationsSchema->addRelation($reflection->relationSchema());
+            });
+
+        dd($relationsSchema);
 
     }
 
@@ -265,14 +272,15 @@ class Reflector
      *
      * @return Collection
      */
-    public function relationReflections(){
-        return Singleton::get('relationReflections', function(){
+    public function relationReflections()
+    {
+        return Singleton::get('relationReflections', function () {
             $allRelations = new Collection();
 
             /** @var ModelReflection $modelReflection */
-            foreach($this->reflections() as $modelReflection){
+            foreach ($this->reflections() as $modelReflection) {
                 /** @var RelationshipReflection $relationshipReflection */
-                foreach($modelReflection->relationships() as $relationshipReflection){
+                foreach ($modelReflection->relationships() as $relationshipReflection) {
                     $allRelations->put($relationshipReflection->qualifiedName(), $relationshipReflection);
                 }
             }
@@ -282,5 +290,4 @@ class Reflector
     }
 
 
-
-} 
+}

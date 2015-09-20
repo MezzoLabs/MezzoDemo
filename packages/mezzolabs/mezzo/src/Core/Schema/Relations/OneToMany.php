@@ -3,11 +3,10 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 
-class OneToMany extends Relation{
+class OneToMany extends OneToOneOrMany{
 
     public function manySide($columnName, $tableName = false){
-
-        $this->connectingTable = $tableName;
-        $this->connectingColumn = $columnName;
+        return $this->connectVia($columnName, $tableName);
     }
-} 
+
+}
