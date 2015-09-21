@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 use Illuminate\Support\Collection;
 
 class RelationshipReflections extends Collection{
+
     /**
      * Filter the relations in this collection. No use for this function yet, but I think its nice to have.
      *
@@ -47,8 +48,6 @@ class RelationshipReflections extends Collection{
             return $reflection->isCounterpart($check);
         });
 
-
-
         if($counterparts->count() > 1) {
            throw new \ReflectionException('Found more than one counterpart for one relationship: ' .
                                             $check->qualifiedName());
@@ -60,4 +59,5 @@ class RelationshipReflections extends Collection{
 
         return $counterparts->first();
     }
+
 } 

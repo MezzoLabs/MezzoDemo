@@ -1,12 +1,14 @@
 <?php
- 
+
 
 namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 
+use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Database\Column;
 
-class ManyToMany extends Relation{
+class ManyToMany extends Relation
+{
 
     protected $pivotTable;
 
@@ -20,7 +22,8 @@ class ManyToMany extends Relation{
      * @param string $columnTo
      * @return $this
      */
-    public function setPivot($tableName, $columnFrom, $columnTo){
+    public function setPivot($tableName, $columnFrom, $columnTo)
+    {
         $this->pivotTable = $tableName;
 
         $this->connectingColumn = Column::disqualifyName($columnFrom);
@@ -36,7 +39,19 @@ class ManyToMany extends Relation{
     /**
      * @return ManyToMany
      */
-    static function make(){
+    static function make()
+    {
         return parent::makeByType(static::class);
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function findConnectingColumns()
+    {
+        return new Collection([
+            $this->pivotTable . '.' . $this->connectingColumn,
+            $this->pivotTable . '.' . $this->connectingColumn2
+        ]);
     }
 }

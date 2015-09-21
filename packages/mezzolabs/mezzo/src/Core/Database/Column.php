@@ -6,7 +6,6 @@ namespace MezzoLabs\Mezzo\Core\Database;
 
 use Doctrine\DBAL\Schema\Column as DoctrineColumn;
 use Doctrine\DBAL\Types\Type;
-use MezzoLabs\Mezzo\Core\Schema\DbalColumn;
 
 class Column {
 
@@ -25,26 +24,25 @@ class Column {
      */
     protected $doctrineColumn;
 
-    public function __construct($name, $type)
+    /**
+     * @var bool
+     */
+    protected $isForeignKey;
+
+    /**
+     * @var Table
+     */
+    protected  $table;
+
+    public function __construct($name, $type, Table $table)
     {
         $this->name = $name;
         $this->type = $type;
+        $this->table = $table;
     }
 
     /**
-     * @param DoctrineColumn $column
-     * @return Column
-     */
-    public static function fromDoctrine(DoctrineColumn $column)
-    {
-        $newColumn = new Column($column->getName(), $column->getType());
-        $newColumn->setDoctrineColumn($column);
-
-        return $newColumn;
-    }
-
-    /**
-     * @return DbalColumn
+     * @return DoctrineColumn
      */
     public function getDoctrineColumn()
     {
@@ -52,7 +50,7 @@ class Column {
     }
 
     /**
-     * @param DbalColumn $dbalColumn
+     * @param DoctrineColumn $dbalColumn
      */
     public function setDoctrineColumn($dbalColumn)
     {
@@ -76,6 +74,15 @@ class Column {
     }
 
     /**
+     * Returns the unique name of this column.
+     *
+     * @return string
+     */
+    public function qualifiedName(){
+        return $this->table->name() . '.' . $this->name();
+    }
+
+    /**
      * Remove the table name from a column.
      *
      * @param $columnName
@@ -87,4 +94,31 @@ class Column {
 
         return $columnName;
     }
-} 
+
+    /**
+     * @return bool
+     */
+    public function isForeignKey(){
+        if($this->isForeignKey === null)
+            $this->isForeignKey = in_array($this->qualifiedName(), $this->table->connectingColumns()->toArray());
+
+        return $this->isForeignKey;
+    }
+
+    /**
+     * Create a column from the imported dbal column.
+     *
+     * @param DoctrineColumn $column
+     * @param Table $table
+     * @return Column
+     */
+    public static function fromDoctrine(DoctrineColumn $column, Table $table)
+    {
+        $type = strtolower(str_replace('Type', '', class_basename($column->getType())));
+
+        $newColumn = new Column($column->getName(), $type, $table);
+        $newColumn->setDoctrineColumn($column);
+
+        return $newColumn;
+    }
+}

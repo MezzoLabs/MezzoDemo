@@ -61,7 +61,7 @@ class RelationshipReflection
     /**
      * @var RelationConverter
      */
-    protected $relationConverter;
+    protected $schemaConverter;
 
 
     /**
@@ -76,7 +76,7 @@ class RelationshipReflection
         $this->instance = $this->makeInstance();
         $this->type = $this->instanceReflection()->getShortName();
 
-        $this->relationConverter = app()->make(RelationConverter::class);
+        $this->schemaConverter = RelationConverter::make();
 
     }
 
@@ -343,22 +343,10 @@ class RelationshipReflection
      * @return MezzoRelation
      */
     public function relationSchema(){
-        if(!$this->relationSchema) $this->relationSchema = $this->makeRelation();
+        if(!$this->relationSchema)
+            $this->relationSchema = $this->schemaConverter->run($this);
 
         return $this->relationSchema;
     }
-
-    /**
-     * Produces a relation schema.
-     *
-     * @throws MezzoException
-     * @throws \ReflectionException
-     * @return Relation
-     */
-    protected function makeRelation(){
-        return $this->relationConverter->run($this);
-    }
-
-
 
 }

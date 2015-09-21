@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Database\Table;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Core\Schema\Converters\ModelReflectionConverter;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
 
@@ -67,10 +68,9 @@ class ModelReflection
     protected $isMezzoModel = false;
 
     /**
-     * @var ModelReflection
+     * @var ModelReflectionConverter
      */
-    protected $counterPart;
-
+    protected $schemaConverter;
 
     /**
      * @param $className
@@ -86,6 +86,8 @@ class ModelReflection
 
         if(Reflector::make()->classUsesMezzoTrait($className))
             $this->isMezzoModel = true;
+
+        $this->schemaConverter = ModelReflectionConverter::make();
 
     }
 
@@ -110,7 +112,7 @@ class ModelReflection
     public function table()
     {
         if(!$this->databaseTable)
-            $this->databaseTable = Table::fromWrapper($this);
+            $this->databaseTable = Table::fromModelReflection($this);
 
         return $this->databaseTable;
     }
@@ -207,7 +209,7 @@ class ModelReflection
      */
     public function schema(){
         if(!$this->schema){
-            $this->schema = ModelSchema::fromReflection($this);
+            $this->schema = $this->schemaConverter->run($this);
         }
 
         return $this->schema;
@@ -220,7 +222,5 @@ class ModelReflection
     {
         return $this->isMezzoModel;
     }
-
-
 
 }

@@ -14,12 +14,19 @@ class RelationsSchema {
     protected  $relations;
 
     /**
+     * @var Collection
+     */
+    protected $connectingColumns;
+
+    /**
      * Creates a new relation schema for a couple of relations.
      *
      * @param array|Collection $relations
      */
     public function __construct($relations = []){
         $this->relations = new Collection();
+
+        $this->connectingColumns = new Collection();
 
         foreach($relations as $relation){
             $this->addRelation($relation);
@@ -33,6 +40,25 @@ class RelationsSchema {
      * @return $this
      */
     public function addRelation(Relation $relation){
+        $this->connectingColumns = $this->connectingColumns->merge($relation->connectingColumns());
+
         return $this->relations->put($relation->qualifiedName(), $relation);
     }
-} 
+
+    /**
+     * Get all connecting columns or filter them with a table name.
+     *
+     * @param string $tableName
+     * @return Collection
+     */
+    public function connectingColumns($tableName = "")
+    {
+        if(empty($table)) return $this->connectingColumns;
+
+        return $this->connectingColumns->filter(function($columnName) use ($tableName){
+            return strstr($columnName, $tableName . '.');
+        });
+    }
+
+
+}

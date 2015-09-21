@@ -58,14 +58,12 @@ class Reader
      * @param  string $table
      * @return array
      */
-    public function getColumns(\MezzoLabs\Mezzo\Core\Database\Table $table)
+    public function getColumns(Table $table)
     {
-        $columns = Singleton::get(
+        return Singleton::get(
             'database.columns.' . $table->name(),
             function () use ($table) {
                 return $this->schemaManager->listTableColumns($table->name());
             });
-
-        return $columns;
     }
 } 

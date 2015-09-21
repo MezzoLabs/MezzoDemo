@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Schema;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use MezzoLabs\Mezzo\Core\Database\Columns;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 
@@ -34,17 +35,9 @@ class ModelSchema {
     public function addMainTable($tableName){
         if(empty($tableName)) $tableName = $this->defaultTableName();
 
-        $this->tables->addMainTable(new TableSchema($tableName));
+        $this->tables->addMainTable(new Columns($tableName));
     }
 
-    public static function fromReflection(ModelReflection $reflection)
-    {
-        $schema = new ModelSchema($reflection->className());
-        
-        foreach($reflection->table()->columns() as $column){
-
-        }
-    }
 
     public function defaultTableName()
     {
@@ -57,7 +50,7 @@ class ModelSchema {
     }
 
     /**
-     * @return TableSchema
+     * @return Columns
      */
     public function mainTable(){
         return $this->tables->main();

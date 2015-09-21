@@ -11,6 +11,7 @@ use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Collections\EloquentModels;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
+use MezzoLabs\Mezzo\Core\Schema\ModelsSchema;
 use MezzoLabs\Mezzo\Core\Schema\RelationsSchema;
 use MezzoLabs\Mezzo\Core\Traits\IsShared;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
@@ -64,7 +65,9 @@ class Reflector
      */
     protected $relationsSchema;
 
-
+    /**
+     * @var ModelsSchema
+     */
     protected $modelsSchema;
 
     /**
@@ -223,7 +226,7 @@ class Reflector
      * Get the reflection of the given model or create one
      *
      * @param $model
-     * @return mixed
+     * @return ModelReflection
      */
     public function modelReflection($model)
     {
@@ -235,7 +238,7 @@ class Reflector
      * Static version of modelReflection($model). Just for your comfort :*
      *
      * @param $model
-     * @return mixed
+     * @return ModelReflection
      */
     public static function getReflection($model)
     {
@@ -268,7 +271,6 @@ class Reflector
             });
 
         return $relationsSchema;
-
     }
 
     /**
@@ -291,6 +293,14 @@ class Reflector
 
             return $allRelations;
         });
+    }
+
+    /**
+     * @return RelationsSchema
+     */
+    public function relationsSchema()
+    {
+        return $this->relationsSchema;
     }
 
 

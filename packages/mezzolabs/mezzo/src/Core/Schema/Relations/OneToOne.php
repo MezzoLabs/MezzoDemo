@@ -8,4 +8,6 @@ class OneToOne extends OneToOneOrMany{
     static function make(){
         return parent::makeByType(static::class);
     }
+
+
 }

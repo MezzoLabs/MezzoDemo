@@ -9,7 +9,9 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Database\Column;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
-use MezzoLabs\Mezzo\Core\Schema\TableSchema;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflections;
+use MezzoLabs\Mezzo\Core\Database\Columns;
 
 class Table {
 
@@ -31,14 +33,19 @@ class Table {
     private $model;
 
     /**
-     * @var TableSchema
+     * @var Columns
      */
-    protected $schema;
+    protected $columns;
 
     /**
      * @var ModelReflection
      */
     protected $reflection;
+
+    /**
+     * @var Collection
+     */
+    protected $connectingColumns;
 
     /**
      * @param $model
@@ -48,50 +55,48 @@ class Table {
 
         $this->reflection = Reflector::getReflection($model);
         $this->instance = $this->reflection->instance();
-        $this->schema = new TableSchema($this->instance->getTable());
+        $this->columns = new Columns($this);
+
     }
 
     /**
      * @return Collection
      */
+    public function allColumns(){
+        return $this->columns()->all();
+    }
+
+    /**
+     * @return Columns
+     */
     public function columns(){
-        if($this->schema->columns()->count() == 0){
-            $this->schema->fillWithRealTable($this);
+        if($this->columns->all()->count() == 0){
+            $this->columns->readFromDatabase($this);
         }
 
-        return $this->schema->columns();
+        return $this->columns;
     }
 
-    public function atomicColumns(){
-        return $this->columns()->filter(function($column){
-            return !$this->columnIsForeignKey($column);
-        });
-    }
-
-    public function foreignKeyColumns(){
-        return $this->columns()->filter(function($column){
-            return $this->columnIsForeignKey($column);
-        });
-    }
-
-    public function columnIsForeignKey(Column $column){
-        foreach($this->relationships() as $relationShip){
-
-        }
+    /**
+     * @param Column $column
+     * @return string
+     */
+    public function qualifiedColumnName(Column $column){
+        return $this->name() . '.' . $column->name();
     }
 
     /**
      * @return string
      */
     public function name(){
-        return $this->schema->name();
+        return $this->columns->name();
     }
 
     /**
      * @param ModelReflection $wrapper
      * @return Table
      */
-    public static function fromWrapper(ModelReflection $wrapper){
+    public static function fromModelReflection(ModelReflection $wrapper){
         $instance = $wrapper->instance();
         $table = new Table(get_class($instance));
         return $table;
@@ -101,7 +106,7 @@ class Table {
     /**
      * @return Model
      */
-    public function getInstance()
+    public function instance()
     {
         return $this->instance;
     }
@@ -114,11 +119,21 @@ class Table {
         $this->instance = $instance;
     }
 
-
     /**
-     * @return Collection
+     * @return RelationshipReflections
      */
     public function relationships(){
         return $this->reflection->relationships();
     }
+
+    /**
+     * @return Collection
+     */
+    public function connectingColumns(){
+        if(!$this->connectingColumns)
+            $this->connectingColumns = mezzo()->reflector()->relationsSchema()->connectingColumns($this->name());
+
+        return $this->connectingColumns;
+    }
+
 } 

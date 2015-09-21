@@ -12,6 +12,7 @@
 */
 
 
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 
 Route::get('/', function () {
@@ -19,7 +20,10 @@ Route::get('/', function () {
 });
 
 Route::get('debug/models', function () {
-    return "hi";
+    $array = mezzo()->reflector()->relationsSchema()->connectingColumns();
+
+    dd(Reflector::getReflection('tutorial')->table()->columns()->readFromDatabase());
+
     //$moduleCenter = mezzo()->moduleCenter();
 
     //dd(mezzo()->module('sample')->model('tutorial')->relationships());

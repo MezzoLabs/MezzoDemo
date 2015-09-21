@@ -16,7 +16,7 @@ class AttributeConverter {
 
         $attributes = new Attributes();
 
-        foreach($reflection->table()->columns() as $column){
+        foreach($reflection->table()->allColumns() as $column){
 
         }
     }

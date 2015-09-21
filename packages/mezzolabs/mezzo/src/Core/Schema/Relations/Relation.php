@@ -3,6 +3,7 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 
+use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgument;
 
@@ -27,6 +28,11 @@ abstract class Relation
      * @var string
      */
     protected $toNaming;
+
+    /**
+     * @var Collection
+     */
+    protected $connectingColumns;
 
 
     public function __construct()
@@ -70,6 +76,12 @@ abstract class Relation
 
     abstract public function qualifiedName();
 
+    abstract protected function findConnectingColumns();
+
+    public function connectingColumns(){
+        if(!$this->connectingColumns) $this->connectingColumns  = $this->findConnectingColumns();
+        return $this->connectingColumns;
+    }
 
     /**
      * Create a new relation. Do not forget to call from and to afterwards.
@@ -141,5 +153,7 @@ abstract class Relation
     {
         return $this->fromTable;
     }
+
+
 
 } 

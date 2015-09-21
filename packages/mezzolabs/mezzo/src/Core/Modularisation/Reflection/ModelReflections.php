@@ -97,8 +97,10 @@ class ModelReflections extends Collection
     {
         $key = $this->modelString($model);
 
-        if ($this->has($key))   return parent::get($key);
-        else                    return $this->add($model);
+        if ($this->has($key))
+            return parent::get($key);
+        else
+            return $this->add($model);
     }
 
     /**
@@ -135,8 +137,11 @@ class ModelReflections extends Collection
         if (is_object($model))
             return get_class($model);
 
-        if (is_string($model))
+        if (class_exists($model))
             return $model;
+
+        if(class_exists('App\\' . ucfirst($model)))
+            return 'App\\' . ucfirst($model);
 
         throw new InvalidModel($model);
     }
