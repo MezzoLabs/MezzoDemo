@@ -218,6 +218,31 @@ class RelationshipReflection
     }
 
     /**
+     * Returns the column that is needed for connecting two tables (Not for many to many relationships).
+     *
+     * @return string
+     * @throws MezzoException
+     */
+    public function connectingColumn(){
+        if($this->isBelongsTo())
+            return $this->localColumn();
+
+        return $this->relatedColumn();
+    }
+
+    /**
+     * Returns the table which contains the extra column.
+     *
+     * @return string
+     */
+    public function connectingTable(){
+        if($this->isBelongsTo())
+            return $this->tableName();
+
+        return $this->relatedTableName();
+    }
+
+    /**
      * Get the qualified local column.
      *
      * @return string

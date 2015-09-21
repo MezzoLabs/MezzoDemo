@@ -30,4 +30,8 @@ class ManyToMany extends Relation{
     {
         return $this->pivotTable;
     }
+
+    static function make(){
+        return parent::makeByType(static::class);
+    }
 }

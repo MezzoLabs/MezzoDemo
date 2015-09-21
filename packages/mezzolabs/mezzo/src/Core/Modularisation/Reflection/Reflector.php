@@ -263,7 +263,6 @@ class Reflector
                 $relationsSchema->addRelation($reflection->relationSchema());
             });
 
-        dd($relationsSchema);
 
     }
 

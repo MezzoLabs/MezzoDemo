@@ -25,6 +25,7 @@ abstract class OneToOneOrMany extends Relation{
 
         $this->connectingColumn = $columnName;
         $this->connectingTable = $tableName;
+        return $this;
     }
 
     public function qualifiedName(){

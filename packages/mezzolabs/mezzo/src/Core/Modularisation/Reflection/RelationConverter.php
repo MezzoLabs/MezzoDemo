@@ -38,27 +38,21 @@ class RelationConverter
     {
         switch ($reflection->type()) {
             case 'BelongsTo':
-                $relation = static::fromBelongsTo($reflection);
+                return static::fromBelongsTo($reflection);
                 break;
             case 'BelongsToMany':
                 $relation = new ManyToMany($reflection->tableName(), $reflection->relatedTableName());
                 $relation->setPivot($reflection->instance()->getTable(),
                     $reflection->instance()->getForeignKey(),
                     $reflection->instance()->getOtherKey());
-                break;
+                return $reflection;
             case 'HasOne':
-                $relation = new OneToOne($reflection->relatedTableName(), $reflection->tableName());
-                $relation->connectVia($reflection->relatedColumn());
-                break;
+                return static::makeOneToOneOrMany(OneToOne::class, $reflection);
             case 'HasMany':
-                $relation = new OneToMany($reflection->relatedTableName(), $reflection->tableName());
-                $relation->manySide($reflection->relatedColumn());
-                break;
+                return static::makeOneToOneOrMany(OneToMany::class, $reflection);
             default:
                 throw new \ReflectionException('Relation is not supported ' . $reflection->qualifiedName());
         }
-
-        return $relation;
     }
 
     /**
@@ -73,23 +67,47 @@ class RelationConverter
      */
     public static function fromBelongsTo(RelationshipReflection $reflection)
     {
-        if (!$reflection->is('BelongsTo')) throw new InvalidArgument($reflection);
+        if (!$reflection->is('BelongsTo'))
+            throw new InvalidArgument($reflection);
 
+        $counterpart = static::findOrFailCounterpart($reflection);
+
+        if ($counterpart->is('HasOne'))
+            return static::makeOneToOneOrMany(OneToOne::class, $reflection);
+        else
+            return static::makeOneToOneOrMany(OneToMany::class, $reflection);
+    }
+
+    /**
+     * Find the counterpart of a relationship or throw an exception
+     *
+     * @param RelationshipReflection $reflection
+     * @return RelationshipReflection
+     * @throws \ReflectionException
+     */
+    protected static function findOrFailCounterpart(RelationshipReflection $reflection){
         $counterpart = $reflection->counterpart();
 
-        if (!$counterpart) {
+        if (!$counterpart)
             throw new \ReflectionException('Cannot find a counterpart to ' . $reflection->qualifiedName() . '. ' .
                 'Please set up the inverse relation in ' . get_class($reflection->instance()->getRelated()));
-        }
 
-        if ($counterpart->is('HasOne')) {
-            $relation = new OneToOne($reflection->tableName(), $reflection->relatedTableName());
-            $relation->connectVia($reflection->localColumn());
-        } else {
-            $relation = new OneToMany($reflection->tableName(), $reflection->relatedTableName());
-            $relation->manySide($reflection->localColumn());
-        }
+        return $counterpart;
+    }
 
-        return $relation;
+    /**
+     * Create a OneToOne or a OneToMany relationship
+     *
+     * @param $class
+     * @param RelationshipReflection $reflection
+     * @internal param $connectingColumn
+     * @return mixed
+     */
+    protected static function makeOneToOneOrMany($class, RelationshipReflection $reflection)
+    {
+        return Relation::makeByType($class)
+            ->from($reflection->tableName())
+            ->to($reflection->relatedTableName())
+            ->connectVia($reflection->connectingColumn(), $reflection->connectingTable());
     }
 }

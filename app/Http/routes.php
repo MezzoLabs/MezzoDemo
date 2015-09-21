@@ -19,11 +19,12 @@ Route::get('/', function () {
 });
 
 Route::get('debug/models', function () {
-    $moduleCenter = mezzo()->moduleCenter();
+    return "hi";
+    //$moduleCenter = mezzo()->moduleCenter();
 
     //dd(mezzo()->module('sample')->model('tutorial')->relationships());
 
-    return view('debugmodels', ['moduleCenter' => $moduleCenter]);
+    //return view('debugmodels', ['moduleCenter' => $moduleCenter]);
 });
 
 Route::get('debug/generator', function () {
