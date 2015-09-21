@@ -28,10 +28,7 @@ abstract class Relation
      */
     protected $toNaming;
 
-    /**
-     * @param $fromTable
-     * @param $toTable
-     */
+
     public function __construct()
     {
 
@@ -73,7 +70,6 @@ abstract class Relation
 
     abstract public function qualifiedName();
 
-    abstract public static function make();
 
     /**
      * Create a new relation. Do not forget to call from and to afterwards.
@@ -108,6 +104,42 @@ abstract class Relation
             default:
                 throw new InvalidArgument($type);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function toNaming()
+    {
+        if(!$this->toNaming) return $this->toTable;
+
+        return $this->toNaming;
+    }
+
+    /**
+     * @return string
+     */
+    public function toTable()
+    {
+        return $this->toTable;
+    }
+
+    /**
+     * @return string
+     */
+    public function fromNaming()
+    {
+        if(!$this->fromNaming) return $this->fromTable;
+
+        return $this->fromNaming;
+    }
+
+    /**
+     * @return string
+     */
+    public function fromTable()
+    {
+        return $this->fromTable;
     }
 
 } 

@@ -18,12 +18,14 @@ class ManyToMany extends Relation{
      * @param string $tableName
      * @param string $columnFrom
      * @param string $columnTo
+     * @return $this
      */
     public function setPivot($tableName, $columnFrom, $columnTo){
         $this->pivotTable = $tableName;
 
         $this->connectingColumn = Column::disqualifyName($columnFrom);
         $this->connectingColumn2 = Column::disqualifyName($columnTo);
+        return $this;
     }
 
     public function qualifiedName()
@@ -31,6 +33,9 @@ class ManyToMany extends Relation{
         return $this->pivotTable;
     }
 
+    /**
+     * @return ManyToMany
+     */
     static function make(){
         return parent::makeByType(static::class);
     }

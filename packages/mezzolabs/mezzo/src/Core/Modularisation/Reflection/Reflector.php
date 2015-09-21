@@ -64,6 +64,9 @@ class Reflector
      */
     protected $relationsSchema;
 
+
+    protected $modelsSchema;
+
     /**
      * @param Mezzo $mezzo
      */
@@ -84,6 +87,7 @@ class Reflector
         $this->modelReflections = new ModelReflections($this->eloquentModels);
 
         $this->relationsSchema = $this->buildRelationsSchema();
+
 
         $this->booted = true;
 
@@ -263,6 +267,7 @@ class Reflector
                 $relationsSchema->addRelation($reflection->relationSchema());
             });
 
+        return $relationsSchema;
 
     }
 

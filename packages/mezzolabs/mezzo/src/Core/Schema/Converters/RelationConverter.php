@@ -1,16 +1,18 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
+namespace MezzoLabs\Mezzo\Core\Schema\Converters;
 
 
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOne;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
+use MezzoLabs\Mezzo\Core\Traits\IsShared;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgument;
 
-class RelationConverter
+class RelationConverter extends Converter
 {
 
     /**
@@ -34,22 +36,17 @@ class RelationConverter
      * @throws \ReflectionException
      * @return Relation
      */
-    public static function fromReflectionToRelation(RelationshipReflection $reflection)
+    protected function fromReflectionToRelation(RelationshipReflection $reflection)
     {
         switch ($reflection->type()) {
             case 'BelongsTo':
-                return static::fromBelongsTo($reflection);
-                break;
+                return $this->fromBelongsTo($reflection);
             case 'BelongsToMany':
-                $relation = new ManyToMany($reflection->tableName(), $reflection->relatedTableName());
-                $relation->setPivot($reflection->instance()->getTable(),
-                    $reflection->instance()->getForeignKey(),
-                    $reflection->instance()->getOtherKey());
-                return $reflection;
+                return $this->makeManyToMany($reflection);
             case 'HasOne':
-                return static::makeOneToOneOrMany(OneToOne::class, $reflection);
+                return $this->makeOneToOneOrMany(OneToOne::class, $reflection);
             case 'HasMany':
-                return static::makeOneToOneOrMany(OneToMany::class, $reflection);
+                return $this->makeOneToOneOrMany(OneToMany::class, $reflection);
             default:
                 throw new \ReflectionException('Relation is not supported ' . $reflection->qualifiedName());
         }
@@ -65,17 +62,17 @@ class RelationConverter
      * @return \MezzoLabs\Mezzo\Core\Schema\Relations\OneToMany|\MezzoLabs\Mezzo\Core\Schema\Relations\OneToOne
      * @throws \ReflectionException
      */
-    public static function fromBelongsTo(RelationshipReflection $reflection)
+    protected function fromBelongsTo(RelationshipReflection $reflection)
     {
         if (!$reflection->is('BelongsTo'))
             throw new InvalidArgument($reflection);
 
-        $counterpart = static::findOrFailCounterpart($reflection);
+        $counterpart = $this->findOrFailCounterpart($reflection);
 
         if ($counterpart->is('HasOne'))
-            return static::makeOneToOneOrMany(OneToOne::class, $reflection);
+            return $this->makeOneToOneOrMany(OneToOne::class, $reflection);
         else
-            return static::makeOneToOneOrMany(OneToMany::class, $reflection);
+            return $this->makeOneToOneOrMany(OneToMany::class, $reflection);
     }
 
     /**
@@ -85,7 +82,7 @@ class RelationConverter
      * @return RelationshipReflection
      * @throws \ReflectionException
      */
-    protected static function findOrFailCounterpart(RelationshipReflection $reflection){
+    protected function findOrFailCounterpart(RelationshipReflection $reflection){
         $counterpart = $reflection->counterpart();
 
         if (!$counterpart)
@@ -103,11 +100,32 @@ class RelationConverter
      * @internal param $connectingColumn
      * @return mixed
      */
-    protected static function makeOneToOneOrMany($class, RelationshipReflection $reflection)
+    protected function makeOneToOneOrMany($class, RelationshipReflection $reflection)
     {
         return Relation::makeByType($class)
-            ->from($reflection->tableName())
-            ->to($reflection->relatedTableName())
+            ->from($reflection->tableName(), $reflection->name())
+            ->to($reflection->relatedTableName(), $reflection->counterpartName())
             ->connectVia($reflection->connectingColumn(), $reflection->connectingTable());
+    }
+
+    /**
+     * @param RelationshipReflection $reflection
+     * @return $this
+     */
+    protected function makeManyToMany(RelationshipReflection $reflection){
+        return ManyToMany::make()
+            ->from($reflection->tableName(), $reflection->name())
+            ->to($reflection->relatedTableName(), $reflection->counterpartName())
+            ->setPivot(
+                $reflection->pivotTable(),
+                $reflection->instance()->getForeignKey(),
+                $reflection->instance()->getOtherKey()
+            );
+    }
+
+
+    public function run($toConvert)
+    {
+        return $this->fromReflectionToRelation($toConvert);
     }
 }

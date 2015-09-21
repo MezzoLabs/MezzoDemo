@@ -50,22 +50,13 @@ class RelationshipReflections extends Collection{
 
 
         if($counterparts->count() > 1) {
-            echo $check->qualifiedName() . ': ' . $check->qualifiedLocalColumn() . ' -> ' . $check->qualifiedRelatedColumn() . '<br/><br/>';
-
-            /** @var RelationshipReflection $counterpart */
-            foreach($counterparts as $counterpart){
-                echo $counterpart->qualifiedName() . ': ' . $counterpart->qualifiedLocalColumn() . ' -> ' . $counterpart->qualifiedRelatedColumn() . '<br/>';
-            }
-
-            throw new \ReflectionException('Found more than one counterpart for one relationship: ' .
+           throw new \ReflectionException('Found more than one counterpart for one relationship: ' .
                                             $check->qualifiedName());
         }
 
         if($counterparts->count() == 0){
             return null;
         }
-
-        debug('found ' . $counterparts->first()->qualifiedName(). ' '. $counterparts->first()->type());
 
         return $counterparts->first();
     }

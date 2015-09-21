@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationConverter;
+use MezzoLabs\Mezzo\Core\Schema\Converters\RelationConverter;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation as MezzoRelation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Database\Column;
@@ -58,6 +58,11 @@ class RelationshipReflection
      */
     protected $relationSchema;
 
+    /**
+     * @var RelationConverter
+     */
+    protected $relationConverter;
+
 
     /**
      * @param ModelReflection $modelReflection
@@ -70,6 +75,8 @@ class RelationshipReflection
 
         $this->instance = $this->makeInstance();
         $this->type = $this->instanceReflection()->getShortName();
+
+        $this->relationConverter = app()->make(RelationConverter::class);
 
     }
 
@@ -169,6 +176,18 @@ class RelationshipReflection
      */
     public function relatedTableName(){
         return $this->instance()->getRelated()->getTable();
+    }
+
+    /**
+     * Returns the pivot table if the relation is many to many (belongsToMany)
+     *
+     * @return string
+     */
+    public function pivotTable(){
+        if(!$this->is('BelongsToMany'))
+            return "";
+
+        return $this->instance()->getTable();
     }
 
     /**
@@ -285,13 +304,27 @@ class RelationshipReflection
      * @throws MezzoException
      */
     public function isCounterpart(RelationshipReflection $check){
-
-
         $correctTables = $check->tableName() == $this->relatedTableName();
         $correctColumns = $check->localColumn() == $this->relatedColumn() &&
                             $check->relatedColumn() == $this->localColumn();
 
+        if($this->is('BelongsToMany'))
+            return $correctTables && $correctColumns && $check->pivotTable() == $this->pivotTable();
+
         return $correctTables && $correctColumns;
+    }
+
+    /**
+     * Returns the name of the counterpart relationship reflection.
+     * If no counterpart is set up in the related model class it will return an empty string.
+     *
+     * @return string
+     */
+    public function counterpartName()
+    {
+        if(!$this->counterpart()) return "";
+
+        return $this->counterpart()->name();
     }
 
     /**
@@ -319,11 +352,11 @@ class RelationshipReflection
      * Produces a relation schema.
      *
      * @throws MezzoException
-     * @throws \Reflectionxception
+     * @throws \ReflectionException
      * @return Relation
      */
     protected function makeRelation(){
-        return RelationConverter::fromReflectionToRelation($this);
+        return $this->relationConverter->run($this);
     }
 
 
