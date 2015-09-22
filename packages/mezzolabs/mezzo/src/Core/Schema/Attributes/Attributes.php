@@ -41,10 +41,10 @@ class Attributes extends Collection{
     }
 
     public function addAttribute(Attribute $attribute){
-        if(get_class($attribute) == AtomicAttribute::class)
+        if($attribute instanceof AtomicAttribute)
             $this->addAtomic($attribute);
 
-        if(get_class($attribute) == RelationAttribute::class)
+        if($attribute instanceof RelationAttribute)
             $this->addRelation($attribute);
     }
 

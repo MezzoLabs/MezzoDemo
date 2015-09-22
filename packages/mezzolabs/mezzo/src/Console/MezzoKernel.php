@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Console;
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Console\Commands\MezzoCommand;
 use MezzoLabs\Mezzo\Core\Mezzo;
+use MezzoLabs\Mezzo\MezzoServiceProvider;
 
 class MezzoKernel {
     /**
@@ -13,8 +14,8 @@ class MezzoKernel {
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\Inspire::class,
     ];
+
     /**
      * @var ServiceProvider
      */
@@ -25,20 +26,26 @@ class MezzoKernel {
      */
     protected $mezzo;
 
-    public function __construct(Mezzo $mezzo, ServiceProvider $mezzoServiceProvider){
+    public function __construct(Mezzo $mezzo){
 
-        $this->mezzoServiceProvider = $mezzoServiceProvider;
+        $this->mezzoServiceProvider = $mezzo->serviceProvider;
         $this->mezzo = $mezzo;
     }
 
-    public function registerCommands(){
-        foreach($this->commands as $command){
+    public function registerCoreCommands(){
+        $this->registerCommands($this->commands);
+    }
+
+    public function registerCommands($commands = []){
+        foreach($commands as $command){
             $this->registerCommand($this->makeCommand($command));
         }
     }
 
     protected function registerCommand(MezzoCommand $command){
         $this->mezzo->app()->instance($command->abstractName(), $command);
+
+        $command->setMezzo($this->mezzo);
 
         $this->mezzoServiceProvider->commands($command->abstractName());
     }

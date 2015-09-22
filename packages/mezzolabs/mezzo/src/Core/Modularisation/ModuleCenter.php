@@ -6,10 +6,11 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
-use MezzoLabs\Mezzo\Core\Modularisation\Generic\GeneralModule;
+use MezzoLabs\Mezzo\Core\Modularisation\Generic\AbstractGeneralModule;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
+use MezzoLabs\Mezzo\Exceptions\InvalidArgument;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeAssociated;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeFound;
@@ -60,15 +61,27 @@ class ModuleCenter
      * Add a new module to the Mezzo module center.
      *
      * @param String $moduleProviderClass
+     * @param string $slug
      * @throws MezzoException
+     * @return \MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider
      */
-    public function register($moduleProviderClass){
+    public function register($moduleProviderClass, $slug = ""){
+        $moduleProvider = false;
+
+        if(is_object($moduleProviderClass)){
+            $moduleProvider = $moduleProviderClass;
+            $moduleProviderClass = get_class($moduleProviderClass);
+        }
+
         if($this->isRegistered($moduleProviderClass))
             return false;
 
-        $moduleProvider = $this->makeModuleProvider($moduleProviderClass);
+        if(!$moduleProvider)
+            $moduleProvider = $this->makeModuleProvider($moduleProviderClass);
 
-        $slug = $moduleProvider->slug();
+        if(empty($slug))
+            $slug = $moduleProvider->slug();
+
         if($this->slugAliases->has($slug))
             throw new MezzoException('Module with the slug ' . $slug . ' is already registered. ' .
                 'Conflict between ' . $moduleProviderClass . ' and ' . $this->slugAliases->get($slug));
@@ -79,6 +92,19 @@ class ModuleCenter
         $this->mezzo->app()->instance(get_class($moduleProvider), $moduleProvider);
 
         $this->put($moduleProvider);
+
+        return $moduleProvider;
+    }
+
+    /**
+     * Register the module that catches all the models without any module association
+     *
+     * @param AbstractGeneralModule $generalModule
+     * @throws MezzoException
+     * @internal param string $generalModuleClass
+     */
+    public function registerGeneralModule(AbstractGeneralModule $generalModule){
+        $this->register($generalModule, 'general');
     }
 
     /**
@@ -101,7 +127,7 @@ class ModuleCenter
      * @param ModuleProvider $moduleProvider
      */
     protected function put(ModuleProvider $moduleProvider){
-        $this->modules->put($moduleProvider->identifier(), $moduleProvider);
+        $this->modules->put($moduleProvider->qualifiedName(), $moduleProvider);
     }
 
     /**
@@ -114,19 +140,12 @@ class ModuleCenter
         return $this->modules->has($moduleProviderClass);
     }
 
-    /**
-     * Register the module that catches all the models without any module association
-     *
-     * @param GeneralModule $module
-     */
-    public function registerGeneralModule(GeneralModule $module){
-        $this->modules->put('general', $module);
-    }
+
 
     /**
      * Get the general module
      *
-     * @return GeneralModule
+     * @return AbstractGeneralModule
      */
     public function generalModule(){
         return $this->getModule('general');
@@ -159,7 +178,7 @@ class ModuleCenter
 
 
     /**
-     * @return ModuleProvider[]
+     * @return Collection
      */
     public function modules(){
         return $this->modules;

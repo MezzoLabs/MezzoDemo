@@ -10,6 +10,7 @@
 namespace MezzoLabs\Mezzo\Core\Traits;
 
 
+use MezzoLabs\Mezzo\Console\MezzoKernel;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Helpers\Path;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
@@ -34,6 +35,15 @@ trait CanMakeInstances {
      */
     public function moduleCenter(){
         return $this->make(ModuleCenter::class);
+    }
+
+    /**
+     * Returns the main Mezzo Console Kernel instance
+     *
+     * @return MezzoKernel
+     */
+    public function kernel(){
+        return $this->make(MezzoKernel::class);
     }
 
     /**

@@ -12,7 +12,7 @@ class Inspire extends Command
      *
      * @var string
      */
-    protected $signature = 'inspire';
+    protected $signature = 'mezzo:inspire';
 
     /**
      * The console command description.

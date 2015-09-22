@@ -20,9 +20,13 @@ Route::get('/', function () {
 });
 
 Route::get('debug/models', function () {
-    $array = mezzo()->reflector()->relationsSchema()->connectingColumns();
+    $relations = mezzo()->reflector()->relationsSchema();
 
-    dd(Reflector::getReflection('tutorial')->table()->columns()->readFromDatabase());
+    foreach(Reflector::getReflection('tutorial')->table()->allColumns() as $column){
+        mezzo_dump($column);
+    }
+
+    return "hi";
 
     //$moduleCenter = mezzo()->moduleCenter();
 

@@ -6,12 +6,12 @@ namespace MezzoLabs\Mezzo\Core\Database;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Database\Column;
+use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflections;
-use MezzoLabs\Mezzo\Core\Database\Columns;
+use MezzoLabs\Mezzo\Core\Database\DatabaseColumns;
 
 class Table {
 
@@ -33,7 +33,7 @@ class Table {
     private $model;
 
     /**
-     * @var Columns
+     * @var DatabaseColumns
      */
     protected $columns;
 
@@ -55,7 +55,7 @@ class Table {
 
         $this->reflection = Reflector::getReflection($model);
         $this->instance = $this->reflection->instance();
-        $this->columns = new Columns($this);
+        $this->columns = new DatabaseColumns($this);
 
     }
 
@@ -67,7 +67,7 @@ class Table {
     }
 
     /**
-     * @return Columns
+     * @return DatabaseColumns
      */
     public function columns(){
         if($this->columns->all()->count() == 0){
@@ -78,10 +78,10 @@ class Table {
     }
 
     /**
-     * @param Column $column
+     * @param DatabaseColumn $column
      * @return string
      */
-    public function qualifiedColumnName(Column $column){
+    public function qualifiedColumnName(DatabaseColumn $column){
         return $this->name() . '.' . $column->name();
     }
 
@@ -135,5 +135,15 @@ class Table {
 
         return $this->connectingColumns;
     }
+
+    /**
+     * @return ModelReflection
+     */
+    public function modelReflection()
+    {
+        return $this->reflection;
+    }
+
+
 
 } 

@@ -1,8 +1,9 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Console\Commands;
+namespace MezzoLabs\Mezzo\Modules\Generator\Commands;
 
 use Illuminate\Console\Command;
+use MezzoLabs\Mezzo\Console\Commands\MezzoCommand;
 
 class GenerateForeignFields extends MezzoCommand
 {
@@ -18,12 +19,12 @@ class GenerateForeignFields extends MezzoCommand
      *
      * @var string
      */
-    protected $description = 'Command description.';
+    protected $description = 'Generate the foreign fields migrations based on the model code.';
 
     /**
      * Create a new command instance.
      *
-     * @return void
+     * @return \MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields
      */
     public function __construct()
     {
@@ -37,6 +38,7 @@ class GenerateForeignFields extends MezzoCommand
      */
     public function handle()
     {
-        //
+
+        $this->mezzo->reflector()->relationsSchema()->connectingColumns();
     }
 }

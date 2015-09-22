@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
+use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgument;
 
 abstract class Relation
@@ -33,6 +34,11 @@ abstract class Relation
      * @var Collection
      */
     protected $connectingColumns;
+
+    /**
+     * @var Collection
+     */
+    protected $columns;
 
 
     public function __construct()
@@ -76,11 +82,23 @@ abstract class Relation
 
     abstract public function qualifiedName();
 
-    abstract protected function findConnectingColumns();
+    abstract protected function makeColumnsCollection();
 
+    /**
+     * @return Collection
+     */
     public function connectingColumns(){
-        if(!$this->connectingColumns) $this->connectingColumns  = $this->findConnectingColumns();
+        if(!$this->connectingColumns) $this->connectingColumns  = $this->columns()->connectingColumns();
         return $this->connectingColumns;
+    }
+
+    /**
+     * @return Columns
+     */
+    public function columns()
+    {
+        if(!$this->columns) $this->columns  = $this->makeColumnsCollection();
+        return $this->columns;
     }
 
     /**
@@ -156,4 +174,5 @@ abstract class Relation
 
 
 
-} 
+
+}

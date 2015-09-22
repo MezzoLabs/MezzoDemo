@@ -79,13 +79,6 @@ class Mezzo{
     }
 
     /**
-     * Bootstrap Mezzo
-     */
-    public function bootstrap(){
-        if($this->booted) return false;
-    }
-
-    /**
      * Run the boot services that we need at the time the Mezzo provider is registered
      */
     public function onProviderRegistered(){

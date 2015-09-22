@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Debug\Dumper;
 
 /**
  * Get the Mezzo core directly
@@ -25,4 +26,26 @@ function mezzo_path(){
  */
 function mezzo_source_path(){
     return mezzo_path() . '/src/';
+}
+
+if (! function_exists('mezzo_dump')) {
+    /**
+     * Dump the passed variables.
+     *
+     * @param $toDump
+     * @param string $title
+     * @internal param $mixed
+     * @return void
+     */
+    function mezzo_dump($toDump, $title = "")
+    {
+        if(!empty($title))
+            $title = "<b>$title</b> ";
+
+        $title .= '<small>(' . debug_backtrace()[0]['file'] . ':' . debug_backtrace()[0]['line'] . ')</small>';
+
+        echo $title . ':<br/>';
+
+        (new Dumper())->dump($toDump);
+    }
 }

@@ -5,13 +5,13 @@ namespace MezzoLabs\Mezzo\Core\Database;
 
 
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Database\Column;
+use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
 use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Database\Table;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 
-class Columns {
+class DatabaseColumns {
     /**
      * @var Collection
      */
@@ -66,7 +66,7 @@ class Columns {
 
         $this->columns = new Collection();
         foreach($array as $doctrineColumn){
-            $this->addColumn($doctrineColumn->getName(), Column::fromDoctrine($doctrineColumn, $this->table));
+            $this->addColumn($doctrineColumn->getName(), DatabaseColumn::fromDoctrine($doctrineColumn, $this->table));
         }
 
         return $this->columns;
@@ -78,7 +78,7 @@ class Columns {
      * @return Collection
      */
     public function atomic(){
-        return $this->all()->filter(function(Column $column){
+        return $this->all()->filter(function(DatabaseColumn $column){
             return !$column->isForeignKey();
         });
     }
@@ -89,7 +89,7 @@ class Columns {
      * @return Collection
      */
     public function foreignKeys(){
-        return $this->all()->filter(function(Column $column){
+        return $this->all()->filter(function(DatabaseColumn $column){
             return $column->isForeignKey();
         });
     }

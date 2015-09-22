@@ -5,7 +5,9 @@ namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Database\Column;
+use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
+use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
+use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
 
 class ManyToMany extends Relation
 {
@@ -26,8 +28,8 @@ class ManyToMany extends Relation
     {
         $this->pivotTable = $tableName;
 
-        $this->connectingColumn = Column::disqualifyName($columnFrom);
-        $this->connectingColumn2 = Column::disqualifyName($columnTo);
+        $this->connectingColumn = DatabaseColumn::disqualifyName($columnFrom);
+        $this->connectingColumn2 = DatabaseColumn::disqualifyName($columnTo);
         return $this;
     }
 
@@ -44,14 +46,15 @@ class ManyToMany extends Relation
         return parent::makeByType(static::class);
     }
 
-    /**
-     * @return Collection
-     */
-    protected function findConnectingColumns()
+    protected function makeColumnsCollection()
     {
-        return new Collection([
-            $this->pivotTable . '.' . $this->connectingColumn,
-            $this->pivotTable . '.' . $this->connectingColumn2
-        ]);
+        $columns = new Columns();
+
+        $columns->addAtomicColumn('id', 'integer', $this->fromTable);
+        $columns->addAtomicColumn('id', 'integer', $this->toTable);
+        $columns->addConnectingColumn($this->connectingColumn, 'integer', $this->pivotTable, $this);
+        $columns->addConnectingColumn($this->connectingColumn2, 'integer', $this->pivotTable, $this);
+
+        return $columns;
     }
 }

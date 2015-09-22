@@ -5,6 +5,8 @@ namespace MezzoLabs\Mezzo\Core\Schema;
 
 
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
+use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
 
 class RelationsSchema {
@@ -14,9 +16,14 @@ class RelationsSchema {
     protected  $relations;
 
     /**
-     * @var Collection
+     * @var Columns
      */
     protected $connectingColumns;
+
+    /**
+     * @var Columns
+     */
+    protected $columns;
 
     /**
      * Creates a new relation schema for a couple of relations.
@@ -27,6 +34,7 @@ class RelationsSchema {
         $this->relations = new Collection();
 
         $this->connectingColumns = new Collection();
+        $this->columns = new Collection();
 
         foreach($relations as $relation){
             $this->addRelation($relation);
@@ -40,9 +48,28 @@ class RelationsSchema {
      * @return $this
      */
     public function addRelation(Relation $relation){
+        $this->columns = $this->columns->merge($relation->columns());
         $this->connectingColumns = $this->connectingColumns->merge($relation->connectingColumns());
 
         return $this->relations->put($relation->qualifiedName(), $relation);
+    }
+
+    /**
+     * @return Columns
+     */
+    public function columns()
+    {
+        return $this->columns;
+    }
+
+    /**
+     * Get a column via the qualified name.
+     *
+     * @param $name
+     * @return mixed
+     */
+    public function column($name){
+        return $this->columns->get($name);
     }
 
     /**
@@ -53,12 +80,18 @@ class RelationsSchema {
      */
     public function connectingColumns($tableName = "")
     {
-        if(empty($table)) return $this->connectingColumns;
+        if(empty($tableName))
+            return $this->connectingColumns;
 
-        return $this->connectingColumns->filter(function($columnName) use ($tableName){
-            return strstr($columnName, $tableName . '.');
+        return $this->connectingColumns->filter(function(ConnectingColumn $column) use ($tableName){
+            return $column->table() == $tableName;
         });
     }
 
+    public function findByConnectingColumn($columnName){
+        foreach($this->connectingColumns() as $connectingColumn){
+
+        }
+    }
 
 }

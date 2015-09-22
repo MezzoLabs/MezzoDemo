@@ -12,7 +12,6 @@ use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
 
 class SampleModule extends ModuleProvider{
 
-    protected $isCoreModule = true;
 
     protected $models = [
         Tutorial::class,

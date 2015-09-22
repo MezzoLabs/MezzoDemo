@@ -4,12 +4,11 @@
 namespace MezzoLabs\Mezzo\Modules\General;
 
 
-use MezzoLabs\Mezzo\Core\Modularisation\Generic\GeneralModule as GenericGeneralModule;
 
-class GeneralModule extends GenericGeneralModule
+use MezzoLabs\Mezzo\Core\Modularisation\Generic\AbstractGeneralModule;
+
+class GeneralModule extends AbstractGeneralModule
 {
-    protected $isCoreModule = true;
-
     protected $models = [];
 
     /**

@@ -19,6 +19,11 @@ class ModelReflections extends Collection
      */
     public $aliases;
 
+    /**
+     * @var Collection
+     */
+    public $tableNames;
+
 
 
     /**
@@ -28,6 +33,7 @@ class ModelReflections extends Collection
     public function __construct($classes = [])
     {
         $this->aliases = new Collection();
+        $this->tableNames = new Collection();
 
         if ((is_array($classes) || is_a($classes, IlluminateCollection::class))
             && count($classes) > 0) {
@@ -85,7 +91,9 @@ class ModelReflections extends Collection
      */
     protected function addAlias(ModelReflection $reflection)
     {
-        $this->aliases->put(strtolower($reflection->shortName()), $reflection->className());
+        $this->aliases->put(strtolower($reflection->shortName()),       $reflection->className());
+
+        $this->tableNames->put(strtolower($reflection->instance()->getTable()), $reflection);
     }
 
     /**
@@ -144,6 +152,14 @@ class ModelReflections extends Collection
             return 'App\\' . ucfirst($model);
 
         throw new InvalidModel($model);
+    }
+
+    /**
+     * @param string $tableName
+     * @return ModelReflection
+     */
+    public function byTable($tableName){
+       return $this->tableNames->get($tableName);
     }
 
 

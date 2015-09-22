@@ -9,9 +9,13 @@ use App\User;
 use Illuminate\Support\Facades\App;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
+use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 
 class GeneratorModule extends ModuleProvider{
-    protected $isCoreModule = true;
+
+    protected $commands = [
+        GenerateForeignFields::class
+    ];
 
     /**
      * Perform post-registration booting of services.
@@ -31,6 +35,8 @@ class GeneratorModule extends ModuleProvider{
      */
     public function register()
     {
+        //$this->loadCommands();
+
     }
 
     /**

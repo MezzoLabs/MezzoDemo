@@ -20,7 +20,7 @@ class RegisterConfiguredModuleProviders implements Bootstrapper
         $providerClasses = $mezzo->config()->get('moduleProviders');
 
         foreach ($providerClasses as $providerClass) {
-            $mezzo->moduleCenter()->register($providerClass);
+            $serviceProvider = $mezzo->moduleCenter()->register($providerClass);
         }
     }
 }

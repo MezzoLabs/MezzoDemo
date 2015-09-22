@@ -6,8 +6,11 @@ namespace MezzoLabs\Mezzo\Core\Database;
 
 use Doctrine\DBAL\Schema\Column as DoctrineColumn;
 use Doctrine\DBAL\Types\Type;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
+use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
 
-class Column {
+class DatabaseColumn
+{
 
     /**
      * @var Type
@@ -17,7 +20,7 @@ class Column {
     /**
      * @var string
      */
-    protected  $name;
+    protected $name;
 
     /**
      * @var DoctrineColumn
@@ -32,7 +35,13 @@ class Column {
     /**
      * @var Table
      */
-    protected  $table;
+    protected $table;
+
+    /**
+     * @var ConnectingColumn
+     */
+    protected $connectingColumn = false;
+
 
     public function __construct($name, $type, Table $table)
     {
@@ -78,7 +87,8 @@ class Column {
      *
      * @return string
      */
-    public function qualifiedName(){
+    public function qualifiedName()
+    {
         return $this->table->name() . '.' . $this->name();
     }
 
@@ -88,8 +98,9 @@ class Column {
      * @param $columnName
      * @return mixed
      */
-    public static function disqualifyName($columnName){
-        if(strstr($columnName, '.'))
+    public static function disqualifyName($columnName)
+    {
+        if (strstr($columnName, '.'))
             return explode('.', $columnName)[1];
 
         return $columnName;
@@ -98,25 +109,45 @@ class Column {
     /**
      * @return bool
      */
-    public function isForeignKey(){
-        if($this->isForeignKey === null)
-            $this->isForeignKey = in_array($this->qualifiedName(), $this->table->connectingColumns()->toArray());
-
-        return $this->isForeignKey;
+    public function isForeignKey()
+    {
+        return $this->connectingColumn() !== null;
     }
+
+    /**
+     * Get the according connecting column from the relations schema.
+     * Returns null if this column is a simple column.
+     *
+     * @return ConnectingColumn|mixed
+     */
+    public function connectingColumn(){
+        if(!$this->connectingColumn === false) {
+            $relationsSchema = mezzo()->reflector()->relationsSchema();
+            $this->connectingColumn = $relationsSchema->connectingColumns($this->table->name())
+                                        ->get($this->qualifiedName());
+        }
+
+        return $this->connectingColumn;
+
+    }
+
+    public function schema(){
+        $schema = mezzo()->reflector()->relationsSchema()->columns();
+    }
+
 
     /**
      * Create a column from the imported dbal column.
      *
      * @param DoctrineColumn $column
      * @param Table $table
-     * @return Column
+     * @return DatabaseColumn
      */
     public static function fromDoctrine(DoctrineColumn $column, Table $table)
     {
         $type = strtolower(str_replace('Type', '', class_basename($column->getType())));
 
-        $newColumn = new Column($column->getName(), $type, $table);
+        $newColumn = new DatabaseColumn($column->getName(), $type, $table);
         $newColumn->setDoctrineColumn($column);
 
         return $newColumn;

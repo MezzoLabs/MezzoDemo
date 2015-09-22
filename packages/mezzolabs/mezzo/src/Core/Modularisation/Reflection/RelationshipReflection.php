@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use MezzoLabs\Mezzo\Core\Schema\Converters\RelationConverter;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation as MezzoRelation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Database\Column;
+use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToOne;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOne;
@@ -278,7 +278,7 @@ class RelationshipReflection
      * @return string
      */
     private function disqualifyColumn($columnName){
-        return Column::disqualifyName($columnName);
+        return DatabaseColumn::disqualifyName($columnName);
     }
 
     /**
@@ -343,10 +343,20 @@ class RelationshipReflection
      * @return MezzoRelation
      */
     public function relationSchema(){
-        if(!$this->relationSchema)
-            $this->relationSchema = $this->schemaConverter->run($this);
+        if(!$this->relationSchema) {
+            $this->relationSchema = $this->makeRelationSchema();
+        }
 
         return $this->relationSchema;
+    }
+
+    /**
+     * @return MezzoRelation
+     */
+    protected function makeRelationSchema(){
+        $schema = $this->schemaConverter->run($this);
+
+        return $schema;
     }
 
 }

@@ -16,6 +16,6 @@ class ModelIsAlreadyAssociated extends \Exception{
      */
     public function  __construct(ModelReflection $model, ModuleProvider $module){
         $this->message = "The model " . $model->className() . ' is already associated with the module ' .
-            $model->module()->identifier() . '. Cannot associate with ' . $module->identifier() . '. ';
+            $model->module()->qualifiedName() . '. Cannot associate with ' . $module->qualifiedName() . '. ';
     }
 } 

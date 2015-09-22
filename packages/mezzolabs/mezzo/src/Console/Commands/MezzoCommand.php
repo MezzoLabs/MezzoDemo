@@ -3,8 +3,14 @@
 namespace MezzoLabs\Mezzo\Console\Commands;
 
 use Illuminate\Console\Command;
+use MezzoLabs\Mezzo\Core\Mezzo;
 
 abstract class MezzoCommand extends Command{
+
+    /**
+     * @var Mezzo
+     */
+    protected $mezzo;
 
     public function abstractName(){
         $signature = $this->signature;
@@ -14,5 +20,22 @@ abstract class MezzoCommand extends Command{
 
         return $signature;
     }
+
+    /**
+     * @return Mezzo
+     */
+    public function getMezzo()
+    {
+        return $this->mezzo;
+    }
+
+    /**
+     * @param Mezzo $mezzo
+     */
+    public function setMezzo(Mezzo $mezzo)
+    {
+        $this->mezzo = $mezzo;
+    }
+
 
 } 

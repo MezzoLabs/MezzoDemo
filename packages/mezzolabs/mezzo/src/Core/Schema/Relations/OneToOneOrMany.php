@@ -4,6 +4,8 @@ namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
+use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
 
 abstract class OneToOneOrMany extends Relation{
     /**
@@ -35,9 +37,18 @@ abstract class OneToOneOrMany extends Relation{
         return $this->connectingTable . '.' . $this->connectingColumn;
     }
 
-    protected function findConnectingColumns()
+    /**
+     * @return Columns
+     */
+    protected function makeColumnsCollection()
     {
-        return new Collection([$this->connectingTable .'.' . $this->connectingColumn]);
+        $columns = new Columns();
+
+        $columns->addAtomicColumn('id', 'integer', $this->fromTable);
+        $columns->addAtomicColumn('id', 'integer', $this->toTable);
+        $columns->addConnectingColumn($this->connectingColumn, 'integer', $this->connectingTable, $this);
+
+        return $columns;
     }
 
 
