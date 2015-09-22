@@ -19,7 +19,7 @@ class Columns extends Collection
         return $this->addColumn(new AtomicColumn($name, $type, $table));
     }
 
-    public function addConnectingColumn($name, $table, $type, Relation $relation)
+    public function addConnectingColumn($name, $type, $table, Relation $relation)
     {
         return $this->addColumn(new ConnectingColumn($name, $type, $table, $relation));
     }

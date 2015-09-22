@@ -84,7 +84,7 @@ class RelationsSchema {
             return $this->connectingColumns;
 
         return $this->connectingColumns->filter(function(ConnectingColumn $column) use ($tableName){
-            return $column->table() == $tableName;
+            return $column->table() === $tableName;
         });
     }
 

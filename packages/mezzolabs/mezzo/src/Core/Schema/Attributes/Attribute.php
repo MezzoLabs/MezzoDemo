@@ -45,9 +45,6 @@ class Attribute {
         return array_filter($attributes);
     }
 
-    public function content(){
-        return 'nope';
-    }
 
     /**
      * @return string

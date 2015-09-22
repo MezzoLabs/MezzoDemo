@@ -121,7 +121,7 @@ class DatabaseColumn
      * @return ConnectingColumn|mixed
      */
     public function connectingColumn(){
-        if(!$this->connectingColumn === false) {
+        if($this->connectingColumn === false) {
             $relationsSchema = mezzo()->reflector()->relationsSchema();
             $this->connectingColumn = $relationsSchema->connectingColumns($this->table->name())
                                         ->get($this->qualifiedName());
@@ -129,10 +129,6 @@ class DatabaseColumn
 
         return $this->connectingColumn;
 
-    }
-
-    public function schema(){
-        $schema = mezzo()->reflector()->relationsSchema()->columns();
     }
 
 

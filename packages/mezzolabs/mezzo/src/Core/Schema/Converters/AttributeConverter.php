@@ -6,15 +6,13 @@ namespace MezzoLabs\Mezzo\Core\Schema\Converters;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 
 class AttributeConverter extends Converter{
 
     public function fromDatabaseColumn(DatabaseColumn $column){
 
 
-    }
-
-    protected function createRelationAttribute(){
 
     }
 

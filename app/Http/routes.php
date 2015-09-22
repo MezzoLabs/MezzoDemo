@@ -12,6 +12,7 @@
 */
 
 
+use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 
@@ -22,8 +23,11 @@ Route::get('/', function () {
 Route::get('debug/models', function () {
     $relations = mezzo()->reflector()->relationsSchema();
 
+    mezzo_dump($relations->connectingColumns('tutorials'));
+
+    /** @var DatabaseColumn $column */
     foreach(Reflector::getReflection('tutorial')->table()->allColumns() as $column){
-        mezzo_dump($column);
+        mezzo_dump($column->connectingColumn());
     }
 
     return "hi";
