@@ -74,5 +74,23 @@ abstract class InputType {
         return $this->htmlType() == "input";
     }
 
+    /**
+     * @param $type
+     * @return Relation
+     */
+    public static function fromType($type){
+        $class  = TextInput::class;
+
+        //@TODO: Add more, move to config
+        switch($type){
+            case 'text':
+                $class = TextArea::class; break;
+            case 'integer':
+                $class = NumberInput::class; break;
+        }
+
+        return new $class;
+    }
+
 
 } 

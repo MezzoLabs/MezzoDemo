@@ -10,6 +10,6 @@
 namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
 
-class TextArea extends Text{
+class TextArea extends TextInput{
     protected $htmlTag = "textarea";
 } 

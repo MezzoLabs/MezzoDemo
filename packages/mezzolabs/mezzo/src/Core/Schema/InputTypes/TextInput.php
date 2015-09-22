@@ -1,7 +1,7 @@
 <?php
 namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
-abstract class Text extends InputType
+class TextInput extends SimpleInput
 {
     protected $htmlTag = "input:text";
 }

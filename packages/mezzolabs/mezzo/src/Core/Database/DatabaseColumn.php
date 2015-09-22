@@ -148,4 +148,12 @@ class DatabaseColumn
 
         return $newColumn;
     }
+
+    /**
+     * @return Table
+     */
+    public function table()
+    {
+        return $this->table;
+    }
 }
