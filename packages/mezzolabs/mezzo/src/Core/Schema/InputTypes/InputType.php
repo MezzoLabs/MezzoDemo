@@ -12,7 +12,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 
-abstract class Type {
+abstract class InputType {
     /**
      * @var \Doctrine\DBAL\Types\Type
      *

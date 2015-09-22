@@ -3,7 +3,7 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 
 
-use MezzoLabs\Mezzo\Core\Schema\InputTypes\Type;
+use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 
 class Attribute {
     /**
@@ -11,7 +11,7 @@ class Attribute {
      */
     protected  $name;
     /**
-     * @var Type
+     * @var InputType
      */
     protected $type;
 
@@ -20,16 +20,6 @@ class Attribute {
      */
     protected $options;
 
-    /**
-     * @param $name
-     * @param \MezzoLabs\Mezzo\Core\Schema\InputTypes\Type $inputType
-     * @param \ArrayAccess $options
-     */
-    public function __construct($name, Type $inputType, \ArrayAccess $options){
-        $this->name = $name;
-        $this->type = $inputType;
-        $this->options = $options;
-    }
 
     /**
      * Get the html attributes as array.

@@ -41,11 +41,6 @@ abstract class Relation
     protected $columns;
 
 
-    public function __construct()
-    {
-
-    }
-
     public function from($fromTable, $relationNaming = "")
     {
         $this->setTable('from', $fromTable, $relationNaming);

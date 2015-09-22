@@ -38,6 +38,14 @@ abstract class OneToOneOrMany extends Relation{
     }
 
     /**
+     * @return string
+     */
+    public function connectingTable()
+    {
+        return $this->connectingTable;
+    }
+
+    /**
      * @return Columns
      */
     protected function makeColumnsCollection()
