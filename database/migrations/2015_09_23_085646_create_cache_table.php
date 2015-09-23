@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTagsTable extends Migration
+class CreateCacheTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,10 @@ class CreateTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tags', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name')->length(50);
-            $table->string('title')->length(250);
+        Schema::create('cache', function (Blueprint $table) {
+            $table->string('key')->unique();
+            $table->text('value');
+            $table->integer('expiration');
         });
     }
 
@@ -26,6 +26,6 @@ class CreateTagsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('tags');
+        Schema::drop('cache');
     }
 }

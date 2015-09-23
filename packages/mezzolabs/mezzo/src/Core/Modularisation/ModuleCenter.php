@@ -10,7 +10,7 @@ use MezzoLabs\Mezzo\Core\Modularisation\Generic\AbstractGeneralModule;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
-use MezzoLabs\Mezzo\Exceptions\InvalidArgument;
+use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeAssociated;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeFound;

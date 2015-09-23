@@ -27,11 +27,6 @@ class Reader
     private $connection;
 
     /**
-     * @var Grammar
-     */
-    private $grammar;
-
-    /**
      * @var \Doctrine\DBAL\Schema\AbstractSchemaManager
      */
     private $schemaManager;
@@ -55,15 +50,41 @@ class Reader
     /**
      * Get the column listing for a given table.
      *
-     * @param  string $table
+     * @param Table|string $table
      * @return array
      */
-    public function getColumns(Table $table)
+    public function getColumns($table)
     {
+        if($table instanceof Table)
+            $table = $table->name();
+
         return Singleton::get(
-            'database.columns.' . $table->name(),
+            'database.columns.' . $table,
             function () use ($table) {
-                return $this->schemaManager->listTableColumns($table->name());
+                return $this->schemaManager->listTableColumns($table);
             });
+    }
+
+    /**
+     * Checks if the given column is migrated.
+     *
+     * @param $table string
+     * @param $column string
+     * @return bool
+     */
+    public function columnIsPersisted($column, $table){
+        $columns = $this->getColumns($table);
+
+        return isset($columns[$column]);
+    }
+
+    /**
+     * Checks if the given table is migrated.
+     *
+     * @param $table
+     * @return bool
+     */
+    public function tableIsPersisted($table){
+        return !empty($this->getColumns($table));
     }
 } 

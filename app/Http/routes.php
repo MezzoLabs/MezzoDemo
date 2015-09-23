@@ -23,18 +23,10 @@ Route::get('/', function () {
 Route::get('debug/models', function () {
     $relations = mezzo()->reflector()->relationsSchema();
 
-    mezzo_dump($relations->connectingColumns('tutorials'));
-
-    /** @var DatabaseColumn $column */
-    foreach(Reflector::getReflection('tutorial')->table()->allColumns() as $column){
-        mezzo_dump($column->connectingColumn());
-    }
-
-    return "hi";
 
     //$moduleCenter = mezzo()->moduleCenter();
 
-    //dd(mezzo()->module('sample')->model('tutorial')->relationships());
+    mezzo_dump(mezzo()->module('sample')->model('tutorial')->schema());
 
     //return view('debugmodels', ['moduleCenter' => $moduleCenter]);
 });

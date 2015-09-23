@@ -7,11 +7,12 @@ namespace MezzoLabs\Mezzo\Core\Schema;
 
 use Illuminate\Database\Eloquent\Collection;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumns;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 
 class ModelTables extends Collection{
 
     /**
-     * @var DatabaseColumns
+     * @var TableSchema
      */
     protected $main;
 
@@ -31,10 +32,46 @@ class ModelTables extends Collection{
     }
 
     /**
+     * Add an attribute to an existing table schema or create
+     *
+     * @param Attribute $attribute
+     * @return Attributes\Attributes
+     */
+    public function addAttribute(Attribute $attribute)
+    {
+        if(!$attribute->hasTable())
+            return $this->main->addAttribute($attribute);
+
+        $table = $this->getOrCreateTable($attribute->getTable());
+
+        return $table->addAttribute($attribute);
+    }
+
+    /**
      * @param TableSchema $tableSchema
      */
     public function addTable(TableSchema $tableSchema){
         $this->put($tableSchema->name(), $tableSchema);
+    }
+
+    /**
+     * @param $tableName
+     * @return TableSchema
+     */
+    public function getTable($tableName){
+        return $this->get($tableName);
+    }
+
+    /**
+     * @param $tableName
+     * @return TableSchema
+     */
+    public function getOrCreateTable($tableName){
+        if(!$this->has($tableName)){
+            $this->addTable(new TableSchema($tableName));
+        }
+
+        return $this->getTable($tableName);
     }
 
     /**

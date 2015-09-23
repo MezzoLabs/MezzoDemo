@@ -32,6 +32,14 @@ class TableSchema {
     }
 
     /**
+     * @param Attribute $attribute
+     * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
+     */
+    public function addAttribute(Attribute $attribute){
+        return $this->attributes->addAttribute($attribute);
+    }
+
+    /**
      * @return string
      */
     public function name()

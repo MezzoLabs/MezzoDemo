@@ -135,6 +135,16 @@ abstract class ModuleProvider extends ServiceProvider
         return Singleton::reflection(get_class($this));
     }
 
+    /**
+     * @param $shortAbstract
+     * @param $concrete
+     */
+    public function bind($shortAbstract, $concrete){
+        $abstract = 'modules.' . $this->slug() . '.' . $shortAbstract;
+
+        $this->app->bind($abstract, $concrete);
+    }
+
 
     /**
      * Load views from the "views" folder inside the module root.

@@ -18,7 +18,7 @@ class RelationSide {
     /**
      * @var boolean
      */
-    protected $isSingle;
+    protected $hasOneChild;
 
     /**
      * Creates a new relation side. Can tell you if this side of the relation has one or many "children"
@@ -30,6 +30,8 @@ class RelationSide {
 
         $this->relation = $relation;
         $this->table = $table;
+
+        $this->hasOneChild = $this->hasOneChild();
     }
 
     /**
@@ -43,11 +45,11 @@ class RelationSide {
      * @return bool
      */
     public function hasOneChild(){
-        if($this->isSingle === null){
-            $this->isSingle = $this->getType() === "single";
+        if($this->hasOneChild === null){
+            $this->hasOneChild = $this->getType() === "single";
         }
 
-        return $this->isSingle;
+        return $this->hasOneChild;
     }
 
     /**

@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
-use MezzoLabs\Mezzo\Exceptions\InvalidArgument;
+use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
 abstract class Relation
 {
@@ -40,6 +40,11 @@ abstract class Relation
      */
     protected $columns;
 
+    /**
+     * @var array
+     */
+    protected $tables;
+
 
     public function from($fromTable, $relationNaming = "")
     {
@@ -53,7 +58,8 @@ abstract class Relation
         return $this;
     }
 
-    public function isInitialized(){
+    public function isInitialized()
+    {
         return $this->fromTable && $this->fromNaming && $this->toTable && $this->toNaming;
     }
 
@@ -75,16 +81,49 @@ abstract class Relation
         $this->$namingAttribute = $relationNaming;
     }
 
+    /**
+     * @return string
+     */
     abstract public function qualifiedName();
 
+    /**
+     * @return Columns
+     */
     abstract protected function makeColumnsCollection();
+
+    /**
+     * @return array
+     */
+    abstract protected function makeTablesArray();
 
     /**
      * @return Collection
      */
-    public function connectingColumns(){
-        if(!$this->connectingColumns) $this->connectingColumns  = $this->columns()->connectingColumns();
+    public function connectingColumns()
+    {
+        if (!$this->connectingColumns)
+            $this->connectingColumns = $this->columns()->connectingColumns();
+
         return $this->connectingColumns;
+    }
+
+    /**
+     * @return array
+     */
+    public function tables()
+    {
+        if (!$this->tables)
+            $this->tables = $this->makeTablesArray();
+
+        return $this->tables;
+    }
+
+    /**
+     * @param $tableName
+     * @return bool
+     */
+    public function connectsTable($tableName){
+        return in_array($tableName, $this->tables());
     }
 
     /**
@@ -92,7 +131,7 @@ abstract class Relation
      */
     public function columns()
     {
-        if(!$this->columns) $this->columns  = $this->makeColumnsCollection();
+        if (!$this->columns) $this->columns = $this->makeColumnsCollection();
         return $this->columns;
     }
 
@@ -113,6 +152,7 @@ abstract class Relation
      * Convert the type of a relationship to the according class name.
      *
      * @param $type
+     * @throws InvalidArgumentException
      * @return mixed
      */
     protected static function typeToClassName($type)
@@ -127,7 +167,7 @@ abstract class Relation
             case 'manytomany':
                 return ManyToMany::class;
             default:
-                throw new InvalidArgument($type);
+                throw new InvalidArgumentException($type);
         }
     }
 
@@ -136,7 +176,7 @@ abstract class Relation
      */
     public function toNaming()
     {
-        if(!$this->toNaming) return $this->toTable;
+        if (!$this->toNaming) return $this->toTable;
 
         return $this->toNaming;
     }
@@ -154,7 +194,7 @@ abstract class Relation
      */
     public function fromNaming()
     {
-        if(!$this->fromNaming) return $this->fromTable;
+        if (!$this->fromNaming) return $this->fromTable;
 
         return $this->fromNaming;
     }
@@ -166,8 +206,6 @@ abstract class Relation
     {
         return $this->fromTable;
     }
-
-
 
 
 }

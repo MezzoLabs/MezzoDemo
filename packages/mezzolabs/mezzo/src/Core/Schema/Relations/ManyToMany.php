@@ -57,4 +57,16 @@ class ManyToMany extends Relation
 
         return $columns;
     }
+
+    /**
+     * @return array
+     */
+    protected function makeTablesArray()
+    {
+        return [
+            $this->fromTable,
+            $this->toTable,
+            $this->pivotTable
+        ];
+    }
 }

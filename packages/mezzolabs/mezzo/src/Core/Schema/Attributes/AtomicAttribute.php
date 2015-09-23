@@ -4,17 +4,19 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 
 
+use ArrayAccess;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 
 class AtomicAttribute extends Attribute {
     /**
      * @param $name
      * @param \MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType $inputType
-     * @param \ArrayAccess $options
+     * @param array|ArrayAccess $options
      */
-    public function __construct($name, InputType $inputType, \ArrayAccess $options){
+    public function __construct($name, InputType $inputType, $options = []){
         $this->name = $name;
         $this->type = $inputType;
-        $this->options = $options;
+
+        $this->setOptions($options);
     }
 } 

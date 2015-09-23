@@ -10,7 +10,7 @@ use MezzoLabs\Mezzo\Core\Schema\Relations\OneToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOne;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
 use MezzoLabs\Mezzo\Core\Traits\IsShared;
-use MezzoLabs\Mezzo\Exceptions\InvalidArgument;
+use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
 class RelationConverter extends Converter
 {
@@ -65,7 +65,7 @@ class RelationConverter extends Converter
     protected function fromBelongsTo(RelationshipReflection $reflection)
     {
         if (!$reflection->is('BelongsTo'))
-            throw new InvalidArgument($reflection);
+            throw new InvalidArgumentException($reflection);
 
         $counterpart = $this->findOrFailCounterpart($reflection);
 

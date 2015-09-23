@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumns;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
+use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
 class ModelSchema {
 
@@ -37,6 +38,13 @@ class ModelSchema {
         $this->tables->addMainTable(new TableSchema($tableName));
     }
 
+    /**
+     * @return string
+     */
+    public function tableName(){
+        return $this->mainTable()->name();
+    }
+
 
     public function defaultTableName()
     {
@@ -45,9 +53,10 @@ class ModelSchema {
 
     /**
      * @param Attribute $attribute
+     * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
      */
     public function addAttribute(Attribute $attribute){
-        return $this->attributes()->addAttribute($attribute);
+        return $this->tables->addAttribute($attribute);
     }
 
     /**
@@ -62,5 +71,24 @@ class ModelSchema {
      */
     public function mainTable(){
         return $this->tables->main();
+    }
+
+    /**
+     * Check if this model contains a certain attribute.
+     *
+     * @param $attribute
+     * @return bool
+     * @throws InvalidArgumentException
+     * @internal param $name
+     */
+    public function hasAttribute($attribute)
+    {
+        if($attribute instanceof Attribute)
+            $attribute = $attribute->name();
+
+        if(!is_string($attribute))
+            throw new InvalidArgumentException($attribute);
+
+        return $this->attributes()->has($attribute);
     }
 } 

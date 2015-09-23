@@ -25,7 +25,7 @@ class DatabaseColumns {
     /**
      * @var string
      */
-    private $name;
+    private $tableName;
 
     /**
      * Initialize a theoretical playground for tables
@@ -35,7 +35,7 @@ class DatabaseColumns {
      */
     public function __construct(Table $table)
     {
-        $this->name = $table->instance()->getTable();
+        $this->tableName = $table->instance()->getTable();
         $this->table = $table;
         $this->columns = new Collection();
     }
@@ -99,7 +99,7 @@ class DatabaseColumns {
      */
     public function name()
     {
-        return $this->name;
+        return $this->tableName;
     }
 
 }

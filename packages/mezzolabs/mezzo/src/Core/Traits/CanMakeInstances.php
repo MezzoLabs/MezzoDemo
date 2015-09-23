@@ -12,6 +12,7 @@ namespace MezzoLabs\Mezzo\Core\Traits;
 
 use MezzoLabs\Mezzo\Console\MezzoKernel;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
+use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Helpers\Path;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
@@ -53,6 +54,16 @@ trait CanMakeInstances {
      */
     public function reflector(){
         return $this->make(Reflector::class);
+    }
+
+    /**
+     * Return the model reflector instance.
+     *
+     * @return Reader
+     */
+    public function makeDatabaseReader()
+    {
+        return $this->make(Reader::class);
     }
 
     /**

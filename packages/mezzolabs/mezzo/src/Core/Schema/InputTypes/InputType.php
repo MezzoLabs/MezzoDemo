@@ -76,7 +76,7 @@ abstract class InputType {
 
     /**
      * @param $type
-     * @return Relation
+     * @return InputType
      */
     public static function fromType($type){
         $class  = TextInput::class;

@@ -63,13 +63,13 @@ class Table {
      * @return Collection
      */
     public function allColumns(){
-        return $this->columns()->all();
+        return $this->databaseColumns()->all();
     }
 
     /**
      * @return DatabaseColumns
      */
-    public function columns(){
+    public function databaseColumns(){
         if($this->columns->all()->count() == 0){
             $this->columns->readFromDatabase($this);
         }

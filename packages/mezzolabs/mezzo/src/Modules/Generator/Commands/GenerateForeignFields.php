@@ -3,7 +3,12 @@
 namespace MezzoLabs\Mezzo\Modules\Generator\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Console\Commands\MezzoCommand;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
+use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
+use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
+use MezzoLabs\Mezzo\Modules\Generator\Generators\Migration\MigrationGenerator;
 
 class GenerateForeignFields extends MezzoCommand
 {
@@ -38,7 +43,24 @@ class GenerateForeignFields extends MezzoCommand
      */
     public function handle()
     {
+        $reader = $this->mezzo->makeDatabaseReader();
 
-        $this->mezzo->reflector()->relationsSchema()->connectingColumns();
+        $notPersisted = $this->allConnectingColumns()->filter(function(ConnectingColumn $column){
+            return !$column->isPersisted();
+        });
+
+        $toAdd = Attributes::fromColumns($notPersisted);
+
+        $migrationGenerator = new MigrationGenerator($toAdd);
+
+        dd($migrationGenerator);
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function allConnectingColumns(){
+        return $this->mezzo->reflector()->relationsSchema()->connectingColumns();
+
     }
 }

@@ -17,4 +17,15 @@ class MezzoException extends \Exception
     {
         $this->message .= $string . "\n";
     }
+
+    /**
+     * @return array
+     */
+    protected function getTraceEnd(){
+        return $this->getTrace()[0];
+    }
+
+    protected function getCallingFunction(){
+        return $this->getTraceEnd()['function'];
+    }
 }

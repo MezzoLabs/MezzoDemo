@@ -18,7 +18,8 @@ use MezzoLabs\Mezzo\Core\Routing\Router;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
 use MezzoLabs\Mezzo\Modules\General\GeneralModule;
 
-class CreateImportantBindings implements Bootstrapper{
+class CreateImportantBindings implements Bootstrapper
+{
 
     /**
      * Important singleton bindings.
@@ -34,8 +35,8 @@ class CreateImportantBindings implements Bootstrapper{
         'mezzo.moduleCenter' => ModuleCenter::class,
         'mezzo.database.reader' => Reader::class,
         'mezzo.cache.singleton' => Singleton::class,
-        'mezzo.path'            => Path::class,
-        'mezzo.kernel'          => MezzoKernel::class
+        'mezzo.path' => Path::class,
+        'mezzo.kernel' => MezzoKernel::class
     ];
 
     /**
@@ -59,8 +60,9 @@ class CreateImportantBindings implements Bootstrapper{
      *
      * @param Mezzo $mezzo
      */
-    protected function bindSingletons(Mezzo $mezzo){
-        foreach($this->singletons as $key => $class){
+    protected function bindSingletons(Mezzo $mezzo)
+    {
+        foreach ($this->singletons as $key => $class) {
             $this->bindSingleton($mezzo->app(), $key, $class);
         }
     }
@@ -72,7 +74,8 @@ class CreateImportantBindings implements Bootstrapper{
      * @param $key
      * @param $class
      */
-    protected function bindSingleton(Application $app, $key, $class){
+    protected function bindSingleton(Application $app, $key, $class)
+    {
 
         $instance = $app->make($class);
 

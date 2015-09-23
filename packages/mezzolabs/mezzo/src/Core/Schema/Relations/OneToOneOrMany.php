@@ -59,5 +59,16 @@ abstract class OneToOneOrMany extends Relation{
         return $columns;
     }
 
+    /**
+     * @return array
+     */
+    protected function makeTablesArray()
+    {
+        return [
+            $this->fromTable,
+            $this->toTable
+        ];
+    }
+
 
 }

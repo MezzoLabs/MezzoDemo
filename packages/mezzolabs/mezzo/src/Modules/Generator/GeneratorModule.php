@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\App;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
 use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
+use MezzoLabs\Mezzo\Modules\Generator\GeneratorCenter;
 
 class GeneratorModule extends ModuleProvider{
 
@@ -35,8 +36,7 @@ class GeneratorModule extends ModuleProvider{
      */
     public function register()
     {
-        //$this->loadCommands();
-
+        $this->bind('center', GeneratorCenter::class);
     }
 
     /**
