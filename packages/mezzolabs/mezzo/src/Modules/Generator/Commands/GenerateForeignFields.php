@@ -8,7 +8,7 @@ use MezzoLabs\Mezzo\Console\Commands\MezzoCommand;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
 use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
-use MezzoLabs\Mezzo\Modules\Generator\Generators\Migration\MigrationGenerator;
+use MezzoLabs\Mezzo\Modules\Generator\Generators\MigrationGenerator;
 
 class GenerateForeignFields extends MezzoCommand
 {

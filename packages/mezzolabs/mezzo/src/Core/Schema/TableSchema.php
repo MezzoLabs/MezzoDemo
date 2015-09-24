@@ -17,8 +17,20 @@ class TableSchema {
      */
     protected $attributes;
 
+    /**
+     * @var ModelSchema
+     */
+    protected $model;
 
-    public function __construct($name){
+
+    /**
+     * Creates a new table schema.
+     * The model attribute is optional, since pivot tables are not related to one model
+     *
+     * @param $name
+     * @param null $model
+     */
+    public function __construct($name, $model = null){
         $this->attributes = new Attributes();
         $this->name = $name;
     }
@@ -45,5 +57,21 @@ class TableSchema {
     public function name()
     {
         return $this->name;
+    }
+
+    /**
+     * @return ModelSchema
+     */
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    /**
+     * @param ModelSchema $model
+     */
+    public function setModel($model)
+    {
+        $this->model = $model;
     }
 } 

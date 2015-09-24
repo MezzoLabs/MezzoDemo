@@ -56,6 +56,8 @@ class ModelSchema {
      * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
      */
     public function addAttribute(Attribute $attribute){
+        $attribute->setModel($this);
+
         return $this->tables->addAttribute($attribute);
     }
 

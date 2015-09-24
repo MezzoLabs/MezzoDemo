@@ -18,34 +18,12 @@ class Attributes extends Collection{
     }
 
     /**
-     * @param AtomicAttribute $attribute
-     * @return $this
-     */
-    public function addAtomic(AtomicAttribute $attribute){
-        return $this->put($attribute->name(), $attribute);
-    }
-
-    /**
-     * @param AtomicAttribute|RelationAttribute $attribute
-     * @return $this
-     */
-    public function addRelation(RelationAttribute $attribute){
-        return $this->put($attribute->name(), $attribute);
-    }
-
-    /**
      * @param Attribute $attribute
      * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
      * @throws InvalidArgumentException
      */
     public function addAttribute(Attribute $attribute){
-        if($attribute instanceof AtomicAttribute)
-            return $this->addAtomic($attribute);
-
-        if($attribute instanceof RelationAttribute)
-            return $this->addRelation($attribute);
-
-        throw new InvalidArgumentException($attribute);
+        return $this->put($attribute->name(), $attribute);
     }
 
     /**
@@ -71,7 +49,7 @@ class Attributes extends Collection{
     /**
      * Returns an Attribute Collection via the converted columns
      *
-     * @param Columns $columns
+     * @param Collection|Columns $columns
      * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
      */
     public static function fromColumns(Collection $columns)

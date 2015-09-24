@@ -21,25 +21,7 @@ class MigrationGenerator extends Generator
         $this->toRemove =   ($toRemove) ? $toRemove : new Attributes();
     }
 
-    /**
-     * @param MigrationAction $action
-     */
-    public function register(MigrationAction $action){
 
-    }
-
-    public function registerAdd($attribute){
-
-    }
-
-    public function registerRemove($attribute)
-    {
-
-    }
-
-    public function registerRename($table, $from, $to){
-
-    }
 
     public function createMigrations(){
 

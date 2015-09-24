@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 use ArrayAccess;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
+use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 
 class Attribute {
     /**
@@ -26,6 +27,11 @@ class Attribute {
      * @var string
      */
     protected $table;
+
+    /**
+     * @var ModelSchema
+     */
+    protected $model;
 
     /**
      * @var bool
@@ -51,7 +57,13 @@ class Attribute {
      */
     public function getTable()
     {
-        return $this->table;
+        if(!empty($this->table))
+            return $this->table;
+
+        if($this->model)
+            return $this->model->tableName();
+
+        return "";
     }
 
     /**
@@ -66,7 +78,7 @@ class Attribute {
      * @return bool
      */
     public function hasTable(){
-        return !empty($this->table);
+        return !empty($this->getTable());
     }
 
     /**
@@ -85,6 +97,30 @@ class Attribute {
         $this->persisted = $persisted;
     }
 
+    /**
+     * @return ModelSchema
+     */
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    /**
+     * @param ModelSchema $model
+     */
+    public function setModel($model)
+    {
+        $this->model = $model;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasModel()
+    {
+        return !$this->model;
+    }
+
 
     /**
      * @param array|ArrayAccess $options
@@ -93,14 +129,18 @@ class Attribute {
         $this->options = new Collection($options);
     }
 
-
-
-
     /**
      * @return string
      */
     public function name()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function qualifiedName(){
+        return $this->getTable() . '.' . $this->name();
     }
 } 
