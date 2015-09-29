@@ -30,6 +30,13 @@ abstract class Action {
     abstract public function qualifiedName();
 
     /**
+     * Returns the name of the table which this action affects.
+     *
+     * @return string
+     */
+    abstract public function tableName();
+
+    /**
      * Checks if the given action is a certain type (like "create", "update"...)
      *
      * @param $actionType string|Action

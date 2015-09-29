@@ -121,6 +121,14 @@ class Attribute {
         return !$this->model;
     }
 
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
 
     /**
      * @param array|ArrayAccess $options

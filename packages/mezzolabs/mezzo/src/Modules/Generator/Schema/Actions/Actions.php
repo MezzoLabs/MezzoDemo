@@ -16,14 +16,18 @@ class Actions extends Collection{
     }
 
     /**
+     * Add a new attribute to the system via a CreateAction.
+     *
      * @param Attribute $attribute
      * @return \MezzoLabs\Mezzo\Modules\Generator\Schema\Actions\Actions
      */
     public function registerCreate(Attribute $attribute){
-        return $this->register( new RemoveAction($attribute));
+        return $this->register( new CreateAction($attribute));
     }
 
     /**
+     * Remove an attribute from the system (database, models etc.)
+     *
      * @param Attribute $attribute
      * @return \MezzoLabs\Mezzo\Modules\Generator\Schema\Actions\Actions
      */
@@ -33,12 +37,43 @@ class Actions extends Collection{
     }
 
     /**
-     * @param $table
-     * @param $from
-     * @param $to
+     * Register a new Update Action that performs a rename of an attribute.
+     *
+     * @param string $oldName
+     * @param Attribute $newAttribute
+     * @return \MezzoLabs\Mezzo\Modules\Generator\Schema\Actions\Actions
+     * @internal param $table
+     * @internal param $from
+     * @internal param $to
      */
-    public function registerRename($table, $from, $to){
+    public function registerRename($oldName, Attribute $newAttribute){
+        $oldAttribute = clone($newAttribute);
+        $oldAttribute->setName($oldName);
 
+        return $this->register(new UpdateAction($oldAttribute, $newAttribute));
+    }
+
+    /**
+     * Returns multiple Actions grouped by their table name.
+     *
+     * @return Collection
+     */
+    public function groupByTables()
+    {
+        $grouped = new Collection();
+
+        $this->each(function(Action $action, $key) use ($grouped){
+            $table = $action->tableName();
+
+            if(!$grouped->has($table))
+                $grouped->put($table, new Actions());
+
+
+            $grouped = $grouped->get($table);
+            $grouped->register($action);
+        });
+
+        return $grouped;
     }
 
 

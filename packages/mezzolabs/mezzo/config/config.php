@@ -6,7 +6,6 @@ return [
     "moduleProviders" => [
         \MezzoLabs\Mezzo\Modules\Sample\SampleModule::class,
         \MezzoLabs\Mezzo\Modules\Generator\GeneratorModule::class
-
     ],
 
     "api" => [

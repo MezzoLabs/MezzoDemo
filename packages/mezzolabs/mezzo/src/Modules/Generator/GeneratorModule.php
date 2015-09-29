@@ -18,6 +18,8 @@ class GeneratorModule extends ModuleProvider{
         GenerateForeignFields::class
     ];
 
+
+
     /**
      * Perform post-registration booting of services.
      *

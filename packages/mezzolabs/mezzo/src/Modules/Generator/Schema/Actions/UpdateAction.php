@@ -96,4 +96,13 @@ class UpdateAction extends Action{
     }
 
 
+    /**
+     * Returns the name of the table which this action affects.
+     *
+     * @return string
+     */
+    public function tableName()
+    {
+        return $this->new->getTable();
+    }
 }

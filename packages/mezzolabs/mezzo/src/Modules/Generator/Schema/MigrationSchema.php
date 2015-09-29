@@ -4,34 +4,62 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Schema;
 
 
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
+use MezzoLabs\Mezzo\Modules\Generator\Schema\Actions\Actions;
 
 class MigrationSchema {
     /**
-     * @var Attributes
-     */
-    protected $toAdd;
-
-    /**
-     * @var Attributes
-     */
-    private $toRemove;
-
-    /**
      * @var string
      */
-    private $table;
+    protected $table;
 
+    /**
+     * @var Actions
+     */
+    protected $actions;
 
     /**
      * @param $table
-     * @param Attributes $toAdd
-     * @param Attributes $toRemove
+     * @param Actions $actions
+     * @internal param Attributes $toAdd
+     * @internal param Attributes $toRemove
      */
-    public function __construct($table, Attributes $toAdd = null, Attributes $toRemove = null)
+    public function __construct($table, Actions $actions)
     {
-        $this->toAdd =      ($toAdd)    ? $toAdd    : new Attributes();
-        $this->toRemove =   ($toRemove) ? $toRemove : new Attributes();
+
         $this->table = $table;
+        $this->actions = $actions;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTable()
+    {
+        return $this->table;
+    }
+
+    /**
+     * @param string $table
+     */
+    public function setTable($table)
+    {
+        $this->table = $table;
+    }
+
+    /**
+     * @return Actions
+     */
+    public function getActions()
+    {
+        return $this->actions;
+    }
+
+    /**
+     * @param Actions $actions
+     */
+    public function setActions($actions)
+    {
+        $this->actions = $actions;
     }
 
 } 

@@ -14,6 +14,7 @@
 
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
+use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 
 Route::get('/', function () {
@@ -40,6 +41,14 @@ Route::get('debug/generator', function () {
 
 
     //return view('debugmodels', ['generator' => $generator]);
+});
+
+Route::get('debug/commands', function(){
+    /** @var \MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields $generateForeignFields */
+    $generateForeignFields = app()->make(GenerateForeignFields::class);
+    $generateForeignFields->setMezzo(mezzo());
+
+    $generateForeignFields->handle();
 });
 
 

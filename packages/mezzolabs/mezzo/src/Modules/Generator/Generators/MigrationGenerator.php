@@ -6,25 +6,33 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Generators;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
+use MezzoLabs\Mezzo\Modules\Generator\ChangeSet;
 use MezzoLabs\Mezzo\Modules\Generator\Generators\Generator;
 use MezzoLabs\Mezzo\Modules\Generator\Schema\MigrationAction;
+use MezzoLabs\Mezzo\Modules\Generator\Schema\MigrationsSchema;
 
 class MigrationGenerator extends Generator
 {
+
     /**
-     * @param Attributes $toAdd
-     * @param Attributes $toRemove
+     * @var ChangeSet
      */
-    public function __construct(Attributes $toAdd = null, Attributes $toRemove = null)
+    protected $changeSet;
+
+
+    public function __construct(ChangeSet $changeSet)
     {
-        $this->toAdd =      ($toAdd)    ? $toAdd    : new Attributes();
-        $this->toRemove =   ($toRemove) ? $toRemove : new Attributes();
+        $this->changeSet = $changeSet;
     }
 
+    /**
+     * @return MigrationsSchema
+     */
+    public function createMigrationsSchema(){
+        $migrationsSchema = new MigrationsSchema();
+        $migrationsSchema->addChangeSet($this->changeSet);
 
-
-    public function createMigrations(){
-
+        return $migrationsSchema;
     }
 
 
