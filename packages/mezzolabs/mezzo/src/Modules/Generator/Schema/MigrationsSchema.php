@@ -4,8 +4,8 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Schema;
 
 
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Modules\Generator\ChangeSet;
-use MezzoLabs\Mezzo\Modules\Generator\Schema\Actions\Actions;
+use MezzoLabs\Mezzo\Modules\Generator\Migration\ChangeSet;
+use MezzoLabs\Mezzo\Modules\Generator\Migration\Actions\Actions;
 
 class MigrationsSchema extends Collection{
 

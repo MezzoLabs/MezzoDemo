@@ -1,13 +1,13 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Modules\Generator;
+namespace MezzoLabs\Mezzo\Modules\Generator\Migration;
 
 
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
-use MezzoLabs\Mezzo\Modules\Generator\Schema\Actions\Action;
-use MezzoLabs\Mezzo\Modules\Generator\Schema\Actions\Actions;
+use MezzoLabs\Mezzo\Modules\Generator\Migration\Actions\Action;
+use MezzoLabs\Mezzo\Modules\Generator\Migration\Actions\Actions;
 
 class ChangeSet {
 
@@ -29,7 +29,6 @@ class ChangeSet {
 
 
     public function createAttributes(Collection $attributes){
-        /** @var Action $action */
         foreach($attributes as $attribute){
             $this->actions->registerCreate($attribute);
         }

@@ -45,6 +45,7 @@ Route::get('debug/generator', function () {
 
 Route::get('debug/commands', function(){
     /** @var \MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields $generateForeignFields */
+
     $generateForeignFields = app()->make(GenerateForeignFields::class);
     $generateForeignFields->setMezzo(mezzo());
 

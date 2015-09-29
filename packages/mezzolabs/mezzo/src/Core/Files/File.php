@@ -1,8 +1,12 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Modules\Generator\File;
+namespace MezzoLabs\Mezzo\Core\Files;
 
+
+use Illuminate\Support\Facades\Storage;
+use MezzoLabs\Mezzo\Modules\Generator\CannotGenerateFileException;
+use MezzoLabs\Mezzo\Modules\Generator\GeneratorException;
 
 class File {
     /**
@@ -45,8 +49,14 @@ class File {
      * Save the file under the given filename.
      *
      * @throws \Exception
+     * @return boolean
      */
     public function save(){
-        throw new \Exception('todo');
+
+        $saved = StorageFactory::root()->put($this->filename(), $this->content());
+
+        if(!$saved) throw new CannotGenerateFileException($this->filename . ' cannot be written.');
+
+        return true;
     }
 } 

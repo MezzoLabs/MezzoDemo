@@ -1,6 +1,6 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Modules\Generator\Schema\Actions;
+namespace MezzoLabs\Mezzo\Modules\Generator\Migration\Actions;
 
 
 use Illuminate\Support\Collection;
@@ -19,7 +19,7 @@ class Actions extends Collection{
      * Add a new attribute to the system via a CreateAction.
      *
      * @param Attribute $attribute
-     * @return \MezzoLabs\Mezzo\Modules\Generator\Schema\Actions\Actions
+     * @return \MezzoLabs\Mezzo\Modules\Generator\Migration\Actions\Actions
      */
     public function registerCreate(Attribute $attribute){
         return $this->register( new CreateAction($attribute));
@@ -29,7 +29,7 @@ class Actions extends Collection{
      * Remove an attribute from the system (database, models etc.)
      *
      * @param Attribute $attribute
-     * @return \MezzoLabs\Mezzo\Modules\Generator\Schema\Actions\Actions
+     * @return \MezzoLabs\Mezzo\Modules\Generator\Migration\Actions\Actions
      */
     public function registerRemove(Attribute $attribute)
     {
@@ -41,7 +41,7 @@ class Actions extends Collection{
      *
      * @param string $oldName
      * @param Attribute $newAttribute
-     * @return \MezzoLabs\Mezzo\Modules\Generator\Schema\Actions\Actions
+     * @return \MezzoLabs\Mezzo\Modules\Generator\Migration\Actions\Actions
      * @internal param $table
      * @internal param $from
      * @internal param $to

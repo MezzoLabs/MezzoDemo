@@ -10,4 +10,11 @@ abstract class Generator {
      * @return mixed
      */
     abstract public function run();
+
+    /**
+     * The path of the folder in which the files are created.
+     *
+     * @return string
+     */
+    abstract public function folderName();
 } 

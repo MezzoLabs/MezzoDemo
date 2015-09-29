@@ -1,10 +1,11 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Modules\Generator\File;
+namespace MezzoLabs\Mezzo\Core\Files;
 
 
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Files\File;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorException;
 

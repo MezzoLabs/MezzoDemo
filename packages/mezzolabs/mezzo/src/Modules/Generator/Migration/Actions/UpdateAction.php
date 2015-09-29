@@ -1,6 +1,6 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Modules\Generator\Schema\Actions;
+namespace MezzoLabs\Mezzo\Modules\Generator\Migration\Actions;
 
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;

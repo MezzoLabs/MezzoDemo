@@ -3,13 +3,15 @@
 namespace MezzoLabs\Mezzo\Modules\Generator\Generators;
 
 
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
-use MezzoLabs\Mezzo\Modules\Generator\ChangeSet;
-use MezzoLabs\Mezzo\Modules\Generator\File\Files;
+use MezzoLabs\Mezzo\Modules\Generator\Migration\ChangeSet;
+use MezzoLabs\Mezzo\Core\Files\Files;
 use MezzoLabs\Mezzo\Modules\Generator\Generators\Generator;
 use MezzoLabs\Mezzo\Modules\Generator\Schema\MigrationAction;
+use MezzoLabs\Mezzo\Modules\Generator\Schema\MigrationSchema;
 use MezzoLabs\Mezzo\Modules\Generator\Schema\MigrationsSchema;
 
 class MigrationGenerator extends Generator
@@ -44,7 +46,7 @@ class MigrationGenerator extends Generator
      */
     public function run()
     {
-
+        return $this->files()->save();
     }
 
     /**
@@ -52,11 +54,25 @@ class MigrationGenerator extends Generator
      *
      * @return Files
      */
-    protected function files(){
+    public function files(){
         $files = new Files();
+
+        $this->createMigrationsSchema()->each(function(MigrationSchema $schema) use ($files){
+            $newFile = $schema->file($this->folderName());
+            $files->addFile($newFile);
+        });
 
         return $files;
     }
 
 
+    /**
+     * The name of the folder in which the files are created.
+     *
+     * @return string
+     */
+    public function folderName()
+    {
+        return mezzo()->path()->toDatabaseDirectory() . '/migrations';
+    }
 }

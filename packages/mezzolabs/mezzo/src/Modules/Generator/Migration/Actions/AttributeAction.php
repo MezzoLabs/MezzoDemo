@@ -1,6 +1,6 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Modules\Generator\Schema\Actions;
+namespace MezzoLabs\Mezzo\Modules\Generator\Migration\Actions;
 
 
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
@@ -66,4 +66,5 @@ abstract class AttributeAction extends Action {
 
         throw new MezzoException('Cannot get qualified name.');
     }
-} 
+
+}

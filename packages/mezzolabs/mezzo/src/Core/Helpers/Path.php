@@ -42,6 +42,34 @@ class Path {
         return mezzo_source_path();
     }
 
+    /**
+     * The path to the app directory
+     *
+     * @return string
+     */
+    public function toApp(){
+        return app_path();
+    }
+
+    /**
+     * The path to the root folder
+     *
+     * @return string
+     */
+    public function toBaseDirectory()
+    {
+        return base_path();
+    }
+
+    /**
+     * The path the the 'database' directory.
+     *
+     * @return string
+     */
+    public function toDatabaseDirectory(){
+        return database_path();
+    }
+
 
     public function toModule($moduleName){
         $moduleKey = $this->mezzo->moduleCenter()->moduleKey($moduleName);

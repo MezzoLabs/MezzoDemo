@@ -1,6 +1,6 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Modules\Generator\Schema\Actions;
+namespace MezzoLabs\Mezzo\Modules\Generator\Migration\Actions;
 
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 
@@ -12,7 +12,7 @@ class CreateAction extends AttributeAction{
      */
     public function migrationUp()
     {
-        // TODO: Implement migrationUp() method.
+       //@TODO
     }
 
     /**
@@ -22,7 +22,7 @@ class CreateAction extends AttributeAction{
      */
     public function migrationDown()
     {
-        // TODO: Implement migrationDown() method.
+        return '$table->dropColumn(\''. $this->attribute()->name() .'\');';
     }
 
 

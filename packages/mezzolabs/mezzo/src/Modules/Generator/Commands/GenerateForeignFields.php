@@ -8,7 +8,7 @@ use MezzoLabs\Mezzo\Console\Commands\MezzoCommand;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
 use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
-use MezzoLabs\Mezzo\Modules\Generator\ChangeSet;
+use MezzoLabs\Mezzo\Modules\Generator\Migration\ChangeSet;
 use MezzoLabs\Mezzo\Modules\Generator\Generators\MigrationGenerator;
 
 class GenerateForeignFields extends MezzoCommand
@@ -56,9 +56,8 @@ class GenerateForeignFields extends MezzoCommand
         $changeSet->createAttributes($toAdd);
 
         $migrationGenerator = new MigrationGenerator($changeSet);
-        $migrationsSchema = $migrationGenerator->createMigrationsSchema();
-
-        dd($migrationsSchema);
+        //$migrationsSchema = $migrationGenerator->createMigrationsSchema();
+        dd($migrationGenerator->run());
     }
 
     /**

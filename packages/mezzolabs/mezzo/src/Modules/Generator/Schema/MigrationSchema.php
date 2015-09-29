@@ -4,9 +4,9 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Schema;
 
 
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
-use MezzoLabs\Mezzo\Modules\Generator\Schema\Actions\Actions;
+use MezzoLabs\Mezzo\Modules\Generator\Migration\Actions\Actions;
 
-class MigrationSchema extends Schema{
+class MigrationSchema extends FileSchema{
     /**
      * @var string
      */
@@ -30,13 +30,20 @@ class MigrationSchema extends Schema{
     }
 
     /**
-     * @return \Illuminate\Contracts\View\View
+     * The content of the generated migration file.
+     *
+     * @return string
      */
     public function content()
     {
-        return $this->makeTemplate(['migration' => $this]);
+        return $this->fillTemplate(['migration' => $this]);
     }
 
+    /**
+     * The name of the template inside the
+     *
+     * @return string
+     */
     protected function templateName()
     {
         return 'migration';
@@ -56,15 +63,18 @@ class MigrationSchema extends Schema{
     {
         $parts = $this->nameParts();
 
+
         foreach($parts as &$part) $part = strtolower($part);
 
-        $date = date('Y_M_D_His');
+        $date = date('Y_m_d_His');
 
         return $date . '_' . implode('_', $parts) . '.php';
     }
 
     protected function nameParts(){
         $parts = [];
+
+        $parts[] = "Mezzo";
 
         if(!$this->tableIsPersisted()){
             $parts[] = 'Create';
