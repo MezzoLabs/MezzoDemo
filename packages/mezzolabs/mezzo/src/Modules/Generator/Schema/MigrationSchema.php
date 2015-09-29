@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Schema;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 use MezzoLabs\Mezzo\Modules\Generator\Schema\Actions\Actions;
 
-class MigrationSchema {
+class MigrationSchema extends Schema{
     /**
      * @var string
      */
@@ -25,41 +25,83 @@ class MigrationSchema {
      */
     public function __construct($table, Actions $actions)
     {
-
         $this->table = $table;
         $this->actions = $actions;
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function content()
+    {
+        return $this->makeTemplate(['migration' => $this]);
+    }
+
+    protected function templateName()
+    {
+        return 'migration';
+    }
+
+    /**
+     * Return the class name of the migration
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return implode('', $this->nameParts());
+    }
+
+    public function shortFileName()
+    {
+        $parts = $this->nameParts();
+
+        foreach($parts as &$part) $part = strtolower($part);
+
+        $date = date('Y_M_D_His');
+
+        return $date . '_' . implode('_', $parts) . '.php';
+    }
+
+    protected function nameParts(){
+        $parts = [];
+
+        if(!$this->tableIsPersisted()){
+            $parts[] = 'Create';
+        }
+        else {
+            $parts[] = 'Update';
+        }
+
+        $parts[] = ucfirst($this->table);
+        $parts[] = 'Table';
+
+        return $parts;
     }
 
     /**
      * @return string
      */
-    public function getTable()
+    public function table()
     {
         return $this->table;
     }
 
     /**
-     * @param string $table
+     * @return bool
      */
-    public function setTable($table)
-    {
-        $this->table = $table;
+    public function tableIsPersisted(){
+        return mezzo()->makeDatabaseReader()->tableIsPersisted($this->table());
     }
+
 
     /**
      * @return Actions
      */
-    public function getActions()
+    public function actions()
     {
         return $this->actions;
     }
 
-    /**
-     * @param Actions $actions
-     */
-    public function setActions($actions)
-    {
-        $this->actions = $actions;
-    }
 
-} 
+}

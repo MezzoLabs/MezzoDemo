@@ -26,6 +26,6 @@ class MigrationsSchema extends Collection{
      */
     public function addMigrationSchema(MigrationSchema $migrationSchema)
     {
-        $this->put($migrationSchema->getTable(), $migrationSchema);
+        $this->put($migrationSchema->table(), $migrationSchema);
     }
 } 

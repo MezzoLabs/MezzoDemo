@@ -83,4 +83,13 @@ trait CanMakeInstances {
     public function path(){
         return app()->make('mezzo.path');
     }
+
+    /**
+     * Returns an instance of the illuminate view factory.
+     *
+     * @return \Illuminate\View\Factory
+     */
+    public function makeViewFactory(){
+        return app(\Illuminate\Contracts\View\Factory::class);
+    }
 } 
