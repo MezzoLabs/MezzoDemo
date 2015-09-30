@@ -12,7 +12,7 @@ class CreateAction extends AttributeAction{
      */
     public function migrationUp()
     {
-       //@TODO
+       $columnType = $this->attribute()->
     }
 
     /**

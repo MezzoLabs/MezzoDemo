@@ -62,4 +62,21 @@ class RelationAttribute extends Attribute
 
         return $this->type;
     }
-} 
+
+    /**
+     * @return RelationSide
+     */
+    public function relationSide()
+    {
+        return $this->relationSide;
+    }
+
+    /**
+     * @return \MezzoLabs\Mezzo\Core\Schema\Relations\Relation
+     */
+    public function relation(){
+        return $this->relationSide()->relation();
+    }
+
+
+}

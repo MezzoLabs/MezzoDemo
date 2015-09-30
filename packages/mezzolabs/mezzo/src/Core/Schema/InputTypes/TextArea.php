@@ -10,6 +10,10 @@
 namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
 
+use Doctrine\DBAL\Types\TextType;
+
 class TextArea extends TextInput{
+    protected $doctrineType = TextType::class;
+
     protected $htmlTag = "textarea";
 } 

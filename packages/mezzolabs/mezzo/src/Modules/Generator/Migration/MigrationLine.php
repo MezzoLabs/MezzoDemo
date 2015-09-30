@@ -38,6 +38,7 @@ class MigrationLine {
      */
     protected function addPart($string){
         $this->parts->push($string);
+        return $this;
     }
 
     /**
@@ -49,16 +50,22 @@ class MigrationLine {
     public function addFunction($functionName, $parameters = []){
         $function = $functionName . '(' . $this->parameterList($parameters) . ')';
         $this->addPart($function);
+
+        return $this;
     }
 
     public function addColumn($type, $columnName, $parameters = []){
         array_unshift($parameters, $columnName);
 
         $this->addFunction($type, $parameters);
+
+        return $this;
     }
 
     public function addPrimaryKey(){
         $this->addFunction('increments', 'id');
+
+        return $this;
     }
 
     public function addForeignKey($foreign_key, $otherTable = '', $references = 'id', $onDelete = 'cascade'){
@@ -66,15 +73,22 @@ class MigrationLine {
         $this->addFunction('references', $references);
         $this->addFunction('otherTable', $otherTable);
         $this->addFunction('onDelete', 'cascade');
+
+        return $this;
     }
 
     public function addPrimary($columns){
         $this->addPart('primary([' . $this->parameterList($columns) .'])');
+
+        return $this;
     }
 
     public function addTimestamps(){
         $this->addFunction('timestamps');
+
+        return $this;
     }
+
 
     /**
      * Prepend '$table' to the line if it isn`t already there.
@@ -131,6 +145,10 @@ class MigrationLine {
      */
     public static function start(){
         return new MigrationLine();
+    }
+
+    public static function increments($columnName = 'id'){
+        return static::start()->addFunction('increments', $columnName)->build();
     }
 
 } 

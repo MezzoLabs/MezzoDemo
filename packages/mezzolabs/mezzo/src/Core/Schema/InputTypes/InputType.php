@@ -92,5 +92,13 @@ abstract class InputType {
         return new $class;
     }
 
+    /**
+     * @return \Doctrine\DBAL\Types\Type
+     */
+    public function doctrineType()
+    {
+        return $this->doctrineType;
+    }
+
 
 } 

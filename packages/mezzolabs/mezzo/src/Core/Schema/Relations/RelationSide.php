@@ -76,4 +76,12 @@ class RelationSide {
 
         return "multiple";
     }
+
+    /**
+     * @return Relation
+     */
+    public function relation()
+    {
+        return $this->relation;
+    }
 } 

@@ -1,12 +1,9 @@
 <?php
-
-
 namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
-
 
 use Doctrine\DBAL\Types\IntegerType;
 
-abstract class RelationInput extends InputType{
+class IntegerInput extends NumberInput
+{
     protected $doctrineType = IntegerType::class;
-
-} 
+}

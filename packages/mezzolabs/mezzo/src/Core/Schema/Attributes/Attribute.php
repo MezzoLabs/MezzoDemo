@@ -129,6 +129,25 @@ class Attribute {
         $this->name = $name;
     }
 
+    /**
+     * @return InputType
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Check if this attribute is a foreign key
+     * @return bool
+     */
+    public function isForeignKey()
+    {
+        if(!($this instanceof RelationAttribute)) return false;
+
+        $this->
+    }
+
 
     /**
      * @param array|ArrayAccess $options
