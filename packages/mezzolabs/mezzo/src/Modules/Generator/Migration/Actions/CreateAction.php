@@ -3,6 +3,8 @@
 namespace MezzoLabs\Mezzo\Modules\Generator\Migration\Actions;
 
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
+use MezzoLabs\Mezzo\Modules\Generator\Migration\MigrationLine;
+use MezzoLabs\Mezzo\Modules\Generator\Migration\MigrationLines;
 
 class CreateAction extends AttributeAction{
 
@@ -12,7 +14,14 @@ class CreateAction extends AttributeAction{
      */
     public function migrationUp()
     {
-       $columnType = $this->attribute()->
+        $string = "";
+
+        $lines = new MigrationLines($this->attribute);
+        $lines->get()->each(function(MigrationLine $line) use ($string){
+            $string .= $line->build();
+        });
+
+        return $string;
     }
 
     /**

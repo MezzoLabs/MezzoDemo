@@ -7,6 +7,7 @@ use ArrayAccess;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
+use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOneOrMany;
 
 class Attribute {
     /**
@@ -137,15 +138,21 @@ class Attribute {
         return $this->type;
     }
 
-    /**
-     * Check if this attribute is a foreign key
-     * @return bool
-     */
+    public function isAtomic()
+    {
+        return $this instanceof AtomicAttribute;
+    }
+
     public function isForeignKey()
     {
         if(!($this instanceof RelationAttribute)) return false;
 
-        $this->
+        $relation = $this->relation();
+
+        if($relation instanceof OneToOneOrMany)
+            return $relation->connectingColumn() == $this->name();
+        else
+            return true;
     }
 
 

@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle;
+use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOneOrMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\RelationSide;
 
 class RelationAttribute extends Attribute
@@ -60,6 +61,8 @@ class RelationAttribute extends Attribute
             $this->type = new RelationInputMultiple();
         }
 
+        
+
         return $this->type;
     }
 
@@ -77,6 +80,8 @@ class RelationAttribute extends Attribute
     public function relation(){
         return $this->relationSide()->relation();
     }
+
+
 
 
 }

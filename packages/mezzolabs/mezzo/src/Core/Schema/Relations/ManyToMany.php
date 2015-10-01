@@ -50,8 +50,8 @@ class ManyToMany extends Relation
     {
         $columns = new Columns();
 
-        $columns->addAtomicColumn('id', 'integer', $this->fromTable);
-        $columns->addAtomicColumn('id', 'integer', $this->toTable);
+        $columns->addAtomicColumn($this->fromPrimaryKey(), 'integer', $this->fromTable);
+        $columns->addAtomicColumn($this->toPrimaryKey(), 'integer', $this->toTable);
         $columns->addConnectingColumn($this->connectingColumn, 'integer', $this->pivotTable, $this);
         $columns->addConnectingColumn($this->connectingColumn2, 'integer', $this->pivotTable, $this);
 

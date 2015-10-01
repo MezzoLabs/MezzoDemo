@@ -4,20 +4,21 @@
  * Date: 16.09.2015 - 14:08
  * Project: MezzoDemo
  */
- 
- 
+
 
 namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
 
+use Doctrine\DBAL\Types\Type;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 
-abstract class InputType {
+abstract class InputType
+{
     /**
      * @var \Doctrine\DBAL\Types\Type
      *
      */
-    protected $doctrineType = \Doctrine\DBAL\Types\Type::class;
+    protected $doctrineType = \Doctrine\DBAL\Types\Type::STRING;
 
     /**
      * @var string
@@ -30,7 +31,8 @@ abstract class InputType {
      * @param $compare
      * @return bool
      */
-    public function is($compare){
+    public function is($compare)
+    {
         $shortName = $this->reflection()->getShortName();
         return strtolower($shortName) === strtolower($compare);
 
@@ -39,7 +41,8 @@ abstract class InputType {
     /**
      * @return \ReflectionClass
      */
-    public function reflection(){
+    public function reflection()
+    {
         return Singleton::reflection(get_class($this));
     }
 
@@ -48,7 +51,8 @@ abstract class InputType {
      *
      * @return string
      */
-    public function htmlTag(){
+    public function htmlTag()
+    {
         $tag = explode(':', $this->htmlTag)[0];
         return $tag;
     }
@@ -58,9 +62,10 @@ abstract class InputType {
      *
      * @return bool | string
      */
-    public function htmlType(){
+    public function htmlType()
+    {
         $tag = explode(':', $this->htmlTag);
-        if(count($tag) < 2) return false;
+        if (count($tag) < 2) return false;
 
         return $tag[1];
     }
@@ -70,7 +75,8 @@ abstract class InputType {
      *
      * @return bool
      */
-    public function htmlIsVoid(){
+    public function htmlIsVoid()
+    {
         return $this->htmlType() == "input";
     }
 
@@ -78,15 +84,18 @@ abstract class InputType {
      * @param $type
      * @return InputType
      */
-    public static function fromType($type){
-        $class  = TextInput::class;
+    public static function fromType($type)
+    {
+        $class = TextInput::class;
 
         //@TODO: Add more, move to config
-        switch($type){
+        switch ($type) {
             case 'text':
-                $class = TextArea::class; break;
+                $class = TextArea::class;
+                break;
             case 'integer':
-                $class = NumberInput::class; break;
+                $class = NumberInput::class;
+                break;
         }
 
         return new $class;
@@ -95,10 +104,19 @@ abstract class InputType {
     /**
      * @return \Doctrine\DBAL\Types\Type
      */
-    public function doctrineType()
+    public function doctrineTypeName()
     {
         return $this->doctrineType;
     }
+
+    /**
+     * @return Type
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function doctrineTypeInstance(){
+        return Type::getType($this->doctrineTypeName());
+    }
+
 
 
 } 

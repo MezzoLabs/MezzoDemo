@@ -46,14 +46,22 @@ abstract class OneToOneOrMany extends Relation{
     }
 
     /**
+     * @return string
+     */
+    public function connectingColumn()
+    {
+        return $this->connectingColumn;
+    }
+
+    /**
      * @return Columns
      */
     protected function makeColumnsCollection()
     {
         $columns = new Columns();
 
-        $columns->addAtomicColumn('id', 'integer', $this->fromTable);
-        $columns->addAtomicColumn('id', 'integer', $this->toTable);
+        $columns->addAtomicColumn($this->fromPrimaryKey(), 'integer', $this->fromTable);
+        $columns->addAtomicColumn($this->toPrimaryKey(), 'integer', $this->toTable);
         $columns->addConnectingColumn($this->connectingColumn, 'integer', $this->connectingTable, $this);
 
         return $columns;

@@ -23,6 +23,16 @@ abstract class Relation
     /**
      * @var string
      */
+    protected $fromPrimaryKey = 'id';
+
+    /**
+     * @var string
+     */
+    protected $toPrimaryKey = 'id';
+
+    /**
+     * @var string
+     */
     protected $fromNaming;
 
     /**
@@ -205,6 +215,22 @@ abstract class Relation
     public function fromTable()
     {
         return $this->fromTable;
+    }
+
+    /**
+     * @return string
+     */
+    public function fromPrimaryKey()
+    {
+        return $this->fromPrimaryKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function toPrimaryKey()
+    {
+        return $this->toPrimaryKey;
     }
 
 

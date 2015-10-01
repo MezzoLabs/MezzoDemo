@@ -2,10 +2,11 @@
 namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
 use Doctrine\DBAL\Types\StringType;
+use Doctrine\DBAL\Types\Type;
 
 class TextInput extends SimpleInput
 {
-    protected $doctrineType = StringType::class;
+    protected $doctrineType = Type::STRING;
 
     protected $htmlTag = "input:text";
 }

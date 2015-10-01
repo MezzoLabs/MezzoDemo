@@ -2,10 +2,11 @@
 namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
 use Doctrine\DBAL\Types\FloatType;
+use Doctrine\DBAL\Types\Type;
 
 class NumberInput extends SimpleInput
 {
-    protected $doctrineType = FloatType::class;
+    protected $doctrineType = Type::FLOAT;
 
     protected $htmlTag = "input:number";
 }

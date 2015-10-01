@@ -52,6 +52,12 @@ class RelationSide {
         return $this->hasOneChild;
     }
 
+    protected function sideType(){
+        if($this->relation()->fromTable() == $this->table) return 'from';
+
+        return 'to';
+    }
+
     /**
      * Check if this relation side has one or many "children".
      *
@@ -83,5 +89,50 @@ class RelationSide {
     public function relation()
     {
         return $this->relation;
+    }
+
+    public function hasConnectingColumn(){
+        if($this->relation instanceof ManyToMany)
+            return true;
+
+        if($this->hasMultipleChildren())
+            return true;
+
+        return $this->relation()->connectingTable() == $this->table;
+    }
+
+    /**
+     * Get the other side of the relation
+     *
+     * @return RelationSide
+     */
+    public function otherSide(){
+        if($this->sideType() === 'from')
+            $table = $this->relation()->toTable();
+        else
+            $table = $this->relation()->fromTable();
+
+        return new RelationSide($this->relation(), $table);
+    }
+
+    /**
+     * Get the primary key for this side of the relation
+     *
+     * @return string
+     */
+    public function primaryKey()
+    {
+        if($this->sideType() == 'from')
+            return $this->relation()->fromPrimaryKey();
+
+        return $this->relation()->toPrimaryKey();
+    }
+
+    /**
+     * @return string
+     */
+    public function table()
+    {
+        return $this->table;
     }
 } 
