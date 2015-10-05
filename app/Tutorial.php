@@ -24,6 +24,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  */
 class Tutorial extends Model
 {
+
     use MezzoTutorial;
 
     public function mainImage(){

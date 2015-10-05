@@ -18,6 +18,11 @@ class ModelSchema {
     protected $className;
 
     /**
+     * @var string
+     */
+    protected $shortName;
+
+    /**
      * @var ModelTables
      */
     protected $tables;
@@ -32,6 +37,9 @@ class ModelSchema {
         $this->addMainTable($tableName);
     }
 
+    /**
+     * @param $tableName
+     */
     public function addMainTable($tableName){
         if(empty($tableName)) $tableName = $this->defaultTableName();
 
@@ -92,5 +100,35 @@ class ModelSchema {
             throw new InvalidArgumentException($attribute);
 
         return $this->attributes()->has($attribute);
+    }
+
+    /**
+     * @return string
+     */
+    public function className()
+    {
+        return $this->className;
+    }
+
+    /**
+     * Get the short name of this model. (Tutorial instead of App\Tutorial)
+     *
+     * @return string
+     */
+    public function shortName()
+    {
+        if(!$this->shortName) $this->shortName = $this->makeShortName();
+        return $this->shortName;
+    }
+
+    /**
+     * Get the short class name of the given full class name.
+     *
+     * @return string
+     */
+    private function makeShortName(){
+        $nameSpaceFolders = explode('\\', $this->className());
+
+        return $nameSpaceFolders[count($nameSpaceFolders) - 1];
     }
 } 

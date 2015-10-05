@@ -139,10 +139,18 @@ abstract class ModuleProvider extends ServiceProvider
      * @param $shortAbstract
      * @param $concrete
      */
-    public function bind($shortAbstract, $concrete){
+    public function bindWithNamespace($shortAbstract, $concrete){
         $abstract = 'modules.' . $this->slug() . '.' . $shortAbstract;
 
         $this->app->bind($abstract, $concrete);
+    }
+
+    /**
+     * @param $shortAbstract
+     * @return mixed
+     */
+    public function makeWithNamespace($shortAbstract){
+        return $this->app->make('modules.' . $this->slug() . '.' . $shortAbstract);
     }
 
 
@@ -165,6 +173,16 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function loadCommands(){
         $this->mezzo->kernel()->registerCommands($this->commands);
+    }
+
+    /**
+     * Factory method for creating a Mezzo module instance.
+     *
+     * @return ModuleProvider
+     */
+    public static function make()
+    {
+        return mezzo()->module(static::class);
     }
 
 

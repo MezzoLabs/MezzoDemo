@@ -71,6 +71,10 @@ class MigrationSchema extends FileSchema{
         return $date . '_' . implode('_', $parts) . '.php';
     }
 
+    protected function fillTemplate($data){
+        return parent::fillTemplate($data);
+    }
+
     protected function nameParts(){
         $parts = [];
 

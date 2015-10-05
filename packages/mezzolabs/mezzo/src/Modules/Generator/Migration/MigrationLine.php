@@ -114,13 +114,13 @@ class MigrationLine {
 
         $newParameters = [];
         foreach($parameters as $parameter){
-            if(is_numeric($parameter))
+            if(!is_numeric($parameter))
                 $newParameters[] = '\'' . $parameter . '\'';
             else
                 $newParameters[] = $parameter;
         }
 
-        return implode(', ', $parameters);
+        return implode(', ', $newParameters);
     }
 
     /**

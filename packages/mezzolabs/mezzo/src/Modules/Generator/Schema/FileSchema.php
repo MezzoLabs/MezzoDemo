@@ -7,8 +7,18 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Schema;
 use MezzoLabs\Mezzo\Core\Files\File;
 
 abstract class FileSchema {
+    /**
+     * The content of the generated file.
+     *
+     * @return string
+     */
     abstract public function content();
 
+    /**
+     * The name of the template inside view folder.
+     *
+     * @return string
+     */
     abstract protected function templateName();
 
     /**

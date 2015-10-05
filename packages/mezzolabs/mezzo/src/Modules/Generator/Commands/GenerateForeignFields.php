@@ -44,7 +44,8 @@ class GenerateForeignFields extends MezzoCommand
      */
     public function handle()
     {
-        $reader = $this->mezzo->makeDatabaseReader();
+        //@TODO-Simon Reader is Needed?
+        $this->mezzo->makeDatabaseReader();
 
         $notPersisted = $this->allConnectingColumns()->filter(function(ConnectingColumn $column){
             return !$column->isPersisted();
@@ -56,8 +57,9 @@ class GenerateForeignFields extends MezzoCommand
         $changeSet->createAttributes($toAdd);
 
         $migrationGenerator = new MigrationGenerator($changeSet);
-        //$migrationsSchema = $migrationGenerator->createMigrationsSchema();
-        dd($migrationGenerator->run());
+
+
+        $migrationGenerator->run();
     }
 
     /**

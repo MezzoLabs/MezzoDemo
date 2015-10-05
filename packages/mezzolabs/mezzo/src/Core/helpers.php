@@ -49,3 +49,37 @@ if (! function_exists('mezzo_dump')) {
         (new Dumper())->dump($toDump);
     }
 }
+
+if (! function_exists('mezzo_dd')) {
+    /**
+     * Dump the passed variables.
+     *
+     * @param $toDump
+     * @param string $title
+     * @internal param $mixed
+     * @return void
+     */
+    function mezzo_dd($toDump)
+    {
+        mezzo_dump($toDump);
+        die();
+    }
+}
+
+if (! function_exists('mezzo_textdump')) {
+    /**
+     * Dump the passed variables.
+     *
+     * @param $toDump
+     * @param string $title
+     * @internal param $mixed
+     * @return void
+     */
+    function mezzo_textdump($toDump)
+    {
+        echo '<pre>';
+        echo str_replace('<?php', 'OPENING', $toDump);
+        echo '<pre>';
+
+    }
+}

@@ -38,16 +38,6 @@ class ModelReflection
     protected $instance;
 
     /**
-     * @var \ReflectionClass
-     */
-    protected $reflectionClass;
-
-    /**
-     * @var Parser
-     */
-    protected $parser;
-
-    /**
      * @var Collection
      */
     protected $relationships;
@@ -73,6 +63,16 @@ class ModelReflection
     protected $schemaConverter;
 
     /**
+     * @var \ReflectionClass
+     */
+    protected $reflectionClass;
+
+    /**
+     * @var Parser
+     */
+    protected $parser;
+
+    /**
      * @param $className
      * @throws \ReflectionException
      */
@@ -88,7 +88,6 @@ class ModelReflection
             $this->isMezzoModel = true;
 
         $this->schemaConverter = ModelReflectionConverter::make();
-
     }
 
     /**

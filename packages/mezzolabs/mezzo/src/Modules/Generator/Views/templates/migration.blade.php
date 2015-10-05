@@ -17,10 +17,11 @@ class {{ $migration->name() }} extends Migration
         Schema::create('{{ $migration->table() }}', function (Blueprint $table){
 @endif
 @foreach($migration->actions() as $action)
-            {!! $action->migrationUp() !!}
+@foreach($action->migrationUp() as $line)
+            {!! $line !!}
+@endforeach
 @endforeach
         });
-
     }
 
     /**
@@ -33,7 +34,9 @@ class {{ $migration->name() }} extends Migration
 @if($migration->tableIsPersisted())
         Schema::table('{{ $migration->table() }}', function (Blueprint $table) {
 @foreach($migration->actions() as $action)
-            {!! $action->migrationDown() !!}
+@foreach($action->migrationDown() as $line)
+            {!! $line !!}
+@endforeach
 @endforeach
         });
 @else

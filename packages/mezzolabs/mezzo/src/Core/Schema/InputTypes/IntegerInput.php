@@ -10,4 +10,5 @@ class IntegerInput extends NumberInput
      * @var string
      */
     protected $doctrineType = Type::INTEGER;
+
 }

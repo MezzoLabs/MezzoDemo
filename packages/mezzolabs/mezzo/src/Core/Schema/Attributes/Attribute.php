@@ -133,7 +133,7 @@ class Attribute {
     /**
      * @return InputType
      */
-    public function getType()
+    public function type()
     {
         return $this->type;
     }

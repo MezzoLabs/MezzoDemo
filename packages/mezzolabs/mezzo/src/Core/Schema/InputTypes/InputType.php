@@ -25,6 +25,16 @@ abstract class InputType
      */
     protected $htmlTag = "input";
 
+
+    /**
+     * The SQL column type of this input.
+     * If the value is false variableType() will return the doctrine type string.
+     *
+     * @var string
+     */
+    protected $variableType = false;
+
+
     /**
      * Compare type to a string.
      *
@@ -117,6 +127,26 @@ abstract class InputType
         return Type::getType($this->doctrineTypeName());
     }
 
+    public function sqlColumnType()
+    {
+        return $this->doctrineTypeInstance()->getSQLDeclaration(array());
+    }
+
+    /**
+     * @return string
+     */
+    public function variableType()
+    {
+        if(!$this->variableType) return ' ' . $this->doctrineType;
+
+        return $this->variableType;
+    }
+
+    public function name()
+    {
+        $namespaceParts = explode('\\', static::class);
+        return end($namespaceParts);
+    }
 
 
-} 
+}

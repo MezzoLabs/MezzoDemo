@@ -12,7 +12,7 @@ use MezzoLabs\Mezzo\Core\Files\Files;
 use MezzoLabs\Mezzo\Modules\Generator\Generators\Generator;
 use MezzoLabs\Mezzo\Modules\Generator\Schema\MigrationAction;
 use MezzoLabs\Mezzo\Modules\Generator\Schema\MigrationSchema;
-use MezzoLabs\Mezzo\Modules\Generator\Schema\MigrationsSchema;
+use MezzoLabs\Mezzo\Modules\Generator\Schema\MigrationSchemas;
 
 class MigrationGenerator extends Generator
 {
@@ -22,17 +22,22 @@ class MigrationGenerator extends Generator
      */
     protected $changeSet;
 
-
+    /**
+     * Create a Generator instance for creating migration files based on a change set of attributes.
+     *
+     * @param ChangeSet $changeSet
+     */
     public function __construct(ChangeSet $changeSet)
     {
         $this->changeSet = $changeSet;
     }
 
     /**
-     * @return MigrationsSchema
+     * @return MigrationSchemas
      */
-    public function createMigrationsSchema(){
-        $migrationsSchema = new MigrationsSchema();
+    public function createMigrationsSchema()
+    {
+        $migrationsSchema = new MigrationSchemas();
         $migrationsSchema->addChangeSet($this->changeSet);
 
         return $migrationsSchema;
@@ -54,13 +59,17 @@ class MigrationGenerator extends Generator
      *
      * @return Files
      */
-    public function files(){
+    public function files()
+    {
         $files = new Files();
 
-        $this->createMigrationsSchema()->each(function(MigrationSchema $schema) use ($files){
-            $newFile = $schema->file($this->folderName());
-            $files->addFile($newFile);
-        });
+        $migrationsSchema = $this->createMigrationsSchema();
+
+        $migrationsSchema->each(
+            function (MigrationSchema $schema) use ($files) {
+                $newFile = $schema->file($this->folderName());
+                $files->addFile($newFile);
+            });
 
         return $files;
     }
@@ -74,5 +83,13 @@ class MigrationGenerator extends Generator
     public function folderName()
     {
         return mezzo()->path()->toDatabaseDirectory() . '/migrations';
+    }
+
+    /**
+     * @return ChangeSet
+     */
+    public function changeSet()
+    {
+        return $this->changeSet;
     }
 }

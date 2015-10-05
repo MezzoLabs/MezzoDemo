@@ -59,7 +59,8 @@ class RelationConverter extends Converter
      * belongsTo + hasMany = OneToMany
      *
      * @param RelationshipReflection $reflection
-     * @return \MezzoLabs\Mezzo\Core\Schema\Relations\OneToMany|\MezzoLabs\Mezzo\Core\Schema\Relations\OneToOne
+     * @return OneToMany|OneToOne
+     * @throws InvalidArgumentException
      * @throws \ReflectionException
      */
     protected function fromBelongsTo(RelationshipReflection $reflection)

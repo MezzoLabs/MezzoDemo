@@ -9,7 +9,7 @@ use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
 use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
 
-class RelationsSchema {
+class RelationSchemas {
     /**
      * @var Collection
      */
@@ -86,12 +86,6 @@ class RelationsSchema {
         return $this->connectingColumns->filter(function(ConnectingColumn $column) use ($tableName){
             return $column->table() === $tableName;
         });
-    }
-
-    public function findByConnectingColumn($columnName){
-        foreach($this->connectingColumns() as $connectingColumn){
-
-        }
     }
 
 }

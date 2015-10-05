@@ -11,8 +11,8 @@ use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Collections\EloquentModels;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
-use MezzoLabs\Mezzo\Core\Schema\ModelsSchema;
-use MezzoLabs\Mezzo\Core\Schema\RelationsSchema;
+use MezzoLabs\Mezzo\Core\Schema\ModelSchemas;
+use MezzoLabs\Mezzo\Core\Schema\RelationSchemas;
 use MezzoLabs\Mezzo\Core\Traits\IsShared;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
@@ -61,12 +61,12 @@ class Reflector
     protected $booted = false;
 
     /**
-     * @var RelationsSchema
+     * @var RelationSchemas
      */
     protected $relationsSchema;
 
     /**
-     * @var ModelsSchema
+     * @var ModelSchemas
      */
     protected $modelsSchema;
 
@@ -89,8 +89,8 @@ class Reflector
         $this->mezzoModels = $this->findMezzoModels();
         $this->modelReflections = new ModelReflections($this->eloquentModels);
 
-        $this->relationsSchema = $this->buildRelationsSchema();
-
+        $this->relationsSchema = $this->buildRelationSchemas();
+        $this->modelsSchema = $this->buildModelSchemas();
 
         $this->booted = true;
 
@@ -258,12 +258,13 @@ class Reflector
      * Check the relations after the reflector ran through the models.
      * We have to do this afterwards so we can tell the difference between one to one and one to many relations.
      *
+     * @return RelationSchemas
      */
-    protected function buildRelationsSchema()
+    protected function buildRelationSchemas()
     {
         $relationReflections = $this->relationReflections();
 
-        $relationsSchema = new RelationsSchema();
+        $relationsSchema = new RelationSchemas();
 
         $relationReflections->each(
             function (RelationshipReflection $reflection) use ($relationsSchema) {
@@ -271,6 +272,25 @@ class Reflector
             });
 
         return $relationsSchema;
+    }
+
+    /**
+     * Get the schemas of all models.
+     *
+     * @return ModelSchemas
+     */
+    protected function buildModelSchemas()
+    {
+
+        $modelReflections = $this->reflections();
+
+        $modelsSchema = new ModelSchemas();
+
+        $modelReflections->each(function(ModelReflection $reflection) use ($modelsSchema){
+            $modelsSchema->addSchema($reflection->schema());
+        });
+
+        return $modelsSchema;
     }
 
 
@@ -297,14 +317,23 @@ class Reflector
         });
     }
 
+
+
     /**
-     * @return RelationsSchema
+     * @return RelationSchemas
      */
     public function relationsSchema()
     {
         return $this->relationsSchema;
     }
 
+    /**
+     * @return ModelSchemas
+     */
+    public function modelsSchema()
+    {
+        return $this->modelsSchema;
+    }
 
 
 }

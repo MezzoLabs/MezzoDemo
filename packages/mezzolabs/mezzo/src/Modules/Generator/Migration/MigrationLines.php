@@ -16,6 +16,11 @@ class MigrationLines {
      */
     private $attribute;
 
+    /**
+     * @var Collection
+     */
+    protected $lines;
+
     public function __construct(Attribute $attribute){
 
         $this->attribute = $attribute;
@@ -26,17 +31,17 @@ class MigrationLines {
      *
      * @return Collection
      */
-    public function get()
+    public function make()
     {
         $columnType = $this->columnType();
 
         if($this->attribute->name() === "id")
-            return $this->lines(MigrationLine::increments());
+            return $this->setLines(MigrationLine::increments());
 
         if($this->attribute->isForeignKey())
             return $this->foreignKey($this->attribute);
 
-        return $this->lines($columnType);
+        return $this->setLines($columnType);
     }
 
 
@@ -47,7 +52,7 @@ class MigrationLines {
     private function foreignKey(RelationAttribute $attribute){
         $otherSide = $attribute->relationSide()->otherSide();
 
-        $type = $attribute->getType();
+        $type = $attribute->type()->doctrineTypeName();
         $name = $attribute->name();
         $referencesColumn = $otherSide->primaryKey();
         $referencesTable = $otherSide->table();
@@ -55,23 +60,33 @@ class MigrationLines {
         $columnLine = MigrationLine::column($type, $name);
         $foreignKey = MigrationLine::start()->addForeignKey($name, $referencesTable, $referencesColumn);
 
-        return $this->lines([$columnLine, $foreignKey]);
+        return $this->setLines([$columnLine, $foreignKey]);
     }
 
     /**
      * @param $line
      * @return Collection
      */
-    private function lines($line){
-        if($line instanceof Collection)
-            return $line;
+    private function setLines($line){
+        $this->lines = $this->makeLines($line);
 
-        if(is_array($line)){
-            return new Collection($line);
+        return $this->lines;
+    }
+
+    /**
+     * @param $var
+     * @return Collection
+     */
+    private function makeLines($var){
+        if($var instanceof Collection)
+            return $var;
+
+        if(is_array($var)){
+            return new Collection($var);
         }
 
         $lines = new Collection();
-        $lines->push($line);
+        $lines->push($var);
         return $lines;
     }
 
@@ -79,7 +94,7 @@ class MigrationLines {
      * @return string
      */
     protected function columnType(){
-        return $this->attribute->getType()->doctrineTypeInstance()->getName();
+        return $this->attribute->type()->doctrineTypeInstance()->getName();
     }
 
 
@@ -91,6 +106,14 @@ class MigrationLines {
      */
     public static function forAttribute(Attribute $attribute)
     {
-        return (new static($attribute))->get();
+        return (new static($attribute))->make();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getLines()
+    {
+        return $this->lines;
     }
 } 

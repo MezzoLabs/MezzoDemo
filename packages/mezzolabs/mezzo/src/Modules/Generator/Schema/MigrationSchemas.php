@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Modules\Generator\Migration\ChangeSet;
 use MezzoLabs\Mezzo\Modules\Generator\Migration\Actions\Actions;
 
-class MigrationsSchema extends Collection{
+class MigrationSchemas extends Collection{
 
     public function addChangeSet(ChangeSet $changeSet){
         $this->addActions($changeSet->actions());

@@ -2,6 +2,7 @@
 
 namespace MezzoLabs\Mezzo\Modules\Generator\Migration\Actions;
 
+use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Modules\Generator\Migration\MigrationLine;
 use MezzoLabs\Mezzo\Modules\Generator\Migration\MigrationLines;
@@ -14,14 +15,14 @@ class CreateAction extends AttributeAction{
      */
     public function migrationUp()
     {
-        $string = "";
-
         $lines = new MigrationLines($this->attribute);
-        $lines->get()->each(function(MigrationLine $line) use ($string){
-            $string .= $line->build();
+
+        $stringLines = new Collection();
+        $lines->make()->each(function(MigrationLine $line) use (&$stringLines){
+            $stringLines->push($line->build());
         });
 
-        return $string;
+        return $stringLines;
     }
 
     /**
@@ -31,7 +32,8 @@ class CreateAction extends AttributeAction{
      */
     public function migrationDown()
     {
-        return '$table->dropColumn(\''. $this->attribute()->name() .'\');';
+
+        return new Collection(['$table->dropColumn(\''. $this->attribute()->name() .'\');']);
     }
 
 

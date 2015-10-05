@@ -12,6 +12,7 @@
 */
 
 
+use App\Tutorial;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
 use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
@@ -33,21 +34,35 @@ Route::get('debug/models', function () {
 });
 
 Route::get('debug/generator', function () {
-    $generator = mezzo()->module(GeneratorModule::class);
+    $generator = GeneratorModule::make();
 
-    //var_dump($generator);
+    $reflector = mezzo()->reflector();
 
-    return View::make('modules.generator::test');
+    $traitGenerator = $generator->generatorFactory()->modelTraitGenerator($reflector->modelsSchema());
 
+    mezzo_textdump($traitGenerator->files()->get('/home/vagrant/Code/MezzoDemo/app/Mezzo/Generated/ModelTraits/MezzoTutorial.php')->content());
+    //return View::make('modules.generator::test');
 
+    die();
     //return view('debugmodels', ['generator' => $generator]);
 });
 
 Route::get('debug/commands', function(){
     /** @var \MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields $generateForeignFields */
 
+
     $generateForeignFields = app()->make(GenerateForeignFields::class);
     $generateForeignFields->setMezzo(mezzo());
+
+    $generateForeignFields->handle();
+});
+
+Route::get('debug/migrationGenerator', function(){
+    /** @var \MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields $generateForeignFields */
+
+    $generateForeignFields = app()->make(GenerateForeignFields::class);
+    $generateForeignFields->setMezzo(mezzo());
+
 
     $generateForeignFields->handle();
 });

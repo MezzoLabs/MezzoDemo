@@ -25,7 +25,6 @@ class ModelReflections extends Collection
     public $tableNames;
 
 
-
     /**
      * @param array $classes
      * @internal param mixed $items
@@ -36,7 +35,8 @@ class ModelReflections extends Collection
         $this->tableNames = new Collection();
 
         if ((is_array($classes) || is_a($classes, IlluminateCollection::class))
-            && count($classes) > 0) {
+            && count($classes) > 0
+        ) {
             foreach ($classes as $class) {
                 $this->add($class);
             }
@@ -91,7 +91,7 @@ class ModelReflections extends Collection
      */
     protected function addAlias(ModelReflection $reflection)
     {
-        $this->aliases->put(strtolower($reflection->shortName()),       $reflection->className());
+        $this->aliases->put(strtolower($reflection->shortName()), $reflection);
 
         $this->tableNames->put(strtolower($reflection->instance()->getTable()), $reflection);
     }
@@ -126,7 +126,11 @@ class ModelReflections extends Collection
             return parent::get('App\\' . $model);
 
         if ($this->aliases->has(strtolower($model)))
-            return parent::get($this->aliases->get(strtolower($model)));
+            return $this->aliases->get(strtolower($model), $default);
+
+        if ($this->tableNames->has(strtolower($model))) {
+            return $this->tableNames->get(strtolower($model), $default);
+        }
 
         return parent::get($model, $default);
     }
@@ -148,7 +152,7 @@ class ModelReflections extends Collection
         if (class_exists($model))
             return $model;
 
-        if(class_exists('App\\' . ucfirst($model)))
+        if (class_exists('App\\' . ucfirst($model)))
             return 'App\\' . ucfirst($model);
 
         throw new InvalidModel($model);
@@ -158,11 +162,10 @@ class ModelReflections extends Collection
      * @param string $tableName
      * @return ModelReflection
      */
-    public function byTable($tableName){
-       return $this->tableNames->get($tableName);
+    public function byTable($tableName)
+    {
+        return $this->tableNames->get($tableName);
     }
 
 
-
-
-} 
+}
