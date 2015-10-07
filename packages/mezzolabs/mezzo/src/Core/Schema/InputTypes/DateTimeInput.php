@@ -2,7 +2,6 @@
 namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
 use Carbon\Carbon;
-use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
 
 class TextInput extends SimpleInput

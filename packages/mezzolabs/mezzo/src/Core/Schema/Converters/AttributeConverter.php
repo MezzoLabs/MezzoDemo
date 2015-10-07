@@ -3,17 +3,11 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Converters;
 
 
-use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Fluent\FluentAttribute;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
+use MezzoLabs\Mezzo\Core\Fluent\FluentAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AtomicAttribute;
-use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
-use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
-use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
-use MezzoLabs\Mezzo\Core\Schema\Relations\RelationSide;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
 class AttributeConverter extends Converter

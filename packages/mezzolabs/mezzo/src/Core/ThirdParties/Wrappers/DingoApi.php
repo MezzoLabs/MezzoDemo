@@ -7,7 +7,8 @@ namespace MezzoLabs\Mezzo\Core\ThirdParties\Wrappers;
 use Dingo\Api\Provider\LaravelServiceProvider as DingoProvider;
 use Dingo\Api\Routing\Router;
 
-class DingoApi extends ThirdPartyWrapper{
+class DingoApi extends ThirdPartyWrapper
+{
 
     /**
      * The Dingo Api router
@@ -40,7 +41,7 @@ class DingoApi extends ThirdPartyWrapper{
      */
     public function onProviderBooted()
     {
-        if($this->booted) return false;
+        if ($this->booted) return false;
         parent::onProviderBooted();
 
         $this->api = $this->mezzo->make(Router::class);
@@ -59,7 +60,8 @@ class DingoApi extends ThirdPartyWrapper{
      *
      * @return DingoApi
      */
-    public static function make(){
+    public static function make()
+    {
         return mezzo()->make('mezzo.thirdParties')->get('DingoApi');
     }
 

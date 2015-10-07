@@ -5,9 +5,7 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Generators;
 
 
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AtomicAttribute;
-use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
-use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
 
 class PhpCodeGenerator
 {
@@ -48,7 +46,7 @@ class PhpCodeGenerator
 
         $elementsString = implode(', ' . static::nl(2), $this->lines);
 
-        return '['  . static::nl(2) . $elementsString . static::nl(1) . '];';
+        return '[' . static::nl(2) . $elementsString . static::nl(1) . '];';
     }
 
     public function rulesArray(ModelSchema $model)
@@ -106,9 +104,10 @@ class PhpCodeGenerator
      * @param int $tabs
      * @return string
      */
-    public static function nl($tabs = 1){
+    public static function nl($tabs = 1)
+    {
         $indent = "";
-        for($i = 0; $i != $tabs; $i++){
+        for ($i = 0; $i != $tabs; $i++) {
             $indent .= '    ';
         }
 

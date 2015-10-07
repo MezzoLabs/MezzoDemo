@@ -6,9 +6,8 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as IlluminateCollection;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
-use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\InvalidModel;
+use MezzoLabs\Mezzo\Exceptions\MezzoException;
 
 class ModelReflections extends Collection
 {
@@ -97,8 +96,8 @@ class ModelReflections extends Collection
 
     /**
      * @param $model
-     * @param null $default
      * @return $this|ModelReflections|mixed|void
+     * @internal param null $default
      */
     public function getOrCreate($model)
     {

@@ -19,8 +19,8 @@ class Rules extends Collection
      */
     public function addRule(Rule $rule)
     {
-        if($this->has($rule->name()))
-            throw new MezzoException('This rule already exists '. $rule->name());
+        if ($this->has($rule->name()))
+            throw new MezzoException('This rule already exists ' . $rule->name());
 
         $this->put($rule->name(), $rule);
     }
@@ -40,7 +40,7 @@ class Rules extends Collection
     {
         $ruleStrings = array();
 
-        $this->each(function(Rule $rule) use ($ruleStrings){
+        $this->each(function (Rule $rule) use ($ruleStrings) {
             $ruleStrings[] = $rule->toString();
         });
 
@@ -65,7 +65,7 @@ class Rules extends Collection
     /**
      * Parse an array based rule.
      *
-     * @param  array  $rules
+     * @param  array $rules
      * @return array
      */
     protected function parseArrayRule(array $rules)
@@ -76,7 +76,7 @@ class Rules extends Collection
     /**
      * Parse a string based rule.
      *
-     * @param  string  $rules
+     * @param  string $rules
      * @return array
      */
     protected function parseStringRule($rules)
@@ -98,8 +98,8 @@ class Rules extends Collection
     /**
      * Parse a parameter list.
      *
-     * @param  string  $rule
-     * @param  string  $parameter
+     * @param  string $rule
+     * @param  string $parameter
      * @return array
      */
     protected function parseParameters($rule, $parameter)

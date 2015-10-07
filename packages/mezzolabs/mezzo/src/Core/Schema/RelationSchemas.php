@@ -9,11 +9,12 @@ use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
 use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
 
-class RelationSchemas {
+class RelationSchemas
+{
     /**
      * @var Collection
      */
-    protected  $relations;
+    protected $relations;
 
     /**
      * @var Columns
@@ -30,13 +31,14 @@ class RelationSchemas {
      *
      * @param array|Collection $relations
      */
-    public function __construct($relations = []){
+    public function __construct($relations = [])
+    {
         $this->relations = new Collection();
 
         $this->joinColumns = new Collection();
         $this->columns = new Collection();
 
-        foreach($relations as $relation){
+        foreach ($relations as $relation) {
             $this->addRelation($relation);
         }
     }
@@ -47,7 +49,8 @@ class RelationSchemas {
      * @param Relation $relation
      * @return $this
      */
-    public function addRelation(Relation $relation){
+    public function addRelation(Relation $relation)
+    {
         $this->columns = $this->columns->merge($relation->columns());
         $this->joinColumns = $this->joinColumns->merge($relation->joinColumns());
 
@@ -68,7 +71,8 @@ class RelationSchemas {
      * @param $name
      * @return mixed
      */
-    public function column($name){
+    public function column($name)
+    {
         return $this->columns->get($name);
     }
 
@@ -80,10 +84,10 @@ class RelationSchemas {
      */
     public function joinColumns($tableName = "")
     {
-        if(empty($tableName))
+        if (empty($tableName))
             return $this->joinColumns;
 
-        return $this->joinColumns->filter(function(JoinColumn $column) use ($tableName){
+        return $this->joinColumns->filter(function (JoinColumn $column) use ($tableName) {
             return $column->table() === $tableName;
         });
     }
@@ -91,7 +95,7 @@ class RelationSchemas {
     /**
      * Execute a callback over each relation.
      *
-     * @param  callable  $callback
+     * @param  callable $callback
      * @return Collection
      */
     public function each($callback)

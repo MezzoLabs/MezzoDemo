@@ -7,9 +7,9 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 use MezzoLabs\Mezzo\Console\MezzoKernel;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Providers\EventServiceProvider;
 
-class RegisterConsoleCommands implements Bootstrapper{
+class RegisterConsoleCommands implements Bootstrapper
+{
 
     /**
      * Run the booting process for this service.
@@ -21,7 +21,7 @@ class RegisterConsoleCommands implements Bootstrapper{
     {
         $mezzo->make(MezzoKernel::class)->registerCoreCommands();
 
-        $mezzo->moduleCenter()->modules()->each(function (ModuleProvider $module){
+        $mezzo->moduleCenter()->modules()->each(function (ModuleProvider $module) {
             $module->loadCommands();
         });
     }

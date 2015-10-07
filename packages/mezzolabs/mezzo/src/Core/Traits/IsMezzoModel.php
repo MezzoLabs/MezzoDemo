@@ -9,9 +9,8 @@
 namespace MezzoLabs\Mezzo\Core\Traits;
 
 
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
-
-trait IsMezzoModel {
+trait IsMezzoModel
+{
     /**
      * The associated model. Use the complete class name or "Default"
      *
@@ -25,7 +24,8 @@ trait IsMezzoModel {
      *
      * @return string
      */
-    public function getModuleClass(){
+    public function getModuleClass()
+    {
         return $this->module;
     }
 } 

@@ -5,11 +5,10 @@ namespace MezzoLabs\Mezzo\Core\Files;
 
 
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Files\File;
-use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorException;
 
-class Files extends Collection{
+class Files extends Collection
+{
 
     /**
      * Add a file to the file collection.
@@ -17,8 +16,9 @@ class Files extends Collection{
      * @param File $file
      * @throws GeneratorException
      */
-    public function addFile(File $file){
-        if($this->has($file->filename())){
+    public function addFile(File $file)
+    {
+        if ($this->has($file->filename())) {
             throw new GeneratorException('File is already existing: ' . $file->filename());
         }
 
@@ -28,8 +28,9 @@ class Files extends Collection{
     /**
      * Save all the files in this collection to the disk.
      */
-    public function save(){
-        $this->each(function(File $file){
+    public function save()
+    {
+        $this->each(function (File $file) {
             $file->save();
         });
     }

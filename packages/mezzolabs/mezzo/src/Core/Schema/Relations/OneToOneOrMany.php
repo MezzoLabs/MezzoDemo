@@ -3,11 +3,10 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 
-use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
-use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 
-abstract class OneToOneOrMany extends Relation{
+abstract class OneToOneOrMany extends Relation
+{
     /**
      * @var string
      */
@@ -25,15 +24,17 @@ abstract class OneToOneOrMany extends Relation{
      * @param bool|string $tableName
      * @return $this
      */
-    public function connectVia($columnName, $tableName = false){
-        if(!$tableName) $tableName = $this->fromTable;
+    public function connectVia($columnName, $tableName = false)
+    {
+        if (!$tableName) $tableName = $this->fromTable;
 
         $this->joinColumn = $columnName;
         $this->joinTable = $tableName;
         return $this;
     }
 
-    public function qualifiedName(){
+    public function qualifiedName()
+    {
         return $this->joinTable . '.' . $this->joinColumn;
     }
 

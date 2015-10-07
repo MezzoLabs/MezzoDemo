@@ -10,15 +10,13 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Collections\EloquentModels;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchemas;
 use MezzoLabs\Mezzo\Core\Schema\RelationSchemas;
-use MezzoLabs\Mezzo\Core\Traits\IsShared;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
+use MezzoLabs\Mezzo\Core\Traits\IsShared;
 
-class Reflector
+class ModelReflector
 {
-
     use IsShared;
 
     /**
@@ -87,7 +85,8 @@ class Reflector
 
         $this->eloquentModels = $this->findEloquentModels();
         $this->mezzoModels = $this->findMezzoModels();
-        $this->modelReflections = new ModelReflections($this->eloquentModels);
+
+        $this->modelReflections = new ModelReflections($this->mezzoModels);
 
         $this->relationsSchema = $this->buildRelationSchemas();
         $this->modelsSchema = $this->buildModelSchemas();
@@ -264,14 +263,14 @@ class Reflector
     {
         $relationReflections = $this->relationReflections();
 
-        $relationsSchema = new RelationSchemas();
+        $relationSchemas = new RelationSchemas();
 
         $relationReflections->each(
-            function (RelationshipReflection $reflection) use ($relationsSchema) {
-                $relationsSchema->addRelation($reflection->relationSchema());
+            function (RelationshipReflection $reflection) use ($relationSchemas) {
+                $relationSchemas->addRelation($reflection->relationSchema());
             });
 
-        return $relationsSchema;
+        return $relationSchemas;
     }
 
     /**
@@ -286,14 +285,12 @@ class Reflector
 
         $modelsSchema = new ModelSchemas();
 
-        $modelReflections->each(function(ModelReflection $reflection) use ($modelsSchema){
+        $modelReflections->each(function (ModelReflection $reflection) use ($modelsSchema) {
             $modelsSchema->addSchema($reflection->schema());
         });
 
         return $modelsSchema;
     }
-
-
 
     /**
      * Get all relationReflections
@@ -308,7 +305,7 @@ class Reflector
             /** @var ModelReflection $modelReflection */
             foreach ($this->reflections() as $modelReflection) {
                 /** @var RelationshipReflection $relationshipReflection */
-                foreach ($modelReflection->relationships() as $relationshipReflection) {
+                foreach ($modelReflection->relationshipReflections() as $relationshipReflection) {
                     $allRelations->put($relationshipReflection->qualifiedName(), $relationshipReflection);
                 }
             }
@@ -316,7 +313,6 @@ class Reflector
             return $allRelations;
         });
     }
-
 
 
     /**

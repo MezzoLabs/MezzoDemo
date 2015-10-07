@@ -60,7 +60,7 @@ class ThirdParties extends Collection
      */
     public function registerServiceProviders()
     {
-        $this->map(function(ThirdPartyWrapper $wrapper){
+        $this->map(function (ThirdPartyWrapper $wrapper) {
             $wrapper->register();
         });
     }
@@ -68,8 +68,9 @@ class ThirdParties extends Collection
     /**
      * Prepare the configurations for each third party package before they boot.
      */
-    public function overwriteConfigs(){
-        $this->map(function(ThirdPartyWrapper $wrapper){
+    public function overwriteConfigs()
+    {
+        $this->map(function (ThirdPartyWrapper $wrapper) {
             $wrapper->overwriteConfig();
         });
     }
@@ -77,8 +78,9 @@ class ThirdParties extends Collection
     /**
      * Called when all the providers are booted and ready to take the request
      */
-    public function onProvidersBooted(){
-        $this->map(function(ThirdPartyWrapper $wrapper){
+    public function onProvidersBooted()
+    {
+        $this->map(function (ThirdPartyWrapper $wrapper) {
             $wrapper->onProviderBooted();
         });
     }

@@ -1,76 +1,39 @@
 <?php
 
-
 namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 
-
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Database\Table;
-use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Core\Schema\Converters\ModelReflectionConverter;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
-use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
 
 abstract class ModelReflection
 {
-    /**
-     * @var string Name of the eloquent class that is wrapped
-     */
-    private $className;
-
-    /**
-     * @var ModuleProvider
-     */
-    private $module;
-
-    /**
-     * @var \MezzoLabs\Mezzo\Core\Database\Table
-     */
-    protected $databaseTable;
-
     /**
      * One example instance of the wrapped model.
      *
      * @var Model
      */
     protected $instance;
-
-    /**
-     * @var Collection
-     */
-    protected $relationships;
-
-    /**
-     * @var Collection
-     */
-    protected $attributes;
-
     /**
      * @var ModelSchema
      */
     protected $schema;
-
-    /**
-     * @var
-     */
-    protected $isMezzoModel = false;
-
     /**
      * @var ModelReflectionConverter
      */
     protected $schemaConverter;
-
     /**
      * @var \ReflectionClass
      */
     protected $reflectionClass;
-
     /**
-     * @var Parser
+     * @var ModelParser
      */
     protected $parser;
+    /**
+     * @var string Name of the eloquent class that is wrapped
+     */
+    private $className;
 
     /**
      * @param $className
@@ -80,146 +43,11 @@ abstract class ModelReflection
     {
         $this->className = $className;
 
-        if(!class_exists($className)){
+        if (!class_exists($className)) {
             throw new \ReflectionException('Class ' . $className . ' does not exist');
         }
 
-        if(mezzo()->reflector()->classUsesMezzoTrait($className))
-            $this->isMezzoModel = true;
-
         $this->schemaConverter = ModelReflectionConverter::make();
-    }
-
-    /**
-     * @return string
-     */
-    public function className()
-    {
-        return $this->className;
-    }
-
-    /**
-     * @return ModuleProvider
-     */
-    public function module(){
-        return $this->module;
-    }
-
-    /**
-     * @return \MezzoLabs\Mezzo\Core\Database\Table
-     */
-    public function table()
-    {
-        if(!$this->databaseTable)
-            $this->databaseTable = Table::fromModelReflection($this);
-
-        return $this->databaseTable;
-    }
-
-    /**
-     * @return Model
-     */
-    public function instance()
-    {
-        if(!$this->instance){
-            $this->instance = mezzo()->make($this->className);
-        }
-
-        return $this->instance;
-    }
-
-
-    /**
-     * @param ModuleProvider $module
-     * @throws ModelIsAlreadyAssociated
-     */
-    public function setModule(ModuleProvider $module)
-    {
-        if($this->hasModule()){
-            throw new ModelIsAlreadyAssociated($this, $module);
-        }
-
-        $this->module = $module;
-
-        $this->module->associateModel($this);
-    }
-
-    /** Check if there is a module that wants to use this model.
-     * @return bool
-     */
-    public function hasModule(){
-       return $this->module != null;
-    }
-
-    /**
-     * Get the ReflectionClass object of the underlying model
-     *
-     * @return \ReflectionClass
-     */
-    public function reflectionClass(){
-        if(!$this->reflectionClass){
-            $this->reflectionClass = new \ReflectionClass($this->className);
-        }
-
-        return $this->reflectionClass;
-    }
-
-    /**
-     * Get the ReflectionClass object of the underlying model
-     *
-     * @return Parser
-     */
-    public function parser(){
-        if(!$this->parser){
-            $this->parser = new Parser($this);
-        }
-
-        return $this->parser;
-    }
-
-    /**
-     * @return string
-     */
-    public function fileName(){
-        return $this->reflectionClass()->getFileName();
-    }
-
-    /**
-     * @return string
-     */
-    public function shortName(){
-        return $this->reflectionClass()->getShortName();
-    }
-
-    /**
-     * @return RelationshipReflections
-     */
-    public function relationships(){
-        if(!$this->relationships){
-            $this->relationships = $this->parser()->relationships();
-        }
-
-        return $this->relationships;
-    }
-
-
-    /**
-     * @return ModelSchema
-     */
-    public function schema(){
-        if(!$this->schema){
-            $this->schema = $this->schemaConverter->run($this);
-        }
-
-        return $this->schema;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function isMezzoModel()
-    {
-        return $this->isMezzoModel;
     }
 
     /**
@@ -233,10 +61,71 @@ abstract class ModelReflection
      */
     public static function make($className, $forceEloquentReflection = false)
     {
-        if(mezzo()->reflector()->classUsesMezzoTrait($className) && !$forceEloquentReflection)
+        if (mezzo()->reflector()->classUsesMezzoTrait($className) && !$forceEloquentReflection)
             return new MezzoModelReflection($className);
 
         return new EloquentModelReflection($className);
     }
 
+    /**
+     * @return string
+     */
+    public function className()
+    {
+        return $this->className;
+    }
+
+    /**
+     * @return Model
+     */
+    public function instance()
+    {
+        if (!$this->instance) {
+            $this->instance = mezzo()->make($this->className);
+        }
+
+        return $this->instance;
+    }
+
+    /**
+     * @return string
+     */
+    public function fileName()
+    {
+        return $this->reflectionClass()->getFileName();
+    }
+
+    /**
+     * Get the ReflectionClass object of the underlying model
+     *
+     * @return \ReflectionClass
+     */
+    public function reflectionClass()
+    {
+        if (!$this->reflectionClass) {
+            $this->reflectionClass = new \ReflectionClass($this->className);
+        }
+
+        return $this->reflectionClass;
+    }
+
+    /**
+     * @return string
+     */
+    public function shortName()
+    {
+        return $this->reflectionClass()->getShortName();
+    }
+
+    /**
+     * @return ModelSchema
+     */
+    public function schema()
+    {
+        if (!$this->schema) {
+            $this->schema = $this->schemaConverter->run($this);
+        }
+
+        return $this->schema;
+    }
 }

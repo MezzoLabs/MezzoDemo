@@ -3,7 +3,8 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Columns;
 
 
-abstract class Column {
+abstract class Column
+{
 
     /**
      * @var string
@@ -40,7 +41,8 @@ abstract class Column {
     /**
      * @return string
      */
-    public function qualifiedName(){
+    public function qualifiedName()
+    {
         return $this->table() . '.' . $this->name();
     }
 

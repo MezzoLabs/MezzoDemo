@@ -6,7 +6,8 @@ namespace MezzoLabs\Mezzo\Core\Schema;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 
-class TableSchema {
+class TableSchema
+{
     /**
      * @var string
      */
@@ -30,7 +31,8 @@ class TableSchema {
      * @param $name
      * @param null $model
      */
-    public function __construct($name, $model = null){
+    public function __construct($name, $model = null)
+    {
         $this->attributes = new Attributes();
         $this->name = $name;
     }
@@ -47,7 +49,8 @@ class TableSchema {
      * @param Attribute $attribute
      * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
      */
-    public function addAttribute(Attribute $attribute){
+    public function addAttribute(Attribute $attribute)
+    {
         return $this->attributes->addAttribute($attribute);
     }
 

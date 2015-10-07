@@ -6,7 +6,8 @@ namespace MezzoLabs\Mezzo\Listeners;
 
 use Illuminate\Events\Dispatcher;
 
-abstract class Listener {
+abstract class Listener
+{
 
     /**
      * @var Dispatcher

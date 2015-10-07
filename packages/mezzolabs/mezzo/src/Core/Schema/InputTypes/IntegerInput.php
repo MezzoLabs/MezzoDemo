@@ -1,7 +1,6 @@
 <?php
 namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
-use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\Type;
 
 class IntegerInput extends NumberInput

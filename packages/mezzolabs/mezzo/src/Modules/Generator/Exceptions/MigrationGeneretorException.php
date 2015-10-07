@@ -4,7 +4,7 @@
 namespace MezzoLabs\Mezzo\Modules\Generator;
 
 
-
-class MigrationGeneratorException extends GeneratorException{
+class MigrationGeneratorException extends GeneratorException
+{
 
 } 

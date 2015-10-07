@@ -4,9 +4,7 @@
 namespace MezzoLabs\Mezzo\Modules\Generator\Generators;
 
 
-use Illuminate\Database\Eloquent\Collection;
 use MezzoLabs\Mezzo\Core\Files\Files;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchemas;
 use MezzoLabs\Mezzo\Modules\Generator\Schema\ModelTraitSchema;
@@ -81,7 +79,7 @@ class ModelTraitGenerator extends FileGenerator
      */
     private function createModelTraitSchemas()
     {
-        if($this->traitSchemas) return $this->traitSchemas;
+        if ($this->traitSchemas) return $this->traitSchemas;
 
         $modelTraits = new ModelTraitSchemas();
 
@@ -89,7 +87,7 @@ class ModelTraitGenerator extends FileGenerator
          * Go through every model schema and create a model trait schema out of it.
          */
         $this->modelSchemas->each(
-            function(ModelSchema $modelSchema) use ($modelTraits){
+            function (ModelSchema $modelSchema) use ($modelTraits) {
                 $modelTrait = new ModelTraitSchema($modelSchema);
 
                 $modelTraits->put($modelSchema->className(), $modelTrait);

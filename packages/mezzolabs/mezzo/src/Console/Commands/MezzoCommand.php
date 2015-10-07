@@ -5,14 +5,16 @@ namespace MezzoLabs\Mezzo\Console\Commands;
 use Illuminate\Console\Command;
 use MezzoLabs\Mezzo\Core\Mezzo;
 
-abstract class MezzoCommand extends Command{
+abstract class MezzoCommand extends Command
+{
 
     /**
      * @var Mezzo
      */
     protected $mezzo;
 
-    public function abstractName(){
+    public function abstractName()
+    {
         $signature = $this->signature;
 
         $signature = str_replace('mezzo:', 'mezzo.commands.', $signature);

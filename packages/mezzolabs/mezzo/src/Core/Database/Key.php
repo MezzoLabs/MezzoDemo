@@ -3,11 +3,13 @@
 namespace MezzoLabs\Mezzo\Core\Database;
 
 
-class Key {
+class Key
+{
     protected $tableName;
     protected $columnName;
 
-    public function __construct($tableName, $columnName){
+    public function __construct($tableName, $columnName)
+    {
 
         $this->tableName = $tableName;
         $this->columnName = $columnName;

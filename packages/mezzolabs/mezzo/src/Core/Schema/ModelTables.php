@@ -4,13 +4,13 @@
 namespace MezzoLabs\Mezzo\Core\Schema;
 
 
-
 use Illuminate\Database\Eloquent\Collection;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumns;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 
-class ModelTables extends Collection{
+class ModelTables extends Collection
+{
 
     /**
      * @var TableSchema
@@ -27,7 +27,8 @@ class ModelTables extends Collection{
      *
      * @param TableSchema $tableSchema
      */
-    public function addMainTable(TableSchema $tableSchema){
+    public function addMainTable(TableSchema $tableSchema)
+    {
         $this->main = $tableSchema;
         $this->addTable($tableSchema);
     }
@@ -40,7 +41,7 @@ class ModelTables extends Collection{
      */
     public function addAttribute(Attribute $attribute)
     {
-        if(!$attribute->hasTable())
+        if (!$attribute->hasTable())
             return $this->main->addAttribute($attribute);
 
         $table = $this->getOrCreateTable($attribute->getTable());
@@ -51,7 +52,8 @@ class ModelTables extends Collection{
     /**
      * @param TableSchema $tableSchema
      */
-    public function addTable(TableSchema $tableSchema){
+    public function addTable(TableSchema $tableSchema)
+    {
         $this->put($tableSchema->name(), $tableSchema);
     }
 
@@ -59,7 +61,8 @@ class ModelTables extends Collection{
      * @param $tableName
      * @return TableSchema
      */
-    public function getTable($tableName){
+    public function getTable($tableName)
+    {
         return $this->get($tableName);
     }
 
@@ -67,8 +70,9 @@ class ModelTables extends Collection{
      * @param $tableName
      * @return TableSchema
      */
-    public function getOrCreateTable($tableName){
-        if(!$this->has($tableName)){
+    public function getOrCreateTable($tableName)
+    {
+        if (!$this->has($tableName)) {
             $this->addTable(new TableSchema($tableName));
         }
 
@@ -111,7 +115,7 @@ class ModelTables extends Collection{
     {
         $attributes = new Attributes();
 
-        $this->each(function(TableSchema $table) use (&$attributes){
+        $this->each(function (TableSchema $table) use (&$attributes) {
             $attributes = $attributes->merge(($table->attributes()));
         });
 

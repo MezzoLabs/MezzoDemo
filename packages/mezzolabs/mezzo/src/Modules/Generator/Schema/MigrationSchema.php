@@ -3,10 +3,10 @@
 namespace MezzoLabs\Mezzo\Modules\Generator\Schema;
 
 
-use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 use MezzoLabs\Mezzo\Modules\Generator\Migration\Actions\Actions;
 
-class MigrationSchema extends FileSchema{
+class MigrationSchema extends FileSchema
+{
     /**
      * @var string
      */
@@ -64,26 +64,27 @@ class MigrationSchema extends FileSchema{
         $parts = $this->nameParts();
 
 
-        foreach($parts as &$part) $part = strtolower($part);
+        foreach ($parts as &$part) $part = strtolower($part);
 
         $date = date('Y_m_d_His');
 
         return $date . '_' . implode('_', $parts) . '.php';
     }
 
-    protected function fillTemplate($data){
+    protected function fillTemplate($data)
+    {
         return parent::fillTemplate($data);
     }
 
-    protected function nameParts(){
+    protected function nameParts()
+    {
         $parts = [];
 
         $parts[] = "Mezzo";
 
-        if(!$this->tableIsPersisted()){
+        if (!$this->tableIsPersisted()) {
             $parts[] = 'Create';
-        }
-        else {
+        } else {
             $parts[] = 'Update';
         }
 
@@ -104,7 +105,8 @@ class MigrationSchema extends FileSchema{
     /**
      * @return bool
      */
-    public function tableIsPersisted(){
+    public function tableIsPersisted()
+    {
         return mezzo()->makeDatabaseReader()->tableIsPersisted($this->table());
     }
 

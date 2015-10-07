@@ -4,18 +4,15 @@
 namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use MezzoLabs\Mezzo\Core\Schema\Converters\RelationConverter;
-use MezzoLabs\Mezzo\Core\Schema\Relations\Relation as MezzoRelation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
+use MezzoLabs\Mezzo\Core\Schema\Converters\RelationConverter;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToOne;
-use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOne;
+use MezzoLabs\Mezzo\Core\Schema\Relations\Relation as MezzoRelation;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 
 class RelationshipReflection
@@ -132,7 +129,8 @@ class RelationshipReflection
     /**
      * @return string
      */
-    public function type(){
+    public function type()
+    {
         return $this->type;
     }
 
@@ -142,21 +140,24 @@ class RelationshipReflection
      * @param string $type
      * @return bool
      */
-    public function is($type){
+    public function is($type)
+    {
         return strtolower($type) == strtolower($this->type());
     }
 
     /**
      * @return \ReflectionClass
      */
-    public function instanceReflection(){
+    public function instanceReflection()
+    {
         return Singleton::reflection($this->instance);
     }
 
     /**
      * Checks if this relation has the foreign key as a column in the connected database table.
      */
-    public function isBelongsTo(){
+    public function isBelongsTo()
+    {
         return $this->type == 'BelongsTo' || $this->type == 'BelongsToMany';
     }
 
@@ -165,8 +166,9 @@ class RelationshipReflection
      *
      * @return string
      */
-    public function tableName(){
-        return $this->modelReflection->table()->name();
+    public function tableName()
+    {
+        return $this->modelReflection->databaseTable()->name();
     }
 
     /**
@@ -174,7 +176,8 @@ class RelationshipReflection
      *
      * @return string
      */
-    public function relatedTableName(){
+    public function relatedTableName()
+    {
         return $this->instance()->getRelated()->getTable();
     }
 
@@ -183,8 +186,9 @@ class RelationshipReflection
      *
      * @return string
      */
-    public function pivotTable(){
-        if(!$this->is('BelongsToMany'))
+    public function pivotTable()
+    {
+        if (!$this->is('BelongsToMany'))
             return "";
 
         return $this->instance()->getTable();
@@ -196,13 +200,23 @@ class RelationshipReflection
      * @throws MezzoException
      * @return string
      */
-    public function relatedColumn(){
-        switch($this->type()){
-            case 'BelongsTo':       $column = $this->instance()->getOtherKey(); break;
-            case 'BelongsToMany':   $column = $this->instance()->getRelated()->getKeyName(); break;
-            case 'HasOne':          $column = $this->instance()->getForeignKey(); break;
-            case 'HasMany':         $column = $this->instance()->getForeignKey(); break;
-            default:                throw new MezzoException('Relationship ' . $this->qualifiedName() . ' is not supported. ');
+    public function relatedColumn()
+    {
+        switch ($this->type()) {
+            case 'BelongsTo':
+                $column = $this->instance()->getOtherKey();
+                break;
+            case 'BelongsToMany':
+                $column = $this->instance()->getRelated()->getKeyName();
+                break;
+            case 'HasOne':
+                $column = $this->instance()->getForeignKey();
+                break;
+            case 'HasMany':
+                $column = $this->instance()->getForeignKey();
+                break;
+            default:
+                throw new MezzoException('Relationship ' . $this->qualifiedName() . ' is not supported. ');
         }
 
         return $this->disqualifyColumn($column);
@@ -214,7 +228,8 @@ class RelationshipReflection
      * @return string
      * @throws MezzoException
      */
-    public function qualifiedRelatedColumn(){
+    public function qualifiedRelatedColumn()
+    {
         return $this->relatedTableName() . '.' . $this->relatedColumn();
     }
 
@@ -224,13 +239,23 @@ class RelationshipReflection
      * @throws \Exception
      * @return string
      */
-    public function localColumn(){
-        switch($this->type()){
-            case 'BelongsTo':       $column = $this->instance()->getForeignKey(); break;
-            case 'BelongsToMany':   $column = $this->instance()->getParent()->getKeyName(); break;
-            case 'HasOne':          $column = $this->instance()->getQualifiedParentKeyName(); break;
-            case 'HasMany':         $column = $this->instance()->getQualifiedParentKeyName(); break;
-            default:                throw new MezzoException('Relationship ' . $this->qualifiedName() . ' is not supported. ');
+    public function localColumn()
+    {
+        switch ($this->type()) {
+            case 'BelongsTo':
+                $column = $this->instance()->getForeignKey();
+                break;
+            case 'BelongsToMany':
+                $column = $this->instance()->getParent()->getKeyName();
+                break;
+            case 'HasOne':
+                $column = $this->instance()->getQualifiedParentKeyName();
+                break;
+            case 'HasMany':
+                $column = $this->instance()->getQualifiedParentKeyName();
+                break;
+            default:
+                throw new MezzoException('Relationship ' . $this->qualifiedName() . ' is not supported. ');
         }
 
         return $this->disqualifyColumn($column);
@@ -242,8 +267,9 @@ class RelationshipReflection
      * @return string
      * @throws MezzoException
      */
-    public function joinColumn(){
-        if($this->isBelongsTo())
+    public function joinColumn()
+    {
+        if ($this->isBelongsTo())
             return $this->localColumn();
 
         return $this->relatedColumn();
@@ -254,8 +280,9 @@ class RelationshipReflection
      *
      * @return string
      */
-    public function connectingTable(){
-        if($this->isBelongsTo())
+    public function connectingTable()
+    {
+        if ($this->isBelongsTo())
             return $this->tableName();
 
         return $this->relatedTableName();
@@ -267,7 +294,8 @@ class RelationshipReflection
      * @return string
      * @throws MezzoException
      */
-    public function qualifiedLocalColumn(){
+    public function qualifiedLocalColumn()
+    {
         return $this->tableName() . '.' . $this->localColumn();
     }
 
@@ -277,7 +305,8 @@ class RelationshipReflection
      * @param string $columnName
      * @return string
      */
-    private function disqualifyColumn($columnName){
+    private function disqualifyColumn($columnName)
+    {
         return DatabaseColumn::disqualifyName($columnName);
     }
 
@@ -286,11 +315,12 @@ class RelationshipReflection
      *
      * @return RelationshipReflection
      */
-    public function counterpart(){
-        if(!$this->counterpart){
+    public function counterpart()
+    {
+        if (!$this->counterpart) {
             $counterpartModel = $this->relatedModelReflection();
 
-            $this->counterpart = $counterpartModel->relationships()->findCounterpartTo($this);
+            $this->counterpart = $counterpartModel->relationshipReflections()->findCounterpartTo($this);
         }
 
         return $this->counterpart;
@@ -303,12 +333,13 @@ class RelationshipReflection
      * @return bool
      * @throws MezzoException
      */
-    public function isCounterpart(RelationshipReflection $check){
+    public function isCounterpart(RelationshipReflection $check)
+    {
         $correctTables = $check->tableName() == $this->relatedTableName();
         $correctColumns = $check->localColumn() == $this->relatedColumn() &&
-                            $check->relatedColumn() == $this->localColumn();
+            $check->relatedColumn() == $this->localColumn();
 
-        if($this->is('BelongsToMany'))
+        if ($this->is('BelongsToMany'))
             return $correctTables && $correctColumns && $check->pivotTable() == $this->pivotTable();
 
         return $correctTables && $correctColumns;
@@ -322,7 +353,7 @@ class RelationshipReflection
      */
     public function counterpartName()
     {
-        if(!$this->counterpart()) return "";
+        if (!$this->counterpart()) return "";
 
         return $this->counterpart()->name();
     }
@@ -332,8 +363,9 @@ class RelationshipReflection
      *
      * @return ModelReflection
      */
-    public function relatedModelReflection(){
-        return Reflector::getReflection($this->instance()->getRelated());
+    public function relatedModelReflection()
+    {
+        return ModelReflector::getReflection($this->instance()->getRelated());
 
     }
 
@@ -342,8 +374,9 @@ class RelationshipReflection
      *
      * @return MezzoRelation
      */
-    public function relationSchema(){
-        if(!$this->relationSchema) {
+    public function relationSchema()
+    {
+        if (!$this->relationSchema) {
             $this->relationSchema = $this->makeRelationSchema();
         }
 
@@ -353,7 +386,8 @@ class RelationshipReflection
     /**
      * @return MezzoRelation
      */
-    protected function makeRelationSchema(){
+    protected function makeRelationSchema()
+    {
         $schema = $this->schemaConverter->run($this);
 
         return $schema;

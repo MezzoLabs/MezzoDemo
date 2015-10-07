@@ -4,7 +4,6 @@
 namespace MezzoLabs\Mezzo\Modules\Generator\Schema;
 
 
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 
 class ModelTraitSchema extends FileSchema
@@ -90,7 +89,8 @@ class ModelTraitSchema extends FileSchema
         return $this->name() . '.php';
     }
 
-    public function name(){
+    public function name()
+    {
         return 'Mezzo' . $this->modelSchema()->shortName();
     }
 

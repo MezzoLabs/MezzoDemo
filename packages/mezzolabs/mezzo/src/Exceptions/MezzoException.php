@@ -4,8 +4,6 @@
 namespace MezzoLabs\Mezzo\Exceptions;
 
 
-use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-
 class MezzoException extends \Exception
 {
     /**
@@ -21,11 +19,13 @@ class MezzoException extends \Exception
     /**
      * @return array
      */
-    protected function getTraceEnd(){
+    protected function getTraceEnd()
+    {
         return $this->getTrace()[0];
     }
 
-    protected function getCallingFunction(){
+    protected function getCallingFunction()
+    {
         return $this->getTraceEnd()['function'];
     }
 }

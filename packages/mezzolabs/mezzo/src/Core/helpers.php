@@ -6,7 +6,8 @@ use Illuminate\Support\Debug\Dumper;
  *
  * @return \MezzoLabs\Mezzo\Core\Mezzo
  */
-function mezzo(){
+function mezzo()
+{
     return app()->make('mezzo');
 }
 
@@ -15,7 +16,8 @@ function mezzo(){
  *
  * @return string
  */
-function mezzo_path(){
+function mezzo_path()
+{
     return realpath(__DIR__ . "/../../");
 }
 
@@ -24,11 +26,12 @@ function mezzo_path(){
  *
  * @return string
  */
-function mezzo_source_path(){
+function mezzo_source_path()
+{
     return mezzo_path() . '/src/';
 }
 
-if (! function_exists('mezzo_dump')) {
+if (!function_exists('mezzo_dump')) {
     /**
      * Dump the passed variables.
      *
@@ -39,7 +42,7 @@ if (! function_exists('mezzo_dump')) {
      */
     function mezzo_dump($toDump, $title = "")
     {
-        if(!empty($title))
+        if (!empty($title))
             $title = "<b>$title</b> ";
 
         $title .= '<small>(' . debug_backtrace()[0]['file'] . ':' . debug_backtrace()[0]['line'] . ')</small>';
@@ -50,7 +53,7 @@ if (! function_exists('mezzo_dump')) {
     }
 }
 
-if (! function_exists('mezzo_dd')) {
+if (!function_exists('mezzo_dd')) {
     /**
      * Dump the passed variables.
      *
@@ -66,7 +69,7 @@ if (! function_exists('mezzo_dd')) {
     }
 }
 
-if (! function_exists('mezzo_textdump')) {
+if (!function_exists('mezzo_textdump')) {
     /**
      * Dump the passed variables.
      *

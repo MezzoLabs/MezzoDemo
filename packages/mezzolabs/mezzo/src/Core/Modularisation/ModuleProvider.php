@@ -6,11 +6,10 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
-use MezzoLabs\Mezzo\Console\MezzoKernel;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
 use MezzoLabs\Mezzo\Exceptions\DirectoryNotFound;
 
 abstract class ModuleProvider extends ServiceProvider
@@ -73,7 +72,8 @@ abstract class ModuleProvider extends ServiceProvider
      * @internal param bool $key
      * @return ModelReflections
      */
-    public function models(){
+    public function models()
+    {
         return $this->modelReflections;
     }
 
@@ -81,7 +81,8 @@ abstract class ModuleProvider extends ServiceProvider
      * @param string $key
      * @return ModelReflection
      */
-    public function model($key){
+    public function model($key)
+    {
         return $this->modelReflections->get($key);
     }
 
@@ -102,7 +103,8 @@ abstract class ModuleProvider extends ServiceProvider
      *
      * @return string
      */
-    public function slug(){
+    public function slug()
+    {
         $class = $this->reflection()->getShortName();
         $class = preg_replace('/Module/', '', $class);
 
@@ -122,7 +124,8 @@ abstract class ModuleProvider extends ServiceProvider
      *
      * @return string
      */
-    public function path(){
+    public function path()
+    {
         $fileName = $this->reflection()->getFileName();
         return dirname($fileName);
     }
@@ -131,7 +134,8 @@ abstract class ModuleProvider extends ServiceProvider
     /**
      * @return \ReflectionClass
      */
-    public function reflection(){
+    public function reflection()
+    {
         return Singleton::reflection(get_class($this));
     }
 
@@ -139,7 +143,8 @@ abstract class ModuleProvider extends ServiceProvider
      * @param $shortAbstract
      * @param $concrete
      */
-    public function bindWithNamespace($shortAbstract, $concrete){
+    public function bindWithNamespace($shortAbstract, $concrete)
+    {
         $abstract = 'modules.' . $this->slug() . '.' . $shortAbstract;
 
         $this->app->bind($abstract, $concrete);
@@ -149,7 +154,8 @@ abstract class ModuleProvider extends ServiceProvider
      * @param $shortAbstract
      * @return mixed
      */
-    public function makeWithNamespace($shortAbstract){
+    public function makeWithNamespace($shortAbstract)
+    {
         return $this->app->make('modules.' . $this->slug() . '.' . $shortAbstract);
     }
 
@@ -160,8 +166,9 @@ abstract class ModuleProvider extends ServiceProvider
      *
      * @throws DirectoryNotFound
      */
-    protected function loadViews(){
-        if(!is_dir($this->path() . '/views'))
+    protected function loadViews()
+    {
+        if (!is_dir($this->path() . '/views'))
             throw new DirectoryNotFound($this->path() . '/views');
 
         $this->loadViewsFrom($this->path() . '/views', 'modules.' . $this->slug());
@@ -171,7 +178,8 @@ abstract class ModuleProvider extends ServiceProvider
     /**
      * @internal param MezzoKernel $kernel
      */
-    public function loadCommands(){
+    public function loadCommands()
+    {
         $this->mezzo->kernel()->registerCommands($this->commands);
     }
 
@@ -184,7 +192,6 @@ abstract class ModuleProvider extends ServiceProvider
     {
         return mezzo()->module(static::class);
     }
-
 
 
 }

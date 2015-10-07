@@ -4,43 +4,43 @@ use Illuminate\Database\Migrations\Migration;
 
 class {{ $migration->name() }} extends Migration
 {
-    /**
-    * Run the migrations.
-    *
-    * @return void
-    */
-    public function up()
-    {
+/**
+* Run the migrations.
+*
+* @return void
+*/
+public function up()
+{
 @if($migration->tableIsPersisted())
-        Schema::table('{{ $migration->table() }}', function (Blueprint $table){
+    Schema::table('{{ $migration->table() }}', function (Blueprint $table){
 @else
-        Schema::create('{{ $migration->table() }}', function (Blueprint $table){
+    Schema::create('{{ $migration->table() }}', function (Blueprint $table){
 @endif
 @foreach($migration->actions() as $action)
-@foreach($action->migrationUp() as $line)
-            {!! $line !!}
+    @foreach($action->migrationUp() as $line)
+        {!! $line !!}
+    @endforeach
 @endforeach
-@endforeach
-        });
-    }
+});
+}
 
-    /**
-    * Reverse the migrations.
-    *
-    * @return void
-    */
-    public function down()
-    {
+/**
+* Reverse the migrations.
+*
+* @return void
+*/
+public function down()
+{
 @if($migration->tableIsPersisted())
-        Schema::table('{{ $migration->table() }}', function (Blueprint $table) {
-@foreach($migration->actions() as $action)
-@foreach($action->migrationDown() as $line)
+    Schema::table('{{ $migration->table() }}', function (Blueprint $table) {
+    @foreach($migration->actions() as $action)
+        @foreach($action->migrationDown() as $line)
             {!! $line !!}
-@endforeach
-@endforeach
-        });
+        @endforeach
+    @endforeach
+    });
 @else
-        Schema::drop('{{ $migration->table() }}');
+    Schema::drop('{{ $migration->table() }}');
 @endif
-    }
+}
 }

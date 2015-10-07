@@ -3,10 +3,10 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Converters;
 
 
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
 use MezzoLabs\Mezzo\Core\Traits\IsShared;
 
-abstract class Converter {
+abstract class Converter
+{
     use IsShared;
 
     public function __construct()

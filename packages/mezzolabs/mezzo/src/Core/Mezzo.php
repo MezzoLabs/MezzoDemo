@@ -6,17 +6,13 @@ namespace MezzoLabs\Mezzo\Core;
 
 use Illuminate\Foundation\Application;
 use MezzoLabs\Mezzo\Core\Booting\BootManager;
-use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
-use MezzoLabs\Mezzo\Core\Helpers\Path;
-use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
 use MezzoLabs\Mezzo\Core\Traits\CanFireEvents;
 use MezzoLabs\Mezzo\Core\Traits\CanMakeInstances;
 use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
-use MezzoLabs\Mezzo\Events\Event;
 use MezzoLabs\Mezzo\MezzoServiceProvider;
 
-class Mezzo{
+class Mezzo
+{
 
     use CanMakeInstances, CanFireEvents;
 
@@ -53,7 +49,8 @@ class Mezzo{
      *
      * @param Application $app
      */
-    public function __construct(Application $app){
+    public function __construct(Application $app)
+    {
         $this->app = $app;
 
         $this->bootManager = BootManager::make($this);
@@ -64,7 +61,8 @@ class Mezzo{
      *
      * @return Application
      */
-    public function app(){
+    public function app()
+    {
         return $this->app;
     }
 
@@ -74,29 +72,33 @@ class Mezzo{
      * @param $key
      * @return \MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider
      */
-    public function module($key){
+    public function module($key)
+    {
         return $this->moduleCenter()->getModule($key);
     }
 
     /**
      * Run the boot services that we need at the time the Mezzo provider is registered
      */
-    public function onProviderRegistered(){
+    public function onProviderRegistered()
+    {
         $this->bootManager->runRegisterPhase();
     }
 
     /**
      * Run the boot services that we need at the time the when all service providers are registered
      */
-    public function onProviderBooted(){
+    public function onProviderBooted()
+    {
         $this->bootManager->runBootPhase();
     }
 
     /**
      * Run the boot services that we need at the time the when all service providers are booted
      */
-    public function onAllProvidersBooted(){
-        if($this->booted) return false;
+    public function onAllProvidersBooted()
+    {
+        if ($this->booted) return false;
 
         $this->bootManager->bootedPhase();
 
@@ -107,10 +109,4 @@ class Mezzo{
     }
 
 
-
-
-
-
-
-
-} 
+}

@@ -5,10 +5,9 @@ namespace MezzoLabs\Mezzo\Core\ThirdParties\Wrappers;
 
 
 use Collective\Html\HtmlServiceProvider;
-use Dingo\Api\Provider\LaravelServiceProvider as DingoProvider;
-use Dingo\Api\Routing\Router;
 
-class Html extends ThirdPartyWrapper{
+class Html extends ThirdPartyWrapper
+{
 
 
     /**
@@ -35,7 +34,7 @@ class Html extends ThirdPartyWrapper{
      */
     public function onProviderBooted()
     {
-        if($this->booted) return false;
+        if ($this->booted) return false;
         parent::onProviderBooted();
     }
 
@@ -44,7 +43,8 @@ class Html extends ThirdPartyWrapper{
      *
      * @return Html
      */
-    public static function make(){
+    public static function make()
+    {
         return mezzo()->make('mezzo.thirdParties')->get('Html');
     }
 

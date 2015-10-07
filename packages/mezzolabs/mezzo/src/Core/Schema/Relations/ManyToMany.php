@@ -4,10 +4,8 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 
-use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
-use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 
 class ManyToMany extends Relation
 {

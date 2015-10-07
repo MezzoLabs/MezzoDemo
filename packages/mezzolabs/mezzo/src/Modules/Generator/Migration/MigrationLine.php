@@ -6,7 +6,8 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Migration;
 
 use Illuminate\Support\Collection;
 
-class MigrationLine {
+class MigrationLine
+{
 
     /**
      * The parts of the migration line
@@ -27,7 +28,8 @@ class MigrationLine {
      *
      * @return string
      */
-    public function build(){
+    public function build()
+    {
         return implode('->', $this->parts->toArray()) . ';';
     }
 
@@ -36,7 +38,8 @@ class MigrationLine {
      *
      * @param $string
      */
-    protected function addPart($string){
+    protected function addPart($string)
+    {
         $this->parts->push($string);
         return $this;
     }
@@ -47,14 +50,16 @@ class MigrationLine {
      * @param $functionName
      * @param array $parameters
      */
-    public function addFunction($functionName, $parameters = []){
+    public function addFunction($functionName, $parameters = [])
+    {
         $function = $functionName . '(' . $this->parameterList($parameters) . ')';
         $this->addPart($function);
 
         return $this;
     }
 
-    public function addColumn($type, $columnName, $parameters = []){
+    public function addColumn($type, $columnName, $parameters = [])
+    {
         array_unshift($parameters, $columnName);
 
         $this->addFunction($type, $parameters);
@@ -62,13 +67,15 @@ class MigrationLine {
         return $this;
     }
 
-    public function addPrimaryKey(){
+    public function addPrimaryKey()
+    {
         $this->addFunction('increments', 'id');
 
         return $this;
     }
 
-    public function addForeignKey($foreign_key, $otherTable = '', $references = 'id', $onDelete = 'cascade'){
+    public function addForeignKey($foreign_key, $otherTable = '', $references = 'id', $onDelete = 'cascade')
+    {
         $this->addFunction('foreign', $foreign_key);
         $this->addFunction('references', $references);
         $this->addFunction('otherTable', $otherTable);
@@ -77,13 +84,15 @@ class MigrationLine {
         return $this;
     }
 
-    public function addPrimary($columns){
-        $this->addPart('primary([' . $this->parameterList($columns) .'])');
+    public function addPrimary($columns)
+    {
+        $this->addPart('primary([' . $this->parameterList($columns) . '])');
 
         return $this;
     }
 
-    public function addTimestamps(){
+    public function addTimestamps()
+    {
         $this->addFunction('timestamps');
 
         return $this;
@@ -95,8 +104,9 @@ class MigrationLine {
      *
      * @return void
      */
-    private function prependTableVariable(){
-        if($this->parts->first() === '$table') return;
+    private function prependTableVariable()
+    {
+        if ($this->parts->first() === '$table') return;
 
         $this->parts->prepend('$table');
     }
@@ -107,14 +117,15 @@ class MigrationLine {
      * @param array $parameters
      * @return string
      */
-    private function parameterList($parameters = []){
-        if(empty($parameters)) return '';
+    private function parameterList($parameters = [])
+    {
+        if (empty($parameters)) return '';
 
-        if(!is_array($parameters)) $parameters = [$parameters];
+        if (!is_array($parameters)) $parameters = [$parameters];
 
         $newParameters = [];
-        foreach($parameters as $parameter){
-            if(!is_numeric($parameter))
+        foreach ($parameters as $parameter) {
+            if (!is_numeric($parameter))
                 $newParameters[] = '\'' . $parameter . '\'';
             else
                 $newParameters[] = $parameter;
@@ -131,7 +142,8 @@ class MigrationLine {
      * @param array $parameters
      * @return MigrationLine
      */
-    public static function column($type, $name, $parameters = []){
+    public static function column($type, $name, $parameters = [])
+    {
         $line = new MigrationLine();
         $line->addColumn($type, $name, $parameters);
 
@@ -143,11 +155,13 @@ class MigrationLine {
      *
      * @return MigrationLine
      */
-    public static function start(){
+    public static function start()
+    {
         return new MigrationLine();
     }
 
-    public static function increments($columnName = 'id'){
+    public static function increments($columnName = 'id')
+    {
         return static::start()->addFunction('increments', $columnName)->build();
     }
 

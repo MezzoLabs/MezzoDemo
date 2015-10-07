@@ -6,13 +6,12 @@ namespace MezzoLabs\Mezzo\Modules\Generator;
 
 use App\Tutorial;
 use App\User;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
 use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 
-class GeneratorModule extends ModuleProvider{
+class GeneratorModule extends ModuleProvider
+{
 
     /**
      * @var GeneratorFactory
@@ -30,7 +29,7 @@ class GeneratorModule extends ModuleProvider{
      */
     public function boot()
     {
-        Blade::directive('annotation', function($string) {
+        Blade::directive('annotation', function ($string) {
             $re = "/\\('(\\w+)',\\s*(.*)\\)/";
             preg_match($re, $string, $matches);
 
@@ -46,7 +45,7 @@ class GeneratorModule extends ModuleProvider{
 
 
     }
-    
+
     /**
      * Register the service provider.
      *
@@ -80,7 +79,7 @@ class GeneratorModule extends ModuleProvider{
      */
     public function generatorFactory()
     {
-        if(!$this->generatorFactory)
+        if (!$this->generatorFactory)
             $this->generatorFactory = new GeneratorFactory($this->mezzo, $this);
 
         return $this->generatorFactory;

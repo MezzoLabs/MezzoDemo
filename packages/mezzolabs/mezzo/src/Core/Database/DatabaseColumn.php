@@ -6,7 +6,6 @@ namespace MezzoLabs\Mezzo\Core\Database;
 
 use Doctrine\DBAL\Schema\Column as DoctrineColumn;
 use Doctrine\DBAL\Types\Type;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
 use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 
 class DatabaseColumn
@@ -120,11 +119,12 @@ class DatabaseColumn
      *
      * @return JoinColumn|mixed
      */
-    public function joinColumn(){
-        if($this->joinColumn === false) {
+    public function joinColumn()
+    {
+        if ($this->joinColumn === false) {
             $relationsSchema = mezzo()->reflector()->relationsSchema();
             $this->joinColumn = $relationsSchema->joinColumns($this->table->name())
-                                        ->get($this->qualifiedName());
+                ->get($this->qualifiedName());
         }
 
         return $this->joinColumn;

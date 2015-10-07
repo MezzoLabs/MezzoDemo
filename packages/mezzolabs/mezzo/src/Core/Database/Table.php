@@ -6,14 +6,12 @@ namespace MezzoLabs\Mezzo\Core\Database;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflector;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflections;
-use MezzoLabs\Mezzo\Core\Database\DatabaseColumns;
 
-class Table {
+class Table
+{
 
     /**
      * @var string
@@ -50,10 +48,11 @@ class Table {
     /**
      * @param $model
      */
-    public function __construct($model){
+    public function __construct($model)
+    {
         $this->model = $model;
 
-        $this->reflection = Reflector::getReflection($model);
+        $this->reflection = ModelReflector::getReflection($model);
         $this->instance = $this->reflection->instance();
         $this->columns = new DatabaseColumns($this);
 
@@ -62,15 +61,17 @@ class Table {
     /**
      * @return Collection
      */
-    public function allColumns(){
+    public function allColumns()
+    {
         return $this->databaseColumns()->all();
     }
 
     /**
      * @return DatabaseColumns
      */
-    public function databaseColumns(){
-        if($this->columns->all()->count() == 0){
+    public function databaseColumns()
+    {
+        if ($this->columns->all()->count() == 0) {
             $this->columns->readFromDatabase($this);
         }
 
@@ -81,14 +82,16 @@ class Table {
      * @param DatabaseColumn $column
      * @return string
      */
-    public function qualifiedColumnName(DatabaseColumn $column){
+    public function qualifiedColumnName(DatabaseColumn $column)
+    {
         return $this->name() . '.' . $column->name();
     }
 
     /**
      * @return string
      */
-    public function name(){
+    public function name()
+    {
         return $this->columns->name();
     }
 
@@ -96,7 +99,8 @@ class Table {
      * @param ModelReflection $wrapper
      * @return Table
      */
-    public static function fromModelReflection(ModelReflection $wrapper){
+    public static function fromModelReflection(ModelReflection $wrapper)
+    {
         $instance = $wrapper->instance();
         $table = new Table(get_class($instance));
         return $table;
@@ -122,15 +126,17 @@ class Table {
     /**
      * @return RelationshipReflections
      */
-    public function relationships(){
-        return $this->reflection->relationships();
+    public function relationships()
+    {
+        return $this->reflection->relationshipReflections();
     }
 
     /**
      * @return Collection
      */
-    public function joiningColumns(){
-        if(!$this->joiningColumns)
+    public function joiningColumns()
+    {
+        if (!$this->joiningColumns)
             $this->joiningColumns = mezzo()->reflector()->relationsSchema()->joinColumns($this->name());
 
         return $this->joiningColumns;
@@ -145,5 +151,4 @@ class Table {
     }
 
 
-
-} 
+}

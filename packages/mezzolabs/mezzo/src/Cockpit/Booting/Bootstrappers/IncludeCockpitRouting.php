@@ -7,7 +7,8 @@ namespace MezzoLabs\Mezzo\Cockpit\Booting\Bootstrappers;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\Bootstrapper;
 use MezzoLabs\Mezzo\Core\Mezzo;
 
-class IncludeCockpitRouting implements Bootstrapper{
+class IncludeCockpitRouting implements Bootstrapper
+{
 
     /**
      * Run the booting process for this service.

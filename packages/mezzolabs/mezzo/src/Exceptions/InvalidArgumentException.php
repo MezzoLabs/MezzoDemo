@@ -4,11 +4,8 @@
 namespace MezzoLabs\Mezzo\Exceptions;
 
 
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
-use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Modules\Sample\SampleModule;
-
-class InvalidArgumentException extends MezzoException{
+class InvalidArgumentException extends MezzoException
+{
 
     /**
      * You can only make a modelWrapper out of a class name (string) or out of an existing modelWrapper
@@ -18,10 +15,11 @@ class InvalidArgumentException extends MezzoException{
      * @internal param ModelWrapper $model
      * @internal param ModuleProvider $module
      */
-    public function  __construct($invalidArgument){
+    public function  __construct($invalidArgument)
+    {
         $type = gettype($invalidArgument);
 
-        if($type === 'object')
+        if ($type === 'object')
             $type = get_class($invalidArgument);
 
         $this->message = $type . ' is an invalid argument for ' . $this->getCallingFunction() . '.';

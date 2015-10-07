@@ -4,9 +4,9 @@ namespace MezzoLabs\Mezzo\Modules\Generator;
 
 
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
-use MezzoLabs\Mezzo\Exceptions\MezzoException;
 
-class NoTableFoundException extends GeneratorException{
+class NoTableFoundException extends GeneratorException
+{
 
     public function __construct(Attribute $attribute)
     {

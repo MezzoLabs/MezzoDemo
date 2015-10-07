@@ -26,7 +26,7 @@ class MezzoServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mezzo = require __DIR__.'/../bootstrap/mezzo.php';
+        $this->mezzo = require __DIR__ . '/../bootstrap/mezzo.php';
 
         $this->mezzo->serviceProvider = $this;
 
@@ -44,15 +44,14 @@ class MezzoServiceProvider extends ServiceProvider
     }
 
 
-
-
     /**
      * Merge config from application with the one in the config folder.
      *
      * @param string $path
      * @param string $key
      */
-    public function mergeConfigFrom($path, $key){
+    public function mergeConfigFrom($path, $key)
+    {
         parent::mergeConfigFrom($path, $key);
     }
 

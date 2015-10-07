@@ -4,7 +4,6 @@
 namespace MezzoLabs\Mezzo\Modules\General;
 
 
-
 use MezzoLabs\Mezzo\Core\Modularisation\Generic\AbstractGeneralModule;
 
 class GeneralModule extends AbstractGeneralModule

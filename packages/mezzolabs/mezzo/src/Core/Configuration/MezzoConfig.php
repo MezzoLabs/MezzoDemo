@@ -8,7 +8,8 @@ use Illuminate\Config\Repository;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
 
-class MezzoConfig {
+class MezzoConfig
+{
     /**
      * @var Mezzo
      */
@@ -41,28 +42,32 @@ class MezzoConfig {
      * @param null $default
      * @return mixed
      */
-    public function get($key, $default = null){
+    public function get($key, $default = null)
+    {
         return $this->repository()->get('mezzo.' . $key, $default);
     }
 
     /**
      * Load the Mezzo specific configuration.
      */
-    public function load(){
+    public function load()
+    {
         $this->mergeConfig();
     }
 
     /**
      * Merge the config from mezzo with the one of the application
      */
-    protected function mergeConfig(){
-        $this->mezzo->serviceProvider->mergeConfigFrom( __DIR__.'../../../../config/config.php', 'mezzo');
+    protected function mergeConfig()
+    {
+        $this->mezzo->serviceProvider->mergeConfigFrom(__DIR__ . '../../../../config/config.php', 'mezzo');
     }
 
     /**
      * Called after all the providers registered and before one provider boots.
      */
-    public function beforeProvidersBoot(){
+    public function beforeProvidersBoot()
+    {
         $this->thirdParties->overwriteConfigs();
     }
 
@@ -72,7 +77,8 @@ class MezzoConfig {
      *
      * @return Repository
      */
-    public function repository(){
+    public function repository()
+    {
         return $this->repository;
     }
 
@@ -82,7 +88,8 @@ class MezzoConfig {
      * @param $weakKey
      * @param $strongKey
      */
-    public function overwrite($weakKey, $strongKey){
+    public function overwrite($weakKey, $strongKey)
+    {
         $weakSettings = $this->repository->get($weakKey);
         $strongSettings = $this->repository->get($strongKey);
 
@@ -93,5 +100,4 @@ class MezzoConfig {
     }
 
 
-
-} 
+}

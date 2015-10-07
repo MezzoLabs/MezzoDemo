@@ -1,7 +1,6 @@
 <?php
 namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
-use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
 
 class TextInput extends SimpleInput

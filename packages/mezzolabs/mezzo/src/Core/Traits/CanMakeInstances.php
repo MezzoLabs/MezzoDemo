@@ -4,8 +4,7 @@
  * Date: 17.09.2015 - 15:20
  * Project: MezzoDemo
  */
- 
- 
+
 
 namespace MezzoLabs\Mezzo\Core\Traits;
 
@@ -15,9 +14,10 @@ use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Helpers\Path;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflector;
 
-trait CanMakeInstances {
+trait CanMakeInstances
+{
     /**
      * A quick access for the Laravel IoC Container
      *
@@ -25,7 +25,8 @@ trait CanMakeInstances {
      * @param array $parameters
      * @return mixed
      */
-    public function make($abstract, $parameters = []){
+    public function make($abstract, $parameters = [])
+    {
         return app()->make($abstract, $parameters);
     }
 
@@ -34,7 +35,8 @@ trait CanMakeInstances {
      *
      * @return ModuleCenter
      */
-    public function moduleCenter(){
+    public function moduleCenter()
+    {
         return $this->make(ModuleCenter::class);
     }
 
@@ -43,17 +45,19 @@ trait CanMakeInstances {
      *
      * @return MezzoKernel
      */
-    public function kernel(){
+    public function kernel()
+    {
         return $this->make(MezzoKernel::class);
     }
 
     /**
      * Return the model reflector instance.
      *
-     * @return Reflector
+     * @return ModelReflector
      */
-    public function reflector(){
-        return $this->make(Reflector::class);
+    public function reflector()
+    {
+        return $this->make(ModelReflector::class);
     }
 
     /**
@@ -71,7 +75,8 @@ trait CanMakeInstances {
      *
      * @return MezzoConfig
      */
-    public function config(){
+    public function config()
+    {
         return $this->make(MezzoConfig::class);
     }
 
@@ -80,7 +85,8 @@ trait CanMakeInstances {
      *
      * @return Path
      */
-    public function path(){
+    public function path()
+    {
         return app()->make('mezzo.path');
     }
 
@@ -89,7 +95,8 @@ trait CanMakeInstances {
      *
      * @return \Illuminate\View\Factory
      */
-    public function makeViewFactory(){
+    public function makeViewFactory()
+    {
         return app(\Illuminate\Contracts\View\Factory::class);
     }
 } 

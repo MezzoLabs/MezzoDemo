@@ -4,13 +4,12 @@
 namespace MezzoLabs\Mezzo\Modules\Generator\Migration;
 
 
-use Doctrine\DBAL\Types\Type;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 
-class MigrationLines {
+class MigrationLines
+{
     /**
      * @var Attribute
      */
@@ -21,7 +20,8 @@ class MigrationLines {
      */
     protected $lines;
 
-    public function __construct(Attribute $attribute){
+    public function __construct(Attribute $attribute)
+    {
 
         $this->attribute = $attribute;
     }
@@ -35,10 +35,10 @@ class MigrationLines {
     {
         $columnType = $this->columnType();
 
-        if($this->attribute->name() === "id")
+        if ($this->attribute->name() === "id")
             return $this->setLines(MigrationLine::increments());
 
-        if($this->attribute->isForeignKey())
+        if ($this->attribute->isForeignKey())
             return $this->foreignKey($this->attribute);
 
         return $this->setLines($columnType);
@@ -49,7 +49,8 @@ class MigrationLines {
      * @param RelationAttribute $attribute
      * @return Collection
      */
-    private function foreignKey(RelationAttribute $attribute){
+    private function foreignKey(RelationAttribute $attribute)
+    {
         $otherSide = $attribute->relationSide()->otherSide();
 
         $type = $attribute->type()->doctrineTypeName();
@@ -67,7 +68,8 @@ class MigrationLines {
      * @param $line
      * @return Collection
      */
-    private function setLines($line){
+    private function setLines($line)
+    {
         $this->lines = $this->makeLines($line);
 
         return $this->lines;
@@ -77,11 +79,12 @@ class MigrationLines {
      * @param $var
      * @return Collection
      */
-    private function makeLines($var){
-        if($var instanceof Collection)
+    private function makeLines($var)
+    {
+        if ($var instanceof Collection)
             return $var;
 
-        if(is_array($var)){
+        if (is_array($var)) {
             return new Collection($var);
         }
 
@@ -93,7 +96,8 @@ class MigrationLines {
     /**
      * @return string
      */
-    protected function columnType(){
+    protected function columnType()
+    {
         return $this->attribute->type()->doctrineTypeInstance()->getName();
     }
 

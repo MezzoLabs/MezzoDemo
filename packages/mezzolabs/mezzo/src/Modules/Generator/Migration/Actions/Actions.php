@@ -6,12 +6,14 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Migration\Actions;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 
-class Actions extends Collection{
+class Actions extends Collection
+{
     /**
      * @param Action $action
      * @return $this
      */
-    public function register(Action $action){
+    public function register(Action $action)
+    {
         return $this->put($action->qualifiedName(), $action);
     }
 
@@ -21,8 +23,9 @@ class Actions extends Collection{
      * @param Attribute $attribute
      * @return \MezzoLabs\Mezzo\Modules\Generator\Migration\Actions\Actions
      */
-    public function registerCreate(Attribute $attribute){
-        return $this->register( new CreateAction($attribute));
+    public function registerCreate(Attribute $attribute)
+    {
+        return $this->register(new CreateAction($attribute));
     }
 
     /**
@@ -33,7 +36,7 @@ class Actions extends Collection{
      */
     public function registerRemove(Attribute $attribute)
     {
-        return $this->register( new RemoveAction($attribute));
+        return $this->register(new RemoveAction($attribute));
     }
 
     /**
@@ -46,7 +49,8 @@ class Actions extends Collection{
      * @internal param $from
      * @internal param $to
      */
-    public function registerRename($oldName, Attribute $newAttribute){
+    public function registerRename($oldName, Attribute $newAttribute)
+    {
         $oldAttribute = clone($newAttribute);
         $oldAttribute->setName($oldName);
 
@@ -62,10 +66,10 @@ class Actions extends Collection{
     {
         $grouped = new Collection();
 
-        $this->each(function(Action $action, $key) use ($grouped){
+        $this->each(function (Action $action, $key) use ($grouped) {
             $table = $action->tableName();
 
-            if(!$grouped->has($table))
+            if (!$grouped->has($table))
                 $grouped->put($table, new Actions());
 
 

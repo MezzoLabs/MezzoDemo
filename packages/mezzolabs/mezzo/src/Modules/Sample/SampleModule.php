@@ -6,15 +6,14 @@ namespace MezzoLabs\Mezzo\Modules\Sample;
 
 use App\Tutorial;
 use App\User;
-use Illuminate\Support\Facades\App;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
 
-class SampleModule extends ModuleProvider{
+class SampleModule extends ModuleProvider
+{
 
 
     protected $models = [
-        Tutorial::class,
+    //    Tutorial::class,
     ];
 
     /**

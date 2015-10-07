@@ -26,11 +26,12 @@ abstract class CodeUpdate
      * @return bool
      * @throws GeneratorException
      */
-    protected function validate(){
-        if(!$this->model)
+    protected function validate()
+    {
+        if (!$this->model)
             throw new GeneratorException('No model set for this code update.');
 
-        if(!class_exists($this->model()->className()))
+        if (!class_exists($this->model()->className()))
             throw new GeneratorException($this->model()->className() . ' is not a valid class.');
 
         return true;

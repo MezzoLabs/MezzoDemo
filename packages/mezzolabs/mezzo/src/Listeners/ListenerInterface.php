@@ -4,7 +4,8 @@
 namespace MezzoLabs\Mezzo\Listeners;
 
 
-interface ListenerInterface {
+interface ListenerInterface
+{
     /**
      * Handle the incomming event event.
      *

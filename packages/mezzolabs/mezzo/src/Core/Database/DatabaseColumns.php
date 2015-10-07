@@ -5,13 +5,9 @@ namespace MezzoLabs\Mezzo\Core\Database;
 
 
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
-use MezzoLabs\Mezzo\Core\Database\Reader;
-use MezzoLabs\Mezzo\Core\Database\Table;
-use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
-use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 
-class DatabaseColumns {
+class DatabaseColumns
+{
     /**
      * @var Collection
      */
@@ -43,7 +39,8 @@ class DatabaseColumns {
     /**
      * @return Collection
      */
-    public function all(){
+    public function all()
+    {
         return $this->columns;
     }
 
@@ -53,7 +50,8 @@ class DatabaseColumns {
      * @param string $name
      * @param string $type
      */
-    public function addColumn($name, $type){
+    public function addColumn($name, $type)
+    {
         $this->columns->put($name, $type);
     }
 
@@ -65,7 +63,7 @@ class DatabaseColumns {
         $array = Reader::make()->getColumns($this->table);
 
         $this->columns = new Collection();
-        foreach($array as $doctrineColumn){
+        foreach ($array as $doctrineColumn) {
             $this->addColumn($doctrineColumn->getName(), DatabaseColumn::fromDoctrine($doctrineColumn, $this->table));
         }
 
@@ -77,8 +75,9 @@ class DatabaseColumns {
      *
      * @return Collection
      */
-    public function atomic(){
-        return $this->all()->filter(function(DatabaseColumn $column){
+    public function atomic()
+    {
+        return $this->all()->filter(function (DatabaseColumn $column) {
             return !$column->isForeignKey();
         });
     }
@@ -88,8 +87,9 @@ class DatabaseColumns {
      *
      * @return Collection
      */
-    public function foreignKeys(){
-        return $this->all()->filter(function(DatabaseColumn $column){
+    public function foreignKeys()
+    {
+        return $this->all()->filter(function (DatabaseColumn $column) {
             return $column->isForeignKey();
         });
     }

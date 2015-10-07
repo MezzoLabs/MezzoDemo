@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
 
-class RelationInputMultiple extends RelationInput{
+class RelationInputMultiple extends RelationInput
+{
 
 } 

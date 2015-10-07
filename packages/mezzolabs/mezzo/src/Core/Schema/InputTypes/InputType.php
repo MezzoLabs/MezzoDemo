@@ -123,7 +123,8 @@ abstract class InputType
      * @return Type
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function doctrineTypeInstance(){
+    public function doctrineTypeInstance()
+    {
         return Type::getType($this->doctrineTypeName());
     }
 
@@ -137,7 +138,7 @@ abstract class InputType
      */
     public function variableType()
     {
-        if(!$this->variableType) return ' ' . $this->doctrineType;
+        if (!$this->variableType) return ' ' . $this->doctrineType;
 
         return $this->variableType;
     }

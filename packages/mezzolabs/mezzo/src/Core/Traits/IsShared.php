@@ -9,7 +9,8 @@
 namespace MezzoLabs\Mezzo\Core\Traits;
 
 
-trait IsShared {
+trait IsShared
+{
     public static function make()
     {
         return app()->make(static::class);

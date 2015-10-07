@@ -3,11 +3,11 @@
 namespace MezzoLabs\Mezzo\Modules\Generator\Migration\Actions;
 
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
-use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorException;
 use MezzoLabs\Mezzo\Modules\Generator\NoTableFoundException;
 
-class UpdateAction extends Action{
+class UpdateAction extends Action
+{
 
     /**
      * @var Attribute
@@ -30,13 +30,13 @@ class UpdateAction extends Action{
         $this->old = $old;
         $this->new = $new;
 
-        if(!$this->old->hasTable())
+        if (!$this->old->hasTable())
             throw new NoTableFoundException($this->old);
 
-        if(!$this->new->hasTable())
+        if (!$this->new->hasTable())
             throw new NoTableFoundException($this->old);
 
-        if($this->old->getTable() !== $this->new->getTable())
+        if ($this->old->getTable() !== $this->new->getTable())
             throw new GeneratorException('Cannot perform an update action from one table to another: From ' .
                 $this->new->qualifiedName() . ' to ' . $this->old->qualifiedName());
 
@@ -73,7 +73,7 @@ class UpdateAction extends Action{
      */
     public function qualifiedName()
     {
-        if(!$this->isRename())
+        if (!$this->isRename())
             return 'rename.' . $this->old->qualifiedName() . '.to.' . $this->new->name();
 
         return 'update.' . $this->old->qualifiedName();

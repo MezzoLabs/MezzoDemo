@@ -5,7 +5,8 @@ namespace MezzoLabs\Mezzo\Core\Schema;
 
 use Illuminate\Support\Collection;
 
-class ModelSchemas extends Collection {
+class ModelSchemas extends Collection
+{
 
     public function addSchema(ModelSchema $schema)
     {

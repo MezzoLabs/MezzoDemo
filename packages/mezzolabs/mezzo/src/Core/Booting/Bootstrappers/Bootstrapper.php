@@ -11,7 +11,8 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 use MezzoLabs\Mezzo\Core\Mezzo;
 
-interface Bootstrapper {
+interface Bootstrapper
+{
     /**
      * Run the booting process for this service.
      *

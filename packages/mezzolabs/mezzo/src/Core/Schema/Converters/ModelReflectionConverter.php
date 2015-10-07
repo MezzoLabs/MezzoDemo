@@ -44,9 +44,9 @@ class ModelReflectionConverter extends ModelConverter
      */
     protected function fromModelReflectionToSchema(ModelReflection $reflection)
     {
-        $schema = new ModelSchema($reflection->className(), $reflection->table()->name());
+        $schema = new ModelSchema($reflection->className(), $reflection->databaseTable()->name());
 
-        $reflection->table()->allColumns()->each(
+        $reflection->databaseTable()->allColumns()->each(
             function (DatabaseColumn $column) use ($schema) {
                 $attribute = $this->attributeConverter->viaDatabaseColumn($column);
                 $schema->addAttribute($attribute);

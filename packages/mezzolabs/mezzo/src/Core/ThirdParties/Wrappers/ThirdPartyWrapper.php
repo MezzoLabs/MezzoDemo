@@ -4,11 +4,11 @@
 namespace MezzoLabs\Mezzo\Core\ThirdParties\Wrappers;
 
 
-use Illuminate\Config\Repository as ConfigRepository;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Mezzo;
 
-abstract class ThirdPartyWrapper{
+abstract class ThirdPartyWrapper
+{
 
     /**
      * The string of the package service provider
@@ -44,7 +44,8 @@ abstract class ThirdPartyWrapper{
      * @param MezzoConfig $mezzoConfig
      * @internal param ConfigRepository $configuration
      */
-    public function __construct(Mezzo $mezzo, MezzoConfig $mezzoConfig){
+    public function __construct(Mezzo $mezzo, MezzoConfig $mezzoConfig)
+    {
         $this->mezzo = $mezzo;
         $this->mezzoConfig = $mezzoConfig;
     }
@@ -54,9 +55,10 @@ abstract class ThirdPartyWrapper{
      *
      * @return \Illuminate\Support\ServiceProvider
      */
-    public function register(){
-        if(empty($this->provider))
-            throw new \RuntimeException("No provider set for wrapper: ". get_called_class());
+    public function register()
+    {
+        if (empty($this->provider))
+            throw new \RuntimeException("No provider set for wrapper: " . get_called_class());
 
         return $this->mezzo->app()->register($this->provider, $this->providerOptions);
     }
@@ -66,7 +68,8 @@ abstract class ThirdPartyWrapper{
      *
      * @return mixed
      */
-    public function onProviderBooted(){
+    public function onProviderBooted()
+    {
 
         $this->booted = true;
     }

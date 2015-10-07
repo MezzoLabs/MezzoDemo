@@ -3,22 +3,21 @@
 
 namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 
-
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
 
-class Parser
+class ModelParser
 {
     /**
      * @var string
      */
-    protected  $filename;
+    protected $filename;
     /**
      * @var ModelReflection
      */
     private $modelReflection;
+
     /**
      * @param ModelReflection $modelReflection
      * @internal param $filename
@@ -45,21 +44,22 @@ class Parser
      * @param array $sequence
      * @return Collection
      */
-    public function findSequences(array $order){
+    public function findSequences(array $order)
+    {
         $stream = $this->tokenStream();
 
         $sequences = [];
 
         $pointer = 0;
         $sequence = [];
-        foreach($stream as $token){
+        foreach ($stream as $token) {
             $needle = $order[$pointer];
-            if($token['name'] == $needle){
+            if ($token['name'] == $needle) {
                 $pointer++;
                 $sequence[] = $token;
             }
 
-            if($pointer == count($order)){
+            if ($pointer == count($order)) {
                 $pointer = 0;
                 $sequences[] = $sequence;
                 $sequence = [];
@@ -69,20 +69,22 @@ class Parser
         return $sequences;
     }
 
-    public function publicFunctions(){
-        return $this->findSequences(['T_PUBLIC','T_FUNCTION','T_STRING', 'T_RETURN', 'T_STRING']);
+    public function publicFunctions()
+    {
+        return $this->findSequences(['T_PUBLIC', 'T_FUNCTION', 'T_STRING', 'T_RETURN', 'T_STRING']);
     }
 
     /**
      * @return RelationshipReflections
      */
-    public function relationships(){
+    public function relationships()
+    {
         $relationships = new RelationshipReflections();
-        foreach($this->publicFunctions() as $tokenSequence){
+        foreach ($this->publicFunctions() as $tokenSequence) {
             $name = $tokenSequence[2]['content'];
             $type = $tokenSequence[4]['content'];
 
-            if(RelationshipReflection::isAllowed($type))
+            if (RelationshipReflection::isAllowed($type))
                 $relationships->put($name, new RelationshipReflection($this->modelReflection, $name));
         }
 
@@ -98,7 +100,7 @@ class Parser
         $tokens = new Collection();
 
         foreach ($allTokens as $token) {
-            if(is_array($token)){
+            if (is_array($token)) {
                 $name = token_name($token[0]);
                 $content = $token[1];
             } else {

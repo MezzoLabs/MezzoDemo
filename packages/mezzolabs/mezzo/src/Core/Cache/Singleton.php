@@ -23,10 +23,11 @@ class Singleton
      * @param callable $closure
      * @return mixed
      */
-    public static function get($key, Closure $closure){
+    public static function get($key, Closure $closure)
+    {
         $singletons = static::instances();
 
-        if(!$singletons->has($key)){
+        if (!$singletons->has($key)) {
             $singletons->put($key, $closure());
         }
 
@@ -40,18 +41,20 @@ class Singleton
      * @param $class
      * @return ReflectionClass
      */
-    public static function reflection($class){
-        if(is_object($class))
+    public static function reflection($class)
+    {
+        if (is_object($class))
             $class = get_class($class);
 
-        return Singleton::get('reflection.' . $class, function() use ($class){
+        return Singleton::get('reflection.' . $class, function () use ($class) {
             return new \ReflectionClass($class);
         });
 
     }
 
-    public static function instances(){
-        if(!static::$instances){
+    public static function instances()
+    {
+        if (!static::$instances) {
             static::$instances = new Collection();
         }
 

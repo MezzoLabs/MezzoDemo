@@ -18,7 +18,8 @@ class AddUseStatement extends CodeUpdate
      * @param string $traitName
      * @throws \MezzoLabs\Mezzo\Modules\Generator\GeneratorException
      */
-    public function __construct(ModelSchema $model, $traitName){
+    public function __construct(ModelSchema $model, $traitName)
+    {
         $this->model = $model;
         $this->traitName = $traitName;
 

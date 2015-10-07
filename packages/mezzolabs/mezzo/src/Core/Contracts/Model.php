@@ -4,7 +4,8 @@
 namespace MezzoLabs\Mezzo\Contracts;
 
 
-interface Model {
+interface Model
+{
     /**
      * Returns the class name of the module which contains this model.
      *

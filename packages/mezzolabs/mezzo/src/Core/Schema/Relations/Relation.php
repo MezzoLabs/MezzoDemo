@@ -4,7 +4,6 @@ namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
@@ -71,7 +70,8 @@ abstract class Relation
     /**
      * Prevent the creation via the constructor. Use the factory method instead.
      */
-    final public function __construct(){
+    final public function __construct()
+    {
 
     }
 
@@ -149,7 +149,8 @@ abstract class Relation
      * @param $tableName
      * @return bool
      */
-    public function connectsTable($tableName){
+    public function connectsTable($tableName)
+    {
         return in_array($tableName, $this->tables());
     }
 

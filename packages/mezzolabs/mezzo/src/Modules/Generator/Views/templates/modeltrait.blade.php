@@ -6,19 +6,18 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 
 
-
 trait {{ $trait->name() }}
 {
-    use IsMezzoModel;
+use IsMezzoModel;
 
-    /**
-    * The table associated with the model.
-    *
-    @annotation('var', 'string')
-    */
-    protected $table = '{{ $trait->table() }}';
+/**
+* The table associated with the model.
+*
+@annotation('var', 'string')
+*/
+protected $table = '{{ $trait->table() }}';
 
-    protected $rules = {!! $php->rulesArray($trait->modelSchema()) !!}
+protected $rules = {!! $php->rulesArray($trait->modelSchema()) !!}
 
 @foreach($trait->attributes() as $attribute)
     /**

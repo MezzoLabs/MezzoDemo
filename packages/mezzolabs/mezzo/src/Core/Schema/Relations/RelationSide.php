@@ -4,7 +4,8 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 
-class RelationSide {
+class RelationSide
+{
     /**
      * @var Relation
      */
@@ -26,7 +27,8 @@ class RelationSide {
      * @param Relation $relation
      * @param string $table
      */
-    public function __construct(Relation $relation, $table){
+    public function __construct(Relation $relation, $table)
+    {
 
         $this->relation = $relation;
         $this->table = $table;
@@ -37,23 +39,26 @@ class RelationSide {
     /**
      * @return bool
      */
-    public function hasMultipleChildren(){
+    public function hasMultipleChildren()
+    {
         return !$this->hasOneChild();
     }
 
     /**
      * @return bool
      */
-    public function hasOneChild(){
-        if($this->hasOneChild === null){
+    public function hasOneChild()
+    {
+        if ($this->hasOneChild === null) {
             $this->hasOneChild = $this->getType() === "single";
         }
 
         return $this->hasOneChild;
     }
 
-    protected function sideType(){
-        if($this->relation()->fromTable() == $this->table) return 'from';
+    protected function sideType()
+    {
+        if ($this->relation()->fromTable() == $this->table) return 'from';
 
         return 'to';
     }
@@ -63,18 +68,19 @@ class RelationSide {
      *
      * @return string
      */
-    protected function getType(){
-        if($this->relation instanceof ManyToMany)
+    protected function getType()
+    {
+        if ($this->relation instanceof ManyToMany)
             return "multiple";
 
-        if($this->relation instanceof OneToOne)
+        if ($this->relation instanceof OneToOne)
             return "single";
 
-        if($this->relation instanceof OneToMany){
+        if ($this->relation instanceof OneToMany) {
             /**
              * If the connecting table is on our side we only have one child.
              */
-            if($this->relation->joinTable() === $this->table)
+            if ($this->relation->joinTable() === $this->table)
                 return "single";
             else
                 return "multiple";
@@ -96,17 +102,17 @@ class RelationSide {
      *
      * @return bool
      */
-    public function containsTheJoinColumn(){
-        if($this->relation instanceof ManyToMany)
+    public function containsTheJoinColumn()
+    {
+        if ($this->relation instanceof ManyToMany)
             return true;
 
-        if($this->hasMultipleChildren())
+        if ($this->hasMultipleChildren())
             return true;
 
-        if($this->relation instanceof OneToOneOrMany)
+        if ($this->relation instanceof OneToOneOrMany)
             return $this->relation->joinTable() === $this->table;
     }
-
 
 
     /**
@@ -114,8 +120,9 @@ class RelationSide {
      *
      * @return RelationSide
      */
-    public function otherSide(){
-        if($this->sideType() === 'from')
+    public function otherSide()
+    {
+        if ($this->sideType() === 'from')
             $table = $this->relation()->toTable();
         else
             $table = $this->relation()->fromTable();
@@ -130,7 +137,7 @@ class RelationSide {
      */
     public function primaryKey()
     {
-        if($this->sideType() == 'from')
+        if ($this->sideType() == 'from')
             return $this->relation()->fromPrimaryKey();
 
         return $this->relation()->toPrimaryKey();
@@ -152,7 +159,7 @@ class RelationSide {
      */
     public function naming()
     {
-        if($this->sideType() == 'to')
+        if ($this->sideType() == 'to')
             return $this->relation()->toNaming();
 
         return $this->relation()->fromNaming();

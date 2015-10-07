@@ -4,10 +4,10 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Migration\Actions;
 
 
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
-use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorException;
 
-abstract class Action {
+abstract class Action
+{
 
     /**
      * The line that will be copied in the migration file inside the "up" function.
@@ -46,19 +46,16 @@ abstract class Action {
      */
     public function is($actionType)
     {
-        if(is_string($actionType)) {
+        if (is_string($actionType)) {
             $class = __NAMESPACE__ . '\\' . ucfirst($actionType) . 'Action';
 
-            if(!class_exists($class))
+            if (!class_exists($class))
                 throw new GeneratorException('Generator Action ' . $actionType . ' is unknown.');
-        }
-        elseif(is_object($actionType)){
+        } elseif (is_object($actionType)) {
             $class = get_class($actionType);
-        }
-        else {
+        } else {
             throw new InvalidArgumentException($actionType);
         }
-
 
 
         return get_class($this) === $class;

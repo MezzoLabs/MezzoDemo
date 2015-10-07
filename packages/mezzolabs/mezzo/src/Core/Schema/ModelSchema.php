@@ -5,8 +5,6 @@ namespace MezzoLabs\Mezzo\Core\Schema;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use MezzoLabs\Mezzo\Core\Database\DatabaseColumns;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Relations\RelationSide;
@@ -159,7 +157,7 @@ class ModelSchema
 
         $relations = new RelationSchemas();
 
-        $relationAttributes->each(function (RelationAttribute $relationAttribute) use ($relations){
+        $relationAttributes->each(function (RelationAttribute $relationAttribute) use ($relations) {
             $relations->addRelation($relationAttribute->relation());
         });
 
@@ -181,7 +179,7 @@ class ModelSchema
         $relationSides = new Collection();
         $table = $this->tableName();
 
-        $relationAttributes->each(function (RelationAttribute $relationAttribute) use ($relationSides, $table){
+        $relationAttributes->each(function (RelationAttribute $relationAttribute) use ($relationSides, $table) {
             $relationSide = new RelationSide($relationAttribute->relation(), $table);
             $relationSides->put($relationAttribute->qualifiedName(), $relationSide);
         });

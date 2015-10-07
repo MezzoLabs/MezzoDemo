@@ -3,7 +3,8 @@
 namespace MezzoLabs\Mezzo\Modules\Generator\Generators;
 
 
-abstract class FileGenerator {
+abstract class FileGenerator
+{
     /**
      * Run the generator and save the files to the disk.
      *

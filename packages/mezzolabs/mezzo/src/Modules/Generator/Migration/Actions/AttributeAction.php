@@ -5,10 +5,10 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Migration\Actions;
 
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
-use MezzoLabs\Mezzo\Modules\Generator\GeneratorException;
 use MezzoLabs\Mezzo\Modules\Generator\NoTableFoundException;
 
-abstract class AttributeAction extends Action {
+abstract class AttributeAction extends Action
+{
 
     /**
      * @var Attribute
@@ -21,9 +21,10 @@ abstract class AttributeAction extends Action {
      * @param Attribute $attribute
      * @throws MezzoException
      */
-    public function __construct(Attribute $attribute){
+    public function __construct(Attribute $attribute)
+    {
 
-        if(!$attribute->hasTable()){
+        if (!$attribute->hasTable()) {
             throw new NoTableFoundException($attribute);
         }
 
@@ -55,13 +56,13 @@ abstract class AttributeAction extends Action {
      */
     public function qualifiedName()
     {
-        if($this instanceof CreateAction)
+        if ($this instanceof CreateAction)
             return "create." . $this->attribute()->qualifiedName();
 
-        if($this instanceof RemoveAction)
+        if ($this instanceof RemoveAction)
             return "remove." . $this->attribute()->qualifiedName();
 
-        if($this instanceof UpdateAction)
+        if ($this instanceof UpdateAction)
             return "update." . $this->attribute()->qualifiedName();
 
         throw new MezzoException('Cannot get qualified name.');

@@ -9,7 +9,6 @@ use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOne;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
-use MezzoLabs\Mezzo\Core\Traits\IsShared;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
 class RelationConverter extends Converter
@@ -83,7 +82,8 @@ class RelationConverter extends Converter
      * @return RelationshipReflection
      * @throws \ReflectionException
      */
-    protected function findOrFailCounterpart(RelationshipReflection $reflection){
+    protected function findOrFailCounterpart(RelationshipReflection $reflection)
+    {
         $counterpart = $reflection->counterpart();
 
         if (!$counterpart)
@@ -113,7 +113,8 @@ class RelationConverter extends Converter
      * @param RelationshipReflection $reflection
      * @return $this
      */
-    protected function makeManyToMany(RelationshipReflection $reflection){
+    protected function makeManyToMany(RelationshipReflection $reflection)
+    {
         return ManyToMany::make()
             ->from($reflection->tableName(), $reflection->name())
             ->to($reflection->relatedTableName(), $reflection->counterpartName())

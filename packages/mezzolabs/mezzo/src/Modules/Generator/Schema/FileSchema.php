@@ -8,7 +8,8 @@ use MezzoLabs\Mezzo\Core\Files\File;
 use MezzoLabs\Mezzo\Modules\Generator\Generators\AnnotationGenerator;
 use MezzoLabs\Mezzo\Modules\Generator\Generators\PhpCodeGenerator;
 
-abstract class FileSchema {
+abstract class FileSchema
+{
     /**
      * The content of the generated file.
      *
@@ -35,7 +36,8 @@ abstract class FileSchema {
      *
      * @return string
      */
-    protected function fullTemplateName(){
+    protected function fullTemplateName()
+    {
         return 'modules.generator::templates.' . $this->templateName();
     }
 
@@ -45,7 +47,8 @@ abstract class FileSchema {
      * @param $data
      * @return string
      */
-    protected function fillTemplate($data){
+    protected function fillTemplate($data)
+    {
         $viewFactory = mezzo()->makeViewFactory();
 
         $phpGenerator = mezzo()->make(PhpCodeGenerator::class);
@@ -67,9 +70,10 @@ abstract class FileSchema {
      * @param $folder
      * @return \MezzoLabs\Mezzo\Core\Files\File
      */
-    public function file($folder){
+    public function file($folder)
+    {
 
-        return new File($folder .'/'. $this->shortFileName(), $this->content());
+        return new File($folder . '/' . $this->shortFileName(), $this->content());
     }
 
 } 

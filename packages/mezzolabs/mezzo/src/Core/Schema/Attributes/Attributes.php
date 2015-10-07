@@ -4,16 +4,17 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 
 
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Column;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
 use MezzoLabs\Mezzo\Core\Schema\Converters\AttributeConverter;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
-class Attributes extends Collection{
+class Attributes extends Collection
+{
 
-    public function __construct($items = []){
+    public function __construct($items = [])
+    {
         parent::__construct($items);
     }
 
@@ -22,7 +23,8 @@ class Attributes extends Collection{
      * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
      * @throws InvalidArgumentException
      */
-    public function addAttribute(Attribute $attribute){
+    public function addAttribute(Attribute $attribute)
+    {
         return $this->put($attribute->name(), $attribute);
     }
 
@@ -31,7 +33,7 @@ class Attributes extends Collection{
      */
     public function atomicAttributes()
     {
-        return $this->filter(function(Attribute $attribute){
+        return $this->filter(function (Attribute $attribute) {
             return $attribute instanceof AtomicAttribute;
         });
     }
@@ -41,7 +43,7 @@ class Attributes extends Collection{
      */
     public function relationAttributes()
     {
-        return $this->filter(function(Attribute $attribute){
+        return $this->filter(function (Attribute $attribute) {
             return $attribute instanceof RelationAttribute;
         });
     }
@@ -57,7 +59,7 @@ class Attributes extends Collection{
         $converter = AttributeConverter::make();
         $attributes = new Attributes();
 
-        $columns->each(function(Column $column) use ($converter, $attributes){
+        $columns->each(function (Column $column) use ($converter, $attributes) {
             $attributes->addAttribute($converter->run($column));
         });
 

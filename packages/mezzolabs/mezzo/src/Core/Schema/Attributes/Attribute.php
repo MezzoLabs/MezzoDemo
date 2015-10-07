@@ -10,11 +10,12 @@ use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOneOrMany;
 use MezzoLabs\Mezzo\Core\Schema\ValidationRules\Rules;
 
-class Attribute {
+class Attribute
+{
     /**
      * @var string
      */
-    protected  $name;
+    protected $name;
     /**
      * @var InputType
      */
@@ -50,7 +51,8 @@ class Attribute {
      *
      * @return array
      */
-    public function htmlAttributes(){
+    public function htmlAttributes()
+    {
         $attributes = [
             'type' => $this->type->htmlType(),
             'name' => $this->name,
@@ -64,10 +66,10 @@ class Attribute {
      */
     public function getTable()
     {
-        if(!empty($this->table))
+        if (!empty($this->table))
             return $this->table;
 
-        if($this->model)
+        if ($this->model)
             return $this->model->tableName();
 
         return "";
@@ -84,7 +86,8 @@ class Attribute {
     /**
      * @return bool
      */
-    public function hasTable(){
+    public function hasTable()
+    {
         return !empty($this->getTable());
     }
 
@@ -151,11 +154,11 @@ class Attribute {
 
     public function isForeignKey()
     {
-        if(!($this instanceof RelationAttribute)) return false;
+        if (!($this instanceof RelationAttribute)) return false;
 
         $relation = $this->relation();
 
-        if($relation instanceof OneToOneOrMany)
+        if ($relation instanceof OneToOneOrMany)
             return $relation->joinColumn() == $this->name();
         else
             return true;
@@ -183,7 +186,8 @@ class Attribute {
     /**
      * @param array|ArrayAccess $options
      */
-    protected function setOptions($options){
+    protected function setOptions($options)
+    {
         $this->options = new Collection($options);
 
         $this->rules = $this->options->get('rules', new Rules());
@@ -200,7 +204,8 @@ class Attribute {
     /**
      * @return string
      */
-    public function qualifiedName(){
+    public function qualifiedName()
+    {
         return $this->getTable() . '.' . $this->name();
     }
 } 

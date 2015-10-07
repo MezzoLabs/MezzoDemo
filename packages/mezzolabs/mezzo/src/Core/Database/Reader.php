@@ -6,10 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Database;
 
 use Illuminate\Database\Connection;
 use Illuminate\Database\DatabaseManager;
-use Illuminate\Database\Schema\Grammars\Grammar;
-use Illuminate\Support\Facades\Cache;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Database\Table;
 use MezzoLabs\Mezzo\Core\Traits\IsShared;
 
 class Reader
@@ -55,7 +52,7 @@ class Reader
      */
     public function getColumns($table)
     {
-        if($table instanceof Table)
+        if ($table instanceof Table)
             $table = $table->name();
 
         return Singleton::get(
@@ -72,7 +69,8 @@ class Reader
      * @param $column string
      * @return bool
      */
-    public function columnIsPersisted($column, $table){
+    public function columnIsPersisted($column, $table)
+    {
         $columns = $this->getColumns($table);
 
         return isset($columns[$column]);
@@ -84,7 +82,8 @@ class Reader
      * @param $table
      * @return bool
      */
-    public function tableIsPersisted($table){
+    public function tableIsPersisted($table)
+    {
         return !empty($this->getColumns($table));
     }
 } 

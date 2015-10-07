@@ -4,7 +4,6 @@
 namespace MezzoLabs\Mezzo\Core\Schema\ValidationRules;
 
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 
@@ -54,7 +53,7 @@ class Rule
 
     public static function makeFromRuleArray($ruleArray)
     {
-        if(count($ruleArray) != 2)
+        if (count($ruleArray) != 2)
             throw new MezzoException('Rule is not valid.');
 
         return new Rule($ruleArray[0], $ruleArray[1]);
@@ -65,7 +64,7 @@ class Rule
      */
     public function toString()
     {
-        if(!$this->hasParameters()) return $this->snakeName();
+        if (!$this->hasParameters()) return $this->snakeName();
 
         return $this->snakeName() . ':' . implode(',', $this->parameters);
 

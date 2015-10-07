@@ -2,7 +2,8 @@
 
 namespace MezzoLabs\Mezzo\Modules\Generator\Migration\Actions;
 
-class RemoveAction extends AttributeAction{
+class RemoveAction extends AttributeAction
+{
 
     /**
      * @var CreateAction
@@ -34,8 +35,9 @@ class RemoveAction extends AttributeAction{
      *
      * @return CreateAction
      */
-    protected function reverse(){
-        if(!$this->reverseAction)
+    protected function reverse()
+    {
+        if (!$this->reverseAction)
             $this->reverseAction = new CreateAction($this->attribute);
 
         return $this->reverseAction;
