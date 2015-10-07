@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
+namespace MezzoLabs\Mezzo\Core\Database\Reflection;
 
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\EloquentModelReflection;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\MezzoModelReflector;
 use MezzoLabs\Mezzo\Core\Schema\Converters\RelationConverter;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToOne;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation as MezzoRelation;
@@ -26,7 +29,7 @@ class RelationshipReflection
         'belongsTo', 'belongsToMany', 'hasMany', 'hasOne', 'hasOneOrMany'
     ];
     /**
-     * @var ModelReflection
+     * @var EloquentModelReflection
      */
     protected $modelReflection;
 
@@ -60,12 +63,11 @@ class RelationshipReflection
      */
     protected $schemaConverter;
 
-
     /**
-     * @param ModelReflection $modelReflection
+     * @param EloquentModelReflection $modelReflection
      * @param $functionName
      */
-    public function __construct(ModelReflection $modelReflection, $functionName)
+    public function __construct(EloquentModelReflection $modelReflection, $functionName)
     {
         $this->modelReflection = $modelReflection;
         $this->functionName = $functionName;
@@ -365,7 +367,7 @@ class RelationshipReflection
      */
     public function relatedModelReflection()
     {
-        return ModelReflector::getReflection($this->instance()->getRelated());
+        return MezzoModelReflector::getReflection($this->instance()->getRelated());
 
     }
 

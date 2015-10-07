@@ -3,6 +3,7 @@
 namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Database\Reflection\RelationshipReflections;
 use MezzoLabs\Mezzo\Core\Database\Table;
 
 class EloquentModelReflection extends ModelReflection

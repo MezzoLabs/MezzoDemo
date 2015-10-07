@@ -9,7 +9,7 @@ use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Generic\AbstractGeneralModule;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflector;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\MezzoModelReflector;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeAssociated;
@@ -32,7 +32,7 @@ class ModuleCenter
     private $mezzo;
 
     /**
-     * @var ModelReflector
+     * @var MezzoModelReflector
      */
     private $reflector;
 
@@ -43,9 +43,9 @@ class ModuleCenter
 
     /**
      * @param Mezzo $mezzo
-     * @param ModelReflector $reflector
+     * @param MezzoModelReflector $reflector
      */
-    public function __construct(Mezzo $mezzo, ModelReflector $reflector)
+    public function __construct(Mezzo $mezzo, MezzoModelReflector $reflector)
     {
         $this->mezzo = $mezzo;
         $this->modules = new Collection();
@@ -260,7 +260,7 @@ class ModuleCenter
     }
 
     /**
-     * @return ModelReflector
+     * @return MezzoModelReflector
      */
     public function reflector()
     {

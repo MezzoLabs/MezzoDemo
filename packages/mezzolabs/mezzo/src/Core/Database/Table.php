@@ -6,9 +6,9 @@ namespace MezzoLabs\Mezzo\Core\Database;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Database\Reflection\RelationshipReflections;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflector;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflections;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\MezzoModelReflector;
 
 class Table
 {
@@ -52,7 +52,7 @@ class Table
     {
         $this->model = $model;
 
-        $this->reflection = ModelReflector::getReflection($model);
+        $this->reflection = MezzoModelReflector::getReflection($model);
         $this->instance = $this->reflection->instance();
         $this->columns = new DatabaseColumns($this);
 

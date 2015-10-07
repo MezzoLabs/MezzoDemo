@@ -14,7 +14,7 @@ use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Helpers\Path;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflector;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\MezzoModelReflector;
 
 trait CanMakeInstances
 {
@@ -53,11 +53,11 @@ trait CanMakeInstances
     /**
      * Return the model reflector instance.
      *
-     * @return ModelReflector
+     * @return MezzoModelReflector
      */
     public function reflector()
     {
-        return $this->make(ModelReflector::class);
+        return $this->make(MezzoModelReflector::class);
     }
 
     /**

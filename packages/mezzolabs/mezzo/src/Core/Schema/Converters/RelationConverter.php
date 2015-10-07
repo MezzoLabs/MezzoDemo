@@ -4,7 +4,7 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Converters;
 
 
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
+use MezzoLabs\Mezzo\Core\Database\Reflection\RelationshipReflection;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOne;

@@ -6,6 +6,8 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
+use MezzoLabs\Mezzo\Core\Database\Reflection\RelationshipReflection;
+use MezzoLabs\Mezzo\Core\Database\Reflection\RelationshipReflections;
 
 class ModelParser
 {

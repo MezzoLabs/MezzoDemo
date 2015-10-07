@@ -15,7 +15,7 @@
 use App\Tutorial;
 use Doctrine\Common\Annotations\FileCacheReader;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflector;
+use MezzoLabs\Mezzo\Core\Modularisation\Reflection\MezzoModelReflector;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AtomicAttribute;
 use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;

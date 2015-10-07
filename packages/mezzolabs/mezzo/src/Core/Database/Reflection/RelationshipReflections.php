@@ -1,8 +1,6 @@
 <?php
 
-
-namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
-
+namespace MezzoLabs\Mezzo\Core\Database\Reflection;
 
 use Illuminate\Support\Collection;
 
