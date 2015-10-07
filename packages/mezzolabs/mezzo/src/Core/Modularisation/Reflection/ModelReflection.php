@@ -13,7 +13,7 @@ use MezzoLabs\Mezzo\Core\Schema\Converters\ModelReflectionConverter;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
 
-class ModelReflection
+abstract class ModelReflection
 {
     /**
      * @var string Name of the eloquent class that is wrapped
@@ -84,7 +84,7 @@ class ModelReflection
             throw new \ReflectionException('Class ' . $className . ' does not exist');
         }
 
-        if(Reflector::make()->classUsesMezzoTrait($className))
+        if(mezzo()->reflector()->classUsesMezzoTrait($className))
             $this->isMezzoModel = true;
 
         $this->schemaConverter = ModelReflectionConverter::make();
@@ -220,6 +220,23 @@ class ModelReflection
     public function isMezzoModel()
     {
         return $this->isMezzoModel;
+    }
+
+    /**
+     * Produces a new model reflection.
+     * Creates an EloquentModelReflection if the model isnt analysed yet and doest use the MezzoTrait.
+     *
+     * @param $className
+     * @param bool $forceEloquentReflection force the usage of an eloquent reflection to take a look at the database
+     *
+     * @return EloquentModelReflection|MezzoModelReflection
+     */
+    public static function make($className, $forceEloquentReflection = false)
+    {
+        if(mezzo()->reflector()->classUsesMezzoTrait($className) && !$forceEloquentReflection)
+            return new MezzoModelReflection($className);
+
+        return new EloquentModelReflection($className);
     }
 
 }

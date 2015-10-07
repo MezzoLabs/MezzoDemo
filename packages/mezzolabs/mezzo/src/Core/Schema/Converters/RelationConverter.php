@@ -98,7 +98,7 @@ class RelationConverter extends Converter
      *
      * @param $class
      * @param RelationshipReflection $reflection
-     * @internal param $connectingColumn
+     * @internal param $joinColumn
      * @return mixed
      */
     protected function makeOneToOneOrMany($class, RelationshipReflection $reflection)
@@ -106,7 +106,7 @@ class RelationConverter extends Converter
         return Relation::makeByType($class)
             ->from($reflection->tableName(), $reflection->name())
             ->to($reflection->relatedTableName(), $reflection->counterpartName())
-            ->connectVia($reflection->connectingColumn(), $reflection->connectingTable());
+            ->connectVia($reflection->joinColumn(), $reflection->connectingTable());
     }
 
     /**

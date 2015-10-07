@@ -9,8 +9,6 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
 class Image extends Model
 {
-    use MezzoTutorial;
-
     public function tutorial(){
         return $this->belongsTo('App\Tutorial');
     }

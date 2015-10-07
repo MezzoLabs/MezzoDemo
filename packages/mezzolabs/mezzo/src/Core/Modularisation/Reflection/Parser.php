@@ -19,9 +19,6 @@ class Parser
      * @var ModelReflection
      */
     private $modelReflection;
-
-
-
     /**
      * @param ModelReflection $modelReflection
      * @internal param $filename

@@ -5,7 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Converters;
 
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
-use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
+use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 
 class ModelReflectionConverter extends ModelConverter
@@ -48,17 +48,17 @@ class ModelReflectionConverter extends ModelConverter
 
         $reflection->table()->allColumns()->each(
             function (DatabaseColumn $column) use ($schema) {
-                $attribute = $this->attributeConverter->fromDatabaseColumn($column);
+                $attribute = $this->attributeConverter->viaDatabaseColumn($column);
                 $schema->addAttribute($attribute);
             });
 
-        mezzo()->reflector()->relationsSchema()->connectingColumns()->each(
-            function (ConnectingColumn $column) use ($schema) {
+        mezzo()->reflector()->relationsSchema()->joinColumns()->each(
+            function (JoinColumn $column) use ($schema) {
 
                 if (!$column->relation()->connectsTable($schema->tableName()))
                     return;
 
-                $attribute = $this->attributeConverter->fromConnectingColumn($column);
+                $attribute = $this->attributeConverter->viaJoinColumn($column);
 
                 if (!$schema->hasAttribute($column->name())) {
                     $attribute->setPersisted($column->isPersisted());

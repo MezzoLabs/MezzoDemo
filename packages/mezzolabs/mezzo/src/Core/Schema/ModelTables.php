@@ -8,6 +8,7 @@ namespace MezzoLabs\Mezzo\Core\Schema;
 use Illuminate\Database\Eloquent\Collection;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumns;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 
 class ModelTables extends Collection{
 
@@ -98,6 +99,23 @@ class ModelTables extends Collection{
     public function setModel(ModelSchema $modelSchema)
     {
         $this->modelSchema = $modelSchema;
+    }
+
+
+    /**
+     * Get all attributes
+     *
+     * @return Attributes
+     */
+    public function attributes()
+    {
+        $attributes = new Attributes();
+
+        $this->each(function(TableSchema $table) use (&$attributes){
+            $attributes = $attributes->merge(($table->attributes()));
+        });
+
+        return $attributes;
     }
 
 

@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Fluent;
 use Illuminate\Support\Fluent;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AtomicAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
-use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
+use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
 use MezzoLabs\Mezzo\Core\Schema\Relations\RelationSide;
@@ -80,7 +80,7 @@ class FluentAttribute extends Fluent
         return $this;
     }
 
-    public function connectingColumn(ConnectingColumn $column)
+    public function joinColumn(JoinColumn $column)
     {
         $this->offsetSet('name', $column->name());
         $this->offsetSet('relation', $column->relation());

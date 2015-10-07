@@ -13,8 +13,10 @@
 
 
 use App\Tutorial;
+use Doctrine\Common\Annotations\FileCacheReader;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\Reflector;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\AtomicAttribute;
 use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 
@@ -34,16 +36,15 @@ Route::get('debug/models', function () {
 });
 
 Route::get('debug/generator', function () {
+
     $generator = GeneratorModule::make();
 
     $reflector = mezzo()->reflector();
 
     $traitGenerator = $generator->generatorFactory()->modelTraitGenerator($reflector->modelsSchema());
 
-    mezzo_textdump($traitGenerator->files()->get('/home/vagrant/Code/MezzoDemo/app/Mezzo/Generated/ModelTraits/MezzoTutorial.php')->content());
-    //return View::make('modules.generator::test');
+    $traitGenerator->run();
 
-    die();
     //return view('debugmodels', ['generator' => $generator]);
 });
 
@@ -65,6 +66,27 @@ Route::get('debug/migrationGenerator', function(){
 
 
     $generateForeignFields->handle();
+});
+
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+
+Route::get('debug/annotations', function(){
+
+    $reader = new FileCacheReader(
+        new AnnotationReader(),
+        storage_path('app/') . 'doctrine2',
+        $debug = true
+    );
+
+    $property = new MezzoLabs\Mezzo\Core\Annotations\Property(array());
+
+    $property = new ReflectionProperty(Tutorial::class, 'email');
+    //dd($property);
+
+    $annotations = $reader->getPropertyAnnotations($property);
+
+    dd($annotations);
 });
 
 

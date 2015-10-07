@@ -8,9 +8,12 @@ use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumns;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
+use MezzoLabs\Mezzo\Core\Schema\Relations\RelationSide;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
-class ModelSchema {
+class ModelSchema
+{
 
     /**
      * @var string
@@ -27,8 +30,12 @@ class ModelSchema {
      */
     protected $tables;
 
-
-    public function __construct($className, $tableName = false){
+    /**
+     * @param string $className
+     * @param bool $tableName
+     */
+    public function __construct($className, $tableName = false)
+    {
         $this->className = $className;
 
         $this->tables = new ModelTables();
@@ -40,8 +47,9 @@ class ModelSchema {
     /**
      * @param $tableName
      */
-    public function addMainTable($tableName){
-        if(empty($tableName)) $tableName = $this->defaultTableName();
+    public function addMainTable($tableName)
+    {
+        if (empty($tableName)) $tableName = $this->defaultTableName();
 
         $this->tables->addMainTable(new TableSchema($tableName));
     }
@@ -49,11 +57,14 @@ class ModelSchema {
     /**
      * @return string
      */
-    public function tableName(){
+    public function tableName()
+    {
         return $this->mainTable()->name();
     }
 
-
+    /**
+     * @return string
+     */
     public function defaultTableName()
     {
         return str_replace('\\', '', Str::snake(Str::plural(class_basename($this->className))));
@@ -63,7 +74,8 @@ class ModelSchema {
      * @param Attribute $attribute
      * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
      */
-    public function addAttribute(Attribute $attribute){
+    public function addAttribute(Attribute $attribute)
+    {
         $attribute->setModel($this);
 
         return $this->tables->addAttribute($attribute);
@@ -72,14 +84,27 @@ class ModelSchema {
     /**
      * @return Attributes\Attributes
      */
-    public function attributes(){
+    public function attributes()
+    {
         return $this->mainTable()->attributes();
+    }
+
+    /**
+     * Get attributes from all tables.
+     * Not only the main table that is connected to the model but also the tables that are connected via relations.
+     *
+     * @return Attributes\Attributes
+     */
+    public function allAttributes()
+    {
+        return $this->tables->attributes();
     }
 
     /**
      * @return TableSchema
      */
-    public function mainTable(){
+    public function mainTable()
+    {
         return $this->tables->main();
     }
 
@@ -93,10 +118,10 @@ class ModelSchema {
      */
     public function hasAttribute($attribute)
     {
-        if($attribute instanceof Attribute)
+        if ($attribute instanceof Attribute)
             $attribute = $attribute->name();
 
-        if(!is_string($attribute))
+        if (!is_string($attribute))
             throw new InvalidArgumentException($attribute);
 
         return $this->attributes()->has($attribute);
@@ -117,8 +142,51 @@ class ModelSchema {
      */
     public function shortName()
     {
-        if(!$this->shortName) $this->shortName = $this->makeShortName();
+        if (!$this->shortName) $this->shortName = $this->makeShortName();
         return $this->shortName;
+    }
+
+    /**
+     *
+     *
+     * @return RelationSchemas
+     */
+    public function relations()
+    {
+        $allAttributes = $this->allAttributes();
+
+        $relationAttributes = $allAttributes->relationAttributes();
+
+        $relations = new RelationSchemas();
+
+        $relationAttributes->each(function (RelationAttribute $relationAttribute) use ($relations){
+            $relations->addRelation($relationAttribute->relation());
+        });
+
+        return $relations;
+    }
+
+    /**
+     * Return all relation sides of this model.
+     * They represent the relations and the position of the current model in the relation.
+     *
+     * @return Collection
+     */
+    public function relationSides()
+    {
+        $allAttributes = $this->allAttributes();
+
+        $relationAttributes = $allAttributes->relationAttributes();
+
+        $relationSides = new Collection();
+        $table = $this->tableName();
+
+        $relationAttributes->each(function (RelationAttribute $relationAttribute) use ($relationSides, $table){
+            $relationSide = new RelationSide($relationAttribute->relation(), $table);
+            $relationSides->put($relationAttribute->qualifiedName(), $relationSide);
+        });
+
+        return $relationSides;
     }
 
     /**
@@ -126,7 +194,8 @@ class ModelSchema {
      *
      * @return string
      */
-    private function makeShortName(){
+    private function makeShortName()
+    {
         $nameSpaceFolders = explode('\\', $this->className());
 
         return $nameSpaceFolders[count($nameSpaceFolders) - 1];

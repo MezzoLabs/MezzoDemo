@@ -8,6 +8,19 @@ use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
+/**
+ * Example: Tutorial<->Categories
+ *
+ * fromTable: tutorials
+ * fromNaming: categories
+ * fromPrimaryKey: id
+ * toTable: categories
+ * toNaming: tutorials
+ * toPrimaryKey: id
+ *
+ * Class Relation
+ * @package MezzoLabs\Mezzo\Core\Schema\Relations
+ */
 abstract class Relation
 {
     /**
@@ -43,7 +56,7 @@ abstract class Relation
     /**
      * @var Collection
      */
-    protected $connectingColumns;
+    protected $joinColumns;
 
     /**
      * @var Collection
@@ -55,14 +68,20 @@ abstract class Relation
      */
     protected $tables;
 
+    /**
+     * Prevent the creation via the constructor. Use the factory method instead.
+     */
+    final public function __construct(){
 
-    public function from($fromTable, $relationNaming = "")
+    }
+
+    public function from($fromTable, $relationNaming)
     {
         $this->setTable('from', $fromTable, $relationNaming);
         return $this;
     }
 
-    public function to($toTable, $relationNaming = "")
+    public function to($toTable, $relationNaming)
     {
         $this->setTable('to', $toTable, $relationNaming);
         return $this;
@@ -80,10 +99,8 @@ abstract class Relation
      * @param $tableName
      * @param string $relationNaming
      */
-    protected function setTable($type, $tableName, $relationNaming = "")
+    protected function setTable($type, $tableName, $relationNaming)
     {
-        if ($relationNaming) $relationNaming = $tableName;
-
         $tableAttribute = $type . 'Table';
         $namingAttribute = $type . 'Naming';
 
@@ -109,12 +126,12 @@ abstract class Relation
     /**
      * @return Collection
      */
-    public function connectingColumns()
+    public function joinColumns()
     {
-        if (!$this->connectingColumns)
-            $this->connectingColumns = $this->columns()->connectingColumns();
+        if (!$this->joinColumns)
+            $this->joinColumns = $this->columns()->joinColumns();
 
-        return $this->connectingColumns;
+        return $this->joinColumns;
     }
 
     /**
@@ -186,8 +203,6 @@ abstract class Relation
      */
     public function toNaming()
     {
-        if (!$this->toNaming) return $this->toTable;
-
         return $this->toNaming;
     }
 
@@ -204,8 +219,6 @@ abstract class Relation
      */
     public function fromNaming()
     {
-        if (!$this->fromNaming) return $this->fromTable;
-
         return $this->fromNaming;
     }
 
@@ -231,6 +244,18 @@ abstract class Relation
     public function toPrimaryKey()
     {
         return $this->toPrimaryKey;
+    }
+
+
+    public function type()
+    {
+        return static::class;
+    }
+
+    public function shortType()
+    {
+        $parts = explode('\\', $this->type());
+        return $parts[count($parts) - 1];
     }
 
 

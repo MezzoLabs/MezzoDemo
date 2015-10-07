@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Columns;
 use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
 
-class ConnectingColumn extends Column{
+class JoinColumn extends Column{
     /**
      * @var Relation
      */

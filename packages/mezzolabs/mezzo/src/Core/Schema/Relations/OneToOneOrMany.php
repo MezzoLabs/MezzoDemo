@@ -5,18 +5,18 @@ namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
-use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
+use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 
 abstract class OneToOneOrMany extends Relation{
     /**
      * @var string
      */
-    protected $connectingTable;
+    protected $joinTable;
 
     /**
      * @var string
      */
-    protected $connectingColumn;
+    protected $joinColumn;
 
     /**
      * Set up the connection from one table to another.
@@ -28,29 +28,29 @@ abstract class OneToOneOrMany extends Relation{
     public function connectVia($columnName, $tableName = false){
         if(!$tableName) $tableName = $this->fromTable;
 
-        $this->connectingColumn = $columnName;
-        $this->connectingTable = $tableName;
+        $this->joinColumn = $columnName;
+        $this->joinTable = $tableName;
         return $this;
     }
 
     public function qualifiedName(){
-        return $this->connectingTable . '.' . $this->connectingColumn;
+        return $this->joinTable . '.' . $this->joinColumn;
     }
 
     /**
      * @return string
      */
-    public function connectingTable()
+    public function joinTable()
     {
-        return $this->connectingTable;
+        return $this->joinTable;
     }
 
     /**
      * @return string
      */
-    public function connectingColumn()
+    public function joinColumn()
     {
-        return $this->connectingColumn;
+        return $this->joinColumn;
     }
 
     /**
@@ -62,7 +62,7 @@ abstract class OneToOneOrMany extends Relation{
 
         $columns->addAtomicColumn($this->fromPrimaryKey(), 'integer', $this->fromTable);
         $columns->addAtomicColumn($this->toPrimaryKey(), 'integer', $this->toTable);
-        $columns->addConnectingColumn($this->connectingColumn, 'integer', $this->connectingTable, $this);
+        $columns->addJoinColumn($this->joinColumn, 'integer', $this->joinTable, $this);
 
         return $columns;
     }

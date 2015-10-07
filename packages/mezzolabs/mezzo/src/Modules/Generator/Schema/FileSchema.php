@@ -5,6 +5,8 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Schema;
 
 
 use MezzoLabs\Mezzo\Core\Files\File;
+use MezzoLabs\Mezzo\Modules\Generator\Generators\AnnotationGenerator;
+use MezzoLabs\Mezzo\Modules\Generator\Generators\PhpCodeGenerator;
 
 abstract class FileSchema {
     /**
@@ -46,8 +48,13 @@ abstract class FileSchema {
     protected function fillTemplate($data){
         $viewFactory = mezzo()->makeViewFactory();
 
+        $phpGenerator = mezzo()->make(PhpCodeGenerator::class);
+        $annotationGenerator = mezzo()->make(AnnotationGenerator::class);
+
         $templateData = [
-            'PHP_OPENING_TAG' => '<?php'
+            'PHP_OPENING_TAG' => '<?php',
+            'php' => $phpGenerator,
+            'annotation' => $annotationGenerator
         ];
 
         return $viewFactory->make($this->fullTemplateName(), $data, $templateData)->render();
@@ -61,6 +68,7 @@ abstract class FileSchema {
      * @return \MezzoLabs\Mezzo\Core\Files\File
      */
     public function file($folder){
+
         return new File($folder .'/'. $this->shortFileName(), $this->content());
     }
 

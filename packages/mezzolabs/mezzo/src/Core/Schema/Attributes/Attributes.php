@@ -29,7 +29,7 @@ class Attributes extends Collection{
     /**
      * @return Collection
      */
-    public function atomics()
+    public function atomicAttributes()
     {
         return $this->filter(function(Attribute $attribute){
             return $attribute instanceof AtomicAttribute;
@@ -39,7 +39,7 @@ class Attributes extends Collection{
     /**
      * @return Collection
      */
-    public function relations()
+    public function relationAttributes()
     {
         return $this->filter(function(Attribute $attribute){
             return $attribute instanceof RelationAttribute;

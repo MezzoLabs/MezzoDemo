@@ -242,7 +242,7 @@ class RelationshipReflection
      * @return string
      * @throws MezzoException
      */
-    public function connectingColumn(){
+    public function joinColumn(){
         if($this->isBelongsTo())
             return $this->localColumn();
 

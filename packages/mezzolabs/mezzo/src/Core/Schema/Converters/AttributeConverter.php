@@ -10,7 +10,7 @@ use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AtomicAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
-use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
+use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
 use MezzoLabs\Mezzo\Core\Schema\Relations\RelationSide;
@@ -22,10 +22,10 @@ class AttributeConverter extends Converter
     public function run($toConvert)
     {
         if ($toConvert instanceof DatabaseColumn)
-            return $this->fromDatabaseColumn($toConvert);
+            return $this->viaDatabaseColumn($toConvert);
 
-        if ($toConvert instanceof ConnectingColumn)
-            return $this->fromConnectingColumn($toConvert);
+        if ($toConvert instanceof JoinColumn)
+            return $this->viaJoinColumn($toConvert);
 
         throw new InvalidArgumentException($toConvert);
     }
@@ -34,13 +34,13 @@ class AttributeConverter extends Converter
      * @param DatabaseColumn $databaseColumn
      * @return AtomicAttribute|RelationAttribute
      */
-    public function fromDatabaseColumn(DatabaseColumn $databaseColumn)
+    public function viaDatabaseColumn(DatabaseColumn $databaseColumn)
     {
         $fluentAttribute = new FluentAttribute();
 
         if ($databaseColumn->isForeignKey()) {
             $fluentAttribute
-                ->connectingColumn($databaseColumn->connectingColumn());
+                ->joinColumn($databaseColumn->joinColumn());
         } else {
             $fluentAttribute
                 ->name($databaseColumn->name())
@@ -56,12 +56,12 @@ class AttributeConverter extends Converter
     }
 
     /**
-     * @param ConnectingColumn $column
+     * @param JoinColumn $column
      * @return AtomicAttribute|RelationAttribute
      */
-    public function fromConnectingColumn(ConnectingColumn $column)
+    public function viaJoinColumn(JoinColumn $column)
     {
-        $fluentAttribute = (new FluentAttribute())->connectingColumn($column);
+        $fluentAttribute = (new FluentAttribute())->joinColumn($column);
 
         return $fluentAttribute->make();
     }

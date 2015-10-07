@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Schema;
 
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
-use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
+use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
 
 class RelationSchemas {
@@ -18,7 +18,7 @@ class RelationSchemas {
     /**
      * @var Columns
      */
-    protected $connectingColumns;
+    protected $joinColumns;
 
     /**
      * @var Columns
@@ -33,7 +33,7 @@ class RelationSchemas {
     public function __construct($relations = []){
         $this->relations = new Collection();
 
-        $this->connectingColumns = new Collection();
+        $this->joinColumns = new Collection();
         $this->columns = new Collection();
 
         foreach($relations as $relation){
@@ -49,7 +49,7 @@ class RelationSchemas {
      */
     public function addRelation(Relation $relation){
         $this->columns = $this->columns->merge($relation->columns());
-        $this->connectingColumns = $this->connectingColumns->merge($relation->connectingColumns());
+        $this->joinColumns = $this->joinColumns->merge($relation->joinColumns());
 
         return $this->relations->put($relation->qualifiedName(), $relation);
     }
@@ -78,14 +78,35 @@ class RelationSchemas {
      * @param string $tableName
      * @return Collection
      */
-    public function connectingColumns($tableName = "")
+    public function joinColumns($tableName = "")
     {
         if(empty($tableName))
-            return $this->connectingColumns;
+            return $this->joinColumns;
 
-        return $this->connectingColumns->filter(function(ConnectingColumn $column) use ($tableName){
+        return $this->joinColumns->filter(function(JoinColumn $column) use ($tableName){
             return $column->table() === $tableName;
         });
+    }
+
+    /**
+     * Execute a callback over each relation.
+     *
+     * @param  callable  $callback
+     * @return Collection
+     */
+    public function each($callback)
+    {
+        return $this->relations->each($callback);
+    }
+
+    /**
+     * Return the collection of relations.
+     *
+     * @return Collection
+     */
+    public function all()
+    {
+        return $this->relations;
     }
 
 }

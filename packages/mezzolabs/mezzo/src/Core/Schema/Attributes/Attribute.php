@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOneOrMany;
+use MezzoLabs\Mezzo\Core\Schema\ValidationRules\Rules;
 
 class Attribute {
     /**
@@ -38,6 +39,11 @@ class Attribute {
      * @var bool
      */
     protected $persisted = true;
+
+    /**
+     * @var Rules
+     */
+    protected $rules;
 
     /**
      * Get the html attributes as array.
@@ -150,9 +156,27 @@ class Attribute {
         $relation = $this->relation();
 
         if($relation instanceof OneToOneOrMany)
-            return $relation->connectingColumn() == $this->name();
+            return $relation->joinColumn() == $this->name();
         else
             return true;
+    }
+
+    /**
+     * @return Rules
+     */
+    public function rules()
+    {
+        return $this->rules;
+    }
+
+    /**
+     * Check if this attribute has rules.
+     *
+     * @return bool
+     */
+    public function hasRules()
+    {
+        return $this->rules()->count() > 0;
     }
 
 
@@ -161,6 +185,8 @@ class Attribute {
      */
     protected function setOptions($options){
         $this->options = new Collection($options);
+
+        $this->rules = $this->options->get('rules', new Rules());
     }
 
     /**

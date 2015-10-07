@@ -7,7 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Database;
 use Doctrine\DBAL\Schema\Column as DoctrineColumn;
 use Doctrine\DBAL\Types\Type;
 use MezzoLabs\Mezzo\Core\Modularisation\Reflection\RelationshipReflection;
-use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
+use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 
 class DatabaseColumn
 {
@@ -38,9 +38,9 @@ class DatabaseColumn
     protected $table;
 
     /**
-     * @var ConnectingColumn
+     * @var JoinColumn
      */
-    protected $connectingColumn = false;
+    protected $joinColumn = false;
 
 
     public function __construct($name, $type, Table $table)
@@ -111,23 +111,23 @@ class DatabaseColumn
      */
     public function isForeignKey()
     {
-        return $this->connectingColumn() !== null;
+        return $this->joinColumn() !== null;
     }
 
     /**
      * Get the according connecting column from the relations schema.
      * Returns null if this column is a simple column.
      *
-     * @return ConnectingColumn|mixed
+     * @return JoinColumn|mixed
      */
-    public function connectingColumn(){
-        if($this->connectingColumn === false) {
+    public function joinColumn(){
+        if($this->joinColumn === false) {
             $relationsSchema = mezzo()->reflector()->relationsSchema();
-            $this->connectingColumn = $relationsSchema->connectingColumns($this->table->name())
+            $this->joinColumn = $relationsSchema->joinColumns($this->table->name())
                                         ->get($this->qualifiedName());
         }
 
-        return $this->connectingColumn;
+        return $this->joinColumn;
 
     }
 

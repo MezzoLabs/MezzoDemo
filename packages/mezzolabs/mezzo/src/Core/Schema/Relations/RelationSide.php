@@ -74,7 +74,7 @@ class RelationSide {
             /**
              * If the connecting table is on our side we only have one child.
              */
-            if($this->relation->connectingTable() === $this->table)
+            if($this->relation->joinTable() === $this->table)
                 return "single";
             else
                 return "multiple";
@@ -91,15 +91,23 @@ class RelationSide {
         return $this->relation;
     }
 
-    public function hasConnectingColumn(){
+    /**
+     * Checks if this side has the connecting column.
+     *
+     * @return bool
+     */
+    public function containsTheJoinColumn(){
         if($this->relation instanceof ManyToMany)
             return true;
 
         if($this->hasMultipleChildren())
             return true;
 
-        return $this->relation()->connectingTable() == $this->table;
+        if($this->relation instanceof OneToOneOrMany)
+            return $this->relation->joinTable() === $this->table;
     }
+
+
 
     /**
      * Get the other side of the relation
@@ -134,5 +142,19 @@ class RelationSide {
     public function table()
     {
         return $this->table;
+    }
+
+    /**
+     * Returns the function name of the current side.
+     * This name will be represented in the model.
+     *
+     * @return string
+     */
+    public function naming()
+    {
+        if($this->sideType() == 'to')
+            return $this->relation()->toNaming();
+
+        return $this->relation()->fromNaming();
     }
 } 

@@ -7,16 +7,16 @@ namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
-use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
+use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 
 class ManyToMany extends Relation
 {
 
     protected $pivotTable;
 
-    protected $connectingColumn;
+    protected $pivotColumnFrom;
 
-    protected $connectingColumn2;
+    protected $pivotColumnTo;
 
     /**
      * @param string $tableName
@@ -28,8 +28,8 @@ class ManyToMany extends Relation
     {
         $this->pivotTable = $tableName;
 
-        $this->connectingColumn = DatabaseColumn::disqualifyName($columnFrom);
-        $this->connectingColumn2 = DatabaseColumn::disqualifyName($columnTo);
+        $this->pivotColumnFrom = DatabaseColumn::disqualifyName($columnFrom);
+        $this->pivotColumnTo = DatabaseColumn::disqualifyName($columnTo);
         return $this;
     }
 
@@ -46,14 +46,38 @@ class ManyToMany extends Relation
         return parent::makeByType(static::class);
     }
 
+    /**
+     * @return mixed
+     */
+    public function pivotTable()
+    {
+        return $this->pivotTable;
+    }
+
+    /**
+     * @return string
+     */
+    public function pivotColumnFrom()
+    {
+        return $this->pivotColumnFrom;
+    }
+
+    /**
+     * @return string
+     */
+    public function pivotColumnTo()
+    {
+        return $this->pivotColumnTo;
+    }
+
     protected function makeColumnsCollection()
     {
         $columns = new Columns();
 
         $columns->addAtomicColumn($this->fromPrimaryKey(), 'integer', $this->fromTable);
         $columns->addAtomicColumn($this->toPrimaryKey(), 'integer', $this->toTable);
-        $columns->addConnectingColumn($this->connectingColumn, 'integer', $this->pivotTable, $this);
-        $columns->addConnectingColumn($this->connectingColumn2, 'integer', $this->pivotTable, $this);
+        $columns->addJoinColumn($this->pivotColumnFrom, 'integer', $this->pivotTable, $this);
+        $columns->addJoinColumn($this->pivotColumnTo, 'integer', $this->pivotTable, $this);
 
         return $columns;
     }

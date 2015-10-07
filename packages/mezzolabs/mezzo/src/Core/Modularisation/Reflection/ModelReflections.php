@@ -52,11 +52,10 @@ class ModelReflections extends Collection
      */
     public static function makeReflection($model)
     {
-        if (is_string($model)) {
-            return new \MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection($model);
-        }
+        if (is_string($model))
+            return ModelReflection::make($model);
 
-        if (\MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection::class == get_class($model))
+        if ($model instanceof ModelReflection)
             return $model;
 
         if ($model == null) {
@@ -143,7 +142,7 @@ class ModelReflections extends Collection
      */
     public function modelString($model)
     {
-        if (is_object($model) && get_class($model) == ModelReflection::class)
+        if (is_object($model) && $model instanceof ModelReflection)
             return $model->className();
 
         if (is_object($model))

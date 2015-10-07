@@ -16,5 +16,7 @@ use Doctrine\DBAL\Types\Type;
 class TextArea extends TextInput{
     protected $doctrineType = Type::TEXT;
 
+    protected $variableType = 'string';
+
     protected $htmlTag = "textarea";
 } 

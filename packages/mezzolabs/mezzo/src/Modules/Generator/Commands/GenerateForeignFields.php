@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Console\Commands\MezzoCommand;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
-use MezzoLabs\Mezzo\Core\Schema\Columns\ConnectingColumn;
+use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 use MezzoLabs\Mezzo\Modules\Generator\Migration\ChangeSet;
 use MezzoLabs\Mezzo\Modules\Generator\Generators\MigrationGenerator;
 
@@ -47,7 +47,7 @@ class GenerateForeignFields extends MezzoCommand
         //@TODO-Simon Reader is Needed?
         $this->mezzo->makeDatabaseReader();
 
-        $notPersisted = $this->allConnectingColumns()->filter(function(ConnectingColumn $column){
+        $notPersisted = $this->allJoinColumns()->filter(function(JoinColumn $column){
             return !$column->isPersisted();
         });
 
@@ -65,8 +65,8 @@ class GenerateForeignFields extends MezzoCommand
     /**
      * @return Collection
      */
-    protected function allConnectingColumns(){
-        return $this->mezzo->reflector()->relationsSchema()->connectingColumns();
+    protected function allJoinColumns(){
+        return $this->mezzo->reflector()->relationsSchema()->joinColumns();
 
     }
 }

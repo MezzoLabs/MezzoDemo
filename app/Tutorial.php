@@ -6,6 +6,9 @@ use App\Mezzo\Generated\ModelTraits\MezzoTutorial;
 use Illuminate\Database\Eloquent\Model;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
+use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
+
+
 /**
  * App\Tutorial
  *
@@ -25,7 +28,12 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 class Tutorial extends Model
 {
 
-    use MezzoTutorial;
+
+    /**
+     * @Mezzo\Property(type="string", mode="super")
+     * @var string
+     */
+    protected $email;
 
     public function mainImage(){
         return $this->hasOne('App\Image');

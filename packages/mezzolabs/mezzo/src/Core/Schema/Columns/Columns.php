@@ -19,15 +19,15 @@ class Columns extends Collection
         return $this->addColumn(new AtomicColumn($name, $type, $table));
     }
 
-    public function addConnectingColumn($name, $type, $table, Relation $relation)
+    public function addJoinColumn($name, $type, $table, Relation $relation)
     {
-        return $this->addColumn(new ConnectingColumn($name, $type, $table, $relation));
+        return $this->addColumn(new JoinColumn($name, $type, $table, $relation));
     }
 
-    public function connectingColumns()
+    public function joinColumns()
     {
         return $this->filter(function (Column $column) {
-            return $column instanceof ConnectingColumn;
+            return $column instanceof JoinColumn;
         });
     }
 } 

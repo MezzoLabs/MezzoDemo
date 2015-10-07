@@ -13,7 +13,7 @@ use MezzoLabs\Mezzo\Modules\Generator\Schema\ModelTraitSchema;
 use MezzoLabs\Mezzo\Modules\Generator\Schema\ModelTraitSchemas;
 
 
-class ModelTraitGenerator extends Generator
+class ModelTraitGenerator extends FileGenerator
 {
 
     /**

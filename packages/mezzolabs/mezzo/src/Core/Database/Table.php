@@ -45,7 +45,7 @@ class Table {
     /**
      * @var Collection
      */
-    protected $connectingColumns;
+    protected $joiningColumns;
 
     /**
      * @param $model
@@ -129,11 +129,11 @@ class Table {
     /**
      * @return Collection
      */
-    public function connectingColumns(){
-        if(!$this->connectingColumns)
-            $this->connectingColumns = mezzo()->reflector()->relationsSchema()->connectingColumns($this->name());
+    public function joiningColumns(){
+        if(!$this->joiningColumns)
+            $this->joiningColumns = mezzo()->reflector()->relationsSchema()->joinColumns($this->name());
 
-        return $this->connectingColumns;
+        return $this->joiningColumns;
     }
 
     /**

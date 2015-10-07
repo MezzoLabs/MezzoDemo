@@ -51,6 +51,26 @@ class ModelTraitSchema extends FileSchema
     }
 
     /**
+     * Returns the relations of the model.
+     *
+     * @return \MezzoLabs\Mezzo\Core\Schema\RelationSchemas
+     */
+    public function relations()
+    {
+        return $this->modelSchema()->relations();
+    }
+
+    /**
+     * Returns the relation sides of the model.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function relationSides()
+    {
+        return $this->modelSchema()->relationSides();
+    }
+
+    /**
      * The name of the template inside view folder.
      *
      * @return string
