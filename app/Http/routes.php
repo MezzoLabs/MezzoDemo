@@ -27,6 +27,8 @@ Route::get('/', function () {
 Route::get('debug/models', function () {
     $relations = mezzo()->reflector()->relationsSchema();
 
+    dd(mezzo()->reflector());
+
 
     //$moduleCenter = mezzo()->moduleCenter();
 

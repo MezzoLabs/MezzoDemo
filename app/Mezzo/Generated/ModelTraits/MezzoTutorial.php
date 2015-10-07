@@ -19,62 +19,8 @@ trait MezzoTutorial
     protected $table = 'tutorials';
 
     protected $rules = [
-        'id' => '', 
-        'title' => '', 
-        'body' => '', 
-        'creator' => '', 
-        'created_at' => '', 
-        'updated_at' => ''
+        
     ];
-
-    /**
-    *
-    /*@Mezzo\InputType(type='NumberInput')
-    * @var float            
-    */
-    protected $id;
-
-    /**
-    *
-    /*@Mezzo\InputType(type='TextInput')
-    * @var string            
-    */
-    protected $title;
-
-    /**
-    *
-    /*@Mezzo\InputType(type='TextArea')
-    * @var string            
-    */
-    protected $body;
-
-    /**
-    *
-    /*@Mezzo\InputType(type='NumberInput')
-    * @var float            
-    */
-    protected $creator;
-
-    /**
-    *
-    /*@Mezzo\InputType(type='TextInput')
-    * @var string            
-    */
-    protected $created_at;
-
-    /**
-    *
-    /*@Mezzo\InputType(type='TextInput')
-    * @var string            
-    */
-    protected $updated_at;
-
-    /**
-    *
-    /*@Mezzo\InputType(type='RelationInputSingle')
-    * @var integer            
-    */
-    protected $user_id;
 
     /**
     *
@@ -90,14 +36,13 @@ trait MezzoTutorial
     */
     protected $parent;
 
-
     /**
-    /*@Mezzo\Relations\OneToMany
-    /*@Mezzo\Relations\From(table='users', primaryKey='id', naming='tutorials')
-    /*@Mezzo\Relations\To(table='tutorials', primaryKey='id', naming='owner')
-    /*@Mezzo\Relations\JoinColumn(table='tutorials', column='id')
+    *
+    /*@Mezzo\InputType(type='RelationInputSingle')
+    * @var integer            
     */
-    protected $owner;
+    protected $user_id;
+
 
     /**
     /*@Mezzo\Relations\OneToMany
@@ -114,6 +59,14 @@ trait MezzoTutorial
     /*@Mezzo\Relations\JoinColumn(table='tutorials', column='id')
     */
     protected $parent;
+
+    /**
+    /*@Mezzo\Relations\OneToMany
+    /*@Mezzo\Relations\From(table='users', primaryKey='id', naming='tutorials')
+    /*@Mezzo\Relations\To(table='tutorials', primaryKey='id', naming='owner')
+    /*@Mezzo\Relations\JoinColumn(table='tutorials', column='id')
+    */
+    protected $owner;
 
     /**
     /*@Mezzo\Relations\ManyToMany
