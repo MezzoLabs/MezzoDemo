@@ -23,9 +23,9 @@ Route::get('/', function () {
 });
 
 Route::get('debug/models', function () {
-    $relations = mezzo()->reflector()->relationsSchema();
+    $relations = mezzo()->reflector()->relationSchemas();
 
-    dd(mezzo()->reflector());
+    dd($relations);
 
 
     //$moduleCenter = mezzo()->moduleCenter();
@@ -41,7 +41,7 @@ Route::get('debug/generator', function () {
 
     $reflector = mezzo()->reflector();
 
-    $traitGenerator = $generator->generatorFactory()->modelTraitGenerator($reflector->modelsSchema());
+    $traitGenerator = $generator->generatorFactory()->modelTraitGenerator($reflector->modelSchemas());
 
     $traitGenerator->run();
 

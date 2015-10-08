@@ -28,6 +28,11 @@ class ModuleCenter
     protected $modules;
 
     /**
+     * @var MezzoModelsReflector
+     */
+    protected $reflector;
+
+    /**
      * @var Mezzo
      */
     private $mezzo;
@@ -55,6 +60,7 @@ class ModuleCenter
         $this->registerGeneralModule($mezzo->make('mezzo.modules.general'));
 
         $this->reflectionManager = $reflectionManager;
+        $this->reflector = $reflectionManager->mezzoModelReflector();
     }
 
     /**
@@ -238,13 +244,13 @@ class ModuleCenter
      */
     public function associateModel($model, ModuleProvider $module)
     {
-        $modelReflection = $this->getModelReflection($model);
+        $modelReflectionSet = $this->getModelReflectionSet($model);
 
-        if (!$modelReflection)
+        if (!$modelReflectionSet)
             throw new ModelCannotBeAssociated($model, $module);
 
-        if ($modelReflection instanceof MezzoModelReflection)
-            $modelReflection->setModule($module);
+        if ($modelReflectionSet->isMezzoModel())
+            return $modelReflectionSet->mezzoReflection()->setModule($module);
 
         throw new ModelDoesntUseMezzoTrait($model . ' doesnt use the mezzo trait but is associated with a module.');
     }
@@ -253,11 +259,14 @@ class ModuleCenter
      * @param $model
      * @throws MezzoException
      * @throws ModelCannotBeFound
-     * @return ModelReflection
+     * @return ModelReflectionSet
      */
-    public function getModelReflection($model)
+    public function getModelReflectionSet($model)
     {
-        return $this->reflectionManager->mezzoModelsReflector()->modelReflection($model);
+        if($model instanceof ModelReflectionSet)
+            return $model;
+
+        return $this->reflector->modelReflectionSet($model);
     }
 
     /**
@@ -265,19 +274,19 @@ class ModuleCenter
      */
     private function fillGeneralModule()
     {
-        $allModels = $this->reflectionManager->sets();
+        $reflectionSets = $this->reflector->modelReflectionSets();
 
-        $allModels->map(function (ModelReflectionSet $model, $key) {
-            if ($model->hasModule()) return;
+        $reflectionSets->map(function (ModelReflectionSet $set, $key) {
+            if ($set->mezzoReflection()->hasModule()) return;
 
-            $this->associateWithGeneralModule($model);
+            $this->associateWithGeneralModule($set);
         });
     }
 
     /**
-     * @param ModelReflection $model
+     * @param ModelReflectionSet $model
      */
-    public function associateWithGeneralModule(ModelReflection $model)
+    public function associateWithGeneralModule(ModelReflectionSet $model)
     {
         $this->associateModel($model, $this->generalModule());
     }

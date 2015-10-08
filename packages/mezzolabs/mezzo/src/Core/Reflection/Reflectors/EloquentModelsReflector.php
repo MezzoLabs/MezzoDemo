@@ -15,6 +15,14 @@ class EloquentModelsReflector extends ModelsReflector
 {
 
     /**
+     * @return ModelReflectionSet
+     */
+    public function modelReflectionSet($className)
+    {
+        return $this->manager()->modelReflection($className);
+    }
+
+    /**
      * Get all relationReflections
      *
      * @return Collection
@@ -24,9 +32,10 @@ class EloquentModelsReflector extends ModelsReflector
         return Singleton::get('relationReflections', function () {
             $allRelations = new Collection();
 
-            foreach ($this->modelReflections() as $modelReflection) {
+            /** @var EloquentModelReflection $reflectionSet */
+            foreach ($this->modelReflections() as $eloquentReflection) {
                 /** @var EloquentRelationshipReflection $relationshipReflection */
-                foreach ($modelReflection->relationshipReflections() as $relationshipReflection) {
+                foreach ($eloquentReflection->relationshipReflections() as $relationshipReflection) {
                     $allRelations->put($relationshipReflection->qualifiedName(), $relationshipReflection);
                 }
             }
@@ -73,12 +82,10 @@ class EloquentModelsReflector extends ModelsReflector
      */
     protected function makeModelSchemas()
     {
-        $modelReflections = $this->modelReflections();
-
         $modelsSchema = new ModelSchemas();
 
-        $modelReflections->each(function (EloquentModelReflection $reflection) use ($modelsSchema) {
-            $modelsSchema->addSchema($reflection->schema());
+        $this->modelReflections()->each(function (EloquentModelReflection $model) use ($modelsSchema) {
+            $modelsSchema->addSchema($model->schema());
         });
 
         return $modelsSchema;
@@ -97,5 +104,13 @@ class EloquentModelsReflector extends ModelsReflector
         return $allSets->filter(function (ModelReflectionSet $reflectionSet) {
             return !$reflectionSet->isMezzoModel();
         });
+    }
+
+    /**
+     * @return Collection
+     */
+    public function modelReflections()
+    {
+        return parent::findModelReflections(false);
     }
 }

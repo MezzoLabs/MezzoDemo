@@ -4,9 +4,13 @@ namespace MezzoLabs\Mezzo\Core\Schema\Converters;
 
 
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
+use MezzoLabs\Mezzo\Exceptions\ReflectionException;
+use MezzoLabs\Mezzo\Exceptions\UnexpectedException;
 
 class ModelReflectionConverter extends ModelConverter
 {
@@ -41,8 +45,25 @@ class ModelReflectionConverter extends ModelConverter
     /**
      * @param ModelReflection $reflection
      * @return ModelSchema
+     * @throws ReflectionException
      */
     protected function fromModelReflectionToSchema(ModelReflection $reflection)
+    {
+        if($reflection instanceof MezzoModelReflection)
+            return $this->fromMezzoReflectionToSchema($reflection);
+
+        if($reflection instanceof EloquentModelReflection)
+            return $this->fromEloquentReflectionToSchema($reflection);
+
+        throw new UnexpectedException();
+    }
+
+    protected function fromMezzoReflectionToSchema(MezzoModelReflection $reflection)
+    {
+        $schema = new ModelSchema($reflection->className(), )
+    }
+
+    protected function fromEloquentReflectionToSchema(EloquentModelReflection $reflection)
     {
         $schema = new ModelSchema($reflection->className(), $reflection->databaseTable()->name());
 
@@ -52,7 +73,7 @@ class ModelReflectionConverter extends ModelConverter
                 $schema->addAttribute($attribute);
             });
 
-        mezzo()->reflector()->relationsSchema()->joinColumns()->each(
+        mezzo()->reflector()->relationSchemas()->joinColumns()->each(
             function (JoinColumn $column) use ($schema) {
 
                 if (!$column->relation()->connectsTable($schema->tableName()))
@@ -68,6 +89,5 @@ class ModelReflectionConverter extends ModelConverter
             });
 
         return $schema;
-
     }
 }

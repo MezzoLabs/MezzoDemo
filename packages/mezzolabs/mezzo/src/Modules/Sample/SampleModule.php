@@ -33,7 +33,7 @@ class SampleModule extends ModuleProvider
     public function ready()
     {
 
-        $tutorialReflection = $this->modelReflections->get(Tutorial::class);
+        $tutorialReflection = $this->modelReflectionSets->get(Tutorial::class);
         //dd($tutorialReflection->relationships());
     }
 }

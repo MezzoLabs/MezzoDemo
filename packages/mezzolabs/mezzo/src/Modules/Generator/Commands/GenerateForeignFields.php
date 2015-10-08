@@ -65,7 +65,7 @@ class GenerateForeignFields extends MezzoCommand
      */
     protected function allJoinColumns()
     {
-        return $this->mezzo->reflector()->relationsSchema()->joinColumns();
+        return $this->mezzo->reflector()->relationSchemas()->joinColumns();
 
     }
 }

@@ -85,7 +85,7 @@ class ReflectionManager
     /**
      * @return MezzoModelsReflector
      */
-    public function mezzoModelsReflector()
+    public function mezzoModelReflector()
     {
         return $this->mezzoModelsReflector;
     }

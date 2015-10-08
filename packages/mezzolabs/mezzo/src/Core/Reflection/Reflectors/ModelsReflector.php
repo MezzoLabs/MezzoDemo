@@ -64,11 +64,33 @@ abstract class ModelsReflector
     abstract public function modelReflectionSets();
 
     /**
+     * @return ModelReflectionSet
+     */
+    abstract public function modelReflectionSet($className);
+
+    /**
      * Retrieve the correct model classes from the ModelFinder.
      *
      * @return Collection
      */
     abstract protected function findModelClasses();
+
+    /**
+     * Get all the model reflection instances for this reflector.
+     *
+     * @param bool|true $useMezzoReflections
+     * @return Collection
+     */
+    public function findModelReflections($useMezzoReflections = true){
+        $modelReflections = new Collection();
+
+        $this->modelReflectionSets()->each(function(ModelReflectionSet $set, $key) use ($modelReflections, $useMezzoReflections){
+            $modelReflection = ($useMezzoReflections) ? $set->mezzoReflection() : $set->eloquentReflection();
+            $modelReflections->put($key, $modelReflection);
+        });
+
+        return $modelReflections;
+    }
 
     /**
      * Returns the found model class names.

@@ -2,6 +2,8 @@
 
 namespace MezzoLabs\Mezzo\Core\Reflection\Reflectors;
 
+use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchemas;
 use MezzoLabs\Mezzo\Core\Schema\RelationSchemas;
@@ -18,23 +20,14 @@ class MezzoModelsReflector extends ModelsReflector
         });
     }
 
-
     /**
-     * @return RelationSchemas
+     * @return ModelReflectionSet
      */
-    public function relationsSchema()
+    public function modelReflectionSet($className)
     {
-        return $this->relationsSchema;
+        return $this->manager()->mezzoReflection($className);
     }
 
-
-    /**
-     * @return ModelSchemas
-     */
-    public function modelsSchema()
-    {
-        return $this->modelsSchema;
-    }
 
     /**
      * Retrieve the correct model classes from the ModelFinder.
@@ -54,7 +47,9 @@ class MezzoModelsReflector extends ModelsReflector
      */
     protected function makeRelationSchemas()
     {
-        // TODO: Implement makeRelationSchemas() method.
+        $modelSchemas = $this->makeModelSchemas();
+
+        dd($modelSchemas);
     }
 
     /**
@@ -65,7 +60,22 @@ class MezzoModelsReflector extends ModelsReflector
      */
     protected function makeModelSchemas()
     {
-        // TODO: Implement makeModelSchemas() method.
+        $modelSchemas = new ModelSchemas();
+
+        $this->modelReflections()->each(function(MezzoModelReflection $modelReflection) use ($modelSchemas){
+            $modelSchemas->addSchema($modelReflection->schema());
+        });
+
+        return $modelSchemas;
     }
+
+    /**
+     * @return Collection
+     */
+    public function modelReflections()
+    {
+        return parent::findModelReflections(true);
+    }
+
 
 }

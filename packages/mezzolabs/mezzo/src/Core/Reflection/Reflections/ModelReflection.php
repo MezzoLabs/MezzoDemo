@@ -36,8 +36,6 @@ abstract class ModelReflection
         $this->modelReflectionSet = $modelReflectionSet;
 
         $this->schemaConverter = ModelReflectionConverter::make();
-
-        mezzo()->makeReflectionManager()->addToMapping($this);
     }
 
     /**

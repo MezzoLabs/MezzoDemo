@@ -60,7 +60,7 @@ trait CanMakeInstances
      */
     public function reflector()
     {
-        return $this->makeReflectionManager()->mezzoModelsReflector();
+        return $this->makeReflectionManager()->mezzoModelReflector();
     }
 
     /**

@@ -11,6 +11,10 @@ namespace MezzoLabs\Mezzo\Core\Traits;
 
 trait IsMezzoModel
 {
+    protected $mezzoTable;
+
+    protected $mezzoRules;
+
     /**
      * The associated model. Use the complete class name or "Default"
      *
@@ -28,4 +32,6 @@ trait IsMezzoModel
     {
         return $this->module;
     }
+
+    
 } 

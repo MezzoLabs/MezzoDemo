@@ -122,7 +122,7 @@ class DatabaseColumn
     public function joinColumn()
     {
         if ($this->joinColumn === false) {
-            $relationsSchema = mezzo()->reflector()->relationsSchema();
+            $relationsSchema = mezzo()->reflector()->relationSchemas();
             $this->joinColumn = $relationsSchema->joinColumns($this->table->name())
                 ->get($this->qualifiedName());
         }

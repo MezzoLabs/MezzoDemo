@@ -137,7 +137,7 @@ class Table
     public function joiningColumns()
     {
         if (!$this->joiningColumns)
-            $this->joiningColumns = mezzo()->reflector()->relationsSchema()->joinColumns($this->name());
+            $this->joiningColumns = mezzo()->reflector()->relationSchemas()->joinColumns($this->name());
 
         return $this->joiningColumns;
     }

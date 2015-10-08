@@ -30,7 +30,7 @@ abstract class ModuleProvider extends ServiceProvider
     /**
      * @var ModelReflectionSets
      */
-    protected $modelReflections;
+    protected $modelReflectionSets;
 
     /**
      * @var Mezzo
@@ -47,7 +47,7 @@ abstract class ModuleProvider extends ServiceProvider
     public function __construct(Application $app)
     {
         $this->mezzo = mezzo();;
-        $this->modelReflections = new ModelReflectionSets();
+        $this->modelReflectionSets = new ModelReflectionSets();
         $this->app = $app;
     }
 
@@ -74,7 +74,7 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function models()
     {
-        return $this->modelReflections;
+        return $this->modelReflectionSets;
     }
 
     /**
@@ -83,7 +83,7 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function model($key)
     {
-        return $this->modelReflections->get($key);
+        return $this->modelReflectionSets->get($key);
     }
 
     /**
@@ -116,7 +116,7 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function associateModel(ModelReflection $model)
     {
-        $this->modelReflections->add($model);
+        $this->modelReflectionSets->add($model);
     }
 
     /**

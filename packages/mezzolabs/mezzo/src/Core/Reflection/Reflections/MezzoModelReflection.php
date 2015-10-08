@@ -44,4 +44,9 @@ class MezzoModelReflection extends ModelReflection
     {
         return $this->module;
     }
+
+    public function tableName()
+    {
+        $this->instance()->
+    }
 }
