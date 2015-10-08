@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
+namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 
 use Illuminate\Database\Eloquent\Collection;
@@ -9,20 +9,9 @@ use Illuminate\Support\Collection as IlluminateCollection;
 use MezzoLabs\Mezzo\Exceptions\InvalidModel;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 
-class ModelReflections extends Collection
+class ModelReflectionSets extends Collection
 {
     public $items;
-
-    /**
-     * @var Collection
-     */
-    public $aliases;
-
-    /**
-     * @var Collection
-     */
-    public $tableNames;
-
 
     /**
      * @param array $classes
@@ -47,19 +36,24 @@ class ModelReflections extends Collection
     /**
      * @param $model
      * @throws InvalidModel
-     * @return \MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection
+     * @return \MezzoLabs\Mezzo\Core\Reflection\Reflections\GenericModelReflection
      */
     public static function makeReflection($model)
     {
-        if (is_string($model))
-            return ModelReflection::make($model);
+        if ($model == null)
+            return null;
 
-        if ($model instanceof ModelReflection)
+
+        GenericModelReflection::modelStringOrFail($model);
+
+        if (is_string($model))
+            return GenericModelReflection::make($model);
+
+
+        if ($model instanceof GenericModelReflection)
             return $model;
 
-        if ($model == null) {
-            return null;
-        }
+
 
         throw new InvalidModel($model);
     }
@@ -85,9 +79,9 @@ class ModelReflections extends Collection
      * Add an alias so you can find the models via their short name.
      * (Tutorial instead of \App\Learning\Tutorial)
      *
-     * @param ModelReflection $reflection
+     * @param GenericModelReflection $reflection
      */
-    protected function addAlias(ModelReflection $reflection)
+    protected function addAlias(GenericModelReflection $reflection)
     {
         $this->aliases->put(strtolower($reflection->shortName()), $reflection);
 
@@ -95,25 +89,10 @@ class ModelReflections extends Collection
     }
 
     /**
-     * @param $model
-     * @return $this|ModelReflections|mixed|void
-     * @internal param null $default
-     */
-    public function getOrCreate($model)
-    {
-        $key = $this->modelString($model);
-
-        if ($this->has($key))
-            return parent::get($key);
-        else
-            return $this->add($model);
-    }
-
-    /**
      * @param mixed $model
      * @param null $default
      * @internal param mixed $key
-     * @return ModelReflection
+     * @return GenericModelReflection
      */
     public function get($model, $default = null)
     {
@@ -134,31 +113,34 @@ class ModelReflections extends Collection
     }
 
     /**
-     * Normalize the variable to a model string.
+     * Check if this reflection collection has the model.
      *
      * @param $model
-     * @return mixed
+     * @return bool
      */
-    public function modelString($model)
+    public function hasModel($model)
     {
-        if (is_object($model) && $model instanceof ModelReflection)
-            return $model->className();
+        return $this->get($model, false) !== false;
+    }
 
-        if (is_object($model))
-            return get_class($model);
+    /**
+     * @param $model
+     * @return $this|ModelReflectionSets|mixed|void
+     * @internal param null $default
+     */
+    public function getOrCreate($model)
+    {
+        $key = GenericModelReflection::modelStringOrFail($model);
 
-        if (class_exists($model))
-            return $model;
-
-        if (class_exists('App\\' . ucfirst($model)))
-            return 'App\\' . ucfirst($model);
-
-        throw new InvalidModel($model);
+        if ($this->has($key))
+            return parent::get($key);
+        else
+            return $this->add($model);
     }
 
     /**
      * @param string $tableName
-     * @return ModelReflection
+     * @return GenericModelReflection
      */
     public function byTable($tableName)
     {

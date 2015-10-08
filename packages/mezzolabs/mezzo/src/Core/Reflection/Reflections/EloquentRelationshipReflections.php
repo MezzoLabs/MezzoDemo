@@ -1,10 +1,10 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Core\Database\Reflection;
+namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 use Illuminate\Support\Collection;
 
-class RelationshipReflections extends Collection
+class EloquentRelationshipReflections extends Collection
 {
 
     /**
@@ -15,7 +15,7 @@ class RelationshipReflections extends Collection
      */
     public function filterRelations($options = [])
     {
-        return $this->filter(function (RelationshipReflection $reflection) use ($options) {
+        return $this->filter(function (EloquentRelationshipReflection $reflection) use ($options) {
             $test = true;
 
             if (isset($options['type']) && !$reflection->is($options['type'])) {
@@ -38,14 +38,14 @@ class RelationshipReflections extends Collection
     /**
      * Find the counterpart to a certain relation reflection inside this collection.
      *
-     * @param RelationshipReflection $check
-     * @return RelationshipReflection | null
+     * @param EloquentRelationshipReflection $check
+     * @return EloquentRelationshipReflection | null
      * @throws \ReflectionException
      */
-    public function findCounterpartTo(RelationshipReflection $check)
+    public function findCounterpartTo(EloquentRelationshipReflection $check)
     {
 
-        $counterparts = $this->filter(function (RelationshipReflection $reflection) use ($check) {
+        $counterparts = $this->filter(function (EloquentRelationshipReflection $reflection) use ($check) {
             return $reflection->isCounterpart($check);
         });
 

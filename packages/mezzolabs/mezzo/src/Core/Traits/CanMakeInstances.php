@@ -14,7 +14,9 @@ use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Helpers\Path;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\MezzoModelReflector;
+use MezzoLabs\Mezzo\Core\Reflection\ModelFinder;
+use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
+use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
 
 trait CanMakeInstances
 {
@@ -51,23 +53,41 @@ trait CanMakeInstances
     }
 
     /**
-     * Return the model reflector instance.
+     * Return the mezzo models reflector instance.
      *
-     * @return MezzoModelReflector
+     * @return MezzoModelsReflector
      */
     public function reflector()
     {
-        return $this->make(MezzoModelReflector::class);
+        return $this->makeReflectionManager()->mezzoModelsReflector();
     }
 
     /**
-     * Return the model reflector instance.
+     * @return ReflectionManager
+     */
+    public function makeReflectionManager()
+    {
+        return $this->make(ReflectionManager::class);
+    }
+
+    /**
+     * Return the model reflector singleton instance.
      *
      * @return Reader
      */
     public function makeDatabaseReader()
     {
         return $this->make(Reader::class);
+    }
+
+    /**
+     * Return the model finder singleton instance.
+     *
+     * @return ModelFinder
+     */
+    public function makeModelFinder()
+    {
+        return $this->make(ModelFinder::class);
     }
 
     /**

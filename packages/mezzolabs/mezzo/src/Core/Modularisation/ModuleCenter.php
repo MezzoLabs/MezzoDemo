@@ -7,10 +7,9 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Generic\AbstractGeneralModule;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\MezzoModelReflection;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\MezzoModelReflector;
-use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\GenericModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeAssociated;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeFound;
@@ -32,7 +31,7 @@ class ModuleCenter
     private $mezzo;
 
     /**
-     * @var MezzoModelReflector
+     * @var MezzoModelsReflector
      */
     private $reflector;
 
@@ -43,9 +42,9 @@ class ModuleCenter
 
     /**
      * @param Mezzo $mezzo
-     * @param MezzoModelReflector $reflector
+     * @param MezzoModelsReflector $reflector
      */
-    public function __construct(Mezzo $mezzo, MezzoModelReflector $reflector)
+    public function __construct(Mezzo $mezzo, MezzoModelsReflector $reflector)
     {
         $this->mezzo = $mezzo;
         $this->modules = new Collection();
@@ -252,7 +251,7 @@ class ModuleCenter
      * @param $model
      * @throws MezzoException
      * @throws ModelCannotBeFound
-     * @return ModelReflection
+     * @return GenericModelReflection
      */
     public function getModelReflection($model)
     {
@@ -260,7 +259,7 @@ class ModuleCenter
     }
 
     /**
-     * @return MezzoModelReflector
+     * @return MezzoModelsReflector
      */
     public function reflector()
     {
@@ -274,7 +273,7 @@ class ModuleCenter
     {
         $allModels = $this->reflector()->reflections();
 
-        $allModels->map(function (ModelReflection $model, $key) {
+        $allModels->map(function (GenericModelReflection $model, $key) {
             if ($model->hasModule()) return;
 
             $this->associateWithGeneralModule($model);
@@ -282,9 +281,9 @@ class ModuleCenter
     }
 
     /**
-     * @param ModelReflection $model
+     * @param GenericModelReflection $model
      */
-    public function associateWithGeneralModule(ModelReflection $model)
+    public function associateWithGeneralModule(GenericModelReflection $model)
     {
         $this->associateModel($model, $this->generalModule());
     }

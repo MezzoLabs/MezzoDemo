@@ -8,8 +8,8 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflections;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\GenericModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSets;
 use MezzoLabs\Mezzo\Exceptions\DirectoryNotFound;
 
 abstract class ModuleProvider extends ServiceProvider
@@ -28,7 +28,7 @@ abstract class ModuleProvider extends ServiceProvider
     protected $commands = [];
 
     /**
-     * @var ModelReflections
+     * @var ModelReflectionSets
      */
     protected $modelReflections;
 
@@ -47,7 +47,7 @@ abstract class ModuleProvider extends ServiceProvider
     public function __construct(Application $app)
     {
         $this->mezzo = mezzo();;
-        $this->modelReflections = new ModelReflections();
+        $this->modelReflections = new ModelReflectionSets();
         $this->app = $app;
     }
 
@@ -70,7 +70,7 @@ abstract class ModuleProvider extends ServiceProvider
      * The reflections of the associated models
      *
      * @internal param bool $key
-     * @return ModelReflections
+     * @return ModelReflectionSets
      */
     public function models()
     {
@@ -79,7 +79,7 @@ abstract class ModuleProvider extends ServiceProvider
 
     /**
      * @param string $key
-     * @return ModelReflection
+     * @return GenericModelReflection
      */
     public function model($key)
     {
@@ -112,9 +112,9 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
-     * @param ModelReflection $model
+     * @param GenericModelReflection $model
      */
-    public function associateModel(ModelReflection $model)
+    public function associateModel(GenericModelReflection $model)
     {
         $this->modelReflections->add($model);
     }

@@ -4,7 +4,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Converters;
 
 
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\GenericModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 
@@ -39,10 +39,10 @@ class ModelReflectionConverter extends ModelConverter
     }
 
     /**
-     * @param ModelReflection $reflection
+     * @param GenericModelReflection $reflection
      * @return ModelSchema
      */
-    protected function fromModelReflectionToSchema(ModelReflection $reflection)
+    protected function fromModelReflectionToSchema(GenericModelReflection $reflection)
     {
         $schema = new ModelSchema($reflection->className(), $reflection->databaseTable()->name());
 

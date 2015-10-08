@@ -4,7 +4,7 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Converters;
 
 
-use MezzoLabs\Mezzo\Core\Database\Reflection\RelationshipReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentRelationshipReflection;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOne;
@@ -31,11 +31,11 @@ class RelationConverter extends Converter
      * $role->belongsToMany('User') --> user_roles.role_id + user_roles.user_id
      *
      *
-     * @param RelationshipReflection $reflection
+     * @param EloquentRelationshipReflection $reflection
      * @throws \ReflectionException
      * @return Relation
      */
-    protected function fromReflectionToRelation(RelationshipReflection $reflection)
+    protected function fromReflectionToRelation(EloquentRelationshipReflection $reflection)
     {
         switch ($reflection->type()) {
             case 'BelongsTo':
@@ -57,12 +57,12 @@ class RelationConverter extends Converter
      * belongsTo + hasOne = OneToOne
      * belongsTo + hasMany = OneToMany
      *
-     * @param RelationshipReflection $reflection
+     * @param EloquentRelationshipReflection $reflection
      * @return OneToMany|OneToOne
      * @throws InvalidArgumentException
      * @throws \ReflectionException
      */
-    protected function fromBelongsTo(RelationshipReflection $reflection)
+    protected function fromBelongsTo(EloquentRelationshipReflection $reflection)
     {
         if (!$reflection->is('BelongsTo'))
             throw new InvalidArgumentException($reflection);
@@ -78,11 +78,11 @@ class RelationConverter extends Converter
     /**
      * Find the counterpart of a relationship or throw an exception
      *
-     * @param RelationshipReflection $reflection
-     * @return RelationshipReflection
+     * @param EloquentRelationshipReflection $reflection
+     * @return EloquentRelationshipReflection
      * @throws \ReflectionException
      */
-    protected function findOrFailCounterpart(RelationshipReflection $reflection)
+    protected function findOrFailCounterpart(EloquentRelationshipReflection $reflection)
     {
         $counterpart = $reflection->counterpart();
 
@@ -97,11 +97,11 @@ class RelationConverter extends Converter
      * Create a OneToOne or a OneToMany relationship
      *
      * @param $class
-     * @param RelationshipReflection $reflection
+     * @param EloquentRelationshipReflection $reflection
      * @internal param $joinColumn
      * @return mixed
      */
-    protected function makeOneToOneOrMany($class, RelationshipReflection $reflection)
+    protected function makeOneToOneOrMany($class, EloquentRelationshipReflection $reflection)
     {
         return Relation::makeByType($class)
             ->from($reflection->tableName(), $reflection->name())
@@ -110,10 +110,10 @@ class RelationConverter extends Converter
     }
 
     /**
-     * @param RelationshipReflection $reflection
+     * @param EloquentRelationshipReflection $reflection
      * @return $this
      */
-    protected function makeManyToMany(RelationshipReflection $reflection)
+    protected function makeManyToMany(EloquentRelationshipReflection $reflection)
     {
         return ManyToMany::make()
             ->from($reflection->tableName(), $reflection->name())

@@ -1,13 +1,14 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
+namespace MezzoLabs\Mezzo\Core\Reflection;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Database\Reflection\RelationshipReflection;
-use MezzoLabs\Mezzo\Core\Database\Reflection\RelationshipReflections;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\GenericModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentRelationshipReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentRelationshipReflections;
 
 class ModelParser
 {
@@ -16,15 +17,15 @@ class ModelParser
      */
     protected $filename;
     /**
-     * @var ModelReflection
+     * @var GenericModelReflection
      */
     private $modelReflection;
 
     /**
-     * @param ModelReflection $modelReflection
+     * @param GenericModelReflection $modelReflection
      * @internal param $filename
      */
-    public function __construct(ModelReflection $modelReflection)
+    public function __construct(GenericModelReflection $modelReflection)
     {
         $this->modelReflection = $modelReflection;
         $this->filename = $modelReflection->fileName();
@@ -77,17 +78,17 @@ class ModelParser
     }
 
     /**
-     * @return RelationshipReflections
+     * @return EloquentRelationshipReflections
      */
     public function relationships()
     {
-        $relationships = new RelationshipReflections();
+        $relationships = new EloquentRelationshipReflections();
         foreach ($this->publicFunctions() as $tokenSequence) {
             $name = $tokenSequence[2]['content'];
             $type = $tokenSequence[4]['content'];
 
-            if (RelationshipReflection::isAllowed($type))
-                $relationships->put($name, new RelationshipReflection($this->modelReflection, $name));
+            if (EloquentRelationshipReflection::isAllowed($type))
+                $relationships->put($name, new EloquentRelationshipReflection($this->modelReflection, $name));
         }
 
         return $relationships;

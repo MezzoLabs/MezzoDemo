@@ -6,9 +6,9 @@ namespace MezzoLabs\Mezzo\Core\Database;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Database\Reflection\RelationshipReflections;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\MezzoModelReflector;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\GenericModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentRelationshipReflections;
+use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
 
 class Table
 {
@@ -36,7 +36,7 @@ class Table
     protected $columns;
 
     /**
-     * @var ModelReflection
+     * @var GenericModelReflection
      */
     protected $reflection;
 
@@ -52,7 +52,7 @@ class Table
     {
         $this->model = $model;
 
-        $this->reflection = MezzoModelReflector::getReflection($model);
+        $this->reflection = MezzoModelsReflector::getReflection($model);
         $this->instance = $this->reflection->instance();
         $this->columns = new DatabaseColumns($this);
 
@@ -96,10 +96,10 @@ class Table
     }
 
     /**
-     * @param ModelReflection $wrapper
+     * @param GenericModelReflection $wrapper
      * @return Table
      */
-    public static function fromModelReflection(ModelReflection $wrapper)
+    public static function fromModelReflection(GenericModelReflection $wrapper)
     {
         $instance = $wrapper->instance();
         $table = new Table(get_class($instance));
@@ -124,7 +124,7 @@ class Table
     }
 
     /**
-     * @return RelationshipReflections
+     * @return EloquentRelationshipReflections
      */
     public function relationships()
     {
@@ -143,7 +143,7 @@ class Table
     }
 
     /**
-     * @return ModelReflection
+     * @return GenericModelReflection
      */
     public function modelReflection()
     {

@@ -1,12 +1,12 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
+namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
 
-class MezzoModelReflection extends ModelReflection
+class MezzoModelReflection extends GenericModelReflection
 {
     /**
      * @var ModuleProvider

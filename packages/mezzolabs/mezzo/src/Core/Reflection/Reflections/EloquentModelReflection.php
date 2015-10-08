@@ -1,12 +1,12 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Reflection;
+namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Database\Reflection\RelationshipReflections;
 use MezzoLabs\Mezzo\Core\Database\Table;
+use MezzoLabs\Mezzo\Core\Reflection\ModelParser;
 
-class EloquentModelReflection extends ModelReflection
+class EloquentModelReflection extends GenericModelReflection
 {
     /**
      * @var Collection
@@ -20,7 +20,7 @@ class EloquentModelReflection extends ModelReflection
 
 
     /**
-     * @return RelationshipReflections
+     * @return EloquentRelationshipReflections
      */
     public function relationshipReflections()
     {

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Database\Reflection;
+namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,15 +10,13 @@ use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\EloquentModelReflection;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\ModelReflection;
-use MezzoLabs\Mezzo\Core\Modularisation\Reflection\MezzoModelReflector;
+use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
 use MezzoLabs\Mezzo\Core\Schema\Converters\RelationConverter;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToOne;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation as MezzoRelation;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 
-class RelationshipReflection
+class EloquentRelationshipReflection
 {
     /**
      * Array of function names that are allowed relationships.
@@ -49,7 +47,7 @@ class RelationshipReflection
     protected $type;
 
     /**
-     * @var RelationshipReflection
+     * @var EloquentRelationshipReflection
      */
     protected $counterpart;
 
@@ -315,7 +313,7 @@ class RelationshipReflection
     /**
      * Get the counterpart if this relationship reflection
      *
-     * @return RelationshipReflection
+     * @return EloquentRelationshipReflection
      */
     public function counterpart()
     {
@@ -331,11 +329,11 @@ class RelationshipReflection
     /**
      * Check if a relationship reflection is the inverse part of this.
      *
-     * @param RelationshipReflection $check
+     * @param EloquentRelationshipReflection $check
      * @return bool
      * @throws MezzoException
      */
-    public function isCounterpart(RelationshipReflection $check)
+    public function isCounterpart(EloquentRelationshipReflection $check)
     {
         $correctTables = $check->tableName() == $this->relatedTableName();
         $correctColumns = $check->localColumn() == $this->relatedColumn() &&
@@ -363,11 +361,11 @@ class RelationshipReflection
     /**
      * Get the reflection of the related model.
      *
-     * @return ModelReflection
+     * @return GenericModelReflection
      */
     public function relatedModelReflection()
     {
-        return MezzoModelReflector::getReflection($this->instance()->getRelated());
+        return MezzoModelsReflector::getReflection($this->instance()->getRelated());
 
     }
 
