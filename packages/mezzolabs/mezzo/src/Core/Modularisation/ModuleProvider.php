@@ -8,7 +8,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
-use MezzoLabs\Mezzo\Core\Reflection\Reflections\GenericModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSets;
 use MezzoLabs\Mezzo\Exceptions\DirectoryNotFound;
 
@@ -79,7 +79,7 @@ abstract class ModuleProvider extends ServiceProvider
 
     /**
      * @param string $key
-     * @return GenericModelReflection
+     * @return ModelReflection
      */
     public function model($key)
     {
@@ -112,9 +112,9 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
-     * @param GenericModelReflection $model
+     * @param ModelReflection $model
      */
-    public function associateModel(GenericModelReflection $model)
+    public function associateModel(ModelReflection $model)
     {
         $this->modelReflections->add($model);
     }

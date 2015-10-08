@@ -5,111 +5,25 @@ namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Collection as IlluminateCollection;
 use MezzoLabs\Mezzo\Exceptions\InvalidModel;
-use MezzoLabs\Mezzo\Exceptions\MezzoException;
+use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 
 class ModelReflectionSets extends Collection
 {
     public $items;
 
-    /**
-     * @param array $classes
-     * @internal param mixed $items
-     */
-    public function __construct($classes = [])
-    {
-        $this->aliases = new Collection();
-        $this->tableNames = new Collection();
-
-        if ((is_array($classes) || is_a($classes, IlluminateCollection::class))
-            && count($classes) > 0
-        ) {
-            foreach ($classes as $class) {
-                $this->add($class);
-            }
-        } else {
-            parent::__construct($classes);
-        }
-    }
+    public $isOverallList = false;
 
     /**
      * @param $model
-     * @throws InvalidModel
-     * @return \MezzoLabs\Mezzo\Core\Reflection\Reflections\GenericModelReflection
+     * @return ModelReflectionSet
      */
-    public static function makeReflection($model)
+    public function getOrCreate($model)
     {
-        if ($model == null)
-            return null;
-
-
-        GenericModelReflection::modelStringOrFail($model);
-
-        if (is_string($model))
-            return GenericModelReflection::make($model);
-
-
-        if ($model instanceof GenericModelReflection)
-            return $model;
-
-
-
-        throw new InvalidModel($model);
-    }
-
-    /**
-     * @param mixed $model
-     * @throws MezzoException
-     * @internal param mixed $class
-     * @return $this|void
-     */
-    public function add($model)
-    {
-        $reflection = $this->makeReflection($model);
-        if (!$reflection) return parent::add(null);
-
-        $this->put($reflection->className(), $reflection);
-        $this->addAlias($reflection);
-
-        return $reflection;
-    }
-
-    /**
-     * Add an alias so you can find the models via their short name.
-     * (Tutorial instead of \App\Learning\Tutorial)
-     *
-     * @param GenericModelReflection $reflection
-     */
-    protected function addAlias(GenericModelReflection $reflection)
-    {
-        $this->aliases->put(strtolower($reflection->shortName()), $reflection);
-
-        $this->tableNames->put(strtolower($reflection->instance()->getTable()), $reflection);
-    }
-
-    /**
-     * @param mixed $model
-     * @param null $default
-     * @internal param mixed $key
-     * @return GenericModelReflection
-     */
-    public function get($model, $default = null)
-    {
-        if ($this->has($model))
-            return parent::get($model);
-
-        if ($this->has('App\\' . $model))
-            return parent::get('App\\' . $model);
-
-        if ($this->aliases->has(strtolower($model)))
-            return $this->aliases->get(strtolower($model), $default);
-
-        if ($this->tableNames->has(strtolower($model))) {
-            return $this->tableNames->get(strtolower($model), $default);
-        }
-
-        return parent::get($model, $default);
+        if ($this->hasModel($model))
+            return $this->getReflectionSet($model);
+        else
+            return $this->addReflectionSet($model);
     }
 
     /**
@@ -120,32 +34,108 @@ class ModelReflectionSets extends Collection
      */
     public function hasModel($model)
     {
-        return $this->get($model, false) !== false;
+        return $this->getReflectionSet($model) !== null;
     }
 
     /**
-     * @param $model
-     * @return $this|ModelReflectionSets|mixed|void
-     * @internal param null $default
+     * @param mixed $model
+     * @return ModelReflectionSet|null
      */
-    public function getOrCreate($model)
+    public function getReflectionSet($model)
     {
-        $key = GenericModelReflection::modelStringOrFail($model);
+        if ($this->has($model))
+            return $this->get($model);
 
-        if ($this->has($key))
-            return parent::get($key);
-        else
-            return $this->add($model);
+        if ($this->has('App\\' . $model))
+            return $this->get('App\\' . $model);
+
+        $fromAliases = $this->getFromMappings($model);
+        if ($fromAliases) return $fromAliases;
+
+        return null;
+    }
+
+
+    /**
+     * @return ModelReflectionSets
+     */
+    public function eloquentSets()
+    {
+        throw new \Exception('TODO');
     }
 
     /**
-     * @param string $tableName
-     * @return GenericModelReflection
+     * @return ModelReflectionSets
      */
-    public function byTable($tableName)
+    public function mezzoTraitSets()
     {
-        return $this->tableNames->get($tableName);
+        throw new \Exception('TODO');
     }
+
+
+    /**
+     * Really create a new model reflection set.
+     *
+     * @param $className
+     * @throws InvalidModel
+     * @return ModelReflectionSet
+     */
+    protected function makeReflectionSet($className)
+    {
+        if($className instanceof ModelReflectionSet)
+            return $className;
+
+        if (is_string($className))
+            return new ModelReflectionSet($className);
+
+        throw new InvalidModel($className);
+    }
+
+    /**
+     * @param ModelReflectionSet $reflectionSet
+     * @return ModelReflectionSet
+     * @throws ReflectionException
+     */
+    protected function addReflectionSet($reflectionSet)
+    {
+        $reflectionSet = $this->makeReflectionSet($reflectionSet);
+
+        if ($this->has($reflectionSet->className()))
+            throw new ReflectionException('Reflectionset is already registered: ' . $reflectionSet->className());
+
+        $this->put($reflectionSet->className(), $reflectionSet);
+        $this->addToMapping($reflectionSet);
+        $this->addToOverallList($reflectionSet);
+
+        return $reflectionSet;
+    }
+
+    protected function addToOverallList(ModelReflectionSet $reflectionSet){
+        if($this->isOverallList) return false;
+
+        static::overall()->addReflectionSet($reflectionSet);
+    }
+
+    protected function addToMapping(ModelReflectionSet $reflectionSet)
+    {
+        mezzo()->makeModelMappings()->add($reflectionSet);
+    }
+
+    /**
+     * Return the global ModelReflectionSets collection
+     *
+     * @return ModelReflectionSets
+     */
+    public static function overall()
+    {
+        return mezzo()->makeReflectionManager()->sets();
+    }
+
+    private function getFromMappings($model)
+    {
+        return mezzo()->makeModelMappings()->find($model);
+    }
+
 
 
 }

@@ -16,9 +16,9 @@ trait MezzoTutorial
     *
     * @var string            
     */
-    protected $table = 'tutorials';
+    protected $mezzoTable = 'tutorials';
 
-    protected $rules = [
+    protected $mezzoRules = [
         'id' => '', 
         'title' => '', 
         'body' => '', 
@@ -83,12 +83,6 @@ trait MezzoTutorial
     */
     protected $main_category;
 
-    /**
-    *
-    /*@Mezzo\InputType(type='RelationInputSingle')
-    * @var integer            
-    */
-    protected $parent;
 
 
     /**

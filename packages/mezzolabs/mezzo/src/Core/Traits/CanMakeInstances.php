@@ -15,6 +15,7 @@ use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Helpers\Path;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
 use MezzoLabs\Mezzo\Core\Reflection\ModelFinder;
+use MezzoLabs\Mezzo\Core\Reflection\ModelMappings;
 use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
 use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
 
@@ -68,6 +69,15 @@ trait CanMakeInstances
     public function makeReflectionManager()
     {
         return $this->make(ReflectionManager::class);
+    }
+
+    /**
+     * @return ModelMappings
+     */
+    public function makeModelMappings()
+    {
+        return $this->make(ModelMappings::class);
+
     }
 
     /**

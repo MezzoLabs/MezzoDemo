@@ -5,7 +5,7 @@ namespace MezzoLabs\Mezzo\Exceptions;
 
 
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Core\Reflection\Reflections\GenericModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 
 class ModelCannotBeAssociated extends MezzoException
 {
@@ -16,7 +16,7 @@ class ModelCannotBeAssociated extends MezzoException
      */
     public function  __construct($model, ModuleProvider $module)
     {
-        if (is_object($model) && get_class($model) == GenericModelReflection::class) $model = $model->className();
+        if (is_object($model) && get_class($model) == ModelReflection::class) $model = $model->className();
 
         $this->add("The model " . $model . " cannot be grabbed by the module " . get_class($module) . ".");
         $this->add("The Reflector wasnt able to find the model.");

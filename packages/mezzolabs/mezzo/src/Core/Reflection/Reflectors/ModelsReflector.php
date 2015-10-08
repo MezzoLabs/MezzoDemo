@@ -7,7 +7,8 @@ namespace MezzoLabs\Mezzo\Core\Reflection\Reflectors;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Reflection\ModelFinder;
-use MezzoLabs\Mezzo\Core\Reflection\Reflections\GenericModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSets;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchemas;
 use MezzoLabs\Mezzo\Core\Schema\RelationSchemas;
@@ -54,6 +55,13 @@ abstract class ModelsReflector
         $this->finder = $finder;
         $this->mezzo = $mezzo;
     }
+
+    /**
+     * Gets the filtered model reflection sets.
+     *
+     * @return ModelReflectionSets
+     */
+    abstract public function modelReflectionSets();
 
     /**
      * Retrieve the correct model classes from the ModelFinder.
@@ -119,34 +127,22 @@ abstract class ModelsReflector
     }
 
     /**
-     * Get the all reflections from the found models.
+     * Make model reflection sets out of the  the model class names
+     * and add them to a ModelReflectionSets collection.
      *
-     * @return ModelReflectionSets
+     * @param ModelReflectionSets $reflectionSets
      */
-    protected function modelReflections(){
-        if(!$this->modelReflections)
-            $this->modelReflections = $this->makeModelReflections();
-
-        return $this->modelReflections;
+    public function addToSets(ModelReflectionSets $reflectionSets){
+        foreach($this->modelClasses() as $modelClassName){
+            $reflectionSets->getOrCreate($modelClassName);
+        }
     }
 
     /**
-     * Create the model reflections collection via the found model classes.
-     *
-     * @return ModelReflectionSets
+     * @return \MezzoLabs\Mezzo\Core\Reflection\ReflectionManager
      */
-    private function makeModelReflections(){
-        return new ModelReflectionSets($this->modelClasses());
+    protected function manager(){
+        return mezzo()->makeReflectionManager();
     }
 
-    /**
-     * Get the reflection of the given model or create one
-     *
-     * @param $model
-     * @return GenericModelReflection
-     */
-    public function modelReflection($model)
-    {
-        return $this->modelReflections()->getOrCreate($model);
-    }
 }

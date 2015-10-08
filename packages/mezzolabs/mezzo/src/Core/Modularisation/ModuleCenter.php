@@ -7,8 +7,10 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Generic\AbstractGeneralModule;
+use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
-use MezzoLabs\Mezzo\Core\Reflection\Reflections\GenericModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeAssociated;
@@ -31,9 +33,9 @@ class ModuleCenter
     private $mezzo;
 
     /**
-     * @var MezzoModelsReflector
+     * @var ReflectionManager
      */
-    private $reflector;
+    private $reflectionManager;
 
     /**
      * @var Collection
@@ -42,9 +44,9 @@ class ModuleCenter
 
     /**
      * @param Mezzo $mezzo
-     * @param MezzoModelsReflector $reflector
+     * @param ReflectionManager $reflectionManager
      */
-    public function __construct(Mezzo $mezzo, MezzoModelsReflector $reflector)
+    public function __construct(Mezzo $mezzo, ReflectionManager $reflectionManager)
     {
         $this->mezzo = $mezzo;
         $this->modules = new Collection();
@@ -52,7 +54,7 @@ class ModuleCenter
 
         $this->registerGeneralModule($mezzo->make('mezzo.modules.general'));
 
-        $this->reflector = $reflector;
+        $this->reflectionManager = $reflectionManager;
     }
 
     /**
@@ -251,19 +253,11 @@ class ModuleCenter
      * @param $model
      * @throws MezzoException
      * @throws ModelCannotBeFound
-     * @return GenericModelReflection
+     * @return ModelReflection
      */
     public function getModelReflection($model)
     {
-        return $this->reflector()->modelReflection($model);
-    }
-
-    /**
-     * @return MezzoModelsReflector
-     */
-    public function reflector()
-    {
-        return $this->reflector;
+        return $this->reflectionManager->mezzoModelsReflector()->modelReflection($model);
     }
 
     /**
@@ -271,9 +265,9 @@ class ModuleCenter
      */
     private function fillGeneralModule()
     {
-        $allModels = $this->reflector()->reflections();
+        $allModels = $this->reflectionManager->sets();
 
-        $allModels->map(function (GenericModelReflection $model, $key) {
+        $allModels->map(function (ModelReflectionSet $model, $key) {
             if ($model->hasModule()) return;
 
             $this->associateWithGeneralModule($model);
@@ -281,9 +275,9 @@ class ModuleCenter
     }
 
     /**
-     * @param GenericModelReflection $model
+     * @param ModelReflection $model
      */
-    public function associateWithGeneralModule(GenericModelReflection $model)
+    public function associateWithGeneralModule(ModelReflection $model)
     {
         $this->associateModel($model, $this->generalModule());
     }

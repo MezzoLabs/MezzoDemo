@@ -4,11 +4,15 @@
 namespace MezzoLabs\Mezzo\Core\Reflection;
 
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Reflection\Reflections\GenericModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSets;
 use MezzoLabs\Mezzo\Core\Reflection\Reflectors\EloquentModelsReflector;
 use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
+use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
+use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 
 class ReflectionManager
 {
@@ -23,16 +27,9 @@ class ReflectionManager
     protected $mezzoModelsReflector;
 
     /**
-     * Run method already called successfully.
-     *
-     * @var boolean
+     * @var ModelReflectionSets
      */
-    protected $booted;
-
-    /**
-     * @var ModelReflectionMappings
-     */
-    protected $modelReflectionMappings;
+    protected $modelReflectionSets;
 
     /**
      * @param EloquentModelsReflector $eloquentModelsReflector
@@ -42,43 +39,38 @@ class ReflectionManager
     {
         $this->eloquentModelsReflector = $eloquentModelsReflector;
         $this->mezzoModelsReflector = $mezzoModelsReflector;
-        $this->modelReflectionMappings = new ModelReflectionMappings();
+
+        $this->modelReflectionSets = new ModelReflectionSets();
+        $this->modelReflectionSets->isOverallList = true;
+
+        $this->eloquentModelsReflector->addToSets($this->modelReflectionSets);
+        $this->mezzoModelsReflector->addToSets($this->modelReflectionSets);
     }
 
     /**
      * @param string $model Short or long class name or even the name of the table.
-     * @return GenericModelReflection
+     * @return ModelReflection
      */
     public function modelReflection($model)
     {
-        $reflectionFromMapping = $this->mappings()->findClassName($model);
+        $reflectionSet = $this->sets()->getOrCreate($model);
 
-        $className = GenericModelReflection::modelStringOrFail($model);
-
-        if(ModelFinder::classUsesMezzoTrait($className))
-            $reflection = $this->mezzoModelsReflector()->modelReflection($model);
-        else
-            $reflection = $this->eloquentModelsReflector()->modelReflection($model);
-
-        return $this->allModelReflections->getOrCreate($model);
+        return $reflectionSet->bestReflection();
     }
 
     /**
-     * Load the class names into the fitting collections.
+     * @param string $model Short or long class name or even the name of the table.
+     * @return ModelReflection
+     * @throws ReflectionException
      */
-    public function run()
+    public function mezzoReflection($model)
     {
-        if ($this->booted) return false;
+        $reflectionSet = $this->sets()->getOrCreate($model);
 
-        $this->eloquentModels = $this->findEloquentModels();
-        $this->mezzoModels = $this->findMezzoModels();
+        if($reflectionSet->isMezzoModel())
+            return $reflectionSet->mezzoReflection();
 
-        $this->allModelReflections = new ModelReflectionSets($this->mezzoModels);
-
-        $this->relationsSchema = $this->buildRelationSchemas();
-        $this->modelsSchema = $this->buildModelSchemas();
-
-        $this->booted = true;
+        throw new InvalidArgumentException($model);
 
     }
 
@@ -98,18 +90,27 @@ class ReflectionManager
         return $this->mezzoModelsReflector;
     }
 
-    public function addToMapping(GenericModelReflection $modelReflection)
+    /**
+     * @return ModelReflectionSets
+     */
+    public function sets()
     {
-        $this->mappings()->add($modelReflection);
+        return $this->modelReflectionSets;
+    }
+
+
+    public function addMappings(ModelReflectionSet $reflectionSet){
+        mezzo()->makeModelMappings()->add($reflectionSet);
     }
 
     /**
-     * @return ModelReflectionMappings
+     * @return ReflectionManager
      */
-    public function mappings()
+    public static function make()
     {
-        return $this->modelReflectionMappings;
+        return mezzo()->makeReflectionManager();
     }
+
 
 
 }

@@ -8,15 +8,8 @@ use MezzoLabs\Mezzo\Core\Schema\Converters\ModelReflectionConverter;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Exceptions\InvalidModel;
 
-abstract class GenericModelReflection
+abstract class ModelReflection
 {
-    /**
-     * One example instance of the wrapped model.
-     *
-     * @var Model
-     */
-    protected $instance;
-
     /**
      * @var ModelSchema
      */
@@ -26,16 +19,6 @@ abstract class GenericModelReflection
      * @var ModelReflectionConverter
      */
     protected $schemaConverter;
-
-    /**
-     * @var \ReflectionClass
-     */
-    protected $reflectionClass;
-
-    /**
-     * @var ModelParser
-     */
-    protected $parser;
 
     /**
      * @var ModelReflectionSet
@@ -80,7 +63,7 @@ abstract class GenericModelReflection
      */
     public static function modelString($model)
     {
-        if (is_object($model) && $model instanceof GenericModelReflection)
+        if (is_object($model) && $model instanceof ModelReflection)
             return $model->className();
 
         if (is_object($model))
@@ -95,17 +78,7 @@ abstract class GenericModelReflection
         return null;
     }
 
-    /**
-     * @return Model
-     */
-    public function instance()
-    {
-        if (!$this->instance) {
-            $this->instance = mezzo()->make($this->className());
-        }
 
-        return $this->instance;
-    }
 
     /**
      * Class name of the reflected eloquent model.
@@ -118,33 +91,13 @@ abstract class GenericModelReflection
     }
 
     /**
-     * @return string
-     */
-    public function fileName()
-    {
-        return $this->reflectionClass()->getFileName();
-    }
-
-    /**
-     * Get the ReflectionClass object of the underlying model
+     * Class name of the reflected eloquent model.
      *
-     * @return \ReflectionClass
-     */
-    public function reflectionClass()
-    {
-        if (!$this->reflectionClass) {
-            $this->reflectionClass = new \ReflectionClass($this->className());
-        }
-
-        return $this->reflectionClass;
-    }
-
-    /**
      * @return string
      */
-    public function shortName()
+    public function instance()
     {
-        return $this->reflectionClass()->getShortName();
+        return $this->modelReflectionSet->instance();
     }
 
     /**

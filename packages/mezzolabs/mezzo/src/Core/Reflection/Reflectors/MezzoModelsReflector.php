@@ -2,13 +2,21 @@
 
 namespace MezzoLabs\Mezzo\Core\Reflection\Reflectors;
 
-use MezzoLabs\Mezzo\Core\Reflection\Reflections\GenericModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchemas;
 use MezzoLabs\Mezzo\Core\Schema\RelationSchemas;
 
 class MezzoModelsReflector extends ModelsReflector
 {
 
+    public function modelReflectionSets()
+    {
+        $allSets = $this->manager()->sets();
+
+        return $allSets->filter(function (ModelReflectionSet $reflectionSet) {
+            return $reflectionSet->isMezzoModel();
+        });
+    }
 
 
     /**
@@ -19,6 +27,7 @@ class MezzoModelsReflector extends ModelsReflector
         return $this->relationsSchema;
     }
 
+
     /**
      * @return ModelSchemas
      */
@@ -26,7 +35,6 @@ class MezzoModelsReflector extends ModelsReflector
     {
         return $this->modelsSchema;
     }
-
 
     /**
      * Retrieve the correct model classes from the ModelFinder.
@@ -59,4 +67,5 @@ class MezzoModelsReflector extends ModelsReflector
     {
         // TODO: Implement makeModelSchemas() method.
     }
+
 }

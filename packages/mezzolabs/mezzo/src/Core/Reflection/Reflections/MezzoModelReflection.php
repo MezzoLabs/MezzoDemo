@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
 
-class MezzoModelReflection extends GenericModelReflection
+class MezzoModelReflection extends ModelReflection
 {
     /**
      * @var ModuleProvider

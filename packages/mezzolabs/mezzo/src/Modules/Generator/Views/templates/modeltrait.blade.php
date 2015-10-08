@@ -15,9 +15,9 @@ use IsMezzoModel;
 *
 @annotation('var', 'string')
 */
-protected $table = '{{ $trait->table() }}';
+protected $mezzoTable = '{{ $trait->table() }}';
 
-protected $rules = {!! $php->rulesArray($trait->modelSchema()) !!}
+protected $mezzoRules = {!! $php->rulesArray($trait->modelSchema()) !!}
 
 @foreach($trait->attributes() as $attribute)
     /**

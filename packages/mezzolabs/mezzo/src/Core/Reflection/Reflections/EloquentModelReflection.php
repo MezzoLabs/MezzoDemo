@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Database\Table;
 use MezzoLabs\Mezzo\Core\Reflection\ModelParser;
 
-class EloquentModelReflection extends GenericModelReflection
+class EloquentModelReflection extends ModelReflection
 {
     /**
      * @var Collection
@@ -18,6 +18,10 @@ class EloquentModelReflection extends GenericModelReflection
      */
     protected $databaseTable;
 
+    /**
+     * @var ModelParser
+     */
+    protected $parser;
 
     /**
      * @return EloquentRelationshipReflections

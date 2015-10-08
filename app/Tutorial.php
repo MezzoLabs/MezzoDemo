@@ -28,6 +28,7 @@ use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 class Tutorial extends Model
 {
 
+    use MezzoTutorial;
 
     /**
      * @Mezzo\Property(type="string", mode="super")

@@ -49,7 +49,6 @@ class BootManager
         ],
         "bootedPhase" => [
             RunThirdPartyWrappers::class,
-            RunModelReflection::class,
             MakeModuleProvidersReady::class,
             IncludeMezzoRouting::class
         ]

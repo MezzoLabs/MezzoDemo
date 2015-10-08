@@ -6,11 +6,14 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentRelationshipReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSets;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchemas;
 use MezzoLabs\Mezzo\Core\Schema\RelationSchemas;
 
 class EloquentModelsReflector extends ModelsReflector
 {
+
     /**
      * Get all relationReflections
      *
@@ -79,5 +82,20 @@ class EloquentModelsReflector extends ModelsReflector
         });
 
         return $modelsSchema;
+    }
+
+
+    /**
+     * Gets the filtered model reflection sets.
+     *
+     * @return ModelReflectionSets
+     */
+    public function modelReflectionSets()
+    {
+        $allSets = $this->manager()->sets();
+
+        return $allSets->filter(function (ModelReflectionSet $reflectionSet) {
+            return !$reflectionSet->isMezzoModel();
+        });
     }
 }

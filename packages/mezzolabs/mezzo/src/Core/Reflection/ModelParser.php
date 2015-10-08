@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Reflection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Reflection\Reflections\GenericModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentRelationshipReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentRelationshipReflections;
 
@@ -17,15 +17,15 @@ class ModelParser
      */
     protected $filename;
     /**
-     * @var GenericModelReflection
+     * @var ModelReflection
      */
     private $modelReflection;
 
     /**
-     * @param GenericModelReflection $modelReflection
+     * @param ModelReflection $modelReflection
      * @internal param $filename
      */
-    public function __construct(GenericModelReflection $modelReflection)
+    public function __construct(ModelReflection $modelReflection)
     {
         $this->modelReflection = $modelReflection;
         $this->filename = $modelReflection->fileName();

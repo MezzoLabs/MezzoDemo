@@ -361,7 +361,7 @@ class EloquentRelationshipReflection
     /**
      * Get the reflection of the related model.
      *
-     * @return GenericModelReflection
+     * @return ModelReflection
      */
     public function relatedModelReflection()
     {
