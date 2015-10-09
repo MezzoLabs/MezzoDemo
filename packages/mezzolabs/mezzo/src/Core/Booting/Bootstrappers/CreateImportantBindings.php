@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 use Illuminate\Foundation\Application;
 use MezzoLabs\Mezzo\Console\MezzoKernel;
+use MezzoLabs\Mezzo\Core\Annotations\Reader\AnnotationReader;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Database\Reader;
@@ -34,6 +35,7 @@ class CreateImportantBindings implements Bootstrapper
         'mezzo.router' => Router::class,
         'mezzo.modelfinder' => ModelFinder::class,
         'mezzo.modelMappings' => ModelMappings::class,
+        'mezzo.annotationReader' => AnnotationReader::class,
         'mezzo.reflectionManager' => ReflectionManager::class,
         'mezzo.modules.general' => GeneralModule::class,
         'mezzo.moduleCenter' => ModuleCenter::class,

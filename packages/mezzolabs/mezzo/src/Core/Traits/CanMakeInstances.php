@@ -10,6 +10,7 @@ namespace MezzoLabs\Mezzo\Core\Traits;
 
 
 use MezzoLabs\Mezzo\Console\MezzoKernel;
+use MezzoLabs\Mezzo\Core\Annotations\Reader\AnnotationReader;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Helpers\Path;
@@ -77,7 +78,14 @@ trait CanMakeInstances
     public function makeModelMappings()
     {
         return $this->make(ModelMappings::class);
+    }
 
+    /**
+     * @return AnnotationReader
+     */
+    public function makeAnnotationReader()
+    {
+        return $this->make(AnnotationReader::class);
     }
 
     /**

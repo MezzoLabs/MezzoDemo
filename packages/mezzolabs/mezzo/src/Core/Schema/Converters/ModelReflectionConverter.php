@@ -3,6 +3,7 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Converters;
 
 
+use MezzoLabs\Mezzo\Core\Annotations\AnnotationReader;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
@@ -60,7 +61,9 @@ class ModelReflectionConverter extends ModelConverter
 
     protected function fromMezzoReflectionToSchema(MezzoModelReflection $reflection)
     {
-        $schema = new ModelSchema($reflection->className(), )
+        $schema = new ModelSchema($reflection->className(), $reflection->tableName());
+
+        $annotationReader = new AnnotationReader()
     }
 
     protected function fromEloquentReflectionToSchema(EloquentModelReflection $reflection)

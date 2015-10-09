@@ -70,11 +70,7 @@ Route::get('debug/migrationGenerator', function(){
 
 Route::get('debug/annotations', function(){
 
-    $reader = new FileCacheReader(
-        new AnnotationReader(),
-        storage_path('app/') . 'doctrine2',
-        $debug = true
-    );
+
 
     $property = new MezzoLabs\Mezzo\Core\Annotations\Property(array());
 
