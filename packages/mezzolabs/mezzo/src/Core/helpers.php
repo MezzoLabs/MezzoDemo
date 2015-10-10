@@ -40,12 +40,12 @@ if (!function_exists('mezzo_dump')) {
      * @internal param $mixed
      * @return void
      */
-    function mezzo_dump($toDump, $title = "")
+    function mezzo_dump($toDump, $title = "", $stepsBack = 0)
     {
         if (!empty($title))
             $title = "<b>$title</b> ";
 
-        $title .= '<small>(' . debug_backtrace()[0]['file'] . ':' . debug_backtrace()[0]['line'] . ')</small>';
+        $title .= '<small>(' . debug_backtrace()[$stepsBack]['file'] . ':' . debug_backtrace()[0]['line'] . ')</small>';
 
         echo $title . ':<br/>';
 
@@ -64,7 +64,7 @@ if (!function_exists('mezzo_dd')) {
      */
     function mezzo_dd($toDump)
     {
-        mezzo_dump($toDump);
+        mezzo_dump($toDump, "", 1);
         die();
     }
 }

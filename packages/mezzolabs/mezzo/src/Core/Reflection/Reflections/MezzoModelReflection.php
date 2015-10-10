@@ -45,8 +45,20 @@ class MezzoModelReflection extends ModelReflection
         return $this->module;
     }
 
+
+    /**
+     * @return string
+     */
     public function tableName()
     {
-        $this->instance()->
+        return $this->instance()->getTable();
+    }
+
+    /**
+     * @return \MezzoLabs\Mezzo\Core\Annotations\Reader\ModelAnnotations
+     */
+    public function annotations()
+    {
+        return mezzo()->makeAnnotationReader()->model($this);
     }
 }

@@ -71,9 +71,6 @@ Route::get('debug/migrationGenerator', function(){
 Route::get('debug/annotations', function(){
 
 
-
-    $property = new MezzoLabs\Mezzo\Core\Annotations\Property(array());
-
     $property = new ReflectionProperty(Tutorial::class, 'email');
     //dd($property);
 

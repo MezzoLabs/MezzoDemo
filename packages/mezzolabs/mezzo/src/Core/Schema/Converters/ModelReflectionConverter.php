@@ -63,7 +63,11 @@ class ModelReflectionConverter extends ModelConverter
     {
         $schema = new ModelSchema($reflection->className(), $reflection->tableName());
 
-        $annotationReader = new AnnotationReader()
+        $reflection->annotations();
+
+        dd('here to die');
+
+
     }
 
     protected function fromEloquentReflectionToSchema(EloquentModelReflection $reflection)

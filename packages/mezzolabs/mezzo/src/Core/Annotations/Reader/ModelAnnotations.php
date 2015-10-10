@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 
 
 use Doctrine\Common\Annotations\Reader as DoctrineReader;
+use Illuminate\Database\Eloquent\Collection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 
 class ModelAnnotations
@@ -13,6 +14,11 @@ class ModelAnnotations
      * @var ModelReflection
      */
     protected $modelReflection;
+
+    /**
+     * @var array
+     */
+    protected $classAnnotations;
 
     /**
      * @param ModelReflection $modelReflection
@@ -27,6 +33,28 @@ class ModelAnnotations
     }
 
     protected function read(){
+        $this->classAnnotations = $this->readClass();
+    }
+
+    /**
+     * @return null|object
+     */
+    protected function readClass(){
+        $reflectionClass = $this->reflectionClass();
+        $classAnnotations = $this->doctrineReader()->getClassAnnotations($reflectionClass);
+        $attributesAnnotations = $this->readAttributes();
+
+        mezzo_dd($attributesAnnotations);
+        return $classAnnotations;
+    }
+
+    protected function readAttributes(){
+        $attributes = new Collection();
+
+        $reflectionClass = $this->reflectionClass();
+        $properties = $reflectionClass->getProperties();
+
+        mezzo_dd($properties);
 
     }
 
@@ -58,8 +86,19 @@ class ModelAnnotations
         return $this->modelReflection;
     }
 
+    /**
+     * @return string
+     */
     public function name()
     {
         return $this->modelReflection->className();
+    }
+
+    /**
+     * @return \ReflectionClass
+     */
+    public function reflectionClass()
+    {
+        return $this->modelReflection()->reflectionClass();
     }
 }
