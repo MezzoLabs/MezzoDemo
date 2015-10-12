@@ -11,19 +11,29 @@ use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 class MigrationLines
 {
     /**
-     * @var Attribute
-     */
-    private $attribute;
-
-    /**
      * @var Collection
      */
     protected $lines;
+    /**
+     * @var Attribute
+     */
+    private $attribute;
 
     public function __construct(Attribute $attribute)
     {
 
         $this->attribute = $attribute;
+    }
+
+    /**
+     *  Gets a Collection of MigrationLine's for an Attribute
+     *
+     * @param Attribute $attribute
+     * @return mixed
+     */
+    public static function forAttribute(Attribute $attribute)
+    {
+        return (new static($attribute))->make();
     }
 
     /**
@@ -44,24 +54,12 @@ class MigrationLines
         return $this->setLines($columnType);
     }
 
-
     /**
-     * @param RelationAttribute $attribute
-     * @return Collection
+     * @return string
      */
-    private function foreignKey(RelationAttribute $attribute)
+    protected function columnType()
     {
-        $otherSide = $attribute->relationSide()->otherSide();
-
-        $type = $attribute->type()->doctrineTypeName();
-        $name = $attribute->name();
-        $referencesColumn = $otherSide->primaryKey();
-        $referencesTable = $otherSide->table();
-
-        $columnLine = MigrationLine::column($type, $name);
-        $foreignKey = MigrationLine::start()->addForeignKey($name, $referencesTable, $referencesColumn);
-
-        return $this->setLines([$columnLine, $foreignKey]);
+        return $this->attribute->type()->doctrineTypeInstance()->getName();
     }
 
     /**
@@ -94,23 +92,21 @@ class MigrationLines
     }
 
     /**
-     * @return string
+     * @param RelationAttribute $attribute
+     * @return Collection
      */
-    protected function columnType()
+    private function foreignKey(RelationAttribute $attribute)
     {
-        return $this->attribute->type()->doctrineTypeInstance()->getName();
-    }
+        $otherSide = $attribute->relationSide()->otherSide();
 
+        $type = $attribute->type()->doctrineTypeName();
+        $name = $attribute->name();
+        $referencesColumn = $otherSide->primaryKey();
+        $referencesTable = $otherSide->table();
 
-    /**
-     *  Gets a Collection of MigrationLine's for an Attribute
-     *
-     * @param Attribute $attribute
-     * @return mixed
-     */
-    public static function forAttribute(Attribute $attribute)
-    {
-        return (new static($attribute))->make();
+        $foreignKey = MigrationLine::start()->addForeignKey($name, $referencesTable, $referencesColumn)->addNullable();
+
+        return $this->setLines($foreignKey);
     }
 
     /**
@@ -120,4 +116,6 @@ class MigrationLines
     {
         return $this->lines;
     }
+
+
 } 

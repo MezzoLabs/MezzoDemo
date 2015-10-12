@@ -70,6 +70,11 @@ Route::get('debug/migrationGenerator', function(){
 
 Route::get('debug/annotations', function(){
 
+    $reader = new FileCacheReader(
+        new AnnotationReader(),
+        storage_path('app/') . 'doctrineAnnotationsTest',
+        $debug = true
+    );
 
     $property = new ReflectionProperty(Tutorial::class, 'email');
     //dd($property);

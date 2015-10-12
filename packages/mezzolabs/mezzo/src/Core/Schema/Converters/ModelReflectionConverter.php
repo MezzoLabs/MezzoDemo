@@ -46,7 +46,7 @@ class ModelReflectionConverter extends ModelConverter
     /**
      * @param ModelReflection $reflection
      * @return ModelSchema
-     * @throws ReflectionException
+     * @throws UnexpectedException
      */
     protected function fromModelReflectionToSchema(ModelReflection $reflection)
     {

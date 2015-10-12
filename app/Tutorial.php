@@ -4,9 +4,8 @@ namespace App;
 
 use App\Mezzo\Generated\ModelTraits\MezzoTutorial;
 use Illuminate\Database\Eloquent\Model;
+use \MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
-
-use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 
 
 /**
@@ -30,37 +29,39 @@ class Tutorial extends Model
 
     use MezzoTutorial;
 
-    /**
-     * @Mezzo\Property(type="string", mode="super")
-     * @var string
-     */
-    protected $email;
 
-    public function mainImage(){
+    public function mainImage()
+    {
         return $this->hasOne('App\Image');
     }
 
-    public function parent(){
+    public function parent()
+    {
         return $this->hasOne('App\Tutorial', 'parent');
     }
 
-    public function comments(){
+    public function comments()
+    {
         return $this->hasMany('App\Comment');
     }
 
-    public function owner(){
+    public function owner()
+    {
         return $this->belongsTo('App\User', 'user_id');
     }
 
-    public function categories(){
+    public function categories()
+    {
         return $this->belongsToMany('App\Category');
     }
 
-    public function plannedCategories(){
+    public function plannedCategories()
+    {
         return $this->belongsToMany(Category::class, 'planned_tutorial_category');
     }
 
-    public function mainCategory(){
+    public function mainCategory()
+    {
         return $this->belongsTo('App\Category', 'main_category');
     }
 

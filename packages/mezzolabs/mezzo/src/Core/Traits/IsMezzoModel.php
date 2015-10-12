@@ -8,7 +8,10 @@
 
 namespace MezzoLabs\Mezzo\Core\Traits;
 
-
+/**
+* @property string $mezzoTable
+* @property string $mezzoRules
+**/
 trait IsMezzoModel
 {
 

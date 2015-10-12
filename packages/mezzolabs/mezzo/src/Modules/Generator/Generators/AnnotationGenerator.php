@@ -22,6 +22,15 @@ class AnnotationGenerator
         $this->lines = new Collection();
     }
 
+    /**
+     * @param InputType $type
+     * @return string
+     */
+    public function inputType(InputType $type)
+    {
+        return $this->doctrine('Mezzo\InputType', ['type' => $type->name()]);
+    }
+
     public function doctrine($annotationClass, $array = [])
     {
         $parameters = array();
@@ -51,15 +60,6 @@ class AnnotationGenerator
     }
 
     /**
-     * @param InputType $type
-     * @return string
-     */
-    public function inputType(InputType $type)
-    {
-        return $this->doctrine('Mezzo\InputType', ['type' => $type->name()]);
-    }
-
-    /**
      * Generate the annotation for an attribute.
      *
      * @param Attribute $attribute
@@ -67,10 +67,34 @@ class AnnotationGenerator
      */
     public function attribute(Attribute $attribute)
     {
-        $this->addLine($this->inputType($attribute->type()));
-
+        $this->doctrine('Mezzo\Attribute', [
+            'inputType' => $attribute->type()->name()
+        ]);
 
         return $this->pullLines();
+    }
+
+    /**
+     * @return string
+     */
+    protected function pullLines()
+    {
+        $string = $this->multiple($this->lines->toArray());
+
+        $this->lines = new Collection();
+
+        return $string;
+    }
+
+    /**
+     * Make a string out of multiple annotation strings
+     *
+     * @param $lines
+     * @return string
+     */
+    protected function multiple(array $lines = [])
+    {
+        return implode("\n    ", $lines);
     }
 
     public function relation(RelationSide $relationSide)
@@ -108,18 +132,6 @@ class AnnotationGenerator
         return $this->pullLines();
     }
 
-
-    /**
-     * Make a string out of multiple annotation strings
-     *
-     * @param $lines
-     * @return string
-     */
-    protected function multiple(array $lines = [])
-    {
-        return implode("\n    ", $lines);
-    }
-
     /**
      * Add a line to the buffer.
      *
@@ -128,18 +140,6 @@ class AnnotationGenerator
     protected function addLine($line)
     {
         $this->lines->push($line);
-    }
-
-    /**
-     * @return string
-     */
-    protected function pullLines()
-    {
-        $string = $this->multiple($this->lines->toArray());
-
-        $this->lines = new Collection();
-
-        return $string;
     }
 
     public function phpGenerator()

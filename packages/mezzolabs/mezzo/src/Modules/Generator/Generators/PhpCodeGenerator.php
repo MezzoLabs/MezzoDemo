@@ -95,7 +95,7 @@ class PhpCodeGenerator
     {
         if (is_numeric($var)) return $var;
 
-        return "'" . $var . "'";
+        return "\"" . $var . "\"";
     }
 
     /**

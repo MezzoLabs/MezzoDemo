@@ -33,6 +33,7 @@ class CreateImportantBindings implements Bootstrapper
         'mezzo.thirdParties' => ThirdParties::class,
         'mezzo.config' => MezzoConfig::class,
         'mezzo.router' => Router::class,
+        'mezzo.path' => Path::class,
         'mezzo.modelfinder' => ModelFinder::class,
         'mezzo.modelMappings' => ModelMappings::class,
         'mezzo.annotationReader' => AnnotationReader::class,
@@ -41,7 +42,6 @@ class CreateImportantBindings implements Bootstrapper
         'mezzo.moduleCenter' => ModuleCenter::class,
         'mezzo.database.reader' => Reader::class,
         'mezzo.cache.singleton' => Singleton::class,
-        'mezzo.path' => Path::class,
         'mezzo.kernel' => MezzoKernel::class
     ];
 

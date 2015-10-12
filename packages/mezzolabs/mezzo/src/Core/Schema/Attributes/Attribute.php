@@ -208,4 +208,12 @@ class Attribute
     {
         return $this->getTable() . '.' . $this->name();
     }
+
+    /**
+     * @return bool
+     */
+    public function isRelationAttribute()
+    {
+        return $this instanceof RelationAttribute;
+    }
 } 

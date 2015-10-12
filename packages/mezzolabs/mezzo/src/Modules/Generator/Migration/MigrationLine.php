@@ -37,6 +37,7 @@ class MigrationLine
      * Add a part to the fluent migration string
      *
      * @param $string
+     * @return $this
      */
     protected function addPart($string)
     {
@@ -49,6 +50,7 @@ class MigrationLine
      *
      * @param $functionName
      * @param array $parameters
+     * @return $this
      */
     public function addFunction($functionName, $parameters = [])
     {
@@ -74,16 +76,27 @@ class MigrationLine
         return $this;
     }
 
+    /**
+     * @param $foreign_key
+     * @param string $otherTable
+     * @param string $references
+     * @param string $onDelete
+     * @return $this
+     */
     public function addForeignKey($foreign_key, $otherTable = '', $references = 'id', $onDelete = 'cascade')
     {
         $this->addFunction('foreign', $foreign_key);
         $this->addFunction('references', $references);
-        $this->addFunction('otherTable', $otherTable);
+        $this->addFunction('on', $otherTable);
         $this->addFunction('onDelete', 'cascade');
 
         return $this;
     }
 
+    /**
+     * @param $columns
+     * @return $this
+     */
     public function addPrimary($columns)
     {
         $this->addPart('primary([' . $this->parameterList($columns) . '])');
@@ -91,11 +104,31 @@ class MigrationLine
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function addTimestamps()
     {
         $this->addFunction('timestamps');
 
         return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function addUnsigned()
+    {
+        $this->addFunction('unsigned');
+        return $this;
+    }
+
+    /**
+     *
+     */
+    public function addNullable()
+    {
+        $this->addFunction('nullable');
     }
 
 

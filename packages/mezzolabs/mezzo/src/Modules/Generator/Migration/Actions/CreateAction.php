@@ -32,8 +32,16 @@ class CreateAction extends AttributeAction
      */
     public function migrationDown()
     {
+        $lines = new Collection();
 
-        return new Collection(['$table->dropColumn(\'' . $this->attribute()->name() . '\');']);
+        if ($this->attribute()->isForeignKey())
+            $lines->push('$table->dropForeign(\'' .
+                $this->attribute()->getTable() . '.'
+                . $this->attribute()->name() . '.foreign\');');
+
+        $lines->push('$table->dropColumn(\'' . $this->attribute()->name() . '\');');
+
+        return $lines;
     }
 
 

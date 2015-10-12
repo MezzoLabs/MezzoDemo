@@ -6,14 +6,8 @@ namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 
 class AttributeAnnotations
 {
-    /**
-     * @var string
-     */
-    protected $attributeName;
-    /**
-     * @var ModelAnnotations
-     */
-    private $modelAnnotations;
+
+
 
     /**
      * @param ModelAnnotations $modelAnnotations

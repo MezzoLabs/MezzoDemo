@@ -4,12 +4,12 @@
 namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 
 
-use Doctrine\Common\Annotations\FileCacheReader;
 use Doctrine\Common\Annotations\AnnotationReader as DoctrineAnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use Doctrine\Common\Annotations\FileCacheReader;
 use Doctrine\Common\Annotations\Reader as ReaderInterface;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
-use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 
 class AnnotationReader
 {
@@ -43,8 +43,12 @@ class AnnotationReader
     /**
      * @return ReaderInterface
      */
-    protected function makeDoctrineAnnotationReader(){
+    protected function makeDoctrineAnnotationReader()
+    {
         //@TODO-SCHS: Move to CachedReader
+
+
+        $this->registerSilentAutoloading();
 
         return new FileCacheReader(
             new DoctrineAnnotationReader(),
@@ -53,9 +57,22 @@ class AnnotationReader
         );
     }
 
+    private function registerSilentAutoloading()
+    {
+        AnnotationRegistry::registerLoader('class_exists');
+
+    }
+
+    private function registerAutoloadNamespace()
+    {
+        AnnotationRegistry::registerAutoloadNamespace(
+            'MezzoLabs\Mezzo\Core\Annotations',
+            mezzo()->path()->toSource());
+    }
+
     public function model(ModelReflection $modelReflection)
     {
-        if($this->modelAnnotationsCache->has($modelReflection->className()))
+        if ($this->modelAnnotationsCache->has($modelReflection->className()))
             return $this->modelAnnotationsCache->get($modelReflection->className());
 
         return new ModelAnnotations($modelReflection);

@@ -32,35 +32,78 @@ class ModelAnnotations
         $this->sendToCache();
     }
 
-    protected function read(){
+    protected function read()
+    {
         $this->classAnnotations = $this->readClass();
+
+        $this->readProperties();
     }
 
     /**
      * @return null|object
      */
-    protected function readClass(){
+    protected function readClass()
+    {
         $reflectionClass = $this->reflectionClass();
         $classAnnotations = $this->doctrineReader()->getClassAnnotations($reflectionClass);
-        $attributesAnnotations = $this->readAttributes();
 
-        mezzo_dd($attributesAnnotations);
         return $classAnnotations;
     }
 
-    protected function readAttributes(){
-        $attributes = new Collection();
+    /**
+     * Read all the properties in the given model anc check for attribute and realtionship reflection.
+     */
+    protected function readProperties()
+    {
+        $attributeAnnotations = new Collection();
+        $relationAnnotations = new Collection();
 
         $reflectionClass = $this->reflectionClass();
-        $properties = $reflectionClass->getProperties();
+        $properties = new Collection($reflectionClass->getProperties(\ReflectionProperty::IS_PROTECTED));
+        $reader = $this->doctrineReader();
 
-        mezzo_dd($properties);
+        $properties->each(function (\ReflectionProperty $property) use ($reader){
+            if(!$property->isProtected()) return true;
+
+            $annotations = $reader->getPropertyAnnotations($property);
+
+            if(empty($annotations)) return true;
+
+            mezzo_dd($annotations);
+
+
+        });
+
+        mezzo_dd();
+    }
+
+
+    /**
+     * @return \ReflectionClass
+     */
+    public function reflectionClass()
+    {
+        return $this->modelReflection()->reflectionClass();
+
 
     }
 
-    protected function sendToCache()
+    /**
+     * @return ModelReflection
+     */
+    public function modelReflection()
     {
-        $this->reader()->cache($this);
+        return $this->modelReflection;
+
+    }
+
+    /**
+     * @return DoctrineReader
+     */
+    protected function doctrineReader()
+    {
+        return $this->reader()->doctrineReader();
+
     }
 
     /**
@@ -71,19 +114,10 @@ class ModelAnnotations
         return mezzo()->makeAnnotationReader();
     }
 
-    /**
-     * @return DoctrineReader
-     */
-    protected function doctrineReader(){
-        return $this->reader()->doctrineReader();
-    }
-
-    /**
-     * @return ModelReflection
-     */
-    public function modelReflection()
+    protected function sendToCache()
     {
-        return $this->modelReflection;
+        $this->reader()->cache($this);
+
     }
 
     /**
@@ -91,14 +125,6 @@ class ModelAnnotations
      */
     public function name()
     {
-        return $this->modelReflection->className();
-    }
-
-    /**
-     * @return \ReflectionClass
-     */
-    public function reflectionClass()
-    {
-        return $this->modelReflection()->reflectionClass();
+        return $this->modelReflection->classNass();
     }
 }
