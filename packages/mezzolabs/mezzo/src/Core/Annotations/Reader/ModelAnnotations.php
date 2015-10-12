@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 use Doctrine\Common\Annotations\Reader as DoctrineReader;
 use Illuminate\Database\Eloquent\Collection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
+use MezzoLabs\Mezzo\Exceptions\AnnotationException;
 
 class ModelAnnotations
 {
@@ -21,6 +22,16 @@ class ModelAnnotations
     protected $classAnnotations;
 
     /**
+     * @var Collection
+     */
+    protected $attributeAnnotations;
+
+    /**
+     * @var Collection
+     */
+    protected $relationAnnotations;
+
+    /**
      * @param ModelReflection $modelReflection
      */
     public function __construct(ModelReflection $modelReflection)
@@ -30,6 +41,8 @@ class ModelAnnotations
         $this->read();
 
         $this->sendToCache();
+
+        mezzo_dd($this);
     }
 
     protected function read()
@@ -51,32 +64,11 @@ class ModelAnnotations
     }
 
     /**
-     * Read all the properties in the given model anc check for attribute and realtionship reflection.
-     */
-    protected function readProperties()
-    {
-        $attributeAnnotations = new Collection();
-        $relationAnnotations = new Collection();
-
-        $reflectionClass = $this->reflectionClass();
-        $properties = new Collection($reflectionClass->getProperties(\ReflectionProperty::IS_PROTECTED));
-
-        $properties->each(function (\ReflectionProperty $property) {
-            $annotations = PropertyAnnotations::make($this->reader(), $property);
-            if($annotations === null) return true;
-
-        });
-    }
-
-
-    /**
      * @return \ReflectionClass
      */
     public function reflectionClass()
     {
         return $this->modelReflection()->reflectionClass();
-
-
     }
 
     /**
@@ -105,10 +97,57 @@ class ModelAnnotations
         return mezzo()->makeAnnotationReader();
     }
 
+    /**
+     * Read all the properties in the given model anc check for attribute and realtionship reflection.
+     */
+    protected function readProperties()
+    {
+        $this->attributeAnnotations = new Collection();
+        $this->relationAnnotations = new Collection();
+
+        $reflectionClass = $this->reflectionClass();
+        $properties = new Collection($reflectionClass->getProperties(\ReflectionProperty::IS_PROTECTED));
+
+        $properties->each(function (\ReflectionProperty $property) {
+            $this->readProperty($property);
+        });
+    }
+
+    /**
+     * @param \ReflectionProperty $property
+     * @return bool
+     * @throws AnnotationException
+     */
+    protected function readProperty(\ReflectionProperty $property)
+    {
+        $annotations = PropertyAnnotations::make($this->reader(), $property);
+        if ($annotations === null)
+            return null;
+
+        if ($annotations instanceof RelationAnnotations)
+            return $this->relationAnnotations->put($annotations->name(), $annotations);
+
+        if ($annotations instanceof AttributeAnnotations)
+            return $this->attributeAnnotations->put($annotations->name(), $annotations);
+
+        throw new AnnotationException('Unknown property ' . $annotations->name() .
+            ' class ' . get_class($annotations));
+    }
+
+    /**
+     * Save this model annotations to the runtime cache.
+     */
     protected function sendToCache()
     {
         $this->reader()->cache($this);
+    }
 
+    /**
+     * @return Collection
+     */
+    public function allAnnotations()
+    {
+        return $this->attributeAnnotations->merge($this->relationAnnotations);
     }
 
     /**

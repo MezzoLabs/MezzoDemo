@@ -23,29 +23,6 @@ class RelationAnnotations extends PropertyAnnotations
     protected $relationClass;
 
     /**
-     * @return string
-     * @throws AnnotationException
-     */
-    public function relationClass()
-    {
-        if (!$this->relationClass) {
-
-            if ($this->has('OneToOne'))
-                $this->relationClass = OneToOne::class;
-
-            if ($this->has('OneToMany'))
-                $this->relationClass = OneToMany::class;
-
-            if ($this->has('ManyToMany'))
-                $this->relationClass = ManyToMany::class;
-
-            throw new AnnotationException('No valid relation type given.');
-        }
-
-        return $this->relationClass;
-    }
-
-    /**
      * @return From
      */
     public function from()
@@ -86,7 +63,28 @@ class RelationAnnotations extends PropertyAnnotations
      */
     public function isManyToMany()
     {
-        return $this->relationClass === ManyToMany::class;
+        return $this->relationClass() === ManyToMany::class;
+    }
+
+    /**
+     * @return string
+     * @throws AnnotationException
+     */
+    public function relationClass()
+    {
+        if (!$this->relationClass) {
+
+            if ($this->has('OneToOne'))
+                $this->relationClass = OneToOne::class;
+            else if ($this->has('OneToMany'))
+                $this->relationClass = OneToMany::class;
+            else if ($this->has('ManyToMany'))
+                $this->relationClass = ManyToMany::class;
+            else
+                throw new AnnotationException('No valid relation type given.');
+        }
+
+        return $this->relationClass;
     }
 
     /**
@@ -133,12 +131,12 @@ class RelationAnnotations extends PropertyAnnotations
 
     public function isOneToOne()
     {
-        return $this->relationClass === OneToOne::class;
+        return $this->relationClass() === OneToOne::class;
     }
 
     public function isOneToMany()
     {
-        return $this->relationClass === OneToMany::class;
+        return $this->relationClass() === OneToMany::class;
     }
 
     /**
@@ -160,6 +158,7 @@ class RelationAnnotations extends PropertyAnnotations
      */
     protected function validateManyToMany()
     {
+
         if (!$this->has('PivotTable'))
             throw new AnnotationException('A many to many relation needs to have ' .
                 'a "PivotTable" annotation: ' . $this->name);

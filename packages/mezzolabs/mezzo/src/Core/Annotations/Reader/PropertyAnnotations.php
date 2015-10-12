@@ -97,5 +97,21 @@ abstract class PropertyAnnotations
         return $this->annotations->have($annotationType);
     }
 
+    /**
+     * @return string
+     */
+    public function name()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return Annotations
+     */
+    public function annotations()
+    {
+        return $this->annotations;
+    }
+
 
 }
