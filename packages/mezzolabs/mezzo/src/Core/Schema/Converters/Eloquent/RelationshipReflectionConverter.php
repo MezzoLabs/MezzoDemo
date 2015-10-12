@@ -1,17 +1,19 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Schema\Converters;
+namespace MezzoLabs\Mezzo\Core\Schema\Converters\Eloquent;
 
 
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentRelationshipReflection;
+use MezzoLabs\Mezzo\Core\Schema\Converters\Converter;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOne;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
-class RelationConverter extends Converter
+class
+RelationshipReflectionConverter extends Converter
 {
 
     /**

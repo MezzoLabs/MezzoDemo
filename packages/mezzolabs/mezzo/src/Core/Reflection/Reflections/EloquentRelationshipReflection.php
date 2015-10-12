@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
 use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
-use MezzoLabs\Mezzo\Core\Schema\Converters\RelationConverter;
+use MezzoLabs\Mezzo\Core\Schema\Converters\Eloquent\RelationshipReflectionConverter;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToOne;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation as MezzoRelation;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
@@ -57,7 +57,7 @@ class EloquentRelationshipReflection
     protected $relationSchema;
 
     /**
-     * @var RelationConverter
+     * @var RelationshipReflectionConverter
      */
     protected $schemaConverter;
 
@@ -73,7 +73,7 @@ class EloquentRelationshipReflection
         $this->instance = $this->makeInstance();
         $this->type = $this->instanceReflection()->getShortName();
 
-        $this->schemaConverter = RelationConverter::make();
+        $this->schemaConverter = RelationshipReflectionConverter::make();
 
     }
 

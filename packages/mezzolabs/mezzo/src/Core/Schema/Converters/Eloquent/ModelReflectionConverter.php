@@ -1,6 +1,6 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Core\Schema\Converters;
+namespace MezzoLabs\Mezzo\Core\Schema\Converters\Eloquent;
 
 
 use MezzoLabs\Mezzo\Core\Annotations\AnnotationReader;
@@ -9,8 +9,8 @@ use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
+use MezzoLabs\Mezzo\Core\Schema\Converters\ModelConverter;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
-use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 use MezzoLabs\Mezzo\Exceptions\UnexpectedException;
 
 class ModelReflectionConverter extends ModelConverter
@@ -18,16 +18,16 @@ class ModelReflectionConverter extends ModelConverter
 
 
     /**
-     * @var AttributeConverter
+     * @var DatabaseColumnConverter
      */
     protected $attributeConverter;
 
     /**
      * Create a new ModelReflection Converter instance
      *
-     * @param AttributeConverter $attributeConverter
+     * @param DatabaseColumnConverter $attributeConverter
      */
-    public function __construct(AttributeConverter $attributeConverter)
+    public function __construct(DatabaseColumnConverter $attributeConverter)
     {
         $this->attributeConverter = $attributeConverter;
     }

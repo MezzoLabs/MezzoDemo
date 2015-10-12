@@ -8,7 +8,7 @@ namespace MezzoLabs\Mezzo\Core\Annotations\Relations;
  * @Annotation
  * @Target({"PROPERTY","ANNOTATION"})
  */
-class ManyToMany
+class ManyToMany extends RelationAnnotation
 {
 
 }

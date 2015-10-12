@@ -55,6 +55,10 @@ class ModelReflectionSet
         $this->isMezzoModel = $this->checkIfMezzoModel();
     }
 
+    /**
+     * @return bool
+     * @throws \ReflectionException
+     */
     protected function assertValidEloquentModel(){
         if (!class_exists($this->className))
             throw new \ReflectionException('Class ' . $this->className . ' does not exist.');

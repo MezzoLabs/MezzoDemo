@@ -7,7 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Column;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
-use MezzoLabs\Mezzo\Core\Schema\Converters\AttributeConverter;
+use MezzoLabs\Mezzo\Core\Schema\Converters\Eloquent\DatabaseColumnConverter;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
 class Attributes extends Collection
@@ -56,7 +56,7 @@ class Attributes extends Collection
      */
     public static function fromColumns(Collection $columns)
     {
-        $converter = AttributeConverter::make();
+        $converter = DatabaseColumnConverter::make();
         $attributes = new Attributes();
 
         $columns->each(function (Column $column) use ($converter, $attributes) {

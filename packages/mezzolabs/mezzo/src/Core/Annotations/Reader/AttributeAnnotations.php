@@ -4,19 +4,28 @@
 namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 
 
-class AttributeAnnotations
+use MezzoLabs\Mezzo\Exceptions\AnnotationException;
+
+class AttributeAnnotations extends PropertyAnnotations
 {
 
+    public function columnName()
+    {
+        return $this->name;
+    }
 
 
     /**
-     * @param ModelAnnotations $modelAnnotations
-     * @param string $attributeName
+     * Checks if the given annotations list is correct.
+     * @return bool
+     * @throws AnnotationException
      */
-    public function __construct(ModelAnnotations $modelAnnotations, $attributeName)
+    protected function validate()
     {
-        $this->modelAnnotations = $modelAnnotations;
-        $this->attributeName = $attributeName;
+        if (!$this->annotations->have('attribute')) {
+            throw new AnnotationException('A attribute need to have an attribute annotation.');
+        }
 
+        return true;
     }
 }

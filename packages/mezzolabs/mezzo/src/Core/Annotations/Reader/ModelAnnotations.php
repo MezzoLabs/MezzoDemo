@@ -60,21 +60,12 @@ class ModelAnnotations
 
         $reflectionClass = $this->reflectionClass();
         $properties = new Collection($reflectionClass->getProperties(\ReflectionProperty::IS_PROTECTED));
-        $reader = $this->doctrineReader();
 
-        $properties->each(function (\ReflectionProperty $property) use ($reader){
-            if(!$property->isProtected()) return true;
-
-            $annotations = $reader->getPropertyAnnotations($property);
-
-            if(empty($annotations)) return true;
-
-            mezzo_dd($annotations);
-
+        $properties->each(function (\ReflectionProperty $property) {
+            $annotations = PropertyAnnotations::make($this->reader(), $property);
+            if($annotations === null) return true;
 
         });
-
-        mezzo_dd();
     }
 
 
@@ -125,6 +116,6 @@ class ModelAnnotations
      */
     public function name()
     {
-        return $this->modelReflection->classNass();
+        return $this->modelReflection->className();
     }
 }

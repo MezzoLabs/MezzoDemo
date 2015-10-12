@@ -11,7 +11,9 @@ use MezzoLabs\Mezzo\Core\Annotations\Annotation;
  */
 class PivotTable extends Annotation
 {
-    public $table;
+    public $name;
 
-    public $column;
+    public $fromColumn;
+
+    public $toColumn;
 }

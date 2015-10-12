@@ -8,5 +8,9 @@ use MezzoLabs\Mezzo\Core\Annotations\Annotation;
 
 abstract class RelationSideAnnotation extends Annotation
 {
+    public $table;
 
+    public $primaryKey;
+
+    public $naming;
 }

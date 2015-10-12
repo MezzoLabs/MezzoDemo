@@ -9,5 +9,5 @@ namespace MezzoLabs\Mezzo\Core\Annotations;
  */
 class Attribute extends Annotation
 {
-    public $inputType;
+    public $type;
 }

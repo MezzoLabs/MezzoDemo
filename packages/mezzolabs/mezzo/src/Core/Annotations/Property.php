@@ -16,5 +16,4 @@ class Property extends Annotation
 
     public $mode;
 
-
 }

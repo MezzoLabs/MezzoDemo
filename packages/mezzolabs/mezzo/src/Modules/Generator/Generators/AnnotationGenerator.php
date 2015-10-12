@@ -52,7 +52,7 @@ class AnnotationGenerator
 
     public function make($type, $parameters = "")
     {
-        $string = '/*@' . $type;
+        $string = '* @' . $type;
 
         if (!empty($parameters)) $string .= " " . $parameters;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Core\Schema\Converters;
+namespace MezzoLabs\Mezzo\Core\Schema\Converters\Eloquent;
 
 
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
@@ -8,9 +8,10 @@ use MezzoLabs\Mezzo\Core\Fluent\FluentAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AtomicAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
+use MezzoLabs\Mezzo\Core\Schema\Converters\Converter;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
-class AttributeConverter extends Converter
+class DatabaseColumnConverter extends Converter
 {
 
     public function run($toConvert)

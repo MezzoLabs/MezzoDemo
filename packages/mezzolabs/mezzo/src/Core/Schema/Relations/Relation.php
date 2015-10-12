@@ -87,6 +87,7 @@ abstract class Relation
         return $this;
     }
 
+
     public function isInitialized()
     {
         return $this->fromTable && $this->fromNaming && $this->toTable && $this->toNaming;

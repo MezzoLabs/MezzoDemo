@@ -63,13 +63,6 @@ class AnnotationReader
 
     }
 
-    private function registerAutoloadNamespace()
-    {
-        AnnotationRegistry::registerAutoloadNamespace(
-            'MezzoLabs\Mezzo\Core\Annotations',
-            mezzo()->path()->toSource());
-    }
-
     public function model(ModelReflection $modelReflection)
     {
         if ($this->modelAnnotationsCache->has($modelReflection->className()))
@@ -87,10 +80,28 @@ class AnnotationReader
     }
 
     /**
+     * @param \ReflectionProperty $property
+     * @return Annotations
+     */
+    public function getPropertyAnnotations(\ReflectionProperty $property)
+    {
+        $annotationArray = $this->doctrineReader()->getPropertyAnnotations($property);
+
+        return new Annotations($annotationArray);
+    }
+
+    /**
      * @return ReaderInterface
      */
     public function doctrineReader()
     {
         return $this->doctrineReader;
+    }
+
+    private function registerAutoloadNamespace()
+    {
+        AnnotationRegistry::registerAutoloadNamespace(
+            'MezzoLabs\Mezzo\Core\Annotations',
+            mezzo()->path()->toSource());
     }
 }

@@ -2,12 +2,10 @@
 
 namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
-use Illuminate\Database\Eloquent\Model;
-use MezzoLabs\Mezzo\Core\Reflection\ModelParser;
-use MezzoLabs\Mezzo\Core\Schema\Converters\ModelReflectionConverter;
+use Illuminate\Database\Eloquent\Model as EloquentModel;
+use MezzoLabs\Mezzo\Core\Schema\Converters\Eloquent\ModelReflectionConverter;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Exceptions\InvalidModel;
-use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 abstract class ModelReflection
 {
@@ -78,7 +76,6 @@ abstract class ModelReflection
     }
 
 
-
     /**
      * Class name of the reflected eloquent model.
      *
@@ -120,19 +117,19 @@ abstract class ModelReflection
     }
 
     /**
-     * @return ModelReflectionSet
-     */
-    public function modelReflectionSet()
-    {
-        return $this->modelReflectionSet;
-    }
-
-    /**
      * @return \ReflectionClass
      */
     public function reflectionClass()
     {
         return $this->modelReflectionSet()->reflectionClass();
+    }
+
+    /**
+     * @return ModelReflectionSet
+     */
+    public function modelReflectionSet()
+    {
+        return $this->modelReflectionSet;
     }
 
 }
