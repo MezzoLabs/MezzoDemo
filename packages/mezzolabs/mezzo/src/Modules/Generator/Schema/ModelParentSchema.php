@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Schema;
 
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 
-class ModelTraitSchema extends FileSchema
+class ModelParentSchema extends FileSchema
 {
     /**
      * @var ModelSchema

@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Schema;
 
 use Illuminate\Support\Collection;
 
-class ModelTraitSchemas extends Collection
+class ModelParentSchemas extends Collection
 {
 
 }

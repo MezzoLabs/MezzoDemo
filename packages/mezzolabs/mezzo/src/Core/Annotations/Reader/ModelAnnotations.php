@@ -7,6 +7,8 @@ namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 use Doctrine\Common\Annotations\Reader as DoctrineReader;
 use Illuminate\Database\Eloquent\Collection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
+use MezzoLabs\Mezzo\Core\Schema\Converters\Annotations\ModelAnnotationsConverter;
+use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Exceptions\AnnotationException;
 
 class ModelAnnotations
@@ -156,5 +158,29 @@ class ModelAnnotations
     public function name()
     {
         return $this->modelReflection->className();
+    }
+
+    /**
+     * @return ModelSchema
+     */
+    public function schema()
+    {
+        return $this->schemaConverter()->run($this);
+    }
+
+    /**
+     * @return ModelAnnotationsConverter
+     */
+    public function schemaConverter()
+    {
+        return new ModelAnnotationsConverter();
+    }
+
+    /**
+     * @return string
+     */
+    public function tableName()
+    {
+        return $this->modelReflection()->modelReflectionSet()->tableName();
     }
 }

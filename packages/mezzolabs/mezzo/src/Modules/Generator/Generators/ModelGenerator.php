@@ -7,11 +7,11 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Generators;
 use MezzoLabs\Mezzo\Core\Files\Files;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchemas;
-use MezzoLabs\Mezzo\Modules\Generator\Schema\ModelTraitSchema;
-use MezzoLabs\Mezzo\Modules\Generator\Schema\ModelTraitSchemas;
+use MezzoLabs\Mezzo\Modules\Generator\Schema\ModelParentSchema;
+use MezzoLabs\Mezzo\Modules\Generator\Schema\ModelParentSchemas;
 
 
-class ModelTraitGenerator extends FileGenerator
+class ModelGenerator extends FileGenerator
 {
 
     /**
@@ -20,9 +20,9 @@ class ModelTraitGenerator extends FileGenerator
     private $modelSchemas;
 
     /**
-     * @var ModelTraitSchemas
+     * @var ModelParentSchemas
      */
-    private $traitSchemas;
+    private $modelParentSchemas;
 
     /**
      * @param ModelSchemas $schemas
@@ -51,10 +51,10 @@ class ModelTraitGenerator extends FileGenerator
     {
         $files = new Files();
 
-        $modelTraitSchemas = $this->createModelTraitSchemas();
+        $modelParentSchemas = $this->createModelParentSchemas();
 
-        $modelTraitSchemas->each(
-            function (ModelTraitSchema $schema) use ($files) {
+        $modelParentSchemas->each(
+            function (ModelParentSchema $schema) use ($files) {
                 $newFile = $schema->file($this->folderName());
                 $files->addFile($newFile);
             });
@@ -69,41 +69,41 @@ class ModelTraitGenerator extends FileGenerator
      */
     public function folderName()
     {
-        return mezzo()->path()->toMezzoGenerated() . '/ModelTraits';
+        return mezzo()->path()->toMezzoGenerated() . '/ModelParents';
     }
 
     /**
-     * Create a collection of ModelTrait`s based on the fiven model schemas
+     * Create a collection of ModelParents`s based on the fiven model schemas
      *
-     * @return ModelTraitSchemas
+     * @return ModelParentSchemas
      */
-    private function createModelTraitSchemas()
+    private function createModelParentSchemas()
     {
-        if ($this->traitSchemas) return $this->traitSchemas;
+        if ($this->modelParentSchemas) return $this->modelParentSchemas;
 
-        $modelTraits = new ModelTraitSchemas();
+        $modelParents = new ModelParentSchemas();
 
         /*
-         * Go through every model schema and create a model trait schema out of it.
+         * Go through every model schema and create a model parent schema out of it.
          */
         $this->modelSchemas->each(
-            function (ModelSchema $modelSchema) use ($modelTraits) {
-                $modelTrait = new ModelTraitSchema($modelSchema);
+            function (ModelSchema $modelSchema) use ($modelParents) {
+                $modelParent = new ModelParentSchema($modelSchema);
 
-                $modelTraits->put($modelSchema->className(), $modelTrait);
+                $modelParents->put($modelSchema->className(), $modelParent);
             }
         );
 
-        $this->traitSchemas = $modelTraits;
+        $this->modelParentSchemas = $modelParents;
 
-        return $modelTraits;
+        return $modelParents;
     }
 
     /**
-     * @return ModelTraitSchemas
+     * @return ModelParentSchemas
      */
-    public function traitSchemas()
+    public function modelParentSchemas()
     {
-        return $this->createModelTraitSchemas();
+        return $this->createModelParentSchemas();
     }
 }
