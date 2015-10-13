@@ -166,10 +166,11 @@ class ModelReflectionSet
     /**
      * Returns a MezzoModelReflection if this model uses the model
      *
+     * @param bool $forceEloquentReflection
      * @return EloquentModelReflection|MezzoModelReflection
      */
-    public function bestReflection(){
-        if($this->isMezzoModel())
+    public function bestReflection($forceEloquentReflection = false){
+        if($this->isMezzoModel() && !$forceEloquentReflection)
             return $this->mezzoReflection();
 
         return $this->eloquentReflection();

@@ -109,6 +109,22 @@ abstract class ModelReflection
     }
 
     /**
+     * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
+     */
+    public function attributes()
+    {
+        return $this->schema()->attributes();
+    }
+
+    /**
+     * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
+     */
+    public function relations()
+    {
+        return $this->schema()->relations();
+    }
+
+    /**
      * @return boolean
      */
     public function isMezzoModel()

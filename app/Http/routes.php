@@ -25,7 +25,9 @@ Route::get('/', function () {
 Route::get('debug/models', function () {
     $moduleCenter = mezzo()->moduleCenter();
 
-    mezzo_dump($moduleCenter);
+    $module = mezzo()->module('sample');
+
+    mezzo_dump($module->models());
 
     //return view('debugmodels', ['moduleCenter' => $moduleCenter]);
 });

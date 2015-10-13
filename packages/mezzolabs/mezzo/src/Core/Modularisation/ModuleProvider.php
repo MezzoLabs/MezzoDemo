@@ -10,6 +10,7 @@ use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflections;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSets;
 use MezzoLabs\Mezzo\Exceptions\DirectoryNotFound;
@@ -99,6 +100,14 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
+     * @return ModelReflections
+     */
+    public function models()
+    {
+        return $this->reflectionSets()->mezzoReflections();
+    }
+
+    /**
      * @param $key
      * @return ModelReflectionSet
      */
@@ -118,11 +127,12 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
-     * @param ModelReflection $model
+     * @param ModelReflection|ModelReflectionSet $modelReflectionSet
+     * @throws \MezzoLabs\Mezzo\Exceptions\ReflectionException
      */
-    public function associateModel(ModelReflection $model)
+    public function associateModel(ModelReflectionSet $modelReflectionSet)
     {
-        $this->modelReflectionSets->add($model);
+        $this->modelReflectionSets->addReflectionSet($modelReflectionSet);
     }
 
     /**

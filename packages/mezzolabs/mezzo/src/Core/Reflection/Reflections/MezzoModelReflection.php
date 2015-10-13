@@ -25,7 +25,7 @@ class MezzoModelReflection extends ModelReflection
 
         $this->module = $module;
 
-        $this->module->associateModel($this);
+        $this->module->associateModel($this->modelReflectionSet());
     }
 
     /**

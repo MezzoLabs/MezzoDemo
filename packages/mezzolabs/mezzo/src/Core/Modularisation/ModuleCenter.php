@@ -8,8 +8,6 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Generic\AbstractGeneralModule;
 use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
-use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
-use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
@@ -157,9 +155,9 @@ class ModuleCenter
      */
     public function associateModels()
     {
-        $this->modules()->map(function (ModuleProvider $module) {
+        $this->modules()->each(function (ModuleProvider $module) {
 
-            if ($this->isGeneralModule($module)) return;
+            if ($this->isGeneralModule($module)) return true;
 
             foreach ($module->modelClasses() as $modelClassName) {
                 $this->associateModel($modelClassName, $module);
@@ -244,7 +242,7 @@ class ModuleCenter
      */
     public function associateModel($model, ModuleProvider $module)
     {
-        $modelReflectionSet = $this->getModelReflectionSet($model);
+        $modelReflectionSet = $this->findModelReflectionSet($model);
 
         if (!$modelReflectionSet)
             throw new ModelCannotBeAssociated($model, $module);
@@ -261,9 +259,9 @@ class ModuleCenter
      * @throws ModelCannotBeFound
      * @return ModelReflectionSet
      */
-    public function getModelReflectionSet($model)
+    public function findModelReflectionSet($model)
     {
-        if($model instanceof ModelReflectionSet)
+        if ($model instanceof ModelReflectionSet)
             return $model;
 
         return $this->reflector->modelReflectionSet($model);

@@ -20,7 +20,7 @@ class MakeModuleProvidersReady implements Bootstrapper
     {
         $mezzo->moduleCenter()->associateModels();
 
-        $mezzo->moduleCenter()->modules()->map(function (ModuleProvider $moduleProvider) {
+        $mezzo->moduleCenter()->modules()->each(function (ModuleProvider $moduleProvider) {
             $moduleProvider->ready();
         });
     }

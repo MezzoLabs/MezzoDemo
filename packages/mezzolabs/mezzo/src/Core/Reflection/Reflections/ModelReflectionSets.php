@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 
 use Illuminate\Database\Eloquent\Collection;
+use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\InvalidModel;
 use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 
@@ -13,6 +14,12 @@ class ModelReflectionSets extends Collection
     public $items;
 
     public $isOverallList = false;
+
+    public function __construct($items = [])
+    {
+        parent::__construct($items);
+    }
+
 
     /**
      * @param $model
@@ -23,7 +30,7 @@ class ModelReflectionSets extends Collection
         if ($this->hasModel($model))
             return $this->getReflectionSet($model);
         else
-            return $this->addReflectionSet($model);
+            return $this->makeAndAddReflectionSet($model);
     }
 
     /**
@@ -55,25 +62,25 @@ class ModelReflectionSets extends Collection
         return null;
     }
 
-
     /**
-     * @return ModelReflectionSets
-     * @throws \Exception
+     * @param $model
+     * @return ModelReflectionSet|null
      */
-    public function eloquentSets()
+    private function getFromMappings($model)
     {
-        throw new \Exception('TODO');
+        return mezzo()->makeModelMappings()->find($model);
     }
 
     /**
-     * @return ModelReflectionSets
-     * @throws \Exception
+     * @param ModelReflectionSet $reflectionSet
+     * @return ModelReflectionSet
+     * @throws ReflectionException
      */
-    public function mezzoTraitSets()
+    protected function makeAndAddReflectionSet($reflectionSet)
     {
-        throw new \Exception('TODO');
+        $reflectionSet = $this->makeReflectionSet($reflectionSet);
+        $this->addReflectionSet($reflectionSet);
     }
-
 
     /**
      * Really create a new model reflection set.
@@ -84,43 +91,41 @@ class ModelReflectionSets extends Collection
      */
     protected function makeReflectionSet($className)
     {
-        if($className instanceof ModelReflectionSet)
+        if ($className instanceof ModelReflectionSet)
             return $className;
 
         if (is_string($className))
             return new ModelReflectionSet($className);
 
         throw new InvalidModel($className);
+
     }
 
     /**
      * @param ModelReflectionSet $reflectionSet
-     * @return ModelReflectionSet
-     * @throws ReflectionException
      */
-    protected function addReflectionSet($reflectionSet)
+    public function addReflectionSet(ModelReflectionSet $reflectionSet)
     {
-        $reflectionSet = $this->makeReflectionSet($reflectionSet);
-
         if ($this->has($reflectionSet->className()))
-            throw new ReflectionException('Reflectionset is already registered: ' . $reflectionSet->className());
+            return;
 
         $this->put($reflectionSet->className(), $reflectionSet);
         $this->addToMapping($reflectionSet);
         $this->addToOverallList($reflectionSet);
-
-        return $reflectionSet;
-    }
-
-    protected function addToOverallList(ModelReflectionSet $reflectionSet){
-        if($this->isOverallList) return false;
-
-        static::overall()->addReflectionSet($reflectionSet);
     }
 
     protected function addToMapping(ModelReflectionSet $reflectionSet)
     {
         mezzo()->makeModelMappings()->add($reflectionSet);
+
+    }
+
+    protected function addToOverallList(ModelReflectionSet $reflectionSet)
+    {
+        if ($this->isOverallList) return false;
+
+        static::overall()->makeAndAddReflectionSet($reflectionSet);
+
     }
 
     /**
@@ -131,13 +136,64 @@ class ModelReflectionSets extends Collection
     public static function overall()
     {
         return mezzo()->makeReflectionManager()->sets();
+
     }
 
-    private function getFromMappings($model)
+    public function offsetSet($key, $value)
     {
-        return mezzo()->makeModelMappings()->find($model);
+        if (!($value instanceof ModelReflectionSet))
+            throw new InvalidArgumentException($value);
+
+        parent::offsetSet($key, $value);
     }
 
 
+    public function push($value)
+    {
+        if (!($value instanceof ModelReflectionSet))
+            throw new InvalidArgumentException($value);
 
+        parent::push($value);
+    }
+
+    /**
+     * @return ModelReflections
+     */
+    public function mezzoReflections()
+    {
+        return ModelReflections::fromModelReflectionSets($this->mezzoModelSets());
+
+    }
+
+    /**
+     * @return ModelReflectionSets
+     * @throws \Exception
+     */
+    public function mezzoModelSets()
+    {
+        return $this->filter(function (ModelReflectionSet $reflectionSet) {
+            return $reflectionSet->isMezzoModel();
+        });
+
+    }
+
+    /**
+     * @return ModelReflections
+     */
+    public function eloquentReflections()
+    {
+        return ModelReflections::fromModelReflectionSets($this->eloquentSets());
+
+    }
+
+    /**
+     * @return ModelReflectionSets
+     * @throws \Exception
+     */
+    public function eloquentSets()
+    {
+        return $this->filter(function (ModelReflectionSet $reflectionSet) {
+            return !$reflectionSet->isMezzoModel();
+        });
+    }
 }
