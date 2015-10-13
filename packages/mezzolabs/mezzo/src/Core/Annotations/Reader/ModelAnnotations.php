@@ -7,7 +7,6 @@ namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 use Doctrine\Common\Annotations\Reader as DoctrineReader;
 use Illuminate\Database\Eloquent\Collection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
-use MezzoLabs\Mezzo\Core\Schema\Converters\Annotations\ModelAnnotationsConverter;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Exceptions\AnnotationException;
 
@@ -26,12 +25,12 @@ class ModelAnnotations
     /**
      * @var Collection
      */
-    protected $attributeAnnotations;
+    protected $attributeAnnotationsCollection;
 
     /**
      * @var Collection
      */
-    protected $relationAnnotations;
+    protected $relationAnnotationsCollection;
 
     /**
      * @param ModelReflection $modelReflection
@@ -43,8 +42,6 @@ class ModelAnnotations
         $this->read();
 
         $this->sendToCache();
-
-        mezzo_dd($this);
     }
 
     protected function read()
@@ -104,8 +101,8 @@ class ModelAnnotations
      */
     protected function readProperties()
     {
-        $this->attributeAnnotations = new Collection();
-        $this->relationAnnotations = new Collection();
+        $this->attributeAnnotationsCollection = new Collection();
+        $this->relationAnnotationsCollection = new Collection();
 
         $reflectionClass = $this->reflectionClass();
         $properties = new Collection($reflectionClass->getProperties(\ReflectionProperty::IS_PROTECTED));
@@ -122,15 +119,15 @@ class ModelAnnotations
      */
     protected function readProperty(\ReflectionProperty $property)
     {
-        $annotations = PropertyAnnotations::make($this->reader(), $property);
+        $annotations = PropertyAnnotations::make($this->reader(), $property, $this);
         if ($annotations === null)
             return null;
 
         if ($annotations instanceof RelationAnnotations)
-            return $this->relationAnnotations->put($annotations->name(), $annotations);
+            return $this->relationAnnotationsCollection->put($annotations->name(), $annotations);
 
         if ($annotations instanceof AttributeAnnotations)
-            return $this->attributeAnnotations->put($annotations->name(), $annotations);
+            return $this->attributeAnnotationsCollection->put($annotations->name(), $annotations);
 
         throw new AnnotationException('Unknown property ' . $annotations->name() .
             ' class ' . get_class($annotations));
@@ -145,19 +142,27 @@ class ModelAnnotations
     }
 
     /**
+     * @return string
+     */
+    public function modelClassName()
+    {
+        return $this->modelReflection->className();
+    }
+
+    /**
      * @return Collection
      */
     public function allAnnotations()
     {
-        return $this->attributeAnnotations->merge($this->relationAnnotations);
+        return $this->attributeAnnotationsCollection->merge($this->relationAnnotationsCollection);
     }
 
     /**
      * @return string
      */
-    public function name()
+    public function parentClassName()
     {
-        return $this->modelReflection->className();
+        return get_parent_class($this->modelReflection->className());
     }
 
     /**
@@ -165,15 +170,7 @@ class ModelAnnotations
      */
     public function schema()
     {
-        return $this->schemaConverter()->run($this);
-    }
-
-    /**
-     * @return ModelAnnotationsConverter
-     */
-    public function schemaConverter()
-    {
-        return new ModelAnnotationsConverter();
+        return $this->modelReflection()->schema();
     }
 
     /**
@@ -183,4 +180,22 @@ class ModelAnnotations
     {
         return $this->modelReflection()->modelReflectionSet()->tableName();
     }
+
+    /**
+     * @return Collection
+     */
+    public function attributeAnnotatinos()
+    {
+        return $this->attributeAnnotationsCollection;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function relationAnnotations()
+    {
+        return $this->relationAnnotationsCollection;
+    }
+
+
 }

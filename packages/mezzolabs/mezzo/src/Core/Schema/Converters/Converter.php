@@ -15,4 +15,4 @@ abstract class Converter
     }
 
     abstract public function run($toConvert);
-} 
+}

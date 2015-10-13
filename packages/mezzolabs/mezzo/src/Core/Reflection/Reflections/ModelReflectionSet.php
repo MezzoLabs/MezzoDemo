@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 
 use Illuminate\Database\Eloquent\Model as EloquentModel;
+use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Reflection\ModelFinder;
 use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
 
@@ -120,7 +121,7 @@ class ModelReflectionSet
     public function reflectionClass()
     {
         if (!$this->reflectionClass) {
-            $this->reflectionClass = new \ReflectionClass($this->className());
+            $this->reflectionClass = Singleton::reflection($this->className());
         }
 
         return $this->reflectionClass;
@@ -188,6 +189,5 @@ class ModelReflectionSet
     protected function checkIfEloquentModel(){
         return $this->instance() instanceof EloquentModel;
     }
-
 
 }

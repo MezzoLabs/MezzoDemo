@@ -249,10 +249,10 @@ class ModuleCenter
         if (!$modelReflectionSet)
             throw new ModelCannotBeAssociated($model, $module);
 
-        if ($modelReflectionSet->isMezzoModel())
-            return $modelReflectionSet->mezzoReflection()->setModule($module);
+        if (!$modelReflectionSet->isMezzoModel())
+            throw new ModelDoesntUseMezzoTrait($model . ' doesnt use the mezzo trait but is associated with a module.');
 
-        throw new ModelDoesntUseMezzoTrait($model . ' doesnt use the mezzo trait but is associated with a module.');
+        $modelReflectionSet->mezzoReflection()->setModule($module);
     }
 
     /**

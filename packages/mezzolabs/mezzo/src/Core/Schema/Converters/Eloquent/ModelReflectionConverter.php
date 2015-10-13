@@ -9,6 +9,7 @@ use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
+use MezzoLabs\Mezzo\Core\Schema\Converters\Annotations\ModelAnnotationsConverter;
 use MezzoLabs\Mezzo\Core\Schema\Converters\ModelConverter;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Exceptions\UnexpectedException;
@@ -23,13 +24,19 @@ class ModelReflectionConverter extends ModelConverter
     protected $attributeConverter;
 
     /**
+     * @var ModelAnnotationsConverter
+     */
+    protected $annotationsConverter;
+
+    /**
      * Create a new ModelReflection Converter instance
      *
-     * @param DatabaseColumnConverter $attributeConverter
+     * @param DatabaseColumnConverter $columnsConverter
      */
-    public function __construct(DatabaseColumnConverter $attributeConverter)
+    public function __construct(DatabaseColumnConverter $columnsConverter, ModelAnnotationsConverter $annotationsConverter)
     {
-        $this->attributeConverter = $attributeConverter;
+        $this->attributeConverter = $columnsConverter;
+        $this->annotationsConverter = $annotationsConverter;
     }
 
     /**
@@ -61,13 +68,7 @@ class ModelReflectionConverter extends ModelConverter
 
     protected function fromMezzoReflectionToSchema(MezzoModelReflection $reflection)
     {
-        $schema = new ModelSchema($reflection->className(), $reflection->tableName());
-
-        $reflection->annotations();
-
-        dd('here to die');
-
-
+        return $this->annotationsConverter->run($reflection->annotations());
     }
 
     protected function fromEloquentReflectionToSchema(EloquentModelReflection $reflection)

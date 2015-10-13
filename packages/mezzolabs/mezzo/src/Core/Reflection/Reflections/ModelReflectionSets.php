@@ -58,6 +58,7 @@ class ModelReflectionSets extends Collection
 
     /**
      * @return ModelReflectionSets
+     * @throws \Exception
      */
     public function eloquentSets()
     {
@@ -66,6 +67,7 @@ class ModelReflectionSets extends Collection
 
     /**
      * @return ModelReflectionSets
+     * @throws \Exception
      */
     public function mezzoTraitSets()
     {

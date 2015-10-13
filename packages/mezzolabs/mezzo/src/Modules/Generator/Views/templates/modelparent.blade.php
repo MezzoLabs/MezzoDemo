@@ -1,12 +1,12 @@
 {!! $php->openingTag() !!}
 
-namespace App\Mezzo\Generated\ModelTraits;
+namespace App\Mezzo\Generated\ModelParents;
 
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
+use App\Mezzo\BaseModel;
 
-
-trait {{ $trait->name() }}
+abstract class {{ $parent->name() }} extends BaseModel
 {
 use IsMezzoModel;
 
@@ -15,11 +15,11 @@ use IsMezzoModel;
 *
 @annotation('var', 'string')
 */
-protected $mezzoTable = '{{ $trait->table() }}';
+protected $table = '{{ $parent->table() }}';
 
-protected $mezzoRules = {!! $php->rulesArray($trait->modelSchema()) !!}
+protected $rules = {!! $php->rulesArray($parent->modelSchema()) !!}
 
-@foreach($trait->attributes() as $attribute)
+@foreach($parent->attributeAnnotatinos() as $attribute)
     /**
     *
     {!! $annotation->attribute($attribute) !!}
@@ -29,7 +29,7 @@ protected $mezzoRules = {!! $php->rulesArray($trait->modelSchema()) !!}
 
 @endforeach
 
-@foreach($trait->relationSides() as $relationSide)
+@foreach($parent->relationSides() as $relationSide)
     /**
     {!! $annotation->relation($relationSide) !!}
     */

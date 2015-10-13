@@ -7,7 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Reflection;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 
-class ModelMappings
+class ModelMapper
 {
     /**
      * @var Collection

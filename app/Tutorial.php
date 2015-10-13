@@ -2,7 +2,8 @@
 
 namespace App;
 
-use App\Mezzo\Generated\ModelTraits\MezzoTutorial;
+use App\Mezzo\BaseModel;
+use App\Mezzo\Generated\ModelParents\MezzoTutorial;
 use Illuminate\Database\Eloquent\Model;
 use \MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
@@ -24,10 +25,8 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  * @method static \Illuminate\Database\Query\Builder|\App\Tutorial whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Tutorial whereUpdatedAt($value)
  */
-class Tutorial extends Model
+class Tutorial extends MezzoTutorial
 {
-    use MezzoTutorial;
-
     public function mainImage()
     {
         return $this->hasOne('App\Image');

@@ -12,6 +12,7 @@ use MezzoLabs\Mezzo\Core\Schema\Converters\Annotations\RelationAnnotationsConver
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOne;
+use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
 use MezzoLabs\Mezzo\Exceptions\AnnotationException;
 
 class RelationAnnotations extends PropertyAnnotations
@@ -21,6 +22,11 @@ class RelationAnnotations extends PropertyAnnotations
      * @var string
      */
     protected $relationClass;
+
+    /**
+     * @var Relation
+     */
+    protected $relation;
 
     /**
      * @return From
@@ -90,9 +96,12 @@ class RelationAnnotations extends PropertyAnnotations
     /**
      * @return \MezzoLabs\Mezzo\Core\Schema\Relations\Relation
      */
-    public function schema()
+    public function relation()
     {
-        return $this->schemaConverter()->run($this);
+        if(!$this->relation)
+            $this->relation =  $this->schemaConverter()->run($this);
+
+        return $this->relation;
     }
 
     /**

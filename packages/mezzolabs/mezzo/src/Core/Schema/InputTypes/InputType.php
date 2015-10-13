@@ -11,6 +11,8 @@ namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
 use Doctrine\DBAL\Types\Type;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
+use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
+use MezzoLabs\Mezzo\Exceptions\MezzoException;
 
 abstract class InputType
 {
@@ -34,6 +36,58 @@ abstract class InputType
      */
     protected $variableType = false;
 
+    /**
+     * @param $type
+     * @return InputType
+     */
+    public static function fromColumnType($type)
+    {
+        $class = TextInput::class;
+
+        //@TODO: Add more, move to config
+        switch ($type) {
+            case 'text':
+                $class = TextArea::class;
+                break;
+            case 'integer':
+                $class = NumberInput::class;
+                break;
+        }
+
+        return new $class;
+    }
+
+    /**
+     * @param $type
+     * @return InputType
+     * @throws InvalidArgumentException
+     */
+    public static function make($type)
+    {
+        if ($type instanceof InputType)
+            return $type;
+
+        if(!is_string($type))
+            throw new InvalidArgumentException($type);
+
+        if (class_exists($type))
+            return new $type();
+
+        $longClassName = static::namespaceName() . '\\' . $type;
+
+        if (class_exists($longClassName)){
+            return new $longClassName;
+        }
+
+        throw new InvalidArgumentException($type);
+    }
+
+    protected static function namespaceName()
+    {
+        $reflection = Singleton::reflection(static::class);
+
+        return $reflection->getNamespaceName();
+    }
 
     /**
      * Compare type to a string.
@@ -68,6 +122,16 @@ abstract class InputType
     }
 
     /**
+     * Checks if the html tag needs to be closed
+     *
+     * @return bool
+     */
+    public function htmlIsVoid()
+    {
+        return $this->htmlType() == "input";
+    }
+
+    /**
      * Gets the type from the htmlTag property (e.g. input:text)
      *
      * @return bool | string
@@ -80,43 +144,9 @@ abstract class InputType
         return $tag[1];
     }
 
-    /**
-     * Checks if the html tag needs to be closed
-     *
-     * @return bool
-     */
-    public function htmlIsVoid()
+    public function sqlColumnType()
     {
-        return $this->htmlType() == "input";
-    }
-
-    /**
-     * @param $type
-     * @return InputType
-     */
-    public static function fromType($type)
-    {
-        $class = TextInput::class;
-
-        //@TODO: Add more, move to config
-        switch ($type) {
-            case 'text':
-                $class = TextArea::class;
-                break;
-            case 'integer':
-                $class = NumberInput::class;
-                break;
-        }
-
-        return new $class;
-    }
-
-    /**
-     * @return \Doctrine\DBAL\Types\Type
-     */
-    public function doctrineTypeName()
-    {
-        return $this->doctrineType;
+        return $this->doctrineTypeInstance()->getSQLDeclaration(array());
     }
 
     /**
@@ -128,9 +158,12 @@ abstract class InputType
         return Type::getType($this->doctrineTypeName());
     }
 
-    public function sqlColumnType()
+    /**
+     * @return \Doctrine\DBAL\Types\Type
+     */
+    public function doctrineTypeName()
     {
-        return $this->doctrineTypeInstance()->getSQLDeclaration(array());
+        return $this->doctrineType;
     }
 
     /**
@@ -147,6 +180,12 @@ abstract class InputType
     {
         $namespaceParts = explode('\\', static::class);
         return end($namespaceParts);
+    }
+
+
+    public function isRelation()
+    {
+        return $this instanceof RelationInput;
     }
 
 

@@ -19,17 +19,25 @@ abstract class PropertyAnnotations
      * @var Annotations
      */
     protected $annotations;
+    /**
+     * @var ModelAnnotations
+     */
+    private $model;
 
     /**
+     * Use the Factory make method
+     *
      * @param string $name
      * @param Annotations $annotations
+     * @param ModelAnnotations $model
      */
-    final public function __construct($name, Annotations $annotations)
+    final private function __construct($name, Annotations $annotations, ModelAnnotations $model)
     {
         $this->name = $name;
         $this->annotations = $annotations;
 
         $this->validate();
+        $this->model = $model;
     }
 
     /**
@@ -44,9 +52,11 @@ abstract class PropertyAnnotations
      *
      * @param AnnotationReader $reader
      * @param ReflectionProperty $property
+     * @param ModelAnnotations $model
      * @return AttributeAnnotations|RelationAnnotations|null
+     * @throws ReflectionException
      */
-    public static function make(AnnotationReader $reader, ReflectionProperty $property)
+    public static function make(AnnotationReader $reader, ReflectionProperty $property, ModelAnnotations $model)
     {
         if (!$property->isProtected()) return null;
 
@@ -55,27 +65,28 @@ abstract class PropertyAnnotations
 
         if ($annotations->count() === 0) return null;
 
-        return static::makeByAnnotationCollection($property->getName(), $annotations);
+        return static::makeByAnnotationCollection($property->getName(), $annotations, $model);
 
     }
 
     /**
      * @param $name
      * @param Annotations $annotations
+     * @param ModelAnnotations $model
      * @return AttributeAnnotations|RelationAnnotations
-     * @throws \MezzoLabs\Mezzo\Exceptions\ReflectionException
+     * @throws ReflectionException
      */
-    protected static function makeByAnnotationCollection($name, Annotations $annotations)
+    protected static function makeByAnnotationCollection($name, Annotations $annotations, ModelAnnotations $model)
     {
         $type = $annotations->type();
 
         if (!$type) return null;
 
         if ($type === RelationAnnotations::class)
-            return new RelationAnnotations($name, $annotations);
+            return new RelationAnnotations($name, $annotations, $model);
 
         if ($type == AttributeAnnotations::class)
-            return new AttributeAnnotations($name, $annotations);
+            return new AttributeAnnotations($name, $annotations, $model);
 
         throw new ReflectionException('Unexpected annotation type :' . $type);
     }
@@ -106,11 +117,31 @@ abstract class PropertyAnnotations
     }
 
     /**
+     * @return string
+     */
+    public function qualifiedName()
+    {
+        return $this->model()->modelClassName() . '.' . $this->name();
+    }
+
+    public function qualifiedColumn(){
+        return $this->model()->tableName() . '.' . $this->name();
+    }
+
+    /**
      * @return Annotations
      */
     public function annotations()
     {
         return $this->annotations;
+    }
+
+    /**
+     * @return ModelAnnotations
+     */
+    public function model()
+    {
+        return $this->model;
     }
 
 

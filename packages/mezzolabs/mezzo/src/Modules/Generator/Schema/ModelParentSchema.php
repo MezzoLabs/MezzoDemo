@@ -14,7 +14,7 @@ class ModelParentSchema extends FileSchema
     private $modelSchema;
 
     /**
-     * Create a new model trait schema based on a model schema
+     * Create a new model parent schema based on a model schema
      *
      * @param ModelSchema $modelSchema
      */
@@ -30,7 +30,7 @@ class ModelParentSchema extends FileSchema
      */
     public function content()
     {
-        return $this->fillTemplate(['trait' => $this]);
+        return $this->fillTemplate(['parent' => $this]);
     }
 
     /**
@@ -76,7 +76,7 @@ class ModelParentSchema extends FileSchema
      */
     protected function templateName()
     {
-        return 'modeltrait';
+        return 'modelparent';
     }
 
     /**

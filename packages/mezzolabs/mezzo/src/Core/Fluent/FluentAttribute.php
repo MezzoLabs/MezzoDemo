@@ -130,7 +130,7 @@ class FluentAttribute extends Fluent
     {
         $attribute = new AtomicAttribute(
             $this->offsetGet('name'),
-            InputType::fromType($this->get('type', 'string')),
+            InputType::fromColumnType($this->get('type', 'string')),
             $this->get('options', [])
         );
 

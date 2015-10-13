@@ -13,7 +13,7 @@ class SampleModule extends ModuleProvider
 
 
     protected $models = [
-    //    Tutorial::class,
+        Tutorial::class,
     ];
 
     /**

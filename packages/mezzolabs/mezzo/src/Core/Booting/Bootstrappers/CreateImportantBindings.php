@@ -14,7 +14,7 @@ use MezzoLabs\Mezzo\Core\Helpers\Path;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
 use MezzoLabs\Mezzo\Core\Reflection\ModelFinder;
-use MezzoLabs\Mezzo\Core\Reflection\ModelMappings;
+use MezzoLabs\Mezzo\Core\Reflection\ModelMapper;
 use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
 use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
 use MezzoLabs\Mezzo\Core\Routing\Router;
@@ -35,7 +35,7 @@ class CreateImportantBindings implements Bootstrapper
         'mezzo.router' => Router::class,
         'mezzo.path' => Path::class,
         'mezzo.modelfinder' => ModelFinder::class,
-        'mezzo.modelMappings' => ModelMappings::class,
+        'mezzo.modelMappings' => ModelMapper::class,
         'mezzo.annotationReader' => AnnotationReader::class,
         'mezzo.reflectionManager' => ReflectionManager::class,
         'mezzo.modules.general' => GeneralModule::class,

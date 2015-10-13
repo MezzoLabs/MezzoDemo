@@ -25,7 +25,7 @@ class MezzoModelsReflector extends ModelsReflector
      */
     public function modelReflectionSet($className)
     {
-        return $this->manager()->mezzoReflection($className);
+        return $this->manager()->mezzoReflection($className)->modelReflectionSet();
     }
 
 
@@ -49,7 +49,6 @@ class MezzoModelsReflector extends ModelsReflector
     {
         $modelSchemas = $this->makeModelSchemas();
 
-        dd($modelSchemas);
     }
 
     /**

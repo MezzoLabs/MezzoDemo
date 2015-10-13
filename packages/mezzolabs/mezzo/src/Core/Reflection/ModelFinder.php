@@ -4,8 +4,10 @@
 namespace MezzoLabs\Mezzo\Core\Reflection;
 
 use Illuminate\Database\Eloquent\Model as EloquentModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\ClassFinder;
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
 class ModelFinder
@@ -114,10 +116,25 @@ class ModelFinder
         if ($childClasses == null) $childClasses = $this->classesInAppFolder();
 
         foreach ($childClasses as $class) {
-            if (is_subclass_of($class, $parentClass)) $children[] = $class;
+            if ($this->checkIfConcreteSubclass($class, $parentClass)){
+                $children[] = $class;
+            }
         }
 
         return $children;
+    }
+
+    protected function checkIfConcreteSubclass($class, $parentClass){
+        if (!is_subclass_of($class, $parentClass))
+            return false;
+
+        $reflection = Singleton::reflection($class);
+
+        if($reflection->isAbstract())
+            return false;
+
+        return true;
+
     }
 
     /**
@@ -150,12 +167,21 @@ class ModelFinder
     {
         //@TODO-SCHS: Check if this needs to be cached.
 
+        $parent = get_parent_class($class);
+
+        if($parent && $parent != Model::class){
+            $parentUsesTrait = static::classUsesTrait($parent, $trait);
+
+            if($parentUsesTrait) return true;
+        }
+
         if (empty($trait)) $trait = static::$mezzoModelTrait;
 
         if ($recursively)
             $usedTraits = trait_uses_recursive($class);
         else
             $usedTraits = class_uses($class);
+
 
         return in_array($trait, $usedTraits);
     }

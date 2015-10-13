@@ -43,6 +43,9 @@ class ReflectionManager
         $this->modelReflectionSets = new ModelReflectionSets();
         $this->modelReflectionSets->isOverallList = true;
 
+        /* Create eloquent and mezzo model reflections and add them
+         * to the global reflection list.
+         * */
         $this->eloquentModelsReflector->addToSets($this->modelReflectionSets);
         $this->mezzoModelsReflector->addToSets($this->modelReflectionSets);
     }
@@ -61,7 +64,7 @@ class ReflectionManager
     /**
      * @param string $model Short or long class name or even the name of the table.
      * @return ModelReflection
-     * @throws ReflectionException
+     * @throws InvalidArgumentException
      */
     public function mezzoReflection($model)
     {

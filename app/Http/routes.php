@@ -23,14 +23,9 @@ Route::get('/', function () {
 });
 
 Route::get('debug/models', function () {
-    $relations = mezzo()->reflector()->relationSchemas();
+    $moduleCenter = mezzo()->moduleCenter();
 
-    dd($relations);
-
-
-    //$moduleCenter = mezzo()->moduleCenter();
-
-    mezzo_dump(mezzo()->module('sample')->model('tutorial')->schema());
+    mezzo_dump($moduleCenter);
 
     //return view('debugmodels', ['moduleCenter' => $moduleCenter]);
 });
@@ -81,7 +76,7 @@ Route::get('debug/annotations', function(){
 
     $annotations = $reader->getPropertyAnnotations($property);
 
-    dd($annotations);
+    mezzo_dd($annotations);
 });
 
 

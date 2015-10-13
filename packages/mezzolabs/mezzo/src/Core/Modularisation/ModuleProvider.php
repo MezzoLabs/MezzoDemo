@@ -8,7 +8,9 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSets;
 use MezzoLabs\Mezzo\Exceptions\DirectoryNotFound;
 
@@ -52,6 +54,16 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
+     * Factory method for creating a Mezzo module instance.
+     *
+     * @return ModuleProvider
+     */
+    public static function make()
+    {
+        return mezzo()->module(static::class);
+    }
+
+    /**
      * Called when module is ready, model reflections are loaded.
      *
      * @return mixed
@@ -72,18 +84,27 @@ abstract class ModuleProvider extends ServiceProvider
      * @internal param bool $key
      * @return ModelReflectionSets
      */
-    public function models()
+    public function reflectionSets()
     {
         return $this->modelReflectionSets;
     }
 
     /**
      * @param string $key
-     * @return ModelReflection
+     * @return MezzoModelReflection
      */
     public function model($key)
     {
-        return $this->modelReflectionSets->get($key);
+        return $this->reflectionSet($key)->mezzoReflection();
+    }
+
+    /**
+     * @param $key
+     * @return ModelReflectionSet
+     */
+    public function reflectionSet($key)
+    {
+        return $this->modelReflectionSets->getReflectionSet($key);
     }
 
     /**
@@ -94,6 +115,25 @@ abstract class ModuleProvider extends ServiceProvider
     public function qualifiedName()
     {
         return get_class($this);
+    }
+
+    /**
+     * @param ModelReflection $model
+     */
+    public function associateModel(ModelReflection $model)
+    {
+        $this->modelReflectionSets->add($model);
+    }
+
+    /**
+     * @param $shortAbstract
+     * @param $concrete
+     */
+    public function bindWithNamespace($shortAbstract, $concrete)
+    {
+        $abstract = 'modules.' . $this->slug() . '.' . $shortAbstract;
+
+        $this->app->bind($abstract, $concrete);
     }
 
     /**
@@ -112,42 +152,11 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
-     * @param ModelReflection $model
-     */
-    public function associateModel(ModelReflection $model)
-    {
-        $this->modelReflectionSets->add($model);
-    }
-
-    /**
-     * Path to the module folder
-     *
-     * @return string
-     */
-    public function path()
-    {
-        $fileName = $this->reflection()->getFileName();
-        return dirname($fileName);
-    }
-
-
-    /**
      * @return \ReflectionClass
      */
     public function reflection()
     {
         return Singleton::reflection(get_class($this));
-    }
-
-    /**
-     * @param $shortAbstract
-     * @param $concrete
-     */
-    public function bindWithNamespace($shortAbstract, $concrete)
-    {
-        $abstract = 'modules.' . $this->slug() . '.' . $shortAbstract;
-
-        $this->app->bind($abstract, $concrete);
     }
 
     /**
@@ -159,6 +168,13 @@ abstract class ModuleProvider extends ServiceProvider
         return $this->app->make('modules.' . $this->slug() . '.' . $shortAbstract);
     }
 
+    /**
+     * @internal param MezzoKernel $kernel
+     */
+    public function loadCommands()
+    {
+        $this->mezzo->kernel()->registerCommands($this->commands);
+    }
 
     /**
      * Load views from the "views" folder inside the module root.
@@ -174,24 +190,14 @@ abstract class ModuleProvider extends ServiceProvider
         $this->loadViewsFrom($this->path() . '/views', 'modules.' . $this->slug());
     }
 
-
     /**
-     * @internal param MezzoKernel $kernel
-     */
-    public function loadCommands()
-    {
-        $this->mezzo->kernel()->registerCommands($this->commands);
-    }
-
-    /**
-     * Factory method for creating a Mezzo module instance.
+     * Path to the module folder
      *
-     * @return ModuleProvider
+     * @return string
      */
-    public static function make()
+    public function path()
     {
-        return mezzo()->module(static::class);
+        $fileName = $this->reflection()->getFileName();
+        return dirname($fileName);
     }
-
-
 }

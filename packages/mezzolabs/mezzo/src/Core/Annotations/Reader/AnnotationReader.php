@@ -76,7 +76,7 @@ class AnnotationReader
      */
     public function cache(ModelAnnotations $modelAnnotations)
     {
-        $this->modelAnnotationsCache->put($modelAnnotations->name(), $modelAnnotations);
+        $this->modelAnnotationsCache->put($modelAnnotations->modelClassName(), $modelAnnotations);
     }
 
     /**
