@@ -16,8 +16,7 @@ use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
 use MezzoLabs\Mezzo\Core\Reflection\ModelFinder;
 use MezzoLabs\Mezzo\Core\Reflection\ModelLookup;
 use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
-use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
-use MezzoLabs\Mezzo\Core\Routing\Router;
+use MezzoLabs\Mezzo\Core\Routing\Router as MezzoRouter;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
 use MezzoLabs\Mezzo\Modules\General\GeneralModule;
 
@@ -29,10 +28,9 @@ class CreateImportantBindings implements Bootstrapper
      *
      * @var array
      */
-    protected $singletons = [
+    protected $instances = [
         'mezzo.thirdParties' => ThirdParties::class,
         'mezzo.config' => MezzoConfig::class,
-        'mezzo.router' => Router::class,
         'mezzo.path' => Path::class,
         'mezzo.modelfinder' => ModelFinder::class,
         'mezzo.modelMappings' => ModelLookup::class,
@@ -44,6 +42,11 @@ class CreateImportantBindings implements Bootstrapper
         'mezzo.cache.singleton' => Singleton::class,
         'mezzo.kernel' => MezzoKernel::class
     ];
+
+    protected $singletons = [
+        MezzoRouter::class
+    ];
+
 
     /**
      * Run the booting process for this service.
@@ -58,20 +61,27 @@ class CreateImportantBindings implements Bootstrapper
         $app->instance('mezzo', $mezzo);
         $app->alias('mezzo', get_class($mezzo));
 
+        $this->bindInstances($mezzo);
         $this->bindSingletons($mezzo);
     }
+
+
+
+
 
     /**
      * Bind the configured instances
      *
      * @param Mezzo $mezzo
      */
-    protected function bindSingletons(Mezzo $mezzo)
+    protected function bindInstances(Mezzo $mezzo)
     {
-        foreach ($this->singletons as $key => $class) {
-            $this->bindSingleton($mezzo->app(), $key, $class);
+        foreach ($this->instances as $key => $class) {
+            $this->bindInstance($mezzo->app(), $key, $class);
         }
     }
+
+
 
     /**
      * Bind a key and the full class name to a single instance.
@@ -80,7 +90,7 @@ class CreateImportantBindings implements Bootstrapper
      * @param $key
      * @param $class
      */
-    protected function bindSingleton(Application $app, $key, $class)
+    protected function bindInstance(Application $app, $key, $class)
     {
 
         $instance = $app->make($class);
@@ -88,6 +98,25 @@ class CreateImportantBindings implements Bootstrapper
         $app->instance($key, $instance);
         $app->alias($key, $class);
 
+    }
+
+    /**
+     * @param $mezzo
+     */
+    private function bindSingletons(Mezzo $mezzo)
+    {
+        foreach ($this->singletons as $class) {
+            $this->bindSingleton($mezzo->app(), $class);
+        }
+    }
+
+    /**
+     * @param Application $app
+     * @param $class
+     */
+    private function bindSingleton(Application $app, $class)
+    {
+        $app->singleton($class, $class);
     }
 
 }

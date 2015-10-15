@@ -22,6 +22,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('random',function(){
+   return str_random(16);
+});
+
 Route::get('debug/models', function () {
     $moduleCenter = mezzo()->moduleCenter();
 
