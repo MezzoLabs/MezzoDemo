@@ -108,5 +108,17 @@ class Mezzo
 
     }
 
+    /**
+     * Get a value from the mezzo config.
+     *
+     * @param $key
+     * @param null $default
+     * @return mixed
+     */
+    public function config($key, $default = null)
+    {
+        return $this->makeConfiguration()->get($key, $default);
+    }
+
 
 }

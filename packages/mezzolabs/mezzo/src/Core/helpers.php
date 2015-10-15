@@ -86,3 +86,14 @@ if (!function_exists('mezzo_textdump')) {
 
     }
 }
+
+if (!function_exists('mezzo_route')) {
+    /**
+     * @return \MezzoLabs\Mezzo\Core\Routing\Router
+     */
+    function mezzo_route()
+    {
+        return mezzo()->makeRouter();
+
+    }
+}

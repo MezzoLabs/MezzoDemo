@@ -65,10 +65,6 @@ class CreateImportantBindings implements Bootstrapper
         $this->bindSingletons($mezzo);
     }
 
-
-
-
-
     /**
      * Bind the configured instances
      *

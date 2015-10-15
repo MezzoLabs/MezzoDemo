@@ -19,6 +19,7 @@ use MezzoLabs\Mezzo\Core\Reflection\ModelFinder;
 use MezzoLabs\Mezzo\Core\Reflection\ModelLookup;
 use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
 use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
+use MezzoLabs\Mezzo\Core\Routing\Router;
 
 trait CanMakeInstances
 {
@@ -109,11 +110,21 @@ trait CanMakeInstances
     }
 
     /**
+     * Return the mezzo router singleton instance.
+     *
+     * @return Router
+     */
+    public function makeRouter()
+    {
+        return $this->make(Router::class);
+    }
+
+    /**
      * Returns the main MezzoConfig instance
      *
      * @return MezzoConfig
      */
-    public function config()
+    public function makeConfiguration()
     {
         return $this->make(MezzoConfig::class);
     }

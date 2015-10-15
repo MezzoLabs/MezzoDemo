@@ -17,7 +17,7 @@ class RegisterConfiguredModuleProviders implements Bootstrapper
      */
     public function bootstrap(Mezzo $mezzo)
     {
-        $providerClasses = $mezzo->config()->get('moduleProviders');
+        $providerClasses = $mezzo->makeConfiguration()->get('moduleProviders');
 
         foreach ($providerClasses as $providerClass) {
             $serviceProvider = $mezzo->moduleCenter()->register($providerClass);

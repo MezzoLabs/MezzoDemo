@@ -24,6 +24,11 @@ class Router
      */
     protected $laravelRouter;
 
+    /**
+     * @var string
+     */
+    protected $apiVersion = "1.0";
+
 
     /**
      * @param RoutesGenerator $generator
@@ -35,6 +40,7 @@ class Router
         $this->generator = $generator;
         $this->dingoRouter = $dingoRouter;
         $this->laravelRouter = $laravelRouter;
+
     }
 
     /**
