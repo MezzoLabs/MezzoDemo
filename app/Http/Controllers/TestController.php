@@ -13,7 +13,6 @@ class TestController extends Controller{
     use Helpers;
 
     public function sayHi(){
-        $this->validate($request, []);
 
         throw new ConflictHttpException('User was updated prior to your request.');
     }

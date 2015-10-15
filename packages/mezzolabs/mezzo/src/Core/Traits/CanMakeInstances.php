@@ -16,7 +16,7 @@ use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Helpers\Path;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
 use MezzoLabs\Mezzo\Core\Reflection\ModelFinder;
-use MezzoLabs\Mezzo\Core\Reflection\ModelMapper;
+use MezzoLabs\Mezzo\Core\Reflection\ModelLookup;
 use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
 use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
 
@@ -73,11 +73,11 @@ trait CanMakeInstances
     }
 
     /**
-     * @return ModelMapper
+     * @return ModelLookup
      */
     public function makeModelMappings()
     {
-        return $this->make(ModelMapper::class);
+        return $this->make(ModelLookup::class);
     }
 
     /**

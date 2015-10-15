@@ -10,11 +10,11 @@ use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
 class SampleModule extends ModuleProvider
 {
-
-
     protected $models = [
         Tutorial::class,
     ];
+
+
 
     /**
      * Register the service provider.

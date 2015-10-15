@@ -30,6 +30,9 @@ abstract class OneToOneOrMany extends Relation
 
         $this->joinColumn = $columnName;
         $this->joinTable = $tableName;
+
+
+
         return $this;
     }
 

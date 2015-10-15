@@ -23,8 +23,9 @@ class RoutesGenerator
      */
     public function run(DingoRouter $apiRouter)
     {
+
         $apiRouter->get('cheat', function () {
-            return "callback possible";
+            return ['foo' => 'bar'];
         });
     }
 } 
