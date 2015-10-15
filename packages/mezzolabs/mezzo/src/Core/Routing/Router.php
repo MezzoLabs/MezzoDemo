@@ -3,7 +3,8 @@
 
 namespace MezzoLabs\Mezzo\Core\Routing;
 
-use \Dingo\Api\Routing\Router as DingoRouter;
+use Closure;
+use Dingo\Api\Routing\Router as DingoRouter;
 use Illuminate\Routing\Router as LaravelRouter;
 
 
@@ -15,9 +16,9 @@ class Router
     protected $generator;
 
     /**
-     * @var DingoRouter
+     * @var ApiRouter
      */
-    protected $dingoRouter;
+    protected $apiRouter;
 
     /**
      * @var LaravelRouter
@@ -25,22 +26,41 @@ class Router
     protected $laravelRouter;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $apiVersion = "1.0";
+    protected $apiGroupAttributes = [
+        "version" => "1",
+        "prefix" => "mezzo",
+        "vendor" => "MezzoLabs",
+        'debug' => false,
+        'strict' => true
+    ];
 
 
     /**
      * @param RoutesGenerator $generator
      * @param LaravelRouter $laravelRouter
-     * @param DingoRouter $dingoRouter
+     * @param ApiRouter $apiRouter
      */
-    public function __construct(RoutesGenerator $generator, LaravelRouter $laravelRouter, DingoRouter $dingoRouter)
+    public function __construct(RoutesGenerator $generator, LaravelRouter $laravelRouter, ApiRouter $apiRouter)
     {
         $this->generator = $generator;
-        $this->dingoRouter = $dingoRouter;
+        $this->apiRouter = $apiRouter;
         $this->laravelRouter = $laravelRouter;
 
+
+        $this->readApiGroupAttributesFromConfig();
+
+    }
+
+    /**
+     * Read the dingo api configuration from the mezzo config file.
+     */
+    protected function readApiGroupAttributesFromConfig()
+    {
+        foreach ($this->apiGroupAttributes as $key => $default) {
+            $this->apiGroupAttributes[$key] = mezzo()->config('api.' . $key, $default);
+        }
     }
 
     /**
@@ -53,12 +73,19 @@ class Router
         return mezzo()->make(static::class);
     }
 
-    /**
-     * @return DingoRouter
-     */
-    public function dingoRouter()
+    public function api(Closure $callback, $overwriteAttributes = [])
     {
-        return $this->dingoRouter;
+        $attributes = array_merge($this->apiGroupAttributes, $overwriteAttributes);
+
+        $this->apiRouter->group($attributes, $callback);
+    }
+
+    /**
+     * @return ApiRouter
+     */
+    public function apiRouter()
+    {
+        return $this->apiRouter;
     }
 
     /**

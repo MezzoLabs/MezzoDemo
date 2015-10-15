@@ -9,7 +9,7 @@ return [
     ],
 
     "api" => [
-        'prefix' => 'api',
+        'prefix' => 'mezzo',
         'version' => '1',
         'vendor' => 'MezzoLabs',
         'debug' => env('APP_DEBUG', false),
