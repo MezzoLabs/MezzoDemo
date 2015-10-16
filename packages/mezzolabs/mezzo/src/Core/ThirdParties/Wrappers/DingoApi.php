@@ -5,24 +5,25 @@ namespace MezzoLabs\Mezzo\Core\ThirdParties\Wrappers;
 
 
 use Dingo\Api\Provider\LaravelServiceProvider as DingoProvider;
-use Dingo\Api\Routing\Router;
+use Dingo\Api\Routing\Router as DingoRouter;
 use MezzoLabs\Mezzo\Core\Routing\ApiRouter;
+use MezzoLabs\Mezzo\Exceptions\RoutingException;
 
 class DingoApi extends ThirdPartyWrapper
 {
-
     /**
      * Class string of the packages laravel provider.
      *
      * @var string
      */
     protected $provider = DingoProvider::class;
+
     /**
      * The Dingo Api router
      *
-     * @var Router
+     * @var DingoRouter
      */
-    private $api;
+    private $dingoRouter;
 
     /**
      * Get the instance of this wrapper which is stored inside the thirdParties collection.
@@ -31,7 +32,7 @@ class DingoApi extends ThirdPartyWrapper
      */
     public static function make()
     {
-        return mezzo()->make('mezzo.thirdParties')->get('DingoApi');
+        return mezzo()->makeThirdparties()->getOrFail('DingoApi');
     }
 
     /**
@@ -54,15 +55,18 @@ class DingoApi extends ThirdPartyWrapper
         if ($this->booted) return false;
         parent::onProviderBooted();
 
-        $this->api = $this->mezzo->make(ApiRouter::class);
+        $this->dingoRouter = $this->mezzo->make(DingoRouter::class);
     }
 
     /**
      * @return ApiRouter
      */
-    public function getApiRouter()
+    public function getDingoRouter()
     {
-        return $this->api;
+        if(!$this->dingoRouter)
+            throw new RoutingException('Cannot get dingo router. Maybe the package is not yet loaded.');
+
+        return $this->dingoRouter;
     }
 
 }

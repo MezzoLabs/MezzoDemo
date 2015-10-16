@@ -3,21 +3,26 @@
 
 namespace MezzoLabs\Mezzo\Core\Routing;
 
-use Dingo\Api\Http\Parser\Accept as AcceptParser;
+use Closure;
 use Dingo\Api\Routing\Router as DingoRouter;
-use MezzoLabs\Mezzo\Exceptions\RoutingException;
+use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers\DingoApi;
 
 class ApiRouter
 {
+    /**
+     * @var ApiConfig
+     */
+    protected $config;
 
     /**
      * @var DingoRouter
      */
     private $dingoRouter;
 
-    public function __construct(DingoRouter $dingoRouter)
+    public function __construct()
     {
-        $this->dingoRouter = $dingoRouter;
+        $this->dingoRouter = DingoApi::make()->getDingoRouter();
+        $this->config = $this->makeApiConfig();
     }
 
     /**
@@ -29,18 +34,9 @@ class ApiRouter
     }
 
     /**
-     * @param array $attributes
-     * @param callable $callback
-     */
-    public function group(array $attributes, $callback)
-    {
-        $this->dingoRouter->group($attributes, function(){});
-        call_user_func($callback, $this);
-    }
-
-    /**
      * @param string $uri
      * @param array|string|callable $action
+     * @return mixed
      */
     public function get($uri, $action)
     {
@@ -48,37 +44,31 @@ class ApiRouter
     }
 
     /**
-     * @return mixed
+     * @return DingoRouter
      */
-    public function getParent()
+    public function getDingoRouter()
     {
         return $this->dingoRouter;
     }
 
-    /**
-     * Create a new API Router instance that will eventually become a singleton inside the laravel container.
-     *
-     * @return ApiRouter
-     * @throws RoutingException
-     */
-    public static function makeNewApiRouter()
+    public function api(Closure $callback, $overwriteAttributes = [])
     {
-        $app = app();
+        $attributes = $this->config->merge($overwriteAttributes)->toArray();
 
-        if (!$app['api.router.adapter'])
-            throw new RoutingException('Cannot instantiate the ApiRouter, because Dingo is not booted yet.');
+        $this->group($attributes, $callback);
+    }
 
-        $apiConfig = static::makeApiConfig();
+    /**
+     * @param array $attributes
+     * @param callable $callback
+     */
+    public function group(array $attributes, $callback)
+    {
 
-        $acceptParser = new AcceptParser($apiConfig->get('vendor'), $apiConfig->get('version'), $apiConfig->get('defaultFormat'));
+        $this->dingoRouter->group($attributes, function (DingoRouter $api) use ($callback) {
 
-        return new ApiRouter(
-            $app['api.router.adapter'],
-            $acceptParser,
-            $app['api.exception'],
-            $app,
-            $apiConfig->get('domain'),
-            $apiConfig->get('prefix')
-        );
+            call_user_func($callback, $this);
+        });
+
     }
 }

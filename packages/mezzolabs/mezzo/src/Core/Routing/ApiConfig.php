@@ -56,4 +56,13 @@ class ApiConfig
     {
         return $this->entries->has($key);
     }
+
+    /**
+     * @param $overwriteWith
+     * @return Collection
+     */
+    public function merge($overwriteWith)
+    {
+        return $this->entries->merge($overwriteWith);
+    }
 }

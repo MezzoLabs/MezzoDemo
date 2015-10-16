@@ -77,6 +77,7 @@ class Mezzo
         return $this->moduleCenter()->getModule($key);
     }
 
+
     /**
      * Run the boot services that we need at the time the Mezzo provider is registered
      */

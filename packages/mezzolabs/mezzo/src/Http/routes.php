@@ -10,9 +10,7 @@ use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers\DingoApi;
 |--------------------------------------------------------------------------
 */
 $wrapper = DingoApi::make();
-$api = $wrapper->getApiRouter()->getParent();
-
-$mezzoRouter = MezzoRouter::make();
+$api = $wrapper->getDingoRouter();
 
 /*
 |--------------------------------------------------------------------------
@@ -24,9 +22,9 @@ $mezzoRouter = MezzoRouter::make();
 |
  */
 
-$api->version('v1', function (Router $api) use ($mezzoRouter) {
+$api->version('v1', function (Router $api)  {
     $api->get('test', 'App\Http\Controllers\TestController@sayHi');
 
-    $mezzoRouter->generator()->run($api);
+    //$mezzoRouter->generator()->run($api);
 });
 

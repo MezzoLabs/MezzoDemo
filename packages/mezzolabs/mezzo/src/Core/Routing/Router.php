@@ -37,7 +37,6 @@ class Router
         $this->generator = $generator;
         $this->apiRouter = $apiRouter;
         $this->laravelRouter = $laravelRouter;
-
     }
 
     /**
@@ -56,9 +55,7 @@ class Router
      */
     public function api(Closure $callback, $overwriteAttributes = [])
     {
-        $attributes = array_merge($this->apiConfig, $overwriteAttributes);
-
-        $this->apiRouter->group($attributes, $callback);
+        $this->apiRouter->api($callback, $overwriteAttributes);
     }
 
     /**

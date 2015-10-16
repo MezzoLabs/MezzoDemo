@@ -47,7 +47,8 @@ class RegisterBindings implements Bootstrapper
 
     protected $singletons = [
         ApiConfig::class,
-        MezzoRouter::class
+        MezzoRouter::class,
+        ApiRouter::class
     ];
 
 
@@ -67,7 +68,6 @@ class RegisterBindings implements Bootstrapper
         $this->bindInstances($mezzo);
         $this->bindSingletons($mezzo);
 
-        $this->registerApiRouter();
     }
 
     /**
@@ -117,14 +117,5 @@ class RegisterBindings implements Bootstrapper
         $app->singleton($class, $class);
     }
 
-    /**
-     * Register the ApiRouter as a singleton.
-     */
-    private function registerApiRouter()
-    {
-        mezzo()->app()->singleton(ApiRouter::class, function (Application $app) {
-            return ApiRouter::makeNewApiRouter();
-        });
-    }
 
 }

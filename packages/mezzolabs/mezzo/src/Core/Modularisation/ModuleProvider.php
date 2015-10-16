@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
@@ -14,6 +15,7 @@ use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflections;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSets;
 use MezzoLabs\Mezzo\Exceptions\DirectoryNotFound;
+use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 
 abstract class ModuleProvider extends ServiceProvider
 {
@@ -209,5 +211,15 @@ abstract class ModuleProvider extends ServiceProvider
     {
         $fileName = $this->reflection()->getFileName();
         return dirname($fileName);
+    }
+
+    public function includeRoutes()
+    {
+        $routesPath = $this->path() . '/Http/routes.php';
+
+        if(!file_exists($routesPath))
+            throw new ModuleControllerException('Cannot find routes file for module ' . $this->qualifiedName() . ' - ' . $routesPath);
+
+        require $routesPath;
     }
 }

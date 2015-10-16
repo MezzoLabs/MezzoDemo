@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 
 use MezzoLabs\Mezzo\Core\Mezzo;
+use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
 class IncludeMezzoRouting implements Bootstrapper
 {
@@ -27,6 +28,12 @@ class IncludeMezzoRouting implements Bootstrapper
             }
 
             require $routesPath;
+
+            $allModules = $mezzo->moduleCenter()->modules();
+
+            $allModules->each(function(ModuleProvider $moduleProvider){
+                $moduleProvider->includeRoutes();
+            });
         }
     }
 }

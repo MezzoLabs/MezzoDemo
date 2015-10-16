@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers;
 use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers\ThirdPartyWrapper;
+use MezzoLabs\Mezzo\Exceptions\MezzoException;
 
 class ThirdParties extends Collection
 {
@@ -83,6 +84,14 @@ class ThirdParties extends Collection
         $this->map(function (ThirdPartyWrapper $wrapper) {
             $wrapper->onProviderBooted();
         });
+    }
+
+    public function getOrFail($thirdParty)
+    {
+        if(!$this->has($thirdParty))
+            throw new MezzoException('Cannot find third party with the name ' . $thirdParty);
+
+        return $this->get($thirdParty);
     }
 
     /**

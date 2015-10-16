@@ -20,6 +20,7 @@ use MezzoLabs\Mezzo\Core\Reflection\ModelLookup;
 use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
 use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
 use MezzoLabs\Mezzo\Core\Routing\Router;
+use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
 
 trait CanMakeInstances
 {
@@ -147,5 +148,13 @@ trait CanMakeInstances
     public function makeViewFactory()
     {
         return app(\Illuminate\Contracts\View\Factory::class);
+    }
+
+    /**
+     * @return ThirdParties
+     */
+    public function makeThirdParties()
+    {
+        return $this->make(ThirdParties::class);
     }
 } 
