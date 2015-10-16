@@ -38,11 +38,7 @@ class Router
         $this->apiRouter = $apiRouter;
         $this->laravelRouter = $laravelRouter;
 
-        $this->readRealApiConfig();
-
     }
-
-
 
     /**
      * Return the singleton instance
@@ -54,6 +50,10 @@ class Router
         return mezzo()->make(static::class);
     }
 
+    /**
+     * @param Closure $callback
+     * @param array $overwriteAttributes
+     */
     public function api(Closure $callback, $overwriteAttributes = [])
     {
         $attributes = array_merge($this->apiConfig, $overwriteAttributes);
@@ -85,25 +85,7 @@ class Router
         return $this->generator;
     }
 
-    public function makeApiRouter()
-    {
-        $app = app();
 
-        if (!$app['api.router.adapter'])
-            throw new RoutingException('Cannot instantiate the ApiRouter, because Dingo is not booted yet.');
-
-        $acceptParser = new Accept($this->apiConfig('vendor'), $this->apiConfig('version'), $this->apiConfig('defaultFormat'));
-
-
-        return new ApiRouter(
-            $app['api.router.adapter'],
-            $acceptParser,
-            $app['api.exception'],
-            $app,
-            $this->apiConfig('domain'),
-            $this->apiConfig('prefix')
-        );
-    }
 
 
 

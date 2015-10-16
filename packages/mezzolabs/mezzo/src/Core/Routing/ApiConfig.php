@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Routing;
 
 
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Exceptions\RoutingException;
 
 class ApiConfig
 {
@@ -24,6 +25,9 @@ class ApiConfig
      */
     protected $entries;
 
+    /**
+     * Creates the container for the API configuration.
+     */
     public function __construct()
     {
         $this->entries = new Collection();
@@ -42,18 +46,35 @@ class ApiConfig
     }
 
 
+    /**
+     * Get an entry from the API config.
+     *
+     * @param string $key
+     * @return $this|mixed
+     * @throws RoutingException
+     */
     public function get($key = "")
     {
         if (empty($key)) return $this;
 
-        if (!isset($this->apiConfig[$key])
-        throw new RoutingException($key . ' is not a valid part of the API config . ');
+        if (!$this->has($key))
+            throw new RoutingException($key . ' is not a valid part of the API config . ');
 
-        return $this->apiConfig[$key];
+        return $this->entries->get($key);
     }
 
+    /**
+     * Check if this API config is set.
+     *
+     * @param $key
+     * @return bool
+     */
     public function has($key)
     {
         return $this->entries->has($key);
+    }
+
+    public static function make(){
+        return mezzo()->make(ApiConfig::class);
     }
 }

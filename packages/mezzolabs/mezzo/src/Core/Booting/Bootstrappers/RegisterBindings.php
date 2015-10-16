@@ -16,6 +16,8 @@ use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
 use MezzoLabs\Mezzo\Core\Reflection\ModelFinder;
 use MezzoLabs\Mezzo\Core\Reflection\ModelLookup;
 use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
+use MezzoLabs\Mezzo\Core\Routing\ApiConfig;
+use MezzoLabs\Mezzo\Core\Routing\ApiRouter;
 use MezzoLabs\Mezzo\Core\Routing\Router as MezzoRouter;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
 use MezzoLabs\Mezzo\Modules\General\GeneralModule;
@@ -44,6 +46,7 @@ class RegisterBindings implements Bootstrapper
     ];
 
     protected $singletons = [
+        ApiConfig::class,
         MezzoRouter::class
     ];
 
@@ -79,8 +82,6 @@ class RegisterBindings implements Bootstrapper
         }
     }
 
-
-
     /**
      * Bind a key and the full class name to a single instance.
      *
@@ -90,7 +91,6 @@ class RegisterBindings implements Bootstrapper
      */
     protected function bindInstance(Application $app, $key, $class)
     {
-
         $instance = $app->make($class);
 
         $app->instance($key, $instance);
@@ -117,9 +117,14 @@ class RegisterBindings implements Bootstrapper
         $app->singleton($class, $class);
     }
 
+    /**
+     * Register the ApiRouter as a singleton.
+     */
     private function registerApiRouter()
     {
-
+        mezzo()->app()->singleton(ApiConfig::class, function (Application $app) {
+            return ApiRouter::makeNewApiRouter();
+        });
     }
 
 }
