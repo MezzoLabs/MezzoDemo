@@ -7,8 +7,18 @@ use Dingo\Api\Http\Parser\Accept as AcceptParser;
 use Dingo\Api\Routing\Router as DingoRouter;
 use MezzoLabs\Mezzo\Exceptions\RoutingException;
 
-class ApiRouter extends DingoRouter
+class ApiRouter
 {
+
+    /**
+     * @var DingoRouter
+     */
+    private $dingoRouter;
+
+    public function __construct(DingoRouter $dingoRouter)
+    {
+        $this->dingoRouter = $dingoRouter;
+    }
 
     /**
      * @return ApiConfig
@@ -24,10 +34,25 @@ class ApiRouter extends DingoRouter
      */
     public function group(array $attributes, $callback)
     {
-        parent::group($attributes, function () {
-        });
-
+        $this->dingoRouter->group($attributes, function(){});
         call_user_func($callback, $this);
+    }
+
+    /**
+     * @param string $uri
+     * @param array|string|callable $action
+     */
+    public function get($uri, $action)
+    {
+        return $this->dingoRouter->get($uri, $action);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParent()
+    {
+        return $this->dingoRouter;
     }
 
     /**

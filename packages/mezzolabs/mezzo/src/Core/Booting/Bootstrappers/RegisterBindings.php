@@ -122,7 +122,7 @@ class RegisterBindings implements Bootstrapper
      */
     private function registerApiRouter()
     {
-        mezzo()->app()->singleton(ApiConfig::class, function (Application $app) {
+        mezzo()->app()->singleton(ApiRouter::class, function (Application $app) {
             return ApiRouter::makeNewApiRouter();
         });
     }

@@ -12,6 +12,12 @@ class DingoApi extends ThirdPartyWrapper
 {
 
     /**
+     * Class string of the packages laravel provider.
+     *
+     * @var string
+     */
+    protected $provider = DingoProvider::class;
+    /**
      * The Dingo Api router
      *
      * @var Router
@@ -19,11 +25,14 @@ class DingoApi extends ThirdPartyWrapper
     private $api;
 
     /**
-     * Class string of the packages laravel provider.
+     * Get the instance of this wrapper which is stored inside the thirdParties collection.
      *
-     * @var string
+     * @return DingoApi
      */
-    protected $provider = DingoProvider::class;
+    public static function make()
+    {
+        return mezzo()->make('mezzo.thirdParties')->get('DingoApi');
+    }
 
     /**
      * Prepare the configuration before a new service gets registered
@@ -45,29 +54,15 @@ class DingoApi extends ThirdPartyWrapper
         if ($this->booted) return false;
         parent::onProviderBooted();
 
-        $this->api = $this->mezzo->make(Router::class);
-
         $this->api = $this->mezzo->make(ApiRouter::class);
-
-        mezzo_dd('made dingo router');
     }
 
     /**
-     * @return Router
+     * @return ApiRouter
      */
-    public function getApi()
+    public function getApiRouter()
     {
         return $this->api;
-    }
-
-    /**
-     * Get the instance of this wrapper which is stored inside the thirdParties collection.
-     *
-     * @return DingoApi
-     */
-    public static function make()
-    {
-        return mezzo()->make('mezzo.thirdParties')->get('DingoApi');
     }
 
 }

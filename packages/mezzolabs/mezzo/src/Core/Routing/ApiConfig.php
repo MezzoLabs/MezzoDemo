@@ -10,17 +10,6 @@ use MezzoLabs\Mezzo\Exceptions\RoutingException;
 class ApiConfig
 {
     /**
-     * @var array
-     */
-    protected $defaults = [
-        "version" => "1",
-        "prefix" => "mezzo",
-        "vendor" => "MezzoLabs",
-        'debug' => false,
-        'strict' => true
-    ];
-
-    /**
      * @var Collection
      */
     protected $entries;
@@ -30,21 +19,15 @@ class ApiConfig
      */
     public function __construct()
     {
-        $this->entries = new Collection();
+        $configArray = mezzo()->config('api');
 
-        $this->readApiConfiguration();
+        $this->entries = new Collection($configArray);
     }
 
-    /**
-     * Read the dingo api configuration from the mezzo config file.
-     */
-    protected function readApiConfiguration()
+    public static function make()
     {
-        foreach ($this->defaults as $key => $default) {
-            $this->entries->put($key, mezzo()->config('api.' . $key, $default));
-        }
+        return mezzo()->make(ApiConfig::class);
     }
-
 
     /**
      * Get an entry from the API config.
@@ -72,9 +55,5 @@ class ApiConfig
     public function has($key)
     {
         return $this->entries->has($key);
-    }
-
-    public static function make(){
-        return mezzo()->make(ApiConfig::class);
     }
 }

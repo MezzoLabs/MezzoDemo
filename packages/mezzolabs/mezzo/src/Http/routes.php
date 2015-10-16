@@ -10,7 +10,7 @@ use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers\DingoApi;
 |--------------------------------------------------------------------------
 */
 $wrapper = DingoApi::make();
-$api = $wrapper->getApi();
+$api = $wrapper->getApiRouter()->getParent();
 
 $mezzoRouter = MezzoRouter::make();
 
@@ -23,8 +23,10 @@ $mezzoRouter = MezzoRouter::make();
 | Accept:  application/vnd.MezzoLabs.v1+json
 |
  */
+
 $api->version('v1', function (Router $api) use ($mezzoRouter) {
     $api->get('test', 'App\Http\Controllers\TestController@sayHi');
 
     $mezzoRouter->generator()->run($api);
 });
+
