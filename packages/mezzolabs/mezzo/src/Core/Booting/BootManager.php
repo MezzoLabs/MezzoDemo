@@ -5,7 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Booting;
 
 
 use Illuminate\Contracts\Foundation\Application;
-use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\CreateImportantBindings;
+use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterBindings;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\IncludeMezzoRouting;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\IncludeThirdParties;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\LoadConfiguration;
@@ -38,7 +38,7 @@ class BootManager
      */
     protected $bootstrappers = [
         "registerPhase" => [
-            CreateImportantBindings::class,
+            RegisterBindings::class,
             LoadConfiguration::class,
             RegisterInternalProviders::class,
             RegisterConfiguredModuleProviders::class,

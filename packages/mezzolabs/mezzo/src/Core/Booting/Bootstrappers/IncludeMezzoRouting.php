@@ -14,6 +14,7 @@ class IncludeMezzoRouting implements Bootstrapper
      *
      * @param Mezzo $mezzo
      * @return mixed
+     * @throws \Exception
      */
     public function bootstrap(Mezzo $mezzo)
     {

@@ -7,11 +7,12 @@ use Dingo\Api\Routing\Router as DingoRouter;
 
 class ApiRouter extends DingoRouter
 {
+
     /**
      * @param array $attributes
      * @param callable $callback
      */
-    public function group($attributes, $callback)
+    public function group(array $attributes, $callback)
     {
         parent::group($attributes, function(){});
 

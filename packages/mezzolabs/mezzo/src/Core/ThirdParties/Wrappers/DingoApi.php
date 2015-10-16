@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\ThirdParties\Wrappers;
 
 use Dingo\Api\Provider\LaravelServiceProvider as DingoProvider;
 use Dingo\Api\Routing\Router;
+use MezzoLabs\Mezzo\Core\Routing\ApiRouter;
 
 class DingoApi extends ThirdPartyWrapper
 {
@@ -45,6 +46,10 @@ class DingoApi extends ThirdPartyWrapper
         parent::onProviderBooted();
 
         $this->api = $this->mezzo->make(Router::class);
+
+        $this->api = $this->mezzo->make(ApiRouter::class);
+
+        mezzo_dd('made dingo router');
     }
 
     /**

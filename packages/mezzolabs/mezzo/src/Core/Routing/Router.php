@@ -4,8 +4,9 @@
 namespace MezzoLabs\Mezzo\Core\Routing;
 
 use Closure;
-use Dingo\Api\Routing\Router as DingoRouter;
+use Dingo\Api\Http\Parser\Accept;
 use Illuminate\Routing\Router as LaravelRouter;
+use MezzoLabs\Mezzo\Exceptions\RoutingException;
 
 
 class Router
@@ -25,17 +26,6 @@ class Router
      */
     protected $laravelRouter;
 
-    /**
-     * @var array
-     */
-    protected $apiGroupAttributes = [
-        "version" => "1",
-        "prefix" => "mezzo",
-        "vendor" => "MezzoLabs",
-        'debug' => false,
-        'strict' => true
-    ];
-
 
     /**
      * @param RoutesGenerator $generator
@@ -48,20 +38,11 @@ class Router
         $this->apiRouter = $apiRouter;
         $this->laravelRouter = $laravelRouter;
 
-
-        $this->readApiGroupAttributesFromConfig();
+        $this->readRealApiConfig();
 
     }
 
-    /**
-     * Read the dingo api configuration from the mezzo config file.
-     */
-    protected function readApiGroupAttributesFromConfig()
-    {
-        foreach ($this->apiGroupAttributes as $key => $default) {
-            $this->apiGroupAttributes[$key] = mezzo()->config('api.' . $key, $default);
-        }
-    }
+
 
     /**
      * Return the singleton instance
@@ -75,7 +56,7 @@ class Router
 
     public function api(Closure $callback, $overwriteAttributes = [])
     {
-        $attributes = array_merge($this->apiGroupAttributes, $overwriteAttributes);
+        $attributes = array_merge($this->apiConfig, $overwriteAttributes);
 
         $this->apiRouter->group($attributes, $callback);
     }
@@ -103,5 +84,27 @@ class Router
     {
         return $this->generator;
     }
+
+    public function makeApiRouter()
+    {
+        $app = app();
+
+        if (!$app['api.router.adapter'])
+            throw new RoutingException('Cannot instantiate the ApiRouter, because Dingo is not booted yet.');
+
+        $acceptParser = new Accept($this->apiConfig('vendor'), $this->apiConfig('version'), $this->apiConfig('defaultFormat'));
+
+
+        return new ApiRouter(
+            $app['api.router.adapter'],
+            $acceptParser,
+            $app['api.exception'],
+            $app,
+            $this->apiConfig('domain'),
+            $this->apiConfig('prefix')
+        );
+    }
+
+
 
 } 

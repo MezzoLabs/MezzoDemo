@@ -20,7 +20,7 @@ use MezzoLabs\Mezzo\Core\Routing\Router as MezzoRouter;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
 use MezzoLabs\Mezzo\Modules\General\GeneralModule;
 
-class CreateImportantBindings implements Bootstrapper
+class RegisterBindings implements Bootstrapper
 {
 
     /**
@@ -63,6 +63,8 @@ class CreateImportantBindings implements Bootstrapper
 
         $this->bindInstances($mezzo);
         $this->bindSingletons($mezzo);
+
+        $this->registerApiRouter();
     }
 
     /**
@@ -113,6 +115,11 @@ class CreateImportantBindings implements Bootstrapper
     private function bindSingleton(Application $app, $class)
     {
         $app->singleton($class, $class);
+    }
+
+    private function registerApiRouter()
+    {
+
     }
 
 }
