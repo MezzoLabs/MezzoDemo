@@ -33,14 +33,7 @@ trait IsMezzoModel
         return $this->module;
     }
 
-    public function mezzoTable(){
-        return $this->mezzoTable;
-    }
 
-    public function mezzoRules()
-    {
-        return $this->mezzoRules;
-    }
 
     
 } 

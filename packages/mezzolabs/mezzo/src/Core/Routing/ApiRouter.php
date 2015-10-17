@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Routing;
 use Closure;
 use Dingo\Api\Routing\Router as DingoRouter;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ResourceController;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResourceController;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers\DingoApi;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
@@ -134,7 +134,7 @@ class ApiRouter
     /**
      * @param $moduleName
      * @param $controllerName
-     * @return ResourceController|ModuleController
+     * @return ModuleResourceController|ModuleController
      * @throws InvalidArgumentException
      * @throws ModuleControllerException
      */

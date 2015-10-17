@@ -19,6 +19,8 @@ use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 
 Route::get('/', function () {
+
+
     return view('welcome');
 });
 

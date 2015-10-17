@@ -14,11 +14,6 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
 {
     use ApiHelpers;
 
-    /**
-     * @var MezzoModelReflection
-     */
-    protected $modelReflection;
-
     public function actionUri($method)
     {
         $this->hasActionOrFail($method);
@@ -80,52 +75,18 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
      */
     public function isResourceController()
     {
-        if(!$this->model())
+        if(!$this instanceof ModuleResourceController)
             return false;
 
-        if(!$this instanceof ResourceController)
+        if(!$this->isValid())
             return false;
 
         return true;
     }
 
-    /**
-     * @return bool|MezzoModelReflection|null
-     */
-    public function model()
-    {
-        if ($this->modelReflection === null) {
-            $modelName = $this->guessModelName();
 
-            if (!$modelName)
-                $this->modelReflection = false;
-            else
-                $this->setModelReflection($modelName);
-        }
 
-        return $this->modelReflection;
-    }
 
-    protected function guessModelName()
-    {
-        $shortName = Singleton::reflection($this)->getShortName();
 
-        $possibleModelName = str_replace('Controller', '', $shortName);
 
-        if (!mezzo()->knowsModel($possibleModelName))
-            return null;
-
-        return $possibleModelName;
-    }
-
-    /**
-     * @param $model
-     * @internal param $modelReflection
-     */
-    public function setModelReflection($model)
-    {
-        $modelReflection = mezzo()->model($model);
-
-        $this->modelReflection = $modelReflection;
-    }
 }

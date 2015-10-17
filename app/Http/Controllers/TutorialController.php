@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Tutorial;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -15,7 +16,7 @@ class TutorialController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**

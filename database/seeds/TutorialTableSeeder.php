@@ -3,7 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 
-class UserTableSeeder extends Seeder
+class TutorialTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,8 +15,8 @@ class UserTableSeeder extends Seeder
         Model::unguard();
 
 
-        factory(App\User::class, 20)->create()->each(function(App\User $u){
-            $u->save();
+        factory(App\Tutorial::class, 20)->create()->each(function(App\Tutorial $t){
+            $t->save();
         });
 
         Model::reguard();

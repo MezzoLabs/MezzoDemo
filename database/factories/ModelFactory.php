@@ -1,5 +1,8 @@
 <?php
 
+use App\Tutorial;
+use App\User;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -11,7 +14,7 @@
 |
 */
 
-$factory->define(App\User::class, function ($faker) {
+$factory->define(User::class, function ($faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,
@@ -20,6 +23,23 @@ $factory->define(App\User::class, function ($faker) {
     ];
 });
 
-$factory->define(App\Tutorial::class, function(Faker\Generator $faker){
+$factory->define(Tutorial::class, function(Faker\Generator $faker){
+    $users = User::all()->lists('id');
 
+    $tutorials = Tutorial::all()->lists('id');
+
+    $parent = NULL;
+    if(rand(0,10) < 6 && $tutorials->count() > 0)
+        $parent = $tutorials->random();
+
+    $array = [
+        'title' => $faker->text(30),
+        'body' => $faker->text(200),
+        'user_id' => $users->random()
+    ];
+
+    if ($parent)
+        $array['parent'] = $parent;
+
+    return $array;
 });
