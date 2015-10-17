@@ -56,8 +56,8 @@ class ModelReflectionSets extends Collection
         if ($this->has('App\\' . $model))
             return $this->get('App\\' . $model);
 
-        $fromAliases = $this->getFromMappings($model);
-        if ($fromAliases) return $fromAliases;
+        $fromLookup = $this->getFromLookup($model);
+        if ($fromLookup) return $fromLookup;
 
         return null;
     }
@@ -66,9 +66,9 @@ class ModelReflectionSets extends Collection
      * @param $model
      * @return ModelReflectionSet|null
      */
-    private function getFromMappings($model)
+    private function getFromLookup($model)
     {
-        return mezzo()->makeModelMappings()->find($model);
+        return mezzo()->makeModelLookup()->find($model);
     }
 
     /**
@@ -116,7 +116,7 @@ class ModelReflectionSets extends Collection
 
     protected function addToMapping(ModelReflectionSet $reflectionSet)
     {
-        mezzo()->makeModelMappings()->add($reflectionSet);
+        mezzo()->makeModelLookup()->add($reflectionSet);
 
     }
 

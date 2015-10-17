@@ -77,13 +77,21 @@ abstract class ModelReflection
 
 
     /**
-     * Class name of the reflected eloquent model.
+     * Full class name of the reflected eloquent model.
      *
      * @return string
      */
     public function className()
     {
         return $this->modelReflectionSet->className();
+    }
+
+    /**
+     * @return string
+     */
+    public function name()
+    {
+        return $this->modelReflectionSet->shortName();
     }
 
     /**

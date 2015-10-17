@@ -221,8 +221,8 @@ class ModuleCenter
         if (!is_string($module))
             throw new MezzoException('Cannot convert ' . gettype($module) . ' into a module class.');
 
-        if ($this->slugAliases->has($module))
-            return $this->slugAliases->get($module);
+        if ($this->slugAliases->has(strtolower($module)))
+            return $this->slugAliases->get(strtolower($module));
 
         if ($this->modules()->has($module))
             return $module;

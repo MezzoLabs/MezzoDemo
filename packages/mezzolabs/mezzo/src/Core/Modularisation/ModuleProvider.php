@@ -5,16 +5,18 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflections;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSets;
+use MezzoLabs\Mezzo\Core\Routing\ModuleRouter;
 use MezzoLabs\Mezzo\Exceptions\DirectoryNotFound;
+use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 
 abstract class ModuleProvider extends ServiceProvider
@@ -43,6 +45,11 @@ abstract class ModuleProvider extends ServiceProvider
     protected $mezzo;
 
     /**
+     * @var ModuleRouter
+     */
+    protected $router;
+
+    /**
      * Create a new module provider instance
      *
      * @param Application $app
@@ -53,6 +60,9 @@ abstract class ModuleProvider extends ServiceProvider
     {
         $this->mezzo = mezzo();;
         $this->modelReflectionSets = new ModelReflectionSets();
+
+        $this->router = new ModuleRouter($this);
+
         $this->app = $app;
     }
 
@@ -82,31 +92,12 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
-     * The reflections of the associated models
-     *
-     * @internal param bool $key
-     * @return ModelReflectionSets
-     */
-    public function reflectionSets()
-    {
-        return $this->modelReflectionSets;
-    }
-
-    /**
      * @param string $key
      * @return MezzoModelReflection
      */
     public function model($key)
     {
         return $this->reflectionSet($key)->mezzoReflection();
-    }
-
-    /**
-     * @return ModelReflections
-     */
-    public function models()
-    {
-        return $this->reflectionSets()->mezzoReflections();
     }
 
     /**
@@ -119,13 +110,22 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
-     * Returns the unique identifier of this module.
-     *
-     * @return string
+     * @return ModelReflections
      */
-    public function qualifiedName()
+    public function models()
     {
-        return get_class($this);
+        return $this->reflectionSets()->mezzoReflections();
+    }
+
+    /**
+     * The reflections of the associated models
+     *
+     * @internal param bool $key
+     * @return ModelReflectionSets
+     */
+    public function reflectionSets()
+    {
+        return $this->modelReflectionSets;
     }
 
     /**
@@ -189,6 +189,93 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
+     * @throws ModuleControllerException
+     */
+    public function includeRoutes()
+    {
+        $this->router()->includeRoutesFile();
+    }
+
+    /**
+     * @return ModuleRouter
+     */
+    public function router()
+    {
+        return $this->router;
+    }
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param $controllerName
+     * @return ModuleController
+     * @throws InvalidArgumentException
+     * @throws ModuleControllerException
+     */
+    public function controller($controllerName)
+    {
+        if (is_object($controllerName)) {
+            if ($controllerName instanceof ModuleController) return $controllerName;
+
+            throw new InvalidArgumentException($controllerName);
+        }
+
+        $controller = mezzo()->make($this->controllerClass($controllerName));
+
+        if (!($controller instanceof ModuleController))
+            throw new ModuleControllerException('Not a valid module controller.');
+
+        return $controller;
+    }
+
+    /**
+     * Find the full class name for a controller.
+     *
+     * @param $controllerName
+     * @return string
+     * @throws ModuleControllerException
+     */
+    public function controllerClass($controllerName)
+    {
+        if ($controllerName instanceof ModuleController)
+            return $controllerName;
+
+        $controllerNamespace = $this->getNamespaceName() . '\\Http\\Controllers\\';
+
+        if (is_object($controllerName))
+            $controllerName = get_class($controllerName);
+
+        if (class_exists($controllerName) && strpos($controllerName, $controllerNamespace) != -1)
+            return $controllerName;
+
+        $longControllerName = $controllerNamespace . $controllerName;
+
+        if (class_exists($longControllerName))
+            return $longControllerName;
+
+        throw new ModuleControllerException('Module controller ' . $controllerName .
+            ' not found for ' . $this->qualifiedName());
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamespaceName()
+    {
+        return Singleton::reflection($this)->getNamespaceName();
+    }
+
+    /**
+     * Returns the unique identifier of this module.
+     *
+     * @return string
+     */
+    public function qualifiedName()
+    {
+        return get_class($this);
+    }
+
+    /**
      * Load views from the "views" folder inside the module root.
      * The namespace will be modules.<modulename>::<view_name>
      *
@@ -213,13 +300,4 @@ abstract class ModuleProvider extends ServiceProvider
         return dirname($fileName);
     }
 
-    public function includeRoutes()
-    {
-        $routesPath = $this->path() . '/Http/routes.php';
-
-        if(!file_exists($routesPath))
-            throw new ModuleControllerException('Cannot find routes file for module ' . $this->qualifiedName() . ' - ' . $routesPath);
-
-        require $routesPath;
-    }
-}
+ }

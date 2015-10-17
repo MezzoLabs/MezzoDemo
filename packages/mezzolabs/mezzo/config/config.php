@@ -10,7 +10,7 @@ return [
 
     "api" => [
         'prefix' => 'mezzo',
-        'version' => '1',
+        'version' => 'v1',
         'vendor' => 'MezzoLabs',
         'debug' => env('APP_DEBUG', false),
         'strict' => true,

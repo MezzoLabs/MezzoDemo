@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Routing;
 use Closure;
 use Dingo\Api\Http\Parser\Accept;
 use Illuminate\Routing\Router as LaravelRouter;
+use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Exceptions\RoutingException;
 
 
@@ -52,6 +53,7 @@ class Router
     /**
      * @param Closure $callback
      * @param array $overwriteAttributes
+     * @internal param ModuleProvider $module
      */
     public function api(Closure $callback, $overwriteAttributes = [])
     {
@@ -80,6 +82,34 @@ class Router
     public function generator()
     {
         return $this->generator;
+    }
+
+    /**
+     * @param ModuleProvider $module
+     * @return string
+     */
+    public function moduleUri(ModuleProvider $module)
+    {
+        return $module->slug();
+    }
+
+    /**
+     * Creates the URI for a module action without prefixes.
+     *
+     * @param ModuleProvider $module
+     * @param $controllerName
+     * @param $method
+     * @return string
+     * @throws \MezzoLabs\Mezzo\Exceptions\ModuleControllerException
+     */
+    public function moduleActionUri(ModuleProvider $module, $controllerName, $method)
+    {
+        $controller = $module->controller($controllerName);
+
+        $controller->hasActionOrFail($method);
+
+        return $this->moduleUri($module) . '/' . $controller->slug() . '/' . $method;
+
     }
 
 

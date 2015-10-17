@@ -77,7 +77,7 @@ trait CanMakeInstances
     /**
      * @return ModelLookup
      */
-    public function makeModelMappings()
+    public function makeModelLookup()
     {
         return $this->make(ModelLookup::class);
     }

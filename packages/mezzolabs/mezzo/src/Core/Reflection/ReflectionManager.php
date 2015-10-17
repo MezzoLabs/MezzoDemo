@@ -62,6 +62,17 @@ class ReflectionManager
     }
 
     /**
+     * Checks if a model is reflected.
+     *
+     * @param $model
+     * @return bool
+     */
+    public function modelIsReflected($model)
+    {
+        return $this->sets()->hasModel($model);
+    }
+
+    /**
      * @param string $model Short or long class name or even the name of the table.
      * @return ModelReflection
      * @throws InvalidArgumentException
@@ -102,8 +113,13 @@ class ReflectionManager
     }
 
 
-    public function addMappings(ModelReflectionSet $reflectionSet){
-        mezzo()->makeModelMappings()->add($reflectionSet);
+    public function addToModelLookup(ModelReflectionSet $reflectionSet){
+        mezzo()->makeModelLookup()->add($reflectionSet);
+    }
+
+    public function modelLookup()
+    {
+        return mezzo()->makeModelLookup();
     }
 
     /**

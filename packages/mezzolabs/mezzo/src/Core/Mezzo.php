@@ -77,6 +77,26 @@ class Mezzo
         return $this->moduleCenter()->getModule($key);
     }
 
+    /**
+     * @param $modelName
+     * @return Reflection\Reflections\ModelReflection
+     */
+    public function model($modelName)
+    {
+        return $this->makeReflectionManager()->modelReflection($modelName);
+    }
+
+    /**
+     * Checks if there if a model is registered in the reflector.
+     *
+     * @param $modelName
+     * @return bool
+     */
+    public function knowsModel($modelName)
+    {
+        return $this->makeReflectionManager()->modelIsReflected($modelName);
+    }
+
 
     /**
      * Run the boot services that we need at the time the Mezzo provider is registered
