@@ -1,0 +1,9 @@
+.gridster .panel .ion-close {
+  visibility: hidden;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.gridster .panel:hover .ion-close {
+  visibility: visible;
+}

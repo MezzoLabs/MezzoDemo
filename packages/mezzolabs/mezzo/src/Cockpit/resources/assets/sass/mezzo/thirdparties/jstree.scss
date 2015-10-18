@@ -1,0 +1,9 @@
+.jstree-proton .jstree-clicked, .jstree-proton .jstree-hovered{
+  box-shadow: none;
+  background-color: $brand-primary;
+  border-radius: 0px;
+}
+
+.jstree-proton .jstree-hovered{
+  background-color: $brand-primary-light;
+}

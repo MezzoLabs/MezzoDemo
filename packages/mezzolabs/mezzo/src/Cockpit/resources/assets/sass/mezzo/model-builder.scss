@@ -1,0 +1,7 @@
+.validation-rule .validation-rule-times {
+  visibility: hidden;
+}
+
+.validation-rule:hover .validation-rule-times {
+  visibility: visible;
+}

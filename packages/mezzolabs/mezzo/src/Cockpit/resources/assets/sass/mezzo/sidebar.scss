@@ -1,0 +1,184 @@
+#sidebar {
+  width: $sidebar-width;
+  left: 0;
+  top: 0;
+  position: fixed;
+  z-index: $sidebar-z-index;
+  height: 100vh;
+  background-color: $mezzo-gray;
+
+
+
+  .sidebar-header {
+    height: $topbar-height;
+    background-color: $mezzo-gray-dark;
+    padding: $sidebar-padding;
+    box-shadow: $top-shadow;
+
+    .sidebar-logo-wrap{
+      margin-right: 10px;
+      margin-left: 5px;
+    }
+
+    .sidebar-pin-wrap{
+      line-height: 29px;
+    }
+    
+    b {
+      color: $mezzo-white;
+      font-size: 22px;
+      font-weight: 400;
+      text-transform: uppercase;
+      display: block;
+
+      //@TODO: Put this in a row?
+    }
+
+    i {
+      color: $mezzo-lightgray;
+    }
+    
+    > div:last-child{
+      margin-right: 3px;
+    }
+  }
+
+  h3 {
+    text-transform: uppercase;
+    color: $mezzo-lightgray;
+    font-weight: normal;
+    font-size: 14px;
+    margin-bottom: 0px;
+    padding: 0px $sidebar-padding;
+  }
+
+  .sidebar-pin-wrap{
+    float: right;
+    text-align: center;
+    padding-top: 1px;
+    cursor: pointer;
+  }
+}
+
+
+.sidebar-unpinned.sidebar-mouseout #sidebar{
+  transition: ease width $mezzo-animation-long;
+
+  width: $sidebar-closed-width;
+
+  .sidebar-logotext-wrap, .nav-main > li.has-pages.opened > a:before,
+  .nav-main span, .nav-main li ul, .sidebar-pin-wrap{
+    display: none;
+  }
+  
+  h3{
+    opacity: 0;
+  }
+
+  .sidebar-pin-wrap{
+    float: none;
+  }
+}
+
+
+.nav-main {
+  @include layout-list();
+
+  a {
+    color: $mezzo-lightgray;
+    display: block;
+  }
+
+  a:hover {
+    color: $mezzo-lightgray-light;
+    text-decoration: none;
+  }
+
+  // First Level
+  > li {
+    > a {
+      @extend .clearfix;
+      padding: $sidebar-padding;
+      position: relative;
+
+      > span, > i{
+        @extend .pull-left;
+      }
+
+      > span {
+        margin-top: 5px;
+        margin-left: 10px;
+      }
+    }
+
+    > a:hover{
+      background-color: rgba(0,0,0,0.1);
+    }
+
+    i {
+      padding-top: 3px;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.3);
+      width: 32px;
+      height: 32px;
+      display: inline-block;
+      font-size: 19px;
+    }
+
+
+  }
+
+  .dropdown {
+    position: absolute;
+    top: 50%;
+    margin-top: -15px;
+    right: 15px;
+    padding: 5px;
+    display: inline-block;
+    color: $mezzo-lightgray;
+
+
+    transition: ease all $mezzo-animation-normal;
+  }
+
+  .dropdown:hover{
+    color: $mezzo-white;
+  }
+
+  .dropdown:before{
+    font-family: 'FontAwesome';
+    content: "\f104";
+  }
+
+  > li.has-pages.opened > a > .dropdown {
+    color: $mezzo-white;
+    @include prefix(transform, rotate(-90deg), webkit ms);
+  }
+
+  // Other Levels
+  li ul {
+    @include layout-list();
+    padding-right: 20px;
+    overflow: hidden;
+    background-color: $mezzo-gray-dark;
+    transition: ease all $mezzo-animation-normal;
+    max-height: 0px;
+
+    a {
+      padding: 3px 3px 3px 59px;
+    }
+
+    li:first-child a{
+      padding-top: 10px;
+    }
+
+    li:last-child a{
+      padding-bottom: 10px;
+    }
+  }
+
+  li.opened ul {
+    max-height: 500px;
+  }
+}
+

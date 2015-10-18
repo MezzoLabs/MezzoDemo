@@ -6,13 +6,23 @@ namespace MezzoLabs\Mezzo\Cockpit\Http\Controllers\Auth;
 
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Support\Facades\Validator;
 use MezzoLabs\Mezzo\Cockpit\Http\Controllers\CockpitController;
 
 class AuthController extends CockpitController
 {
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    protected $loginPath = "mezzo/auth/login";
+
+    protected $redirectAfterLogout = "mezzo/auth/login";
+
+    protected $redirectTo = "mezzo/";
+
+    use AuthenticatesUsers, RegistersUsers, ThrottlesLogins {
+        AuthenticatesUsers::redirectPath insteadof RegistersUsers;
+    }
 
     /**
      * Create a new authentication controller instance.
@@ -20,6 +30,19 @@ class AuthController extends CockpitController
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'getLogout']);
+    }
+
+    /**
+     * @return \Illuminate\View\View
+     */
+    public function getLogin()
+    {
+        return view('mezzo.cockpit::auth.login');
+    }
+
+    public function getRegister()
+    {
+        return view('mezzo.cockpit::auth.register');
     }
 
     /**

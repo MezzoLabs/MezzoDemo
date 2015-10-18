@@ -141,7 +141,7 @@ abstract class ModuleProvider extends ServiceProvider
      * @param $shortAbstract
      * @param $concrete
      */
-    public function bindWithNamespace($shortAbstract, $concrete)
+    public function bindWithPrefix($shortAbstract, $concrete)
     {
         $abstract = 'modules.' . $this->slug() . '.' . $shortAbstract;
 
@@ -175,7 +175,7 @@ abstract class ModuleProvider extends ServiceProvider
      * @param $shortAbstract
      * @return mixed
      */
-    public function makeWithNamespace($shortAbstract)
+    public function makeWithPrefix($shortAbstract)
     {
         return $this->app->make('modules.' . $this->slug() . '.' . $shortAbstract);
     }

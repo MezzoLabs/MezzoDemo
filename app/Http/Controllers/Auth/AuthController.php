@@ -12,11 +12,7 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class AuthController extends Controller
 {
-    protected $loginPath = "mezzo/auth/login";
 
-    protected $redirectAfterLogout = "mezzo/auth/login";
-
-    protected $redirectTo = "mezzo/";
 
     /*
     |--------------------------------------------------------------------------
@@ -29,14 +25,8 @@ class AuthController extends Controller
     |
     */
 
-    use AuthenticatesUsers, RegistersUsers, ThrottlesLogins {
-        AuthenticatesUsers::redirectPath insteadof RegistersUsers;
-    };
+    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-    public function getLogin()
-    {
-
-    }
 
     /**
      * Create a new authentication controller instance.
