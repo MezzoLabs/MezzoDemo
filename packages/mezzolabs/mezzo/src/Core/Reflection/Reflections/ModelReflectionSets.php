@@ -50,6 +50,12 @@ class ModelReflectionSets extends Collection
      */
     public function getReflectionSet($model)
     {
+        if($model instanceof ModelReflection)
+            $model = $model->className();
+
+        if($model instanceof ModelReflectionSet)
+            $model = $model->className();
+
         if ($this->has($model))
             return $this->get($model);
 

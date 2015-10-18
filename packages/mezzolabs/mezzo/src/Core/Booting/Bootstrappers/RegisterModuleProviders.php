@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 use MezzoLabs\Mezzo\Core\Mezzo;
 
-class RegisterConfiguredModuleProviders implements Bootstrapper
+class RegisterModuleProviders implements Bootstrapper
 {
 
     /**
@@ -20,7 +20,7 @@ class RegisterConfiguredModuleProviders implements Bootstrapper
         $providerClasses = $mezzo->makeConfiguration()->get('moduleProviders');
 
         foreach ($providerClasses as $providerClass) {
-            $serviceProvider = $mezzo->moduleCenter()->register($providerClass);
+            $mezzo->moduleCenter()->register($providerClass);
         }
     }
 }

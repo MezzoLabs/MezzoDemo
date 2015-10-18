@@ -9,7 +9,7 @@ use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleRequest;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResponse;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResourceController;
 
-class TutorialControllerModule extends ModuleResourceController
+class TutorialController extends ModuleResourceController
 {
 
 }

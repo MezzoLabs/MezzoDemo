@@ -5,14 +5,16 @@ namespace MezzoLabs\Mezzo\Core\Booting;
 
 
 use Illuminate\Contracts\Foundation\Application;
-use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterBindings;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\IncludeMezzoRouting;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\IncludeThirdParties;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\LoadConfiguration;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\MakeModuleProvidersReady;
-use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterConfiguredModuleProviders;
+use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterBindings;
+use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterCockpitProvider;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterConsoleCommands;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterInternalProviders;
+use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterMiddleware;
+use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterModuleProviders;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RunModelReflection;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RunThirdPartyWrappers;
 use MezzoLabs\Mezzo\Core\Mezzo;
@@ -41,7 +43,8 @@ class BootManager
             RegisterBindings::class,
             LoadConfiguration::class,
             RegisterInternalProviders::class,
-            RegisterConfiguredModuleProviders::class,
+            RegisterModuleProviders::class,
+            RegisterCockpitProvider::class,
             RegisterConsoleCommands::class,
             IncludeThirdParties::class
         ],
@@ -50,6 +53,7 @@ class BootManager
         "bootedPhase" => [
             RunThirdPartyWrappers::class,
             MakeModuleProvidersReady::class,
+            RegisterMiddleware::class,
             IncludeMezzoRouting::class
         ]
     ];

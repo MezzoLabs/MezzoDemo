@@ -8,6 +8,7 @@ use Dingo\Api\Http\Parser\Accept;
 use Illuminate\Routing\Router as LaravelRouter;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Exceptions\RoutingException;
+use MezzoLabs\Mezzo\Http\Middleware\MezzoMiddleware;
 
 
 class Router
@@ -109,7 +110,16 @@ class Router
         $controller->hasActionOrFail($method);
 
         return $this->moduleUri($module) . '/' . $controller->slug() . '/' . $method;
+    }
 
+    /**
+     * Add a named middleware to the routes.
+     *
+     * @param MezzoMiddleware $mezzoMiddleware
+     */
+    public function middleware(MezzoMiddleware $mezzoMiddleware)
+    {
+        $this->laravelRouter()->middleware($mezzoMiddleware->key(), get_class($mezzoMiddleware));
     }
 
 

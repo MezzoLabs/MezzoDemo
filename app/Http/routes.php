@@ -25,6 +25,7 @@ Route::get('/', function () {
 });
 
 Route::get('random',function(){
+    mezzo_dump(app()->getProvider(MezzoLabs\Mezzo\Cockpit\CockpitProvider::class));
    return str_random(16);
 });
 
@@ -33,7 +34,8 @@ Route::get('debug/models', function () {
 
     $module = mezzo()->module('sample');
 
-    mezzo_dump($module->models());
+    $controller = new \MezzoLabs\Mezzo\Modules\Sample\Http\Controllers\TutorialController();
+    $controller->repository();
 
     //return view('debugmodels', ['moduleCenter' => $moduleCenter]);
 });

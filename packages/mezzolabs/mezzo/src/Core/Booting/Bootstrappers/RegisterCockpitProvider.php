@@ -1,13 +1,13 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Cockpit\Booting\Bootstrappers;
+namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 
-use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\Bootstrapper;
+use MezzoLabs\Mezzo\Cockpit\CockpitProvider;
 use MezzoLabs\Mezzo\Core\Mezzo;
 
-class IncludeCockpitRouting implements Bootstrapper
+class RegisterCockpitProvider implements Bootstrapper
 {
 
     /**
@@ -18,6 +18,6 @@ class IncludeCockpitRouting implements Bootstrapper
      */
     public function bootstrap(Mezzo $mezzo)
     {
-
+        $mezzo->app()->register(CockpitProvider::class);
     }
 }

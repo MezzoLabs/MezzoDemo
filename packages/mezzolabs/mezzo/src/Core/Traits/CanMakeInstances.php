@@ -9,6 +9,8 @@
 namespace MezzoLabs\Mezzo\Core\Traits;
 
 
+use Illuminate\Contracts\Http\Kernel as LaravelHttpKernel;
+use MezzoLabs\Mezzo\Cockpit\CockpitProvider;
 use MezzoLabs\Mezzo\Console\MezzoKernel;
 use MezzoLabs\Mezzo\Core\Annotations\Reader\AnnotationReader;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
@@ -21,6 +23,7 @@ use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
 use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
 use MezzoLabs\Mezzo\Core\Routing\Router;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
+use MezzoLabs\Mezzo\Exceptions\UnexpectedException;
 
 trait CanMakeInstances
 {
@@ -156,5 +159,27 @@ trait CanMakeInstances
     public function makeThirdParties()
     {
         return $this->make(ThirdParties::class);
+    }
+
+    /**
+     * @return \MezzoLabs\Mezzo\Cockpit\Cockpit
+     * @throws UnexpectedException
+     */
+    public function makeCockpit()
+    {
+        $cockpitProvider = app()->getProvider(CockpitProvider::class);
+
+        if(!$cockpitProvider instanceof CockpitProvider)
+            throw new UnexpectedException();
+
+        return $cockpitProvider->cockpit();
+    }
+
+    /**
+     * @return LaravelHttpKernel
+     */
+    public function makeLaravelHttpKernel()
+    {
+        return $this->make(LaravelHttpKernel::class);
     }
 } 

@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 
 class ModelRepository
@@ -23,6 +24,7 @@ class ModelRepository
      */
     protected $model;
 
+
     /**
      * @param ModelReflection|null $modelReflection
      * @throws RepositoryException
@@ -34,7 +36,7 @@ class ModelRepository
         }
         $this->modelReflection = $modelReflection;
 
-        if(!$this->modelReflection)
+        if (!$this->modelReflection)
             throw new RepositoryException('Cannot find a model for repository "' . get_class($this) . '" .');
 
         $this->model = $this->modelReflection->className();
@@ -51,13 +53,6 @@ class ModelRepository
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    protected function modelInstance(){
-        return $this->modelReflection->instance();
-    }
-
-    /**
      * Try to find a model that fits the repository class name (<ModelName>Repository.php)
      *
      * @return string
@@ -68,11 +63,20 @@ class ModelRepository
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function query()
+    {
+        return $this->modelReflection->instance()->newQuery();
+    }
+
+    /**
      * @param array $columns
      * @return mixed
      */
-    public function all($columns = array('*')) {
-        return $this->model->get($columns);
+    public function all($columns = array('*'))
+    {
+        return $this->query()->get($columns);
     }
 
     /**
@@ -80,16 +84,18 @@ class ModelRepository
      * @param array $columns
      * @return mixed
      */
-    public function paginate($perPage = 15, $columns = array('*')) {
-        return $this->model->paginate($perPage, $columns);
+    public function paginate($perPage = 15, $columns = array('*'))
+    {
+        return $this->query()->paginate($perPage, $columns);
     }
 
     /**
      * @param array $data
      * @return mixed
      */
-    public function create(array $data) {
-        return $this->model->create($data);
+    public function create(array $data)
+    {
+        return $this->modelInstance()->create($data);
     }
 
     /**
@@ -98,16 +104,18 @@ class ModelRepository
      * @param string $attribute
      * @return mixed
      */
-    public function update(array $data, $id, $attribute="id") {
-        return $this->model->where($attribute, '=', $id)->update($data);
+    public function update(array $data, $id, $attribute = "id")
+    {
+        return $this->query()->where($attribute, '=', $id)->update($data);
     }
 
     /**
-     * @param $id
+     * @param $ids
      * @return mixed
      */
-    public function delete($id) {
-        return $this->model->destroy($id);
+    public function delete($ids)
+    {
+        return $this->modelInstance()->destroy($ids);
     }
 
     /**
@@ -115,8 +123,9 @@ class ModelRepository
      * @param array $columns
      * @return mixed
      */
-    public function find($id, $columns = array('*')) {
-        return $this->model->find($id, $columns);
+    public function find($id, $columns = array('*'))
+    {
+        return $this->query()->find($id, $columns);
     }
 
     /**
@@ -125,8 +134,53 @@ class ModelRepository
      * @param array $columns
      * @return mixed
      */
-    public function findBy($attribute, $value, $columns = array('*')) {
-        return $this->model->where($attribute, '=', $value)->first($columns);
+    public function findBy($attribute, $value, $columns = array('*'))
+    {
+        return $this->query()->where($attribute, '=', $value)->first($columns);
+    }
+
+    /**
+     * Try to find a concrete repository implementation for a model class.
+     *
+     * @param $modelName
+     * @param array $namespaces
+     * @return bool|string
+     */
+    public static function guessRepositoryClass($modelName, $namespaces = ['App'])
+    {
+        foreach ($namespaces as $namespace) {
+            $possibleRepository = $namespace . '\Domain\Repositories\\' . $modelName . 'Repository';
+
+            if (class_exists($possibleRepository))
+                return $possibleRepository;
+        }
+
+        return false;
+    }
+
+    /**
+     * Create a new generic model repository for a given model class.
+     *
+     * @param string|ModelReflection|ModelReflectionSet $model
+     * @return static
+     */
+    public static function make($model)
+    {
+        /**
+         * Find the model reflection, normalize the $model variable.
+         */
+        $model = mezzo()->model($model);
+
+        return new ModelRepository($model);
+
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    protected function modelInstance()
+    {
+        return $this->modelReflection->instance();
     }
 
 }

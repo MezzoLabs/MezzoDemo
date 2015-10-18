@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -10,6 +12,12 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class AuthController extends Controller
 {
+    protected $loginPath = "mezzo/auth/login";
+
+    protected $redirectAfterLogout = "mezzo/auth/login";
+
+    protected $redirectTo = "mezzo/";
+
     /*
     |--------------------------------------------------------------------------
     | Registration & Login Controller
@@ -21,16 +29,21 @@ class AuthController extends Controller
     |
     */
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    use AuthenticatesUsers, RegistersUsers, ThrottlesLogins {
+        AuthenticatesUsers::redirectPath insteadof RegistersUsers;
+    };
+
+    public function getLogin()
+    {
+
+    }
 
     /**
      * Create a new authentication controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'getLogout']);
+        $this->middleware('mezzo.guest', ['except' => 'getLogout']);
     }
 
     /**

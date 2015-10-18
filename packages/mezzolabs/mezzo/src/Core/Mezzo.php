@@ -44,6 +44,7 @@ class Mezzo
      */
     public $serviceProvider;
 
+
     /**
      * Create the one and only Mezzo instance
      *

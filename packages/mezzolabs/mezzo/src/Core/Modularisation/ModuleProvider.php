@@ -253,8 +253,8 @@ abstract class ModuleProvider extends ServiceProvider
         if (class_exists($longControllerName))
             return $longControllerName;
 
-        throw new ModuleControllerException('Module controller ' . $controllerName .
-            ' not found for ' . $this->qualifiedName());
+        throw new ModuleControllerException('Module controller "' . $longControllerName .'"'.
+            ' not found for "' . $this->qualifiedName() .'".');
     }
 
     /**
