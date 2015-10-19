@@ -3,22 +3,11 @@
 
 namespace MezzoLabs\Mezzo\Modules\Sample\Http\Pages;
 
+use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ListResourcePage;
 
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModulePage;
-
-class ListPage extends ModulePage
+class ListPage extends ListResourcePage
 {
     protected  $title  = "List Tutorials";
 
-    /**
-     * Deliver the HTML code to the cockpit.
-     *
-     * @param array $data
-     * @return string
-     * @throws \MezzoLabs\Mezzo\Exceptions\ModulePageException
-     */
-    public function template($data)
-    {
-        parent::template($data);
-    }
+
 }

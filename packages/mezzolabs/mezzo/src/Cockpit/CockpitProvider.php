@@ -24,6 +24,7 @@ class CockpitProvider extends ServiceProvider
     public function boot()
     {
         $this->includeRoutes();
+        $this->includeHelpers();
     }
 
     /**
@@ -46,6 +47,11 @@ class CockpitProvider extends ServiceProvider
         $this->app->alias('mezzo.cockpit', Cockpit::class);
     }
 
+    protected function includeHelpers()
+    {
+        require __DIR__ . '/helpers.php';
+    }
+
     /**
      * Include the basic routes for the cockpit.
      * Please note that this has nothing to do with the module routes.
@@ -54,13 +60,15 @@ class CockpitProvider extends ServiceProvider
         if (! $this->app->routesAreCached()) {
             require __DIR__.'/Http/routes.php';
         }
+
+
     }
+
 
     protected function loadViews()
     {
         $this->loadViewsFrom($this->resourcesFolder('/views'), 'cockpit');
     }
-
 
     protected function publishPublicFolder()
     {

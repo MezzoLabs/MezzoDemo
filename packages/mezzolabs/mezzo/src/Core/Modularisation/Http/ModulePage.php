@@ -2,6 +2,7 @@
 
 namespace MezzoLabs\Mezzo\Core\Modularisation\Http;
 
+use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Exceptions\ModulePageException;
@@ -35,13 +36,19 @@ abstract class ModulePage implements ModulePageContract
     private $name;
 
     /**
+     * @var Collection
+     */
+    private $options;
+
+    /**
      * Create a new module page.
      *
      * @param ModuleProvider $moduleProvider
      */
-    public function __construct(ModuleProvider $moduleProvider)
+    public function __construct(ModuleProvider $moduleProvider, $options = [])
     {
         $this->module = $moduleProvider;
+        $this->options = new Collection($options);
     }
 
     /**
