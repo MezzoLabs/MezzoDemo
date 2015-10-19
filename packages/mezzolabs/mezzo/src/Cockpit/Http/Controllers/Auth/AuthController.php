@@ -37,12 +37,12 @@ class AuthController extends CockpitController
      */
     public function getLogin()
     {
-        return view('mezzo.cockpit::auth.login');
+        return view('cockpit::auth.login');
     }
 
     public function getRegister()
     {
-        return view('mezzo.cockpit::auth.register');
+        return view('cockpit::auth.register');
     }
 
     /**

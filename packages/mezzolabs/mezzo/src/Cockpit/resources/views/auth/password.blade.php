@@ -1,4 +1,4 @@
-<form method="POST" action="/mezzo/password/email">
+<form method="POST" action="{{ route('cockpit::password.email') }}">
     {!! csrf_field() !!}
 
     @if (count($errors) > 0)

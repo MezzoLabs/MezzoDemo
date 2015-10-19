@@ -1,3 +1,8 @@
-<h1>Start</h1>
+@extends('cockpit::layouts.default')
 
-<?php mezzo_dd(Auth::user()); ?>
+
+@section('content')
+    <h1>Content</h1>
+    <mezzo-content></mezzo-content>
+    <mezzo-quickview></mezzo-quickview>
+@endsection

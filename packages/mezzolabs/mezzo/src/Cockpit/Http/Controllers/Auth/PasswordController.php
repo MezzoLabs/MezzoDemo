@@ -36,7 +36,7 @@ class PasswordController extends Controller
      */
     public function getEmail()
     {
-        return view('mezzo.cockpit::auth.password');
+        return view('cockpit::auth.password');
     }
 
     /**
@@ -51,6 +51,6 @@ class PasswordController extends Controller
             throw new NotFoundHttpException;
         }
 
-        return view('mezzo.cockpit::auth.reset')->with('token', $token);
+        return view('cockpit::auth.reset')->with('token', $token);
     }
 }

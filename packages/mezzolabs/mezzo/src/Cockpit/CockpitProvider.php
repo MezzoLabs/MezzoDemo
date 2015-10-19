@@ -18,7 +18,7 @@ class CockpitProvider extends ServiceProvider
     {
         $this->registerCockpit();
         $this->loadViews();
-        $this->publishResources();
+        $this->publishPublicFolder();
     }
 
     public function boot()
@@ -58,10 +58,11 @@ class CockpitProvider extends ServiceProvider
 
     protected function loadViews()
     {
-        $this->loadViewsFrom($this->resourcesFolder('/views'), 'mezzo.cockpit');
+        $this->loadViewsFrom($this->resourcesFolder('/views'), 'cockpit');
     }
 
-    protected function publishResources()
+
+    protected function publishPublicFolder()
     {
         $this->publishes([
             $this->publicFolder() => public_path('mezzolabs/mezzo/cockpit')

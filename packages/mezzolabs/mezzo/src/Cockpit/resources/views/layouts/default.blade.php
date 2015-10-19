@@ -25,8 +25,7 @@
             <mezzo-sidebar></mezzo-sidebar>
             <div id="view-main">
                 <mezzo-topbar></mezzo-topbar>
-                <mezzo-content></mezzo-content>
-                <mezzo-quickview></mezzo-quickview>
+                @yield('content')
             </div>
         </div>
         <!-- Content -->

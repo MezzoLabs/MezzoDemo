@@ -1,22 +1,23 @@
 <?php
 
-Route::group(['as' => 'cockpit::', 'prefix' => 'mezzo', 'namespace' => 'MezzoLabs\Mezzo\Cockpit\Http\Controllers'], function() {
-    Route::get('/', 'MainController@start');
+Route::group(['as' => 'cockpit::', 'prefix' => 'mezzo', 'namespace' => 'MezzoLabs\Mezzo\Cockpit\Http\Controllers'], function () {
+    Route::get('/', ['as' => 'start', 'uses' => 'MainController@start']);
 
     // Authentication routes...
-    Route::get('auth/login', 'Auth\AuthController@getLogin');
-    Route::post('auth/login', 'Auth\AuthController@postLogin');
-    Route::get('auth/logout', 'Auth\AuthController@getLogout');
+    Route::get('auth/login', ['as' => 'login', 'uses' => 'Auth\AuthController@getLogin']);
+    Route::post('auth/login', ['as' => 'login', 'uses' => 'Auth\AuthController@postLogin']);
+    Route::get('auth/logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']);
 
     // Registration routes...
-    Route::get('auth/register', 'Auth\AuthController@getRegister');
-    Route::post('auth/register', 'Auth\AuthController@postRegister');
+    Route::get('auth/register', ['as' => 'register', 'uses' => 'Auth\AuthController@getRegister']);
+    Route::post('auth/register', ['as' => 'register', 'uses' => 'Auth\AuthController@postRegister']);
 
     // Password reset link request routes...
-    Route::get('password/email', 'Auth\PasswordController@getEmail');
-    Route::post('password/email', 'Auth\PasswordController@postEmail');
+    Route::get('password/email', ['as' => 'password.email', 'uses' => 'Auth\PasswordController@getEmail']);
+
+    Route::post('password/email', ['as' => 'password.email', 'uses' => 'Auth\PasswordController@postEmail']);
 
     // Password reset routes...
-    Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
-    Route::post('password/reset', 'Auth\PasswordController@postReset');
+    Route::get('password/reset/{token}', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@getReset']);
+    Route::post('password/reset', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@postReset']);
 });

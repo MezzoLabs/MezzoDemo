@@ -1,4 +1,4 @@
-<form method="POST" action="/mezzo/auth/register">
+<form method="POST" action="{{ route('cockpit::register') }}">
     {!! csrf_field() !!}
 
     <div>
@@ -25,3 +25,6 @@
         <button type="submit">Register</button>
     </div>
 </form>
+<ul>
+    <li><a href="{{ route('cockpit::login') }}">Login</a></li>
+</ul>

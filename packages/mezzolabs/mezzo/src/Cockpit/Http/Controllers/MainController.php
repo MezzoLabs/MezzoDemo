@@ -13,6 +13,6 @@ class MainController extends CockpitController
 
     public function start()
     {
-        return view('mezzo.cockpit::start');
+        return view('cockpit::start');
     }
 }
