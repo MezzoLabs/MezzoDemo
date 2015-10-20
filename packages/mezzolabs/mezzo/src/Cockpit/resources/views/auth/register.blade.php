@@ -1,3 +1,6 @@
+@extends('cockpit::layouts.auth)
+
+@section('content')
 <form method="POST" action="{{ route('cockpit::register') }}">
     {!! csrf_field() !!}
 
@@ -28,3 +31,4 @@
 <ul>
     <li><a href="{{ route('cockpit::login') }}">Login</a></li>
 </ul>
+@endsection
