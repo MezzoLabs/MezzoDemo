@@ -3,11 +3,11 @@
 
 namespace MezzoLabs\Mezzo\Modules\Sample\Http\Pages;
 
+use MezzoLabs\Mezzo\Cockpit\Pages\Resources\AddResourcePage;
 use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ListResourcePage;
 
-class ListPage extends ListResourcePage
+class AddTutorialPage extends AddResourcePage
 {
-    protected  $title  = "List Tutorials";
 
 
 }

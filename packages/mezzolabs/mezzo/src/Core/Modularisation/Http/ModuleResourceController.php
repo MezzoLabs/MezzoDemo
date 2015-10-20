@@ -12,6 +12,7 @@ use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 
 abstract class ModuleResourceController extends ModuleController
 {
+
     protected $allowStaticRepositories = false;
 
     /**

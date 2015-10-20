@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Http;
 
 use Dingo\Api\Routing\Helpers as ApiHelpers;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
@@ -14,6 +15,15 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
 {
     use ApiHelpers;
 
+    /**
+     * @var Collection
+     */
+    private $data;
+
+    /**
+     * @param $method
+     * @throws ModuleControllerException
+     */
     public function actionUri($method)
     {
         $this->hasActionOrFail($method);
@@ -84,9 +94,29 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
         return true;
     }
 
+    /**
+     * @return Collection
+     */
+    public function data()
+    {
+        if(!$this->data)
+            $this->data = new Collection();
 
+        return $this->data;
+    }
 
-
+    /**
+     * Add data to the controller data, which will later be passed to the view.
+     *
+     * @param $toAdd
+     */
+    public function addData($toAdd)
+    {
+        if(is_array($toAdd) || $toAdd instanceof Collection) {
+            $this->data = $this->data()->merge($toAdd);
+            return;
+        }
+    }
 
 
 }

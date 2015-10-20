@@ -11,5 +11,24 @@ use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResourceController;
 
 class TutorialController extends ModuleResourceController
 {
+    public function showListPage()
+    {
+        $this->addData
+    }
 
+    public function showAddPage()
+    {
+
+    }
+
+    /**
+     * Display the page to edit a Tutorial.
+     *
+     * @param  int $id
+     * @return ModuleResponse
+     */
+    public function showEditPage($id)
+    {
+
+    }
 }

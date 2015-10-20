@@ -42,6 +42,7 @@ abstract class ModulePage implements ModulePageContract
 
     /**
      * Create a new module page.
+     * Use the static make method for creating pages.
      *
      * @param ModuleProvider $moduleProvider
      */
@@ -131,4 +132,6 @@ abstract class ModulePage implements ModulePageContract
     {
         return snake_case($this->name());
     }
+
+
 }
