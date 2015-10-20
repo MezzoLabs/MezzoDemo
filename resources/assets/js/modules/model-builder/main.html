@@ -1,0 +1,5 @@
+<div sv-root sv-part="vm.modelBuilder.fields" style="padding: 10px">
+    <div ng-repeat="field in vm.modelBuilder.fields" ng-click="vm.modelBuilder.selectField(field)" ng-class="{ 'well well-sm': field === vm.modelBuilder.selectedField }" sv-element>
+        <div mezzo-compile="field.mainDirective"></div>
+    </div>
+</div>

@@ -1,4 +1,19 @@
+var gulp = require('gulp');
 var elixir = require('laravel-elixir');
+var ngRegister = require('gulp-ng-register');
+var ngTemplates = require('gulp-angular-templatecache');
+
+gulp.task('register', function(){
+    return gulp.src('resources/assets/js/**/*.{controller,directive,service}.js')
+        .pipe(ngRegister())
+        .pipe(gulp.dest('resources/assets/js'));
+});
+
+gulp.task('templates', function(){
+    return gulp.src('resources/assets/js/**/*.html')
+        .pipe(ngTemplates({standalone: true}))
+        .pipe(gulp.dest('public/mezzolabs/mezzo/cockpit/js'));
+});
 
 /*
  |--------------------------------------------------------------------------
@@ -12,8 +27,9 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.copy('packages/MezzoLabs/Mezzo/resources/assets', 'public/mezzolabs/mezzo');
-    mix.sass(['app.scss', '../../../public/mezzolabs/mezzo/sass/mezzo.scss']);
-
-    mix.browserify();
+    mix
+        .browserSync()
+        .task('register', 'resources/assets/js**/*.{controller,directive,service}.js')
+        .task('templates', 'resources/assets/js/**/*.html')
+        .browserify('app.js', 'public/mezzolabs/mezzo/cockpit/js');
 });
