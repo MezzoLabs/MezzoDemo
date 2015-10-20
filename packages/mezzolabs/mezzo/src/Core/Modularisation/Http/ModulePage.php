@@ -38,18 +38,18 @@ abstract class ModulePage implements ModulePageContract
     /**
      * @var Collection
      */
-    private $options;
+    private $parameters;
 
     /**
      * Create a new module page.
-     * Use the static make method for creating pages.
      *
-     * @param ModuleProvider $moduleProvider
+     * @param ModuleProvider $module
+     * @internal param array $parameters
+     * @internal param ModuleProvider $moduleProvider
      */
-    public function __construct(ModuleProvider $moduleProvider, $options = [])
+    public function __construct(ModuleProvider $module)
     {
-        $this->module = $moduleProvider;
-        $this->options = new Collection($options);
+        $this->parameters = new Collection($parameters);
     }
 
     /**
@@ -131,6 +131,14 @@ abstract class ModulePage implements ModulePageContract
     final public function slug()
     {
         return snake_case($this->name());
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
     }
 
 

@@ -1,4 +1,4 @@
-@extends('cockpit::layouts.auth)
+@extends('cockpit::layouts.auth')
 
 @section('content')
 <form method="POST" action="{{ route('cockpit::register') }}">

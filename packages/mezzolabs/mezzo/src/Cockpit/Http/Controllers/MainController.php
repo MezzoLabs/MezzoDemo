@@ -8,7 +8,7 @@ class MainController extends CockpitController
 {
     public function __construct()
     {
-        //$this->middleware('mezzo.auth');
+        $this->middleware('mezzo.auth');
     }
 
     public function start()

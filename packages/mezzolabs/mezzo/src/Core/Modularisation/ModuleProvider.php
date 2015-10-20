@@ -9,6 +9,7 @@ use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\ModulePages;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflections;
@@ -48,6 +49,16 @@ abstract class ModuleProvider extends ServiceProvider
      * @var ModuleRouter
      */
     protected $router;
+
+    /**
+     * @var ModulePages
+     */
+    protected $pages;
+
+    /**
+     * @var Controllers
+     */
+    protected $controllers;
 
     /**
      * Create a new module provider instance
