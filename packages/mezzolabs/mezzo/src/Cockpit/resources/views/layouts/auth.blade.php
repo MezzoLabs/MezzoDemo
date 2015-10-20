@@ -7,6 +7,7 @@
     <title>Mezzo</title>
     <base href="/">
 
+    <link href="{{ cockpit_asset('/css/app.css') }}" rel='stylesheet' type="text/css" >
 
     <!-- CSS -->
 </head>

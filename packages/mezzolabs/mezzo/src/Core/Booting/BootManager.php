@@ -31,7 +31,7 @@ class BootManager
      *
      * @var bool
      */
-    protected $debug = false;
+    protected $debug = true;
 
     /**
      * Bootstrappers split into the different phases of the MezzoServiceProvider.
@@ -131,11 +131,11 @@ class BootManager
         foreach ($bootstrappers as $bootstrapper) {
             event('bootstrapping: ' . $bootstrapper, [$this->app]);
 
-            if ($this->debug) echo 'bootstrapping: ' . $bootstrapper . '<br/>';
+            if ($this->debug) debugbar()->startMeasure('boot.' . $bootstrapper);
 
             $this->app->make($bootstrapper)->bootstrap($this->mezzo);
 
-            if ($this->debug) echo 'bootstrapped<br/>';
+            if ($this->debug) debugbar()->stopMeasure('boot.' . $bootstrapper);
 
             event('bootstrapped: ' . $bootstrapper, [$this->app]);
         }

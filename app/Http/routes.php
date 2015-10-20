@@ -25,7 +25,7 @@ Route::get('/', function () {
 });
 
 Route::get('random',function(){
-    mezzo_dump(app()->getProvider(MezzoLabs\Mezzo\Cockpit\CockpitProvider::class));
+    app()->getProvider(MezzoLabs\Mezzo\Cockpit\CockpitProvider::class);
    return str_random(16);
 });
 
