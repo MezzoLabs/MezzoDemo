@@ -12,6 +12,7 @@ class MezzoUpdateTutorialsTable extends Migration
     public function up()
     {
         Schema::table('tutorials', function (Blueprint $table) {
+            $table->integer('parent', false, true);
             $table->foreign('parent')->references('id')->on('tutorials')->onDelete('cascade')->nullable();
         });
 

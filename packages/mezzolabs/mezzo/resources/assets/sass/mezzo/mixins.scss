@@ -1,0 +1,81 @@
+@mixin layout-list() {
+  padding: 0;
+  margin: 0;
+  display: block;
+  list-style: none;
+}
+
+@mixin layout-heading(){
+  margin: 0;
+  display: block;
+}
+
+@mixin overlay(){
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  background-color: rgba(0,0,0,0.5);
+  opacity: 0;
+  transition: ease opacity $mezzo-animation-normal;
+  visibility: hidden;
+  
+  &.opened{
+    opacity: 1.0;
+    visibility: visible;
+  }
+}
+
+@mixin layout-button{
+  padding: 5px 10px;
+  min-width: 50px;
+  border: none;
+}
+
+@mixin ion-icon($content){
+  content: $content;
+  display: inline-block;
+  font-family: "Ionicons";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-rendering: auto;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+@mixin light-button-variant($background) {
+  &:focus,
+  &.focus {
+    background-color: lighten($background, 10%);
+  }
+  &:hover {
+    background-color: lighten($background, 10%);
+  }
+  &:active,
+  &.active,
+  .open > &.dropdown-toggle {
+    background-color: lighten($background, 10%);
+
+    &:hover,
+    &:focus,
+    &.focus {
+      background-color: lighten($background, 17%);
+    }
+  }
+
+}
+
+@mixin prefix($property, $value, $vendors: webkit moz ms o) {
+  @if $vendors {
+    @each $vendor in $vendors {
+      #{"-" + $vendor + "-" + $property}: #{$value};
+    }
+  }
+  #{$property}: #{$value};
+}
+
+

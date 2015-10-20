@@ -1,0 +1,46 @@
+.btn{
+  text-transform: uppercase;
+  font-weight: 300;
+  padding: 8px 20px;
+
+  transition: ease background-color $mezzo-animation-normal;
+}
+
+.btn-success{  @include light-button-variant($btn-success-bg); }
+.btn-danger {  @include light-button-variant($btn-danger-bg); }
+.btn-warning{  @include light-button-variant($btn-warning-bg); }
+.btn-info   {  @include light-button-variant($btn-info-bg); }
+.btn-primary{  @include light-button-variant($btn-primary-bg); }
+
+
+.btn-sm, .btn-group-sm > .btn {
+  padding: 5px 10px;
+}
+
+.btn-xs{
+  padding: 1px 5px;
+}
+
+.form-control:focus {
+  outline: 0 none;
+  border-color: #aaaaaa;
+  box-shadow: none;
+}
+
+label{
+  font-weight: 500;
+}
+
+.has-error label{
+  color: $brand-danger;
+}
+
+.has-success label{
+  color: $brand-success;
+}
+
+.nav-pills li a {
+  border-radius: 0;
+}
+
+textarea { resize:vertical; }

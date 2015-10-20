@@ -23,9 +23,9 @@
 
         <!-- Content -->
         <div id="page-container">
-            <mezzo-sidebar></mezzo-sidebar>
+            @include('cockpit::layouts.default.sidebar')
             <div id="view-main">
-                <mezzo-topbar></mezzo-topbar>
+                @include('cockpit::layouts.default.topbar')
                 @yield('content')
             </div>
         </div>
