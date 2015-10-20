@@ -67,7 +67,6 @@ class RegisterBindings implements Bootstrapper
 
         $this->bindInstances($mezzo);
         $this->bindSingletons($mezzo);
-
     }
 
     /**
