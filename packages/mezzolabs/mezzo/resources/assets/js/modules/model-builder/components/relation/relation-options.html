@@ -1,0 +1,56 @@
+<div class="form-group">
+    <label>Title</label>
+    <input type="text" class="form-control" placeholder="Title" ng-model="options.title">
+</div>
+
+<div class="row">
+
+    <div class="col-xs-5">
+        <select class="form-control" ng-model="options.leftModel.mode">
+            <option value="1">One</option>
+            <option value="n">Many</option>
+        </select>
+    </div>
+
+    <div class="col-xs-7" style="vertical-align: middle">
+        <select class="form-control" disabled>
+            <option ng-bind="options.leftModel.label()"></option>
+        </select>
+    </div>
+
+</div>
+
+<hr>
+
+<div style="text-align: center">
+    <strong ng-bind="options.hasOrHave()"></strong>
+</div>
+
+<hr>
+
+<div class="row">
+
+    <div class="col-xs-5">
+        <select class="form-control" ng-model="options.rightModel.mode" ng-change="options.onModelUpdate()">
+            <option value="1">One</option>
+            <option value="n">Many</option>
+        </select>
+    </div>
+
+    <div class="col-xs-7">
+        <select class="form-control"
+                ng-options="model.label() for model in options.models track by model.id"
+                ng-model="options.rightModel"
+                ng-change="options.onModelUpdate()"></select>
+    </div>
+
+</div>
+
+<hr>
+
+<button type="button" class="btn btn-default btn-block text-muted" data-toggle="modal" data-target="div.modal">
+    <span class="ion-gear-a pull-right"></span>
+    Advanced Options
+</button>
+
+<ng-include src="'modules/model-builder/components/relation/advanced-options.html'"></ng-include>

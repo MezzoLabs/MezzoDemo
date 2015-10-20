@@ -1,0 +1,3 @@
+<label ng-bind="options.label" ng-show="options.label.length"></label>
+<select class="form-control" ng-options="item.value as item.label for item in options.items track by $index" ng-model="options.selectSingle" ng-hide="options.multiple"></select>
+<select class="form-control" multiple ng-options="item.value as item.label for item in options.items track by $index" ng-model="options.selectMultiple" ng-show="options.multiple"></select>

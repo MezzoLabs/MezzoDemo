@@ -1,0 +1,124 @@
+.form-group {
+  position: relative;
+  margin-bottom: 20px;
+
+  .form-control {
+    border: none;
+    box-shadow: 0 1px 0 #DDD;
+    border-radius: 0px !important;
+    padding-left: 0px;
+  }
+
+  textarea.form-control, textarea.form-control:focus{
+    border: 1px solid $mezzo-lightgray-lighter;
+    padding-left: 12px;
+  }
+
+  label + .form-control {
+    padding-top: 3px;
+  }
+
+  .form-control:focus {
+    box-shadow: 0 2px 0 #666;
+  }
+
+  &.has-error {
+    .form-control {
+      box-shadow: 0 1px 0 $brand-danger;
+    }
+
+    .form-control:focus {
+      box-shadow: 0 2px 0 $brand-danger;
+    }
+  }
+
+  &.has-success {
+    .form-control {
+      box-shadow: 0 1px 0 $brand-success;
+    }
+
+    .form-control:focus {
+      box-shadow: 0 2px 0 $brand-success;
+    }
+  }
+
+  > label {
+    margin-bottom: 0px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+}
+
+
+.editable-click, a.editable-click {
+  display: inline-block;
+  position: relative;
+  color: $mezzo-font-color;
+  border-bottom: none;
+  padding-right: 40px;
+
+  &:hover {
+    border-bottom: none;
+  }
+
+  &:after {
+    @include ion-icon("\f2bf");
+
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    margin-left: 5px;
+    transition: ease opacity $mezzo-animation-normal;
+    border: 1px solid $btn-default-border;
+    padding: 3px 5px;
+    color: $mezzo-font-color;
+    border-radius: $border-radius-base;
+  }
+
+  &:hover:after {
+    opacity: 1.0;
+  }
+
+}
+
+.select2-container--default {
+
+  .select2-selection--multiple, &.select2-container--focus .select2-selection--multiple{
+    border-color: $mezzo-lightgray-lighter;
+    border-bottom: 1px solid $mezzo-lightgray-light;
+  }
+
+  .select2-selection--multiple{
+    border-radius: 0px;
+
+    .select2-selection__choice{
+      border-radius: 0px;
+      background: none;
+      border: none;
+    }
+
+    .select2-selection__choice__remove{
+      font-family: "FontAwesome";
+      font-size: 18px;
+      padding-right: 7px;
+      color: $brand-primary;
+    }
+  }
+
+  .select2-dropdown{
+    border-radius: 0px;
+    border: none;
+    box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.3);
+  }
+
+  .select2-results__option--highlighted[aria-selected]{
+    background-color: $brand-primary;
+  }
+
+  .select2-results__option[aria-selected=true]{
+    display: none;
+  }
+}
+
+

@@ -1,0 +1,46 @@
+<div class="row">
+
+    <div class="col-sm-8">
+        <label>Label</label>
+        <input type="text" class="form-control" placeholder="Label" ng-model="options.label">
+    </div>
+
+    <div class="col-sm-4">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="options.multiple">
+                Multiple
+            </label>
+        </div>
+    </div>
+
+</div>
+
+<br/>
+
+<label>Items</label>
+<div class="row">
+
+    <div class="col-sm-5">
+        <input type="text" class="form-control" placeholder="Item Label" ng-model="itemLabel">
+    </div>
+
+    <div class="col-sm-5">
+        <input type="text" class="form-control" placeholder="Item Value" ng-model="itemValue">
+    </div>
+
+    <div class="col-sm-2">
+        <button type="button" class="btn btn-primary" ng-click="addItem(itemLabel, itemValue)">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+    </div>
+
+</div>
+
+<br/>
+
+<div class="btn-group-vertical">
+    <button type="button" class="btn btn-default btn-xs" ng-repeat="item in options.items track by $index" ng-click="removeItem($index)">
+        <span ng-bind="item.label"></span> (<span ng-bind="item.value"></span>)
+    </button>
+</div>

@@ -27,8 +27,8 @@ gulp.task('templates', function(){
  */
 
 elixir(function(mix) {
-    mix.browserSync();
     mix
+        .browserSync()
         .task('register', 'resources/assets/js**/*.{controller,directive,service}.js')
         .task('templates', 'resources/assets/js/**/*.html')
         .browserify('app.js', 'public/mezzolabs/mezzo/cockpit/js');
