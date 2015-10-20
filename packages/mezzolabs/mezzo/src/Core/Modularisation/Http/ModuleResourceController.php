@@ -126,6 +126,11 @@ abstract class ModuleResourceController extends ModuleController
         return $this->repository;
     }
 
+    public function makePage()
+    {
+
+    }
+
     /**
      * @param string $repositoryClassName
      * @return static

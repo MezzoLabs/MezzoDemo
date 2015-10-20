@@ -17,9 +17,6 @@
                 <div class="col-md-12">
                     @include("layouts/test/panel")
                 </div>
-
-
-
             </div>
 
         </div>

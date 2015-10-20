@@ -95,12 +95,25 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
     }
 
     /**
+     * @param null $key
+     * @param null $value
      * @return Collection
      */
-    public function data()
+    public function data($key = null, $value = null)
     {
         if(!$this->data)
             $this->data = new Collection();
+
+        if($key !== null && $value !== null){
+            $this->data->put($key, $value);
+        }
+
+        if(is_array($key))
+            $this->addData($key);
+
+        if($key){
+            $this->data->get($key);
+        }
 
         return $this->data;
     }
@@ -109,14 +122,15 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
      * Add data to the controller data, which will later be passed to the view.
      *
      * @param $toAdd
+     * @return Collection|static
      */
-    public function addData($toAdd)
+    public function addData(array $toAdd)
     {
-        if(is_array($toAdd) || $toAdd instanceof Collection) {
-            $this->data = $this->data()->merge($toAdd);
-            return;
-        }
+        $this->data = $this->data()->merge($toAdd);
+        return $this->data;
     }
+
+
 
 
 }

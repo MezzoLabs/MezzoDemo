@@ -20,7 +20,7 @@ class Singleton
      * Get a existing instance or retrieve one from the singleton cache.
      *
      * @param $key
-     * @param callable $closure
+     * @param callable|Closure $closure
      * @return mixed
      */
     public static function get($key, Closure $closure)

@@ -8,12 +8,16 @@ use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleRequest;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResponse;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResourceController;
+use MezzoLabs\Mezzo\Modules\Sample\Http\Pages\ListTutorialPage;
 
 class TutorialController extends ModuleResourceController
 {
+
     public function showListPage()
     {
-        $this->addData
+        $this->data('tutorials', $this->repository()->all());
+
+        return $this->page(ListTutorialPage::class);
     }
 
     public function showAddPage()
