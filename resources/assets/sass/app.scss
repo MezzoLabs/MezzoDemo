@@ -1,9 +1,9 @@
 @import "mezzo/variables";
 @import "mezzo/mixins";
 
-@import 'public/bower/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
-@import "public/bower/font-awesome/scss/font-awesome.scss";
-@import "public/bower/select2/src/scss/core.scss";
+@import "public/mezzolabs/mezzo/cockpit/components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "public/mezzolabs/mezzo/cockpit/components/font-awesome/scss/font-awesome.scss";
+@import "public/mezzolabs/mezzo/cockpit/components/select2/src/scss/core.scss";
 
 @import "mezzo/bootstrap-extension";
 @import "mezzo/general";
