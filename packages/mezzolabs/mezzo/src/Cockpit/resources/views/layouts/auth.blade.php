@@ -8,6 +8,7 @@
     <base href="/">
 
     <link href="{{ cockpit_asset('/css/app.css') }}" rel='stylesheet' type="text/css" >
+    <link href="{{ cockpit_asset('/css/auth.css') }}" rel='stylesheet' type="text/css" >
 
     <!-- CSS -->
 </head>
@@ -16,7 +17,7 @@
 @include('cockpit::layouts.auth.errors')
 
 <!-- Content -->
-<div id="page-container">
+<div class="container auth-container">
     @yield('content')
 </div>
 <!-- Content -->

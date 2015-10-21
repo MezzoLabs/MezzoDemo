@@ -5,27 +5,27 @@
     {!! csrf_field() !!}
 
     <div>
-        Name
-        <input type="text" name="name" value="{{ old('name') }}">
+        <label>Name</label>
+        <input type="text" class="form-control" name="name" value="{{ old('name') }}">
     </div>
 
     <div>
-        Email
-        <input type="email" name="email" value="{{ old('email') }}">
+        <label>Email</label>
+        <input type="email" class="form-control" name="email" value="{{ old('email') }}">
     </div>
 
     <div>
-        Password
-        <input type="password" name="password">
+        <label>Password</label>
+        <input type="password" class="form-control" name="password">
     </div>
 
     <div>
-        Confirm Password
-        <input type="password" name="password_confirmation">
+        <label>Password</label>
+        <input type="password" class="form-control" name="password_confirmation">
     </div>
 
     <div>
-        <button type="submit">Register</button>
+        <button class="btn btn-primary btn-block" type="submit">Register</button>
     </div>
 </form>
 <ul>

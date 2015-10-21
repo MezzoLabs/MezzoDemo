@@ -13,12 +13,12 @@
     @endif
 
     <div>
-        Email
-        <input type="email" name="email" value="{{ old('email') }}">
+        <label>Email</label>
+        <input type="email" class="form-control" name="email" value="{{ old('email') }}">
     </div>
 
     <div>
-        <button type="submit">
+        <button class="btn btn-primary btn-block" type="submit">
             Send Password Reset Link
         </button>
     </div>

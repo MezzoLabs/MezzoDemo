@@ -11,9 +11,9 @@
                     <ul class="nav-main">
 
                         <li class="has-pages opened">
-                            <a href="#">
+                            <a href="/mezzo/sample">
                                 <i class="ion-ios-copy"></i>
-                                <span>Pages</span>
+                                <span>Sample Tutorials</span>
                                 <span class="dropdown"></span>
                             </a>
                             <ul>

@@ -9,18 +9,23 @@ as
     <form method="POST" action="{{ route('cockpit::login') }}">
         {!! csrf_field() !!}
 
+        <div class="text-center">
+            <img  src="{{ cockpit_asset('/img/mezzo/logo_web.png') }}" />
+        </div>
+        <br/>
+
         <div>
-            Email
+            <label>Email</label>
             <input class="form-control" type="email" name="email" value="{{ old('email') }}">
         </div>
 
         <div>
-            Password
+            <label>Password</label>
             <input class="form-control" type="password" name="password" id="password">
         </div>
 
         <div>
-            <input  type="checkbox" name="remember"> Remember Me
+            <input type="checkbox" name="remember"> Remember Me
         </div>
 
         <div>

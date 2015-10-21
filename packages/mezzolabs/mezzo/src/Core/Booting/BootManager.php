@@ -27,11 +27,26 @@ class BootManager
     const BootedPhase = "bootedPhase";
 
     /**
+     * The Laravel Application
+     *
+     * @var Application
+     */
+    protected $app;
+
+    /**
+     * The mezzo instance.
+     *
+     * @var Application
+     */
+    protected $mezzo;
+
+    /**
      * If true this will output the boot order
      *
      * @var bool
      */
     protected $debug = true;
+
 
     /**
      * Bootstrappers split into the different phases of the MezzoServiceProvider.
@@ -57,21 +72,6 @@ class BootManager
             IncludeMezzoRouting::class
         ]
     ];
-
-
-    /**
-     * The Laravel Application
-     *
-     * @var Application
-     */
-    protected $app;
-
-    /**
-     * The mezzo instance.
-     *
-     * @var Application
-     */
-    protected $mezzo;
 
 
     /**
