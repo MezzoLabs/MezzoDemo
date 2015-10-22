@@ -117,15 +117,21 @@ module.exports = exports['default'];
 },{}],6:[function(require,module,exports){
 'use strict';
 
-exports.name = 'uid';
-exports.service = function inject() {
-    return uid;
-};
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
 var id = 0;
+
+exports['default'] = { name: 'uid', service: service };
+
+/*@ngInject*/function service() {
+    return uid;
+}
 
 function uid() {
     return id++;
 }
+module.exports = exports['default'];
 
 },{}],7:[function(require,module,exports){
 'use strict';
@@ -688,11 +694,11 @@ var _commonState2 = _interopRequireDefault(_commonState);
 
 exports['default'] = new _commonState2['default']('files', 'files', {
     aside: {
-        templateUrl: 'modules/files/aside.html',
+        templateUrl: 'modules/file-manager/aside.html',
         controller: 'FilesAsideController as vm'
     },
     main: {
-        templateUrl: 'modules/files/main.html',
+        templateUrl: 'modules/file-manager/main.html',
         controller: 'FilesMainController as vm'
     }
 });
@@ -1397,11 +1403,11 @@ var _commonState2 = _interopRequireDefault(_commonState);
 
 exports['default'] = new _commonState2['default']('pages', 'pages', {
     aside: {
-        templateUrl: 'modules/pages/aside.html',
+        templateUrl: 'modules/page-builder/aside.html',
         controller: 'PagesAsideController'
     },
     main: {
-        templateUrl: 'modules/pages/main.html',
+        templateUrl: 'modules/page-builder/main.html',
         controller: 'PagesMainController'
     }
 });
