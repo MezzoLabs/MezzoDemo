@@ -59,7 +59,7 @@ abstract class ResourcePage extends ModulePage
     /**
      * @return MezzoModelReflection
      */
-    protected function model()
+    public function model()
     {
         if (!$this->modelReflection) {
             $this->modelReflection = $this->makeModelReflection();

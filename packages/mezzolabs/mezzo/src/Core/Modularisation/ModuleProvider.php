@@ -363,4 +363,9 @@ abstract class ModuleProvider extends ServiceProvider
         return $pages;
     }
 
+    public function generateRoutes()
+    {
+        $this->router()->generateRoutes();
+    }
+
 }

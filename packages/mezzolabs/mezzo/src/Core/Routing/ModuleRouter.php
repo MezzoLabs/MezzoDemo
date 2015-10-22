@@ -81,5 +81,10 @@ class ModuleRouter
         $this->mezzoRouter()->cockpitRouter()->page($modulePage);
     }
 
+    public function generateRoutes()
+    {
+        $this->module->pages()->registerRoutes();
+    }
+
 
 }

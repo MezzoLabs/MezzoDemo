@@ -101,8 +101,13 @@ class CockpitRouter
         $pageUri = mezzo()->uri()->toModulePage($page);
         $action = $this->shortenAction($page->qualifiedActionName());
 
-        $this->get($pageUri, $action);
-        $this->get($pageUri . '.html', $action);
+        $this->get($pageUri,
+            ['uses' => $action, 'as' => $page->slug()]
+        );
+
+        $this->get($pageUri . '.html',
+            ['uses' => $action, 'as' => $page->slug() . '_html']
+        );
     }
 
     /**

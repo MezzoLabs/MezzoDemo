@@ -160,5 +160,19 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
         return mezzo()->makeRequest();
     }
 
+    /**
+     * @param $class
+     * @param $parameters
+     * @return string
+     * @throws \MezzoLabs\Mezzo\Exceptions\InvalidArgumentException
+     * @throws \MezzoLabs\Mezzo\Exceptions\ModulePageException
+     */
+    protected function page($class, $parameters = [])
+    {
+        $page = $this->module()->makePage($class);
+
+        return $page->template($parameters);
+    }
+
 
 }

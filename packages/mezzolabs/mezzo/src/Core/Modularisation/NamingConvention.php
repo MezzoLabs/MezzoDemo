@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModulePage;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ResourceController;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
@@ -167,6 +168,8 @@ class NamingConvention
         if (!is_string($name))
             throw new InvalidArgumentException($name);
 
+        if (class_exists($name) && is_subclass_of($name, ModulePage::class))
+            return $name;
 
         $possibleClass = static::pageNameSpace($module) . '\\' . $name;
 

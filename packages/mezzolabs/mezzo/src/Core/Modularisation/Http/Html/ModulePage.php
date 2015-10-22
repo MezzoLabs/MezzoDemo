@@ -3,6 +3,7 @@
 namespace MezzoLabs\Mezzo\Core\Modularisation\Http\Html;
 
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ResourcePage;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
@@ -80,7 +81,7 @@ abstract class ModulePage implements ModulePageContract
     public function template($data = [])
     {
         if (!$this->view)
-            throw new ModulePageException('');
+            throw new ModulePageException('No view for page.');
 
         return $this->makeView($this->view, $data);
     }
@@ -92,7 +93,25 @@ abstract class ModulePage implements ModulePageContract
      */
     protected function makeView($view, $data = [])
     {
-        return $this->viewFactory()->make($view, $data);
+        $allData = $this->additionalData()->merge($data);
+
+        if (class_exists(\Debugbar::class))
+            \Debugbar::disable();
+
+        return $this->viewFactory()->make($view, $allData->toArray());
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function additionalData()
+    {
+        $additionalData = new Collection();
+
+        if ($this instanceof ResourcePage)
+            $additionalData->put('model', $this->model());
+
+        return $additionalData;
     }
 
     /**

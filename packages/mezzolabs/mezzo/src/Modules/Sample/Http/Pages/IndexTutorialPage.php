@@ -7,5 +7,4 @@ use MezzoLabs\Mezzo\Cockpit\Pages\Resources\IndexResourcePage;
 
 class IndexTutorialPage extends IndexResourcePage
 {
-
 }

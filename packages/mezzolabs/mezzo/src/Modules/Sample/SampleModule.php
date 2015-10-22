@@ -31,7 +31,6 @@ class SampleModule extends ModuleProvider
      */
     public function ready()
     {
-        $this->pages()->registerRoutes();
         $tutorialReflection = $this->modelReflectionSets->get(Tutorial::class);
 
         //dd($tutorialReflection->relationships());

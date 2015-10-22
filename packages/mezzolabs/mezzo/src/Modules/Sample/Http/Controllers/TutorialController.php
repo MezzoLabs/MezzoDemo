@@ -18,7 +18,7 @@ class TutorialController extends ModuleResourceController
      */
     public function index(ModuleRequest $request)
     {
-        return $this->page(IndexTutorialPage::class, ['tutorials' => $this->repository()->all()]);
+        return $this->page(IndexTutorialPage::class);
     }
 
     /**
@@ -83,5 +83,6 @@ class TutorialController extends ModuleResourceController
     public function destroy($id)
     {
     }
+
 
 }
