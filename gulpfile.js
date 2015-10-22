@@ -36,6 +36,7 @@ elixir(function(mix) {
             files: 'public/mezzolabs/mezzo/cockpit/js/*',
             proxy: 'mezzo.dev',
             open: false,
-            ui: false
+            ui: false,
+            ghostMode: false
         });
 });
