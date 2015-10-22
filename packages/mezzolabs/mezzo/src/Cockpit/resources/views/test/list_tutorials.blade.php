@@ -1,5 +1,5 @@
-Bla bla bla
+@extends('cockpit::layouts.default')
 
-<table>
-
-</table>
+@section('content')
+    <div ui-view="main"></div>
+@endsection

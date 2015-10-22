@@ -25,7 +25,7 @@
             <div id="view-main">
                 @include('cockpit::layouts.default.topbar')
                 <main id="content-container">
-                    <div id="content-aside">
+                    <div id="content-aside" ng-if="aside()">
                         @yield('content-aside')
                     </div>
                     <div id="content-main">
