@@ -1422,13 +1422,13 @@ Object.defineProperty(exports, '__esModule', {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var SampleMainController =
+var TestMainController =
 
-/*@ngInject*/function SampleMainController() {
-    _classCallCheck(this, SampleMainController);
+/*@ngInject*/function TestMainController() {
+    _classCallCheck(this, TestMainController);
 };
 
-exports['default'] = { name: 'SampleMainController', controller: SampleMainController };
+exports['default'] = { name: 'TestMainController', controller: TestMainController };
 module.exports = exports['default'];
 
 },{}],41:[function(require,module,exports){
@@ -1444,10 +1444,10 @@ var _commonState = require('../../common/State');
 
 var _commonState2 = _interopRequireDefault(_commonState);
 
-exports['default'] = new _commonState2['default']('sample', 'sample/tutorial/index', {
+exports['default'] = new _commonState2['default']('test', 'sample/tutorial/index', {
     main: {
-        templateUrl: 'modules/sample/main.html',
-        controller: 'SampleMainController'
+        templateUrl: '/mezzo/sample/tutorial/index.html',
+        controller: 'TestMainController'
     }
 });
 module.exports = exports['default'];
@@ -1468,16 +1468,16 @@ module.exports = function (app) {
 				register(require('./modules/model-builder/model-builder.service.js'));
 				register(require('./modules/page-builder/aside.controller.js'));
 				register(require('./modules/page-builder/main.controller.js'));
-				register(require('./modules/sample/main.controller.js'));
+				register(require('./modules/test/main.controller.js'));
 				register(require('./modules/model-builder/components/component.service.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown.directive.js'));
-				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
-				register(require('./modules/model-builder/components/relation/relation.directive.js'));
 				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
 				register(require('./modules/model-builder/components/owner/owner.directive.js'));
+				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
+				register(require('./modules/model-builder/components/relation/relation.directive.js'));
 				register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
 				register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
 				register(require('./modules/model-builder/components/text-single/text-single-options.directive.js'));
@@ -1498,7 +1498,7 @@ module.exports = function (app) {
 				}
 };
 
-},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/uid.service.js":6,"./modules/file-manager/aside.controller.js":9,"./modules/file-manager/draggable.directive.js":10,"./modules/file-manager/droppable.directive.js":11,"./modules/file-manager/file-manager.service.js":12,"./modules/file-manager/main.controller.js":13,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":17,"./modules/model-builder/components/checkbox/checkbox.directive.js":18,"./modules/model-builder/components/component.service.js":19,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":20,"./modules/model-builder/components/dropdown/dropdown.directive.js":21,"./modules/model-builder/components/owner/owner-options.directive.js":22,"./modules/model-builder/components/owner/owner.directive.js":23,"./modules/model-builder/components/relation/relation-options.directive.js":27,"./modules/model-builder/components/relation/relation.directive.js":28,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":30,"./modules/model-builder/components/text-multi/text-multi.directive.js":31,"./modules/model-builder/components/text-single/text-single-options.directive.js":32,"./modules/model-builder/components/text-single/text-single.directive.js":33,"./modules/model-builder/model-builder.controller.js":34,"./modules/model-builder/model-builder.service.js":35,"./modules/page-builder/aside.controller.js":37,"./modules/page-builder/main.controller.js":38,"./modules/sample/main.controller.js":40}],43:[function(require,module,exports){
+},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/uid.service.js":6,"./modules/file-manager/aside.controller.js":9,"./modules/file-manager/draggable.directive.js":10,"./modules/file-manager/droppable.directive.js":11,"./modules/file-manager/file-manager.service.js":12,"./modules/file-manager/main.controller.js":13,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":17,"./modules/model-builder/components/checkbox/checkbox.directive.js":18,"./modules/model-builder/components/component.service.js":19,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":20,"./modules/model-builder/components/dropdown/dropdown.directive.js":21,"./modules/model-builder/components/owner/owner-options.directive.js":22,"./modules/model-builder/components/owner/owner.directive.js":23,"./modules/model-builder/components/relation/relation-options.directive.js":27,"./modules/model-builder/components/relation/relation.directive.js":28,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":30,"./modules/model-builder/components/text-multi/text-multi.directive.js":31,"./modules/model-builder/components/text-single/text-single-options.directive.js":32,"./modules/model-builder/components/text-single/text-single.directive.js":33,"./modules/model-builder/model-builder.controller.js":34,"./modules/model-builder/model-builder.service.js":35,"./modules/page-builder/aside.controller.js":37,"./modules/page-builder/main.controller.js":38,"./modules/test/main.controller.js":40}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1655,11 +1655,11 @@ var _modulesFileManagerState = require('../modules/file-manager/state');
 
 var _modulesFileManagerState2 = _interopRequireDefault(_modulesFileManagerState);
 
-var _modulesSampleState = require('../modules/sample/state');
+var _modulesTestState = require('../modules/test/state');
 
-var _modulesSampleState2 = _interopRequireDefault(_modulesSampleState);
+var _modulesTestState2 = _interopRequireDefault(_modulesTestState);
 
-exports['default'] = [_modulesModelBuilderState2['default'], _modulesPageBuilderStateJs2['default'], _modulesFileManagerState2['default'], _modulesSampleState2['default']];
+exports['default'] = [_modulesModelBuilderState2['default'], _modulesPageBuilderStateJs2['default'], _modulesFileManagerState2['default'], _modulesTestState2['default']];
 module.exports = exports['default'];
 
-},{"../modules/file-manager/state":14,"../modules/model-builder/state":36,"../modules/page-builder/state.js":39,"../modules/sample/state":41}]},{},[1]);
+},{"../modules/file-manager/state":14,"../modules/model-builder/state":36,"../modules/page-builder/state.js":39,"../modules/test/state":41}]},{},[1]);
