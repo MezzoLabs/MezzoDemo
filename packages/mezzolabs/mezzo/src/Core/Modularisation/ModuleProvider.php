@@ -224,7 +224,7 @@ abstract class ModuleProvider extends ServiceProvider
      * @throws InvalidArgumentException
      * @throws ModuleControllerException
      */
-    public function controller($controllerName)
+    public function controller($controllerName, $type = "Html")
     {
         if (is_object($controllerName)) {
             if ($controllerName instanceof ModuleController) return $controllerName;
@@ -249,24 +249,7 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function controllerClass($controllerName)
     {
-        if ($controllerName instanceof ModuleController)
-            return $controllerName;
 
-        $controllerNamespace = $this->getNamespaceName() . '\\Http\\Controllers\\';
-
-        if (is_object($controllerName))
-            $controllerName = get_class($controllerName);
-
-        if (class_exists($controllerName) && strpos($controllerName, $controllerNamespace) != -1)
-            return $controllerName;
-
-        $longControllerName = $controllerNamespace . $controllerName;
-
-        if (class_exists($longControllerName))
-            return $longControllerName;
-
-        throw new ModuleControllerException('Module controller "' . $longControllerName .'"'.
-            ' not found for "' . $this->qualifiedName() .'".');
     }
 
     /**
@@ -326,6 +309,11 @@ abstract class ModuleProvider extends ServiceProvider
             throw new ModuleControllerException($controller->qualifiedName() . ' is not a valid resource controller.');
 
         return $controller;
+    }
+
+    public function apiResourceController($controllerName)
+    {
+
     }
 
  }

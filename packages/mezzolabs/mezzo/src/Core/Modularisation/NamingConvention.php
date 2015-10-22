@@ -16,8 +16,9 @@ class NamingConvention
      * @return ModuleProvider
      * @throws NamingConventionException
      */
-    public static function findModule($object){
-        if($object instanceof ModuleController)
+    public static function findModule($object)
+    {
+        if ($object instanceof ModuleController)
             return static::findModuleOfController($object);
 
         throw new NamingConventionException('Cannot find module for ' . get_class($object));
@@ -33,7 +34,7 @@ class NamingConvention
         $controllerClass = get_class($controller);
         $moduleNamespaceEnd = strpos($controllerClass, 'Http\Controllers');
 
-        if($moduleNamespaceEnd === -1)
+        if ($moduleNamespaceEnd === -1)
             throw new NamingConventionException("This module controller isn't located inside a real module. " .
                 "Check if the controller is inside the Http\\Controlelrs Folder.");
 
@@ -45,7 +46,7 @@ class NamingConvention
 
     public static function modelName($object)
     {
-        if($object instanceof ModuleResourceController)
+        if ($object instanceof ModuleResourceController)
             return static::modelNameForModuleController($object);
 
         throw new NamingConventionException('Cannot find model name for ' . get_class($object));
@@ -77,6 +78,57 @@ class NamingConvention
         $possibleModelName = str_replace('Controller', '', $shortName);
 
         return $possibleModelName;
+    }
+
+    public static function controllerClass(ModuleProvider $module, $controllerName)
+    {
+        if (is_object($controllerName))
+            $controllerName = get_class($controllerName);
+
+        /**
+         * Get the correct namespace depending on the type of the controller.
+         */
+        $controllerType = static::controllerType($controllerName);
+        if ($controllerType == 'api')
+            $controllerNamespace = $module->getNamespaceName() . '\\Http\\ApiControllers\\';
+        else
+            $controllerNamespace = $module->getNamespaceName() . '\\Http\\Controllers\\';
+
+
+        /**
+         * Check if controllerName exists and if it is inside the correct namespace
+         */
+        if (class_exists($controllerName) && strpos($controllerName, $controllerNamespace) !== -1)
+            return $controllerName;
+
+        /**
+         * Check if controllerName is just the class name of the controller and prepend the correct namespace.
+         */
+        $longControllerName = $controllerNamespace . $controllerName;
+
+        if (class_exists($longControllerName))
+            return $longControllerName;
+
+        throw new NamingConventionException('Module controller "' . $longControllerName . '"' .
+            ' not found for "' . $module->qualifiedName() . '".');
+    }
+
+    /**
+     * @param $controllerName
+     * @return string
+     */
+    public static function controllerType($controllerName)
+    {
+        if (is_object($controllerName)) {
+            $controllerName = get_class($controllerName);
+        }
+
+        $nameParts = explode('\\', $controllerName);
+        $controllerName = $nameParts[count($nameParts) - 1];
+
+        $isApi = ends_with($controllerName, 'ApiController');
+
+        return ($isApi) ? 'api' : 'html';
     }
 
 }
