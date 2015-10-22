@@ -3,6 +3,7 @@
 namespace App\Mezzo\Generated\ModelParents;
 
 use App\Mezzo\BaseModel;
+use App\Tutorial;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
@@ -74,7 +75,12 @@ abstract class MezzoTutorial extends BaseModel
     protected $user_id;
 
     /**
-     *
+     * @Mezzo\Attribute(type="RelationInputSingle")
+     * @var integer
+     */
+    protected $parent_id;
+
+    /**
      * @Mezzo\Attribute(type="RelationInputSingle")
      * @var integer
      */
@@ -101,6 +107,7 @@ abstract class MezzoTutorial extends BaseModel
      * @Mezzo\Relations\From(table="tutorials", primaryKey="id", naming="parent")
      * @Mezzo\Relations\To(table="tutorials", primaryKey="id", naming="")
      * @Mezzo\Relations\JoinColumn(table="tutorials", column="parent")
+     * @returns \App\Tutorial
      */
     protected $parent;
 

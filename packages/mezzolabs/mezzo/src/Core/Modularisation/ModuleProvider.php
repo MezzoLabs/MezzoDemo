@@ -10,6 +10,7 @@ use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModulePages;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResourceController;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflections;
@@ -309,6 +310,22 @@ abstract class ModuleProvider extends ServiceProvider
     {
         $fileName = $this->reflection()->getFileName();
         return dirname($fileName);
+    }
+
+    /**
+     * @param $controllerName
+     * @return ModuleResourceController
+     * @throws InvalidArgumentException
+     * @throws ModuleControllerException
+     */
+    public function resourceController($controllerName)
+    {
+        $controller = $this->controller($controllerName);
+
+        if (!$controller->isResourceController())
+            throw new ModuleControllerException($controller->qualifiedName() . ' is not a valid resource controller.');
+
+        return $controller;
     }
 
  }

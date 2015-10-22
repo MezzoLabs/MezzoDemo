@@ -79,4 +79,30 @@ class CockpitRouter
         });
     }
 
+
+    /**
+     * @param $modelName
+     * @param array $pages
+     * @param string $controllerName
+     */
+    public function resourcePages($modelName, $pages = ['add', 'edit', 'list', 'show'], $controllerName = "")
+    {
+        if (empty($controllerName))
+            $controllerName = $modelName . 'Controller';
+
+        $controller = $this->module->resourceController($controllerName);
+
+
+    }
+
+    /**
+     * @param $uri
+     * @param $action
+     * @return \Illuminate\Routing\Route
+     */
+    public function get($uri, $action)
+    {
+        return $this->laravelRouter()->get($uri, $action);
+    }
+
 }

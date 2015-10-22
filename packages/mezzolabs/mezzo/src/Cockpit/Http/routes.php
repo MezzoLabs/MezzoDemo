@@ -20,5 +20,9 @@ Route::group(['as' => 'cockpit::', 'prefix' => 'mezzo', 'namespace' => 'MezzoLab
     Route::get('password/reset/{token}', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@getReset']);
     Route::post('password/reset', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@postReset']);
 
+    Route::get('sample/tutorial/index.html', function(){
+        return view('cockpit::test.list_tutorials');
+    });
+
     Route::get('{slug?}', ['as' => 'start', 'uses' => 'MainController@start'])->where('slug', '.+');
 });

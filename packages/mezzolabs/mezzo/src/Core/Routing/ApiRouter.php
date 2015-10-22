@@ -123,7 +123,7 @@ class ApiRouter
         if (empty($controllerName))
             $controllerName = $modelName . 'Controller';
 
-        $controller = $this->getResourceController($controllerName);
+        $controller = $this->module->resourceController($controllerName);
 
         $uri = $this->modelUri($controller->model());
 
@@ -134,21 +134,7 @@ class ApiRouter
         $this->delete($uri . '/{id}', $controller->qualifiedActionName('destroy'));
     }
 
-    /**
-     * @param $controllerName
-     * @return ModuleResourceController|ModuleController
-     * @throws InvalidArgumentException
-     * @throws ModuleControllerException
-     */
-    protected function getResourceController($controllerName)
-    {
-        $controller = $this->module->controller($controllerName);
 
-        if (!$controller->isResourceController())
-            throw new ModuleControllerException($controller->qualifiedName() . ' is not a valid resource controller.');
-
-        return $controller;
-    }
 
     public function modelUri(ModelReflection $model)
     {
