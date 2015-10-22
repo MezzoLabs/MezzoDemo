@@ -4,3 +4,4 @@ Homestead.yaml
 .env
 npm-debug.log
 /.idea
+/public/mezzolabs/mezzo/cockpit/components
