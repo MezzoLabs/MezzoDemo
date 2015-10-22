@@ -1,4 +1,4 @@
-class TestMainController {
+class ResourceIndexController {
 
     /*@ngInject*/ constructor($http){
         this.models = [];
@@ -100,4 +100,4 @@ class TestMainController {
 
 }
 
-export default { name: 'TestMainController', controller: TestMainController };
+export default { name: 'ResourceIndexController', controller: ResourceIndexController };

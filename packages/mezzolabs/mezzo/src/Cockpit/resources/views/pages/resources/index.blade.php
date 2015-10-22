@@ -53,7 +53,7 @@
                 <td>
                     <input type="checkbox" ng-model="model._meta.selected">
                 </td>
-                <td ng-repeat="value in vm.getModelValues(model)" ng-bind="value"></td>
+                <td ng-repeat="value in vm.getModelValues(model) track by $index" ng-bind="value"></td>
             </tr>
             </tbody>
         </table>

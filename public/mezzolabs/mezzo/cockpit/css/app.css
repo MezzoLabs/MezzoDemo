@@ -8498,6 +8498,9 @@ button.close {
 .select2-container--classic.select2-container--open .select2-dropdown {
   border-color: #5897fb; }
 
+[ng-cloak] {
+  display: none !important; }
+
 .btn {
   text-transform: uppercase;
   font-weight: 300;
