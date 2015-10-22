@@ -35,6 +35,7 @@ elixir(function(mix) {
         .browserSync({
             files: 'public/mezzolabs/mezzo/cockpit/js/*',
             proxy: 'mezzo.dev',
-            open: false
+            open: false,
+            ui: false
         });
 });
