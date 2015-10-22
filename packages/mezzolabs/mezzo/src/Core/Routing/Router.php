@@ -4,15 +4,16 @@
 namespace MezzoLabs\Mezzo\Core\Routing;
 
 use Closure;
-use Dingo\Api\Http\Parser\Accept;
 use Illuminate\Routing\Router as LaravelRouter;
+use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Exceptions\RoutingException;
 use MezzoLabs\Mezzo\Http\Middleware\MezzoMiddleware;
 
 
 class Router
 {
+    use CanHaveModule;
+
     /**
      * @var RoutesGenerator
      */
@@ -26,7 +27,7 @@ class Router
     /**
      * @var LaravelRouter
      */
-    protected $laravelRouter;
+    protected $cockpitRouter;
 
 
     /**
@@ -34,11 +35,37 @@ class Router
      * @param LaravelRouter $laravelRouter
      * @param ApiRouter $apiRouter
      */
-    public function __construct(RoutesGenerator $generator, LaravelRouter $laravelRouter, ApiRouter $apiRouter)
+    public function __construct(RoutesGenerator $generator, CockpitRouter $cockpitRouter, ApiRouter $apiRouter)
     {
         $this->generator = $generator;
         $this->apiRouter = $apiRouter;
-        $this->laravelRouter = $laravelRouter;
+        $this->cockpitRouter = $cockpitRouter;
+    }
+
+    /**
+     * @param ModuleProvider|string $module
+     * @param array $attributes
+     * @param Closure $callback
+     */
+    public function instance($module, $attributes = ['cockpit' => [], 'api' => []], Closure $callback)
+    {
+        $attributes = new Collection($attributes);
+        $module = mezzo()->module($module);
+
+        /**
+         * Create new router instances and set the grouped router.
+         * This way you don't have to call the group methods yourself.
+         * You can change the attributes of the groups by using the $attributes variable.
+         */
+        $cockpitRouter = new CockpitRouter($this->cockpitRouter->laravelRouter());
+        $apiRouter = new ApiRouter($this->apiRouter->dingoRouter());
+        $cockpitRouter->group($attributes->get('cockpit', []));
+        $apiRouter->group($attributes->get('api', []));
+
+        $copy = new Router($this->generator, $cockpitRouter, $apiRouter);
+        $copy->setModule($module);
+
+        call_user_func($callback, $copy, $copy->apiRouter(), $copy->cockpitRouter());
     }
 
     /**
@@ -58,7 +85,7 @@ class Router
      */
     public function api(Closure $callback, $overwriteAttributes = [])
     {
-        $this->apiRouter->api($callback, $overwriteAttributes);
+        $this->apiRouter->group($overwriteAttributes, $callback);
     }
 
     /**
@@ -70,11 +97,11 @@ class Router
     }
 
     /**
-     * @return LaravelRouter
+     * @return CockpitRouter
      */
-    public function laravelRouter()
+    public function cockpitRouter()
     {
-        return $this->laravelRouter;
+        return $this->cockpitRouter;
     }
 
     /**
@@ -86,44 +113,26 @@ class Router
     }
 
     /**
-     * @param ModuleProvider $module
-     * @return string
-     */
-    public function moduleUri(ModuleProvider $module)
-    {
-        return $module->slug();
-    }
-
-    /**
-     * Creates the URI for a module action without prefixes.
-     *
-     * @param ModuleProvider $module
-     * @param $controllerName
-     * @param $method
-     * @return string
-     * @throws \MezzoLabs\Mezzo\Exceptions\ModuleControllerException
-     */
-    public function moduleActionUri(ModuleProvider $module, $controllerName, $method)
-    {
-        $controller = $module->controller($controllerName);
-
-        $controller->hasActionOrFail($method);
-
-        return $this->moduleUri($module) . '/' . $controller->slug() . '/' . $method;
-    }
-
-    /**
      * Add a named middleware to the routes.
      *
      * @param MezzoMiddleware $mezzoMiddleware
      */
     public function middleware(MezzoMiddleware $mezzoMiddleware)
     {
-        $this->laravelRouter()->middleware($mezzoMiddleware->key(), get_class($mezzoMiddleware));
+        $this->cockpitRouter()->laravelRouter()->middleware($mezzoMiddleware->key(), get_class($mezzoMiddleware));
     }
 
 
+    /**
+     * @param ModuleProvider $module
+     */
+    public function setModule($module)
+    {
+        $this->module = $module;
+
+        $this->apiRouter->setModule($module);
+        $this->cockpitRouter->setModule($module);
+    }
 
 
-
-} 
+}

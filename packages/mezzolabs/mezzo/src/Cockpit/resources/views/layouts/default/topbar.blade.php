@@ -15,7 +15,7 @@
             <i class="fa fa-bolt"></i>
         </li>
         <li>
-            <i class="fa fa-user"></i>
+            <a href="{{ route('cockpit::logout') }}"><i class="fa fa-user"></i></a>
         </li>
     </ul>
 </header>

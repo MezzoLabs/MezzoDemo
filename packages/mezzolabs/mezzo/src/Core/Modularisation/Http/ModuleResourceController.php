@@ -31,6 +31,7 @@ abstract class ModuleResourceController extends ModuleController
      */
     public function setModelReflection($model)
     {
+
         $modelReflection = mezzo()->model($model);
 
         $this->modelReflection = $modelReflection;
@@ -154,11 +155,13 @@ abstract class ModuleResourceController extends ModuleController
     }
 
     /**
+     * Try to find a repository implementation for the resource.
+     *
      * @return bool|string
      */
     private function guessRepositoryClass()
     {
-        return ModelRepository::guessRepositoryClass($this->model()->name(), ['App', $this->guessModuleNamespace()]);
+        return ModelRepository::guessRepositoryClass($this->model()->name(), ['App', $this->module()->getNamespaceName()]);
     }
 
     /**
@@ -174,10 +177,6 @@ abstract class ModuleResourceController extends ModuleController
     }
 
 
-    private function guessModuleNamespace()
-    {
-        return str_replace('\\Http\\Controllers', '', Singleton::reflection($this)->getNamespaceName());
-    }
 
     /**
      * Check if this resource controller is correctly named (<ModelName>Controller)
@@ -187,10 +186,18 @@ abstract class ModuleResourceController extends ModuleController
      */
     public function isValid()
     {
+        parent::isValid();
+
         return $this->assertResourceIsReflectedModel();
 
     }
 
+    /**
+     * Assert that this resource controller has a valid model reflection.
+     *
+     * @return bool
+     * @throws ModuleControllerException
+     */
     protected function assertResourceIsReflectedModel()
     {
         if (!$this->model())

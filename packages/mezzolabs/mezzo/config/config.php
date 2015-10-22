@@ -16,6 +16,11 @@ return [
         'strict' => true,
         'defaultFormat' => 'json',
         'domain' => null
+    ],
+
+    'cockpit' => [
+        'prefix' => 'mezzo',
+        'namedRouteNamespace' => 'cockpit::'
     ]
 ];
   

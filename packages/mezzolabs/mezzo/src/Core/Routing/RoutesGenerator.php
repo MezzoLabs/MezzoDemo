@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Routing;
 
 
 use Dingo\Api\Routing\Router as DingoRouter;
+use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
 class RoutesGenerator
 {
@@ -28,4 +29,6 @@ class RoutesGenerator
             return ['foo' => 'bar'];
         });
     }
+
+
 } 

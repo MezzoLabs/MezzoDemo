@@ -87,13 +87,13 @@ if (!function_exists('mezzo_textdump')) {
     }
 }
 
-if (!function_exists('mezzo_route')) {
+if (!function_exists('module_route')) {
     /**
      * @return \MezzoLabs\Mezzo\Core\Routing\Router
      */
-    function mezzo_route()
+    function module_route($module, $attributes, $callback)
     {
-        return mezzo()->makeRouter();
+        mezzo()->makeRouter()->instance($module, $attributes, $callback);
 
     }
 }

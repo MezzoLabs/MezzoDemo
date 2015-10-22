@@ -7,6 +7,7 @@ use Closure;
 use Dingo\Api\Routing\Router as DingoRouter;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResourceController;
+use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers\DingoApi;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
@@ -15,6 +16,8 @@ use MezzoLabs\Mezzo\Exceptions\ModuleNotFound;
 
 class ApiRouter
 {
+    use CanHaveModule, CanHaveGroupedRouter;
+
     /**
      * @var ApiConfig
      */
@@ -49,50 +52,51 @@ class ApiRouter
      */
     public function patch($uri, $action)
     {
-        return $this->dingoRouter->patch($uri, $action);
+        return $this->dingoRouter()->patch($uri, $action);
     }
 
     /**
      * @return DingoRouter
      */
-    public function getDingoRouter()
+    public function dingoRouter()
     {
+        if($this->hasGroupedRouter())
+            return $this->groupedRouter;
+
         return $this->dingoRouter;
     }
 
-    public function api(Closure $callback, $overwriteAttributes = [])
+
+    /**
+     * @param array $overwriteAttributes
+     * @param callable|Closure $callback
+     */
+    public function group(array $overwriteAttributes, Closure $callback = null)
     {
         $attributes = $this->config->merge($overwriteAttributes)->toArray();
 
-        $this->group($attributes, $callback);
-    }
+        $this->dingoRouter()->group($attributes, function (DingoRouter $router) use ($callback) {
+            $this->setGroupedRouter($router);
 
-    /**
-     * @param array $attributes
-     * @param callable $callback
-     */
-    public function group(array $attributes, $callback)
-    {
-        $this->dingoRouter->group($attributes, function (DingoRouter $api) use ($callback) {
-            call_user_func($callback, $this);
+            if($callback !== null)
+                call_user_func($callback, $this);
         });
     }
 
-    public function moduleAction($moduleName, $controllerAction)
+
+    public function moduleAction($controllerAction)
     {
+        $this->hasModuleOrFail();
+
         if (!is_string($controllerAction) || strpos($controllerAction, '@') == -1)
             throw new InvalidArgumentException($controllerAction);
 
         $parts = explode('@', $controllerAction);
 
-        $module = mezzo()->module($moduleName);
-
-        if (!$module) throw new ModuleNotFound($moduleName);
-
-        $controller = $module->controller($parts[0]);
+        $controller = $this->module->controller($parts[0]);
         $method = $parts[1];
 
-        $uri = mezzo_route()->moduleActionUri($module, $controller, $method);
+        $uri = mezzo()->uri()->toModuleAction($this->module, $controller, $method);
 
         return $this->get($uri, $controller->qualifiedActionName($method));
     }
@@ -104,23 +108,22 @@ class ApiRouter
      */
     public function get($uri, $action)
     {
-        return $this->dingoRouter->get($uri, $action);
+        return $this->dingoRouter()->get($uri, $action);
     }
 
     /**
      * Creates the restful routes for a certain resource controller.
      *
-     * @param $moduleName
      * @param $modelName
      * @param string $controllerName
      * @throws ModuleControllerException
      */
-    public function resource($moduleName, $modelName, $controllerName = "")
+    public function resource($modelName, $controllerName = "")
     {
         if (empty($controllerName))
             $controllerName = $modelName . 'Controller';
 
-        $controller = $this->getResourceController($moduleName, $controllerName);
+        $controller = $this->getResourceController($controllerName);
 
         $uri = $this->modelUri($controller->model());
 
@@ -132,16 +135,14 @@ class ApiRouter
     }
 
     /**
-     * @param $moduleName
      * @param $controllerName
      * @return ModuleResourceController|ModuleController
      * @throws InvalidArgumentException
      * @throws ModuleControllerException
      */
-    protected function getResourceController($moduleName, $controllerName)
+    protected function getResourceController($controllerName)
     {
-
-        $controller = mezzo()->module($moduleName)->controller($controllerName);
+        $controller = $this->module->controller($controllerName);
 
         if (!$controller->isResourceController())
             throw new ModuleControllerException($controller->qualifiedName() . ' is not a valid resource controller.');
@@ -161,7 +162,7 @@ class ApiRouter
      */
     public function post($uri, $action)
     {
-        return $this->dingoRouter->post($uri, $action);
+        return $this->dingoRouter()->post($uri, $action);
     }
 
     /**
@@ -171,7 +172,7 @@ class ApiRouter
      */
     public function put($uri, $action)
     {
-        return $this->dingoRouter->put($uri, $action);
+        return $this->dingoRouter()->put($uri, $action);
     }
 
     /**
@@ -181,6 +182,8 @@ class ApiRouter
      */
     public function delete($uri, $action)
     {
-        return $this->dingoRouter->delete($uri, $action);
+        return $this->dingoRouter()->delete($uri, $action);
     }
+
+
 }

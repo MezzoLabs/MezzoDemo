@@ -22,7 +22,6 @@ class TutorialController extends ModuleResourceController
 
     public function showAddPage()
     {
-
     }
 
     /**

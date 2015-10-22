@@ -19,13 +19,12 @@ use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 
 Route::get('/', function () {
-
-
-    return view('welcome');
+        return view('welcome');
 });
 
 Route::get('random',function(){
-    app()->getProvider(MezzoLabs\Mezzo\Cockpit\CockpitProvider::class);
+    mezzo_dump((new \MezzoLabs\Mezzo\Modules\Sample\Http\Controllers\TutorialController())->module());
+
    return str_random(16);
 });
 

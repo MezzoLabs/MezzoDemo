@@ -1,10 +1,11 @@
 <?php
 
 use MezzoLabs\Mezzo\Core\Routing\ApiRouter;
+use MezzoLabs\Mezzo\Core\Routing\CockpitRouter;
+use MezzoLabs\Mezzo\Core\Routing\Router;
 
-mezzo_route()->api(function (ApiRouter $api){
-
-    $api->resource('Sample', 'Tutorial');
-
+module_route('Sample', [], function (Router $router, ApiRouter $api, CockpitRouter $cockpit) {
+    $api->resource('Tutorial');
 });
+
 
