@@ -1,9 +1,11 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Http;
+namespace MezzoLabs\Mezzo\Core\Modularisation\Http\Html;
 
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ResourcePage;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Exceptions\ModulePageException;
 
@@ -41,15 +43,32 @@ abstract class ModulePage implements ModulePageContract
     private $parameters;
 
     /**
+     * @var ModuleController
+     */
+    protected $controllerObject;
+
+    /**
+     * The name of the controller that manages this page.
+     *
+     * @var string
+     */
+    protected $controller;
+
+    /**
+     * @var string The controller method that shows this page.
+     */
+    protected $action;
+
+    /**
      * Create a new module page.
      *
      * @param ModuleProvider $module
-     * @internal param array $parameters
-     * @internal param ModuleProvider $moduleProvider
      */
     public function __construct(ModuleProvider $module)
     {
-        $this->parameters = new Collection($parameters);
+        $this->module = $module;
+
+        $this->validate();
     }
 
     /**
@@ -62,7 +81,7 @@ abstract class ModulePage implements ModulePageContract
     public function template($data = [])
     {
         if (!$this->view)
-            throw new ModulePageException('');
+            throw new ModulePageException('No view for page.');
 
         return $this->makeView($this->view, $data);
     }
@@ -74,7 +93,25 @@ abstract class ModulePage implements ModulePageContract
      */
     protected function makeView($view, $data = [])
     {
-        return $this->viewFactory()->make($view, $data);
+        $allData = $this->additionalData()->merge($data);
+
+        if (class_exists(\Debugbar::class))
+            \Debugbar::disable();
+
+        return $this->viewFactory()->make($view, $allData->toArray());
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function additionalData()
+    {
+        $additionalData = new Collection();
+
+        if ($this instanceof ResourcePage)
+            $additionalData->put('model', $this->model());
+
+        return $additionalData;
     }
 
     /**
@@ -139,6 +176,54 @@ abstract class ModulePage implements ModulePageContract
     public function getParameters()
     {
         return $this->parameters;
+    }
+
+    /**
+     * @return ModuleController
+     * @throws \MezzoLabs\Mezzo\Exceptions\InvalidArgumentException
+     * @throws \MezzoLabs\Mezzo\Exceptions\ModuleControllerException
+     */
+    public function controller()
+    {
+        if (!$this->controllerObject)
+            $this->controllerObject = $this->module()->makeController($this->controller);
+
+        return $this->controllerObject;
+    }
+
+    /**
+     * @return string
+     */
+    public function action()
+    {
+        if ($this->action)
+            return $this->action;
+
+        return $this->name;
+    }
+
+    public function qualifiedActionName()
+    {
+        return $this->controller()->qualifiedActionName($this->action());
+    }
+
+    /**
+     * @return bool
+     * @throws ModulePageException
+     */
+    protected function validate()
+    {
+        if (!$this->controller())
+            throw new ModulePageException('There is no controller for ' . $this->qualifiedName());
+
+        $this->controller()->hasActionOrFail($this->action());
+
+        return true;
+    }
+
+    public function registerRoutes()
+    {
+        $this->module()->router()->registerPage($this);
     }
 
 

@@ -96,8 +96,6 @@ class AttributeAnnotations extends PropertyAnnotations
         $relation = null;
 
         $relationAnnotationsCollection->each(function(RelationAnnotations $relationAnnotations) use (&$relation){
-            mezzo_dump($relationAnnotations->relation()->columns());
-
             if($relationAnnotations->relation()->columns()->has($this->qualifiedColumn())){
                 $relation = $relationAnnotations->relation();
             }

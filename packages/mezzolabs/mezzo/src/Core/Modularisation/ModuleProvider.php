@@ -8,9 +8,11 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Api\ApiResourceController;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModulePage;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModulePages;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleResourceController;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModulePages;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResourceController;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflections;
@@ -56,10 +58,6 @@ abstract class ModuleProvider extends ServiceProvider
      */
     protected $pages;
 
-    /**
-     * @var Controllers
-     */
-    protected $controllers;
 
     /**
      * Create a new module provider instance
@@ -224,7 +222,7 @@ abstract class ModuleProvider extends ServiceProvider
      * @throws InvalidArgumentException
      * @throws ModuleControllerException
      */
-    public function controller($controllerName)
+    public function makeController($controllerName)
     {
         if (is_object($controllerName)) {
             if ($controllerName instanceof ModuleController) return $controllerName;
@@ -241,6 +239,25 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
+     * @param $name
+     * @return ModulePage
+     * @throws InvalidArgumentException
+     * @throws \MezzoLabs\Mezzo\Exceptions\NamingConventionException
+     */
+    public function makePage($name)
+    {
+        if (is_object($name)) {
+            if ($name instanceof ModulePage) return $name;
+
+            throw new InvalidArgumentException($name);
+        };
+
+        $pageClass = NamingConvention::findPageClass($this, $name);
+
+        return new $pageClass($this);
+    }
+
+    /**
      * Find the full class name for a controller.
      *
      * @param $controllerName
@@ -249,24 +266,7 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function controllerClass($controllerName)
     {
-        if ($controllerName instanceof ModuleController)
-            return $controllerName;
-
-        $controllerNamespace = $this->getNamespaceName() . '\\Http\\Controllers\\';
-
-        if (is_object($controllerName))
-            $controllerName = get_class($controllerName);
-
-        if (class_exists($controllerName) && strpos($controllerName, $controllerNamespace) != -1)
-            return $controllerName;
-
-        $longControllerName = $controllerNamespace . $controllerName;
-
-        if (class_exists($longControllerName))
-            return $longControllerName;
-
-        throw new ModuleControllerException('Module controller "' . $longControllerName .'"'.
-            ' not found for "' . $this->qualifiedName() .'".');
+        return NamingConvention::controllerClass($this, $controllerName);
     }
 
     /**
@@ -285,6 +285,17 @@ abstract class ModuleProvider extends ServiceProvider
     public function qualifiedName()
     {
         return get_class($this);
+    }
+
+    /**
+     * @return ModulePages
+     */
+    public function pages()
+    {
+        if (!$this->pages)
+            $this->pages = $this->collectPages();
+
+        return $this->pages;
     }
 
     /**
@@ -320,7 +331,7 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function resourceController($controllerName)
     {
-        $controller = $this->controller($controllerName);
+        $controller = $this->makeController($controllerName);
 
         if (!$controller->isResourceController())
             throw new ModuleControllerException($controller->qualifiedName() . ' is not a valid resource controller.');
@@ -328,4 +339,33 @@ abstract class ModuleProvider extends ServiceProvider
         return $controller;
     }
 
- }
+    /**
+     * Get the api resource controller with the ControllerName
+     *
+     * @param $controllerName
+     * @return ModuleResourceController
+     * @throws ModuleControllerException
+     */
+    public function apiResourceController($controllerName)
+    {
+        $controller = $this->resourceController($controllerName);
+
+        if (!($controller instanceof ApiResourceController))
+            throw new ModuleControllerException($controller->qualifiedName() . ' is not a API resource controller. ');
+
+        return $controller;
+    }
+
+    protected function collectPages()
+    {
+        $pages = new ModulePages();
+        $pages->collectFromModule($this);
+        return $pages;
+    }
+
+    public function generateRoutes()
+    {
+        $this->router()->generateRoutes();
+    }
+
+}

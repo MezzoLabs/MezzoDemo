@@ -4,6 +4,8 @@
 namespace MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories;
 
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
@@ -72,7 +74,7 @@ class ModelRepository
 
     /**
      * @param array $columns
-     * @return mixed
+     * @return Collection
      */
     public function all($columns = array('*'))
     {
@@ -82,7 +84,7 @@ class ModelRepository
     /**
      * @param int $perPage
      * @param array $columns
-     * @return mixed
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function paginate($perPage = 15, $columns = array('*'))
     {
@@ -91,7 +93,7 @@ class ModelRepository
 
     /**
      * @param array $data
-     * @return mixed
+     * @return Model
      */
     public function create(array $data)
     {
@@ -102,7 +104,7 @@ class ModelRepository
      * @param array $data
      * @param $id
      * @param string $attribute
-     * @return mixed
+     * @return int
      */
     public function update(array $data, $id, $attribute = "id")
     {
@@ -111,7 +113,7 @@ class ModelRepository
 
     /**
      * @param $ids
-     * @return mixed
+     * @return int
      */
     public function delete($ids)
     {
@@ -139,24 +141,6 @@ class ModelRepository
         return $this->query()->where($attribute, '=', $value)->first($columns);
     }
 
-    /**
-     * Try to find a concrete repository implementation for a model class.
-     *
-     * @param $modelName
-     * @param array $namespaces
-     * @return bool|string
-     */
-    public static function guessRepositoryClass($modelName, $namespaces = ['App'])
-    {
-        foreach ($namespaces as $namespace) {
-            $possibleRepository = $namespace . '\Domain\Repositories\\' . $modelName . 'Repository';
-
-            if (class_exists($possibleRepository))
-                return $possibleRepository;
-        }
-
-        return false;
-    }
 
     /**
      * Create a new generic model repository for a given model class.

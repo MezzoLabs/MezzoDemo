@@ -48,7 +48,7 @@ class CockpitRouter
 
     private function setDefaultControllerNamespace()
     {
-        $namespace = $this->module->getNamespaceName() . '\Http\Controllers';
+        $namespace = $this->module->getNamespaceName() . '\Http';
         $this->attributes->put('namespace', $namespace);
     }
 
@@ -69,6 +69,8 @@ class CockpitRouter
      */
     public function group($overwriteAttributes, Closure $callback = null)
     {
+        $this->readConfig();
+
         $attributes = $this->attributes->merge($overwriteAttributes);
 
         $this->laravelRouter()->group($attributes->toArray(), function(LaravelRouter $router) use ($callback){
@@ -82,17 +84,30 @@ class CockpitRouter
 
     /**
      * @param $modelName
-     * @param array $pages
-     * @param string $controllerName
+     * @param array $pageTypes
      */
-    public function resourcePages($modelName, $pages = ['add', 'edit', 'list', 'show'], $controllerName = "")
+    public function resourcePages($modelName, $pageTypes = ['create', 'edit', 'index', 'show'])
     {
-        if (empty($controllerName))
-            $controllerName = $modelName . 'Controller';
+        foreach ($pageTypes as $pageType) {
+            $pageName = ucfirst($pageType) . ucfirst($modelName) . 'Page';
+            $this->page($pageName);
+        }
+    }
 
-        $controller = $this->module->resourceController($controllerName);
+    public function page($pageName)
+    {
+        $page = $this->module->makePage($pageName);
 
+        $pageUri = mezzo()->uri()->toModulePage($page);
+        $action = $this->shortenAction($page->qualifiedActionName());
 
+        $this->get($pageUri,
+            ['uses' => $action, 'as' => $page->slug()]
+        );
+
+        $this->get($pageUri . '.html',
+            ['uses' => $action, 'as' => $page->slug() . '_html']
+        );
     }
 
     /**
@@ -103,6 +118,35 @@ class CockpitRouter
     public function get($uri, $action)
     {
         return $this->laravelRouter()->get($uri, $action);
+    }
+
+    /**
+     * @param $action
+     * @return mixed
+     */
+    protected function shortenAction($action)
+    {
+        $namespace = $this->controllerNamespace();
+
+        return str_replace($namespace . '\\', '', $action);
+    }
+
+    public function controllerNamespace()
+    {
+        return $this->lastGroupStack()->get('namespace', '');
+    }
+
+    /**
+     * @return Collection
+     */
+    public function lastGroupStack()
+    {
+        if (!empty($this->laravelRouter()->getGroupStack())) {
+            $groupStack = $this->laravelRouter()->getGroupStack();
+            return new Collection(end($groupStack));
+        }
+
+        return new Collection();
     }
 
 }

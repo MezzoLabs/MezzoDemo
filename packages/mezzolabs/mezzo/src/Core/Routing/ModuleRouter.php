@@ -4,7 +4,9 @@
 namespace MezzoLabs\Mezzo\Core\Routing;
 
 
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModulePage;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Core\Routing\Router as MezzoRouter;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 
 class ModuleRouter
@@ -13,6 +15,11 @@ class ModuleRouter
      * @var ModuleProvider
      */
     protected $module;
+
+    /**
+     * @var MezzoRouter
+     */
+    protected $mezzoRouter;
 
     /**
      * @param ModuleProvider $module
@@ -46,6 +53,37 @@ class ModuleRouter
         $module = $this->module();
 
         require $routesPath;
+    }
+
+    /**
+     * Create a grouped mezzo router.
+     *
+     * @return Router
+     */
+    public function mezzoRouter()
+    {
+        if (!$this->mezzoRouter) {
+            module_route($this->module, [], function (MezzoRouter $mezzoRouter) {
+                $this->mezzoRouter = $mezzoRouter;
+            });
+        }
+
+        return $this->mezzoRouter;
+    }
+
+    /**
+     * Register the cockpit routes for a module page.
+     *
+     * @param ModulePage $modulePage
+     */
+    public function registerPage(ModulePage $modulePage)
+    {
+        $this->mezzoRouter()->cockpitRouter()->page($modulePage);
+    }
+
+    public function generateRoutes()
+    {
+        $this->module->pages()->registerRoutes();
     }
 
 

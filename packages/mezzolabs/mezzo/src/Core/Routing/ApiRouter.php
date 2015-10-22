@@ -5,14 +5,10 @@ namespace MezzoLabs\Mezzo\Core\Routing;
 
 use Closure;
 use Dingo\Api\Routing\Router as DingoRouter;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResourceController;
-use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers\DingoApi;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
-use MezzoLabs\Mezzo\Exceptions\ModuleNotFound;
 
 class ApiRouter
 {
@@ -93,7 +89,7 @@ class ApiRouter
 
         $parts = explode('@', $controllerAction);
 
-        $controller = $this->module->controller($parts[0]);
+        $controller = $this->module->makeController($parts[0]);
         $method = $parts[1];
 
         $uri = mezzo()->uri()->toModuleAction($this->module, $controller, $method);
@@ -121,9 +117,9 @@ class ApiRouter
     public function resource($modelName, $controllerName = "")
     {
         if (empty($controllerName))
-            $controllerName = $modelName . 'Controller';
+            $controllerName = $modelName . 'ApiController';
 
-        $controller = $this->module->resourceController($controllerName);
+        $controller = $this->module->apiResourceController($controllerName);
 
         $uri = $this->modelUri($controller->model());
 
