@@ -167,7 +167,7 @@ abstract class ModulePage implements ModulePageContract
     public function controller()
     {
         if (!$this->controllerObject)
-            $this->controllerObject = $this->module()->controller($this->controller);
+            $this->controllerObject = $this->module()->makeController($this->controller);
 
         return $this->controllerObject;
     }

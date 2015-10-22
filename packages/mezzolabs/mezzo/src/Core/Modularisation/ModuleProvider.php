@@ -226,7 +226,7 @@ abstract class ModuleProvider extends ServiceProvider
      * @throws InvalidArgumentException
      * @throws ModuleControllerException
      */
-    public function controller($controllerName)
+    public function makeController($controllerName)
     {
         if (is_object($controllerName)) {
             if ($controllerName instanceof ModuleController) return $controllerName;
@@ -248,7 +248,7 @@ abstract class ModuleProvider extends ServiceProvider
      * @throws InvalidArgumentException
      * @throws \MezzoLabs\Mezzo\Exceptions\NamingConventionException
      */
-    public function page($name)
+    public function makePage($name)
     {
         if (is_object($name)) {
             if ($name instanceof ModulePage) return $name;
@@ -324,7 +324,7 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function resourceController($controllerName)
     {
-        $controller = $this->controller($controllerName);
+        $controller = $this->makeController($controllerName);
 
         if (!$controller->isResourceController())
             throw new ModuleControllerException($controller->qualifiedName() . ' is not a valid resource controller.');
@@ -332,6 +332,13 @@ abstract class ModuleProvider extends ServiceProvider
         return $controller;
     }
 
+    /**
+     * Get the api resource controller with the ControllerName
+     *
+     * @param $controllerName
+     * @return ModuleResourceController
+     * @throws ModuleControllerException
+     */
     public function apiResourceController($controllerName)
     {
         $controller = $this->resourceController($controllerName);

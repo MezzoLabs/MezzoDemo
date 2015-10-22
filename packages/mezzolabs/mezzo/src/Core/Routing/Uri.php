@@ -20,7 +20,7 @@ class Uri
      */
     public function toModuleAction(ModuleProvider $module, $controllerName, $method)
     {
-        $controller = $module->controller($controllerName);
+        $controller = $module->makeController($controllerName);
 
         $controller->hasActionOrFail($method);
 

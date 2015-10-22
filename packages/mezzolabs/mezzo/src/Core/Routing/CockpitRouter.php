@@ -96,9 +96,13 @@ class CockpitRouter
 
     public function page($pageName)
     {
-        $page = $this->module->page($pageName);
+        $page = $this->module->makePage($pageName);
 
-        $this->get(mezzo()->uri()->toModulePage($page), $page->qualifiedActionName());
+        $pageUri = mezzo()->uri()->toModulePage($page);
+        $action = $this->shortenAction($page->qualifiedActionName());
+
+        $this->get($pageUri, $action);
+        $this->get($pageUri . '.html', $action);
     }
 
     /**
@@ -108,12 +112,10 @@ class CockpitRouter
      */
     public function get($uri, $action)
     {
-        $action = $this->controllerAction($action);
-
         return $this->laravelRouter()->get($uri, $action);
     }
 
-    protected function controllerAction($action)
+    protected function shortenAction($action)
     {
         $namespace = $this->controllerNamespace();
 

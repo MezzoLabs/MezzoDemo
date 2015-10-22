@@ -75,7 +75,11 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
      */
     public function slug()
     {
-        return snake_case(Singleton::reflection($this)->getShortName());
+        $shortName = Singleton::reflection($this)->getShortName();
+
+        $shortName = str_replace('Controller', '', $shortName);
+
+        return snake_case($shortName);
     }
 
     /**

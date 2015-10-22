@@ -89,7 +89,7 @@ class ApiRouter
 
         $parts = explode('@', $controllerAction);
 
-        $controller = $this->module->controller($parts[0]);
+        $controller = $this->module->makeController($parts[0]);
         $method = $parts[1];
 
         $uri = mezzo()->uri()->toModuleAction($this->module, $controller, $method);
