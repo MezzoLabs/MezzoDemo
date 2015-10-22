@@ -1414,47 +1414,48 @@ exports['default'] = new _commonState2['default']('pages', 'pages', {
 module.exports = exports['default'];
 
 },{"../../common/State":3}],40:[function(require,module,exports){
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var TestMainController = (function () {
+var ResourceIndexController = (function () {
 
     /*@ngInject*/
-    function TestMainController($http) {
-        _classCallCheck(this, TestMainController);
+    function ResourceIndexController($scope, $http) {
+        var _this = this;
 
+        _classCallCheck(this, ResourceIndexController);
+
+        this.$scope = $scope;
+        this.$http = $http;
         this.models = [];
         this.searchText = '';
         this.selectAll = false;
+        this.removing = 0;
 
-        /*
         $http.get('/api/tutorials', {
             headers: {
                 Accept: 'application/vnd.MezzoLabs.v1+json'
             }
-        }).success(data => {
-            console.log(data);
-        }).error(err => {
-            console.error(err);
-        });
-        */
+        }).success(function (models) {
+            _this.models = models;
 
-        this.models = [{ "id": 2, "title": "Placeat ut placeat tempore a.", "body": "Delectus libero vitae quae nesciunt ipsa soluta in sed. Dolores sit voluptatem perferendis qui quo aliquam adipisci. Rerum nobis aliquid fugiat est. Repudiandae sint sunt qui.", "user_id": 29, "parent": 0 }, { "id": 3, "title": "Aut dolor id eum quae et eos.", "body": "Tempora cupiditate eos sint sequi nihil non porro. Perferendis voluptas et dicta qui omnis. Sed omnis dolor deserunt. Ipsa ad libero voluptates labore totam exercitationem et consequatur.", "user_id": 15, "parent": 0 }, { "id": 4, "title": "Ut sed quo veritatis aut.", "body": "Corporis ex nemo dignissimos distinctio. Laboriosam libero quam sed labore. Fuga delectus ullam omnis harum delectus quia et. Illo saepe possimus rerum deleniti.", "user_id": 32, "parent": 0 }, { "id": 5, "title": "Et nisi quis eum dignissimos.", "body": "Odit voluptas similique autem sint. Similique vitae eaque illo possimus. Eos deserunt ut laborum reprehenderit eaque accusantium ipsa. Eveniet labore quas velit ipsum.", "user_id": 26, "parent": 0 }, { "id": 6, "title": "Nihil modi officia et et.", "body": "Nam doloremque et esse velit. In voluptates laborum fugit rerum. Iste possimus totam cupiditate. Aut qui tempora sit rem.", "user_id": 4, "parent": 0 }, { "id": 7, "title": "Qui aliquam iusto illum ipsa.", "body": "Sit modi quia accusamus amet hic odit. Dolore ut illum id et amet impedit sed. Eum optio id eum nesciunt consequatur quo. Quam eos quidem consequuntur blanditiis.", "user_id": 11, "parent": 0 }, { "id": 8, "title": "Ratione id eveniet possimus.", "body": "Amet odit pariatur quo. Voluptatem molestias ut qui ab ut. Aspernatur quam occaecati eveniet et.", "user_id": 3, "parent": 0 }, { "id": 9, "title": "Eligendi quae aut voluptas.", "body": "Inventore corrupti vero deleniti cumque et voluptate et. Qui saepe assumenda voluptates nihil adipisci reprehenderit. Nisi reprehenderit soluta dolorum.", "user_id": 23, "parent": 0 }, { "id": 10, "title": "Quae quia enim omnis.", "body": "Fugiat assumenda aut ea et reprehenderit neque. Impedit numquam ut sed aperiam.", "user_id": 34, "parent": 0 }, { "id": 11, "title": "Ab numquam a tempora autem.", "body": "Repellendus explicabo ut omnis numquam culpa ea. Non eum placeat illo ipsam magni consequatur. Enim quas illum perferendis.\nAd excepturi cum molestiae magni. Voluptatum tempora totam ut unde.", "user_id": 9, "parent": 0 }, { "id": 12, "title": "Qui sint porro est non.", "body": "Eos sapiente sed voluptatibus impedit nulla. Voluptatem eos dolore nobis facilis sapiente vel possimus adipisci. Doloremque sapiente quis a et quam.", "user_id": 8, "parent": 0 }, { "id": 13, "title": "Et reiciendis fugiat et quo.", "body": "Qui voluptas aut qui modi fugiat voluptatum sapiente. Earum ut et nihil aut dolorem. Praesentium aut unde et quidem natus adipisci aut. Amet et quam est necessitatibus.", "user_id": 21, "parent": 0 }, { "id": 14, "title": "Omnis unde in sint est.", "body": "Non sunt est non blanditiis est in. Corporis voluptas et voluptatem consequuntur. Vel aliquam fugit ratione neque tempore.", "user_id": 16, "parent": 0 }, { "id": 15, "title": "Corporis aut qui est.", "body": "Quibusdam debitis repellat culpa dicta est alias. Dicta ipsam maxime totam esse ratione. Ut ut ut in ullam sequi quo molestiae.", "user_id": 2, "parent": 0 }, { "id": 16, "title": "Pariatur enim ut quia ea.", "body": "Molestiae soluta eum omnis et et est ad. Tenetur perspiciatis qui autem amet quisquam eum non eligendi. Excepturi sed quia aut.", "user_id": 15, "parent": 0 }, { "id": 17, "title": "Ea et aut earum ab.", "body": "Autem fuga eaque voluptatibus. Eveniet minus voluptatem ab omnis omnis omnis. Sit praesentium ullam ullam voluptatem qui.", "user_id": 40, "parent": 0 }, { "id": 18, "title": "Consectetur est et minima.", "body": "Hic iusto sit illum dolor. Est illo neque quae aut est mollitia. Doloremque voluptas consequatur maiores voluptatum magnam labore recusandae. Eum alias quidem magnam facilis voluptatem.", "user_id": 30, "parent": 0 }, { "id": 19, "title": "Sed non hic odit dolore.", "body": "Magnam sunt eos qui in deserunt asperiores. Accusantium possimus voluptas quibusdam et occaecati. Iusto consequatur iure illo officiis.", "user_id": 15, "parent": 0 }, { "id": 20, "title": "Ea placeat libero omnis ipsa.", "body": "Omnis ut in facere fugiat. Molestiae dolor beatae dicta tempore praesentium magni ut voluptatum. Laboriosam dolores sit hic.", "user_id": 33, "parent": 0 }, { "id": 21, "title": "Ipsam a qui alias inventore.", "body": "Aliquid nostrum impedit porro laboriosam et quas ut. Dicta illo aspernatur quo sit qui ut ut. Fugiat corporis voluptatem eligendi ut vitae veritatis. Asperiores cum rerum aut ut neque inventore.", "user_id": 4, "parent": 0 }];
-
-        this.models.forEach(function (model) {
-            return model._meta = {};
+            _this.models.forEach(function (model) {
+                return model._meta = {};
+            });
+        }).error(function (err) {
+            return console.error(err);
         });
     }
 
-    _createClass(TestMainController, [{
-        key: "getModels",
+    _createClass(ResourceIndexController, [{
+        key: 'getModels',
         value: function getModels() {
             if (this.searchText.length > 0) {
                 return this.search();
@@ -1463,7 +1464,7 @@ var TestMainController = (function () {
             return this.models;
         }
     }, {
-        key: "getModelKeys",
+        key: 'getModelKeys',
         value: function getModelKeys(model) {
             if (this.models.length > 0 && !model) {
                 model = this.models[0];
@@ -1480,7 +1481,7 @@ var TestMainController = (function () {
             });
         }
     }, {
-        key: "getModelValues",
+        key: 'getModelValues',
         value: function getModelValues(model) {
             var keys = this.getModelKeys(model);
             var values = [];
@@ -1492,81 +1493,132 @@ var TestMainController = (function () {
             return values;
         }
     }, {
-        key: "canEdit",
+        key: 'canEdit',
         value: function canEdit() {
             return this.selected().length === 1;
         }
     }, {
-        key: "canRemove",
+        key: 'canRemove',
         value: function canRemove() {
             return this.selected().length > 0;
         }
     }, {
-        key: "search",
+        key: 'search',
         value: function search() {
-            var _this = this;
+            var _this2 = this;
 
-            var found = [];
-
-            this.models.forEach(function (model) {
+            return this.models.filter(function (model) {
                 for (var key in model) {
                     if (model.hasOwnProperty(key)) {
                         var value = model[key];
 
-                        if (String(value).indexOf(_this.searchText) !== -1) {
-                            found.push(model);
+                        if (String(value).indexOf(_this2.searchText) !== -1) {
+                            return true;
                         }
                     }
                 }
             });
-
-            return found;
         }
     }, {
-        key: "updateSelectAll",
+        key: 'updateSelectAll',
         value: function updateSelectAll() {
-            var _this2 = this;
+            var _this3 = this;
 
             var models = this.getModels();
 
             models.forEach(function (model) {
-                return model._meta.selected = _this2.selectAll;
+                return model._meta.selected = _this3.selectAll;
             });
         }
     }, {
-        key: "selected",
+        key: 'selected',
         value: function selected() {
             return this.models.filter(function (model) {
                 return model._meta.selected;
             });
         }
     }, {
-        key: "create",
+        key: 'create',
         value: function create() {
             //TODO
         }
     }, {
-        key: "edit",
+        key: 'edit',
         value: function edit() {
             //TODO
         }
     }, {
-        key: "remove",
+        key: 'remove',
         value: function remove() {
-            //TODO
+            var _this4 = this;
+
+            var selected = this.selected();
+
+            swal({
+                title: 'Are you sure?',
+                text: selected.length + ' models will be deleted!',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete them!',
+                confirmButtonColor: '#fb503b'
+            }, function (confirmed) {
+                if (!confirmed) {
+                    return;
+                }
+
+                selected.forEach(function (model) {
+                    return _this4.removeModel(model);
+                });
+            });
         }
     }, {
-        key: "countSelected",
+        key: 'removeModel',
+        value: function removeModel(model) {
+            var _this5 = this;
+
+            this.removing++;
+            model._meta.selected = false;
+            model._meta.removed = true;
+
+            this.removeRemoteModel(model).success(function (result) {
+                console.log(result);
+                _this5.removeLocalModel(model);
+            }).error(function (err) {
+                return console.error(err);
+            })['finally'](function () {
+                return _this5.removing--;
+            });
+        }
+    }, {
+        key: 'removeLocalModel',
+        value: function removeLocalModel(model) {
+            for (var i = 0; i < this.models.length; i++) {
+                if (this.models[i] === model) {
+                    return this.models.splice(i, 1);
+                }
+            }
+        }
+    }, {
+        key: 'removeRemoteModel',
+        value: function removeRemoteModel(model) {
+            return this.$http['delete']('/api/tutorials/' + model.id, {
+                headers: {
+                    Accept: 'application/vnd.MezzoLabs.v1+json'
+                }
+            });
+        }
+    }, {
+        key: 'countSelected',
         value: function countSelected() {
             return this.selected().length;
         }
     }]);
 
-    return TestMainController;
+    return ResourceIndexController;
 })();
 
-exports["default"] = { name: 'TestMainController', controller: TestMainController };
-module.exports = exports["default"];
+exports['default'] = { name: 'ResourceIndexController', controller: ResourceIndexController };
+module.exports = exports['default'];
 
 },{}],41:[function(require,module,exports){
 'use strict';
@@ -1577,20 +1629,20 @@ Object.defineProperty(exports, '__esModule', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _commonState = require('../../common/State');
+var _commonState = require('../../../common/State');
 
 var _commonState2 = _interopRequireDefault(_commonState);
 
-exports['default'] = new _commonState2['default']('test', 'sample/tutorial/index', {
+exports['default'] = new _commonState2['default']('resource', 'sample/tutorial/index', {
     main: {
         templateUrl: '/mezzo/sample/tutorial/index.html',
-        controller: 'TestMainController',
+        controller: 'ResourceIndexController',
         controllerAs: 'vm'
     }
 });
 module.exports = exports['default'];
 
-},{"../../common/State":3}],42:[function(require,module,exports){
+},{"../../../common/State":3}],42:[function(require,module,exports){
 'use strict';
 
 module.exports = function (app) {
@@ -1606,16 +1658,16 @@ module.exports = function (app) {
 				register(require('./modules/model-builder/model-builder.service.js'));
 				register(require('./modules/page-builder/aside.controller.js'));
 				register(require('./modules/page-builder/main.controller.js'));
-				register(require('./modules/test/main.controller.js'));
 				register(require('./modules/model-builder/components/component.service.js'));
+				register(require('./modules/resource/index/resource-index.controller.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown.directive.js'));
-				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
-				register(require('./modules/model-builder/components/owner/owner.directive.js'));
 				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
 				register(require('./modules/model-builder/components/relation/relation.directive.js'));
+				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
+				register(require('./modules/model-builder/components/owner/owner.directive.js'));
 				register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
 				register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
 				register(require('./modules/model-builder/components/text-single/text-single-options.directive.js'));
@@ -1636,7 +1688,7 @@ module.exports = function (app) {
 				}
 };
 
-},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/uid.service.js":6,"./modules/file-manager/aside.controller.js":9,"./modules/file-manager/draggable.directive.js":10,"./modules/file-manager/droppable.directive.js":11,"./modules/file-manager/file-manager.service.js":12,"./modules/file-manager/main.controller.js":13,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":17,"./modules/model-builder/components/checkbox/checkbox.directive.js":18,"./modules/model-builder/components/component.service.js":19,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":20,"./modules/model-builder/components/dropdown/dropdown.directive.js":21,"./modules/model-builder/components/owner/owner-options.directive.js":22,"./modules/model-builder/components/owner/owner.directive.js":23,"./modules/model-builder/components/relation/relation-options.directive.js":27,"./modules/model-builder/components/relation/relation.directive.js":28,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":30,"./modules/model-builder/components/text-multi/text-multi.directive.js":31,"./modules/model-builder/components/text-single/text-single-options.directive.js":32,"./modules/model-builder/components/text-single/text-single.directive.js":33,"./modules/model-builder/model-builder.controller.js":34,"./modules/model-builder/model-builder.service.js":35,"./modules/page-builder/aside.controller.js":37,"./modules/page-builder/main.controller.js":38,"./modules/test/main.controller.js":40}],43:[function(require,module,exports){
+},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/uid.service.js":6,"./modules/file-manager/aside.controller.js":9,"./modules/file-manager/draggable.directive.js":10,"./modules/file-manager/droppable.directive.js":11,"./modules/file-manager/file-manager.service.js":12,"./modules/file-manager/main.controller.js":13,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":17,"./modules/model-builder/components/checkbox/checkbox.directive.js":18,"./modules/model-builder/components/component.service.js":19,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":20,"./modules/model-builder/components/dropdown/dropdown.directive.js":21,"./modules/model-builder/components/owner/owner-options.directive.js":22,"./modules/model-builder/components/owner/owner.directive.js":23,"./modules/model-builder/components/relation/relation-options.directive.js":27,"./modules/model-builder/components/relation/relation.directive.js":28,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":30,"./modules/model-builder/components/text-multi/text-multi.directive.js":31,"./modules/model-builder/components/text-single/text-single-options.directive.js":32,"./modules/model-builder/components/text-single/text-single.directive.js":33,"./modules/model-builder/model-builder.controller.js":34,"./modules/model-builder/model-builder.service.js":35,"./modules/page-builder/aside.controller.js":37,"./modules/page-builder/main.controller.js":38,"./modules/resource/index/resource-index.controller.js":40}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1793,11 +1845,11 @@ var _modulesFileManagerState = require('../modules/file-manager/state');
 
 var _modulesFileManagerState2 = _interopRequireDefault(_modulesFileManagerState);
 
-var _modulesTestState = require('../modules/test/state');
+var _modulesResourceIndexState = require('../modules/resource/index/state');
 
-var _modulesTestState2 = _interopRequireDefault(_modulesTestState);
+var _modulesResourceIndexState2 = _interopRequireDefault(_modulesResourceIndexState);
 
-exports['default'] = [_modulesModelBuilderState2['default'], _modulesPageBuilderStateJs2['default'], _modulesFileManagerState2['default'], _modulesTestState2['default']];
+exports['default'] = [_modulesModelBuilderState2['default'], _modulesPageBuilderStateJs2['default'], _modulesFileManagerState2['default'], _modulesResourceIndexState2['default']];
 module.exports = exports['default'];
 
-},{"../modules/file-manager/state":14,"../modules/model-builder/state":36,"../modules/page-builder/state.js":39,"../modules/test/state":41}]},{},[1]);
+},{"../modules/file-manager/state":14,"../modules/model-builder/state":36,"../modules/page-builder/state.js":39,"../modules/resource/index/state":41}]},{},[1]);
