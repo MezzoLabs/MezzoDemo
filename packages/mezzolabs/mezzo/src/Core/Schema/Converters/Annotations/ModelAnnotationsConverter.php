@@ -44,8 +44,6 @@ class ModelAnnotationsConverter extends ModelConverter
             $schema->addAttribute($attribute);
         });
 
-        mezzo_dd($schema);
-
         return $schema;
 
     }

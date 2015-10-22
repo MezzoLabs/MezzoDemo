@@ -22,7 +22,6 @@ abstract class MezzoTutorial extends BaseModel
         "id" => "",
         "title" => "",
         "body" => "",
-        "creator" => "",
         "created_at" => "",
         "updated_at" => ""
     ];
@@ -46,13 +45,6 @@ abstract class MezzoTutorial extends BaseModel
      * @var string
      */
     protected $body;
-
-    /**
-     *
-     * @Mezzo\Attribute(type="NumberInput")
-     * @var float
-     */
-    protected $creator;
 
     /**
      *
@@ -106,8 +98,7 @@ abstract class MezzoTutorial extends BaseModel
      * @Mezzo\Relations\OneToOne
      * @Mezzo\Relations\From(table="tutorials", primaryKey="id", naming="parent")
      * @Mezzo\Relations\To(table="tutorials", primaryKey="id", naming="")
-     * @Mezzo\Relations\JoinColumn(table="tutorials", column="parent")
-     * @returns \App\Tutorial
+     * @Mezzo\Relations\JoinColumn(table="tutorials", column="parent_id")
      */
     protected $parent;
 

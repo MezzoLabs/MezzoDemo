@@ -16,6 +16,7 @@ class Attribute
      * @var string
      */
     protected $name;
+
     /**
      * @var InputType
      */
@@ -45,6 +46,11 @@ class Attribute
      * @var Rules
      */
     protected $rules;
+
+    /**
+     * @var string
+     */
+    protected $title;
 
     /**
      * Get the html attributes as array.
@@ -215,5 +221,21 @@ class Attribute
     public function isRelationAttribute()
     {
         return $this instanceof RelationAttribute;
+    }
+
+    public function title()
+    {
+        if (!$this->title) {
+            $nameParts = explode('_', $this->name());
+
+            foreach ($nameParts as $i => $namePart) {
+                if ($namePart == "id" && $i != 0) $namePart = "";
+                $nameParts[$i] = ucfirst($namePart);
+            }
+
+            $this->title = implode(' ', $nameParts);
+        }
+
+        return $this->title;
     }
 } 
