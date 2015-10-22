@@ -202,5 +202,10 @@ abstract class ModulePage implements ModulePageContract
         return true;
     }
 
+    public function registerRoutes()
+    {
+        $this->module()->router()->registerPage($this);
+    }
+
 
 }

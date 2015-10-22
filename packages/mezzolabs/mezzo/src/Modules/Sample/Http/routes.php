@@ -6,7 +6,6 @@ use MezzoLabs\Mezzo\Core\Routing\Router;
 
 module_route('Sample', [], function (Router $router, ApiRouter $api, CockpitRouter $cockpit) {
     $api->resource('Tutorial');
-    $cockpit->resourcePages('Tutorial');
 });
 
 

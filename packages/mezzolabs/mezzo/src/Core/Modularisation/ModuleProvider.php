@@ -58,10 +58,6 @@ abstract class ModuleProvider extends ServiceProvider
      */
     protected $pages;
 
-    /**
-     * @var Controllers
-     */
-    protected $controllers;
 
     /**
      * Create a new module provider instance
@@ -292,6 +288,17 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
+     * @return ModulePages
+     */
+    public function pages()
+    {
+        if (!$this->pages)
+            $this->pages = $this->collectPages();
+
+        return $this->pages;
+    }
+
+    /**
      * Load views from the "views" folder inside the module root.
      * The namespace will be modules.<modulename>::<view_name>
      *
@@ -349,4 +356,11 @@ abstract class ModuleProvider extends ServiceProvider
         return $controller;
     }
 
- }
+    protected function collectPages()
+    {
+        $pages = new ModulePages();
+        $pages->collectFromModule($this);
+        return $pages;
+    }
+
+}

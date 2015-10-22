@@ -167,14 +167,18 @@ class NamingConvention
         if (!is_string($name))
             throw new InvalidArgumentException($name);
 
-        $namespace = $module->getNamespaceName();
 
-        $possibleClass = $namespace . '\Http\Pages\\' . $name;
+        $possibleClass = static::pageNameSpace($module) . '\\' . $name;
 
         if (!class_exists($possibleClass))
             throw new NamingConventionException('No page found with the name ' . $name . ' tried ' . $possibleClass);
 
         return $possibleClass;
+    }
+
+    public static function pageNameSpace(ModuleProvider $module)
+    {
+        return $module->getNamespaceName() . '\Http\Pages';
     }
 
 }

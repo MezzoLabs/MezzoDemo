@@ -115,6 +115,10 @@ class CockpitRouter
         return $this->laravelRouter()->get($uri, $action);
     }
 
+    /**
+     * @param $action
+     * @return mixed
+     */
     protected function shortenAction($action)
     {
         $namespace = $this->controllerNamespace();

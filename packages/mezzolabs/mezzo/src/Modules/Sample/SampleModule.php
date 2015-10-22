@@ -14,8 +14,6 @@ class SampleModule extends ModuleProvider
         Tutorial::class,
     ];
 
-
-
     /**
      * Register the service provider.
      *
@@ -23,6 +21,7 @@ class SampleModule extends ModuleProvider
      */
     public function register()
     {
+
     }
 
     /**
@@ -32,7 +31,7 @@ class SampleModule extends ModuleProvider
      */
     public function ready()
     {
-
+        $this->pages()->registerRoutes();
         $tutorialReflection = $this->modelReflectionSets->get(Tutorial::class);
 
         //dd($tutorialReflection->relationships());
