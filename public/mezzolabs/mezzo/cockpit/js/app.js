@@ -1424,8 +1424,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var TestMainController =
 
-/*@ngInject*/function TestMainController() {
+/*@ngInject*/function TestMainController($http) {
     _classCallCheck(this, TestMainController);
+
+    $http.get('/api/tutorials', {
+        headers: {
+            Accept: 'application/vnd.MezzoLabs.v1+json'
+        }
+    }).success(function (data) {
+        console.log(data);
+    }).error(function (err) {
+        console.error(err);
+    });
 };
 
 exports['default'] = { name: 'TestMainController', controller: TestMainController };
