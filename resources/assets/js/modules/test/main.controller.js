@@ -35,6 +35,17 @@ class TestMainController {
             {"id":21, "title":"Ipsam a qui alias inventore.", "body":"Aliquid nostrum impedit porro laboriosam et quas ut. Dicta illo aspernatur quo sit qui ut ut. Fugiat corporis voluptatem eligendi ut vitae veritatis. Asperiores cum rerum aut ut neque inventore.", "user_id":4, "parent":0}];
     }
 
+    columns(){
+        if(this.models.length === 0){
+            return [];
+        }
+
+        return Object.keys(this.models[0]);
+    }
+
+    /* public */
+    /* private */
+
 }
 
 export default { name: 'TestMainController', controller: TestMainController };
