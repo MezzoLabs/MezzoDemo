@@ -11,9 +11,6 @@ class InvalidArgumentException extends MezzoException
      * You can only make a modelWrapper out of a class name (string) or out of an existing modelWrapper
      *
      * @param string|object $invalidArgument
-     * @internal param string $notAModel
-     * @internal param ModelWrapper $model
-     * @internal param ModuleProvider $module
      */
     public function  __construct($invalidArgument)
     {

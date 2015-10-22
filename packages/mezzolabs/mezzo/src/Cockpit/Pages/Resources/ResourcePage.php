@@ -13,6 +13,8 @@ use MezzoLabs\Mezzo\Exceptions\ModulePageException;
 
 abstract class ResourcePage extends ModulePage
 {
+    protected static $types = ['create', 'edit', 'index', 'show'];
+
     /**
      * @var string
      */
@@ -24,12 +26,19 @@ abstract class ResourcePage extends ModulePage
     private $modelReflection;
 
     /**
-     * @param ModuleProvider $moduleProvider
-     * @param array $options
+     * @param ModuleProvider $module
+     * @throws ModulePageException
+     * @internal param array $options
      */
-    public function __construct(ModuleProvider $moduleProvider, $options = [])
+    public function __construct(ModuleProvider $module)
     {
-        parent::__construct($moduleProvider, $options);
+        $this->module = $module;
+
+        if (empty($this->controller))
+            $this->controller = $this->guessController();
+
+        parent::__construct($module);
+
 
         $this->assertThatPageHasModel();
 
@@ -41,7 +50,7 @@ abstract class ResourcePage extends ModulePage
      */
     protected function assertThatPageHasModel()
     {
-        if(!$this->model())
+        if (!$this->model())
             throw new ModulePageException('Cannot find a model for this resource page.');
 
         return true;
@@ -83,21 +92,28 @@ abstract class ResourcePage extends ModulePage
      */
     protected function guessModel()
     {
-        $pageTypes = ['add', 'edit', 'list'];
-
         $pageName = strtolower(Singleton::reflection($this)->getShortName());
 
         $possibleModel = str_replace('page', '', $pageName);
-        $possibleModel = str_replace($pageTypes, '', $possibleModel);
+        $possibleModel = str_replace(static::$types, '', $possibleModel);
 
-        if(empty($possibleModel))
+        if (empty($possibleModel))
             throw new CannotGuessModelException('Cannot guess model for page ' . get_class($this) . '.');
 
-        if(!mezzo()->knowsModel($possibleModel))
+        if (!mezzo()->knowsModel($possibleModel))
             throw new CannotGuessModelException('Cannot guess model for page ' . get_class($this) . '. ' .
                 'A model with the name ' . $possibleModel . ' is not reflected');
 
         return $possibleModel;
+    }
+
+    /**
+     * @return \MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleResourceController
+     * @throws \MezzoLabs\Mezzo\Exceptions\ModuleControllerException
+     */
+    protected function guessController()
+    {
+        return $this->module()->resourceController($this->model()->name() . 'Controller');
     }
 
 }

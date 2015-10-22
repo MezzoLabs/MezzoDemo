@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ResourceController;
+use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\NamingConventionException;
 
 class NamingConvention
@@ -111,6 +112,9 @@ class NamingConvention
         if (is_object($controllerName))
             $controllerName = get_class($controllerName);
 
+        if (!strpos($controllerName, 'Controller'))
+            $controllerName .= 'Controller';
+
         /**
          * Get the correct namespace depending on the type of the controller.
          */
@@ -156,6 +160,21 @@ class NamingConvention
         $isApi = ends_with($controllerName, 'ApiController');
 
         return ($isApi) ? 'api' : 'html';
+    }
+
+    public static function findPageClass(ModuleProvider $module, $name)
+    {
+        if (!is_string($name))
+            throw new InvalidArgumentException($name);
+
+        $namespace = $module->getNamespaceName();
+
+        $possibleClass = $namespace . '\Http\Pages\\' . $name;
+
+        if (!class_exists($possibleClass))
+            throw new NamingConventionException('No page found with the name ' . $name . ' tried ' . $possibleClass);
+
+        return $possibleClass;
     }
 
 }

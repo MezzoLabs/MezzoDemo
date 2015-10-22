@@ -9,6 +9,7 @@ use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\Api\ApiResourceController;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModulePage;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModulePages;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleResourceController;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
@@ -225,7 +226,7 @@ abstract class ModuleProvider extends ServiceProvider
      * @throws InvalidArgumentException
      * @throws ModuleControllerException
      */
-    public function controller($controllerName, $type = "Html")
+    public function controller($controllerName)
     {
         if (is_object($controllerName)) {
             if ($controllerName instanceof ModuleController) return $controllerName;
@@ -239,6 +240,25 @@ abstract class ModuleProvider extends ServiceProvider
             throw new ModuleControllerException('Not a valid module controller.');
 
         return $controller;
+    }
+
+    /**
+     * @param $name
+     * @return ModulePage
+     * @throws InvalidArgumentException
+     * @throws \MezzoLabs\Mezzo\Exceptions\NamingConventionException
+     */
+    public function page($name)
+    {
+        if (is_object($name)) {
+            if ($name instanceof ModulePage) return $name;
+
+            throw new InvalidArgumentException($name);
+        };
+
+        $pageClass = NamingConvention::findPageClass($this, $name);
+
+        return new $pageClass($this);
     }
 
     /**

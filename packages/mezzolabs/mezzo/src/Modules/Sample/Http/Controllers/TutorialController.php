@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Modules\Sample\Http\Controllers;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleResourceController;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleRequest;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResponse;
-use MezzoLabs\Mezzo\Modules\Sample\Http\Pages\ListTutorialPage;
+use MezzoLabs\Mezzo\Modules\Sample\Http\Pages\IndexTutorialPage;
 
 class TutorialController extends ModuleResourceController
 {
@@ -18,7 +18,7 @@ class TutorialController extends ModuleResourceController
      */
     public function index(ModuleRequest $request)
     {
-        return $this->page(ListTutorialPage::class, ['tutorials' => $this->repository()->all()]);
+        return $this->page(IndexTutorialPage::class, ['tutorials' => $this->repository()->all()]);
     }
 
     /**

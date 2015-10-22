@@ -59,11 +59,14 @@ class Router
          */
         $cockpitRouter = new CockpitRouter($this->cockpitRouter->laravelRouter());
         $apiRouter = new ApiRouter($this->apiRouter->dingoRouter());
-        $cockpitRouter->group($attributes->get('cockpit', []));
-        $apiRouter->group($attributes->get('api', []));
+
 
         $copy = new Router($this->generator, $cockpitRouter, $apiRouter);
         $copy->setModule($module);
+
+        $cockpitRouter->group($attributes->get('cockpit', []));
+        $apiRouter->group($attributes->get('api', []));
+
 
         call_user_func($callback, $copy, $copy->apiRouter(), $copy->cockpitRouter());
     }

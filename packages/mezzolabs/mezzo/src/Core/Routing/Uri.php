@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Core\Routing;
 
 
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModulePage;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
 class Uri
@@ -33,5 +34,10 @@ class Uri
     public function toModule(ModuleProvider $module)
     {
         return $module->slug();
+    }
+
+    public function toModulePage(ModulePage $page)
+    {
+        return $this->toModuleAction($page->module(), $page->controller(), $page->action());
     }
 }
