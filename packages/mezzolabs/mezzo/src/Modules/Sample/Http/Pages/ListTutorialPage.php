@@ -7,5 +7,6 @@ use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ListResourcePage;
 
 class ListTutorialPage extends ListResourcePage
 {
+    protected $action = "TutorialController@index";
 
 }

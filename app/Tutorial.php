@@ -27,6 +27,9 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  */
 class Tutorial extends MezzoTutorial
 {
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function mainImage()
     {
         return $this->hasOne('App\Image');
@@ -60,6 +63,11 @@ class Tutorial extends MezzoTutorial
     public function mainCategory()
     {
         return $this->belongsTo('App\Category', 'main_category');
+    }
+
+    public function foo()
+    {
+        
     }
 
 

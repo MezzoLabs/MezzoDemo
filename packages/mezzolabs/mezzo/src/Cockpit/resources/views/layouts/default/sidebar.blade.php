@@ -17,9 +17,9 @@
                                 <span class="dropdown"></span>
                             </a>
                             <ul>
-                                <li><a href="#"><span>List</span></a></li>
-                                <li><a href="#"><span>Add New</span></a></li>
-                                <li><a href="#"><span>Categories</span></a></li>
+                                <li><a href="/mezzo/tutorial/tutorial/index"><span>List</span></a></li>
+                                <li><a href="/mezzo/tutorial/tutorial/new"><span>Add New</span></a></li>
+                                <li><a href="/mezzo/tutorial/tutorial/categories"><span>Categories</span></a></li>
                             </ul>
                         </li>
                         <li>

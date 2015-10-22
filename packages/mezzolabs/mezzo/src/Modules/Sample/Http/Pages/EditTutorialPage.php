@@ -7,5 +7,6 @@ use MezzoLabs\Mezzo\Cockpit\Pages\Resources\EditResourcePage;
 
 class EditTutorialPage extends EditResourcePage
 {
+    protected $action = "TutorialController@edit";
 
 }
