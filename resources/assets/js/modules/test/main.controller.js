@@ -81,21 +81,17 @@ class TestMainController {
     }
 
     search(){
-        var found = [];
-
-        this.models.forEach(model => {
+        return this.models.filter(model => {
             for(var key in model){
                 if(model.hasOwnProperty(key)){
                     var value = model[key];
 
                     if(String(value).indexOf(this.searchText) !== -1){
-                        found.push(model);
+                        return true;
                     }
                 }
             }
         });
-
-        return found;
     }
 
     updateSelectAll(){
