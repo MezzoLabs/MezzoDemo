@@ -1427,14 +1427,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var ResourceIndexController = (function () {
 
     /*@ngInject*/
-    function ResourceIndexController($http) {
+    function ResourceIndexController($scope, $http) {
         var _this = this;
 
         _classCallCheck(this, ResourceIndexController);
 
+        this.$scope = $scope;
+        this.$http = $http;
         this.models = [];
         this.searchText = '';
         this.selectAll = false;
+        this.removing = 0;
 
         $http.get('/api/tutorials', {
             headers: {
@@ -1447,7 +1450,7 @@ var ResourceIndexController = (function () {
                 return model._meta = {};
             });
         }).error(function (err) {
-            console.error(err);
+            return console.error(err);
         });
     }
 
@@ -1547,7 +1550,62 @@ var ResourceIndexController = (function () {
     }, {
         key: 'remove',
         value: function remove() {
-            //TODO
+            var _this4 = this;
+
+            var selected = this.selected();
+
+            swal({
+                title: 'Are you sure?',
+                text: selected.length + ' models will be deleted!',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete them!',
+                confirmButtonColor: '#fb503b'
+            }, function (confirmed) {
+                if (!confirmed) {
+                    return;
+                }
+
+                selected.forEach(function (model) {
+                    return _this4.removeModel(model);
+                });
+            });
+        }
+    }, {
+        key: 'removeModel',
+        value: function removeModel(model) {
+            var _this5 = this;
+
+            this.removing++;
+            model._meta.selected = false;
+            model._meta.removed = true;
+
+            this.removeRemoteModel(model).success(function (result) {
+                console.log(result);
+                _this5.removeLocalModel(model);
+            }).error(function (err) {
+                return console.error(err);
+            })['finally'](function () {
+                return _this5.removing--;
+            });
+        }
+    }, {
+        key: 'removeLocalModel',
+        value: function removeLocalModel(model) {
+            for (var i = 0; i < this.models.length; i++) {
+                if (this.models[i] === model) {
+                    return this.models.splice(i, 1);
+                }
+            }
+        }
+    }, {
+        key: 'removeRemoteModel',
+        value: function removeRemoteModel(model) {
+            return this.$http['delete']('/api/tutorials/' + model.id, {
+                headers: {
+                    Accept: 'application/vnd.MezzoLabs.v1+json'
+                }
+            });
         }
     }, {
         key: 'countSelected',

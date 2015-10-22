@@ -21,13 +21,21 @@
         </button>
         <!-- Edit -->
 
-        <!-- Delete selected -->
+        <!-- Delete -->
         <button type="button" class="btn btn-default" ng-disabled="!vm.canRemove()" ng-click="vm.remove()">
             <span class="ion-trash-b"></span>
             Delete
             <span class="badge" ng-bind="vm.countSelected()"></span>
         </button>
-        <!-- Delete selected -->
+        <!-- Delete -->
+
+        <!-- Deletion progress -->
+        <div class="progress" style="display: inline-block; width: 200px; margin-top: auto; margin-bottom: auto" ng-show="vm.removing">
+            <div class="progress-bar progress-bar-striped active" style="width: 100%">
+                Deleting <span ng-bind="vm.removing"></span> models...
+            </div>
+        </div>
+        <!-- Deletion progress -->
 
     </div>
     <!-- Top Container -->
@@ -49,9 +57,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="model in vm.getModels() track by $index">
+            <tr ng-repeat="model in vm.getModels() track by $index" ng-class="{ danger: model._meta.removed }">
                 <td>
-                    <input type="checkbox" ng-model="model._meta.selected">
+                    <input type="checkbox" ng-model="model._meta.selected" ng-disabled="model._meta.removed">
                 </td>
                 <td ng-repeat="value in vm.getModelValues(model) track by $index" ng-bind="value"></td>
             </tr>
