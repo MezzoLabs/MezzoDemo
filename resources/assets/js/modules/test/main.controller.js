@@ -1,6 +1,10 @@
 class TestMainController {
 
     /*@ngInject*/ constructor($http){
+        this.models = [];
+        this.searchText = '';
+        this.selectAll = false;
+
         /*
         $http.get('/api/tutorials', {
             headers: {
@@ -33,18 +37,76 @@ class TestMainController {
             {"id":19, "title":"Sed non hic odit dolore.", "body":"Magnam sunt eos qui in deserunt asperiores. Accusantium possimus voluptas quibusdam et occaecati. Iusto consequatur iure illo officiis.", "user_id":15, "parent":0},
             {"id":20, "title":"Ea placeat libero omnis ipsa.", "body":"Omnis ut in facere fugiat. Molestiae dolor beatae dicta tempore praesentium magni ut voluptatum. Laboriosam dolores sit hic.", "user_id":33, "parent":0},
             {"id":21, "title":"Ipsam a qui alias inventore.", "body":"Aliquid nostrum impedit porro laboriosam et quas ut. Dicta illo aspernatur quo sit qui ut ut. Fugiat corporis voluptatem eligendi ut vitae veritatis. Asperiores cum rerum aut ut neque inventore.", "user_id":4, "parent":0}];
+
+        this.models.forEach(model => model._meta = {});
     }
 
-    columns(){
-        if(this.models.length === 0){
+    getModels(){
+        if(this.searchText.length > 0){
+            return this.search();
+        }
+
+        return this.models;
+    }
+
+    getModelKeys(model){
+        if(this.models.length > 0 && !model){
+            model = this.models[0];
+        }
+
+        if(!model){
             return [];
         }
 
-        return Object.keys(this.models[0]);
+        var keys = Object.keys(model);
+
+        return keys.filter(key => key !== '_meta' && model.hasOwnProperty(key));
     }
 
-    /* public */
-    /* private */
+    getModelValues(model){
+        var keys = this.getModelKeys(model);
+        var values = [];
+
+        keys.forEach(key => values.push(model[key]));
+
+        return values;
+    }
+
+    canEdit(){
+        return this.selected().length === 1;
+    }
+
+    canDelete(){
+        return this.selected().length > 0;
+    }
+
+    search(){
+        var found = [];
+
+        this.models.forEach(model => {
+            for(var key in model){
+                if(model.hasOwnProperty(key)){
+                    var value = model[key];
+
+                    if(String(value).indexOf(this.searchText) !== -1){
+                        found.push(model);
+                    }
+                }
+            }
+        });
+
+        return found;
+    }
+
+    updateSelectAll(){
+        var models = this.getModels();
+
+        models.forEach(model => model._meta.selected = this.selectAll);
+    }
+
+    selected(){
+        return this.models.filter(model => model._meta.selected);
+    }
 
 }
 
