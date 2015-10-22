@@ -31,10 +31,5 @@ elixir(function(mix) {
         .task('register', 'resources/assets/js**/*.{controller,directive,service}.js')
         .task('templates', 'resources/assets/js/**/*.html')
         .sass('app.scss', 'public/mezzolabs/mezzo/cockpit/css')
-        .browserify('app.js', 'public/mezzolabs/mezzo/cockpit/js')
-        .browserSync({
-            proxy: 'mezzo.dev',
-            files: 'public/**/*',
-            open: false
-        });
+        .browserify('app.js', 'public/mezzolabs/mezzo/cockpit/js');
 });
