@@ -21,7 +21,53 @@ app.config(_setupConfig2['default']);
 app.run(_setupRun2['default']);
 (0, _register2['default'])(app);
 
-},{"./register":35,"./setup/config":36,"./setup/run":38}],2:[function(require,module,exports){
+},{"./register":40,"./setup/config":41,"./setup/run":43}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var prefix = '/mezzo/';
+
+var Route = function Route(url, views) {
+    _classCallCheck(this, Route);
+
+    this.url = prefix + url;
+    this.views = views;
+};
+
+exports['default'] = Route;
+module.exports = exports['default'];
+
+},{}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _Route = require('./Route');
+
+var _Route2 = _interopRequireDefault(_Route);
+
+var State = function State(name, url, views) {
+    _classCallCheck(this, State);
+
+    this.name = name;
+    this.route = new _Route2['default'](url, views);
+};
+
+exports['default'] = State;
+module.exports = exports['default'];
+
+},{"./Route":2}],4:[function(require,module,exports){
 'use strict';
 
 exports.name = 'mezzoCompile';
@@ -43,7 +89,7 @@ exports.directive = /*@ngInject*/function ($compile) {
     }
 };
 
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -68,7 +114,7 @@ exports['default'] = { name: 'mezzoEnter', directive: directive };
 }
 module.exports = exports['default'];
 
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 exports.name = 'uid';
@@ -81,7 +127,7 @@ function uid() {
     return id++;
 }
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -167,7 +213,7 @@ var File = (function () {
 exports['default'] = File;
 module.exports = exports['default'];
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -208,7 +254,7 @@ var Folder = (function (_File) {
 exports['default'] = Folder;
 module.exports = exports['default'];
 
-},{"./File":5}],7:[function(require,module,exports){
+},{"./File":7}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -260,7 +306,7 @@ var FilesAsideController = (function () {
 exports['default'] = { name: 'FilesAsideController', controller: FilesAsideController };
 module.exports = exports['default'];
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -285,7 +331,7 @@ exports['default'] = { name: 'mezzoDraggable', directive: directive };
 }
 module.exports = exports['default'];
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -318,7 +364,7 @@ exports['default'] = { name: 'mezzoDroppable', directive: directive };
 }
 module.exports = exports['default'];
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -355,7 +401,7 @@ var FileManagerService = (function () {
 
 module.exports = exports['default'];
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -627,7 +673,32 @@ var FilesMainController = (function () {
 exports['default'] = { name: 'FilesMainController', controller: FilesMainController };
 module.exports = exports['default'];
 
-},{"./File":5,"./Folder":6}],12:[function(require,module,exports){
+},{"./File":7,"./Folder":8}],14:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _commonState = require('../../common/State');
+
+var _commonState2 = _interopRequireDefault(_commonState);
+
+exports['default'] = new _commonState2['default']('files', 'files', {
+    aside: {
+        templateUrl: 'modules/files/aside.html',
+        controller: 'FilesAsideController as vm'
+    },
+    main: {
+        templateUrl: 'modules/files/main.html',
+        controller: 'FilesMainController as vm'
+    }
+});
+module.exports = exports['default'];
+
+},{"../../common/State":3}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -664,7 +735,7 @@ function directive(templateUrl, modifyOptions) {
 }
 module.exports = exports['default'];
 
-},{}],13:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -704,7 +775,7 @@ function directive(templateUrl, controller) {
 }
 module.exports = exports['default'];
 
-},{}],14:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -715,7 +786,7 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoCheckboxOptions', 'checkbox/checkbox-options.html');
 
-},{"../ComponentOptions":13}],15:[function(require,module,exports){
+},{"../ComponentOptions":16}],18:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -730,7 +801,7 @@ function modifyOptions(options) {
     options.label = 'Label';
 }
 
-},{"../Component":12}],16:[function(require,module,exports){
+},{"../Component":15}],19:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -770,7 +841,7 @@ var ComponentService = (function () {
     return ComponentService;
 })();
 
-},{}],17:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -793,7 +864,7 @@ function controller(scope) {
     };
 }
 
-},{"../ComponentOptions":13}],18:[function(require,module,exports){
+},{"../ComponentOptions":16}],21:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -810,7 +881,7 @@ function modifyOptions(options) {
     options.multiple = false;
 }
 
-},{"../Component":12}],19:[function(require,module,exports){
+},{"../Component":15}],22:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -821,7 +892,7 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoOwnerOptions', 'owner/owner-options.html');
 
-},{"../ComponentOptions":13}],20:[function(require,module,exports){
+},{"../ComponentOptions":16}],23:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -834,7 +905,7 @@ module.exports = new _Component2['default']('mezzoOwner', 'owner/owner.html', mo
 
 function modifyOptions(options) {}
 
-},{"../Component":12}],21:[function(require,module,exports){
+},{"../Component":15}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -846,7 +917,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{}],22:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -906,7 +977,7 @@ var Model = (function () {
 exports['default'] = Model;
 module.exports = exports['default'];
 
-},{"./Mode":21}],23:[function(require,module,exports){
+},{"./Mode":24}],26:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -927,7 +998,7 @@ function alphabetical(str1, str2) {
 }
 module.exports = exports["default"];
 
-},{}],24:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -938,7 +1009,7 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoRelationOptions', 'relation/relation-options.html');
 
-},{"../ComponentOptions":13}],25:[function(require,module,exports){
+},{"../ComponentOptions":16}],28:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1015,7 +1086,7 @@ function modifyOptions(options) {
     }
 }
 
-},{"../Component":12,"./Mode":21,"./Model":22,"./alphabetical":23,"./sentence":26}],26:[function(require,module,exports){
+},{"../Component":15,"./Mode":24,"./Model":25,"./alphabetical":26,"./sentence":29}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1051,7 +1122,7 @@ function phrase(model1, model2) {
 }
 module.exports = exports['default'];
 
-},{"./Mode":21}],27:[function(require,module,exports){
+},{"./Mode":24}],30:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1062,7 +1133,7 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoTextMultiOptions', 'text-multi/text-multi-options.html');
 
-},{"../ComponentOptions":13}],28:[function(require,module,exports){
+},{"../ComponentOptions":16}],31:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1078,7 +1149,7 @@ function modifyOptions(options) {
     options.placeholder = 'Placeholder';
 }
 
-},{"../Component":12}],29:[function(require,module,exports){
+},{"../Component":15}],32:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1089,7 +1160,7 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoTextSingleOptions', 'text-single/text-single-options.html');
 
-},{"../ComponentOptions":13}],30:[function(require,module,exports){
+},{"../ComponentOptions":16}],33:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1105,7 +1176,7 @@ function modifyOptions(options) {
     options.placeholder = 'Placeholder';
 }
 
-},{"../Component":12}],31:[function(require,module,exports){
+},{"../Component":15}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1130,7 +1201,7 @@ function button(label, icon, component) {
 }
 module.exports = exports['default'];
 
-},{}],32:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1243,7 +1314,32 @@ var ModelBuilder = (function () {
 
 module.exports = exports['default'];
 
-},{}],33:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _commonState = require('../../common/State');
+
+var _commonState2 = _interopRequireDefault(_commonState);
+
+exports['default'] = new _commonState2['default']('models', 'models', {
+    aside: {
+        templateUrl: 'modules/model-builder/aside.html',
+        controller: 'ModelBuilderController as vm'
+    },
+    main: {
+        templateUrl: 'modules/model-builder/main.html',
+        controller: 'ModelBuilderController as vm'
+    }
+});
+module.exports = exports['default'];
+
+},{"../../common/State":3}],37:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1266,7 +1362,7 @@ exports['default'] = { name: 'PagesAsideController', controller: controller };
 }
 module.exports = exports['default'];
 
-},{}],34:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1286,22 +1382,47 @@ function controller() {
 }
 module.exports = exports['default'];
 
-},{}],35:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _commonState = require('../../common/State');
+
+var _commonState2 = _interopRequireDefault(_commonState);
+
+exports['default'] = new _commonState2['default']('pages', 'pages', {
+    aside: {
+        templateUrl: 'modules/pages/aside.html',
+        controller: 'PagesAsideController'
+    },
+    main: {
+        templateUrl: 'modules/pages/main.html',
+        controller: 'PagesMainController'
+    }
+});
+module.exports = exports['default'];
+
+},{"../../common/State":3}],40:[function(require,module,exports){
 'use strict';
 
 module.exports = function (app) {
 				register(require('./common/compile.directive.js'));
 				register(require('./common/enter.directive.js'));
 				register(require('./common/uid.service.js'));
-				register(require('./modules/files/aside.controller.js'));
-				register(require('./modules/files/main.controller.js'));
-				register(require('./modules/files/draggable.directive.js'));
-				register(require('./modules/files/droppable.directive.js'));
-				register(require('./modules/files/file-manager.service.js'));
+				register(require('./modules/file-manager/aside.controller.js'));
+				register(require('./modules/file-manager/main.controller.js'));
+				register(require('./modules/file-manager/draggable.directive.js'));
+				register(require('./modules/file-manager/droppable.directive.js'));
+				register(require('./modules/file-manager/file-manager.service.js'));
 				register(require('./modules/model-builder/model-builder.controller.js'));
 				register(require('./modules/model-builder/model-builder.service.js'));
-				register(require('./modules/pages/aside.controller.js'));
-				register(require('./modules/pages/main.controller.js'));
+				register(require('./modules/page-builder/aside.controller.js'));
+				register(require('./modules/page-builder/main.controller.js'));
 				register(require('./modules/model-builder/components/component.service.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
@@ -1331,7 +1452,7 @@ module.exports = function (app) {
 				}
 };
 
-},{"./common/compile.directive.js":2,"./common/enter.directive.js":3,"./common/uid.service.js":4,"./modules/files/aside.controller.js":7,"./modules/files/draggable.directive.js":8,"./modules/files/droppable.directive.js":9,"./modules/files/file-manager.service.js":10,"./modules/files/main.controller.js":11,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":14,"./modules/model-builder/components/checkbox/checkbox.directive.js":15,"./modules/model-builder/components/component.service.js":16,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":17,"./modules/model-builder/components/dropdown/dropdown.directive.js":18,"./modules/model-builder/components/owner/owner-options.directive.js":19,"./modules/model-builder/components/owner/owner.directive.js":20,"./modules/model-builder/components/relation/relation-options.directive.js":24,"./modules/model-builder/components/relation/relation.directive.js":25,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":27,"./modules/model-builder/components/text-multi/text-multi.directive.js":28,"./modules/model-builder/components/text-single/text-single-options.directive.js":29,"./modules/model-builder/components/text-single/text-single.directive.js":30,"./modules/model-builder/model-builder.controller.js":31,"./modules/model-builder/model-builder.service.js":32,"./modules/pages/aside.controller.js":33,"./modules/pages/main.controller.js":34}],36:[function(require,module,exports){
+},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/uid.service.js":6,"./modules/file-manager/aside.controller.js":9,"./modules/file-manager/draggable.directive.js":10,"./modules/file-manager/droppable.directive.js":11,"./modules/file-manager/file-manager.service.js":12,"./modules/file-manager/main.controller.js":13,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":17,"./modules/model-builder/components/checkbox/checkbox.directive.js":18,"./modules/model-builder/components/component.service.js":19,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":20,"./modules/model-builder/components/dropdown/dropdown.directive.js":21,"./modules/model-builder/components/owner/owner-options.directive.js":22,"./modules/model-builder/components/owner/owner.directive.js":23,"./modules/model-builder/components/relation/relation-options.directive.js":27,"./modules/model-builder/components/relation/relation.directive.js":28,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":30,"./modules/model-builder/components/text-multi/text-multi.directive.js":31,"./modules/model-builder/components/text-single/text-single-options.directive.js":32,"./modules/model-builder/components/text-single/text-single.directive.js":33,"./modules/model-builder/model-builder.controller.js":34,"./modules/model-builder/model-builder.service.js":35,"./modules/page-builder/aside.controller.js":37,"./modules/page-builder/main.controller.js":38}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1355,7 +1476,7 @@ exports['default'] = config;
 }
 module.exports = exports['default'];
 
-},{"./states":39}],37:[function(require,module,exports){
+},{"./states":44}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1435,7 +1556,7 @@ function init() {
 }
 module.exports = exports['default'];
 
-},{}],38:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1455,68 +1576,28 @@ exports['default'] = run;
 }
 module.exports = exports['default'];
 
-},{"./jquery":37}],39:[function(require,module,exports){
+},{"./jquery":42}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-exports['default'] = [{
-    name: 'pages',
-    route: {
-        url: '/cockpit/pages',
-        views: {
-            aside: {
-                templateUrl: 'modules/pages/aside.html',
-                controller: 'PagesAsideController'
-            },
-            main: {
-                templateUrl: 'modules/pages/main.html',
-                controller: 'PagesMainController'
-            }
-        }
-    }
-}, {
-    name: 'models',
-    route: {
-        url: '/cockpit/models',
-        views: {
-            aside: {
-                templateUrl: 'modules/model-builder/aside.html',
-                controller: 'ModelBuilderController as vm'
-            },
-            main: {
-                templateUrl: 'modules/model-builder/main.html',
-                controller: 'ModelBuilderController as vm'
-            }
-        }
-    }
-}, {
-    name: 'panels',
-    route: {
-        url: '/cockpit/panels',
-        views: {
-            main: {
-                templateUrl: 'modules/panels/panels.html'
-            }
-        }
-    }
-}, {
-    name: 'files',
-    route: {
-        url: '/cockpit/files',
-        views: {
-            aside: {
-                templateUrl: 'modules/files/aside.html',
-                controller: 'FilesAsideController as vm'
-            },
-            main: {
-                templateUrl: 'modules/files/main.html',
-                controller: 'FilesMainController as vm'
-            }
-        }
-    }
-}];
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _modulesModelBuilderState = require('../modules/model-builder/state');
+
+var _modulesModelBuilderState2 = _interopRequireDefault(_modulesModelBuilderState);
+
+var _modulesPageBuilderStateJs = require('../modules/page-builder/state.js');
+
+var _modulesPageBuilderStateJs2 = _interopRequireDefault(_modulesPageBuilderStateJs);
+
+var _modulesFileManagerState = require('../modules/file-manager/state');
+
+var _modulesFileManagerState2 = _interopRequireDefault(_modulesFileManagerState);
+
+exports['default'] = [_modulesModelBuilderState2['default'], _modulesPageBuilderStateJs2['default'], _modulesFileManagerState2['default']];
 module.exports = exports['default'];
 
-},{}]},{},[1]);
+},{"../modules/file-manager/state":14,"../modules/model-builder/state":36,"../modules/page-builder/state.js":39}]},{},[1]);
