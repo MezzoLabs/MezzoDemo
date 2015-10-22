@@ -117,9 +117,9 @@ class ApiRouter
     public function resource($modelName, $controllerName = "")
     {
         if (empty($controllerName))
-            $controllerName = $modelName . 'Controller';
+            $controllerName = $modelName . 'ApiController';
 
-        $controller = $this->module->resourceController($controllerName);
+        $controller = $this->module->apiResourceController($controllerName);
 
         $uri = $this->modelUri($controller->model());
 

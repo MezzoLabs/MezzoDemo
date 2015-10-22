@@ -8,7 +8,6 @@ use Dingo\Api\Routing\Helpers as ApiHelpers;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleResourceController;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Core\Modularisation\NamingConvention;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
@@ -84,7 +83,7 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
      */
     public function isResourceController()
     {
-        if(!$this instanceof ModuleResourceController)
+        if (!($this instanceof ResourceController))
             return false;
 
         if(!$this->isValid())
@@ -133,6 +132,8 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
     {
         if(!$this->module())
             throw new ModuleControllerException('A module controller has to be inside a module folder.');
+
+        return true;
     }
 
     /**

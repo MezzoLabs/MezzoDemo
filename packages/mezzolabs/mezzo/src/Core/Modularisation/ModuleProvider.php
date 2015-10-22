@@ -8,6 +8,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Api\ApiResourceController;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModulePages;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleResourceController;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
@@ -249,7 +250,7 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function controllerClass($controllerName)
     {
-
+        return NamingConvention::controllerClass($this, $controllerName);
     }
 
     /**
@@ -313,7 +314,12 @@ abstract class ModuleProvider extends ServiceProvider
 
     public function apiResourceController($controllerName)
     {
+        $controller = $this->resourceController($controllerName);
 
+        if (!($controller instanceof ApiResourceController))
+            throw new ModuleControllerException($controller->qualifiedName() . ' is not a API resource controller. ');
+
+        return $controller;
     }
 
  }

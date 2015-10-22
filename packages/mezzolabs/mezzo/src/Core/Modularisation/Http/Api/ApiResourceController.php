@@ -6,9 +6,10 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Http\Api;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\HasModelResource;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleRequest;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResponse;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\ResourceController;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 
-abstract class ApiResourceController extends ApiController
+abstract class ApiResourceController extends ApiController implements ResourceController
 {
     use HasModelResource;
 
@@ -22,18 +23,7 @@ abstract class ApiResourceController extends ApiController
      */
     public function index(ModuleRequest $request)
     {
-        return $this->repository()->all();
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return ModuleResponse
-     */
-    public function create()
-    {
-
+        return $this->repository()->all()->toJson();
     }
 
 
@@ -56,19 +46,9 @@ abstract class ApiResourceController extends ApiController
      */
     public function show($id)
     {
-        return $this->repository->find($id);
+        return $this->repository()->find($id)->toJson();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return ModuleResponse
-     */
-    public function edit($id)
-    {
-
-    }
 
     /**
      * Update the specified resource in storage.
@@ -79,7 +59,7 @@ abstract class ApiResourceController extends ApiController
      */
     public function update(ModuleRequest $request, $id)
     {
-        return $this->repository->update($request->all(), $id);
+        return $this->repository()->update($request->all(), $id);
     }
 
     /**
@@ -90,7 +70,7 @@ abstract class ApiResourceController extends ApiController
      */
     public function destroy($id)
     {
-        return $this->repository->delete($id);
+        return $this->repository()->delete($id);
     }
 
 

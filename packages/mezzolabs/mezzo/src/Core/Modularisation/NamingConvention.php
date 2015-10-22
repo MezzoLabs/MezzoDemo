@@ -5,8 +5,8 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleResourceController;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\ResourceController;
 use MezzoLabs\Mezzo\Exceptions\NamingConventionException;
 
 class NamingConvention
@@ -34,9 +34,12 @@ class NamingConvention
         $controllerClass = get_class($controller);
         $moduleNamespaceEnd = strpos($controllerClass, 'Http\Controllers');
 
-        if ($moduleNamespaceEnd === -1)
+        if (!$moduleNamespaceEnd)
+            $moduleNamespaceEnd = strpos($controllerClass, 'Http\ApiControllers');
+
+        if (!$moduleNamespaceEnd)
             throw new NamingConventionException("This module controller isn't located inside a real module. " .
-                "Check if the controller is inside the Http\\Controlelrs Folder.");
+                "Check if the controller is inside the Http\\Controllers or the ApiControllers Folder.");
 
         $moduleNamespace = explode('\\', substr($controllerClass, 0, $moduleNamespaceEnd - 1));
         $moduleKey = $moduleNamespace[count($moduleNamespace) - 1];
@@ -44,9 +47,20 @@ class NamingConvention
         return mezzo()->module($moduleKey);
     }
 
+    /**
+     * Try to find the model that is connected via the naming.
+     * <ModelName>Controller
+     * <ModelName>ApiController
+     * <ModelName>Repository
+     * ...
+     *
+     * @param $object
+     * @return mixed
+     * @throws NamingConventionException
+     */
     public static function modelName($object)
     {
-        if ($object instanceof ModuleResourceController)
+        if ($object instanceof ResourceController)
             return static::modelNameForModuleController($object);
 
         throw new NamingConventionException('Cannot find model name for ' . get_class($object));
@@ -71,15 +85,27 @@ class NamingConvention
         return false;
     }
 
-    private static function modelNameForModuleController(ModuleResourceController $object)
+    /**
+     * @param ResourceController $object
+     * @return mixed
+     */
+    private static function modelNameForModuleController(ResourceController $object)
     {
         $shortName = Singleton::reflection($object)->getShortName();
 
-        $possibleModelName = str_replace('Controller', '', $shortName);
+        $possibleModelName = str_replace(['ApiController', 'Controller'], '', $shortName);
 
         return $possibleModelName;
     }
 
+    /**
+     * Get the full controller class via the module and the name of the controller.
+     *
+     * @param ModuleProvider $module
+     * @param $controllerName
+     * @return string
+     * @throws NamingConventionException
+     */
     public static function controllerClass(ModuleProvider $module, $controllerName)
     {
         if (is_object($controllerName))
@@ -93,7 +119,6 @@ class NamingConvention
             $controllerNamespace = $module->getNamespaceName() . '\\Http\\ApiControllers\\';
         else
             $controllerNamespace = $module->getNamespaceName() . '\\Http\\Controllers\\';
-
 
         /**
          * Check if controllerName exists and if it is inside the correct namespace
@@ -114,6 +139,8 @@ class NamingConvention
     }
 
     /**
+     * Determine the type of the controller based on his short class name.
+     *
      * @param $controllerName
      * @return string
      */
