@@ -11,7 +11,7 @@
     <link href="http://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,400italic" rel='stylesheet'
           type="text/css">
     <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="{{ cockpit_asset('/components/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ cockpit_asset('/components/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css') }}"
           rel="stylesheet">
     <link href="{{ cockpit_asset('/components/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css') }}"
@@ -37,7 +37,7 @@
                     @yield('content')
                 </div>
             </div>
-            @include('cockpit::layouts.default.content.footer');
+            @include('cockpit::layouts.default.content.footer')
         </main>
         @include('cockpit::layouts.default.quickview')
     </div>
