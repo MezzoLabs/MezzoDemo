@@ -21,7 +21,7 @@ Route::group(['as' => 'cockpit::', 'prefix' => 'mezzo', 'namespace' => 'MezzoLab
     Route::post('password/reset', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@postReset']);
 
     Route::get('sample/tutorial/index.html', function(){
-        Config::set('laravel-debugbar::config.enabled', false);
+        \Debugbar::disable();
 
         return view('cockpit::test.list_tutorials');
     });
