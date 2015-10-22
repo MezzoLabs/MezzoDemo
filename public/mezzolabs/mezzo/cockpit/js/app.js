@@ -21,7 +21,7 @@ app.config(_setupConfig2['default']);
 app.run(_setupRun2['default']);
 (0, _register2['default'])(app);
 
-},{"./register":41,"./setup/config":42,"./setup/run":43}],2:[function(require,module,exports){
+},{"./register":35,"./setup/config":36,"./setup/run":38}],2:[function(require,module,exports){
 'use strict';
 
 exports.name = 'mezzoCompile';
@@ -82,164 +82,6 @@ function uid() {
 }
 
 },{}],5:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-exports['default'] = { name: 'mezzoContent', directive: directive };
-
-/*@ngInject*/function directive(quickview) {
-    return {
-        restrict: 'E',
-        templateUrl: 'layout/content/content.html',
-        link: link
-    };
-
-    function link() {
-        $('#content-main').click(function () {
-            quickview.setVisible(false);
-        });
-    }
-}
-module.exports = exports['default'];
-
-},{}],6:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-exports['default'] = { name: 'mezzoQuickview', directive: directive };
-
-/*@ngInject*/function directive(quickview) {
-    return {
-        restrict: 'E',
-        templateUrl: 'layout/quickview/quickview.html',
-        link: link
-    };
-
-    function link() {
-        $('#quickview .btn-close, #view-overlay').click(function () {
-            quickview.setVisible(false);
-        });
-    }
-}
-module.exports = exports['default'];
-
-},{}],7:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-exports['default'] = { name: 'quickview', service: service };
-
-function service() {
-    return { setVisible: setVisible, isVisible: isVisible };
-}
-
-function setVisible(open) {
-    if (open) {
-        $('#quickview').addClass('opened');
-        $('#view-overlay').addClass('opened');
-    } else {
-        $('#quickview').removeClass('opened');
-        $('#view-overlay').removeClass('opened');
-    }
-}
-
-function isVisible() {
-    return $('#quickview').hasClass('opened');
-}
-module.exports = exports['default'];
-
-},{}],8:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-exports['default'] = { name: 'mezzoQuickview', directive: directive };
-
-/*@ngInject*/function directive(quickview) {
-    return {
-        restrict: 'A',
-        link: link
-    };
-
-    function link(scope, element, attrs) {
-        $(element).click(function () {
-            quickview.setVisible(!quickview.isVisible());
-            return false;
-        });
-    }
-}
-module.exports = exports['default'];
-
-},{}],9:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-exports['default'] = { name: 'mezzoSidebar', directive: directive };
-
-function directive() {
-    return {
-        restrict: 'E',
-        templateUrl: 'layout/sidebar/sidebar.html',
-        link: link
-    };
-}
-
-function link() {
-    var $body = $('body');
-
-    $('.sidebar-pin').click(function () {
-        var sidebarIsPinned = $body.hasClass('sidebar-pinned');
-
-        if (sidebarIsPinned) {
-            $('body').addClass('sidebar-unpinned').removeClass('sidebar-pinned');
-            $(this).addClass('fa-circle-o').removeClass('fa-dot-circle-o');
-        } else {
-            $('body').addClass('sidebar-pinned').removeClass('sidebar-unpinned');
-            $(this).addClass('fa-dot-circle-o').removeClass('fa-circle-o');
-        }
-    });
-
-    $('#sidebar').mouseenter(function () {
-        $body.addClass('sidebar-mousein').removeClass('sidebar-mouseout');
-    }).mouseleave(function () {
-        $body.addClass('sidebar-mouseout').removeClass('sidebar-mousein');
-
-        if ($body.hasClass('sidebar-unpinned')) $('.nav-main .opened').removeClass('opened');
-    });
-
-    $('.nav-main > li.has-pages > a .dropdown').click(function () {
-        $(this).parents('li').toggleClass('opened');
-        console.log(this);
-    });
-}
-module.exports = exports['default'];
-
-},{}],10:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-exports['default'] = { name: 'mezzoTopbar', directive: directive };
-
-function directive() {
-    return {
-        restrict: 'E',
-        templateUrl: 'layout/topbar/topbar.html'
-    };
-}
-module.exports = exports['default'];
-
-},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -325,7 +167,7 @@ var File = (function () {
 exports['default'] = File;
 module.exports = exports['default'];
 
-},{}],12:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -366,7 +208,7 @@ var Folder = (function (_File) {
 exports['default'] = Folder;
 module.exports = exports['default'];
 
-},{"./File":11}],13:[function(require,module,exports){
+},{"./File":5}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -418,7 +260,7 @@ var FilesAsideController = (function () {
 exports['default'] = { name: 'FilesAsideController', controller: FilesAsideController };
 module.exports = exports['default'];
 
-},{}],14:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -443,7 +285,7 @@ exports['default'] = { name: 'mezzoDraggable', directive: directive };
 }
 module.exports = exports['default'];
 
-},{}],15:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -476,7 +318,7 @@ exports['default'] = { name: 'mezzoDroppable', directive: directive };
 }
 module.exports = exports['default'];
 
-},{}],16:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -513,7 +355,7 @@ var FileManagerService = (function () {
 
 module.exports = exports['default'];
 
-},{}],17:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -785,7 +627,7 @@ var FilesMainController = (function () {
 exports['default'] = { name: 'FilesMainController', controller: FilesMainController };
 module.exports = exports['default'];
 
-},{"./File":11,"./Folder":12}],18:[function(require,module,exports){
+},{"./File":5,"./Folder":6}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -822,7 +664,7 @@ function directive(templateUrl, modifyOptions) {
 }
 module.exports = exports['default'];
 
-},{}],19:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -862,7 +704,7 @@ function directive(templateUrl, controller) {
 }
 module.exports = exports['default'];
 
-},{}],20:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -873,7 +715,7 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoCheckboxOptions', 'checkbox/checkbox-options.html');
 
-},{"../ComponentOptions":19}],21:[function(require,module,exports){
+},{"../ComponentOptions":13}],15:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -888,7 +730,7 @@ function modifyOptions(options) {
     options.label = 'Label';
 }
 
-},{"../Component":18}],22:[function(require,module,exports){
+},{"../Component":12}],16:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -928,7 +770,7 @@ var ComponentService = (function () {
     return ComponentService;
 })();
 
-},{}],23:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -951,7 +793,7 @@ function controller(scope) {
     };
 }
 
-},{"../ComponentOptions":19}],24:[function(require,module,exports){
+},{"../ComponentOptions":13}],18:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -968,7 +810,7 @@ function modifyOptions(options) {
     options.multiple = false;
 }
 
-},{"../Component":18}],25:[function(require,module,exports){
+},{"../Component":12}],19:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -979,7 +821,7 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoOwnerOptions', 'owner/owner-options.html');
 
-},{"../ComponentOptions":19}],26:[function(require,module,exports){
+},{"../ComponentOptions":13}],20:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -992,7 +834,7 @@ module.exports = new _Component2['default']('mezzoOwner', 'owner/owner.html', mo
 
 function modifyOptions(options) {}
 
-},{"../Component":18}],27:[function(require,module,exports){
+},{"../Component":12}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1004,7 +846,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{}],28:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1064,7 +906,7 @@ var Model = (function () {
 exports['default'] = Model;
 module.exports = exports['default'];
 
-},{"./Mode":27}],29:[function(require,module,exports){
+},{"./Mode":21}],23:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1085,7 +927,7 @@ function alphabetical(str1, str2) {
 }
 module.exports = exports["default"];
 
-},{}],30:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1096,7 +938,7 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoRelationOptions', 'relation/relation-options.html');
 
-},{"../ComponentOptions":19}],31:[function(require,module,exports){
+},{"../ComponentOptions":13}],25:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1173,7 +1015,7 @@ function modifyOptions(options) {
     }
 }
 
-},{"../Component":18,"./Mode":27,"./Model":28,"./alphabetical":29,"./sentence":32}],32:[function(require,module,exports){
+},{"../Component":12,"./Mode":21,"./Model":22,"./alphabetical":23,"./sentence":26}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1209,7 +1051,7 @@ function phrase(model1, model2) {
 }
 module.exports = exports['default'];
 
-},{"./Mode":27}],33:[function(require,module,exports){
+},{"./Mode":21}],27:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1220,7 +1062,7 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoTextMultiOptions', 'text-multi/text-multi-options.html');
 
-},{"../ComponentOptions":19}],34:[function(require,module,exports){
+},{"../ComponentOptions":13}],28:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1236,7 +1078,7 @@ function modifyOptions(options) {
     options.placeholder = 'Placeholder';
 }
 
-},{"../Component":18}],35:[function(require,module,exports){
+},{"../Component":12}],29:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1247,7 +1089,7 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoTextSingleOptions', 'text-single/text-single-options.html');
 
-},{"../ComponentOptions":19}],36:[function(require,module,exports){
+},{"../ComponentOptions":13}],30:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1263,7 +1105,7 @@ function modifyOptions(options) {
     options.placeholder = 'Placeholder';
 }
 
-},{"../Component":18}],37:[function(require,module,exports){
+},{"../Component":12}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1288,7 +1130,7 @@ function button(label, icon, component) {
 }
 module.exports = exports['default'];
 
-},{}],38:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1401,7 +1243,7 @@ var ModelBuilder = (function () {
 
 module.exports = exports['default'];
 
-},{}],39:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1424,7 +1266,7 @@ exports['default'] = { name: 'PagesAsideController', controller: controller };
 }
 module.exports = exports['default'];
 
-},{}],40:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1444,7 +1286,7 @@ function controller() {
 }
 module.exports = exports['default'];
 
-},{}],41:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 module.exports = function (app) {
@@ -1456,25 +1298,19 @@ module.exports = function (app) {
 				register(require('./modules/files/draggable.directive.js'));
 				register(require('./modules/files/droppable.directive.js'));
 				register(require('./modules/files/file-manager.service.js'));
-				register(require('./modules/pages/aside.controller.js'));
-				register(require('./modules/pages/main.controller.js'));
 				register(require('./modules/model-builder/model-builder.controller.js'));
 				register(require('./modules/model-builder/model-builder.service.js'));
-				register(require('./layout/content/content.directive.js'));
-				register(require('./layout/quickview/quickview.directive.js'));
-				register(require('./layout/quickview/trigger.directive.js'));
-				register(require('./layout/quickview/quickview.service.js'));
-				register(require('./layout/sidebar/sidebar.directive.js'));
-				register(require('./layout/topbar/topbar.directive.js'));
+				register(require('./modules/pages/aside.controller.js'));
+				register(require('./modules/pages/main.controller.js'));
 				register(require('./modules/model-builder/components/component.service.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
-				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
-				register(require('./modules/model-builder/components/relation/relation.directive.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown.directive.js'));
 				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
 				register(require('./modules/model-builder/components/owner/owner.directive.js'));
+				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
+				register(require('./modules/model-builder/components/relation/relation.directive.js'));
 				register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
 				register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
 				register(require('./modules/model-builder/components/text-single/text-single-options.directive.js'));
@@ -1495,7 +1331,7 @@ module.exports = function (app) {
 				}
 };
 
-},{"./common/compile.directive.js":2,"./common/enter.directive.js":3,"./common/uid.service.js":4,"./layout/content/content.directive.js":5,"./layout/quickview/quickview.directive.js":6,"./layout/quickview/quickview.service.js":7,"./layout/quickview/trigger.directive.js":8,"./layout/sidebar/sidebar.directive.js":9,"./layout/topbar/topbar.directive.js":10,"./modules/files/aside.controller.js":13,"./modules/files/draggable.directive.js":14,"./modules/files/droppable.directive.js":15,"./modules/files/file-manager.service.js":16,"./modules/files/main.controller.js":17,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":20,"./modules/model-builder/components/checkbox/checkbox.directive.js":21,"./modules/model-builder/components/component.service.js":22,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":23,"./modules/model-builder/components/dropdown/dropdown.directive.js":24,"./modules/model-builder/components/owner/owner-options.directive.js":25,"./modules/model-builder/components/owner/owner.directive.js":26,"./modules/model-builder/components/relation/relation-options.directive.js":30,"./modules/model-builder/components/relation/relation.directive.js":31,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":33,"./modules/model-builder/components/text-multi/text-multi.directive.js":34,"./modules/model-builder/components/text-single/text-single-options.directive.js":35,"./modules/model-builder/components/text-single/text-single.directive.js":36,"./modules/model-builder/model-builder.controller.js":37,"./modules/model-builder/model-builder.service.js":38,"./modules/pages/aside.controller.js":39,"./modules/pages/main.controller.js":40}],42:[function(require,module,exports){
+},{"./common/compile.directive.js":2,"./common/enter.directive.js":3,"./common/uid.service.js":4,"./modules/files/aside.controller.js":7,"./modules/files/draggable.directive.js":8,"./modules/files/droppable.directive.js":9,"./modules/files/file-manager.service.js":10,"./modules/files/main.controller.js":11,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":14,"./modules/model-builder/components/checkbox/checkbox.directive.js":15,"./modules/model-builder/components/component.service.js":16,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":17,"./modules/model-builder/components/dropdown/dropdown.directive.js":18,"./modules/model-builder/components/owner/owner-options.directive.js":19,"./modules/model-builder/components/owner/owner.directive.js":20,"./modules/model-builder/components/relation/relation-options.directive.js":24,"./modules/model-builder/components/relation/relation.directive.js":25,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":27,"./modules/model-builder/components/text-multi/text-multi.directive.js":28,"./modules/model-builder/components/text-single/text-single-options.directive.js":29,"./modules/model-builder/components/text-single/text-single.directive.js":30,"./modules/model-builder/model-builder.controller.js":31,"./modules/model-builder/model-builder.service.js":32,"./modules/pages/aside.controller.js":33,"./modules/pages/main.controller.js":34}],36:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1519,22 +1355,107 @@ exports['default'] = config;
 }
 module.exports = exports['default'];
 
-},{"./states":44}],43:[function(require,module,exports){
+},{"./states":39}],37:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-exports['default'] = run;
 
-/*@ngInject*/function run($state) {
-    /* Form stuff */
+exports['default'] = function () {
+    $(function () {
+        return init();
+    });
+};
+
+function init() {
+    $('.sidebar-pin').click(function () {
+        var sidebarIsPinned = $('body').hasClass('sidebar-pinned');
+
+        if (sidebarIsPinned) {
+            $('body').addClass('sidebar-unpinned').removeClass('sidebar-pinned');
+            $(this).addClass('fa-circle-o').removeClass('fa-dot-circle-o');
+        } else {
+            $('body').addClass('sidebar-pinned').removeClass('sidebar-unpinned');
+            $(this).addClass('fa-dot-circle-o').removeClass('fa-circle-o');
+        }
+    });
+
+    $('#sidebar').mouseenter(function () {
+        $('body').addClass('sidebar-mousein').removeClass('sidebar-mouseout');
+    });
+
+    $('#sidebar').mouseleave(function () {
+        $('body').addClass('sidebar-mouseout').removeClass('sidebar-mousein');
+
+        if ($('body').hasClass('sidebar-unpinned')) $('.nav-main .opened').removeClass('opened');
+    });
+
+    $('.nav-main > li.has-pages > a .dropdown').click(function () {
+        $(this).parents('li').toggleClass('opened');
+    });
+
+    $('.trigger-quickview').click(function () {
+        quickviewVisible(!quickviewIsVisible());
+        return false;
+    });
+
+    $('#quickview .btn-close').click(function () {
+        quickviewVisible(false);
+    });
+
+    $('#content-main, #view-overlay').click(function () {
+        quickviewVisible(false);
+    });
+
+    function quickviewIsVisible() {
+        return $('#quickview').hasClass('opened');
+    }
+
+    function quickviewVisible(open) {
+        if (open) {
+            $('#quickview').addClass('opened');
+            $('#view-overlay').addClass('opened');
+        } else {
+            $('#quickview').removeClass('opened');
+            $('#view-overlay').removeClass('opened');
+        }
+    }
+
+    /**
+     * Form stuff
+     */
     $.fn.editable.defaults.mode = 'inline';
+
     $.fn.editableform.buttons = '<button type="submit" class="btn btn-primary btn-sm editable-submit">' + '<i class=ion-checkmark></i>' + '</button>' + '<button type="button" class="btn btn-default btn-sm editable-cancel">' + '<i class="ion-close"></i>' + '</button>';
+
+    $('.editable').editable();
+
+    $('select').select2();
 }
 module.exports = exports['default'];
 
-},{}],44:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _jquery = require('./jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+exports['default'] = run;
+
+/*@ngInject*/function run() {
+    (0, _jquery2['default'])();
+}
+module.exports = exports['default'];
+
+},{"./jquery":37}],39:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
