@@ -33,7 +33,10 @@ elixir(function(mix) {
         .sass('app.scss', 'public/mezzolabs/mezzo/cockpit/css')
         .browserify('app.js', 'public/mezzolabs/mezzo/cockpit/js')
         .browserSync({
+            files: 'public/mezzolabs/mezzo/cockpit/js/*',
             proxy: 'mezzo.dev',
-            open: false
+            open: false,
+            ui: false,
+            ghostMode: false
         });
 });

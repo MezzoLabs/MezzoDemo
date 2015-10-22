@@ -1,9 +1,9 @@
 @extends('cockpit::layouts.default')
 
+@section('content-aside')
+    <div ui-view="aside"></div>
+@endsection
 
 @section('content')
-    <div class="wrapper">
-        <h1>Content 2</h1>
-
-    </div>
+    <div ui-view="main"></div>
 @endsection

@@ -25,14 +25,15 @@
             <div id="view-main">
                 @include('cockpit::layouts.default.topbar')
                 <main id="content-container">
-                    @yield('content-aside')
-
+                    <div id="content-aside" ng-if="aside()">
+                        @yield('content-aside')
+                    </div>
                     <div id="content-main">
                         <div class="content">
                             @yield('content')
                         </div>
+                        @include('cockpit::layouts.default.content.footer')
                     </div>
-                    @include('cockpit::layouts.default.content.footer')
                 </main>
                 @include('cockpit::layouts.default.quickview')
             </div>
