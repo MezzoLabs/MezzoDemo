@@ -1497,8 +1497,8 @@ var TestMainController = (function () {
             return this.selected().length === 1;
         }
     }, {
-        key: "canDelete",
-        value: function canDelete() {
+        key: "canRemove",
+        value: function canRemove() {
             return this.selected().length > 0;
         }
     }, {
@@ -1539,6 +1539,26 @@ var TestMainController = (function () {
             return this.models.filter(function (model) {
                 return model._meta.selected;
             });
+        }
+    }, {
+        key: "create",
+        value: function create() {
+            //TODO
+        }
+    }, {
+        key: "edit",
+        value: function edit() {
+            //TODO
+        }
+    }, {
+        key: "remove",
+        value: function remove() {
+            //TODO
+        }
+    }, {
+        key: "countSelected",
+        value: function countSelected() {
+            return this.selected().length;
         }
     }]);
 

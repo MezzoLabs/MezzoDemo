@@ -76,7 +76,7 @@ class TestMainController {
         return this.selected().length === 1;
     }
 
-    canDelete(){
+    canRemove(){
         return this.selected().length > 0;
     }
 
@@ -106,6 +106,22 @@ class TestMainController {
 
     selected(){
         return this.models.filter(model => model._meta.selected);
+    }
+
+    create(){
+        //TODO
+    }
+
+    edit(){
+        //TODO
+    }
+
+    remove(){
+        //TODO
+    }
+
+    countSelected(){
+        return this.selected().length;
     }
 
 }

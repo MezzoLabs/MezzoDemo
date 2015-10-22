@@ -8,23 +8,24 @@
         <!-- Search -->
 
         <!-- Add new -->
-        <button type="button" class="btn btn-primary">
+        <button type="button" class="btn btn-primary" ng-click="vm.create()">
             <span class="ion-plus"></span>
             Add new
         </button>
         <!-- Add new -->
 
         <!-- Edit -->
-        <button type="button" class="btn btn-default" ng-disabled="!vm.canEdit()">
+        <button type="button" class="btn btn-default" ng-disabled="!vm.canEdit()" ng-click="vm.edit()">
             <span class="ion-edit"></span>
             Edit
         </button>
         <!-- Edit -->
 
         <!-- Delete selected -->
-        <button type="button" class="btn btn-default" ng-disabled="!vm.canDelete()">
+        <button type="button" class="btn btn-default" ng-disabled="!vm.canRemove()" ng-click="vm.remove()">
             <span class="ion-trash-b"></span>
             Delete
+            <span class="badge" ng-bind="vm.countSelected()"></span>
         </button>
         <!-- Delete selected -->
 
