@@ -1,6 +1,6 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Http;
+namespace MezzoLabs\Mezzo\Core\Modularisation\Http\Html;
 
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;

@@ -139,24 +139,6 @@ class ModelRepository
         return $this->query()->where($attribute, '=', $value)->first($columns);
     }
 
-    /**
-     * Try to find a concrete repository implementation for a model class.
-     *
-     * @param $modelName
-     * @param array $namespaces
-     * @return bool|string
-     */
-    public static function guessRepositoryClass($modelName, $namespaces = ['App'])
-    {
-        foreach ($namespaces as $namespace) {
-            $possibleRepository = $namespace . '\Domain\Repositories\\' . $modelName . 'Repository';
-
-            if (class_exists($possibleRepository))
-                return $possibleRepository;
-        }
-
-        return false;
-    }
 
     /**
      * Create a new generic model repository for a given model class.

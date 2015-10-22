@@ -5,14 +5,10 @@ namespace MezzoLabs\Mezzo\Core\Routing;
 
 use Closure;
 use Dingo\Api\Routing\Router as DingoRouter;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResourceController;
-use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers\DingoApi;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
-use MezzoLabs\Mezzo\Exceptions\ModuleNotFound;
 
 class ApiRouter
 {

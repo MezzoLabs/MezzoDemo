@@ -8,8 +8,9 @@ use Dingo\Api\Routing\Helpers as ApiHelpers;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleResourceController;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
+use MezzoLabs\Mezzo\Core\Modularisation\NamingConvention;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 
 abstract class ModuleController extends Controller implements ModuleControllerContract
@@ -141,29 +142,11 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
     public function module()
     {
         if(!$this->module)
-            $this->module = $this->findModule();
+            $this->module = NamingConvention::findModule($this);
 
         return $this->module;
     }
 
-    /**
-     * @return ModuleProvider
-     * @throws ModuleControllerException
-     */
-    protected function findModule()
-    {
-        $controllerClass = get_class($this);
-        $moduleNamespaceEnd = strpos($controllerClass, 'Http\Controllers');
-
-        if($moduleNamespaceEnd === -1)
-            throw new ModuleControllerException("This module controller isn't located inside a real module. " .
-                "Check if the controller is inside the Http\\Controlelrs Folder.");
-
-        $moduleNamespace = explode('\\', substr($controllerClass, 0, $moduleNamespaceEnd - 1));
-        $moduleKey = $moduleNamespace[count($moduleNamespace) - 1];
-
-        return mezzo()->module($moduleKey);
-    }
 
     /**
      * @return ModuleRequest

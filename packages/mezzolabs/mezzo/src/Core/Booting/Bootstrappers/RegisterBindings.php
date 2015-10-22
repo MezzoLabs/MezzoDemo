@@ -13,6 +13,7 @@ use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Helpers\Path;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
+use MezzoLabs\Mezzo\Core\Modularisation\NamingConvention;
 use MezzoLabs\Mezzo\Core\Reflection\ModelFinder;
 use MezzoLabs\Mezzo\Core\Reflection\ModelLookup;
 use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
@@ -48,9 +49,8 @@ class RegisterBindings implements Bootstrapper
 
     protected $singletons = [
         ApiConfig::class,
-        MezzoRouter::class,
-        ApiRouter::class,
-        Uri::class
+        Uri::class,
+        NamingConvention::class
     ];
 
 
