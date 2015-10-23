@@ -18,10 +18,10 @@ use MezzoLabs\Mezzo\Exceptions\DirectoryNotFound;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 use MezzoLabs\Mezzo\Http\Api\ApiResourceControllerContract;
-use MezzoLabs\Mezzo\Http\Controller;
-use MezzoLabs\Mezzo\Http\Html\ModulePage;
-use MezzoLabs\Mezzo\Http\Html\ModulePages;
-use MezzoLabs\Mezzo\Http\Html\ResourceController;
+use MezzoLabs\Mezzo\Http\Controllers\Controller;
+use MezzoLabs\Mezzo\Http\Controllers\ResourceController;
+use MezzoLabs\Mezzo\Http\Pages\ModulePage;
+use MezzoLabs\Mezzo\Http\Pages\ModulePages;
 
 abstract class ModuleProvider extends ServiceProvider
 {

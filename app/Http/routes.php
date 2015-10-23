@@ -23,8 +23,8 @@ Route::get('/', function () {
 });
 
 Route::any('debug/controller', function(){
-    mezzo_dd(\MezzoLabs\Mezzo\Http\Api\ApiRequest::capture()->all());
-    mezzo_dd(app(\MezzoLabs\Mezzo\Http\Html\ModuleRequest::class)->all());
+    mezzo_dd(\MezzoLabs\Mezzo\Http\Requests\ApiRequest::capture()->all());
+    mezzo_dd(app(\MezzoLabs\Mezzo\Http\Requests\ModuleRequest::class)->all());
     mezzo_dd(Request::capture()->all());
 });
 

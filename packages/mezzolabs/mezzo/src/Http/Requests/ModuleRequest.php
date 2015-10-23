@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Http\Html;
+namespace MezzoLabs\Mezzo\Http\Requests;
 
 use Illuminate\Http\Request as LaravelRequest;
 

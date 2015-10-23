@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Http;
+namespace MezzoLabs\Mezzo\Http\Controllers;
 
 
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -13,7 +13,7 @@ use MezzoLabs\Mezzo\Core\Modularisation\NamingConvention;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Validation\ModelValidator;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
-use MezzoLabs\Mezzo\Http\Html\ModuleRequest;
+use MezzoLabs\Mezzo\Http\Requests\ModuleRequest;
 
 abstract class Controller extends IlluminateController
 {
@@ -181,7 +181,7 @@ abstract class Controller extends IlluminateController
     }
 
     /**
-     * @return \MezzoLabs\Mezzo\Http\Html\ModuleRequest
+     * @return \MezzoLabs\Mezzo\Http\Requests\ModuleRequest
      */
     protected function request()
     {

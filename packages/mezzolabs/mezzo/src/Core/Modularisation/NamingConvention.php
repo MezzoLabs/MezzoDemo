@@ -7,9 +7,9 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\NamingConventionException;
-use MezzoLabs\Mezzo\Http\Controller;
-use MezzoLabs\Mezzo\Http\Html\ModulePage;
-use MezzoLabs\Mezzo\Http\ResourceControllerContract;
+use MezzoLabs\Mezzo\Http\Controllers\Controller;
+use MezzoLabs\Mezzo\Http\Controllers\ResourceControllerContract;
+use MezzoLabs\Mezzo\Http\Pages\ModulePage;
 
 class NamingConvention
 {

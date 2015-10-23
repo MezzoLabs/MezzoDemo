@@ -25,7 +25,7 @@ use MezzoLabs\Mezzo\Core\Routing\Router;
 use MezzoLabs\Mezzo\Core\Routing\Uri;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
 use MezzoLabs\Mezzo\Exceptions\UnexpectedException;
-use MezzoLabs\Mezzo\Http\Html\ModuleRequest;
+use MezzoLabs\Mezzo\Http\Requests\ModuleRequest;
 
 trait CanMakeInstances
 {

@@ -1,15 +1,14 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Http\Html;
+namespace MezzoLabs\Mezzo\Http\Controllers;
 
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
-use MezzoLabs\Mezzo\Http\Controller;
-use MezzoLabs\Mezzo\Http\HasModelResource;
-use MezzoLabs\Mezzo\Http\ResourceControllerContract;
+use MezzoLabs\Mezzo\Http\Requests\ModuleRequest;
+use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
 
 abstract class ResourceController extends Controller implements ResourceControllerContract
 {
-    use HasModelResource;
+    use \MezzoLabs\Mezzo\Http\Controllers\HasModelResource;
 
     protected $allowStaticRepositories = false;
 

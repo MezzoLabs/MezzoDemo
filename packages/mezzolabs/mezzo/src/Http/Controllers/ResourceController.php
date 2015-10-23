@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Http;
+namespace MezzoLabs\Mezzo\Http\Controllers;
 
 
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;

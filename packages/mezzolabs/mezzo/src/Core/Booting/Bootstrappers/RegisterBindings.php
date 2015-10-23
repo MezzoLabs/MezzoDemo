@@ -20,8 +20,8 @@ use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
 use MezzoLabs\Mezzo\Core\Routing\ApiConfig;
 use MezzoLabs\Mezzo\Core\Routing\Uri;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
-use MezzoLabs\Mezzo\Http\Api\ApiRequest;
-use MezzoLabs\Mezzo\Http\Html\ModuleRequest;
+use MezzoLabs\Mezzo\Http\Requests\ApiRequest;
+use MezzoLabs\Mezzo\Http\Requests\ModuleRequest;
 use MezzoLabs\Mezzo\Modules\General\GeneralModule;
 
 class RegisterBindings implements Bootstrapper

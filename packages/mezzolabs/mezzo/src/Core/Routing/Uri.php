@@ -5,7 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Routing;
 
 
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Http\Html\ModulePage;
+use MezzoLabs\Mezzo\Http\Pages\ModulePage;
 
 class Uri
 {

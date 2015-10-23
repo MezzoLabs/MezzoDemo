@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Http\Api;
+namespace MezzoLabs\Mezzo\Http\Requests;
 
 use Dingo\Api\Http\Request as DingoRequest;
 use Illuminate\Http\Request as IlluminateRequest;
@@ -11,7 +11,7 @@ class ApiRequest extends DingoRequest
 {
     public function createFromIlluminate(IlluminateRequest $old)
     {
-        parent::createFromIlluminate($old);
+        DingoRequest::createFromIlluminate($old);
     }
 
     /**

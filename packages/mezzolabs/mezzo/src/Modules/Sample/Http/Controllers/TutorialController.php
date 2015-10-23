@@ -3,9 +3,9 @@
 namespace MezzoLabs\Mezzo\Modules\Sample\Http\Controllers;
 
 
-use MezzoLabs\Mezzo\Http\Html\ModuleRequest;
-use MezzoLabs\Mezzo\Http\Html\ModuleResponse;
-use MezzoLabs\Mezzo\Http\Html\ResourceController;
+use MezzoLabs\Mezzo\Http\Controllers\ResourceController;
+use MezzoLabs\Mezzo\Http\Requests\ModuleRequest;
+use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
 use MezzoLabs\Mezzo\Modules\Sample\Http\Pages\IndexTutorialPage;
 
 class TutorialController extends ResourceController

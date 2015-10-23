@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Http\Api;
+namespace MezzoLabs\Mezzo\Http\Requests;
 
 use Dingo\Api\Http\Response as DingoResponse;
 use Dingo\Api\Http\Response\Factory as DingoResponseFactory;

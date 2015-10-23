@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Http\Html;
+namespace MezzoLabs\Mezzo\Http\Responses;
 
 
 use Illuminate\Http\Response as LaravelResponse;

@@ -1,15 +1,15 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Http\Api;
+namespace MezzoLabs\Mezzo\Http\Controllers;
 
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
-use MezzoLabs\Mezzo\Http\HasModelResource;
-use MezzoLabs\Mezzo\Http\ResourceControllerContract;
+use MezzoLabs\Mezzo\Http\Requests\ApiRequest;
+use MezzoLabs\Mezzo\Http\Requests\ApiResponseFactory;
 
-abstract class ApiResourceControllerContract extends ApiController implements ResourceControllerContract
+abstract class ApiResourceController extends ApiController implements ResourceControllerContract
 {
-    use HasModelResource;
+    use \MezzoLabs\Mezzo\Http\Controllers\HasModelResource;
 
     protected $allowStaticRepositories = false;
 

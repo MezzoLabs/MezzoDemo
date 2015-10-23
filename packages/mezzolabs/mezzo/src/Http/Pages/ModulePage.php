@@ -1,13 +1,13 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Http\Html;
+namespace MezzoLabs\Mezzo\Http\Pages;
 
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ResourcePage;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Exceptions\ModulePageException;
-use MezzoLabs\Mezzo\Http\Controller;
+use MezzoLabs\Mezzo\Http\Controllers\Controller;
 
 abstract class ModulePage implements ModulePageContract
 {
