@@ -16,7 +16,7 @@ use MezzoLabs\Mezzo\Core\Annotations\Reader\AnnotationReader;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Helpers\Path;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleRequest;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleRequest;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
 use MezzoLabs\Mezzo\Core\Reflection\ModelFinder;
 use MezzoLabs\Mezzo\Core\Reflection\ModelLookup;

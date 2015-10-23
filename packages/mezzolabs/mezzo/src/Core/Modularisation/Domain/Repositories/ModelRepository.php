@@ -26,7 +26,6 @@ class ModelRepository
      */
     protected $model;
 
-
     /**
      * @param ModelReflection|null $modelReflection
      * @throws RepositoryException

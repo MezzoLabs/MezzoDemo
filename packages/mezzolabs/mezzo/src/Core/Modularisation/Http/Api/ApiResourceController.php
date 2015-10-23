@@ -4,8 +4,6 @@
 namespace MezzoLabs\Mezzo\Core\Modularisation\Http\Api;
 
 use MezzoLabs\Mezzo\Core\Modularisation\Http\HasModelResource;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleRequest;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResponse;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ResourceController;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 
@@ -18,10 +16,10 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
     /**
      * Display a listing of the resource.
      *
-     * @param ModuleRequest $request
-     * @return ModuleResponse
+     * @param ApiRequest $request
+     * @return ApiResponseFactory
      */
-    public function index(ModuleRequest $request)
+    public function index(ApiRequest $request)
     {
         return $this->repository()->all()->toJson();
     }
@@ -30,11 +28,12 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
     /**
      * Store a newly created resource in storage.
      *
-     * @param  ModuleRequest $request
-     * @return ModuleResponse
+     * @param  ApiRequest $request
+     * @return ApiResponseFactory
      */
-    public function store(ModuleRequest $request)
+    public function store(ApiRequest $request)
     {
+        mezzo_dd($this->request());
         return $this->repository()->make($request->all());
     }
 
@@ -42,31 +41,33 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
      * Display the specified resource.
      *
      * @param  int $id
-     * @return ModuleResponse
+     * @return ApiResponseFactory
      */
     public function show($id)
     {
-        return $this->repository()->find($id)->toJson();
+        return $this->repository()->find($id);
     }
 
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  ModuleRequest $request
+     * @param ApiRequest $request
      * @param  int $id
-     * @return ModuleResponse
+     * @return ApiResponseFactory
      */
-    public function update(ModuleRequest $request, $id)
+    public function update(ApiRequest $request, $id)
     {
-        return $this->repository()->update($request->all(), $id);
+        $result = $this->repository()->update($request->all(), $id);
+
+        return $this->response()->result($result)->withHeader('foo', 'bar');
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int $id
-     * @return ModuleResponse
+     * @return ApiResponseFactory
      */
     public function destroy($id)
     {

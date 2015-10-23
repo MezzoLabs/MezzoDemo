@@ -4,7 +4,6 @@
 namespace MezzoLabs\Mezzo\Core\Modularisation\Http;
 
 
-use Dingo\Api\Routing\Helpers as ApiHelpers;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
@@ -14,7 +13,6 @@ use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 
 abstract class ModuleController extends Controller implements ModuleControllerContract
 {
-    use ApiHelpers;
 
     /**
      * @var Collection
@@ -90,7 +88,7 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
         if (!($this instanceof ResourceController))
             return false;
 
-        if(!$this->isValid())
+        if (!$this->isValid())
             return false;
 
         return true;
@@ -103,17 +101,17 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
      */
     public function data($key = null, $value = null)
     {
-        if(!$this->data)
+        if (!$this->data)
             $this->data = new Collection();
 
-        if($key !== null && $value !== null){
+        if ($key !== null && $value !== null) {
             $this->data->put($key, $value);
         }
 
-        if(is_array($key))
+        if (is_array($key))
             $this->addData($key);
 
-        if($key){
+        if ($key) {
             $this->data->get($key);
         }
 
@@ -134,7 +132,7 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
 
     public function isValid()
     {
-        if(!$this->module())
+        if (!$this->module())
             throw new ModuleControllerException('A module controller has to be inside a module folder.');
 
         return true;
@@ -146,18 +144,10 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
      */
     public function module()
     {
-        if(!$this->module)
+        if (!$this->module)
             $this->module = NamingConvention::findModule($this);
 
         return $this->module;
-    }
-
-
-    /**
-     * @return ModuleRequest
-     */
-    protected function request(){
-        return mezzo()->makeRequest();
     }
 
     /**
