@@ -4,15 +4,21 @@
 namespace MezzoLabs\Mezzo\Core\Modularisation\Http;
 
 
-use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as IlluminateController;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleRequest;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Core\Modularisation\NamingConvention;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
+use MezzoLabs\Mezzo\Core\Validation\ModelValidator;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 
-abstract class ModuleController extends Controller implements ModuleControllerContract
+abstract class Controller extends IlluminateController
 {
+
+    use ValidatesRequests;
 
     /**
      * @var Collection
@@ -85,7 +91,7 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
      */
     public function isResourceController()
     {
-        if (!($this instanceof ResourceController))
+        if (!($this instanceof ResourceControllerContract))
             return false;
 
         if (!$this->isValid())
@@ -162,6 +168,16 @@ abstract class ModuleController extends Controller implements ModuleControllerCo
         $page = $this->module()->makePage($class);
 
         return $page->template($parameters);
+    }
+
+    /**
+     * @param MezzoModelReflection $model
+     * @param ModuleRequest $request
+     * @return ModelValidator
+     */
+    protected function modelValidator(MezzoModelReflection $model, ModuleRequest $request)
+    {
+        return new ModelValidator($model, $request->all());
     }
 
 

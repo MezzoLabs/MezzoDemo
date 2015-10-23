@@ -5,7 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Http\Html;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ResourcePage;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Controller;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Exceptions\ModulePageException;
 
@@ -43,7 +43,7 @@ abstract class ModulePage implements ModulePageContract
     private $parameters;
 
     /**
-     * @var ModuleController
+     * @var Controller
      */
     protected $controllerObject;
 
@@ -179,7 +179,7 @@ abstract class ModulePage implements ModulePageContract
     }
 
     /**
-     * @return ModuleController
+     * @return Controller
      * @throws \MezzoLabs\Mezzo\Exceptions\InvalidArgumentException
      * @throws \MezzoLabs\Mezzo\Exceptions\ModuleControllerException
      */

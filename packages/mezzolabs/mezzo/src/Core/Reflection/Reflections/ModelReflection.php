@@ -156,4 +156,15 @@ abstract class ModelReflection
         return $this->modelReflectionSet;
     }
 
+    /**
+     * @return array
+     */
+    public function rules()
+    {
+        if (!isset($this->instance()->rules))
+            return [];
+
+        return $this->instance()->rules;
+    }
+
 }

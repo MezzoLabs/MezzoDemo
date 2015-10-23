@@ -4,11 +4,11 @@ namespace MezzoLabs\Mezzo\Modules\Sample\Http\Controllers;
 
 
 use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleRequest;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleResourceController;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleResponse;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ResourceController;
 use MezzoLabs\Mezzo\Modules\Sample\Http\Pages\IndexTutorialPage;
 
-class TutorialController extends ModuleResourceController
+class TutorialController extends ResourceController
 {
     /**
      * Display a listing of the resource.

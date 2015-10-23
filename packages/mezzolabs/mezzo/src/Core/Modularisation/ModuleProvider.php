@@ -8,11 +8,11 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Api\ApiResourceController;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Api\ApiResourceControllerContract;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Controller;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModulePage;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModulePages;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleResourceController;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ResourceController;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflections;
@@ -218,21 +218,21 @@ abstract class ModuleProvider extends ServiceProvider
      * Create a new controller instance.
      *
      * @param $controllerName
-     * @return ModuleController
+     * @return Controller
      * @throws InvalidArgumentException
      * @throws ModuleControllerException
      */
     public function makeController($controllerName)
     {
         if (is_object($controllerName)) {
-            if ($controllerName instanceof ModuleController) return $controllerName;
+            if ($controllerName instanceof Controller) return $controllerName;
 
             throw new InvalidArgumentException($controllerName);
         }
 
         $controller = mezzo()->make($this->controllerClass($controllerName));
 
-        if (!($controller instanceof ModuleController))
+        if (!($controller instanceof Controller))
             throw new ModuleControllerException('Not a valid module controller.');
 
         return $controller;
@@ -325,7 +325,7 @@ abstract class ModuleProvider extends ServiceProvider
 
     /**
      * @param $controllerName
-     * @return ModuleResourceController
+     * @return ResourceController
      * @throws InvalidArgumentException
      * @throws ModuleControllerException
      */
@@ -343,14 +343,14 @@ abstract class ModuleProvider extends ServiceProvider
      * Get the api resource controller with the ControllerName
      *
      * @param $controllerName
-     * @return ModuleResourceController
+     * @return ResourceController
      * @throws ModuleControllerException
      */
     public function apiResourceController($controllerName)
     {
         $controller = $this->resourceController($controllerName);
 
-        if (!($controller instanceof ApiResourceController))
+        if (!($controller instanceof ApiResourceControllerContract))
             throw new ModuleControllerException($controller->qualifiedName() . ' is not a API resource controller. ');
 
         return $controller;

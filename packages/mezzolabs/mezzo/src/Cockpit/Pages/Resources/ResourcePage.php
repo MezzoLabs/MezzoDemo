@@ -108,7 +108,7 @@ abstract class ResourcePage extends ModulePage
     }
 
     /**
-     * @return \MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleResourceController
+     * @return \MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ResourceController
      * @throws \MezzoLabs\Mezzo\Exceptions\ModuleControllerException
      */
     protected function guessController()

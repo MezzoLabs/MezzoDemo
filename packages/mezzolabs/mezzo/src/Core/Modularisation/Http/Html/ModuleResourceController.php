@@ -2,12 +2,11 @@
 
 namespace MezzoLabs\Mezzo\Core\Modularisation\Http\Html;
 
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Controller;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\HasModelResource;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ResourceController;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 
-abstract class ModuleResourceController extends ModuleController implements ResourceController
+abstract class ResourceController extends Controller implements ResourceController
 {
     use HasModelResource;
 

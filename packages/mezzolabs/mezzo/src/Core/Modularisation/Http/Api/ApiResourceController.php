@@ -4,10 +4,10 @@
 namespace MezzoLabs\Mezzo\Core\Modularisation\Http\Api;
 
 use MezzoLabs\Mezzo\Core\Modularisation\Http\HasModelResource;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ResourceController;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\ResourceControllerContract;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 
-abstract class ApiResourceController extends ApiController implements ResourceController
+abstract class ApiResourceControllerContract extends ApiController implements ResourceControllerContract
 {
     use HasModelResource;
 

@@ -5,9 +5,9 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Http\Api;
 
 
 use Dingo\Api\Routing\Helpers as ApiHelpers;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Controller;
 
-abstract class ApiController extends ModuleController
+abstract class ApiController extends Controller
 {
     use ApiHelpers;
 

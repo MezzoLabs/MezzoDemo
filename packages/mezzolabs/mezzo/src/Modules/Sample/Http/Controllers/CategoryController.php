@@ -4,9 +4,9 @@
 namespace MezzoLabs\Mezzo\Modules\Sample\Http\Controllers;
 
 
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Controller;
 
-class CategoryController extends ModuleController
+class CategoryController extends Controller
 {
 
 }

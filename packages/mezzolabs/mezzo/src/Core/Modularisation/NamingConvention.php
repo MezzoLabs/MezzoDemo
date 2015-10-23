@@ -5,9 +5,9 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\Controller;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModulePage;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ResourceController;
+use MezzoLabs\Mezzo\Core\Modularisation\Http\ResourceControllerContract;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\NamingConventionException;
 
@@ -20,18 +20,18 @@ class NamingConvention
      */
     public static function findModule($object)
     {
-        if ($object instanceof ModuleController)
+        if ($object instanceof Controller)
             return static::findModuleOfController($object);
 
         throw new NamingConventionException('Cannot find module for ' . get_class($object));
     }
 
     /**
-     * @param ModuleController $controller
+     * @param Controller $controller
      * @return ModuleProvider
      * @throws NamingConventionException
      */
-    protected static function findModuleOfController(ModuleController $controller)
+    protected static function findModuleOfController(Controller $controller)
     {
         $controllerClass = get_class($controller);
         $moduleNamespaceEnd = strpos($controllerClass, 'Http\Controllers');
@@ -62,7 +62,7 @@ class NamingConvention
      */
     public static function modelName($object)
     {
-        if ($object instanceof ResourceController)
+        if ($object instanceof ResourceControllerContract)
             return static::modelNameForModuleController($object);
 
         throw new NamingConventionException('Cannot find model name for ' . get_class($object));
@@ -88,10 +88,10 @@ class NamingConvention
     }
 
     /**
-     * @param ResourceController $object
+     * @param ResourceControllerContract $object
      * @return mixed
      */
-    private static function modelNameForModuleController(ResourceController $object)
+    private static function modelNameForModuleController(ResourceControllerContract $object)
     {
         $shortName = Singleton::reflection($object)->getShortName();
 
