@@ -13,4 +13,12 @@ class ApiRequest extends DingoRequest
     {
         parent::createFromIlluminate($old);
     }
+
+    /**
+     * @return ApiRequest
+     */
+    public static function make()
+    {
+        return mezzo()->make(ApiRequest::class);
+    }
 }

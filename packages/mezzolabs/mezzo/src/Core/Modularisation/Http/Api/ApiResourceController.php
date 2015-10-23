@@ -21,7 +21,7 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
      */
     public function index(ApiRequest $request)
     {
-        return $this->repository()->all()->toJson();
+        return $this->response()->array($this->repository()->all()->toArray());
     }
 
 
@@ -33,7 +33,6 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
      */
     public function store(ApiRequest $request)
     {
-        mezzo_dd($this->request());
         return $this->repository()->make($request->all());
     }
 
