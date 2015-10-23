@@ -21,57 +21,70 @@ app.config(_setupConfig2['default']);
 app.run(_setupRun2['default']);
 (0, _register2['default'])(app);
 
-},{"./register":42,"./setup/config":43,"./setup/run":45}],2:[function(require,module,exports){
+}, {"./register": 42, "./setup/config": 43, "./setup/run": 45}],
+    2: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+        function _classCallCheck(instance, Constructor) {
+            if (!(instance instanceof Constructor)) {
+                throw new TypeError('Cannot call a class as a function');
+            }
+        }
 
-var prefix = '/mezzo/';
+        var prefix = '/mezzo/';
 
-var Route = function Route(url, views) {
-    _classCallCheck(this, Route);
+        var Route = function Route(url, views) {
+            _classCallCheck(this, Route);
 
-    this.url = prefix + url;
-    this.views = views;
+            this.url = prefix + url;
+            this.views = views;
 };
 
-exports['default'] = Route;
+        exports['default'] = Route;
 module.exports = exports['default'];
 
-},{}],3:[function(require,module,exports){
+    }, {}],
+    3: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {'default': obj};
+        }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+        function _classCallCheck(instance, Constructor) {
+            if (!(instance instanceof Constructor)) {
+                throw new TypeError('Cannot call a class as a function');
+            }
+        }
 
-var _Route = require('./Route');
+        var _Route = require('./Route');
 
-var _Route2 = _interopRequireDefault(_Route);
+        var _Route2 = _interopRequireDefault(_Route);
 
-var State = function State(name, url, views) {
-    _classCallCheck(this, State);
+        var State = function State(name, url, views) {
+            _classCallCheck(this, State);
 
-    this.name = name;
-    this.route = new _Route2['default'](url, views);
-};
+            this.name = name;
+            this.route = new _Route2['default'](url, views);
+        };
 
-exports['default'] = State;
+        exports['default'] = State;
 module.exports = exports['default'];
 
-},{"./Route":2}],4:[function(require,module,exports){
+    }, {"./Route": 2}],
+    4: [function (require, module, exports) {
 'use strict';
 
-exports.name = 'mezzoCompile';
-exports.directive = /*@ngInject*/function ($compile) {
+        exports.name = 'mezzoCompile';
+        exports.directive = /*@ngInject*/function ($compile) {
     return {
         restrict: 'A',
         link: link
@@ -87,53 +100,58 @@ exports.directive = /*@ngInject*/function ($compile) {
             }
         });
     }
-};
+        };
 
-},{}],5:[function(require,module,exports){
+    }, {}],
+    5: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-exports['default'] = { name: 'mezzoEnter', directive: directive };
+        exports['default'] = {name: 'mezzoEnter', directive: directive};
 
-/*@ngInject*/function directive() {
+        /*@ngInject*/
+        function directive() {
     return {
         restrict: 'A',
         link: link
     };
 
-    function link(scope, element, attributes) {
-        element.bind('keypress', function (event) {
-            if (event.which === 13) {
-                scope.$eval(attributes.mezzoEnter);
-                scope.$apply();
+            function link(scope, element, attributes) {
+                element.bind('keypress', function (event) {
+                    if (event.which === 13) {
+                        scope.$eval(attributes.mezzoEnter);
+                        scope.$apply();
+                    }
+                });
             }
-        });
-    }
 }
 module.exports = exports['default'];
 
-},{}],6:[function(require,module,exports){
+    }, {}],
+    6: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-var id = 0;
+        var id = 0;
 
-exports['default'] = { name: 'uid', service: service };
+        exports['default'] = {name: 'uid', service: service};
 
-/*@ngInject*/function service() {
-    return uid;
+        /*@ngInject*/
+        function service() {
+            return uid;
 }
 
-function uid() {
-    return id++;
-}
+        function uid() {
+            return id++;
+        }
 module.exports = exports['default'];
 
-},{}],7:[function(require,module,exports){
+    }, {}],
+    7: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -219,7 +237,8 @@ var File = (function () {
 exports['default'] = File;
 module.exports = exports['default'];
 
-},{}],8:[function(require,module,exports){
+    }, {}],
+    8: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -260,7 +279,8 @@ var Folder = (function (_File) {
 exports['default'] = Folder;
 module.exports = exports['default'];
 
-},{"./File":7}],9:[function(require,module,exports){
+    }, {"./File": 7}],
+    9: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -312,7 +332,8 @@ var FilesAsideController = (function () {
 exports['default'] = { name: 'FilesAsideController', controller: FilesAsideController };
 module.exports = exports['default'];
 
-},{}],10:[function(require,module,exports){
+    }, {}],
+    10: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -337,7 +358,8 @@ exports['default'] = { name: 'mezzoDraggable', directive: directive };
 }
 module.exports = exports['default'];
 
-},{}],11:[function(require,module,exports){
+    }, {}],
+    11: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -370,7 +392,8 @@ exports['default'] = { name: 'mezzoDroppable', directive: directive };
 }
 module.exports = exports['default'];
 
-},{}],12:[function(require,module,exports){
+    }, {}],
+    12: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -407,7 +430,8 @@ var FileManagerService = (function () {
 
 module.exports = exports['default'];
 
-},{}],13:[function(require,module,exports){
+    }, {}],
+    13: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -679,37 +703,41 @@ var FilesMainController = (function () {
 exports['default'] = { name: 'FilesMainController', controller: FilesMainController };
 module.exports = exports['default'];
 
-},{"./File":7,"./Folder":8}],14:[function(require,module,exports){
+    }, {"./File": 7, "./Folder": 8}],
+    14: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {'default': obj};
+        }
 
-var _commonState = require('../../common/State');
+        var _commonState = require('../../common/State');
 
-var _commonState2 = _interopRequireDefault(_commonState);
+        var _commonState2 = _interopRequireDefault(_commonState);
 
-exports['default'] = new _commonState2['default']('files', 'files', {
-    aside: {
-        templateUrl: 'modules/file-manager/aside.html',
-        controller: 'FilesAsideController as vm'
-    },
-    main: {
-        templateUrl: 'modules/file-manager/main.html',
-        controller: 'FilesMainController as vm'
-    }
-});
-module.exports = exports['default'];
+        exports['default'] = new _commonState2['default']('files', 'files', {
+            aside: {
+                templateUrl: 'modules/file-manager/aside.html',
+                controller: 'FilesAsideController as vm'
+            },
+            main: {
+                templateUrl: 'modules/file-manager/main.html',
+                controller: 'FilesMainController as vm'
+            }
+        });
+        module.exports = exports['default'];
 
-},{"../../common/State":3}],15:[function(require,module,exports){
-'use strict';
+    }, {"../../common/State": 3}],
+    15: [function (require, module, exports) {
+        'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+        Object.defineProperty(exports, '__esModule', {
+            value: true
+        });
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
@@ -741,7 +769,8 @@ function directive(templateUrl, modifyOptions) {
 }
 module.exports = exports['default'];
 
-},{}],16:[function(require,module,exports){
+    }, {}],
+    16: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -781,7 +810,8 @@ function directive(templateUrl, controller) {
 }
 module.exports = exports['default'];
 
-},{}],17:[function(require,module,exports){
+    }, {}],
+    17: [function (require, module, exports) {
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -792,7 +822,8 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoCheckboxOptions', 'checkbox/checkbox-options.html');
 
-},{"../ComponentOptions":16}],18:[function(require,module,exports){
+    }, {"../ComponentOptions": 16}],
+    18: [function (require, module, exports) {
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -807,7 +838,8 @@ function modifyOptions(options) {
     options.label = 'Label';
 }
 
-},{"../Component":15}],19:[function(require,module,exports){
+    }, {"../Component": 15}],
+    19: [function (require, module, exports) {
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -847,7 +879,8 @@ var ComponentService = (function () {
     return ComponentService;
 })();
 
-},{}],20:[function(require,module,exports){
+    }, {}],
+    20: [function (require, module, exports) {
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -870,7 +903,8 @@ function controller(scope) {
     };
 }
 
-},{"../ComponentOptions":16}],21:[function(require,module,exports){
+    }, {"../ComponentOptions": 16}],
+    21: [function (require, module, exports) {
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -887,7 +921,8 @@ function modifyOptions(options) {
     options.multiple = false;
 }
 
-},{"../Component":15}],22:[function(require,module,exports){
+    }, {"../Component": 15}],
+    22: [function (require, module, exports) {
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -898,7 +933,8 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoOwnerOptions', 'owner/owner-options.html');
 
-},{"../ComponentOptions":16}],23:[function(require,module,exports){
+    }, {"../ComponentOptions": 16}],
+    23: [function (require, module, exports) {
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -911,7 +947,8 @@ module.exports = new _Component2['default']('mezzoOwner', 'owner/owner.html', mo
 
 function modifyOptions(options) {}
 
-},{"../Component":15}],24:[function(require,module,exports){
+    }, {"../Component": 15}],
+    24: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -923,7 +960,8 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{}],25:[function(require,module,exports){
+    }, {}],
+    25: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -983,7 +1021,8 @@ var Model = (function () {
 exports['default'] = Model;
 module.exports = exports['default'];
 
-},{"./Mode":24}],26:[function(require,module,exports){
+    }, {"./Mode": 24}],
+    26: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1004,7 +1043,8 @@ function alphabetical(str1, str2) {
 }
 module.exports = exports["default"];
 
-},{}],27:[function(require,module,exports){
+    }, {}],
+    27: [function (require, module, exports) {
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1015,7 +1055,8 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoRelationOptions', 'relation/relation-options.html');
 
-},{"../ComponentOptions":16}],28:[function(require,module,exports){
+    }, {"../ComponentOptions": 16}],
+    28: [function (require, module, exports) {
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1092,7 +1133,8 @@ function modifyOptions(options) {
     }
 }
 
-},{"../Component":15,"./Mode":24,"./Model":25,"./alphabetical":26,"./sentence":29}],29:[function(require,module,exports){
+    }, {"../Component": 15, "./Mode": 24, "./Model": 25, "./alphabetical": 26, "./sentence": 29}],
+    29: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1128,7 +1170,8 @@ function phrase(model1, model2) {
 }
 module.exports = exports['default'];
 
-},{"./Mode":24}],30:[function(require,module,exports){
+    }, {"./Mode": 24}],
+    30: [function (require, module, exports) {
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1139,7 +1182,8 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoTextMultiOptions', 'text-multi/text-multi-options.html');
 
-},{"../ComponentOptions":16}],31:[function(require,module,exports){
+    }, {"../ComponentOptions": 16}],
+    31: [function (require, module, exports) {
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1155,7 +1199,8 @@ function modifyOptions(options) {
     options.placeholder = 'Placeholder';
 }
 
-},{"../Component":15}],32:[function(require,module,exports){
+    }, {"../Component": 15}],
+    32: [function (require, module, exports) {
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1166,7 +1211,8 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoTextSingleOptions', 'text-single/text-single-options.html');
 
-},{"../ComponentOptions":16}],33:[function(require,module,exports){
+    }, {"../ComponentOptions": 16}],
+    33: [function (require, module, exports) {
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1182,7 +1228,8 @@ function modifyOptions(options) {
     options.placeholder = 'Placeholder';
 }
 
-},{"../Component":15}],34:[function(require,module,exports){
+    }, {"../Component": 15}],
+    34: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1207,7 +1254,8 @@ function button(label, icon, component) {
 }
 module.exports = exports['default'];
 
-},{}],35:[function(require,module,exports){
+    }, {}],
+    35: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1320,37 +1368,41 @@ var ModelBuilder = (function () {
 
 module.exports = exports['default'];
 
-},{}],36:[function(require,module,exports){
+    }, {}],
+    36: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {'default': obj};
+        }
 
-var _commonState = require('../../common/State');
+        var _commonState = require('../../common/State');
 
-var _commonState2 = _interopRequireDefault(_commonState);
+        var _commonState2 = _interopRequireDefault(_commonState);
 
-exports['default'] = new _commonState2['default']('models', 'models', {
-    aside: {
-        templateUrl: 'modules/model-builder/aside.html',
-        controller: 'ModelBuilderController as vm'
-    },
-    main: {
-        templateUrl: 'modules/model-builder/main.html',
-        controller: 'ModelBuilderController as vm'
-    }
-});
-module.exports = exports['default'];
+        exports['default'] = new _commonState2['default']('models', 'models', {
+            aside: {
+                templateUrl: 'modules/model-builder/aside.html',
+                controller: 'ModelBuilderController as vm'
+            },
+            main: {
+                templateUrl: 'modules/model-builder/main.html',
+                controller: 'ModelBuilderController as vm'
+            }
+        });
+        module.exports = exports['default'];
 
-},{"../../common/State":3}],37:[function(require,module,exports){
-'use strict';
+    }, {"../../common/State": 3}],
+    37: [function (require, module, exports) {
+        'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+        Object.defineProperty(exports, '__esModule', {
+            value: true
+        });
 exports['default'] = { name: 'PagesAsideController', controller: controller };
 
 /*@ngInject*/function controller($scope) {
@@ -1368,7 +1420,8 @@ exports['default'] = { name: 'PagesAsideController', controller: controller };
 }
 module.exports = exports['default'];
 
-},{}],38:[function(require,module,exports){
+    }, {}],
+    38: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1388,225 +1441,372 @@ function controller() {
 }
 module.exports = exports['default'];
 
-},{}],39:[function(require,module,exports){
-'use strict';
+    }, {}],
+    39: [function (require, module, exports) {
+        'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _commonState = require('../../common/State');
-
-var _commonState2 = _interopRequireDefault(_commonState);
-
-exports['default'] = new _commonState2['default']('pages', 'pages', {
-    aside: {
-        templateUrl: 'modules/page-builder/aside.html',
-        controller: 'PagesAsideController'
-    },
-    main: {
-        templateUrl: 'modules/page-builder/main.html',
-        controller: 'PagesMainController'
-    }
-});
-module.exports = exports['default'];
-
-},{"../../common/State":3}],40:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var TestMainController = (function () {
-
-    /*@ngInject*/
-    function TestMainController($http) {
-        _classCallCheck(this, TestMainController);
-
-        this.models = [];
-        this.searchText = '';
-        this.selectAll = false;
-
-        /*
-        $http.get('/api/tutorials', {
-            headers: {
-                Accept: 'application/vnd.MezzoLabs.v1+json'
-            }
-        }).success(data => {
-            console.log(data);
-        }).error(err => {
-            console.error(err);
+        Object.defineProperty(exports, '__esModule', {
+            value: true
         });
-        */
 
-        this.models = [{ "id": 2, "title": "Placeat ut placeat tempore a.", "body": "Delectus libero vitae quae nesciunt ipsa soluta in sed. Dolores sit voluptatem perferendis qui quo aliquam adipisci. Rerum nobis aliquid fugiat est. Repudiandae sint sunt qui.", "user_id": 29, "parent": 0 }, { "id": 3, "title": "Aut dolor id eum quae et eos.", "body": "Tempora cupiditate eos sint sequi nihil non porro. Perferendis voluptas et dicta qui omnis. Sed omnis dolor deserunt. Ipsa ad libero voluptates labore totam exercitationem et consequatur.", "user_id": 15, "parent": 0 }, { "id": 4, "title": "Ut sed quo veritatis aut.", "body": "Corporis ex nemo dignissimos distinctio. Laboriosam libero quam sed labore. Fuga delectus ullam omnis harum delectus quia et. Illo saepe possimus rerum deleniti.", "user_id": 32, "parent": 0 }, { "id": 5, "title": "Et nisi quis eum dignissimos.", "body": "Odit voluptas similique autem sint. Similique vitae eaque illo possimus. Eos deserunt ut laborum reprehenderit eaque accusantium ipsa. Eveniet labore quas velit ipsum.", "user_id": 26, "parent": 0 }, { "id": 6, "title": "Nihil modi officia et et.", "body": "Nam doloremque et esse velit. In voluptates laborum fugit rerum. Iste possimus totam cupiditate. Aut qui tempora sit rem.", "user_id": 4, "parent": 0 }, { "id": 7, "title": "Qui aliquam iusto illum ipsa.", "body": "Sit modi quia accusamus amet hic odit. Dolore ut illum id et amet impedit sed. Eum optio id eum nesciunt consequatur quo. Quam eos quidem consequuntur blanditiis.", "user_id": 11, "parent": 0 }, { "id": 8, "title": "Ratione id eveniet possimus.", "body": "Amet odit pariatur quo. Voluptatem molestias ut qui ab ut. Aspernatur quam occaecati eveniet et.", "user_id": 3, "parent": 0 }, { "id": 9, "title": "Eligendi quae aut voluptas.", "body": "Inventore corrupti vero deleniti cumque et voluptate et. Qui saepe assumenda voluptates nihil adipisci reprehenderit. Nisi reprehenderit soluta dolorum.", "user_id": 23, "parent": 0 }, { "id": 10, "title": "Quae quia enim omnis.", "body": "Fugiat assumenda aut ea et reprehenderit neque. Impedit numquam ut sed aperiam.", "user_id": 34, "parent": 0 }, { "id": 11, "title": "Ab numquam a tempora autem.", "body": "Repellendus explicabo ut omnis numquam culpa ea. Non eum placeat illo ipsam magni consequatur. Enim quas illum perferendis.\nAd excepturi cum molestiae magni. Voluptatum tempora totam ut unde.", "user_id": 9, "parent": 0 }, { "id": 12, "title": "Qui sint porro est non.", "body": "Eos sapiente sed voluptatibus impedit nulla. Voluptatem eos dolore nobis facilis sapiente vel possimus adipisci. Doloremque sapiente quis a et quam.", "user_id": 8, "parent": 0 }, { "id": 13, "title": "Et reiciendis fugiat et quo.", "body": "Qui voluptas aut qui modi fugiat voluptatum sapiente. Earum ut et nihil aut dolorem. Praesentium aut unde et quidem natus adipisci aut. Amet et quam est necessitatibus.", "user_id": 21, "parent": 0 }, { "id": 14, "title": "Omnis unde in sint est.", "body": "Non sunt est non blanditiis est in. Corporis voluptas et voluptatem consequuntur. Vel aliquam fugit ratione neque tempore.", "user_id": 16, "parent": 0 }, { "id": 15, "title": "Corporis aut qui est.", "body": "Quibusdam debitis repellat culpa dicta est alias. Dicta ipsam maxime totam esse ratione. Ut ut ut in ullam sequi quo molestiae.", "user_id": 2, "parent": 0 }, { "id": 16, "title": "Pariatur enim ut quia ea.", "body": "Molestiae soluta eum omnis et et est ad. Tenetur perspiciatis qui autem amet quisquam eum non eligendi. Excepturi sed quia aut.", "user_id": 15, "parent": 0 }, { "id": 17, "title": "Ea et aut earum ab.", "body": "Autem fuga eaque voluptatibus. Eveniet minus voluptatem ab omnis omnis omnis. Sit praesentium ullam ullam voluptatem qui.", "user_id": 40, "parent": 0 }, { "id": 18, "title": "Consectetur est et minima.", "body": "Hic iusto sit illum dolor. Est illo neque quae aut est mollitia. Doloremque voluptas consequatur maiores voluptatum magnam labore recusandae. Eum alias quidem magnam facilis voluptatem.", "user_id": 30, "parent": 0 }, { "id": 19, "title": "Sed non hic odit dolore.", "body": "Magnam sunt eos qui in deserunt asperiores. Accusantium possimus voluptas quibusdam et occaecati. Iusto consequatur iure illo officiis.", "user_id": 15, "parent": 0 }, { "id": 20, "title": "Ea placeat libero omnis ipsa.", "body": "Omnis ut in facere fugiat. Molestiae dolor beatae dicta tempore praesentium magni ut voluptatum. Laboriosam dolores sit hic.", "user_id": 33, "parent": 0 }, { "id": 21, "title": "Ipsam a qui alias inventore.", "body": "Aliquid nostrum impedit porro laboriosam et quas ut. Dicta illo aspernatur quo sit qui ut ut. Fugiat corporis voluptatem eligendi ut vitae veritatis. Asperiores cum rerum aut ut neque inventore.", "user_id": 4, "parent": 0 }];
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {'default': obj};
+        }
 
-        this.models.forEach(function (model) {
-            return model._meta = {};
+        var _commonState = require('../../common/State');
+
+        var _commonState2 = _interopRequireDefault(_commonState);
+
+        exports['default'] = new _commonState2['default']('pages', 'pages', {
+            aside: {
+                templateUrl: 'modules/page-builder/aside.html',
+                controller: 'PagesAsideController'
+            },
+            main: {
+                templateUrl: 'modules/page-builder/main.html',
+                controller: 'PagesMainController'
+            }
         });
-    }
+        module.exports = exports['default'];
 
-    _createClass(TestMainController, [{
-        key: "getModels",
-        value: function getModels() {
-            if (this.searchText.length > 0) {
-                return this.search();
-            }
+    }, {"../../common/State": 3}],
+    40: [function (require, module, exports) {
+        "use strict";
 
-            return this.models;
-        }
-    }, {
-        key: "getModelKeys",
-        value: function getModelKeys(model) {
-            if (this.models.length > 0 && !model) {
-                model = this.models[0];
-            }
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
 
-            if (!model) {
-                return [];
-            }
-
-            var keys = Object.keys(model);
-
-            return keys.filter(function (key) {
-                return key !== '_meta' && model.hasOwnProperty(key);
-            });
-        }
-    }, {
-        key: "getModelValues",
-        value: function getModelValues(model) {
-            var keys = this.getModelKeys(model);
-            var values = [];
-
-            keys.forEach(function (key) {
-                return values.push(model[key]);
-            });
-
-            return values;
-        }
-    }, {
-        key: "canEdit",
-        value: function canEdit() {
-            return this.selected().length === 1;
-        }
-    }, {
-        key: "canRemove",
-        value: function canRemove() {
-            return this.selected().length > 0;
-        }
-    }, {
-        key: "search",
-        value: function search() {
-            var _this = this;
-
-            var found = [];
-
-            this.models.forEach(function (model) {
-                for (var key in model) {
-                    if (model.hasOwnProperty(key)) {
-                        var value = model[key];
-
-                        if (String(value).indexOf(_this.searchText) !== -1) {
-                            found.push(model);
-                        }
-                    }
+        var _createClass = (function () {
+            function defineProperties(target, props) {
+                for (var i = 0; i < props.length; i++) {
+                    var descriptor = props[i];
+                    descriptor.enumerable = descriptor.enumerable || false;
+                    descriptor.configurable = true;
+                    if ("value" in descriptor) descriptor.writable = true;
+                    Object.defineProperty(target, descriptor.key, descriptor);
                 }
-            });
+            }
 
-            return found;
-        }
-    }, {
-        key: "updateSelectAll",
-        value: function updateSelectAll() {
-            var _this2 = this;
+            return function (Constructor, protoProps, staticProps) {
+                if (protoProps) defineProperties(Constructor.prototype, protoProps);
+                if (staticProps) defineProperties(Constructor, staticProps);
+                return Constructor;
+            };
+        })();
 
-            var models = this.getModels();
+        function _classCallCheck(instance, Constructor) {
+            if (!(instance instanceof Constructor)) {
+                throw new TypeError("Cannot call a class as a function");
+            }
+        }
 
-            models.forEach(function (model) {
-                return model._meta.selected = _this2.selectAll;
-            });
-        }
-    }, {
-        key: "selected",
-        value: function selected() {
-            return this.models.filter(function (model) {
-                return model._meta.selected;
-            });
-        }
-    }, {
-        key: "create",
-        value: function create() {
-            //TODO
-        }
-    }, {
-        key: "edit",
-        value: function edit() {
-            //TODO
-        }
-    }, {
-        key: "remove",
-        value: function remove() {
-            //TODO
-        }
-    }, {
-        key: "countSelected",
-        value: function countSelected() {
-            return this.selected().length;
-        }
-    }]);
+        var TestMainController = (function () {
 
-    return TestMainController;
-})();
+            /*@ngInject*/
+            function TestMainController($http) {
+                _classCallCheck(this, TestMainController);
 
-exports["default"] = { name: 'TestMainController', controller: TestMainController };
-module.exports = exports["default"];
+                this.models = [];
+                this.searchText = '';
+                this.selectAll = false;
+
+                /*
+                 $http.get('/api/tutorials', {
+                 headers: {
+                 Accept: 'application/vnd.MezzoLabs.v1+json'
+                 }
+                 }).success(data => {
+                 console.log(data);
+                 }).error(err => {
+                 console.error(err);
+                 });
+                 */
+
+                this.models = [{
+                    "id": 2,
+                    "title": "Placeat ut placeat tempore a.",
+                    "body": "Delectus libero vitae quae nesciunt ipsa soluta in sed. Dolores sit voluptatem perferendis qui quo aliquam adipisci. Rerum nobis aliquid fugiat est. Repudiandae sint sunt qui.",
+                    "user_id": 29,
+                    "parent": 0
+                }, {
+                    "id": 3,
+                    "title": "Aut dolor id eum quae et eos.",
+                    "body": "Tempora cupiditate eos sint sequi nihil non porro. Perferendis voluptas et dicta qui omnis. Sed omnis dolor deserunt. Ipsa ad libero voluptates labore totam exercitationem et consequatur.",
+                    "user_id": 15,
+                    "parent": 0
+                }, {
+                    "id": 4,
+                    "title": "Ut sed quo veritatis aut.",
+                    "body": "Corporis ex nemo dignissimos distinctio. Laboriosam libero quam sed labore. Fuga delectus ullam omnis harum delectus quia et. Illo saepe possimus rerum deleniti.",
+                    "user_id": 32,
+                    "parent": 0
+                }, {
+                    "id": 5,
+                    "title": "Et nisi quis eum dignissimos.",
+                    "body": "Odit voluptas similique autem sint. Similique vitae eaque illo possimus. Eos deserunt ut laborum reprehenderit eaque accusantium ipsa. Eveniet labore quas velit ipsum.",
+                    "user_id": 26,
+                    "parent": 0
+                }, {
+                    "id": 6,
+                    "title": "Nihil modi officia et et.",
+                    "body": "Nam doloremque et esse velit. In voluptates laborum fugit rerum. Iste possimus totam cupiditate. Aut qui tempora sit rem.",
+                    "user_id": 4,
+                    "parent": 0
+                }, {
+                    "id": 7,
+                    "title": "Qui aliquam iusto illum ipsa.",
+                    "body": "Sit modi quia accusamus amet hic odit. Dolore ut illum id et amet impedit sed. Eum optio id eum nesciunt consequatur quo. Quam eos quidem consequuntur blanditiis.",
+                    "user_id": 11,
+                    "parent": 0
+                }, {
+                    "id": 8,
+                    "title": "Ratione id eveniet possimus.",
+                    "body": "Amet odit pariatur quo. Voluptatem molestias ut qui ab ut. Aspernatur quam occaecati eveniet et.",
+                    "user_id": 3,
+                    "parent": 0
+                }, {
+                    "id": 9,
+                    "title": "Eligendi quae aut voluptas.",
+                    "body": "Inventore corrupti vero deleniti cumque et voluptate et. Qui saepe assumenda voluptates nihil adipisci reprehenderit. Nisi reprehenderit soluta dolorum.",
+                    "user_id": 23,
+                    "parent": 0
+                }, {
+                    "id": 10,
+                    "title": "Quae quia enim omnis.",
+                    "body": "Fugiat assumenda aut ea et reprehenderit neque. Impedit numquam ut sed aperiam.",
+                    "user_id": 34,
+                    "parent": 0
+                }, {
+                    "id": 11,
+                    "title": "Ab numquam a tempora autem.",
+                    "body": "Repellendus explicabo ut omnis numquam culpa ea. Non eum placeat illo ipsam magni consequatur. Enim quas illum perferendis.\nAd excepturi cum molestiae magni. Voluptatum tempora totam ut unde.",
+                    "user_id": 9,
+                    "parent": 0
+                }, {
+                    "id": 12,
+                    "title": "Qui sint porro est non.",
+                    "body": "Eos sapiente sed voluptatibus impedit nulla. Voluptatem eos dolore nobis facilis sapiente vel possimus adipisci. Doloremque sapiente quis a et quam.",
+                    "user_id": 8,
+                    "parent": 0
+                }, {
+                    "id": 13,
+                    "title": "Et reiciendis fugiat et quo.",
+                    "body": "Qui voluptas aut qui modi fugiat voluptatum sapiente. Earum ut et nihil aut dolorem. Praesentium aut unde et quidem natus adipisci aut. Amet et quam est necessitatibus.",
+                    "user_id": 21,
+                    "parent": 0
+                }, {
+                    "id": 14,
+                    "title": "Omnis unde in sint est.",
+                    "body": "Non sunt est non blanditiis est in. Corporis voluptas et voluptatem consequuntur. Vel aliquam fugit ratione neque tempore.",
+                    "user_id": 16,
+                    "parent": 0
+                }, {
+                    "id": 15,
+                    "title": "Corporis aut qui est.",
+                    "body": "Quibusdam debitis repellat culpa dicta est alias. Dicta ipsam maxime totam esse ratione. Ut ut ut in ullam sequi quo molestiae.",
+                    "user_id": 2,
+                    "parent": 0
+                }, {
+                    "id": 16,
+                    "title": "Pariatur enim ut quia ea.",
+                    "body": "Molestiae soluta eum omnis et et est ad. Tenetur perspiciatis qui autem amet quisquam eum non eligendi. Excepturi sed quia aut.",
+                    "user_id": 15,
+                    "parent": 0
+                }, {
+                    "id": 17,
+                    "title": "Ea et aut earum ab.",
+                    "body": "Autem fuga eaque voluptatibus. Eveniet minus voluptatem ab omnis omnis omnis. Sit praesentium ullam ullam voluptatem qui.",
+                    "user_id": 40,
+                    "parent": 0
+                }, {
+                    "id": 18,
+                    "title": "Consectetur est et minima.",
+                    "body": "Hic iusto sit illum dolor. Est illo neque quae aut est mollitia. Doloremque voluptas consequatur maiores voluptatum magnam labore recusandae. Eum alias quidem magnam facilis voluptatem.",
+                    "user_id": 30,
+                    "parent": 0
+                }, {
+                    "id": 19,
+                    "title": "Sed non hic odit dolore.",
+                    "body": "Magnam sunt eos qui in deserunt asperiores. Accusantium possimus voluptas quibusdam et occaecati. Iusto consequatur iure illo officiis.",
+                    "user_id": 15,
+                    "parent": 0
+                }, {
+                    "id": 20,
+                    "title": "Ea placeat libero omnis ipsa.",
+                    "body": "Omnis ut in facere fugiat. Molestiae dolor beatae dicta tempore praesentium magni ut voluptatum. Laboriosam dolores sit hic.",
+                    "user_id": 33,
+                    "parent": 0
+                }, {
+                    "id": 21,
+                    "title": "Ipsam a qui alias inventore.",
+                    "body": "Aliquid nostrum impedit porro laboriosam et quas ut. Dicta illo aspernatur quo sit qui ut ut. Fugiat corporis voluptatem eligendi ut vitae veritatis. Asperiores cum rerum aut ut neque inventore.",
+                    "user_id": 4,
+                    "parent": 0
+                }];
+
+                this.models.forEach(function (model) {
+                    return model._meta = {};
+                });
+            }
+
+            _createClass(TestMainController, [{
+                key: "getModels",
+                value: function getModels() {
+                    if (this.searchText.length > 0) {
+                        return this.search();
+                    }
+
+                    return this.models;
+                }
+            }, {
+                key: "getModelKeys",
+                value: function getModelKeys(model) {
+                    if (this.models.length > 0 && !model) {
+                        model = this.models[0];
+                    }
+
+                    if (!model) {
+                        return [];
+                    }
+
+                    var keys = Object.keys(model);
+
+                    return keys.filter(function (key) {
+                        return key !== '_meta' && model.hasOwnProperty(key);
+                    });
+                }
+            }, {
+                key: "getModelValues",
+                value: function getModelValues(model) {
+                    var keys = this.getModelKeys(model);
+                    var values = [];
+
+                    keys.forEach(function (key) {
+                        return values.push(model[key]);
+                    });
+
+                    return values;
+                }
+            }, {
+                key: "canEdit",
+                value: function canEdit() {
+                    return this.selected().length === 1;
+                }
+            }, {
+                key: "canRemove",
+                value: function canRemove() {
+                    return this.selected().length > 0;
+                }
+            }, {
+                key: "search",
+                value: function search() {
+                    var _this = this;
+
+                    var found = [];
+
+                    this.models.forEach(function (model) {
+                        for (var key in model) {
+                            if (model.hasOwnProperty(key)) {
+                                var value = model[key];
+
+                                if (String(value).indexOf(_this.searchText) !== -1) {
+                                    found.push(model);
+                                }
+                            }
+                        }
+                    });
+
+                    return found;
+                }
+            }, {
+                key: "updateSelectAll",
+                value: function updateSelectAll() {
+                    var _this2 = this;
+
+                    var models = this.getModels();
+
+                    models.forEach(function (model) {
+                        return model._meta.selected = _this2.selectAll;
+                    });
+                }
+            }, {
+                key: "selected",
+                value: function selected() {
+                    return this.models.filter(function (model) {
+                        return model._meta.selected;
+                    });
+                }
+            }, {
+                key: "create",
+                value: function create() {
+                    //TODO
+                }
+            }, {
+                key: "edit",
+                value: function edit() {
+                    //TODO
+                }
+            }, {
+                key: "remove",
+                value: function remove() {
+                    //TODO
+                }
+            }, {
+                key: "countSelected",
+                value: function countSelected() {
+                    return this.selected().length;
+                }
+            }]);
+
+            return TestMainController;
+        })();
+
+        exports["default"] = {name: 'TestMainController', controller: TestMainController};
+        module.exports = exports["default"];
 
 },{}],41:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+        Object.defineProperty(exports, '__esModule', {
+            value: true
+        });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {'default': obj};
+        }
 
-var _commonState = require('../../common/State');
+        var _commonState = require('../../common/State');
 
-var _commonState2 = _interopRequireDefault(_commonState);
+        var _commonState2 = _interopRequireDefault(_commonState);
 
-exports['default'] = new _commonState2['default']('test', 'sample/tutorial/index', {
-    main: {
-        templateUrl: '/mezzo/sample/tutorial/index.html',
-        controller: 'TestMainController',
-        controllerAs: 'vm'
-    }
-});
-module.exports = exports['default'];
+        exports['default'] = new _commonState2['default']('test', 'sample/tutorial/index', {
+            main: {
+                templateUrl: '/mezzo/sample/tutorial/index.html',
+                controller: 'TestMainController',
+                controllerAs: 'vm'
+            }
+        });
+        module.exports = exports['default'];
 
-},{"../../common/State":3}],42:[function(require,module,exports){
-'use strict';
+    }, {"../../common/State": 3}],
+    42: [function (require, module, exports) {
+        'use strict';
 
 module.exports = function (app) {
 				register(require('./common/compile.directive.js'));
 				register(require('./common/enter.directive.js'));
 				register(require('./common/uid.service.js'));
-				register(require('./modules/file-manager/aside.controller.js'));
-				register(require('./modules/file-manager/main.controller.js'));
-				register(require('./modules/file-manager/draggable.directive.js'));
-				register(require('./modules/file-manager/droppable.directive.js'));
-				register(require('./modules/file-manager/file-manager.service.js'));
+    register(require('./modules/file-manager/aside.controller.js'));
+    register(require('./modules/file-manager/main.controller.js'));
+    register(require('./modules/file-manager/draggable.directive.js'));
+    register(require('./modules/file-manager/droppable.directive.js'));
+    register(require('./modules/file-manager/file-manager.service.js'));
 				register(require('./modules/model-builder/model-builder.controller.js'));
 				register(require('./modules/model-builder/model-builder.service.js'));
-				register(require('./modules/page-builder/aside.controller.js'));
-				register(require('./modules/page-builder/main.controller.js'));
-				register(require('./modules/test/main.controller.js'));
+    register(require('./modules/page-builder/aside.controller.js'));
+    register(require('./modules/page-builder/main.controller.js'));
+    register(require('./modules/test/main.controller.js'));
 				register(require('./modules/model-builder/components/component.service.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
@@ -1614,8 +1814,8 @@ module.exports = function (app) {
 				register(require('./modules/model-builder/components/dropdown/dropdown.directive.js'));
 				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
 				register(require('./modules/model-builder/components/owner/owner.directive.js'));
-				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
-				register(require('./modules/model-builder/components/relation/relation.directive.js'));
+    register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
+    register(require('./modules/model-builder/components/relation/relation.directive.js'));
 				register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
 				register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
 				register(require('./modules/model-builder/components/text-single/text-single-options.directive.js'));
@@ -1636,7 +1836,35 @@ module.exports = function (app) {
 				}
 };
 
-},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/uid.service.js":6,"./modules/file-manager/aside.controller.js":9,"./modules/file-manager/draggable.directive.js":10,"./modules/file-manager/droppable.directive.js":11,"./modules/file-manager/file-manager.service.js":12,"./modules/file-manager/main.controller.js":13,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":17,"./modules/model-builder/components/checkbox/checkbox.directive.js":18,"./modules/model-builder/components/component.service.js":19,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":20,"./modules/model-builder/components/dropdown/dropdown.directive.js":21,"./modules/model-builder/components/owner/owner-options.directive.js":22,"./modules/model-builder/components/owner/owner.directive.js":23,"./modules/model-builder/components/relation/relation-options.directive.js":27,"./modules/model-builder/components/relation/relation.directive.js":28,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":30,"./modules/model-builder/components/text-multi/text-multi.directive.js":31,"./modules/model-builder/components/text-single/text-single-options.directive.js":32,"./modules/model-builder/components/text-single/text-single.directive.js":33,"./modules/model-builder/model-builder.controller.js":34,"./modules/model-builder/model-builder.service.js":35,"./modules/page-builder/aside.controller.js":37,"./modules/page-builder/main.controller.js":38,"./modules/test/main.controller.js":40}],43:[function(require,module,exports){
+    }, {
+        "./common/compile.directive.js": 4,
+        "./common/enter.directive.js": 5,
+        "./common/uid.service.js": 6,
+        "./modules/file-manager/aside.controller.js": 9,
+        "./modules/file-manager/draggable.directive.js": 10,
+        "./modules/file-manager/droppable.directive.js": 11,
+        "./modules/file-manager/file-manager.service.js": 12,
+        "./modules/file-manager/main.controller.js": 13,
+        "./modules/model-builder/components/checkbox/checkbox-options.directive.js": 17,
+        "./modules/model-builder/components/checkbox/checkbox.directive.js": 18,
+        "./modules/model-builder/components/component.service.js": 19,
+        "./modules/model-builder/components/dropdown/dropdown-options.directive.js": 20,
+        "./modules/model-builder/components/dropdown/dropdown.directive.js": 21,
+        "./modules/model-builder/components/owner/owner-options.directive.js": 22,
+        "./modules/model-builder/components/owner/owner.directive.js": 23,
+        "./modules/model-builder/components/relation/relation-options.directive.js": 27,
+        "./modules/model-builder/components/relation/relation.directive.js": 28,
+        "./modules/model-builder/components/text-multi/text-multi-options.directive.js": 30,
+        "./modules/model-builder/components/text-multi/text-multi.directive.js": 31,
+        "./modules/model-builder/components/text-single/text-single-options.directive.js": 32,
+        "./modules/model-builder/components/text-single/text-single.directive.js": 33,
+        "./modules/model-builder/model-builder.controller.js": 34,
+        "./modules/model-builder/model-builder.service.js": 35,
+        "./modules/page-builder/aside.controller.js": 37,
+        "./modules/page-builder/main.controller.js": 38,
+        "./modules/test/main.controller.js": 40
+    }],
+    43: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1660,144 +1888,158 @@ exports['default'] = config;
 }
 module.exports = exports['default'];
 
-},{"./states":46}],44:[function(require,module,exports){
+    }, {"./states": 46}],
+    44: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-exports['default'] = function () {
-    $(function () {
-        return init();
-    });
-};
+        exports['default'] = function () {
+            $(function () {
+                return init();
+            });
+        };
 
-function init() {
-    $('.sidebar-pin').click(function () {
-        var sidebarIsPinned = $('body').hasClass('sidebar-pinned');
+        function init() {
+            $('.sidebar-pin').click(function () {
+                var sidebarIsPinned = $('body').hasClass('sidebar-pinned');
 
-        if (sidebarIsPinned) {
-            $('body').addClass('sidebar-unpinned').removeClass('sidebar-pinned');
-            $(this).addClass('fa-circle-o').removeClass('fa-dot-circle-o');
-        } else {
-            $('body').addClass('sidebar-pinned').removeClass('sidebar-unpinned');
-            $(this).addClass('fa-dot-circle-o').removeClass('fa-circle-o');
-        }
-    });
+                if (sidebarIsPinned) {
+                    $('body').addClass('sidebar-unpinned').removeClass('sidebar-pinned');
+                    $(this).addClass('fa-circle-o').removeClass('fa-dot-circle-o');
+                } else {
+                    $('body').addClass('sidebar-pinned').removeClass('sidebar-unpinned');
+                    $(this).addClass('fa-dot-circle-o').removeClass('fa-circle-o');
+                }
+            });
 
-    $('#sidebar').mouseenter(function () {
-        $('body').addClass('sidebar-mousein').removeClass('sidebar-mouseout');
-    });
+            $('#sidebar').mouseenter(function () {
+                $('body').addClass('sidebar-mousein').removeClass('sidebar-mouseout');
+            });
 
-    $('#sidebar').mouseleave(function () {
-        $('body').addClass('sidebar-mouseout').removeClass('sidebar-mousein');
+            $('#sidebar').mouseleave(function () {
+                $('body').addClass('sidebar-mouseout').removeClass('sidebar-mousein');
 
-        if ($('body').hasClass('sidebar-unpinned')) $('.nav-main .opened').removeClass('opened');
-    });
+                if ($('body').hasClass('sidebar-unpinned')) $('.nav-main .opened').removeClass('opened');
+            });
 
-    $('.nav-main > li.has-pages > a .dropdown').click(function () {
-        $(this).parents('li').toggleClass('opened');
-    });
+            $('.nav-main > li.has-pages > a .dropdown').click(function () {
+                $(this).parents('li').toggleClass('opened');
+            });
 
-    $('.trigger-quickview').click(function () {
-        quickviewVisible(!quickviewIsVisible());
-        return false;
-    });
+            $('.trigger-quickview').click(function () {
+                quickviewVisible(!quickviewIsVisible());
+                return false;
+            });
 
-    $('#quickview .btn-close').click(function () {
-        quickviewVisible(false);
-    });
+            $('#quickview .btn-close').click(function () {
+                quickviewVisible(false);
+            });
 
-    $('#content-main, #view-overlay').click(function () {
-        quickviewVisible(false);
-    });
+            $('#content-main, #view-overlay').click(function () {
+                quickviewVisible(false);
+            });
 
-    function quickviewIsVisible() {
-        return $('#quickview').hasClass('opened');
-    }
+            function quickviewIsVisible() {
+                return $('#quickview').hasClass('opened');
+            }
 
-    function quickviewVisible(open) {
-        if (open) {
-            $('#quickview').addClass('opened');
-            $('#view-overlay').addClass('opened');
-        } else {
-            $('#quickview').removeClass('opened');
-            $('#view-overlay').removeClass('opened');
-        }
-    }
+            function quickviewVisible(open) {
+                if (open) {
+                    $('#quickview').addClass('opened');
+                    $('#view-overlay').addClass('opened');
+                } else {
+                    $('#quickview').removeClass('opened');
+                    $('#view-overlay').removeClass('opened');
+                }
+            }
 
-    /**
-     * Form stuff
-     */
+            /**
+             * Form stuff
+             */
     $.fn.editable.defaults.mode = 'inline';
 
     $.fn.editableform.buttons = '<button type="submit" class="btn btn-primary btn-sm editable-submit">' + '<i class=ion-checkmark></i>' + '</button>' + '<button type="button" class="btn btn-default btn-sm editable-cancel">' + '<i class="ion-close"></i>' + '</button>';
 
-    $('.editable').editable();
+            $('.editable').editable();
 
-    $('select').select2();
+            $('select').select2();
 }
 module.exports = exports['default'];
 
-},{}],45:[function(require,module,exports){
+    }, {}],
+    45: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _jquery = require('./jquery');
-
-var _jquery2 = _interopRequireDefault(_jquery);
-
-exports['default'] = run;
-
-/*@ngInject*/function run($rootScope, $state) {
-    $rootScope.aside = aside;
-
-    (0, _jquery2['default'])();
-
-    function aside() {
-        var views = $state.current.views;
-
-        if (views) {
-            return views.aside;
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {'default': obj};
         }
 
-        return false;
+        var _jquery = require('./jquery');
+
+        var _jquery2 = _interopRequireDefault(_jquery);
+
+        exports['default'] = run;
+
+        /*@ngInject*/
+        function run($rootScope, $state) {
+            $rootScope.aside = aside;
+
+            (0, _jquery2['default'])();
+
+            function aside() {
+                var views = $state.current.views;
+
+                if (views) {
+                    return views.aside;
+        }
+
+                return false;
     }
-}
+        }
 module.exports = exports['default'];
 
-},{"./jquery":44}],46:[function(require,module,exports){
-'use strict';
+    }, {"./jquery": 44}],
+    46: [function (require, module, exports) {
+        'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+        Object.defineProperty(exports, '__esModule', {
+            value: true
+        });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {'default': obj};
+        }
 
-var _modulesModelBuilderState = require('../modules/model-builder/state');
+        var _modulesModelBuilderState = require('../modules/model-builder/state');
 
-var _modulesModelBuilderState2 = _interopRequireDefault(_modulesModelBuilderState);
+        var _modulesModelBuilderState2 = _interopRequireDefault(_modulesModelBuilderState);
 
-var _modulesPageBuilderStateJs = require('../modules/page-builder/state.js');
+        var _modulesPageBuilderStateJs = require('../modules/page-builder/state.js');
 
-var _modulesPageBuilderStateJs2 = _interopRequireDefault(_modulesPageBuilderStateJs);
+        var _modulesPageBuilderStateJs2 = _interopRequireDefault(_modulesPageBuilderStateJs);
 
-var _modulesFileManagerState = require('../modules/file-manager/state');
+        var _modulesFileManagerState = require('../modules/file-manager/state');
 
-var _modulesFileManagerState2 = _interopRequireDefault(_modulesFileManagerState);
+        var _modulesFileManagerState2 = _interopRequireDefault(_modulesFileManagerState);
 
-var _modulesTestState = require('../modules/test/state');
+        var _modulesTestState = require('../modules/test/state');
 
-var _modulesTestState2 = _interopRequireDefault(_modulesTestState);
+        var _modulesTestState2 = _interopRequireDefault(_modulesTestState);
 
-exports['default'] = [_modulesModelBuilderState2['default'], _modulesPageBuilderStateJs2['default'], _modulesFileManagerState2['default'], _modulesTestState2['default']];
-module.exports = exports['default'];
+        exports['default'] = [_modulesModelBuilderState2['default'], _modulesPageBuilderStateJs2['default'], _modulesFileManagerState2['default'], _modulesTestState2['default']];
+        module.exports = exports['default'];
 
-},{"../modules/file-manager/state":14,"../modules/model-builder/state":36,"../modules/page-builder/state.js":39,"../modules/test/state":41}]},{},[1]);
+    }, {
+        "../modules/file-manager/state": 14,
+        "../modules/model-builder/state": 36,
+        "../modules/page-builder/state.js": 39,
+        "../modules/test/state": 41
+    }]
+}, {}, [1]);
