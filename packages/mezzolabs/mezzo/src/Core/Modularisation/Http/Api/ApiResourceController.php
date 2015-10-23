@@ -33,7 +33,7 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
      */
     public function store(ApiRequest $request)
     {
-        return $this->repository()->make($request->all());
+        return $this->repository()->create($request->all());
     }
 
     /**

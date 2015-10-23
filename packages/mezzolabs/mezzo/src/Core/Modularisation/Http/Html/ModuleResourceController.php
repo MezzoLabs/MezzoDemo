@@ -44,7 +44,7 @@ abstract class ModuleResourceController extends ModuleController implements Reso
      */
     public function store(ModuleRequest $request)
     {
-        return $this->repository()->make($request->all());
+        return $this->repository()->makeRepository($request->all());
     }
 
     /**

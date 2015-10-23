@@ -26,6 +26,10 @@ abstract class MezzoTutorial extends BaseModel
         "updated_at" => ""
     ];
 
+    protected $fillable = [
+        'title', 'body', 'created_at', 'updated_at', 'user_id', 'main_category_id', 'parent_id'
+    ];
+
     /**
      * @Mezzo\Attribute(type="NumberInput")
      * @var float

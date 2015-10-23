@@ -48,6 +48,7 @@ trait HasModelResource
      */
     protected function makeRepository($repositoryClassName = "")
     {
+
         if (empty($repositoryClassName)) {
             $repositoryClassName = $this->guessRepositoryClass();
         }
@@ -60,7 +61,7 @@ trait HasModelResource
             throw new RepositoryException('Cannot find a repository implementation for ' .
                 $this->model()->className() . '. You should create one in the App or the module folder.');
 
-        return ModelRepository::make($this->model());
+        return ModelRepository::makeRepository($this->model());
     }
 
     /**
