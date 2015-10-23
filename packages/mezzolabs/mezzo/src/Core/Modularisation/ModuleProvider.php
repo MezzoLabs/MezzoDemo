@@ -8,11 +8,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Api\ApiResourceControllerContract;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Controller;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModulePage;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModulePages;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ResourceController;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflections;
@@ -22,6 +17,11 @@ use MezzoLabs\Mezzo\Core\Routing\ModuleRouter;
 use MezzoLabs\Mezzo\Exceptions\DirectoryNotFound;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
+use MezzoLabs\Mezzo\Http\Api\ApiResourceControllerContract;
+use MezzoLabs\Mezzo\Http\Controller;
+use MezzoLabs\Mezzo\Http\Html\ModulePage;
+use MezzoLabs\Mezzo\Http\Html\ModulePages;
+use MezzoLabs\Mezzo\Http\Html\ResourceController;
 
 abstract class ModuleProvider extends ServiceProvider
 {

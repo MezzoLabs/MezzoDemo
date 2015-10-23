@@ -1,11 +1,11 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Http\Api;
+namespace MezzoLabs\Mezzo\Http\Api;
 
 
 use Dingo\Api\Routing\Helpers as ApiHelpers;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Controller;
+use MezzoLabs\Mezzo\Http\Controller;
 
 abstract class ApiController extends Controller
 {
@@ -17,7 +17,7 @@ abstract class ApiController extends Controller
     protected $response;
 
     /**
-     * @return \MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleRequest
+     * @return \MezzoLabs\Mezzo\Http\Html\ModuleRequest
      */
     protected function request()
     {

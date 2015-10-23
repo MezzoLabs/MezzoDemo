@@ -1,8 +1,14 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Http;
+namespace MezzoLabs\Mezzo\Http;
 
+
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
+use MezzoLabs\Mezzo\Core\Modularisation\NamingConvention;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
+use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
+use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 
 class ResourceController extends Controller implements ResourceControllerContract
 {

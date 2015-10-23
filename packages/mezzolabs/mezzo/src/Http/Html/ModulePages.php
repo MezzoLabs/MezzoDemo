@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Http\Html;
+namespace MezzoLabs\Mezzo\Http\Html;
 
 
 use Illuminate\Filesystem\ClassFinder;

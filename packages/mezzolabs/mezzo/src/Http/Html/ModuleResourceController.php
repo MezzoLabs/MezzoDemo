@@ -1,12 +1,13 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Http\Html;
+namespace MezzoLabs\Mezzo\Http\Html;
 
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Controller;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\HasModelResource;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
+use MezzoLabs\Mezzo\Http\Controller;
+use MezzoLabs\Mezzo\Http\HasModelResource;
+use MezzoLabs\Mezzo\Http\ResourceControllerContract;
 
-abstract class ResourceController extends Controller implements ResourceController
+abstract class ResourceController extends Controller implements ResourceControllerContract
 {
     use HasModelResource;
 

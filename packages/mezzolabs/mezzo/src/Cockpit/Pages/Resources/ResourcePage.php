@@ -5,11 +5,11 @@ namespace MezzoLabs\Mezzo\Cockpit\Pages\Resources;
 
 
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModulePage;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Exceptions\CannotGuessModelException;
 use MezzoLabs\Mezzo\Exceptions\ModulePageException;
+use MezzoLabs\Mezzo\Http\Html\ModulePage;
 
 abstract class ResourcePage extends ModulePage
 {
@@ -108,7 +108,7 @@ abstract class ResourcePage extends ModulePage
     }
 
     /**
-     * @return \MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ResourceController
+     * @return \MezzoLabs\Mezzo\Http\Html\ResourceController
      * @throws \MezzoLabs\Mezzo\Exceptions\ModuleControllerException
      */
     protected function guessController()

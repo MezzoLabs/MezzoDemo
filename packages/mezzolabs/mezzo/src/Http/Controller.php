@@ -1,19 +1,19 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Core\Modularisation\Http;
+namespace MezzoLabs\Mezzo\Http;
 
 
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as IlluminateController;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleRequest;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Core\Modularisation\NamingConvention;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Validation\ModelValidator;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
+use MezzoLabs\Mezzo\Http\Html\ModuleRequest;
 
 abstract class Controller extends IlluminateController
 {
@@ -180,5 +180,12 @@ abstract class Controller extends IlluminateController
         return new ModelValidator($model, $request->all());
     }
 
+    /**
+     * @return \MezzoLabs\Mezzo\Http\Html\ModuleRequest
+     */
+    protected function request()
+    {
+        return mezzo()->makeRequest();
+    }
 
 }

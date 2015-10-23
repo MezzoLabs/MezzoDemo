@@ -3,7 +3,7 @@
 namespace MezzoLabs\Mezzo\Modules\Sample\Http\ApiControllers;
 
 
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Api\ApiResourceControllerContract;
+use MezzoLabs\Mezzo\Http\Api\ApiResourceControllerContract;
 
 class TutorialApiController extends ApiResourceControllerContract
 {

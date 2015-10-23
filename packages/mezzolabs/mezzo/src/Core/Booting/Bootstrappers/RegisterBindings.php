@@ -12,8 +12,6 @@ use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Helpers\Path;
 use MezzoLabs\Mezzo\Core\Mezzo;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Api\ApiRequest;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleRequest;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
 use MezzoLabs\Mezzo\Core\Modularisation\NamingConvention;
 use MezzoLabs\Mezzo\Core\Reflection\ModelFinder;
@@ -22,6 +20,8 @@ use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
 use MezzoLabs\Mezzo\Core\Routing\ApiConfig;
 use MezzoLabs\Mezzo\Core\Routing\Uri;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
+use MezzoLabs\Mezzo\Http\Api\ApiRequest;
+use MezzoLabs\Mezzo\Http\Html\ModuleRequest;
 use MezzoLabs\Mezzo\Modules\General\GeneralModule;
 
 class RegisterBindings implements Bootstrapper
