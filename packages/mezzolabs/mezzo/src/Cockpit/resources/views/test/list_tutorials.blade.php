@@ -4,8 +4,7 @@
     <div class="well">
 
         <!-- Search -->
-        <input type="search" class="form-control pull-right" style="display: inline-block; width: 200px"
-               placeholder="Search" ng-model="vm.searchText">
+        <input type="search" class="form-control pull-right" style="display: inline-block; width: 200px" placeholder="Search" ng-model="vm.searchText">
         <!-- Search -->
 
         <!-- Add new -->
