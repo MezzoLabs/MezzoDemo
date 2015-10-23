@@ -4,8 +4,6 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Http\Html;
 
 use MezzoLabs\Mezzo\Core\Modularisation\Http\HasModelResource;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleController;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleRequest;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResponse;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ResourceController;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 
@@ -46,7 +44,7 @@ abstract class ModuleResourceController extends ModuleController implements Reso
      */
     public function store(ModuleRequest $request)
     {
-        return $this->repository()->make($request->all());
+        return $this->repository()->makeRepository($request->all());
     }
 
     /**

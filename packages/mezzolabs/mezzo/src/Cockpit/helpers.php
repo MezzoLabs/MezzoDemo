@@ -13,7 +13,7 @@ if (!function_exists('cockpit_asset')){
     }
 }
 
-if (!function_exists('cockpit_stylesheet')){
+if (!function_exists('cockpit_stylesheet')) {
     /**
      * Create a link to a stylesheet for a specific asset.
      *
@@ -26,7 +26,7 @@ if (!function_exists('cockpit_stylesheet')){
     }
 }
 
-if (!function_exists('cockpit_script')){
+if (!function_exists('cockpit_script')) {
     /**
      * Create a script tag for a specific asset.
      *

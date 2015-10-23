@@ -26,7 +26,6 @@ class ModelRepository
      */
     protected $model;
 
-
     /**
      * @param ModelReflection|null $modelReflection
      * @throws RepositoryException
@@ -148,7 +147,7 @@ class ModelRepository
      * @param string|ModelReflection|ModelReflectionSet $model
      * @return static
      */
-    public static function make($model)
+    public static function makeRepository($model)
     {
         /**
          * Find the model reflection, normalize the $model variable.
