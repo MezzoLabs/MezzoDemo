@@ -1,4 +1,8 @@
 export default () => {
+    $(() => init());
+};
+
+function init(){
     $('.sidebar-pin').click(function(){
         var sidebarIsPinned = $('body').hasClass('sidebar-pinned');
 
@@ -28,7 +32,6 @@ export default () => {
 
     $('.nav-main > li.has-pages > a .dropdown').click(function(){
         $(this).parents('li').toggleClass('opened');
-        console.log(this);
     });
 
     $('.trigger-quickview').click(function(){
@@ -76,4 +79,4 @@ export default () => {
 
 
     $('select').select2();
-};
+}

@@ -23,7 +23,10 @@
     "pluralize": "~1.2.1",
     "sweetalert2": "~0.2.3",
     "jquery-ui": "jqueryui#~1.11.4",
-    "ng-file-upload": "~9.0.13"
+    "ng-file-upload": "~9.0.13",
+    "gridster": "~0.5.6",
+    "Ionicons": "ionicons#~2.0.1",
+    "roboto-fontface": "~0.4.3"
   },
   "ignore": [
     "**/.*",
