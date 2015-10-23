@@ -17,9 +17,8 @@ use MezzoLabs\Mezzo\Core\Routing\ModuleRouter;
 use MezzoLabs\Mezzo\Exceptions\DirectoryNotFound;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
-use MezzoLabs\Mezzo\Http\Api\ApiResourceControllerContract;
+use MezzoLabs\Mezzo\Http\Controllers\ApiResourceController;
 use MezzoLabs\Mezzo\Http\Controllers\Controller;
-use MezzoLabs\Mezzo\Http\Controllers\ResourceController;
 use MezzoLabs\Mezzo\Http\Pages\ModulePage;
 use MezzoLabs\Mezzo\Http\Pages\ModulePages;
 
@@ -350,8 +349,8 @@ abstract class ModuleProvider extends ServiceProvider
     {
         $controller = $this->resourceController($controllerName);
 
-        if (!($controller instanceof ApiResourceControllerContract))
-            throw new ModuleControllerException($controller->qualifiedName() . ' is not a API resource controller. ');
+        if (!($controller instanceof ApiResourceController))
+            throw new ModuleControllerException($controller->qualifiedName() . ' is not an API resource controller. ');
 
         return $controller;
     }

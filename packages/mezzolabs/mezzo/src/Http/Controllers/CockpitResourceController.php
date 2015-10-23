@@ -3,10 +3,10 @@
 namespace MezzoLabs\Mezzo\Http\Controllers;
 
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
-use MezzoLabs\Mezzo\Http\Requests\ModuleRequest;
+use MezzoLabs\Mezzo\Http\Requests\CockpitRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
 
-abstract class ResourceController extends Controller implements ResourceControllerContract
+abstract class CockpitResourceController extends CockpitController implements ResourceControllerContract
 {
     use \MezzoLabs\Mezzo\Http\Controllers\HasModelResource;
 
@@ -15,10 +15,10 @@ abstract class ResourceController extends Controller implements ResourceControll
     /**
      * Display a listing of the resource.
      *
-     * @param ModuleRequest $request
+     * @param CockpitRequest $request
      * @return ModuleResponse
      */
-    public function index(ModuleRequest $request)
+    public function index(CockpitRequest $request)
     {
 
     }
@@ -38,10 +38,10 @@ abstract class ResourceController extends Controller implements ResourceControll
     /**
      * Store a newly created resource in storage.
      *
-     * @param  ModuleRequest $request
+     * @param  CockpitRequest $request
      * @return ModuleResponse
      */
-    public function store(ModuleRequest $request)
+    public function store(CockpitRequest $request)
     {
         return $this->repository()->makeRepository($request->all());
     }
@@ -71,11 +71,11 @@ abstract class ResourceController extends Controller implements ResourceControll
     /**
      * Update the specified resource in storage.
      *
-     * @param  ModuleRequest $request
+     * @param  CockpitRequest $request
      * @param  int $id
      * @return ModuleResponse
      */
-    public function update(ModuleRequest $request, $id)
+    public function update(CockpitRequest $request, $id)
     {
         return $this->repository->update($request->all(), $id);
     }

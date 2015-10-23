@@ -3,20 +3,20 @@
 namespace MezzoLabs\Mezzo\Modules\Sample\Http\Controllers;
 
 
-use MezzoLabs\Mezzo\Http\Controllers\ResourceController;
-use MezzoLabs\Mezzo\Http\Requests\ModuleRequest;
+use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
+use MezzoLabs\Mezzo\Http\Requests\CockpitRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
 use MezzoLabs\Mezzo\Modules\Sample\Http\Pages\IndexTutorialPage;
 
-class TutorialController extends ResourceController
+class TutorialController extends CockpitResourceController
 {
     /**
      * Display a listing of the resource.
      *
-     * @param ModuleRequest $request
+     * @param CockpitRequest $request
      * @return ModuleResponse
      */
-    public function index(ModuleRequest $request)
+    public function index(CockpitRequest $request)
     {
         return $this->page(IndexTutorialPage::class);
     }
@@ -35,10 +35,10 @@ class TutorialController extends ResourceController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  ModuleRequest $request
+     * @param  CockpitRequest $request
      * @return ModuleResponse
      */
-    public function store(ModuleRequest $request)
+    public function store(CockpitRequest $request)
     {
     }
 
@@ -66,11 +66,11 @@ class TutorialController extends ResourceController
     /**
      * Update the specified resource in storage.
      *
-     * @param  ModuleRequest $request
+     * @param  CockpitRequest $request
      * @param  int $id
      * @return ModuleResponse
      */
-    public function update(ModuleRequest $request, $id)
+    public function update(CockpitRequest $request, $id)
     {
     }
 

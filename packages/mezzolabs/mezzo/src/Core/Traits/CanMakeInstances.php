@@ -25,7 +25,7 @@ use MezzoLabs\Mezzo\Core\Routing\Router;
 use MezzoLabs\Mezzo\Core\Routing\Uri;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
 use MezzoLabs\Mezzo\Exceptions\UnexpectedException;
-use MezzoLabs\Mezzo\Http\Requests\ModuleRequest;
+use MezzoLabs\Mezzo\Http\Requests\CockpitRequest;
 
 trait CanMakeInstances
 {
@@ -186,11 +186,11 @@ trait CanMakeInstances
     }
 
     /**
-     * @return ModuleRequest
+     * @return CockpitRequest
      */
     public function makeRequest()
     {
-        return ModuleRequest::capture();
+        return CockpitRequest::capture();
     }
 
     /**
