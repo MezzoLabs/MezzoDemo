@@ -4,9 +4,12 @@
 namespace MezzoLabs\Mezzo\Http\Controllers;
 
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
-use MezzoLabs\Mezzo\Http\Requests\ApiRequest;
 use MezzoLabs\Mezzo\Http\Requests\ApiResponseFactory;
-use MezzoLabs\Mezzo\Http\Requests\ResourceRequest;
+use MezzoLabs\Mezzo\Http\Requests\Resource\DestroyResourceRequest;
+use MezzoLabs\Mezzo\Http\Requests\Resource\IndexResourceRequest;
+use MezzoLabs\Mezzo\Http\Requests\Resource\ShowResourceRequest;
+use MezzoLabs\Mezzo\Http\Requests\Resource\StoreResourceRequest;
+use MezzoLabs\Mezzo\Http\Requests\Resource\UpdateResourceRequest;
 
 abstract class ApiResourceController extends ApiController implements ResourceControllerContract
 {
@@ -17,10 +20,10 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
     /**
      * Display a listing of the resource.
      *
-     * @param ResourceRequest $request
+     * @param IndexResourceRequest $request
      * @return ApiResponseFactory
      */
-    public function index(ResourceRequest $request)
+    public function index(IndexResourceRequest $request)
     {
         return $this->response()->array($this->repository()->all()->toArray());
     }
@@ -29,10 +32,11 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
     /**
      * Store a newly created resource in storage.
      *
-     * @param  ResourceRequest $request
+     * @param StoreResourceRequest $request
      * @return ApiResponseFactory
+     * @throws ModuleControllerException
      */
-    public function store(ResourceRequest $request)
+    public function store(StoreResourceRequest $request)
     {
         mezzo_dd($request->controller());
 
@@ -42,10 +46,11 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param ShowResourceRequest $request
+     * @param int $id
      * @return ApiResponseFactory
      */
-    public function show($id)
+    public function show(ShowResourceRequest $request, $id)
     {
         return $this->repository()->find($id);
     }
@@ -54,11 +59,11 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
     /**
      * Update the specified resource in storage.
      *
-     * @param ApiRequest $request
+     * @param UpdateResourceRequest $request
      * @param  int $id
      * @return ApiResponseFactory
      */
-    public function update(ApiRequest $request, $id)
+    public function update(UpdateResourceRequest $request, $id)
     {
         $result = $this->repository()->update($request->all(), $id);
 
@@ -68,10 +73,11 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
     /**
      * Remove the specified resource from storage.
      *
+     * @param DestroyResourceRequest $request
      * @param  int $id
      * @return ApiResponseFactory
      */
-    public function destroy($id)
+    public function destroy(DestroyResourceRequest $request, $id)
     {
         return $this->repository()->delete($id);
     }

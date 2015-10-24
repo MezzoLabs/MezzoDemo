@@ -13,7 +13,7 @@ use MezzoLabs\Mezzo\Core\Modularisation\NamingConvention;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Validation\ModelValidator;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
-use MezzoLabs\Mezzo\Http\Requests\CockpitRequest;
+use MezzoLabs\Mezzo\Http\Requests\Request;
 
 abstract class Controller extends IlluminateController
 {
@@ -172,16 +172,16 @@ abstract class Controller extends IlluminateController
 
     /**
      * @param MezzoModelReflection $model
-     * @param CockpitRequest $request
+     * @param Request $request
      * @return ModelValidator
      */
-    protected function modelValidator(MezzoModelReflection $model, CockpitRequest $request)
+    protected function modelValidator(MezzoModelReflection $model, Request $request)
     {
         return new ModelValidator($model, $request->all());
     }
 
     /**
-     * @return \MezzoLabs\Mezzo\Http\Requests\CockpitRequest
+     * @return \MezzoLabs\Mezzo\Http\Requests\Request
      */
     protected function request()
     {

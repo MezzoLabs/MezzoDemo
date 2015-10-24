@@ -6,12 +6,15 @@ namespace MezzoLabs\Mezzo\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Exceptions\HttpException;
+use MezzoLabs\Mezzo\Http\Controllers\ApiController;
 use MezzoLabs\Mezzo\Http\Controllers\Controller;
 
-class CockpitRequest extends FormRequest
+
+class Request extends FormRequest
 {
+
     /**
-     * @var CockpitRequest
+     * @var Request
      */
     protected static $current;
 
@@ -22,7 +25,7 @@ class CockpitRequest extends FormRequest
 
 
     /**
-     * @return CockpitRequest
+     * @return Request
      */
     public static function capture()
     {
@@ -49,7 +52,7 @@ class CockpitRequest extends FormRequest
      */
     public function rules()
     {
-
+        return [];
     }
 
     /**
@@ -84,5 +87,16 @@ class CockpitRequest extends FormRequest
             throw new HttpException('The controller has to be ' . Controller::class);
 
         return $controller;
+    }
+
+
+    /**
+     * Check if the current request comes via the API
+     *
+     * @return bool
+     */
+    public function isApi()
+    {
+        return $this->controller() instanceof ApiController;
     }
 }

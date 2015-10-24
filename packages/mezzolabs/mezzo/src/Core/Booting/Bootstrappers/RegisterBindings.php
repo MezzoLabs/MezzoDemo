@@ -20,8 +20,7 @@ use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
 use MezzoLabs\Mezzo\Core\Routing\ApiConfig;
 use MezzoLabs\Mezzo\Core\Routing\Uri;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
-use MezzoLabs\Mezzo\Http\Requests\ApiRequest;
-use MezzoLabs\Mezzo\Http\Requests\CockpitRequest;
+use MezzoLabs\Mezzo\Http\Requests\Request;
 use MezzoLabs\Mezzo\Modules\General\GeneralModule;
 
 class RegisterBindings implements Bootstrapper
@@ -121,12 +120,8 @@ class RegisterBindings implements Bootstrapper
 
     private function bindRequests(Application $app)
     {
-        $app->singleton(ApiRequest::class, function (Application $app) {
-            return ApiRequest::capture();
-        });
-
-        $app->singleton(CockpitRequest::class, function (Application $app) {
-            return CockpitRequest::capture();
+        $app->singleton(Request::class, function (Application $app) {
+            return Request::capture();
         });
     }
 

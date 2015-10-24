@@ -4,8 +4,8 @@ namespace MezzoLabs\Mezzo\Http\Controllers;
 
 use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ShowResourcePage;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
-use MezzoLabs\Mezzo\Http\Requests\CockpitRequest;
-use MezzoLabs\Mezzo\Http\Requests\ResourceRequest;
+use MezzoLabs\Mezzo\Http\Requests\Request;
+use MezzoLabs\Mezzo\Http\Requests\Resource\ResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
 
 abstract class CockpitResourceController extends CockpitController implements ResourceControllerContract
@@ -17,7 +17,7 @@ abstract class CockpitResourceController extends CockpitController implements Re
     /**
      * Display a listing of the resource.
      *
-     * @param CockpitRequest $request
+     * @param Request $request
      * @return ModuleResponse
      */
     public function index(ResourceRequest $request)

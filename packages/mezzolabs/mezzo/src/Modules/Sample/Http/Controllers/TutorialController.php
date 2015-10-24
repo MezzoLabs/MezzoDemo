@@ -4,7 +4,7 @@ namespace MezzoLabs\Mezzo\Modules\Sample\Http\Controllers;
 
 
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
-use MezzoLabs\Mezzo\Http\Requests\ResourceRequest;
+use MezzoLabs\Mezzo\Http\Requests\Resource\ResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
 use MezzoLabs\Mezzo\Modules\Sample\Http\Pages\IndexTutorialPage;
 

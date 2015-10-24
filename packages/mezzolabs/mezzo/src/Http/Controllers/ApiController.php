@@ -17,7 +17,7 @@ abstract class ApiController extends Controller
     protected $response;
 
     /**
-     * @return \MezzoLabs\Mezzo\Http\Requests\CockpitRequest
+     * @return \MezzoLabs\Mezzo\Http\Requests\Request
      */
     protected function request()
     {
