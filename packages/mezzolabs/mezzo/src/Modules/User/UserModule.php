@@ -3,6 +3,8 @@
 
 namespace MezzoLabs\Mezzo\Modules\User;
 
+use App\Permission;
+use App\Role;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
@@ -10,6 +12,8 @@ class UserModule extends ModuleProvider
 {
     protected $models = [
         User::class,
+        Role::class,
+        Permission::class
     ];
 
     /**
