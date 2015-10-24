@@ -5,6 +5,7 @@ namespace App\Mezzo\Generated\ModelParents;
 
 
 use App\Mezzo\BaseModel;
+use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
 abstract class MezzoUser extends BaseModel

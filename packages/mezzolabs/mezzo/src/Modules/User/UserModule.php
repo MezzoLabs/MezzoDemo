@@ -29,7 +29,6 @@ class UserModule extends ModuleProvider
      */
     public function ready()
     {
-        $UserReflection = $this->modelReflectionSets->get(User::class);
 
         //dd($tutorialReflection->relationships());
     }

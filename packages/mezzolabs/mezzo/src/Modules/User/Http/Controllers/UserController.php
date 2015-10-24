@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Modules\User\Http\Controllers;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\ResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
-use MezzoLabs\Mezzo\Modules\Sample\Http\Pages\IndexUserPage;
+use MezzoLabs\Mezzo\Modules\User\Http\Pages\IndexUserPage;
 
 class UserController extends CockpitResourceController
 {

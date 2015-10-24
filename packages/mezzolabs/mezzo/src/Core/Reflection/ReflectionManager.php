@@ -4,8 +4,6 @@
 namespace MezzoLabs\Mezzo\Core\Reflection;
 
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSets;
@@ -84,7 +82,7 @@ class ReflectionManager
         if($reflectionSet->isMezzoModel())
             return $reflectionSet->mezzoReflection();
 
-        throw new InvalidArgumentException($model);
+        throw new ReflectionException($model . ' is not a valid MezzoModel.');
 
     }
 
