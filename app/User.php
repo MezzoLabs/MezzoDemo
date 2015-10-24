@@ -54,15 +54,24 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
      */
     protected $hidden = ['password', 'remember_token'];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function tutorials(){
         return $this->hasMany(Tutorial::class, 'user_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function roles()
     {
         return $this->belongsToMany(Role::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
     public function permissions()
     {
         return $this->hasManyThrough(Permission::class, Role::class);
