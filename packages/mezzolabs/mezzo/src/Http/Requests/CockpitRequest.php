@@ -7,7 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Exceptions\HttpException;
 use MezzoLabs\Mezzo\Http\Controllers\Controller;
-use MezzoLabs\Mezzo\Http\Controllers\ResourceControllerContract;
 
 class CockpitRequest extends FormRequest
 {
@@ -40,7 +39,7 @@ class CockpitRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -50,15 +49,7 @@ class CockpitRequest extends FormRequest
      */
     public function rules()
     {
-        $this->controller();
 
-        if ($this->controller instanceof ResourceControllerContract) {
-            return $this->controller->model()->rules();
-        }
-
-        return [
-            //
-        ];
     }
 
     /**
@@ -75,7 +66,11 @@ class CockpitRequest extends FormRequest
 
     protected function detectControllerFromRoute()
     {
-        $action = (new Collection($this->route()->getAction()))->get('controller');
+        $actionData = (new Collection($this->route()->getAction()));
+        $action = $actionData->get('controller');
+
+        if (!$action)
+            $action = $actionData->get('uses');
 
         if (!$action)
             throw new HttpException('No controller found for this request. ' .

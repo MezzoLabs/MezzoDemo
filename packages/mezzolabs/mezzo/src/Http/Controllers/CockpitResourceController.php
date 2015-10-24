@@ -2,13 +2,15 @@
 
 namespace MezzoLabs\Mezzo\Http\Controllers;
 
+use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ShowResourcePage;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 use MezzoLabs\Mezzo\Http\Requests\CockpitRequest;
+use MezzoLabs\Mezzo\Http\Requests\ResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
 
 abstract class CockpitResourceController extends CockpitController implements ResourceControllerContract
 {
-    use \MezzoLabs\Mezzo\Http\Controllers\HasModelResource;
+    use HasModelResource;
 
     protected $allowStaticRepositories = false;
 
@@ -18,7 +20,7 @@ abstract class CockpitResourceController extends CockpitController implements Re
      * @param CockpitRequest $request
      * @return ModuleResponse
      */
-    public function index(CockpitRequest $request)
+    public function index(ResourceRequest $request)
     {
 
     }
@@ -27,34 +29,27 @@ abstract class CockpitResourceController extends CockpitController implements Re
     /**
      * Show the form for creating a new resource.
      *
+     * @param ResourceRequest $request
      * @return ModuleResponse
      */
-    public function create()
+    public function create(ResourceRequest $request)
     {
-
+        mezzo_dd($request);
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  CockpitRequest $request
-     * @return ModuleResponse
-     */
-    public function store(CockpitRequest $request)
-    {
-        return $this->repository()->makeRepository($request->all());
-    }
 
     /**
      * Display the specified resource.
      *
      * @param  int $id
+     * @param ResourceRequest $request
      * @return ModuleResponse
      */
-    public function show($id)
+    public function show(ResourceRequest $request)
     {
-        return $this->repository->find($id);
+        $resource = $this->repository->findOrFail($request->get('id', null));
+
+        $this->page(ShowResourcePage::class);
     }
 
     /**
@@ -67,30 +62,6 @@ abstract class CockpitResourceController extends CockpitController implements Re
     {
 
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  CockpitRequest $request
-     * @param  int $id
-     * @return ModuleResponse
-     */
-    public function update(CockpitRequest $request, $id)
-    {
-        return $this->repository->update($request->all(), $id);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return ModuleResponse
-     */
-    public function destroy($id)
-    {
-        return $this->repository->delete($id);
-    }
-
 
     /**
      * Check if this resource controller is correctly named (<ModelName>Controller)

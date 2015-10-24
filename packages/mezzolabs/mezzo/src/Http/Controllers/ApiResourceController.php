@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Http\Controllers;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 use MezzoLabs\Mezzo\Http\Requests\ApiRequest;
 use MezzoLabs\Mezzo\Http\Requests\ApiResponseFactory;
-use MezzoLabs\Mezzo\Http\Requests\CockpitRequest;
+use MezzoLabs\Mezzo\Http\Requests\ResourceRequest;
 
 abstract class ApiResourceController extends ApiController implements ResourceControllerContract
 {
@@ -17,10 +17,10 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
     /**
      * Display a listing of the resource.
      *
-     * @param ApiRequest $request
+     * @param ResourceRequest $request
      * @return ApiResponseFactory
      */
-    public function index(ApiRequest $request)
+    public function index(ResourceRequest $request)
     {
         return $this->response()->array($this->repository()->all()->toArray());
     }
@@ -29,12 +29,12 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
     /**
      * Store a newly created resource in storage.
      *
-     * @param  ApiRequest $request
+     * @param  ResourceRequest $request
      * @return ApiResponseFactory
      */
-    public function store(CockpitRequest $request)
+    public function store(ResourceRequest $request)
     {
-        mezzo_dd($request->all());
+        mezzo_dd($request->controller());
 
         return $this->repository()->create($request->all());
     }

@@ -130,6 +130,17 @@ class ModelRepository
     }
 
     /**
+     * @param $id
+     * @param array $columns
+     * @return Collection|Model
+     */
+    public function findOrFail($id, $columns = array('*'))
+    {
+        return $this->query()->findOrFail($id, $columns);
+    }
+
+
+    /**
      * @param $attribute
      * @param $value
      * @param array $columns
@@ -139,7 +150,6 @@ class ModelRepository
     {
         return $this->query()->where($attribute, '=', $value)->first($columns);
     }
-
 
     /**
      * Create a new generic model repository for a given model class.
