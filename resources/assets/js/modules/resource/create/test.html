@@ -1,0 +1,51 @@
+<div class="wrapper">
+    <div class="row">
+        <div class="col-sm-3 center-block">
+            <div class="well">
+
+                <h1>New Tutorial</h1>
+
+                <hr>
+
+                <form ng-submit="vm.submit()">
+
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" class="form-control" placeholder="Title" ng-model="vm.model.title">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Body</label>
+                        <textarea class="form-control" placeholder="Body" ng-model="vm.model.body"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Created at</label>
+                        <input type="datetime-local" class="form-control" placeholder="Created at" ng-model="vm.model.createdAt">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Updated at</label>
+                        <input type="datetime-local" class="form-control" placeholder="Updated at" ng-model="vm.model.updatedAt">
+                    </div>
+
+                    <div class="form-group">
+                        <label>User</label>
+                        <select class="form-control" ng-model="vm.model.userId"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Parent</label>
+                        <select class="form-control" ng-model="vm.model.parent"></select>
+                    </div>
+
+                    <hr>
+
+                    <button type="submit" class="btn btn-primary center-block">Create new Tutorial</button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

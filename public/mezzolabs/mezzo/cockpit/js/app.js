@@ -21,7 +21,7 @@ app.config(_setupConfig2['default']);
 app.run(_setupRun2['default']);
 (0, _register2['default'])(app);
 
-},{"./register":42,"./setup/config":43,"./setup/run":45}],2:[function(require,module,exports){
+},{"./register":44,"./setup/config":45,"./setup/run":47}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1424,6 +1424,80 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
+var ResourceCreateController = (function () {
+
+    /*@ngInject*/
+    function ResourceCreateController($http) {
+        _classCallCheck(this, ResourceCreateController);
+
+        this.$http = $http;
+        this.model = {};
+    }
+
+    _createClass(ResourceCreateController, [{
+        key: 'submit',
+        value: function submit() {
+            var headers = {
+                headers: {
+                    Accept: 'application/vnd.MezzoLabs.v1+json'
+                }
+            };
+            var payload = {
+                title: this.model.title,
+                body: this.model.body,
+                created_at: this.model.createdAt,
+                updated_at: this.model.updatedAt,
+                user_id: this.model.userId,
+                parent: this.model.parent
+            };
+
+            this.$http.post('/api/tutorials', headers, payload).success(function (result) {
+                console.log(result);
+            }).error(function (err) {
+                return console.error(err);
+            });
+        }
+    }]);
+
+    return ResourceCreateController;
+})();
+
+exports['default'] = { name: 'ResourceCreateController', controller: ResourceCreateController };
+module.exports = exports['default'];
+
+},{}],41:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _commonState = require('../../../common/State');
+
+var _commonState2 = _interopRequireDefault(_commonState);
+
+exports['default'] = new _commonState2['default']('resource-create', 'sample/tutorial/create', {
+    main: {
+        templateUrl: 'modules/resource/create/test.html',
+        controller: 'ResourceCreateController',
+        controllerAs: 'vm'
+    }
+});
+module.exports = exports['default'];
+
+},{"../../../common/State":3}],42:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
 var ResourceIndexController = (function () {
 
     /*@ngInject*/
@@ -1577,6 +1651,7 @@ var ResourceIndexController = (function () {
             var _this5 = this;
 
             this.removing++;
+            this.selectAll = false;
             model._meta.selected = false;
             model._meta.removed = true;
 
@@ -1620,7 +1695,7 @@ var ResourceIndexController = (function () {
 exports['default'] = { name: 'ResourceIndexController', controller: ResourceIndexController };
 module.exports = exports['default'];
 
-},{}],41:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1633,7 +1708,7 @@ var _commonState = require('../../../common/State');
 
 var _commonState2 = _interopRequireDefault(_commonState);
 
-exports['default'] = new _commonState2['default']('resource', 'sample/tutorial/index', {
+exports['default'] = new _commonState2['default']('resource-index', 'sample/tutorial/index', {
     main: {
         templateUrl: '/mezzo/sample/tutorial/index.html',
         controller: 'ResourceIndexController',
@@ -1642,7 +1717,7 @@ exports['default'] = new _commonState2['default']('resource', 'sample/tutorial/i
 });
 module.exports = exports['default'];
 
-},{"../../../common/State":3}],42:[function(require,module,exports){
+},{"../../../common/State":3}],44:[function(require,module,exports){
 'use strict';
 
 module.exports = function (app) {
@@ -1659,15 +1734,16 @@ module.exports = function (app) {
 				register(require('./modules/page-builder/aside.controller.js'));
 				register(require('./modules/page-builder/main.controller.js'));
 				register(require('./modules/model-builder/components/component.service.js'));
+				register(require('./modules/resource/create/resource-create.controller.js'));
 				register(require('./modules/resource/index/resource-index.controller.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown.directive.js'));
-				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
-				register(require('./modules/model-builder/components/relation/relation.directive.js'));
 				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
 				register(require('./modules/model-builder/components/owner/owner.directive.js'));
+				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
+				register(require('./modules/model-builder/components/relation/relation.directive.js'));
 				register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
 				register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
 				register(require('./modules/model-builder/components/text-single/text-single-options.directive.js'));
@@ -1688,7 +1764,7 @@ module.exports = function (app) {
 				}
 };
 
-},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/uid.service.js":6,"./modules/file-manager/aside.controller.js":9,"./modules/file-manager/draggable.directive.js":10,"./modules/file-manager/droppable.directive.js":11,"./modules/file-manager/file-manager.service.js":12,"./modules/file-manager/main.controller.js":13,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":17,"./modules/model-builder/components/checkbox/checkbox.directive.js":18,"./modules/model-builder/components/component.service.js":19,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":20,"./modules/model-builder/components/dropdown/dropdown.directive.js":21,"./modules/model-builder/components/owner/owner-options.directive.js":22,"./modules/model-builder/components/owner/owner.directive.js":23,"./modules/model-builder/components/relation/relation-options.directive.js":27,"./modules/model-builder/components/relation/relation.directive.js":28,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":30,"./modules/model-builder/components/text-multi/text-multi.directive.js":31,"./modules/model-builder/components/text-single/text-single-options.directive.js":32,"./modules/model-builder/components/text-single/text-single.directive.js":33,"./modules/model-builder/model-builder.controller.js":34,"./modules/model-builder/model-builder.service.js":35,"./modules/page-builder/aside.controller.js":37,"./modules/page-builder/main.controller.js":38,"./modules/resource/index/resource-index.controller.js":40}],43:[function(require,module,exports){
+},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/uid.service.js":6,"./modules/file-manager/aside.controller.js":9,"./modules/file-manager/draggable.directive.js":10,"./modules/file-manager/droppable.directive.js":11,"./modules/file-manager/file-manager.service.js":12,"./modules/file-manager/main.controller.js":13,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":17,"./modules/model-builder/components/checkbox/checkbox.directive.js":18,"./modules/model-builder/components/component.service.js":19,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":20,"./modules/model-builder/components/dropdown/dropdown.directive.js":21,"./modules/model-builder/components/owner/owner-options.directive.js":22,"./modules/model-builder/components/owner/owner.directive.js":23,"./modules/model-builder/components/relation/relation-options.directive.js":27,"./modules/model-builder/components/relation/relation.directive.js":28,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":30,"./modules/model-builder/components/text-multi/text-multi.directive.js":31,"./modules/model-builder/components/text-single/text-single-options.directive.js":32,"./modules/model-builder/components/text-single/text-single.directive.js":33,"./modules/model-builder/model-builder.controller.js":34,"./modules/model-builder/model-builder.service.js":35,"./modules/page-builder/aside.controller.js":37,"./modules/page-builder/main.controller.js":38,"./modules/resource/create/resource-create.controller.js":40,"./modules/resource/index/resource-index.controller.js":42}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1712,7 +1788,7 @@ exports['default'] = config;
 }
 module.exports = exports['default'];
 
-},{"./states":46}],44:[function(require,module,exports){
+},{"./states":48}],46:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1788,11 +1864,11 @@ function init() {
 
     $('.editable').editable();
 
-    $('select').select2();
+    //$('select').select2(); uncomment for model builder
 }
 module.exports = exports['default'];
 
-},{}],45:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1824,7 +1900,7 @@ exports['default'] = run;
 }
 module.exports = exports['default'];
 
-},{"./jquery":44}],46:[function(require,module,exports){
+},{"./jquery":46}],48:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1849,7 +1925,11 @@ var _modulesResourceIndexState = require('../modules/resource/index/state');
 
 var _modulesResourceIndexState2 = _interopRequireDefault(_modulesResourceIndexState);
 
-exports['default'] = [_modulesModelBuilderState2['default'], _modulesPageBuilderStateJs2['default'], _modulesFileManagerState2['default'], _modulesResourceIndexState2['default']];
+var _modulesResourceCreateState = require('../modules/resource/create/state');
+
+var _modulesResourceCreateState2 = _interopRequireDefault(_modulesResourceCreateState);
+
+exports['default'] = [_modulesModelBuilderState2['default'], _modulesPageBuilderStateJs2['default'], _modulesFileManagerState2['default'], _modulesResourceIndexState2['default'], _modulesResourceCreateState2['default']];
 module.exports = exports['default'];
 
-},{"../modules/file-manager/state":14,"../modules/model-builder/state":36,"../modules/page-builder/state.js":39,"../modules/resource/index/state":41}]},{},[1]);
+},{"../modules/file-manager/state":14,"../modules/model-builder/state":36,"../modules/page-builder/state.js":39,"../modules/resource/create/state":41,"../modules/resource/index/state":43}]},{},[1]);

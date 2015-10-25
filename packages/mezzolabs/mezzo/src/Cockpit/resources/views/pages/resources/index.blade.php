@@ -8,10 +8,10 @@
         <!-- Search -->
 
         <!-- Add new -->
-        <button type="button" class="btn btn-primary" ng-click="vm.create()">
+        <a ui-sref="resource-create" class="btn btn-primary" ng-click="vm.create()">
             <span class="ion-plus"></span>
             Add new
-        </button>
+        </a>
         <!-- Add new -->
 
         <!-- Edit -->

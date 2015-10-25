@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Modules\Sample\Http\Controllers;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleResourceController;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleRequest;
 use MezzoLabs\Mezzo\Core\Modularisation\Http\ModuleResponse;
+use MezzoLabs\Mezzo\Modules\Sample\Http\Pages\CreateTutorialPage;
 use MezzoLabs\Mezzo\Modules\Sample\Http\Pages\IndexTutorialPage;
 
 class TutorialController extends ModuleResourceController
@@ -28,7 +29,7 @@ class TutorialController extends ModuleResourceController
      */
     public function create()
     {
-
+        return $this->page(CreateTutorialPage::class);
     }
 
 

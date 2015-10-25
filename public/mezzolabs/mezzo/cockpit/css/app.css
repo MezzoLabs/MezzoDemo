@@ -8643,6 +8643,9 @@ label {
 textarea {
   resize: vertical; }
 
+.center-block {
+  float: none; }
+
 html, body {
   color: #555555;
   background-color: #e4e7e8; }
