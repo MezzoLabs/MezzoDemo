@@ -1432,6 +1432,11 @@ var ResourceCreateController = (function () {
 
         this.$http = $http;
         this.model = {};
+
+        /* Fake data */
+        this.users = [{ id: 0, name: 'Simon' }, { id: 1, name: 'Marc' }, { id: 2, name: 'John Doe' }, { id: 3, name: 'MSDOS Manfred' }];
+        this.tutorials = [{ id: 0, name: 'Mezzo Tutorial' }, { id: 1, name: 'How to peel an Egg Tutorial Part 1' }, { id: 2, name: 'How to sit down Tutorial' }];
+        /* Fake data */
     }
 
     _createClass(ResourceCreateController, [{
@@ -1726,22 +1731,20 @@ module.exports = function (app) {
 				register(require('./common/compile.directive.js'));
 				register(require('./common/enter.directive.js'));
 				register(require('./common/uid.service.js'));
+				register(require('./modules/model-builder/model-builder.controller.js'));
+				register(require('./modules/model-builder/model-builder.service.js'));
 				register(require('./modules/file-manager/aside.controller.js'));
 				register(require('./modules/file-manager/main.controller.js'));
 				register(require('./modules/file-manager/draggable.directive.js'));
 				register(require('./modules/file-manager/droppable.directive.js'));
 				register(require('./modules/file-manager/file-manager.service.js'));
-				register(require('./modules/model-builder/model-builder.controller.js'));
-				register(require('./modules/model-builder/model-builder.service.js'));
 				register(require('./modules/page-builder/aside.controller.js'));
 				register(require('./modules/page-builder/main.controller.js'));
 				register(require('./modules/model-builder/components/component.service.js'));
-				register(require('./modules/resource/index/resource-index.controller.js'));
 				register(require('./modules/resource/create/resource-create.controller.js'));
+				register(require('./modules/resource/index/resource-index.controller.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown.directive.js'));
-				register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
-				register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
 				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
@@ -1750,6 +1753,8 @@ module.exports = function (app) {
 				register(require('./modules/model-builder/components/text-single/text-single.directive.js'));
 				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
 				register(require('./modules/model-builder/components/relation/relation.directive.js'));
+				register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
+				register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
 
 				function register(module) {
 								if (module.controller) {

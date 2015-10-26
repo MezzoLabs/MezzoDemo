@@ -26,7 +26,8 @@
                     <div class="form-group" ng-class="vm.hasError(vm.form.body)">
                         <label>Body</label>
                         <textarea name="body" class="form-control" placeholder="Body" ng-model="vm.model.body"
-                                  required minlength="10" maxlength="1000"></textarea>
+                                  required minlength="10" maxlength="1000">
+                        </textarea>
                         <div class="help-block text-danger" ng-messages="vm.form.body.$error" ng-show="vm.form.body.$dirty">
                             <div ng-message="required">required</div>
                             <div ng-message="minlength">minlength</div>
@@ -61,7 +62,9 @@
                     <div class="form-group" ng-class="vm.hasError(vm.form.userId)">
                         <label>User</label>
                         <select name="userId" class="form-control" ng-model="vm.model.userId"
-                                required></select>
+                                ng-options="user.name for user in vm.users track by user.id"
+                                required>
+                        </select>
                         <div class="help-block text-danger" ng-messages="vm.form.userId.$error" ng-show="vm.form.userId.$dirty">
                             <div ng-message="required">required</div>
                         </div>
@@ -69,13 +72,11 @@
                     <!-- User -->
 
                     <!-- Parent -->
-                    <div class="form-group" ng-class="vm.hasError(vm.form.parent)">
+                    <div class="form-group">
                         <label>Parent</label>
                         <select name="parent" class="form-control" ng-model="vm.model.parent"
-                                required></select>
-                        <div class="help-block text-danger" ng-messages="vm.form.parent.$error" ng-show="vm.form.parent.$dirty">
-                            <div ng-message="required">required</div>
-                        </div>
+                                ng-options="tutorial.name for tutorial in vm.tutorials track by tutorial.id">
+                        </select>
                     </div>
                     <!-- Parent -->
 

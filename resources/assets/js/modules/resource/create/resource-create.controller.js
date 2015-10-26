@@ -3,6 +3,20 @@ class ResourceCreateController {
     /*@ngInject*/ constructor($http) {
         this.$http = $http;
         this.model = {};
+
+        /* Fake data */
+        this.users = [
+            { id: 0, name: 'Simon' },
+            { id: 1, name: 'Marc' },
+            { id: 2, name: 'John Doe' },
+            { id: 3, name: 'MSDOS Manfred' }
+        ];
+        this.tutorials = [
+            { id: 0, name: 'Mezzo Tutorial' },
+            { id: 1, name: 'How to peel an Egg Tutorial Part 1' },
+            { id: 2, name: 'How to sit down Tutorial' }
+        ];
+        /* Fake data */
     }
 
     submit(){
