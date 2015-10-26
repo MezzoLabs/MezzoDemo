@@ -15,7 +15,7 @@ var _register = require('./register');
 
 var _register2 = _interopRequireDefault(_register);
 
-var app = angular.module('Mezzo', ['ui.router', 'templates', 'angular-sortable-view', 'ngFileUpload']);
+var app = angular.module('Mezzo', ['ui.router', 'templates', 'angular-sortable-view', 'ngFileUpload', 'ngMessages']);
 
 app.config(_setupConfig2['default']);
 app.run(_setupRun2['default']);
@@ -1437,6 +1437,10 @@ var ResourceCreateController = (function () {
     _createClass(ResourceCreateController, [{
         key: 'submit',
         value: function submit() {
+            if (this.form.$invalid) {
+                return false;
+            }
+
             var payload = {
                 title: this.model.title,
                 body: this.model.body,
@@ -1446,11 +1450,18 @@ var ResourceCreateController = (function () {
                 parent: this.model.parent
             };
 
-            this.$http.post('/api/tutorials', payload).success(function (result) {
+            this.$http.post('/api/tutorials', payload).then(function (result) {
                 console.log(result);
-            }).error(function (err) {
+            })['catch'](function (err) {
                 return console.error(err);
             });
+        }
+    }, {
+        key: 'hasError',
+        value: function hasError(formControl) {
+            if (Object.keys(formControl.$error).length && formControl.$dirty) {
+                return 'has-error';
+            }
         }
     }]);
 
@@ -1720,25 +1731,25 @@ module.exports = function (app) {
 				register(require('./modules/file-manager/draggable.directive.js'));
 				register(require('./modules/file-manager/droppable.directive.js'));
 				register(require('./modules/file-manager/file-manager.service.js'));
-				register(require('./modules/page-builder/aside.controller.js'));
-				register(require('./modules/page-builder/main.controller.js'));
 				register(require('./modules/model-builder/model-builder.controller.js'));
 				register(require('./modules/model-builder/model-builder.service.js'));
+				register(require('./modules/page-builder/aside.controller.js'));
+				register(require('./modules/page-builder/main.controller.js'));
 				register(require('./modules/model-builder/components/component.service.js'));
-				register(require('./modules/resource/create/resource-create.controller.js'));
 				register(require('./modules/resource/index/resource-index.controller.js'));
+				register(require('./modules/resource/create/resource-create.controller.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown.directive.js'));
-				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
-				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
-				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
-				register(require('./modules/model-builder/components/relation/relation.directive.js'));
 				register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
 				register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
+				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
+				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
 				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
 				register(require('./modules/model-builder/components/owner/owner.directive.js'));
 				register(require('./modules/model-builder/components/text-single/text-single-options.directive.js'));
 				register(require('./modules/model-builder/components/text-single/text-single.directive.js'));
+				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
+				register(require('./modules/model-builder/components/relation/relation.directive.js'));
 
 				function register(module) {
 								if (module.controller) {

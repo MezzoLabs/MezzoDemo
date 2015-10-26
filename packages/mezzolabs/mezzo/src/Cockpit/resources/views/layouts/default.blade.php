@@ -48,6 +48,7 @@
         {!! cockpit_script('/components/gridster/dist/jquery.gridster.min.js') !!}
         {!! cockpit_script('/components/angular/angular.min.js') !!}
         {!! cockpit_script('/components/angular-ui-router/release/angular-ui-router.min.js') !!}
+        {!! cockpit_script('/components/angular-messages/angular-messages.min.js') !!}
         {!! cockpit_script('/components/angular-sortable-view/src/angular-sortable-view.min.js') !!}
         {!! cockpit_script('/components/ng-file-upload/ng-file-upload.min.js') !!}
         {!! cockpit_script('/components/chosen/chosen.jquery.min.js') !!}

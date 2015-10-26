@@ -6,6 +6,10 @@ class ResourceCreateController {
     }
 
     submit(){
+        if(this.form.$invalid){
+            return false;
+        }
+
         var payload = {
             title: this.model.title,
             body: this.model.body,
@@ -16,10 +20,16 @@ class ResourceCreateController {
         };
 
         this.$http.post('/api/tutorials', payload)
-            .success(result => {
+            .then(result => {
                 console.log(result);
             })
-            .error(err => console.error(err));
+            .catch(err => console.error(err));
+    }
+
+    hasError(formControl){
+        if(Object.keys(formControl.$error).length && formControl.$dirty){
+            return 'has-error';
+        }
     }
 
 }
