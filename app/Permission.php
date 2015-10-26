@@ -2,13 +2,9 @@
 
 namespace App;
 
-use App\Mezzo\Generated\ModelParents\MezzoPermission;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 
-class Permission extends MezzoPermission
+class Permission extends \MezzoLabs\Mezzo\Modules\User\Domain\Models\Permission
 {
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
+
 }

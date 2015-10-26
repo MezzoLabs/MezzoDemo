@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use MezzoLabs\Mezzo\Core\Permission\HasPermissions;
 
 
 /**
@@ -31,7 +32,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
  */
 class User extends MezzoUser implements AuthenticatableContract, CanResetPasswordContract, AuthorizableContract
 {
-    use Authenticatable, CanResetPassword, Authorizable;
+    use Authenticatable, CanResetPassword, Authorizable, HasPermissions;
 
     /**
      * The database table used by the model.
@@ -61,21 +62,6 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return $this->hasMany(Tutorial::class, 'user_id');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
-     */
-    public function permissions()
-    {
-        return $this->hasManyThrough(Permission::class, Role::class);
-    }
 
 
 }
