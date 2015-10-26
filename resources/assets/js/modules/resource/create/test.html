@@ -9,39 +9,59 @@
 
                 <form ng-submit="vm.submit()">
 
+                    <!-- Title -->
                     <div class="form-group">
                         <label>Title</label>
-                        <input type="text" class="form-control" placeholder="Title" ng-model="vm.model.title">
+                        <input type="text" class="form-control" placeholder="Title" ng-model="vm.model.title"
+                               minlength="3" required maxlength="30">
                     </div>
+                    <!-- Title -->
 
+                    <!-- Body -->
                     <div class="form-group">
                         <label>Body</label>
-                        <textarea class="form-control" placeholder="Body" ng-model="vm.model.body"></textarea>
+                        <textarea class="form-control" placeholder="Body" ng-model="vm.model.body"
+                                  required minlength="10" maxlength="1000"></textarea>
                     </div>
+                    <!-- Body -->
 
+                    <!-- Created at -->
                     <div class="form-group">
                         <label>Created at</label>
-                        <input type="datetime-local" class="form-control" placeholder="Created at" ng-model="vm.model.createdAt">
+                        <input type="datetime-local" class="form-control" placeholder="Created at" ng-model="vm.model.createdAt"
+                               required>
                     </div>
+                    <!-- Created at -->
 
+                    <!-- Updated at -->
                     <div class="form-group">
                         <label>Updated at</label>
-                        <input type="datetime-local" class="form-control" placeholder="Updated at" ng-model="vm.model.updatedAt">
+                        <input type="datetime-local" class="form-control" placeholder="Updated at" ng-model="vm.model.updatedAt"
+                               required>
                     </div>
+                    <!-- Updated at -->
 
+                    <!-- User -->
                     <div class="form-group">
                         <label>User</label>
-                        <select class="form-control" ng-model="vm.model.userId"></select>
+                        <select class="form-control" ng-model="vm.model.userId"
+                                required></select>
                     </div>
+                    <!-- User -->
 
+                    <!-- Parent -->
                     <div class="form-group">
                         <label>Parent</label>
-                        <select class="form-control" ng-model="vm.model.parent"></select>
+                        <select class="form-control" ng-model="vm.model.parent"
+                                required></select>
                     </div>
+                    <!-- Parent -->
 
                     <hr>
 
+                    <!-- Submit -->
                     <button type="submit" class="btn btn-primary center-block">Create new Tutorial</button>
+                    <!-- Submit -->
 
                 </form>
 

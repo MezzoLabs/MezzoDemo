@@ -1437,11 +1437,6 @@ var ResourceCreateController = (function () {
     _createClass(ResourceCreateController, [{
         key: 'submit',
         value: function submit() {
-            var headers = {
-                headers: {
-                    Accept: 'application/vnd.MezzoLabs.v1+json'
-                }
-            };
             var payload = {
                 title: this.model.title,
                 body: this.model.body,
@@ -1451,7 +1446,7 @@ var ResourceCreateController = (function () {
                 parent: this.model.parent
             };
 
-            this.$http.post('/api/tutorials', headers, payload).success(function (result) {
+            this.$http.post('/api/tutorials', payload).success(function (result) {
                 console.log(result);
             }).error(function (err) {
                 return console.error(err);
@@ -1513,11 +1508,7 @@ var ResourceIndexController = (function () {
         this.selectAll = false;
         this.removing = 0;
 
-        $http.get('/api/tutorials', {
-            headers: {
-                Accept: 'application/vnd.MezzoLabs.v1+json'
-            }
-        }).success(function (models) {
+        $http.get('/api/tutorials').success(function (models) {
             _this.models = models;
 
             _this.models.forEach(function (model) {
@@ -1729,23 +1720,23 @@ module.exports = function (app) {
 				register(require('./modules/file-manager/draggable.directive.js'));
 				register(require('./modules/file-manager/droppable.directive.js'));
 				register(require('./modules/file-manager/file-manager.service.js'));
-				register(require('./modules/model-builder/model-builder.controller.js'));
-				register(require('./modules/model-builder/model-builder.service.js'));
 				register(require('./modules/page-builder/aside.controller.js'));
 				register(require('./modules/page-builder/main.controller.js'));
+				register(require('./modules/model-builder/model-builder.controller.js'));
+				register(require('./modules/model-builder/model-builder.service.js'));
 				register(require('./modules/model-builder/components/component.service.js'));
 				register(require('./modules/resource/create/resource-create.controller.js'));
 				register(require('./modules/resource/index/resource-index.controller.js'));
-				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
-				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown.directive.js'));
-				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
-				register(require('./modules/model-builder/components/owner/owner.directive.js'));
+				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
+				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
 				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
 				register(require('./modules/model-builder/components/relation/relation.directive.js'));
 				register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
 				register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
+				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
+				register(require('./modules/model-builder/components/owner/owner.directive.js'));
 				register(require('./modules/model-builder/components/text-single/text-single-options.directive.js'));
 				register(require('./modules/model-builder/components/text-single/text-single.directive.js'));
 
@@ -1779,7 +1770,9 @@ var _states2 = _interopRequireDefault(_states);
 
 exports['default'] = config;
 
-/*@ngInject*/function config($locationProvider, $stateProvider, $urlRouterProvider) {
+/*@ngInject*/function config($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
+    $httpProvider.defaults.headers.common.accept = 'application/vnd.MezzoLabs.v1+json';
+
     $locationProvider.html5Mode(true);
     $urlRouterProvider.otherwise('/mezzo');
     _states2['default'].forEach(function (state) {

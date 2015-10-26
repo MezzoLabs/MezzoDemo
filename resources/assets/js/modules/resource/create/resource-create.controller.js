@@ -6,11 +6,6 @@ class ResourceCreateController {
     }
 
     submit(){
-        var headers = {
-            headers: {
-                Accept: 'application/vnd.MezzoLabs.v1+json'
-            }
-        };
         var payload = {
             title: this.model.title,
             body: this.model.body,
@@ -20,7 +15,7 @@ class ResourceCreateController {
             parent: this.model.parent
         };
 
-        this.$http.post('/api/tutorials', headers, payload)
+        this.$http.post('/api/tutorials', payload)
             .success(result => {
                 console.log(result);
             })
