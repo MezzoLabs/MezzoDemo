@@ -2,10 +2,10 @@
 
 namespace MezzoLabs\Mezzo\Modules\Sample\Http\Controllers;
 
-
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\ResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
+use MezzoLabs\Mezzo\Modules\Sample\Http\Pages\CreateTutorialPage;
 use MezzoLabs\Mezzo\Modules\Sample\Http\Pages\IndexTutorialPage;
 
 class TutorialController extends CockpitResourceController
@@ -22,6 +22,9 @@ class TutorialController extends CockpitResourceController
     }
 
 
-
+    public function create(ResourceRequest $request)
+    {
+        return $this->page(CreateTutorialPage::class);
+    }
 
 }
