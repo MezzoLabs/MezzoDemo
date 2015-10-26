@@ -38,8 +38,6 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
      */
     public function store(StoreResourceRequest $request)
     {
-        mezzo_dd($request->controller());
-
         return $this->repository()->create($request->all());
     }
 
@@ -52,7 +50,7 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
      */
     public function show(ShowResourceRequest $request, $id)
     {
-        return $this->repository()->find($id);
+        return $this->response()->array($this->repository()->find($id));
     }
 
 
