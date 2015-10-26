@@ -16,7 +16,6 @@ use MezzoLabs\Mezzo\Core\Annotations\Reader\AnnotationReader;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Database\Reader;
 use MezzoLabs\Mezzo\Core\Helpers\Path;
-use MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleRequest;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
 use MezzoLabs\Mezzo\Core\Reflection\ModelFinder;
 use MezzoLabs\Mezzo\Core\Reflection\ModelLookup;
@@ -26,6 +25,7 @@ use MezzoLabs\Mezzo\Core\Routing\Router;
 use MezzoLabs\Mezzo\Core\Routing\Uri;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
 use MezzoLabs\Mezzo\Exceptions\UnexpectedException;
+use MezzoLabs\Mezzo\Http\Requests\Request;
 
 trait CanMakeInstances
 {
@@ -186,11 +186,11 @@ trait CanMakeInstances
     }
 
     /**
-     * @return ModuleRequest
+     * @return Request
      */
     public function makeRequest()
     {
-        return ModuleRequest::capture();
+        return Request::capture();
     }
 
     /**

@@ -22,11 +22,6 @@ Route::get('/', function () {
         return view('welcome');
 });
 
-Route::any('debug/controller', function(){
-    mezzo_dd(\MezzoLabs\Mezzo\Core\Modularisation\Http\Api\ApiRequest::capture()->all());
-    mezzo_dd(app(\MezzoLabs\Mezzo\Core\Modularisation\Http\Html\ModuleRequest::class)->all());
-    mezzo_dd(Request::capture()->all());
-});
 
 Route::get('random',function(){
     mezzo_dump((new \MezzoLabs\Mezzo\Modules\Sample\Http\Controllers\TutorialController())->module());
@@ -44,6 +39,8 @@ Route::get('debug/models', function () {
 
     //return view('debugmodels', ['moduleCenter' => $moduleCenter]);
 });
+
+Route::any('debug/controller', 'TestController@foo');
 
 Route::get('debug/generator', function () {
 

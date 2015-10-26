@@ -2,13 +2,14 @@
 
 namespace App;
 
+use App\Mezzo\Generated\ModelParents\MezzoUser;
 use Illuminate\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use MezzoLabs\Mezzo\Core\Permission\HasPermissions;
 
 
 /**
@@ -29,9 +30,9 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
  * @method static \Illuminate\Database\Query\Builder|\App\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereUpdatedAt($value)
  */
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract, AuthorizableContract
+class User extends MezzoUser implements AuthenticatableContract, CanResetPasswordContract, AuthorizableContract
 {
-    use Authenticatable, CanResetPassword, Authorizable;
+    use Authenticatable, CanResetPassword, Authorizable, HasPermissions;
 
     /**
      * The database table used by the model.
@@ -54,9 +55,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $hidden = ['password', 'remember_token'];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function tutorials(){
         return $this->hasMany(Tutorial::class, 'user_id');
     }
+
 
 
 }

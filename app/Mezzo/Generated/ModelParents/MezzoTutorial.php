@@ -21,7 +21,7 @@ abstract class MezzoTutorial extends BaseModel
     protected $rules = [
         "id" => "",
         "title" => "",
-        "body" => "",
+        "body" => "required",
         "created_at" => "",
         "updated_at" => ""
     ];
