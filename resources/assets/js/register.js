@@ -7,13 +7,13 @@ module.exports = app => {
 	register(require('./modules/file-manager/draggable.directive.js'));
 	register(require('./modules/file-manager/droppable.directive.js'));
 	register(require('./modules/file-manager/file-manager.service.js'));
-	register(require('./modules/page-builder/aside.controller.js'));
-	register(require('./modules/page-builder/main.controller.js'));
 	register(require('./modules/model-builder/model-builder.controller.js'));
 	register(require('./modules/model-builder/model-builder.service.js'));
+	register(require('./modules/page-builder/aside.controller.js'));
+	register(require('./modules/page-builder/main.controller.js'));
 	register(require('./modules/model-builder/components/component.service.js'));
-	register(require('./modules/resource/index/resource-index.controller.js'));
 	register(require('./modules/resource/create/resource-create.controller.js'));
+	register(require('./modules/resource/index/resource-index.controller.js'));
 	register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
 	register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
 	register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
