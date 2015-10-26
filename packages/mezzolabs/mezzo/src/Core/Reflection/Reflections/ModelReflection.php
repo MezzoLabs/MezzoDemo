@@ -3,6 +3,7 @@
 namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 use Illuminate\Database\Eloquent\Model as EloquentModel;
+use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Schema\Converters\Eloquent\ModelReflectionConverter;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Exceptions\InvalidModel;
@@ -23,6 +24,11 @@ abstract class ModelReflection
      * @var ModelReflectionSet
      */
     private $modelReflectionSet;
+
+    /**
+     * @var array
+     */
+    protected $rules;
 
     /**
      * Constructor is private so the factory method has to be used.
@@ -154,6 +160,37 @@ abstract class ModelReflection
     public function modelReflectionSet()
     {
         return $this->modelReflectionSet;
+    }
+
+    /**
+     * @return array
+     */
+    public function rules()
+    {
+        if (!$this->rules) {
+            $this->rules = $this->getRulesFromInstance();
+        }
+
+        return $this->rules;
+    }
+
+    protected function getRulesFromInstance()
+    {
+        if (method_exists($this->instance(), 'getRules'))
+            return $this->instance()->getRules();
+
+        if (method_exists($this->instance(), 'rules'))
+            return $this->instance()->rules();
+
+        $reflectionClass = Singleton::reflection($this->instance());
+
+        if (!$reflectionClass->hasProperty('rules'))
+            return [];
+
+        $reflectionProperty = $reflectionClass->getProperty('rules');
+        $reflectionProperty->setAccessible(true);
+
+        return $reflectionProperty->getValue($this->instance());
     }
 
 }

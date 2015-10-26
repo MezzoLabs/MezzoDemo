@@ -10,6 +10,7 @@ use MezzoLabs\Mezzo\Core\Mezzo;
 class RegisterCockpitProvider implements Bootstrapper
 {
 
+
     /**
      * Run the booting process for this service.
      *

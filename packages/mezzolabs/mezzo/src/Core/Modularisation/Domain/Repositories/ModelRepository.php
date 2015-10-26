@@ -26,7 +26,6 @@ class ModelRepository
      */
     protected $model;
 
-
     /**
      * @param ModelReflection|null $modelReflection
      * @throws RepositoryException
@@ -131,6 +130,17 @@ class ModelRepository
     }
 
     /**
+     * @param $id
+     * @param array $columns
+     * @return Collection|Model
+     */
+    public function findOrFail($id, $columns = array('*'))
+    {
+        return $this->query()->findOrFail($id, $columns);
+    }
+
+
+    /**
      * @param $attribute
      * @param $value
      * @param array $columns
@@ -141,14 +151,13 @@ class ModelRepository
         return $this->query()->where($attribute, '=', $value)->first($columns);
     }
 
-
     /**
      * Create a new generic model repository for a given model class.
      *
      * @param string|ModelReflection|ModelReflectionSet $model
      * @return static
      */
-    public static function make($model)
+    public static function makeRepository($model)
     {
         /**
          * Find the model reflection, normalize the $model variable.

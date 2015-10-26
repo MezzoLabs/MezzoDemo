@@ -3,6 +3,7 @@
 
 namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
 
@@ -45,6 +46,15 @@ class MezzoModelReflection extends ModelReflection
         return $this->module;
     }
 
+    /**
+     * Class name of the reflected eloquent model.
+     *
+     * @return MezzoEloquentModel
+     */
+    public function instance()
+    {
+        return parent::instance();
+    }
 
     /**
      * @return string

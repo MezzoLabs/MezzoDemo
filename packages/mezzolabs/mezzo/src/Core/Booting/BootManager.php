@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Booting;
 
 
 use Illuminate\Contracts\Foundation\Application;
+use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\IncludeCockpitRouting;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\IncludeMezzoRouting;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\IncludeThirdParties;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\LoadConfiguration;
@@ -69,7 +70,8 @@ class BootManager
             RunThirdPartyWrappers::class,
             MakeModuleProvidersReady::class,
             RegisterMiddleware::class,
-            IncludeMezzoRouting::class
+            IncludeMezzoRouting::class,
+            IncludeCockpitRouting::class
         ]
     ];
 

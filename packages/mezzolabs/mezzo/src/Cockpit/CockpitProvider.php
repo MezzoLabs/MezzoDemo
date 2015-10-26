@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Cockpit;
 
 
 use Illuminate\Support\ServiceProvider;
+use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
 class CockpitProvider extends ServiceProvider
 {
@@ -23,7 +24,6 @@ class CockpitProvider extends ServiceProvider
 
     public function boot()
     {
-        $this->includeRoutes();
         $this->includeHelpers();
     }
 
@@ -40,11 +40,13 @@ class CockpitProvider extends ServiceProvider
      */
     protected function registerCockpit()
     {
-        $this->app->singleton(Cockpit::class, function($app){
+        $this->app->singleton(Cockpit::class, function () {
             return new Cockpit($this, mezzo());
         });
 
-        $this->app->alias('mezzo.cockpit', Cockpit::class);
+        $this->app->alias(Cockpit::class, 'mezzo.cockpit');
+
+
     }
 
     protected function includeHelpers()
@@ -56,7 +58,14 @@ class CockpitProvider extends ServiceProvider
      * Include the basic routes for the cockpit.
      * Please note that this has nothing to do with the module routes.
      */
-    protected function includeRoutes(){
+    public function includeRoutes()
+    {
+        $allModules = mezzo()->moduleCenter()->modules();
+
+        $allModules->each(function (ModuleProvider $moduleProvider) {
+            $moduleProvider->includeRoutes();
+        });
+
         if (! $this->app->routesAreCached()) {
             require __DIR__.'/Http/routes.php';
         }

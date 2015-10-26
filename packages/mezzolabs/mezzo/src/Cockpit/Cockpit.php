@@ -24,6 +24,13 @@ class Cockpit
         $this->mezzo = $mezzo;
     }
 
+    /**
+     * @return CockpitProvider
+     */
+    public function serviceProvider()
+    {
+        return $this->serviceProvider;
+    }
 
 
 }
