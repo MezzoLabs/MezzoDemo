@@ -8,7 +8,7 @@ use MezzoLabs\Mezzo\Http\Requests\Resource\ResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
 use MezzoLabs\Mezzo\Modules\User\Http\Pages\User\IndexUserPage;
 
-class UserController extends CockpitResourceController
+class PermissionController extends CockpitResourceController
 {
     /**
      * Display a listing of the resource.
