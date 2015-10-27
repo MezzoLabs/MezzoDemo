@@ -22,6 +22,8 @@ class GeneratorModule extends ModuleProvider
         GenerateForeignFields::class
     ];
 
+    protected $group = "development";
+
     /**
      * Perform post-registration booting of services.
      *

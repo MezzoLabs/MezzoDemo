@@ -33,6 +33,9 @@ class CockpitRouter
         $this->readConfig();
     }
 
+    /**
+     * Read the mezzo.cockpit configuration.
+     */
     private function readConfig()
     {
         $cockpitConfig = mezzo()->config('cockpit');
@@ -57,7 +60,7 @@ class CockpitRouter
      */
     public function laravelRouter()
     {
-        if($this->hasGroupedRouter())
+        if ($this->hasGroupedRouter())
             return $this->groupedRouter;
 
         return $this->laravelRouter;
@@ -73,10 +76,10 @@ class CockpitRouter
 
         $attributes = $this->attributes->merge($overwriteAttributes);
 
-        $this->laravelRouter()->group($attributes->toArray(), function(LaravelRouter $router) use ($callback){
+        $this->laravelRouter()->group($attributes->toArray(), function (LaravelRouter $router) use ($callback) {
             $this->setGroupedRouter($router);
 
-            if($callback !== null)
+            if ($callback !== null)
                 call_user_func($callback, $this);
         });
     }
@@ -94,6 +97,10 @@ class CockpitRouter
         }
     }
 
+    /**
+     * @param $pageName
+     * @throws \MezzoLabs\Mezzo\Exceptions\InvalidArgumentException
+     */
     public function page($pageName)
     {
         $page = $this->module->makePage($pageName);
@@ -101,9 +108,14 @@ class CockpitRouter
         $pageUri = mezzo()->uri()->toModulePage($page);
         $action = $this->shortenAction($page->qualifiedActionName());
 
-        $this->get($pageUri,
-            ['uses' => $action, 'as' => $page->slug()]
-        );
+        if (!$page->isRenderedByFrontend())
+            $this->get($pageUri,
+                ['uses' => $action, 'as' => $page->slug()]
+            );
+        else
+            $this->get($pageUri,
+                ['uses' => mezzo()->makeCockpit()->startAction(), 'as' => $page->slug()]
+            );
 
         $this->get($pageUri . '.html',
             ['uses' => $action, 'as' => $page->slug() . '_html']
@@ -131,6 +143,9 @@ class CockpitRouter
         return str_replace($namespace . '\\', '', $action);
     }
 
+    /**
+     * @return mixed
+     */
     public function controllerNamespace()
     {
         return $this->lastGroupStack()->get('namespace', '');

@@ -336,6 +336,19 @@ abstract class ModuleProvider extends ServiceProvider
         return $this->group;
     }
 
+    /**
+     * @param null $key
+     * @param null $default
+     * @return array|Collection
+     */
+    public function options($key = null, $default = null)
+    {
+        if($key)
+            return $this->options->get($key, $default);
+
+        return $this->options;
+    }
+
 
     /**
      * Load views from the "views" folder inside the module root.
@@ -412,10 +425,18 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function title()
     {
-        if($this->options->has('title'))
+        if($this->options->get('title'))
             return $this->options->get('title');
 
         return $this->shortName();
+    }
+
+    /**
+     * @return string
+     */
+    public function uri()
+    {
+        return mezzo()->uri()->toModule($this);
     }
 
 }

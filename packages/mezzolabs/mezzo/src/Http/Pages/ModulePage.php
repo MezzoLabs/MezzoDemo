@@ -38,11 +38,6 @@ abstract class ModulePage implements ModulePageContract
     private $name;
 
     /**
-     * @var Collection
-     */
-    private $parameters;
-
-    /**
      * @var Controller
      */
     protected $controllerObject;
@@ -67,6 +62,15 @@ abstract class ModulePage implements ModulePageContract
      * @var bool
      */
     protected $visibleInNavigation = false;
+
+    /**
+     * Is this page rendered by a Javascript SPA-Framework like Angular.
+     * Then /mezzo/MODULE_NAME/PAGE_ACTION will output the cockpit without any content.
+     * /mezzo/MODULE_NAME/PAGE_ACTION.html will output the page template
+     *
+     * @var bool
+     */
+    protected $renderedByFrontend = true;
 
     /**
      * Create a new module page.
@@ -179,13 +183,6 @@ abstract class ModulePage implements ModulePageContract
         return snake_case($this->name());
     }
 
-    /**
-     * @return Collection
-     */
-    public function getParameters()
-    {
-        return $this->parameters;
-    }
 
     /**
      * @return Controller
@@ -252,6 +249,14 @@ abstract class ModulePage implements ModulePageContract
     public function uri()
     {
         return mezzo()->uri()->toModulePage($this);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isRenderedByFrontend()
+    {
+        return $this->renderedByFrontend;
     }
 
 

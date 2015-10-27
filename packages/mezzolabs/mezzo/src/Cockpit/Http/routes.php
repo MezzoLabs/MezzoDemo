@@ -20,5 +20,5 @@ Route::group(['as' => 'cockpit::', 'prefix' => 'mezzo', 'namespace' => 'MezzoLab
     Route::get('password/reset/{token}', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@getReset']);
     Route::post('password/reset', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@postReset']);
 
-    Route::get('{slug?}', ['as' => 'start', 'uses' => 'MainController@start'])->where('slug', '.+');
+    Route::get('{slug?}', ['as' => 'start', 'uses' => mezzo()->makeCockpit()->startAction()])->where('slug', '.+');
 });

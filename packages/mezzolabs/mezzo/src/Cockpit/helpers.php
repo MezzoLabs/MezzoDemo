@@ -1,5 +1,7 @@
 <?php
 
+use MezzoLabs\Mezzo\Cockpit\Html\HtmlHelper;
+
 if (!function_exists('cockpit_asset')){
     /**
      * Get the URI to a specific asset (Css/Js/Image..).
@@ -36,5 +38,17 @@ if (!function_exists('cockpit_script')) {
     function cockpit_script($assetName)
     {
         return '<script src="' . cockpit_asset($assetName) . '"></script>';
+    }
+}
+
+if (!function_exists('cockpit_html')) {
+    /**
+     * Gives you a instance of the cockpit html helper class.
+     *
+     * @return HtmlHelper
+     */
+    function cockpit_html()
+    {
+        return new HtmlHelper();
     }
 }

@@ -26,7 +26,8 @@ return [
 
     'moduleGroups' => [
         'general' => 'General',
-        'admin' => 'Admin'
+        'admin' => 'Admin',
+        'development' => 'Development'
     ]
 ];
   
