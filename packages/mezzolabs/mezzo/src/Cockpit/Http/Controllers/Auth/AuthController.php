@@ -10,9 +10,9 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Support\Facades\Validator;
-use MezzoLabs\Mezzo\Cockpit\Http\Controllers\CockpitController;
+use MezzoLabs\Mezzo\Cockpit\Http\Controllers\NonModuleController;
 
-class AuthController extends CockpitController
+class AuthController extends NonModuleController
 {
     protected $loginPath = "mezzo/auth/login";
 

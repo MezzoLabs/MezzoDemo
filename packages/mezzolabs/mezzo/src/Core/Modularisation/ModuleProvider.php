@@ -439,4 +439,14 @@ abstract class ModuleProvider extends ServiceProvider
         return mezzo()->uri()->toModule($this);
     }
 
+
+    /**
+     * Called when all service pro
+     *
+     * @return void
+     */
+    public function boot(){
+        
+    }
+
 }

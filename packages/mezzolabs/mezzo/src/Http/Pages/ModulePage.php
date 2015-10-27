@@ -96,22 +96,32 @@ abstract class ModulePage implements ModulePageContract
         if (!$this->view)
             throw new ModulePageException('No view for page.');
 
-        return $this->makeView($this->view, $data);
+        /**
+         * Add some additional data to the view data.
+         */
+        $data = $this->additionalData()->merge($data)->toArray();
+
+        /**
+         * Return the view of this page without any surrounding template
+         */
+        if($this->isRenderedByFrontend())
+            return $this->makeView($this->view, $data);
+
+        return $this->makeView('cockpit::layouts.default', $data)->nest('content', $this->view, $data);
     }
 
     /**
      * @param $view
      * @param array $data
-     * @return \Illuminate\Contracts\View\View
+     * @return \Illuminate\View\View
      */
     protected function makeView($view, $data = [])
     {
-        $allData = $this->additionalData()->merge($data);
 
         if (class_exists(\Debugbar::class))
             \Debugbar::disable();
 
-        return $this->viewFactory()->make($view, $allData->toArray());
+        return $this->viewFactory()->make($view, $data);
     }
 
     /**
