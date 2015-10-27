@@ -10,4 +10,5 @@ abstract class IndexResourcePage extends ResourcePage
 
     protected $view = 'cockpit::pages.resources.index';
 
+    protected $visibleInNavigation = true;
 }

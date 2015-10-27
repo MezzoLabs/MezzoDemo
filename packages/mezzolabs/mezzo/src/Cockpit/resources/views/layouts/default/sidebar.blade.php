@@ -8,49 +8,30 @@
                     <div class="sidebar-pin-wrap"><i class="sidebar-pin fa fa-dot-circle-o"></i></div>
                 </div>
                 <div class="sidebar-content sidebar-padding">
+                    @foreach(mezzo()->moduleCenter()->groups() as $group )
+                    <h3>{{ $group->label() }}</h3>
                     <ul class="nav-main">
 
-                        <li class="has-pages opened">
-                            <a href="/mezzo/sample">
-                                <i class="ion-ios-copy"></i>
-                                <span>Sample Tutorials</span>
-                                <span class="dropdown"></span>
-                            </a>
-                            <ul>
-                                <li><a href="/mezzo/tutorial/tutorial/index"><span>List</span></a></li>
-                                <li><a href="/mezzo/tutorial/tutorial/new"><span>Add New</span></a></li>
-                                <li><a href="/mezzo/tutorial/tutorial/categories"><span>Categories</span></a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="ion-pricetags"></i>
-                                <span>Shop</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="ion-easel"></i>
-                                <span>Gallery</span>
-                            </a>
-                        </li>
-                        <li>
-                    </ul>
-                    <h3>Administration</h3>
-                    <ul class="nav-main">
-                        <li>
-                            <a href="#">
-                                <i class="ion-person-stalker"></i>
-                                <span>Users</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="ion-ios-folder"></i>
-                                <span>Files</span>
-                            </a>
-                        </li>
-                    </ul>
+                        @foreach($group->modules() as $module )
+
+                            <li class="{{ cockpit_html()->css('sidebar', $module) }}">
+                                <a href="mezzo/{{ $module->uri() }}">
+                                    <i class="{{ $module->options('icon') }}"></i>
+                                    <span>{{ $module->title() }}</span>
+                                    <span class="dropdown"></span>
+
+                                </a>
+                                <ul>
+                                    @foreach($module->pages()->filterVisibleInNavigation() as $page)
+                                        <li><a href="mezzo/{{ $page->uri() }}"><span>{{ $page->title() }}</span></a></li>
+                                    @endforeach
+                                </ul>
+                            </li>
+
+                        @endforeach
+
+                    @endforeach
+
 
                 </div>
             </div>

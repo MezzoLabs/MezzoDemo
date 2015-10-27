@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
@@ -57,6 +58,22 @@ abstract class ModuleProvider extends ServiceProvider
      */
     protected $pages;
 
+    /**
+     * @var string
+     */
+    protected $group = 'general';
+
+    /**
+     * Options that will determine the style of this module.
+     *
+     * @var array|Collection
+     */
+    protected $options = [
+        'icon' => 'ion-ios-copy',
+        'visible' => true,
+        'title' => null
+    ];
+
 
     /**
      * Create a new module provider instance
@@ -73,6 +90,7 @@ abstract class ModuleProvider extends ServiceProvider
         $this->router = new ModuleRouter($this);
 
         $this->app = $app;
+        $this->options = new Collection($this->options);
     }
 
     /**
@@ -287,6 +305,16 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
+     * @return mixed
+     */
+    public function shortName()
+    {
+        $classShortName = Singleton::reflection($this)->getShortName();
+
+        return str_replace('Module', '', $classShortName);
+    }
+
+    /**
      * @return ModulePages
      */
     public function pages()
@@ -296,6 +324,31 @@ abstract class ModuleProvider extends ServiceProvider
 
         return $this->pages;
     }
+
+    /**
+     * @return string
+     */
+    public function groupName()
+    {
+        if(empty($this->group))
+            return 'general';
+
+        return $this->group;
+    }
+
+    /**
+     * @param null $key
+     * @param null $default
+     * @return array|Collection
+     */
+    public function options($key = null, $default = null)
+    {
+        if($key)
+            return $this->options->get($key, $default);
+
+        return $this->options;
+    }
+
 
     /**
      * Load views from the "views" folder inside the module root.
@@ -365,6 +418,25 @@ abstract class ModuleProvider extends ServiceProvider
     public function generateRoutes()
     {
         $this->router()->generateRoutes();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function title()
+    {
+        if($this->options->get('title'))
+            return $this->options->get('title');
+
+        return $this->shortName();
+    }
+
+    /**
+     * @return string
+     */
+    public function uri()
+    {
+        return mezzo()->uri()->toModule($this);
     }
 
 }

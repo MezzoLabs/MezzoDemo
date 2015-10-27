@@ -49,4 +49,11 @@ class ModulePages extends Collection
             $page->registerRoutes();
         });
     }
+
+    public function filterVisibleInNavigation()
+    {
+        return $this->filter(function(ModulePage $page){
+            return $page->isVisibleInNavigation();
+        });
+    }
 }

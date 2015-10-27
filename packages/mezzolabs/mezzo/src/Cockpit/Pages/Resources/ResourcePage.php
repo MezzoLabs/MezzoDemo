@@ -26,6 +26,13 @@ abstract class ResourcePage extends ModulePage
     private $modelReflection;
 
     /**
+     * Check if this
+     *
+     * @var boolean
+     */
+    protected $renderedByFrontend = true;
+
+    /**
      * @param ModuleProvider $module
      * @throws ModulePageException
      * @internal param array $options
