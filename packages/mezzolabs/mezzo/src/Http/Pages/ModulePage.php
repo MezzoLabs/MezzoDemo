@@ -55,9 +55,18 @@ abstract class ModulePage implements ModulePageContract
     protected $controller;
 
     /**
-     * @var string The controller method that shows this page.
+     *  The controller method that shows this page.
+     *
+     * @var string
      */
     protected $action;
+
+    /**
+     * Should this page be displayed in the sidebar navigation.
+     *
+     * @var bool
+     */
+    protected $visibleInNavigation = false;
 
     /**
      * Create a new module page.
@@ -224,6 +233,25 @@ abstract class ModulePage implements ModulePageContract
     public function registerRoutes()
     {
         $this->module()->router()->registerPage($this);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVisibleInNavigation()
+    {
+        return $this->visibleInNavigation;
+    }
+
+    /**
+     * The URI to this module page.
+     * /mezzo/<MODULE_NAME>/<CONTROLLER_ACTION_NAME>
+     *
+     * @return string
+     */
+    public function uri()
+    {
+        return mezzo()->uri()->toModulePage($this);
     }
 
 

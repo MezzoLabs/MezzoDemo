@@ -8,7 +8,27 @@
                     <div class="sidebar-pin-wrap"><i class="sidebar-pin fa fa-dot-circle-o"></i></div>
                 </div>
                 <div class="sidebar-content sidebar-padding">
+                    @foreach(mezzo()->moduleCenter()->groups() as $group )
+                    <h3>{{ $group->label() }}</h3>
                     <ul class="nav-main">
+
+                        @foreach($group->modules() as $module )
+
+                            <li class="">
+                                <a href="">
+                                    {{ $module->title() }}
+                                </a>
+                                <ul>
+                                    @foreach($module->pages()->filterVisibleInNavigation() as $page)
+                                        <li><a href="{{ $page->uri() }}"><span>{{ $page->title() }}</span></a></li>
+                                    @endforeach
+                                </ul>
+                            </li>
+
+                        @endforeach
+
+                    @endforeach
+
 
                         <li class="has-pages opened">
                             <a href="/mezzo/sample">
