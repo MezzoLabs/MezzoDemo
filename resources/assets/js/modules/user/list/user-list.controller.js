@@ -1,14 +1,23 @@
-class UsersController {
+class UserListController {
 
-    /*@ngInject*/ constructor($http){
+    /*@ngInject*/ constructor($http, userService){
         this.$http = $http;
-        this.users = [];
+        this.userService = userService;
+        this.users = userService.users || [];
+
+        if(!this.users || this.users.length === 0){
+            this.loadUsers();
+        }
+    }
+
+    loadUsers(){
         this.loading = true;
 
         this.$http.get('/api/users')
             .then(response => {
                 this.loading = false;
                 this.users = response.data;
+                this.userService.users = this.users;
 
                 setTimeout(this.initTooltips, 1);
             })
@@ -27,4 +36,4 @@ class UsersController {
 
 }
 
-export default { name: 'UsersController', controller: UsersController };
+export default { name: 'UserListController', controller: UserListController };

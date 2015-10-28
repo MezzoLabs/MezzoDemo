@@ -7,14 +7,7 @@
 
                 <hr>
 
-                <div ng-show="vm.loading">
-                    <div class="progress" ng-show="vm.loading">
-                        <div class="progress-bar progress-bar-striped active" style="width: 100%">Please be patient...</div>
-                    </div>
-                    <hr>
-                </div>
-
-                <table class="table table-responsive">
+                <table class="table table-responsive table-hover">
                     <thead>
 
                     <tr>
@@ -27,8 +20,18 @@
                     </thead>
                     <tbody>
 
+                    <tr ng-show="vm.loading">
+                        <td colspan="4">
+                            <div class="progress" ng-show="vm.loading">
+                                <div class="progress-bar progress-bar-striped active" style="width: 100%">Please be patient...</div>
+                            </div>
+                        </td>
+                    </tr>
+
                     <tr ng-repeat="permission in vm.permissions track by permission.id">
-                        <td ng-bind="permission.id"></td>
+                        <td>
+                            <strong ng-bind="permission.id"></strong>
+                        </td>
                         <td ng-bind="permission.model"></td>
                         <td ng-bind="permission.name"></td>
                         <td ng-bind="permission.label"></td>
