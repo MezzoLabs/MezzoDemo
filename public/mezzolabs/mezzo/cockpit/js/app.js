@@ -21,7 +21,7 @@ app.config(_setupConfig2['default']);
 app.run(_setupRun2['default']);
 (0, _register2['default'])(app);
 
-},{"./register":46,"./setup/config":47,"./setup/run":49}],2:[function(require,module,exports){
+},{"./register":48,"./setup/config":49,"./setup/run":51}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1420,6 +1420,59 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _commonState = require('../../common/State');
+
+var _commonState2 = _interopRequireDefault(_commonState);
+
+exports['default'] = new _commonState2['default']('permissions', 'permissions', {
+    main: {
+        templateUrl: 'modules/permissions/permissions.html',
+        controller: 'PermissionsController',
+        controllerAs: 'vm'
+    }
+});
+module.exports = exports['default'];
+
+},{"../../common/State":3}],41:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var PermissionsController =
+
+/*@ngInject*/function PermissionsController($http) {
+    var _this = this;
+
+    _classCallCheck(this, PermissionsController);
+
+    this.$http = $http;
+    this.permissions = [];
+    this.loading = true;
+
+    this.$http.get('/api/permissions').then(function (response) {
+        _this.loading = false;
+        _this.permissions = response.data;
+    })['catch'](function (err) {
+        return console.error(err);
+    });
+};
+
+exports['default'] = { name: 'PermissionsController', controller: PermissionsController };
+module.exports = exports['default'];
+
+},{}],42:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
@@ -1476,7 +1529,7 @@ var ResourceCreateController = (function () {
 exports['default'] = { name: 'ResourceCreateController', controller: ResourceCreateController };
 module.exports = exports['default'];
 
-},{}],41:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1498,7 +1551,7 @@ exports['default'] = new _commonState2['default']('resource-create', 'model/crea
 });
 module.exports = exports['default'];
 
-},{"../../../common/State":3}],42:[function(require,module,exports){
+},{"../../../common/State":3}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1702,7 +1755,7 @@ var ResourceIndexController = (function () {
 exports['default'] = { name: 'ResourceIndexController', controller: ResourceIndexController };
 module.exports = exports['default'];
 
-},{}],43:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1724,7 +1777,7 @@ exports['default'] = new _commonState2['default']('resource-index', 'model/list'
 });
 module.exports = exports['default'];
 
-},{"../../../common/State":3}],44:[function(require,module,exports){
+},{"../../../common/State":3}],46:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1746,7 +1799,7 @@ exports['default'] = new _commonState2['default']('users', 'users', {
 });
 module.exports = exports['default'];
 
-},{"../../common/State":3}],45:[function(require,module,exports){
+},{"../../common/State":3}],47:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1809,38 +1862,39 @@ var UsersController = (function () {
 exports['default'] = { name: 'UsersController', controller: UsersController };
 module.exports = exports['default'];
 
-},{}],46:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 module.exports = function (app) {
 				register(require('./common/compile.directive.js'));
 				register(require('./common/enter.directive.js'));
 				register(require('./common/uid.service.js'));
+				register(require('./modules/model-builder/model-builder.controller.js'));
+				register(require('./modules/model-builder/model-builder.service.js'));
 				register(require('./modules/file-manager/aside.controller.js'));
 				register(require('./modules/file-manager/main.controller.js'));
 				register(require('./modules/file-manager/draggable.directive.js'));
 				register(require('./modules/file-manager/droppable.directive.js'));
 				register(require('./modules/file-manager/file-manager.service.js'));
-				register(require('./modules/model-builder/model-builder.controller.js'));
-				register(require('./modules/model-builder/model-builder.service.js'));
+				register(require('./modules/permissions/permissions.controller.js'));
 				register(require('./modules/page-builder/aside.controller.js'));
 				register(require('./modules/page-builder/main.controller.js'));
 				register(require('./modules/users/users.controller.js'));
 				register(require('./modules/model-builder/components/component.service.js'));
 				register(require('./modules/resource/create/resource-create.controller.js'));
 				register(require('./modules/resource/index/resource-index.controller.js'));
-				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
-				register(require('./modules/model-builder/components/owner/owner.directive.js'));
-				register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
-				register(require('./modules/model-builder/components/dropdown/dropdown.directive.js'));
-				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
-				register(require('./modules/model-builder/components/relation/relation.directive.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
-				register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
-				register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
+				register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
+				register(require('./modules/model-builder/components/dropdown/dropdown.directive.js'));
+				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
+				register(require('./modules/model-builder/components/owner/owner.directive.js'));
+				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
+				register(require('./modules/model-builder/components/relation/relation.directive.js'));
 				register(require('./modules/model-builder/components/text-single/text-single-options.directive.js'));
 				register(require('./modules/model-builder/components/text-single/text-single.directive.js'));
+				register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
+				register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
 
 				function register(module) {
 								if (module.controller) {
@@ -1857,7 +1911,7 @@ module.exports = function (app) {
 				}
 };
 
-},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/uid.service.js":6,"./modules/file-manager/aside.controller.js":9,"./modules/file-manager/draggable.directive.js":10,"./modules/file-manager/droppable.directive.js":11,"./modules/file-manager/file-manager.service.js":12,"./modules/file-manager/main.controller.js":13,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":17,"./modules/model-builder/components/checkbox/checkbox.directive.js":18,"./modules/model-builder/components/component.service.js":19,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":20,"./modules/model-builder/components/dropdown/dropdown.directive.js":21,"./modules/model-builder/components/owner/owner-options.directive.js":22,"./modules/model-builder/components/owner/owner.directive.js":23,"./modules/model-builder/components/relation/relation-options.directive.js":27,"./modules/model-builder/components/relation/relation.directive.js":28,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":30,"./modules/model-builder/components/text-multi/text-multi.directive.js":31,"./modules/model-builder/components/text-single/text-single-options.directive.js":32,"./modules/model-builder/components/text-single/text-single.directive.js":33,"./modules/model-builder/model-builder.controller.js":34,"./modules/model-builder/model-builder.service.js":35,"./modules/page-builder/aside.controller.js":37,"./modules/page-builder/main.controller.js":38,"./modules/resource/create/resource-create.controller.js":40,"./modules/resource/index/resource-index.controller.js":42,"./modules/users/users.controller.js":45}],47:[function(require,module,exports){
+},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/uid.service.js":6,"./modules/file-manager/aside.controller.js":9,"./modules/file-manager/draggable.directive.js":10,"./modules/file-manager/droppable.directive.js":11,"./modules/file-manager/file-manager.service.js":12,"./modules/file-manager/main.controller.js":13,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":17,"./modules/model-builder/components/checkbox/checkbox.directive.js":18,"./modules/model-builder/components/component.service.js":19,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":20,"./modules/model-builder/components/dropdown/dropdown.directive.js":21,"./modules/model-builder/components/owner/owner-options.directive.js":22,"./modules/model-builder/components/owner/owner.directive.js":23,"./modules/model-builder/components/relation/relation-options.directive.js":27,"./modules/model-builder/components/relation/relation.directive.js":28,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":30,"./modules/model-builder/components/text-multi/text-multi.directive.js":31,"./modules/model-builder/components/text-single/text-single-options.directive.js":32,"./modules/model-builder/components/text-single/text-single.directive.js":33,"./modules/model-builder/model-builder.controller.js":34,"./modules/model-builder/model-builder.service.js":35,"./modules/page-builder/aside.controller.js":37,"./modules/page-builder/main.controller.js":38,"./modules/permissions/permissions.controller.js":41,"./modules/resource/create/resource-create.controller.js":42,"./modules/resource/index/resource-index.controller.js":44,"./modules/users/users.controller.js":47}],49:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1883,7 +1937,7 @@ exports['default'] = config;
 }
 module.exports = exports['default'];
 
-},{"./states":50}],48:[function(require,module,exports){
+},{"./states":52}],50:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1963,7 +2017,7 @@ function init() {
 }
 module.exports = exports['default'];
 
-},{}],49:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1995,7 +2049,7 @@ exports['default'] = run;
 }
 module.exports = exports['default'];
 
-},{"./jquery":48}],50:[function(require,module,exports){
+},{"./jquery":50}],52:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2028,7 +2082,11 @@ var _modulesUsers = require('../modules/users');
 
 var _modulesUsers2 = _interopRequireDefault(_modulesUsers);
 
-exports['default'] = [_modulesModelBuilderState2['default'], _modulesPageBuilderStateJs2['default'], _modulesFileManagerState2['default'], _modulesResourceIndexState2['default'], _modulesResourceCreateState2['default'], _modulesUsers2['default']];
+var _modulesPermissions = require('../modules/permissions');
+
+var _modulesPermissions2 = _interopRequireDefault(_modulesPermissions);
+
+exports['default'] = [_modulesModelBuilderState2['default'], _modulesPageBuilderStateJs2['default'], _modulesFileManagerState2['default'], _modulesResourceIndexState2['default'], _modulesResourceCreateState2['default'], _modulesUsers2['default'], _modulesPermissions2['default']];
 module.exports = exports['default'];
 
-},{"../modules/file-manager/state":14,"../modules/model-builder/state":36,"../modules/page-builder/state.js":39,"../modules/resource/create/state":41,"../modules/resource/index/state":43,"../modules/users":44}]},{},[1]);
+},{"../modules/file-manager/state":14,"../modules/model-builder/state":36,"../modules/page-builder/state.js":39,"../modules/permissions":40,"../modules/resource/create/state":43,"../modules/resource/index/state":45,"../modules/users":46}]},{},[1]);
