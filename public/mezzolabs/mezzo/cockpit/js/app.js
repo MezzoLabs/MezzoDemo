@@ -1869,13 +1869,13 @@ module.exports = function (app) {
 				register(require('./common/compile.directive.js'));
 				register(require('./common/enter.directive.js'));
 				register(require('./common/uid.service.js'));
-				register(require('./modules/model-builder/model-builder.controller.js'));
-				register(require('./modules/model-builder/model-builder.service.js'));
 				register(require('./modules/file-manager/aside.controller.js'));
 				register(require('./modules/file-manager/main.controller.js'));
 				register(require('./modules/file-manager/draggable.directive.js'));
 				register(require('./modules/file-manager/droppable.directive.js'));
 				register(require('./modules/file-manager/file-manager.service.js'));
+				register(require('./modules/model-builder/model-builder.controller.js'));
+				register(require('./modules/model-builder/model-builder.service.js'));
 				register(require('./modules/permissions/permissions.controller.js'));
 				register(require('./modules/page-builder/aside.controller.js'));
 				register(require('./modules/page-builder/main.controller.js'));

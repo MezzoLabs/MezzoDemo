@@ -28,7 +28,7 @@
                     </thead>
                     <tbody>
 
-                        <tr ng-repeat="user in vm.users track by $index">
+                        <tr ng-repeat="user in vm.users track by user.id">
                             <td ng-bind="user.id"></td>
                             <td ng-bind="user.name"></td>
                             <td ng-bind="user.email"></td>

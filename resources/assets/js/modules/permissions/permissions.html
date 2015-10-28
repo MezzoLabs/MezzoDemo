@@ -27,7 +27,7 @@
                     </thead>
                     <tbody>
 
-                    <tr ng-repeat="permission in vm.permissions track by $index">
+                    <tr ng-repeat="permission in vm.permissions track by permission.id">
                         <td ng-bind="permission.id"></td>
                         <td ng-bind="permission.model"></td>
                         <td ng-bind="permission.name"></td>
