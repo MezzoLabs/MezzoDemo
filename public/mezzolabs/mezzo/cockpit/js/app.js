@@ -21,7 +21,7 @@ app.config(_setupConfig2['default']);
 app.run(_setupRun2['default']);
 (0, _register2['default'])(app);
 
-},{"./register":45,"./setup/config":46,"./setup/run":48}],2:[function(require,module,exports){
+},{"./register":46,"./setup/config":47,"./setup/run":49}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -226,7 +226,7 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _get = function get(_x2, _x3, _x4) { var _again = true; _function: while (_again) { var object = _x2, property = _x3, receiver = _x4; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x2 = parent; _x3 = property; _x4 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x2, _x3, _x4) { var _again = true; _function: while (_again) { var object = _x2, property = _x3, receiver = _x4; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x2 = parent; _x3 = property; _x4 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -1749,6 +1749,24 @@ module.exports = exports['default'];
 },{"../../../common/State":3}],45:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var UserListController =
+
+/*@ngInject*/function UserListController() {
+    _classCallCheck(this, UserListController);
+};
+
+exports['default'] = { name: 'UserListController', controller: UserListController };
+module.exports = exports['default'];
+
+},{}],46:[function(require,module,exports){
+'use strict';
+
 module.exports = function (app) {
 				register(require('./common/compile.directive.js'));
 				register(require('./common/enter.directive.js'));
@@ -1765,6 +1783,7 @@ module.exports = function (app) {
 				register(require('./modules/model-builder/components/component.service.js'));
 				register(require('./modules/resource/create/resource-create.controller.js'));
 				register(require('./modules/resource/index/resource-index.controller.js'));
+				register(require('./modules/user/list/user-list.controller.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
@@ -1793,7 +1812,7 @@ module.exports = function (app) {
 				}
 };
 
-},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/uid.service.js":6,"./modules/file-manager/aside.controller.js":9,"./modules/file-manager/draggable.directive.js":10,"./modules/file-manager/droppable.directive.js":11,"./modules/file-manager/file-manager.service.js":12,"./modules/file-manager/main.controller.js":13,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":17,"./modules/model-builder/components/checkbox/checkbox.directive.js":18,"./modules/model-builder/components/component.service.js":19,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":20,"./modules/model-builder/components/dropdown/dropdown.directive.js":21,"./modules/model-builder/components/owner/owner-options.directive.js":22,"./modules/model-builder/components/owner/owner.directive.js":23,"./modules/model-builder/components/relation/relation-options.directive.js":27,"./modules/model-builder/components/relation/relation.directive.js":28,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":30,"./modules/model-builder/components/text-multi/text-multi.directive.js":31,"./modules/model-builder/components/text-single/text-single-options.directive.js":32,"./modules/model-builder/components/text-single/text-single.directive.js":33,"./modules/model-builder/model-builder.controller.js":34,"./modules/model-builder/model-builder.service.js":35,"./modules/page-builder/aside.controller.js":37,"./modules/page-builder/main.controller.js":38,"./modules/resource/create/resource-create.controller.js":40,"./modules/resource/index/resource-index.controller.js":42}],46:[function(require,module,exports){
+},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/uid.service.js":6,"./modules/file-manager/aside.controller.js":9,"./modules/file-manager/draggable.directive.js":10,"./modules/file-manager/droppable.directive.js":11,"./modules/file-manager/file-manager.service.js":12,"./modules/file-manager/main.controller.js":13,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":17,"./modules/model-builder/components/checkbox/checkbox.directive.js":18,"./modules/model-builder/components/component.service.js":19,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":20,"./modules/model-builder/components/dropdown/dropdown.directive.js":21,"./modules/model-builder/components/owner/owner-options.directive.js":22,"./modules/model-builder/components/owner/owner.directive.js":23,"./modules/model-builder/components/relation/relation-options.directive.js":27,"./modules/model-builder/components/relation/relation.directive.js":28,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":30,"./modules/model-builder/components/text-multi/text-multi.directive.js":31,"./modules/model-builder/components/text-single/text-single-options.directive.js":32,"./modules/model-builder/components/text-single/text-single.directive.js":33,"./modules/model-builder/model-builder.controller.js":34,"./modules/model-builder/model-builder.service.js":35,"./modules/page-builder/aside.controller.js":37,"./modules/page-builder/main.controller.js":38,"./modules/resource/create/resource-create.controller.js":40,"./modules/resource/index/resource-index.controller.js":42,"./modules/user/list/user-list.controller.js":45}],47:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1819,7 +1838,7 @@ exports['default'] = config;
 }
 module.exports = exports['default'];
 
-},{"./states":49}],47:[function(require,module,exports){
+},{"./states":50}],48:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1899,7 +1918,7 @@ function init() {
 }
 module.exports = exports['default'];
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1931,7 +1950,7 @@ exports['default'] = run;
 }
 module.exports = exports['default'];
 
-},{"./jquery":47}],49:[function(require,module,exports){
+},{"./jquery":48}],50:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
