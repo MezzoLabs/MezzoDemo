@@ -16,7 +16,7 @@ class CreatePermissionsTable extends Migration
             $table->increments('id');
             $table->string('model')->nullable();
             $table->string('name');
-            $table->string('label');
+            $table->string('label')->nullable();
         });
     }
 

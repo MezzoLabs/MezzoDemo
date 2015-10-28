@@ -15,27 +15,36 @@ use App\User;
 */
 
 $factory->define(User::class, function ($faker) {
+
+    $date = $faker->dateTimeThisMonth;
+
     return [
         'name' => $faker->name,
         'email' => $faker->email,
         'password' => str_random(10),
         'remember_token' => str_random(10),
+        'updated_at' => $date,
+        'created_at' => $date
     ];
 });
 
 $factory->define(Tutorial::class, function(Faker\Generator $faker){
-    $users = User::all()->lists('id');
+    $users = User::all()->lists('id')->keys();
 
-    $tutorials = Tutorial::all()->lists('id');
+    $tutorials = Tutorial::all()->lists('id')->keys();
 
     $parent = NULL;
     if(rand(0,10) < 6 && $tutorials->count() > 0)
         $parent = $tutorials->random();
 
+    $date = $faker->dateTimeThisMonth;
+
     $array = [
         'title' => $faker->text(30),
         'body' => $faker->text(200),
-        'user_id' => $users->random()
+        'user_id' => $users->random(),
+        'updated_at' => $date,
+        'created_at' => $date
     ];
 
     if ($parent)

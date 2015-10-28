@@ -22,6 +22,12 @@ return [
     'cockpit' => [
         'prefix' => 'mezzo',
         'namedRouteNamespace' => 'cockpit::'
+    ],
+
+    'moduleGroups' => [
+        'general' => 'General',
+        'admin' => 'Admin',
+        'development' => 'Development'
     ]
 ];
   

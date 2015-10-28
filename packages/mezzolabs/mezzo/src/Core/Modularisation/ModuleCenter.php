@@ -14,6 +14,7 @@ use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeAssociated;
 use MezzoLabs\Mezzo\Exceptions\ModelCannotBeFound;
 use MezzoLabs\Mezzo\Exceptions\ModelDoesntUseMezzoTrait;
+use MezzoLabs\Mezzo\Exceptions\ModuleCenterException;
 use MezzoLabs\Mezzo\Exceptions\ModuleNotFound;
 
 class ModuleCenter
@@ -287,6 +288,25 @@ class ModuleCenter
     public function associateWithGeneralModule(ModelReflectionSet $model)
     {
         $this->associateModel($model, $this->generalModule());
+    }
+
+    /**
+     * @return Collection
+     */
+    public function groups()
+    {
+        $groups = ModuleGroup::groupsFromConfiguration();
+
+        $this->modules()->each(function(ModuleProvider $module) use ($groups){
+            if(!$groups->has($module->groupName()))
+                throw new ModuleCenterException('Module group ' . $module->groupName() . ' ' .
+                    'is not defined in the configuration.');
+
+            $groups->get($module->groupName())->addModule($module);
+        });
+
+
+        return $groups;
     }
 
 }

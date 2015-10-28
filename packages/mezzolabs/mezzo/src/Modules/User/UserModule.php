@@ -34,6 +34,7 @@ class UserModule extends ModuleProvider
     public function ready()
     {
 
+
         //dd($tutorialReflection->relationships());
     }
 }
