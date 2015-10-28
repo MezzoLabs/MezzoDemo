@@ -11,7 +11,7 @@ use MezzoLabs\Mezzo\Modules\DeveloperDashboard\Http\Pages\RoutesPage;
 
 class RoutesController extends CockpitController
 {
-    public function showList()
+    public function show()
     {
         $applicationRoutes = RouteListCommandWrapper::make()->getApplicationRoutes();
         $apiRoutes = ApiRouteListCommandWrapper::make()->getApiRoutes();

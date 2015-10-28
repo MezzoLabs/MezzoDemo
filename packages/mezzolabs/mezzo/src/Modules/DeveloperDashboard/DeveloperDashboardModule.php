@@ -15,6 +15,10 @@ class DeveloperDashboardModule extends ModuleProvider
     protected $models = [
     ];
 
+    protected $options = [
+        'icon' => 'ion-hammer'
+    ];
+
     /**
      * Register the service provider.
      *

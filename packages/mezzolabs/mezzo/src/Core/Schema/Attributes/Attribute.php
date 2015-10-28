@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOneOrMany;
+use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderer;
 use MezzoLabs\Mezzo\Core\Schema\ValidationRules\Rules;
 
 class Attribute
@@ -237,5 +238,16 @@ class Attribute
         }
 
         return $this->title;
+    }
+
+    /**
+     * Render this attribute schema as a HTML string.
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $renderer = AttributeRenderer::make();
+        return $renderer->render();
     }
 } 
