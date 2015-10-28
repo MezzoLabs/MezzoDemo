@@ -50,4 +50,14 @@ class HtmlHelper
         else
             $this->addCssClass($class2);
     }
+
+    /**
+     * Checks if a section is set in the child template.
+     *
+     * @param $sectionName
+     * @return bool
+     */
+    public function sectionExists($sectionName){
+        return array_key_exists('content-aside', \View::getSections());
+    }
 }

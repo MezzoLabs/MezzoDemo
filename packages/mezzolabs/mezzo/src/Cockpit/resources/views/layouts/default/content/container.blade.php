@@ -1,8 +1,10 @@
 <main id="content-container">
 
-    <div id="content-aside" ng-if="aside()" ng-cloak>
+    @if (cockpit_html()->sectionExists('content-aside')))
+    <div id="content-aside" @ifangular('ng-if="aside()" ng-cloak')>
         @yield('content-aside')
     </div>
+    @endif
     <div id="content-main">
         <div class="content">
             @yield('content')

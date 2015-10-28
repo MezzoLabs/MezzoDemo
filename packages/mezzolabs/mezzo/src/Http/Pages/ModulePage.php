@@ -56,18 +56,6 @@ abstract class ModulePage implements ModulePageContract
      */
     protected $action;
 
-    /**
-     * Should this page be displayed in the sidebar navigation.
-     *
-     * @var bool
-     */
-    protected $visibleInNavigation = true;
-
-    /**
-
-     * @var bool
-     */
-    protected $renderedByFrontend = true;
 
     /**
      * Options that influence the styling and the routes of this page.
@@ -90,11 +78,11 @@ abstract class ModulePage implements ModulePageContract
          */
         'visibleInNavigation' => false,
         /*
-         * Is this page rendered by a Javascript SPA-Framework like Angular.
+         * Is this page rendered by a Javascript SPA-Framework like Angular?
          * Then /mezzo/MODULE_NAME/PAGE_ACTION will output the cockpit without any content.
-         * mezzo/MODULE_NAME/PAGE_ACTION.html will output the page template
+         * mezzo/MODULE_NAME/PAGE_ACTION.html will output the content of this page.
          */
-        'renderedByFrontend' => true
+        'renderedByFrontend' => true,
     ];
 
     /**
@@ -161,6 +149,9 @@ abstract class ModulePage implements ModulePageContract
 
         if ($this instanceof ResourcePage)
             $additionalData->put('model', $this->model());
+        
+        $additionalData->put('module_page', $this);
+        $additionalData->put('page_options', $this->options);
 
         return $additionalData;
     }
