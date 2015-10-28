@@ -61,16 +61,41 @@ abstract class ModulePage implements ModulePageContract
      *
      * @var bool
      */
-    protected $visibleInNavigation = false;
+    protected $visibleInNavigation = true;
 
     /**
-     * Is this page rendered by a Javascript SPA-Framework like Angular.
-     * Then /mezzo/MODULE_NAME/PAGE_ACTION will output the cockpit without any content.
-     * /mezzo/MODULE_NAME/PAGE_ACTION.html will output the page template
-     *
+
      * @var bool
      */
     protected $renderedByFrontend = true;
+
+    /**
+     * Options that influence the styling and the routes of this page.
+     * They will overwrite the $defaultOptions.
+     *
+     * @var array|static
+     */
+    protected $options = [
+
+    ];
+
+    /**
+     * The default options that will eventually be overwritten by $options.
+     *
+     * @var array|Collection
+     */
+    protected $defaultOptions = [
+        /*
+         * Should this page be display in the sidebar navigation?
+         */
+        'visibleInNavigation' => false,
+        /*
+         * Is this page rendered by a Javascript SPA-Framework like Angular.
+         * Then /mezzo/MODULE_NAME/PAGE_ACTION will output the cockpit without any content.
+         * mezzo/MODULE_NAME/PAGE_ACTION.html will output the page template
+         */
+        'renderedByFrontend' => true
+    ];
 
     /**
      * Create a new module page.
@@ -80,6 +105,9 @@ abstract class ModulePage implements ModulePageContract
     public function __construct(ModuleProvider $module)
     {
         $this->module = $module;
+
+        $this->defaultOptions = new Collection($this->defaultOptions);
+        $this->options = $this->defaultOptions->merge($this->options);
 
         $this->validate();
     }
@@ -107,7 +135,7 @@ abstract class ModulePage implements ModulePageContract
         if($this->isRenderedByFrontend())
             return $this->makeView($this->view, $data);
 
-        return $this->makeView('cockpit::layouts.default', $data)->nest('content', $this->view, $data);
+        return $this->makeView('cockpit::layouts.default', $data)->nest('content_container', $this->view, $data);
     }
 
     /**
@@ -247,7 +275,7 @@ abstract class ModulePage implements ModulePageContract
      */
     public function isVisibleInNavigation()
     {
-        return $this->visibleInNavigation;
+        return $this->options('visibleInNavigation');
     }
 
     /**
@@ -266,7 +294,23 @@ abstract class ModulePage implements ModulePageContract
      */
     public function isRenderedByFrontend()
     {
-        return $this->renderedByFrontend;
+        return $this->options('renderedByFrontend');
+    }
+
+    /**
+     * @param null $key
+     * @param null $value
+     * @return Collection
+     */
+    public function options($key = null, $value = null)
+    {
+        if(!$key)
+            return $this->options;
+
+        if(!$value)
+            return $this->options()->get($key);
+
+        return $this->options()->put($key, $value);
     }
 
 

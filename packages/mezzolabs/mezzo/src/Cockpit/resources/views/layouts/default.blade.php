@@ -24,22 +24,11 @@
     @include('cockpit::layouts.default.sidebar')
     <div id="view-main">
         @include('cockpit::layouts.default.topbar')
-        <main id="content-container">
-            <div id="content-aside" ng-if="aside()" ng-cloak>
-                @yield('content-aside')
-            </div>
-            <div id="content-main">
-                <div class="content">
-                    @if($content)
-                        {!! $content !!}
-                    @else
-                        @yield('content')
-                    @endif
-                </div>
-                @include('cockpit::layouts.default.content.footer')
-            </div>
-        </main>
-        @include('cockpit::layouts.default.quickview')
+        @if(isset($content_container))
+            {!! $content_container !!}
+        @else
+            @yield('content-container')
+        @endif
     </div>
 </div>
 <!-- Content -->

@@ -8,13 +8,13 @@ use MezzoLabs\Mezzo\Modules\DeveloperDashboard\Http\Controllers\RoutesController
 
 class RoutesPage extends ModulePage
 {
-    protected $renderedByFrontend = false;
-
+    protected $options = [
+        'visibleInNavigation' => true,
+        'renderedByFrontend' => false
+    ];
     protected $controller = RoutesController::class;
 
     protected $action = 'showList';
-
-    protected $visibleInNavigation = true;
 
     protected $view = 'modules.developerdashboard::routes';
 

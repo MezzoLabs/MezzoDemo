@@ -4,27 +4,25 @@
 namespace MezzoLabs\Mezzo\Modules\DeveloperDashboard\CommandWrappers;
 
 
-use Illuminate\Foundation\Console\RouteListCommand;
+use Dingo\Api\Console\Command\Routes as DingoRoutesCommand;
 use Illuminate\Support\Collection;
 
-class RouteListCommandWrapper extends RouteListCommand
+class ApiRouteListCommandWrapper extends DingoRoutesCommand
 {
     /**
      * @return Collection
      */
-    public function getApplicationRoutes()
+    public function getApiRoutes()
     {
         return new Collection($this->getRoutes());
     }
 
     /**
-     * @return RouteListCommandWrapper
+     * @return ApiRouteListCommandWrapper
      */
     public static function make()
     {
-        $command = app(static::class);
-        $command->setLaravel(app());
-        return $command;
+        return app(static::class);
     }
 
     public function option($key = null)
