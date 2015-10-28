@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 use MezzoLabs\Mezzo\Core\Annotations\Attribute as AttributeAnnotation;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
+use MezzoLabs\Mezzo\Core\Schema\ValidationRules\Rules;
 use MezzoLabs\Mezzo\Exceptions\AnnotationException;
 
 class AttributeAnnotations extends PropertyAnnotations
@@ -60,6 +61,7 @@ class AttributeAnnotations extends PropertyAnnotations
      */
     public function options()
     {
+        $rulesString =
         return [];
     }
 

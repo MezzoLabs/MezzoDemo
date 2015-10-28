@@ -110,4 +110,10 @@ class Rules extends Collection
 
         return str_getcsv($parameter);
     }
+
+    public function isRequired()
+    {
+        mezzo_dump($this);
+
+    }
 }

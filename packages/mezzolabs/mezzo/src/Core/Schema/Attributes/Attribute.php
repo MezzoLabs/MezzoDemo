@@ -247,7 +247,7 @@ class Attribute
      */
     public function render()
     {
-        $renderer = AttributeRenderer::make();
+        $renderer = AttributeRenderer::make($this);
         return $renderer->render();
     }
 } 

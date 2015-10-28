@@ -4,8 +4,10 @@
 namespace MezzoLabs\Mezzo\Cockpit;
 
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Cockpit\Html\Rendering\AttributeRenderer as CockpitAttributeRenderer;
+use MezzoLabs\Mezzo\Cockpit\Html\Rendering\FormBuilder;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderer as AttributeSchemaRenderer;
 
@@ -48,6 +50,10 @@ class CockpitProvider extends ServiceProvider
         });
 
         $this->app->alias(Cockpit::class, 'mezzo.cockpit');
+
+        $this->app->singleton(FormBuilder::class, function(Application $app){
+            return new FormBuilder($app['html'], $app['url'], $app['session.store']->getToken());
+        });
 
 
     }
