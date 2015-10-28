@@ -3,7 +3,7 @@ import pageBuilderState from '../modules/page-builder/state.js';
 import fileManagerState from '../modules/file-manager/state';
 import resourceIndexState from '../modules/resource/index/state';
 import resourceCreateState from '../modules/resource/create/state';
-import userListState from '../modules/user/list/state';
+import usersState from '../modules/users';
 
 export default [
     moduleBuilderState,
@@ -11,5 +11,5 @@ export default [
     fileManagerState,
     resourceIndexState,
     resourceCreateState,
-    userListState
+    usersState
 ];
