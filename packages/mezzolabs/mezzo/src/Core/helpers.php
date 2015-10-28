@@ -97,3 +97,18 @@ if (!function_exists('module_route')) {
 
     }
 }
+
+if (!function_exists('space_case')) {
+    /**
+     * Transforms studly case to a readable text.
+     *
+     * @param $studlyCase
+     * @return string
+     */
+    function space_case($studlyCase)
+    {
+        $space_case = strtolower(preg_replace("/(?<=[a-zA-Z])(?=[A-Z])/", " ", $studlyCase));
+
+        return ucfirst($space_case);
+    }
+}
