@@ -165,15 +165,24 @@ abstract class ModelReflection
     /**
      * @return array
      */
-    public function rules()
+    public function rules($attribute = null)
     {
         if (!$this->rules) {
             $this->rules = $this->getRulesFromInstance();
         }
 
+        if ($attribute){
+            return (isset($this->rules[$attribute]))? $this->rules[$attribute] : "";
+        }
+
         return $this->rules;
     }
 
+    /**
+     * Gets the rules from the Eloquent instance.
+     *
+     * @return array|mixed
+     */
     protected function getRulesFromInstance()
     {
         if (method_exists($this->instance(), 'getRules'))

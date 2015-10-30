@@ -31,8 +31,11 @@ abstract class MezzoUser extends BaseModel
      *
      * @var array
      */
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = ['id', 'password', 'remember_token'];
 
+    /**
+     * @var array
+     */
     protected $rules = [
         'name' => 'required|max:255',
         'email' => 'required|email|max:255|unique:users',

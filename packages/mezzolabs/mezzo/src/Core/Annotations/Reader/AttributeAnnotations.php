@@ -61,8 +61,10 @@ class AttributeAnnotations extends PropertyAnnotations
      */
     public function options()
     {
-        $rulesString =
-        return [];
+        return [
+            'rules' => $this->modelReflection()->rules($this->name()),
+            'visible' => !in_array($this->name(), $this->modelReflection()->instance()->getHidden())
+        ];
     }
 
     /**

@@ -44,7 +44,7 @@ class Attribute
     protected $persisted = true;
 
     /**
-     * @var Rules
+     * @var Collection
      */
     protected $rules;
 
@@ -197,7 +197,7 @@ class Attribute
     {
         $this->options = new Collection($options);
 
-        $this->rules = $this->options->get('rules', new Rules());
+        $this->rules = Rules::makeCollection($this->options->get('rules', ""));
     }
 
     /**
@@ -250,4 +250,16 @@ class Attribute
         $renderer = AttributeRenderer::make($this);
         return $renderer->render();
     }
+
+    /**
+     * Check if this attribute is visible in forms.
+     * E.g. id, created_at should not be viisble.
+     *
+     * @return mixed
+     */
+    public function isVisible()
+    {
+        return $this->options->get('visible', false);
+    }
+
 } 
