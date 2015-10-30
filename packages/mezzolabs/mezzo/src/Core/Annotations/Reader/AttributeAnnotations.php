@@ -63,7 +63,8 @@ class AttributeAnnotations extends PropertyAnnotations
     {
         return [
             'rules' => $this->modelReflection()->rules($this->name()),
-            'visible' => !in_array($this->name(), $this->modelReflection()->instance()->getHidden())
+            'visible' => !in_array($this->name(), $this->modelReflection()->instance()->getHidden()),
+            'fillable' => in_array($this->name(), $this->modelReflection()->instance()->getFillable()),
         ];
     }
 
@@ -81,6 +82,10 @@ class AttributeAnnotations extends PropertyAnnotations
         return true;
     }
 
+    /**
+     * @return Relation|null
+     * @throws AnnotationException
+     */
     public function relation(){
         if(!$this->isRelation()) return null;
 

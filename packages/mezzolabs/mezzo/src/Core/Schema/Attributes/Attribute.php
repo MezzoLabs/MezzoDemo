@@ -189,6 +189,14 @@ class Attribute
         return $this->rules()->count() > 0;
     }
 
+    /**
+     * @return Collection
+     */
+    public function options()
+    {
+        return $this->options;
+    }
+
 
     /**
      * @param array|ArrayAccess $options
@@ -252,14 +260,24 @@ class Attribute
     }
 
     /**
-     * Check if this attribute is visible in forms.
-     * E.g. id, created_at should not be viisble.
+     * Check if this attribute is visible in JSON.
+     * E.g. password and the remember token should not be visible.
      *
-     * @return mixed
+     * @return boolean
      */
     public function isVisible()
     {
         return $this->options->get('visible', false);
+    }
+
+    /**
+     * Check if this attribute is mass assignable.
+     *
+     * @return boolean
+     */
+    public function isFillable()
+    {
+        return $this->options->get('fillable', false);
     }
 
 } 

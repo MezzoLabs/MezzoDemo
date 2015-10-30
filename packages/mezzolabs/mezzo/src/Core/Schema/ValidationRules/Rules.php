@@ -30,6 +30,16 @@ class Rules extends Collection
 
     /**
      * @param mixed $key
+     * @param null $default
+     * @return Rule
+     */
+    public function get($key, $default = null)
+    {
+        return parent::get($key, $default);
+    }
+
+    /**
+     * @param mixed $key
      * @return bool
      */
     public function has($key)
@@ -69,9 +79,10 @@ class Rules extends Collection
     {
         $ruleStrings = array();
 
-        $this->each(function (Rule $rule) use ($ruleStrings) {
+        $this->each(function (Rule $rule) use (&$ruleStrings) {
             $ruleStrings[] = $rule->toString();
         });
+
 
         return implode('|', $ruleStrings);
     }

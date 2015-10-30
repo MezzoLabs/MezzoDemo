@@ -26,6 +26,9 @@ class AttributeRenderer extends AttributeSchemaRenderer
         return "!! Cannot render " . get_class($this->inputType());
     }
 
+    /**
+     * @return string
+     */
     protected function renderSimpleInput()
     {
         $inputType = $this->attribute()->type()->htmlType();
@@ -48,7 +51,7 @@ class AttributeRenderer extends AttributeSchemaRenderer
      */
     public function validationAttributes()
     {
-        return (new AngularAttributeValidation($this->attribute()))->htmlAttributes();
+        return (new HtmlAttributeValidation($this->attribute()))->htmlAttributes();
     }
 
 

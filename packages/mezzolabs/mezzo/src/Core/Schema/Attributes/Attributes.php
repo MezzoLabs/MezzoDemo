@@ -48,6 +48,29 @@ class Attributes extends Collection
         });
     }
 
+    public function visibleOnly()
+    {
+        return $this->filter(function(Attribute $attribute){
+            return $attribute->isVisible();
+        });
+    }
+
+    /**
+     * @return Attributes
+     */
+    public function hiddenOnly()
+    {
+        return $this->diff($this->visibleOnly());
+    }
+
+
+    public function fillableOnly()
+    {
+        return $this->filter(function(Attribute $attribute){
+            return $attribute->isFillable();
+        });
+    }
+
     /**
      * Returns an Attribute Collection via the converted columns
      *

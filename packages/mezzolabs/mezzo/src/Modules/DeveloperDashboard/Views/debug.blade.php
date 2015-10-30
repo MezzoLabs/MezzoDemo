@@ -13,7 +13,7 @@
             </div>
             <div class="panel-body">
                 {!! cockpit_form()->open() !!}
-                @foreach($model->attributes() as $attribute)
+                @foreach($model->attributes()->fillableOnly() as $attribute)
                     <div class="form-group">
                         <label>{{ $attribute->title() }}</label>
                         {!! $attribute->render() !!}

@@ -31,7 +31,7 @@ abstract class MezzoUser extends BaseModel
      *
      * @var array
      */
-    protected $hidden = ['id', 'password', 'remember_token'];
+    protected $hidden = ['password', 'remember_token'];
 
     /**
      * @var array
@@ -50,13 +50,19 @@ abstract class MezzoUser extends BaseModel
 
     /**
      * @Mezzo\Attribute(type="TextInput")
-     * @var int
+     * @var string
      */
     protected $name;
 
     /**
+     * @Mezzo\Attribute(type="PasswordInput")
+     * @var string
+     */
+    protected $password;
+
+    /**
      * @Mezzo\Attribute(type="EmailInput")
-     * @var int
+     * @var string
      */
     protected $email;
 
