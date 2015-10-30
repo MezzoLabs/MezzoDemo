@@ -5,7 +5,10 @@ namespace MezzoLabs\Mezzo\Core\Schema\Rendering;
 
 
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Annotations\Relations\RelationAnnotation;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\AtomicAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 
 abstract class AttributeRenderer
 {
@@ -23,7 +26,7 @@ abstract class AttributeRenderer
     }
 
     /**
-     * @return Attribute
+     * @return Attribute|AtomicAttribute|RelationAttribute
      */
     public function attribute()
     {

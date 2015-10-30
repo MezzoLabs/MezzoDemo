@@ -202,4 +202,13 @@ abstract class ModelReflection
         return $reflectionProperty->getValue($this->instance());
     }
 
+    /**
+     * @param array $columns
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function all($columns = ['*'])
+    {
+        return $this->instance()->all($columns);
+    }
+
 }

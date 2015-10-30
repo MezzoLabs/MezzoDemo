@@ -7,7 +7,7 @@ namespace MezzoLabs\Mezzo\Cockpit\Html\Rendering;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 
-class HtmlAttributeValidation
+class AttributeHtmlValidation
 {
     /**
      * @var Attribute
