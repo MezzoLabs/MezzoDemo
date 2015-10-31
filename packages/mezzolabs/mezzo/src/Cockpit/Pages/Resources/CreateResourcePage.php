@@ -10,7 +10,9 @@ class CreateResourcePage extends ResourcePage
 
     protected $view = 'cockpit::pages.resources.create';
 
-    protected $visibleInNavigation = true;
+    protected $options = [
+        'visibleInNavigation' => true,
+    ];
 
 
 }

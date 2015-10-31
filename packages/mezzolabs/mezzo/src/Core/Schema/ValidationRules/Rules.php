@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\ValidationRules;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 
 class Rules extends Collection
@@ -19,18 +20,56 @@ class Rules extends Collection
      */
     public function addRule(Rule $rule)
     {
-        if ($this->has($rule->name()))
+        $key = strtolower($rule->name());
+
+        if ($this->has($key))
             throw new MezzoException('This rule already exists ' . $rule->name());
 
-        $this->put($rule->name(), $rule);
+        $this->put($key, $rule);
     }
 
-
-    public function addRuleFromString($string)
+    /**
+     * @param mixed $key
+     * @param null $default
+     * @return Rule
+     */
+    public function get($key, $default = null)
     {
-        $rules = $this->parseRule($string);
+        return parent::get($key, $default);
+    }
 
-        return Rule::makeFromRuleArray($rules);
+    /**
+     * @param mixed $key
+     * @return bool
+     */
+    public function has($key)
+    {
+        return parent::has(strtolower($key));
+    }
+
+    /**
+     * Add the rules from a Laravl validation rule string.
+     *
+     * @param $string|array
+     * @return bool
+     * @throws MezzoException
+     */
+    public function addRulesFromString($string)
+    {
+        if(empty($string))
+            return false;
+
+        if (!is_array($string))
+            $string = explode('|', $string);
+
+        foreach ($string as $ruleString) {
+            $ruleArray = $this->parseRule($ruleString);
+
+            $rule = Rule::makeFromRuleArray($ruleArray);
+            $this->addRule($rule);
+        }
+
+        return true;
     }
 
     /**
@@ -40,9 +79,10 @@ class Rules extends Collection
     {
         $ruleStrings = array();
 
-        $this->each(function (Rule $rule) use ($ruleStrings) {
+        $this->each(function (Rule $rule) use (&$ruleStrings) {
             $ruleStrings[] = $rule->toString();
         });
+
 
         return implode('|', $ruleStrings);
     }
@@ -109,5 +149,33 @@ class Rules extends Collection
         }
 
         return str_getcsv($parameter);
+    }
+
+    public function isRequired()
+    {
+        return $this->has('required');
+    }
+
+    /**
+     * @param array|mixed $rulesToAdd
+     * @return array|mixed|static
+     * @throws InvalidArgumentException
+     */
+    public static function makeCollection($rulesToAdd)
+    {
+
+        if(is_array($rulesToAdd) || is_string($rulesToAdd)){
+            $rules = new static();
+            $rules->addRulesFromString($rulesToAdd);
+            return $rules;
+        }
+
+        if($rulesToAdd instanceof Rules)
+            return $rulesToAdd;
+
+        if(!$rulesToAdd)
+            return new static();
+
+        throw new InvalidArgumentException($rulesToAdd);
     }
 }

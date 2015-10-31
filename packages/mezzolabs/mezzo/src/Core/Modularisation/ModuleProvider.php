@@ -69,6 +69,14 @@ abstract class ModuleProvider extends ServiceProvider
      * @var array|Collection
      */
     protected $options = [
+    ];
+
+    /**
+     * Will be overwritten by the $options array.
+     *
+     * @var array
+     */
+    private $defaultOptions = [
         'icon' => 'ion-ios-copy',
         'visible' => true,
         'title' => null
@@ -90,7 +98,8 @@ abstract class ModuleProvider extends ServiceProvider
         $this->router = new ModuleRouter($this);
 
         $this->app = $app;
-        $this->options = new Collection($this->options);
+        $this->defaultOptions = new Collection($this->defaultOptions);
+        $this->options = $this->defaultOptions->merge($this->options);
     }
 
     /**
@@ -437,6 +446,16 @@ abstract class ModuleProvider extends ServiceProvider
     public function uri()
     {
         return mezzo()->uri()->toModule($this);
+    }
+
+
+    /**
+     * Called when all service pro
+     *
+     * @return void
+     */
+    public function boot(){
+
     }
 
 }

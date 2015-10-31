@@ -128,6 +128,15 @@ class ReflectionManager
         return mezzo()->makeReflectionManager();
     }
 
+    /**
+     * @param string $model
+     * @return \MezzoLabs\Mezzo\Core\Schema\ModelSchema
+     * @throws ReflectionException
+     */
+    public function modelSchema($model)
+    {
+        return $this->mezzoReflection($model)->schema();
+    }
 
 
 }

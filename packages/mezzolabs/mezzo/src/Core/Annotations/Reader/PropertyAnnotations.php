@@ -3,6 +3,7 @@
 
 namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Exceptions\AnnotationException;
 use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 use ReflectionProperty;
@@ -22,7 +23,7 @@ abstract class PropertyAnnotations
     /**
      * @var ModelAnnotations
      */
-    private $model;
+    protected $model;
 
     /**
      * Use the Factory make method
@@ -31,7 +32,7 @@ abstract class PropertyAnnotations
      * @param Annotations $annotations
      * @param ModelAnnotations $model
      */
-    final private function __construct($name, Annotations $annotations, ModelAnnotations $model)
+    final protected function __construct($name, Annotations $annotations, ModelAnnotations $model)
     {
         $this->name = $name;
         $this->annotations = $annotations;
@@ -142,6 +143,14 @@ abstract class PropertyAnnotations
     public function model()
     {
         return $this->model;
+    }
+
+    /**
+     * @return ModelReflection
+     */
+    public function modelReflection()
+    {
+        return $this->model->modelReflection();
     }
 
 

@@ -13,7 +13,8 @@ class SidebarHelper extends HtmlHelper
 
         $this->decideCssClass($visiblePages->isEmpty(), 'has-no-pages', 'has-pages');
 
-        $this->addCssClass('opened');
+        //@TODO
+        //$this->addCssClass('opened');
 
         return $this->cssClassString();
     }

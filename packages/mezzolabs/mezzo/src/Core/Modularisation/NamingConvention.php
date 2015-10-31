@@ -116,6 +116,9 @@ class NamingConvention
         if (!strpos($controllerName, 'Controller'))
             $controllerName .= 'Controller';
 
+        if(class_exists($controllerName))
+            return $controllerName;
+
         /**
          * Get the correct namespace depending on the type of the controller.
          */

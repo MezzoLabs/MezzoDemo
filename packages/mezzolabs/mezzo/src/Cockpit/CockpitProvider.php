@@ -4,8 +4,12 @@
 namespace MezzoLabs\Mezzo\Cockpit;
 
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use MezzoLabs\Mezzo\Cockpit\Html\Rendering\AttributeRenderer as CockpitAttributeRenderer;
+use MezzoLabs\Mezzo\Cockpit\Html\Rendering\FormBuilder;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderer as AttributeSchemaRenderer;
 
 class CockpitProvider extends ServiceProvider
 {
@@ -18,6 +22,7 @@ class CockpitProvider extends ServiceProvider
     public function register()
     {
         $this->registerCockpit();
+        $this->registerRenderer();
         $this->loadViews();
         $this->publishPublicFolder();
     }
@@ -45,6 +50,10 @@ class CockpitProvider extends ServiceProvider
         });
 
         $this->app->alias(Cockpit::class, 'mezzo.cockpit');
+
+        $this->app->singleton(FormBuilder::class, function(Application $app){
+            return new FormBuilder($app['html'], $app['url'], $app['session.store']->getToken());
+        });
 
 
     }
@@ -90,6 +99,11 @@ class CockpitProvider extends ServiceProvider
 
     private function publicFolder($folder = ""){
         return __DIR__ . '/public' . $folder;
+    }
+
+    private function registerRenderer()
+    {
+        app()->bind(AttributeSchemaRenderer::class, CockpitAttributeRenderer::class);
     }
 
 

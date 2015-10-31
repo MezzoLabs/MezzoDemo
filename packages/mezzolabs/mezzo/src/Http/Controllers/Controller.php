@@ -165,6 +165,8 @@ abstract class Controller extends IlluminateController
      */
     protected function page($class, $parameters = [])
     {
+        $parameters = $this->data()->merge($parameters);
+
         $page = $this->module()->makePage($class);
 
         return $page->template($parameters);

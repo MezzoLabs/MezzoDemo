@@ -4,7 +4,7 @@
 namespace MezzoLabs\Mezzo\Cockpit\Http\Controllers;
 
 
-class MainController extends CockpitController
+class MainController extends NonModuleController
 {
     public function __construct()
     {

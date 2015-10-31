@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOneOrMany;
+use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderer;
 use MezzoLabs\Mezzo\Core\Schema\ValidationRules\Rules;
 
 class Attribute
@@ -43,7 +44,7 @@ class Attribute
     protected $persisted = true;
 
     /**
-     * @var Rules
+     * @var Collection
      */
     protected $rules;
 
@@ -188,6 +189,14 @@ class Attribute
         return $this->rules()->count() > 0;
     }
 
+    /**
+     * @return Collection
+     */
+    public function options()
+    {
+        return $this->options;
+    }
+
 
     /**
      * @param array|ArrayAccess $options
@@ -196,7 +205,7 @@ class Attribute
     {
         $this->options = new Collection($options);
 
-        $this->rules = $this->options->get('rules', new Rules());
+        $this->rules = Rules::makeCollection($this->options->get('rules', ""));
     }
 
     /**
@@ -238,4 +247,37 @@ class Attribute
 
         return $this->title;
     }
+
+    /**
+     * Render this attribute schema as a HTML string.
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $renderer = AttributeRenderer::make($this);
+        return $renderer->render();
+    }
+
+    /**
+     * Check if this attribute is visible in JSON.
+     * E.g. password and the remember token should not be visible.
+     *
+     * @return boolean
+     */
+    public function isVisible()
+    {
+        return $this->options->get('visible', false);
+    }
+
+    /**
+     * Check if this attribute is mass assignable.
+     *
+     * @return boolean
+     */
+    public function isFillable()
+    {
+        return $this->options->get('fillable', false);
+    }
+
 } 

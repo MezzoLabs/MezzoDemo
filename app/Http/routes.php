@@ -29,6 +29,14 @@ Route::get('random',function(){
    return str_random(16);
 });
 
+Route::get('debug/rules', function () {
+    $rules = new \MezzoLabs\Mezzo\Core\Schema\ValidationRules\Rules();
+    $rules->addRulesFromString('required|email|between:5,255|unique:users');
+
+    mezzo_dd($rules);
+});
+
+
 Route::get('debug/models', function () {
     $moduleCenter = mezzo()->moduleCenter();
 
