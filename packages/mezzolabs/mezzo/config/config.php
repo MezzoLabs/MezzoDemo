@@ -17,7 +17,12 @@ return [
         'debug' => env('APP_DEBUG', false),
         'strict' => true,
         'defaultFormat' => 'json',
-        'domain' => null
+        'domain' => null,
+        'formats' => [
+
+            'json' => MezzoLabs\Mezzo\Http\Format\Json::class
+
+        ]
     ],
 
     'cockpit' => [

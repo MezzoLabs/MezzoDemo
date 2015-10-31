@@ -5,7 +5,7 @@ namespace MezzoLabs\Mezzo\Http\Controllers;
 
 
 use Dingo\Api\Routing\Helpers as ApiHelpers;
-use MezzoLabs\Mezzo\Http\Requests\ApiResponseFactory;
+use MezzoLabs\Mezzo\Http\Responses\ApiResponseFactory;
 
 /**
  * Class ApiController

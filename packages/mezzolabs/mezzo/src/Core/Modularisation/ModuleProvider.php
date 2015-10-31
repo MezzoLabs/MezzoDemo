@@ -19,9 +19,13 @@ use MezzoLabs\Mezzo\Exceptions\DirectoryNotFound;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 use MezzoLabs\Mezzo\Http\Controllers\ApiResourceController;
+use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Controllers\Controller;
+use MezzoLabs\Mezzo\Http\Controllers\ResourceControllerContract;
 use MezzoLabs\Mezzo\Http\Pages\ModulePage;
 use MezzoLabs\Mezzo\Http\Pages\ModulePages;
+use MezzoLabs\Mezzo\Http\Transformers\TransformerRegistrar;
+use PhpSpec\Exception\Locator\ResourceCreationException;
 
 abstract class ModuleProvider extends ServiceProvider
 {
@@ -37,6 +41,7 @@ abstract class ModuleProvider extends ServiceProvider
      * @var array
      */
     protected $commands = [];
+
 
     /**
      * @var ModelReflectionSets
@@ -404,7 +409,7 @@ abstract class ModuleProvider extends ServiceProvider
      * Get the api resource controller with the ControllerName
      *
      * @param $controllerName
-     * @return ResourceController
+     * @return ApiResourceController|CockpitResourceController
      * @throws ModuleControllerException
      */
     public function apiResourceController($controllerName)
@@ -448,6 +453,13 @@ abstract class ModuleProvider extends ServiceProvider
         return mezzo()->uri()->toModule($this);
     }
 
+
+    /**
+     * Register the eloquent model transformers.
+     */
+    protected function registerTransformers($array = []){
+        app(TransformerRegistrar::class)->addTransformers($array);
+    }
 
     /**
      * Called when all service pro

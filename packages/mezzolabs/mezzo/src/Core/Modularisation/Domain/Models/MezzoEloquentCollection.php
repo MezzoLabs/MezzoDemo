@@ -63,6 +63,9 @@ class MezzoEloquentCollection
         if($model->getAttribute('title'))
             return 'title';
 
+        if($model->getAttribute('label'))
+            return 'label';
+
         if($model->getAttribute('name'))
             return 'name';
 

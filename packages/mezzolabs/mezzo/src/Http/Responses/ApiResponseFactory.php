@@ -1,10 +1,12 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Http\Requests;
+namespace MezzoLabs\Mezzo\Http\Responses;
 
+use Closure;
 use Dingo\Api\Http\Response as DingoResponse;
 use Dingo\Api\Http\Response\Factory as DingoResponseFactory;
+use Illuminate\Support\Collection;
 
 
 class ApiResponseFactory extends DingoResponseFactory
@@ -28,4 +30,14 @@ class ApiResponseFactory extends DingoResponseFactory
     {
         return $this->array($array);
     }
+
+    public function collection(Collection $collection, $transformer, array $parameters = [], Closure $after = null)
+    {
+        $collection = parent::collection($collection, $transformer, $parameters, $after);
+
+        return $collection;
+    }
+
+
+
 }

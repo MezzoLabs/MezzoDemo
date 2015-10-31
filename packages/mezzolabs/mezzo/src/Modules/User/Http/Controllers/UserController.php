@@ -21,5 +21,10 @@ class UserController extends CockpitResourceController
         return $this->page(IndexUserPage::class);
     }
 
+    public function rolesIndex()
+    {
+        
+    }
+
 
 }
