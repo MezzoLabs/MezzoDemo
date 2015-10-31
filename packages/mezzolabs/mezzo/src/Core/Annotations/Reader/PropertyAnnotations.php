@@ -32,7 +32,7 @@ abstract class PropertyAnnotations
      * @param Annotations $annotations
      * @param ModelAnnotations $model
      */
-    final private function __construct($name, Annotations $annotations, ModelAnnotations $model)
+    final protected function __construct($name, Annotations $annotations, ModelAnnotations $model)
     {
         $this->name = $name;
         $this->annotations = $annotations;

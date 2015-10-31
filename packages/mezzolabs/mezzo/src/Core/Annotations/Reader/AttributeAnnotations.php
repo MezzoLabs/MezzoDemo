@@ -5,7 +5,9 @@ namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 
 
 use MezzoLabs\Mezzo\Core\Annotations\Attribute as AttributeAnnotation;
+use MezzoLabs\Mezzo\Core\Annotations\Relations\RelationAnnotation;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
+use MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
 use MezzoLabs\Mezzo\Core\Schema\ValidationRules\Rules;
 use MezzoLabs\Mezzo\Exceptions\AnnotationException;
@@ -69,6 +71,16 @@ class AttributeAnnotations extends PropertyAnnotations
     }
 
     /**
+     * Create a relation annotations collection from this attribute annotation.
+     *
+     * @return RelationAnnotations
+     */
+    public function toRelationAnnotations()
+    {
+        return new RelationAnnotations($this->name(), $this->annotations(), $this->model());
+    }
+
+    /**
      * Checks if the given annotations list is correct.
      * @return bool
      * @throws AnnotationException
@@ -105,8 +117,9 @@ class AttributeAnnotations extends PropertyAnnotations
         $relation = null;
 
         $relationAnnotationsCollection->each(function(RelationAnnotations $relationAnnotations) use (&$relation){
-            if($relationAnnotations->relation()->columns()->has($this->qualifiedColumn())){
+            if($this->belongsToRelationAnnotations($relationAnnotations)){
                 $relation = $relationAnnotations->relation();
+                return false;
             }
         });
 
@@ -115,5 +128,30 @@ class AttributeAnnotations extends PropertyAnnotations
         }
 
         return $relation;
+    }
+
+    /**
+     * Check if this attribute annotations belong to a certain relation annotations group.
+     *
+     * @param RelationAnnotations $relationAnnotations
+     * @return bool
+     */
+    private function belongsToRelationAnnotations(RelationAnnotations $relationAnnotations){
+        /**
+         * Check if the column of this attribute is part of the relation.
+         */
+        if($relationAnnotations->relation()->columns()->has($this->qualifiedColumn())){
+            return true;
+        }
+
+        /**
+         * Check if the relation and this attribute are named equally.
+         * E.g: roles is a attribute with multiple inputs but also the name of the relation.
+         */
+        if($this->inputType() instanceof RelationInputMultiple && $relationAnnotations->name() === $this->name()){
+            return true;
+        }
+
+        return false;
     }
 }

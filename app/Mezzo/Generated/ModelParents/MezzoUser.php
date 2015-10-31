@@ -5,6 +5,8 @@ namespace App\Mezzo\Generated\ModelParents;
 
 
 use App\Mezzo\BaseModel;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
@@ -24,7 +26,7 @@ abstract class MezzoUser extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'password', 'roles'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -79,4 +81,15 @@ abstract class MezzoUser extends BaseModel
      * @var string
      */
     protected $updated_at;
+
+    /**
+     * @Mezzo\Attribute(type="RelationInputMultiple")
+     * @Mezzo\Relations\ManyToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="roles")
+     * @Mezzo\Relations\To(table="roles", primaryKey="id", naming="users")
+     * @Mezzo\Relations\PivotTable(name="role_user", fromColumn="user_id", toColumn="role_id")
+     *
+     * @var EloquentCollection
+     */
+    protected $roles;
 }

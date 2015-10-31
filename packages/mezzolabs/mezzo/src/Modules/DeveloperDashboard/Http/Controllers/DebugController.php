@@ -14,7 +14,7 @@ class DebugController extends CockpitController
 {
     public function show()
     {
-        $this->data('model', mezzo()->model('Tutorial'));
+        $this->data('model', mezzo()->model('User'));
         return $this->page(DebugPage::class, []);
     }
 }

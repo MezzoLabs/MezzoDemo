@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 use Doctrine\Common\Annotations\Reader as DoctrineReader;
 use Illuminate\Database\Eloquent\Collection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
+use MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Exceptions\AnnotationException;
 
@@ -124,13 +125,28 @@ class ModelAnnotations
             return null;
 
         if ($annotations instanceof RelationAnnotations)
-            return $this->relationAnnotationsCollection->put($annotations->name(), $annotations);
+            return $this->addRelationAnnotations($annotations);
 
-        if ($annotations instanceof AttributeAnnotations)
-            return $this->attributeAnnotationsCollection->put($annotations->name(), $annotations);
+        if ($annotations instanceof AttributeAnnotations) {
+            return $this->addAttributeAnnotations($annotations);
+        }
 
         throw new AnnotationException('Unknown property ' . $annotations->name() .
             ' class ' . get_class($annotations));
+    }
+
+    protected function addAttributeAnnotations(AttributeAnnotations $annotations)
+    {
+        if ($annotations->inputType() instanceof RelationInputMultiple) {
+            $this->addRelationAnnotations($annotations->toRelationAnnotations());
+        }
+
+        return $this->attributeAnnotationsCollection->put($annotations->name(), $annotations);
+    }
+
+    protected function addRelationAnnotations(RelationAnnotations $annotations)
+    {
+        return $this->relationAnnotationsCollection->put($annotations->name(), $annotations);
     }
 
     /**
