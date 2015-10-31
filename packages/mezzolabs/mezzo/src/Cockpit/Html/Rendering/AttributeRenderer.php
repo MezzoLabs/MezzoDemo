@@ -54,14 +54,14 @@ class AttributeRenderer extends AttributeSchemaRenderer
      */
     protected function renderRelationInputSingle(RelationAttribute $attribute)
     {
-        $list = $this->makeEloquentList($attribute);
+        $list = $this->makeEloquentList($attribute, true);
         return $this->formBuilder()->select($attribute->name(),  $list, null, $this->htmlAttributes());
     }
 
 
     protected function renderRelationInputMultiple(RelationAttribute $attribute)
     {
-        $list = $this->makeEloquentList($attribute);
+        $list = $this->makeEloquentList($attribute, false);
         return $this->formBuilder()->select($attribute->name(),  $list, null, $this->htmlAttributes());
     }
 
@@ -71,10 +71,13 @@ class AttributeRenderer extends AttributeSchemaRenderer
      * @param RelationAttribute $attribute
      * @return static
      */
-    protected function makeEloquentList(RelationAttribute $attribute){
+    protected function makeEloquentList(RelationAttribute $attribute, $addPleaseSelect = true){
         $collection = new MezzoEloquentCollection($attribute->otherModelReflection()->all());
-        $list = $collection->asList()->merge([null=>'Please Select']);
-        return $list;
+        if(!$addPleaseSelect)
+            return $collection->asList();
+
+        return $collection->asList()->merge([null=>'Please Select']);
+
     }
 
     /**
