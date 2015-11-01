@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Schema;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Relations\RelationSide;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
@@ -80,11 +81,14 @@ class ModelSchema
     }
 
     /**
-     * @return Attributes\Attributes
+     * @return Attributes|Attribute
      */
-    public function attributes()
+    public function attributes($name = null)
     {
-        return $this->mainTable()->attributes();
+        if(!$name)
+            return $this->mainTable()->attributes();
+
+        return $this->mainTable()->attributes()->get($name);
     }
 
     /**

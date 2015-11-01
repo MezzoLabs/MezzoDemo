@@ -1,0 +1,98 @@
+<?php
+
+
+namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
+
+
+use Illuminate\Support\Facades\Input;
+use MezzoLabs\Mezzo\Core\Collection\StrictCollection;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
+use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
+use MezzoLabs\Mezzo\Exceptions\HttpException;
+
+class AttributeValues extends StrictCollection
+{
+    public function add(AttributeValue $value)
+    {
+        $this->put($value->attribute()->name(), $value);
+    }
+
+    /**
+     * Returns a filtered Value collection that only consists out of atomic attributes.
+     *
+     * @return AttributeValues
+     */
+    public function atomicOnly()
+    {
+        return $this->filter(function(AttributeValue $value){
+            return $value->attribute()->isAtomic();
+        });
+    }
+
+    /**
+     * Returns a filtered Value collection that only consists out of relation attributes.
+     *
+     * @return AttributeValues
+     */
+    public function relationsOnly()
+    {
+        return $this->filter(function(AttributeValue $value){
+            return $value->attribute()->isRelationAttribute();
+        });
+    }
+
+    protected function checkItem($value)
+    {
+        return $value instanceof AttributeValue;
+    }
+
+    /**
+     * @param MezzoEloquentModel $model
+     * @return AttributeValues
+     * @throws HttpException
+     */
+    public static function fromModel(MezzoEloquentModel $model)
+    {
+        return static::fromArray($model->schema(), $model->getAttributes());
+    }
+
+    /**
+     * @param ModelSchema $model
+     * @param array $data
+     * @return AttributeValues
+     * @throws HttpException
+     */
+    public static function fromInput(ModelSchema $model, $data = [])
+    {
+        if (empty($data))
+            $data = Input::all();
+
+        return static::fromArray($model, $data);
+    }
+
+    /**
+     * @param ModelSchema $model
+     * @param array $array
+     * @return AttributeValues
+     * @throws HttpException
+     */
+    public static function fromArray(ModelSchema $model, $array)
+    {
+        $values = new AttributeValues();
+
+        foreach ($array as $key => $value) {
+            $attribute = $model->attributes($key);
+
+            if (!$attribute)
+                throw new HttpException("\"" . $key . "\" is not a valid attribute in " . $model->className());
+
+            $value = new AttributeValue($value, $attribute);
+            $values->add($value);
+        }
+
+        return $values;
+
+    }
+}

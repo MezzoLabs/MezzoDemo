@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 
 use Illuminate\Database\Eloquent\Collection;
+use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\InvalidModel;
 use MezzoLabs\Mezzo\Exceptions\ReflectionException;
@@ -55,6 +56,12 @@ class ModelReflectionSets extends Collection
 
         if($model instanceof ModelReflectionSet)
             $model = $model->className();
+
+        if($model instanceof ModelSchema)
+            $model = $model->className();
+
+        if(is_object($model))
+            $model = get_class($model);
 
         if ($this->has($model))
             return $this->get($model);

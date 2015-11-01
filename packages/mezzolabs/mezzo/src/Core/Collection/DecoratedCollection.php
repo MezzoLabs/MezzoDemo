@@ -62,4 +62,14 @@ abstract class DecoratedCollection
     {
         $this->collection()->put($key, $value);
     }
+
+    /**
+     * Get the collection of items as a plain array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->collection()->toArray();
+    }
 }

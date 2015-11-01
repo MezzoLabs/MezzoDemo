@@ -6,10 +6,15 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValue;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValues;
 use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 
 class ModelRepository
@@ -96,7 +101,7 @@ class ModelRepository
      */
     public function create(array $data)
     {
-        $data = $this->parseData($data);
+        $values = $this->values($data);
         return $this->modelInstance()->create($data);
     }
 
@@ -108,8 +113,50 @@ class ModelRepository
      */
     public function update(array $data, $id, $attribute = "id")
     {
-        $data = $this->parseData($data);
-        return $this->query()->where($attribute, '=', $id)->update($data);
+        $values = $this->values($data);
+        $model = $this->query()->where($attribute, '=', $id)->update($values->atomicOnly()->toArray());
+
+        $values->relationsOnly()->each(function (AttributeValue $attributeValue) {
+            $this->updateRelation($attributeValue->name(), $attributeValue->value());
+        });
+
+    }
+
+    /**
+     * @param string $relationName
+     * @param array|integer $id
+     * @return array
+     * @throws \Exception
+     * @throws \MezzoLabs\Mezzo\Exceptions\ReflectionException
+     */
+    public function updateRelation($relationName, $id)
+    {
+        $relation = $this->modelReflection()->relation($relationName);
+
+        if ($relation instanceof BelongsToMany)
+            return $this->updateBelongsToManyRelation($relation, $id);
+
+        throw new \Exception('This type of relation is not yet supported');
+
+    }
+
+    /**
+     * @param BelongsToMany $relation
+     * @param array $ids
+     * @return array
+     */
+    private function updateBelongsToManyRelation(BelongsToMany $relation, array $ids){
+        return $relation->sync($ids);
+    }
+
+
+    /**
+     * @param $relation
+     * @return BelongsToMany|Relation
+     */
+    protected function getRelation($relation)
+    {
+        return $this->modelInstance()->$relation();
     }
 
     /**
@@ -172,11 +219,11 @@ class ModelRepository
 
     /**
      * @param array $data
-     * @return Collection
+     * @return AttributeValues
      */
-    protected function parseData(array $data){
-
-        $data = new Collection($data);
+    protected function values(array $data)
+    {
+        return AttributeValues::fromArray($this->modelSchema(), $data);
     }
 
     /**
@@ -185,6 +232,22 @@ class ModelRepository
     protected function modelInstance()
     {
         return $this->modelReflection->instance();
+    }
+
+    /**
+     * @return MezzoModelReflection
+     */
+    public function modelReflection()
+    {
+        return $this->modelReflection;
+    }
+
+    /**
+     * @return \MezzoLabs\Mezzo\Core\Schema\ModelSchema
+     */
+    public function modelSchema()
+    {
+        return $this->modelReflection()->schema();
     }
 
 }

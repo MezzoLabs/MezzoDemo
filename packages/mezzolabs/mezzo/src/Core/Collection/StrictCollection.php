@@ -29,6 +29,12 @@ abstract class StrictCollection extends DecoratedCollection
         return true;
     }
 
+    /**
+     * Check if a item can be part of this collection.
+     *
+     * @param $value
+     * @return boolean
+     */
     abstract protected function checkItem($value);
 
 }

@@ -232,6 +232,9 @@ class Attribute
         return $this instanceof RelationAttribute;
     }
 
+    /**
+     * @return string
+     */
     public function title()
     {
         if (!$this->title) {
@@ -278,6 +281,6 @@ class Attribute
     public function isFillable()
     {
         return $this->options->get('fillable', false);
-    }¡
+    }
 
 } 

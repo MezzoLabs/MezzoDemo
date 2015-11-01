@@ -4,7 +4,7 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 
 
-class Value
+class AttributeValue
 {
     /**
      * @var Attribute
@@ -43,5 +43,10 @@ class Value
     public function attribute()
     {
         return $this->attribute;
+    }
+
+    public function name()
+    {
+        return $this->attribute()->name();
     }
 }
