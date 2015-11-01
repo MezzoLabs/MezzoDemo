@@ -35,8 +35,8 @@ abstract class MezzoRole extends BaseModel
     protected $hidden = [];
 
     protected $rules = [
-        'name' => 'required|max:255|alpha_dash',
-        'label' => 'required|max:255|alpha_num'
+        'name' => 'required|max:255|alpha_dash|unique:roles',
+        'label' => 'required|max:255|alpha_num|unique:roles'
     ];
 
     /**
@@ -59,14 +59,14 @@ abstract class MezzoRole extends BaseModel
 
     /**
      *
-     * @Mezzo\Attribute(type="DateInput")
+     * @Mezzo\Attribute(type="DateTimeInput")
      * @var string
      */
     protected $created_at;
 
     /**
      *
-     * @Mezzo\Attribute(type="DateInput")
+     * @Mezzo\Attribute(type="DateTimeInput")
      * @var string
      */
     protected $updated_at;

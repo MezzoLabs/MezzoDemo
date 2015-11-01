@@ -33,7 +33,7 @@ abstract class MezzoUser extends BaseModel
      *
      * @var array
      */
-    protected $hidden = [ 'remember_token'];
+    protected $hidden = [ 'remember_token', 'password'];
 
     /**
      * @var array

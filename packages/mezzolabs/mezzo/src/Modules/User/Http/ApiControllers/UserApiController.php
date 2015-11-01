@@ -22,8 +22,7 @@ class UserApiController extends ApiResourceController
      */
     public function index(IndexResourceRequest $request)
     {
-        $collection = $this->repository()->all();
-        return $this->response()->collection($collection, new UserTransformer());
+        return parent::index($request);
     }
 
     /**

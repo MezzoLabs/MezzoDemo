@@ -13,6 +13,7 @@ use Doctrine\DBAL\Types\Type;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
+use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 
 abstract class InputType
 {
@@ -79,7 +80,7 @@ abstract class InputType
             return new $longClassName;
         }
 
-        throw new InvalidArgumentException($type);
+        throw new ReflectionException("\"". $type . "\" isn't a valid InputType.");
     }
 
     protected static function namespaceName()

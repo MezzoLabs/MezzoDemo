@@ -96,6 +96,7 @@ class ModelRepository
      */
     public function create(array $data)
     {
+        $data = $this->parseData($data);
         return $this->modelInstance()->create($data);
     }
 
@@ -107,6 +108,7 @@ class ModelRepository
      */
     public function update(array $data, $id, $attribute = "id")
     {
+        $data = $this->parseData($data);
         return $this->query()->where($attribute, '=', $id)->update($data);
     }
 
@@ -166,6 +168,15 @@ class ModelRepository
 
         return new ModelRepository($model);
 
+    }
+
+    /**
+     * @param array $data
+     * @return Collection
+     */
+    protected function parseData(array $data){
+
+        $data = new Collection($data);
     }
 
     /**

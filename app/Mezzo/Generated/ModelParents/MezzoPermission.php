@@ -36,7 +36,7 @@ abstract class MezzoPermission extends BaseModel
     protected $rules = [
         'model' => 'max:255|alpha_num',
         'name' => 'required|max:255|alpha_dash',
-        'label' => 'required|max:255|alpha_num',
+        'label' => 'required|max:255|unique:permissions',
     ];
 
     /**

@@ -18,6 +18,6 @@ class RoleTransformer extends EloquentModelTransformer
         if(! $model instanceof Role)
             throw new InvalidArgumentException($model);
 
-        return ['hi' => 'there'];
+        return parent::transform($model);
     }
 }

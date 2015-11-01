@@ -278,6 +278,6 @@ class Attribute
     public function isFillable()
     {
         return $this->options->get('fillable', false);
-    }
+    }¡
 
 } 

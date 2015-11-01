@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Http\Responses;
 
 use Closure;
+use Dingo\Api\Exception\ResourceException;
 use Dingo\Api\Http\Response as DingoResponse;
 use Dingo\Api\Http\Response\Factory as DingoResponseFactory;
 use Illuminate\Support\Collection;
@@ -17,8 +18,14 @@ class ApiResponseFactory extends DingoResponseFactory
      */
     public function result($code)
     {
+        if ($code !== 1)
+            throw new ResourceException();
+
         return $this->withArray([
-            'result' => $code
+            'data' => [
+                'success' => true,
+                'code' => $code
+            ]
         ]);
     }
 
@@ -37,7 +44,6 @@ class ApiResponseFactory extends DingoResponseFactory
 
         return $collection;
     }
-
 
 
 }

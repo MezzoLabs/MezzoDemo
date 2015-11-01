@@ -28,6 +28,7 @@ class TransformerRegistrar
     public function register($class, $transformer)
     {
         app('Dingo\Api\Transformer\Factory')->register($class, $transformer);
+        $this->bindings->put($class, $transformer);
     }
 
     /**
@@ -61,12 +62,26 @@ class TransformerRegistrar
         }
     }
 
+    public function findTransformerClass($modelClass)
+    {
+        if(is_string($modelClass))
+            return $this->bindings->get($modelClass);
+
+        if(is_object($modelClass))
+            return $this->bindings->get(get_class($modelClass));
+
+        if($modelClass instanceof Collection)
+            return $this->bindings->get(get_class($modelClass->first()));
+
+        throw new InvalidArgumentException($modelClass);
+    }
+
     /**
      * @return static
      */
     public static function make()
     {
-        return new static();
+        return app(static::class);
     }
 
 }

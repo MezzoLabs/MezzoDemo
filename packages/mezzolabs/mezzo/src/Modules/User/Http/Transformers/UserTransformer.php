@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Modules\User\Http\Transformers;
 
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
+use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Http\Transformers\EloquentModelTransformer;
 use MezzoLabs\Mezzo\Http\Transformers\ModelTransformer;
 
@@ -30,11 +31,7 @@ class UserTransformer extends EloquentModelTransformer
         if(! $model instanceof User)
             throw new InvalidArgumentException($model);
 
-        return [
-            'id' => $model->id,
-            'name' => $model->name,
-            'email' => $model->email
-        ];
+        return parent::transform($model);
     }
 
     /**
@@ -45,8 +42,6 @@ class UserTransformer extends EloquentModelTransformer
      */
     public function includeRoles(User $user)
     {
-        $roles = $user->roles;
-
-        return $this->collection($roles, new RoleTransformer());
+        return $this->automaticCollection($user->roles);
     }
 }

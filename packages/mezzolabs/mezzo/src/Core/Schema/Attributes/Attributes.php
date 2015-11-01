@@ -29,7 +29,7 @@ class Attributes extends Collection
     }
 
     /**
-     * @return Collection
+     * @return static
      */
     public function atomicAttributes()
     {
@@ -39,7 +39,7 @@ class Attributes extends Collection
     }
 
     /**
-     * @return Collection
+     * @return static
      */
     public function relationAttributes()
     {
@@ -48,6 +48,9 @@ class Attributes extends Collection
         });
     }
 
+    /**
+     * @return static
+     */
     public function visibleOnly()
     {
         return $this->filter(function(Attribute $attribute){
@@ -56,7 +59,7 @@ class Attributes extends Collection
     }
 
     /**
-     * @return Attributes
+     * @return static
      */
     public function hiddenOnly()
     {
@@ -64,6 +67,9 @@ class Attributes extends Collection
     }
 
 
+    /**
+     * @return static
+     */
     public function fillableOnly()
     {
         return $this->filter(function(Attribute $attribute){
