@@ -52,6 +52,17 @@ abstract class DecoratedCollection
     }
 
     /**
+     * Run a map over each of the items.
+     *
+     * @param  callable  $callback
+     * @return static
+     */
+    public function map(callable $callback)
+    {
+        return new static($this->collection()->map($callback));
+    }
+
+    /**
      * Put an item in the collection by key.
      *
      * @param  mixed  $key

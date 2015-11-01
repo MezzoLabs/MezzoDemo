@@ -3,9 +3,7 @@
 
 namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
-use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany as EloquentBelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOneOrMany as EloquentHasOneOrMany;
+
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
@@ -77,23 +75,5 @@ class MezzoModelReflection extends ModelReflection
         return mezzo()->makeAnnotationReader()->model($this);
     }
 
-    /**
-     * @param $relationName
-     * @return EloquentBelongsToMany|EloquentHasOneOrMany|EloquentRelation
-     * @throws ReflectionException
-     */
-    public function relation($relationName)
-    {
-        $hasRelation = method_exists($this->instance(), $relationName);
 
-        if(!$hasRelation)
-            throw new ReflectionException('The Model ' . $this->name() . " doesn't has a relation named " . $relationName);
-
-        $relation = $this->instance()->$relationName();
-
-        if($relation instanceof EloquentRelation)
-            throw new ReflectionException($relationName . ' is not a valid Eloquent reflection.');
-
-        return $relation;
-    }
 }

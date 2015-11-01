@@ -49,6 +49,20 @@ class AttributeValues extends StrictCollection
     }
 
     /**
+     * @return array
+     */
+    public function toArray()
+    {
+        $array = [];
+
+        $this->each(function(AttributeValue $value) use (&$array){
+            $array[$value->name()] = $value->value();
+        });
+
+        return $array;
+    }
+
+    /**
      * @param MezzoEloquentModel $model
      * @return AttributeValues
      * @throws HttpException

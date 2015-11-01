@@ -6,15 +6,19 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValue;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValues;
+use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 
 class ModelRepository
@@ -114,11 +118,17 @@ class ModelRepository
     public function update(array $data, $id, $attribute = "id")
     {
         $values = $this->values($data);
-        $model = $this->query()->where($attribute, '=', $id)->update($values->atomicOnly()->toArray());
 
-        $values->relationsOnly()->each(function (AttributeValue $attributeValue) {
-            $this->updateRelation($attributeValue->name(), $attributeValue->value());
+        $model = $this->findByOrFail($attribute, $id);
+        $result = $this->query()->where($attribute, '=', $id)->update($values->atomicOnly()->toArray());
+
+
+        $values->relationsOnly()->each(function (AttributeValue $attributeValue) use ($model) {
+            $this->updateRelation($model, $attributeValue->name(), $attributeValue->value());
         });
+
+
+        return $result;
 
     }
 
@@ -129,12 +139,18 @@ class ModelRepository
      * @throws \Exception
      * @throws \MezzoLabs\Mezzo\Exceptions\ReflectionException
      */
-    public function updateRelation($relationName, $id)
+    public function updateRelation(MezzoEloquentModel $model, $relationName, $id)
     {
-        $relation = $this->modelReflection()->relation($relationName);
+        $relation = $model->relation($relationName);
 
         if ($relation instanceof BelongsToMany)
             return $this->updateBelongsToManyRelation($relation, $id);
+
+        if ($relation instanceof HasOne)
+            return $this->updateHasOneRelation($relation, $id);
+
+        if($relation instanceof HasMany)
+            return $this->updateHasManyRelation($relation, $id, $model);
 
         throw new \Exception('This type of relation is not yet supported');
 
@@ -145,10 +161,48 @@ class ModelRepository
      * @param array $ids
      * @return array
      */
-    private function updateBelongsToManyRelation(BelongsToMany $relation, array $ids){
+    private function updateBelongsToManyRelation(BelongsToMany $relation, array $ids)
+    {
         return $relation->sync($ids);
     }
 
+    /**
+     * Set the parent of many child resources.
+     *
+     * @param HasMany $relation
+     * @param array $ids
+     * @param MezzoEloquentModel $parent
+     * @return bool
+     * @throws InvalidArgumentException
+     */
+    private function updateHasManyRelation(HasMany $relation, array $ids, MezzoEloquentModel $parent)
+    {
+        $foreignKey = $relation->getPlainForeignKey();
+
+        foreach($ids as $id){
+            if(!is_integer($id))
+                throw new InvalidArgumentException($id);
+
+            $foreignModel = $relation->getRelated();
+            $foreignChild = $foreignModel->newQuery()->where($foreignModel->getQualifiedKeyName(), '=', $id);
+            $result = $foreignChild->update([$foreignKey => $parent->id]);
+
+            if(!$result)
+                return false;
+        }
+
+        return true;
+    }
+
+    private function updateHasOneRelation(HasOne $relation, $id)
+    {
+        if (!is_integer($id))
+            throw new InvalidArgumentException($id);
+
+
+        mezzo_dd($relation);
+
+    }
 
     /**
      * @param $relation
@@ -171,17 +225,18 @@ class ModelRepository
     /**
      * @param $id
      * @param array $columns
-     * @return mixed
+     * @return MezzoEloquentModel
      */
     public function find($id, $columns = array('*'))
     {
         return $this->query()->find($id, $columns);
     }
 
+
     /**
      * @param $id
      * @param array $columns
-     * @return Collection|Model
+     * @return Collection|MezzoEloquentModel
      */
     public function findOrFail($id, $columns = array('*'))
     {
@@ -198,6 +253,22 @@ class ModelRepository
     public function findBy($attribute, $value, $columns = array('*'))
     {
         return $this->query()->where($attribute, '=', $value)->first($columns);
+    }
+
+    /**
+     * @param $attribute
+     * @param $value
+     * @param array $columns
+     * @return mixed
+     */
+    public function findByOrFail($attribute, $value, $columns = ['*'])
+    {
+        $found = $this->findBy($attribute, $value, $columns);
+
+        if (!$found)
+            throw new ModelNotFoundException();
+
+        return $found;
     }
 
     /**

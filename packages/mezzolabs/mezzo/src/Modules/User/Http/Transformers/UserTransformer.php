@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Modules\User\Http\Transformers;
 
 
+use App\Tutorial;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
@@ -19,7 +20,8 @@ class UserTransformer extends EloquentModelTransformer
      * @var array
      */
     protected $availableIncludes = [
-        'roles'
+        'roles',
+        'tutorials'
     ];
 
     protected $defaultIncludes = [
@@ -43,5 +45,16 @@ class UserTransformer extends EloquentModelTransformer
     public function includeRoles(User $user)
     {
         return $this->automaticCollection($user->roles);
+    }
+
+    /**
+     * Include Tutorials
+     *
+     * @param User $user
+     * @return \League\Fractal\Resource\Item
+     */
+    public function includeTutorials(User $user)
+    {
+        return $this->automaticCollection($user->tutorials);
     }
 }
