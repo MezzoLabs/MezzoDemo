@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\DB;
+use MezzoLabs\Mezzo\Core\Cache\ResourceExistsCache;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
@@ -122,14 +124,21 @@ class ModelRepository
         $model = $this->findByOrFail($attribute, $id);
         $result = $this->query()->where($attribute, '=', $id)->update($values->atomicOnly()->toArray());
 
-
-        $values->relationsOnly()->each(function (AttributeValue $attributeValue) use ($model) {
-            $this->updateRelation($model, $attributeValue->name(), $attributeValue->value());
-        });
-
+        $this->updateRelations($model, $values->relationsOnly());
 
         return $result;
+    }
 
+
+    protected function updateRelations(MezzoEloquentModel $model, AttributeValues $relationAttributes){
+        $relationAttributes->each(function (AttributeValue $attributeValue) use ($model) {
+            $relationUpdate = $this->updateRelation($model, $attributeValue->name(), $attributeValue->value());
+
+            if(!$relationUpdate)
+                throw new RepositoryException('Cannot update the relation ' . $attributeValue->name());
+        });
+
+        return true;
     }
 
     /**
@@ -194,6 +203,11 @@ class ModelRepository
         return true;
     }
 
+    /**
+     * @param HasOne $relation
+     * @param $id
+     * @throws InvalidArgumentException
+     */
     private function updateHasOneRelation(HasOne $relation, $id)
     {
         if (!is_integer($id))
@@ -288,6 +302,15 @@ class ModelRepository
 
     }
 
+    public function exists($id, $table = null)
+    {
+        if(!$table) $table = $this->modelReflection()->tableName();
+
+        return ResourceExistsCache::checkExistence($table, $id, function() use ($table, $id){
+            return $this->table($table)->where('id', '=', $id)->count() == 1;
+        });
+    }
+
     /**
      * @param array $data
      * @return AttributeValues
@@ -319,6 +342,22 @@ class ModelRepository
     public function modelSchema()
     {
         return $this->modelReflection()->schema();
+    }
+
+    /**
+     * @return \Illuminate\Database\MySqlConnection
+     */
+    protected function mysqlConnection()
+    {
+        return app('db');
+    }
+
+    /**
+     * @param $table
+     * @return \Illuminate\Database\Query\Builder
+     */
+    protected function table($table){
+        return $this->mysqlConnection()->table($table);
     }
 
 }

@@ -9,6 +9,7 @@ use MezzoLabs\Mezzo\Core\Collection\StrictCollection;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
+use MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Exceptions\HttpException;
 
@@ -27,7 +28,7 @@ class AttributeValues extends StrictCollection
     public function atomicOnly()
     {
         return $this->filter(function(AttributeValue $value){
-            return $value->attribute()->isAtomic();
+            return $value->attribute()->isAtomic() || $value->isInteger();
         });
     }
 

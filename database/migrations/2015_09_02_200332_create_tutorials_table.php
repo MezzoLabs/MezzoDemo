@@ -16,7 +16,6 @@ class CreateTutorialsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->text('body');
-            $table->integer('creator');
             $table->timestamps();
         });
     }

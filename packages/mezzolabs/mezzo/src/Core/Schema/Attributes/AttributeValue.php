@@ -49,4 +49,9 @@ class AttributeValue
     {
         return $this->attribute()->name();
     }
+
+    public function isInteger()
+    {
+        return is_integer($this->value());
+    }
 }

@@ -8,11 +8,18 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
-use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
+use MezzoLabs\Mezzo\Core\Modularisation\NamingConvention;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValue;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
 class EloquentModelTransformer extends ModelTransformer
 {
+    /**
+     * The class name of the model which is handled by this transformer.
+     *
+     * @var string
+     */
+    protected $modelName;
 
 
     public function transform($model)
@@ -20,15 +27,13 @@ class EloquentModelTransformer extends ModelTransformer
         if (!$model instanceof MezzoEloquentModel)
             throw new InvalidArgumentException($model);
 
-        $schema = $model->schema();
-
         $returnCollection = new Collection();
 
-        $attributes = $schema->attributes()->atomicAttributes()->visibleOnly();
+        $attributeValues = $model->attributeValues()->atomicOnly();
 
-        $attributes->each(function (Attribute $attribute) use ($model, $returnCollection) {
-            $value = $this->attributeValue($attribute, $model);
-            $returnCollection->put($attribute->name(), $value);
+        $attributeValues->each(function (AttributeValue $attributeValue) use ($returnCollection) {
+            $value = $this->transformValue($attributeValue);
+            $returnCollection->put($attributeValue->name(), $value);
         });
 
         $returnCollection->put('id', $model->id);
@@ -37,19 +42,21 @@ class EloquentModelTransformer extends ModelTransformer
         return $returnCollection->toArray();
     }
 
-    protected function attributeValue(Attribute $attribute, MezzoEloquentModel $model){
-        $value = $model->getAttribute($attribute->name());
+    protected function transformValue(AttributeValue $attributeValue)
+    {
+        $value = $attributeValue->value();
 
-        if(!is_object($value))
+        if (!is_object($value))
             return $value;
 
         $transformer = $this->registrar()->findTransformerClass($value);
 
-        if(!$transformer)
+        if (!$transformer)
             return $value;
 
         return app($transformer)->transform($value);
     }
+
 
     /**
      * @param $modelClass
@@ -82,13 +89,13 @@ class EloquentModelTransformer extends ModelTransformer
     protected function automaticCollection($collection)
     {
         $modelClass = "";
-        if($collection instanceof EloquentRelation)
+        if ($collection instanceof EloquentRelation)
             $modelClass = get_class($collection->getRelated());
 
-        if($collection instanceof EloquentCollection)
+        if ($collection instanceof EloquentCollection)
             $modelClass = get_class($collection->first());
 
-        if(empty($modelClass))
+        if (empty($modelClass))
             throw new InvalidArgumentException($collection);
 
         $transformer = $this->makeBest($modelClass);
@@ -101,5 +108,18 @@ class EloquentModelTransformer extends ModelTransformer
         $transformer = $this->makeBest(get_class($model));
 
         return $this->item($model, $transformer);
+    }
+
+    protected function addRelationsAsIncludes()
+    {
+
+    }
+
+    protected function modelName()
+    {
+        if(!$this->modelName)
+            return NamingConvention::modelName($this);
+
+        return $this->modelName;
     }
 }

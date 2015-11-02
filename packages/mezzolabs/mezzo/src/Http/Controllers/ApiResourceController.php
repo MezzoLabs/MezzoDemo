@@ -90,7 +90,7 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
      */
     public function assertResourceExists($id)
     {
-        if(!$this->repository()->find($id, ['id']))
+        if(!$this->repository()->exists($id))
             throw new NotFoundHttpException();
         return true;
     }

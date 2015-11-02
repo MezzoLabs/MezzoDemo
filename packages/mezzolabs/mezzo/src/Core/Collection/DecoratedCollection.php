@@ -14,7 +14,7 @@ abstract class DecoratedCollection
 
     public function __construct(IlluminateCollection $collection = null)
     {
-        if(!$collection)
+        if (!$collection)
             $collection = new IlluminateCollection();
 
         $this->collection = $collection;
@@ -32,18 +32,18 @@ abstract class DecoratedCollection
     /**
      * Execute a callback over each item.
      *
-     * @param  callable  $callback
+     * @param  callable $callback
      * @return $this
      */
     public function each(callable $callback)
     {
-       return $this->collection()->each($callback);
+        return $this->collection()->each($callback);
     }
 
     /**
      * Run a filter over each of the items.
      *
-     * @param  callable|null  $callback
+     * @param  callable|null $callback
      * @return static
      */
     public function filter(callable $callback = null)
@@ -54,7 +54,7 @@ abstract class DecoratedCollection
     /**
      * Run a map over each of the items.
      *
-     * @param  callable  $callback
+     * @param  callable $callback
      * @return static
      */
     public function map(callable $callback)
@@ -65,8 +65,8 @@ abstract class DecoratedCollection
     /**
      * Put an item in the collection by key.
      *
-     * @param  mixed  $key
-     * @param  mixed  $value
+     * @param  mixed $key
+     * @param  mixed $value
      * @return $this
      */
     public function put($key, $value)
@@ -82,5 +82,17 @@ abstract class DecoratedCollection
     public function toArray()
     {
         return $this->collection()->toArray();
+    }
+
+    /**
+     * Get an item from the collection by key.
+     *
+     * @param  mixed $key
+     * @param  mixed $default
+     * @return mixed
+     */
+    public function get($key, $default = null)
+    {
+        return $this->collection()->get($key, $default);
     }
 }

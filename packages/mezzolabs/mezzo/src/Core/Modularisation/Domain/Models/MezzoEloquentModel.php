@@ -8,11 +8,17 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany as EloquentBelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany as EloquentHasOneOrMany;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValues;
 use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 
 abstract class MezzoEloquentModel extends EloquentModel implements MezzoModel
 {
     protected $rules = [];
+
+    /**
+     * @var AttributeValues
+     */
+    protected $attributeValues;
 
     public function getRules()
     {
@@ -42,6 +48,17 @@ abstract class MezzoEloquentModel extends EloquentModel implements MezzoModel
     public function attributeSchemas()
     {
         return $this->schema()->attributes();
+    }
+
+    /**
+     * @return AttributeValues
+     */
+    public function attributeValues()
+    {
+        if(!$this->attributeValues)
+            $this->attributeValues = AttributeValues::fromModel($this);
+
+        return $this->attributeValues;
     }
 
     /**
