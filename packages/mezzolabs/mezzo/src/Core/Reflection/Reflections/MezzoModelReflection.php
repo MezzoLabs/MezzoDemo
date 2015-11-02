@@ -48,6 +48,14 @@ class MezzoModelReflection extends ModelReflection
     }
 
     /**
+     * @return string
+     */
+    public function tableName()
+    {
+        return $this->instance()->getTable();
+    }
+
+    /**
      * Class name of the reflected eloquent model.
      *
      * @return MezzoEloquentModel
@@ -55,14 +63,6 @@ class MezzoModelReflection extends ModelReflection
     public function instance()
     {
         return parent::instance();
-    }
-
-    /**
-     * @return string
-     */
-    public function tableName()
-    {
-        return $this->instance()->getTable();
     }
 
     /**

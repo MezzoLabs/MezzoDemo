@@ -24,6 +24,42 @@ class AttributeAnnotations extends PropertyAnnotations
      */
     protected $relation;
 
+    /**
+     * @return array
+     */
+    public function options()
+    {
+        return [
+            'rules' => $this->modelReflection()->rules($this->name()),
+            'visible' => !in_array($this->name(), $this->modelReflection()->instance()->getHidden()),
+            'fillable' => in_array($this->name(), $this->modelReflection()->instance()->getFillable()),
+        ];
+    }
+
+    /**
+     * Create a relation annotations collection from this attribute annotation.
+     *
+     * @return RelationAnnotations
+     */
+    public function toRelationAnnotations()
+    {
+        return new RelationAnnotations($this->name(), $this->annotations(), $this->model());
+    }
+
+    /**
+     * @return Relation|null
+     * @throws AnnotationException
+     */
+    public function relation()
+    {
+        if (!$this->isRelation()) return null;
+
+        if (!$this->relation)
+            $this->relation = $this->findRelation();
+
+        return $this->relation;
+    }
+
     public function isRelation()
     {
         return $this->inputType()->isRelation();
@@ -59,55 +95,6 @@ class AttributeAnnotations extends PropertyAnnotations
     }
 
     /**
-     * @return array
-     */
-    public function options()
-    {
-        return [
-            'rules' => $this->modelReflection()->rules($this->name()),
-            'visible' => !in_array($this->name(), $this->modelReflection()->instance()->getHidden()),
-            'fillable' => in_array($this->name(), $this->modelReflection()->instance()->getFillable()),
-        ];
-    }
-
-    /**
-     * Create a relation annotations collection from this attribute annotation.
-     *
-     * @return RelationAnnotations
-     */
-    public function toRelationAnnotations()
-    {
-        return new RelationAnnotations($this->name(), $this->annotations(), $this->model());
-    }
-
-    /**
-     * Checks if the given annotations list is correct.
-     * @return bool
-     * @throws AnnotationException
-     */
-    protected function validate()
-    {
-        if (!$this->annotations->have('Attribute')) {
-            throw new AnnotationException('A attribute need to have an attribute annotation.');
-        }
-
-        return true;
-    }
-
-    /**
-     * @return Relation|null
-     * @throws AnnotationException
-     */
-    public function relation(){
-        if(!$this->isRelation()) return null;
-
-        if(!$this->relation)
-            $this->relation = $this->findRelation();
-
-        return $this->relation;
-    }
-
-    /**
      * @return Relation|null
      * @throws AnnotationException
      */
@@ -117,7 +104,7 @@ class AttributeAnnotations extends PropertyAnnotations
         $relation = null;
 
         $relationAnnotationsCollection->each(function(RelationAnnotations $relationAnnotations) use (&$relation){
-            if($this->belongsToRelationAnnotations($relationAnnotations)){
+            if ($this->belongsToRelationAnnotations($relationAnnotations)) {
                 $relation = $relationAnnotations->relation();
                 return false;
             }
@@ -136,11 +123,12 @@ class AttributeAnnotations extends PropertyAnnotations
      * @param RelationAnnotations $relationAnnotations
      * @return bool
      */
-    private function belongsToRelationAnnotations(RelationAnnotations $relationAnnotations){
+    private function belongsToRelationAnnotations(RelationAnnotations $relationAnnotations)
+    {
         /**
          * Check if the column of this attribute is part of the relation.
          */
-        if($relationAnnotations->relation()->columns()->has($this->qualifiedColumn())){
+        if ($relationAnnotations->relation()->columns()->has($this->qualifiedColumn())) {
             return true;
         }
 
@@ -148,10 +136,24 @@ class AttributeAnnotations extends PropertyAnnotations
          * Check if the relation and this attribute are named equally.
          * E.g: roles is a attribute with multiple inputs but also the name of the relation.
          */
-        if($this->inputType() instanceof RelationInputMultiple && $relationAnnotations->name() === $this->name()){
+        if ($this->inputType() instanceof RelationInputMultiple && $relationAnnotations->name() === $this->name()) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Checks if the given annotations list is correct.
+     * @return bool
+     * @throws AnnotationException
+     */
+    protected function validate()
+    {
+        if (!$this->annotations->have('Attribute')) {
+            throw new AnnotationException('A attribute need to have an attribute annotation.');
+        }
+
+        return true;
     }
 }

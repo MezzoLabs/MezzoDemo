@@ -56,17 +56,6 @@ class CockpitRouter
     }
 
     /**
-     * @return LaravelRouter
-     */
-    public function laravelRouter()
-    {
-        if ($this->hasGroupedRouter())
-            return $this->groupedRouter;
-
-        return $this->laravelRouter;
-    }
-
-    /**
      * @param $overwriteAttributes
      * @param Closure $callback
      */
@@ -84,6 +73,16 @@ class CockpitRouter
         });
     }
 
+    /**
+     * @return LaravelRouter
+     */
+    public function laravelRouter()
+    {
+        if ($this->hasGroupedRouter())
+            return $this->groupedRouter;
+
+        return $this->laravelRouter;
+    }
 
     /**
      * @param $modelName
@@ -131,16 +130,6 @@ class CockpitRouter
     }
 
     /**
-     * @param $uri
-     * @param $action
-     * @return \Illuminate\Routing\Route
-     */
-    public function get($uri, $action)
-    {
-        return $this->laravelRouter()->get($uri, $action);
-    }
-
-    /**
      * @param $action
      * @return mixed
      */
@@ -170,6 +159,16 @@ class CockpitRouter
         }
 
         return new Collection();
+    }
+
+    /**
+     * @param $uri
+     * @param $action
+     * @return \Illuminate\Routing\Route
+     */
+    public function get($uri, $action)
+    {
+        return $this->laravelRouter()->get($uri, $action);
     }
 
 }

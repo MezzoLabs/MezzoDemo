@@ -69,6 +69,14 @@ class Attribute
     }
 
     /**
+     * @return bool
+     */
+    public function hasTable()
+    {
+        return !empty($this->getTable());
+    }
+
+    /**
      * @return string
      */
     public function getTable()
@@ -88,14 +96,6 @@ class Attribute
     public function setTable($table)
     {
         $this->table = $table;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasTable()
-    {
-        return !empty($this->getTable());
     }
 
     /**
@@ -172,11 +172,11 @@ class Attribute
     }
 
     /**
-     * @return Rules
+     * @return string
      */
-    public function rules()
+    public function name()
     {
-        return $this->rules;
+        return $this->name;
     }
 
     /**
@@ -190,30 +190,19 @@ class Attribute
     }
 
     /**
+     * @return Rules
+     */
+    public function rules()
+    {
+        return $this->rules;
+    }
+
+    /**
      * @return Collection
      */
     public function options()
     {
         return $this->options;
-    }
-
-
-    /**
-     * @param array|ArrayAccess $options
-     */
-    protected function setOptions($options)
-    {
-        $this->options = new Collection($options);
-
-        $this->rules = Rules::makeCollection($this->options->get('rules', ""));
-    }
-
-    /**
-     * @return string
-     */
-    public function name()
-    {
-        return $this->name;
     }
 
     /**
@@ -278,6 +267,16 @@ class Attribute
     public function isFillable()
     {
         return $this->options->get('fillable', false);
+    }
+
+    /**
+     * @param array|ArrayAccess $options
+     */
+    protected function setOptions($options)
+    {
+        $this->options = new Collection($options);
+
+        $this->rules = Rules::makeCollection($this->options->get('rules', ""));
     }
 
 } 

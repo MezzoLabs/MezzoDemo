@@ -189,5 +189,4 @@ abstract class InputType
     }
 
 
-
 }

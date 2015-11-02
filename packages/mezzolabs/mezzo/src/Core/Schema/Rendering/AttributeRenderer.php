@@ -25,6 +25,11 @@ abstract class AttributeRenderer
         $this->attribute = $attribute;
     }
 
+    public static function make(Attribute $attribute)
+    {
+        return app(AttributeRenderer::class, ['attribute' => $attribute]);
+    }
+
     /**
      * @return Attribute|AtomicAttribute|RelationAttribute
      */
@@ -54,9 +59,4 @@ abstract class AttributeRenderer
      * @return Collection
      */
     abstract protected function htmlAttributes();
-
-    public static function make(Attribute $attribute)
-    {
-        return app(AttributeRenderer::class, ['attribute' => $attribute]);
-    }
 }

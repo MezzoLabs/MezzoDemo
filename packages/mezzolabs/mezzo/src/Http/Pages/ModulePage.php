@@ -29,34 +29,22 @@ abstract class ModulePage implements ModulePageContract
      * @var ModuleProvider
      */
     protected $module;
-
-    /**
-     * The short name of this page.
-     *
-     * @var string
-     */
-    private $name;
-
     /**
      * @var Controller
      */
     protected $controllerObject;
-
     /**
      * The name of the controller that manages this page.
      *
      * @var string
      */
     protected $controller;
-
     /**
      *  The controller method that shows this page.
      *
      * @var string
      */
     protected $action;
-
-
     /**
      * Options that influence the styling and the routes of this page.
      * They will overwrite the $defaultOptions.
@@ -66,7 +54,6 @@ abstract class ModulePage implements ModulePageContract
     protected $options = [
 
     ];
-
     /**
      * The default options that will eventually be overwritten by $options.
      *
@@ -84,6 +71,12 @@ abstract class ModulePage implements ModulePageContract
          */
         'renderedByFrontend' => true,
     ];
+    /**
+     * The short name of this page.
+     *
+     * @var string
+     */
+    private $name;
 
     /**
      * Create a new module page.
@@ -98,6 +91,75 @@ abstract class ModulePage implements ModulePageContract
         $this->options = $this->defaultOptions->merge($this->options);
 
         $this->validate();
+    }
+
+    /**
+     * @return bool
+     * @throws ModulePageException
+     */
+    protected function validate()
+    {
+        if (!$this->controller())
+            throw new ModulePageException('There is no controller for ' . $this->qualifiedName());
+
+        $this->controller()->hasActionOrFail($this->action());
+
+        return true;
+    }
+
+    /**
+     * @return Controller
+     * @throws \MezzoLabs\Mezzo\Exceptions\InvalidArgumentException
+     * @throws \MezzoLabs\Mezzo\Exceptions\ModuleControllerException
+     */
+    public function controller()
+    {
+        if (!$this->controllerObject)
+            $this->controllerObject = $this->module()->makeController($this->controller);
+
+        return $this->controllerObject;
+    }
+
+    /**
+     * @return ModuleProvider
+     */
+    public function module()
+    {
+        return $this->module;
+    }
+
+    /**
+     * @return string
+     */
+    final public function qualifiedName()
+    {
+        return $this->module()->qualifiedName() . '.' . $this->name();
+    }
+
+    /**
+     * Returns the name of this page.
+     *
+     * @return string
+     */
+    final public function name()
+    {
+        if (!$this->name) {
+            $reflection = Singleton::reflection($this);
+            $this->name = str_replace('Page', '', $reflection->getShortName());
+        }
+
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function action()
+    {
+        if ($this->action)
+            return $this->action;
+
+        return $this->name;
     }
 
     /**
@@ -120,10 +182,50 @@ abstract class ModulePage implements ModulePageContract
         /**
          * Return the view of this page without any surrounding template
          */
-        if($this->isRenderedByFrontend())
+        if ($this->isRenderedByFrontend())
             return $this->makeView($this->view, $data);
 
         return $this->makeView('cockpit::layouts.default', $data)->nest('content_container', $this->view, $data);
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function additionalData()
+    {
+        $additionalData = new Collection();
+
+        if ($this instanceof ResourcePage)
+            $additionalData->put('model', $this->model());
+
+        $additionalData->put('module_page', $this);
+        $additionalData->put('page_options', $this->options);
+
+        return $additionalData;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isRenderedByFrontend()
+    {
+        return $this->options('renderedByFrontend');
+    }
+
+    /**
+     * @param null $key
+     * @param null $value
+     * @return Collection
+     */
+    public function options($key = null, $value = null)
+    {
+        if (!$key)
+            return $this->options;
+
+        if (!$value)
+            return $this->options()->get($key);
+
+        return $this->options()->put($key, $value);
     }
 
     /**
@@ -138,22 +240,6 @@ abstract class ModulePage implements ModulePageContract
             \Debugbar::disable();
 
         return $this->viewFactory()->make($view, $data);
-    }
-
-    /**
-     * @return Collection
-     */
-    protected function additionalData()
-    {
-        $additionalData = new Collection();
-
-        if ($this instanceof ResourcePage)
-            $additionalData->put('model', $this->model());
-        
-        $additionalData->put('module_page', $this);
-        $additionalData->put('page_options', $this->options);
-
-        return $additionalData;
     }
 
     /**
@@ -174,37 +260,6 @@ abstract class ModulePage implements ModulePageContract
     }
 
     /**
-     * Returns the name of this page.
-     *
-     * @return string
-     */
-    final public function name()
-    {
-        if (!$this->name) {
-            $reflection = Singleton::reflection($this);
-            $this->name = str_replace('Page', '', $reflection->getShortName());
-        }
-
-        return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    final public function qualifiedName()
-    {
-        return $this->module()->qualifiedName() . '.' . $this->name();
-    }
-
-    /**
-     * @return ModuleProvider
-     */
-    public function module()
-    {
-        return $this->module;
-    }
-
-    /**
      * @return string
      */
     final public function slug()
@@ -212,48 +267,9 @@ abstract class ModulePage implements ModulePageContract
         return snake_case($this->name());
     }
 
-
-    /**
-     * @return Controller
-     * @throws \MezzoLabs\Mezzo\Exceptions\InvalidArgumentException
-     * @throws \MezzoLabs\Mezzo\Exceptions\ModuleControllerException
-     */
-    public function controller()
-    {
-        if (!$this->controllerObject)
-            $this->controllerObject = $this->module()->makeController($this->controller);
-
-        return $this->controllerObject;
-    }
-
-    /**
-     * @return string
-     */
-    public function action()
-    {
-        if ($this->action)
-            return $this->action;
-
-        return $this->name;
-    }
-
     public function qualifiedActionName()
     {
         return $this->controller()->qualifiedActionName($this->action());
-    }
-
-    /**
-     * @return bool
-     * @throws ModulePageException
-     */
-    protected function validate()
-    {
-        if (!$this->controller())
-            throw new ModulePageException('There is no controller for ' . $this->qualifiedName());
-
-        $this->controller()->hasActionOrFail($this->action());
-
-        return true;
     }
 
     public function registerRoutes()
@@ -278,30 +294,6 @@ abstract class ModulePage implements ModulePageContract
     public function uri()
     {
         return mezzo()->uri()->toModulePage($this);
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isRenderedByFrontend()
-    {
-        return $this->options('renderedByFrontend');
-    }
-
-    /**
-     * @param null $key
-     * @param null $value
-     * @return Collection
-     */
-    public function options($key = null, $value = null)
-    {
-        if(!$key)
-            return $this->options;
-
-        if(!$value)
-            return $this->options()->get($key);
-
-        return $this->options()->put($key, $value);
     }
 
 

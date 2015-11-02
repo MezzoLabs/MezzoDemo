@@ -89,14 +89,13 @@ class BootManager
     }
 
     /**
-     * Run the bootstrappers for the current phase
+     * Return a BootManager instance
      *
-     * @param string $phase
+     * @return BootManager
      */
-    public function bootForPhase($phase = BootManager::RegisterPhase)
+    public static function make($mezzo)
     {
-        $bootstrappers = $this->bootstrappers[$phase];
-        $this->run($bootstrappers);
+        return new BootManager($mezzo);
     }
 
     /**
@@ -107,21 +106,15 @@ class BootManager
         $this->bootForPhase(BootManager::RegisterPhase);
     }
 
-
     /**
-     * Run the bootstrappers that are needed during the "boot" phase
+     * Run the bootstrappers for the current phase
+     *
+     * @param string $phase
      */
-    public function runBootPhase()
+    public function bootForPhase($phase = BootManager::RegisterPhase)
     {
-        $this->bootForPhase(BootManager::BootPhase);
-    }
-
-    /**
-     * Run the bootstrappers that are needed last.
-     */
-    public function bootedPhase()
-    {
-        $this->bootForPhase(BootManager::BootedPhase);
+        $bootstrappers = $this->bootstrappers[$phase];
+        $this->run($bootstrappers);
     }
 
     /**
@@ -146,13 +139,19 @@ class BootManager
     }
 
     /**
-     * Return a BootManager instance
-     *
-     * @return BootManager
+     * Run the bootstrappers that are needed during the "boot" phase
      */
-    public static function make($mezzo)
+    public function runBootPhase()
     {
-        return new BootManager($mezzo);
+        $this->bootForPhase(BootManager::BootPhase);
+    }
+
+    /**
+     * Run the bootstrappers that are needed last.
+     */
+    public function bootedPhase()
+    {
+        $this->bootForPhase(BootManager::BootedPhase);
     }
 
 

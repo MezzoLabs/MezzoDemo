@@ -7,6 +7,12 @@ use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
 class SidebarHelper extends HtmlHelper
 {
+    public function cssClass($parameters)
+    {
+        if ($parameters instanceof ModuleProvider)
+            return $this->moduleCssClass($parameters);
+    }
+
     public function moduleCssClass(ModuleProvider $module)
     {
         $visiblePages = $module->pages()->filterVisibleInNavigation();
@@ -17,11 +23,5 @@ class SidebarHelper extends HtmlHelper
         //$this->addCssClass('opened');
 
         return $this->cssClassString();
-    }
-
-    public function cssClass($parameters)
-    {
-        if($parameters instanceof ModuleProvider)
-            return $this->moduleCssClass($parameters);
     }
 }

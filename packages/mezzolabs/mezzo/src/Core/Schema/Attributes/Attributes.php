@@ -19,6 +19,24 @@ class Attributes extends Collection
     }
 
     /**
+     * Returns an Attribute Collection via the converted columns
+     *
+     * @param Collection|Columns $columns
+     * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
+     */
+    public static function fromColumns(Collection $columns)
+    {
+        $converter = DatabaseColumnConverter::make();
+        $attributes = new Attributes();
+
+        $columns->each(function (Column $column) use ($converter, $attributes) {
+            $attributes->addAttribute($converter->run($column));
+        });
+
+        return $attributes;
+    }
+
+    /**
      * @param Attribute $attribute
      * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
      * @throws InvalidArgumentException
@@ -48,13 +66,6 @@ class Attributes extends Collection
         });
     }
 
-    public function visibleOnly()
-    {
-        return $this->filter(function(Attribute $attribute){
-            return $attribute->isVisible();
-        });
-    }
-
     /**
      * @return Attributes
      */
@@ -63,29 +74,17 @@ class Attributes extends Collection
         return $this->diff($this->visibleOnly());
     }
 
-
-    public function fillableOnly()
+    public function visibleOnly()
     {
-        return $this->filter(function(Attribute $attribute){
-            return $attribute->isFillable();
+        return $this->filter(function (Attribute $attribute) {
+            return $attribute->isVisible();
         });
     }
 
-    /**
-     * Returns an Attribute Collection via the converted columns
-     *
-     * @param Collection|Columns $columns
-     * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
-     */
-    public static function fromColumns(Collection $columns)
+    public function fillableOnly()
     {
-        $converter = DatabaseColumnConverter::make();
-        $attributes = new Attributes();
-
-        $columns->each(function (Column $column) use ($converter, $attributes) {
-            $attributes->addAttribute($converter->run($column));
+        return $this->filter(function (Attribute $attribute) {
+            return $attribute->isFillable();
         });
-
-        return $attributes;
     }
 } 

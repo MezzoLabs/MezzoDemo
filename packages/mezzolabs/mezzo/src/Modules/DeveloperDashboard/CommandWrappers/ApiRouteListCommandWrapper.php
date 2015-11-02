@@ -10,19 +10,19 @@ use Illuminate\Support\Collection;
 class ApiRouteListCommandWrapper extends DingoRoutesCommand
 {
     /**
-     * @return Collection
-     */
-    public function getApiRoutes()
-    {
-        return new Collection($this->getRoutes());
-    }
-
-    /**
      * @return ApiRouteListCommandWrapper
      */
     public static function make()
     {
         return app(static::class);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getApiRoutes()
+    {
+        return new Collection($this->getRoutes());
     }
 
     public function option($key = null)

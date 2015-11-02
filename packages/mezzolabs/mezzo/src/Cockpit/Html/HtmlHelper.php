@@ -19,17 +19,22 @@ class HtmlHelper
      */
     protected $content = '';
 
-    public function sidebar()
-    {
-        $this->resetBuffers();
-        return new SidebarHelper();
-    }
-
     public function table($array = null)
     {
         $this->resetBuffers();
         $tableHelper = new TableHelper($array);
         return $tableHelper->render();
+    }
+
+    protected function resetBuffers()
+    {
+        $this->startNewCssClass();
+        $this->content = '';
+    }
+
+    protected function startNewCssClass()
+    {
+        $this->cssClasses = [];
     }
 
     public function css($key, $parameters)
@@ -40,6 +45,23 @@ class HtmlHelper
             return $this->sidebar()->cssClass($parameters);
     }
 
+    public function sidebar()
+    {
+        $this->resetBuffers();
+        return new SidebarHelper();
+    }
+
+    /**
+     * Checks if a section is set in the child template.
+     *
+     * @param $sectionName
+     * @return bool
+     */
+    public function sectionExists($sectionName)
+    {
+        return array_key_exists('content-aside', \View::getSections());
+    }
+
     protected function cssClassString()
     {
         $string =  implode(' ', $this->cssClasses);
@@ -47,9 +69,12 @@ class HtmlHelper
         return $string;
     }
 
-    protected function startNewCssClass()
+    protected function decideCssClass($decision, $class1, $class2)
     {
-        $this->cssClasses = [];
+        if ($decision)
+            $this->addCssClass($class1);
+        else
+            $this->addCssClass($class2);
     }
 
     /**
@@ -59,36 +84,16 @@ class HtmlHelper
         $this->cssClasses[] = $class;
     }
 
-    protected function decideCssClass($decision, $class1, $class2){
-        if($decision)
-            $this->addCssClass($class1);
-        else
-            $this->addCssClass($class2);
-    }
-
-    protected function addContent($content){
+    protected function addContent($content)
+    {
         $this->content .= $content;
     }
 
-    protected function finishContent(){
+    protected function finishContent()
+    {
         $content = $this->content;
 
         $this->content = "";
         return $content;
-    }
-
-    /**
-     * Checks if a section is set in the child template.
-     *
-     * @param $sectionName
-     * @return bool
-     */
-    public function sectionExists($sectionName){
-        return array_key_exists('content-aside', \View::getSections());
-    }
-
-    protected function resetBuffers(){
-        $this->startNewCssClass();
-        $this->content = '';
     }
 }
