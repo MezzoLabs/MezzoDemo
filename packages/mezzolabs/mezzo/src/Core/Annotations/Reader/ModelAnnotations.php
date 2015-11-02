@@ -135,6 +135,11 @@ class ModelAnnotations
             ' class ' . get_class($annotations));
     }
 
+    protected function addRelationAnnotations(RelationAnnotations $annotations)
+    {
+        return $this->relationAnnotationsCollection->put($annotations->name(), $annotations);
+    }
+
     protected function addAttributeAnnotations(AttributeAnnotations $annotations)
     {
         if ($annotations->inputType() instanceof RelationInputMultiple) {
@@ -142,11 +147,6 @@ class ModelAnnotations
         }
 
         return $this->attributeAnnotationsCollection->put($annotations->name(), $annotations);
-    }
-
-    protected function addRelationAnnotations(RelationAnnotations $annotations)
-    {
-        return $this->relationAnnotationsCollection->put($annotations->name(), $annotations);
     }
 
     /**

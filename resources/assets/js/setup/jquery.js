@@ -78,5 +78,5 @@ function init(){
     $('.editable').editable();
 
 
-    $('select').select2();
+    //$('select').select2(); uncomment for model builder
 }

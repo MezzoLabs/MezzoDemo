@@ -41,11 +41,13 @@
 {!! cockpit_script('/components/gridster/dist/jquery.gridster.min.js') !!}
 {!! cockpit_script('/components/angular/angular.min.js') !!}
 {!! cockpit_script('/components/angular-ui-router/release/angular-ui-router.min.js') !!}
+{!! cockpit_script('/components/angular-messages/angular-messages.min.js') !!}
 {!! cockpit_script('/components/angular-sortable-view/src/angular-sortable-view.min.js') !!}
 {!! cockpit_script('/components/ng-file-upload/ng-file-upload.min.js') !!}
 {!! cockpit_script('/components/chosen/chosen.jquery.min.js') !!}
 {!! cockpit_script('/components/pluralize/pluralize.js') !!}
 {!! cockpit_script('/components/sweetalert2/dist/sweetalert2.min.js') !!}
+{!! cockpit_script('/components/moment/min/moment.min.js') !!}
 {!! cockpit_script('/js/templates.js') !!}
 {!! cockpit_script('/js/app.js') !!}
         <!-- JavaScript -->

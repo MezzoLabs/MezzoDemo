@@ -27,19 +27,6 @@ class CockpitProvider extends ServiceProvider
         $this->publishPublicFolder();
     }
 
-    public function boot()
-    {
-        $this->includeHelpers();
-    }
-
-    /**
-     * @return Cockpit
-     */
-    public function cockpit()
-    {
-        return mezzo()->make(Cockpit::class);
-    }
-
     /**
      * Registers the cockpit singleton instance.
      */
@@ -51,16 +38,56 @@ class CockpitProvider extends ServiceProvider
 
         $this->app->alias(Cockpit::class, 'mezzo.cockpit');
 
-        $this->app->singleton(FormBuilder::class, function(Application $app){
+        $this->app->singleton(FormBuilder::class, function (Application $app) {
             return new FormBuilder($app['html'], $app['url'], $app['session.store']->getToken());
         });
 
 
     }
 
+    private function registerRenderer()
+    {
+        app()->bind(AttributeSchemaRenderer::class, CockpitAttributeRenderer::class);
+    }
+
+    protected function loadViews()
+    {
+        $this->loadViewsFrom($this->resourcesFolder('/views'), 'cockpit');
+    }
+
+    private function resourcesFolder($folder = "")
+    {
+        return __DIR__ . '/resources' . $folder;
+    }
+
+    protected function publishPublicFolder()
+    {
+        $this->publishes([
+            $this->publicFolder() => public_path('mezzolabs/mezzo/cockpit')
+        ]);
+    }
+
+    private function publicFolder($folder = "")
+    {
+        return __DIR__ . '/public' . $folder;
+    }
+
+    public function boot()
+    {
+        $this->includeHelpers();
+    }
+
     protected function includeHelpers()
     {
         require __DIR__ . '/helpers.php';
+    }
+
+    /**
+     * @return Cockpit
+     */
+    public function cockpit()
+    {
+        return mezzo()->make(Cockpit::class);
     }
 
     /**
@@ -78,32 +105,6 @@ class CockpitProvider extends ServiceProvider
         if (! $this->app->routesAreCached()) {
             require __DIR__.'/Http/routes.php';
         }
-    }
-
-
-    protected function loadViews()
-    {
-        $this->loadViewsFrom($this->resourcesFolder('/views'), 'cockpit');
-    }
-
-    protected function publishPublicFolder()
-    {
-        $this->publishes([
-            $this->publicFolder() => public_path('mezzolabs/mezzo/cockpit')
-        ]);
-    }
-
-    private function resourcesFolder($folder = ""){
-        return __DIR__ . '/resources' . $folder;
-    }
-
-    private function publicFolder($folder = ""){
-        return __DIR__ . '/public' . $folder;
-    }
-
-    private function registerRenderer()
-    {
-        app()->bind(AttributeSchemaRenderer::class, CockpitAttributeRenderer::class);
     }
 
 

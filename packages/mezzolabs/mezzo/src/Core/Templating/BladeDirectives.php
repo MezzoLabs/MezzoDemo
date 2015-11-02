@@ -16,11 +16,6 @@ class BladeDirectives
         $this->compiler = $this->getCompiler();
     }
 
-    public function addDirectives()
-    {
-        $this->addIfAngular();
-    }
-
     /**
      * @return \Illuminate\View\Compilers\BladeCompiler
      */
@@ -29,13 +24,18 @@ class BladeDirectives
         return app('view')->getEngineResolver()->resolve('blade')->getCompiler();
     }
 
+    public function addDirectives()
+    {
+        $this->addIfAngular();
+    }
+
     protected function addIfAngular()
     {
         $this->compiler->directive('ifangular', function ($expression) {
 
             return '<?php
                 if($module_page->isRenderedByFrontend())
-                    echo '. $expression .';
+                    echo ' . $expression . ';
             ?>';
 
         });

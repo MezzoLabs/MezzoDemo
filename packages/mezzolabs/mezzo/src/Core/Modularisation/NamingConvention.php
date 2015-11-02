@@ -69,6 +69,19 @@ class NamingConvention
     }
 
     /**
+     * @param ResourceControllerContract $object
+     * @return mixed
+     */
+    private static function modelNameForModuleController(ResourceControllerContract $object)
+    {
+        $shortName = Singleton::reflection($object)->getShortName();
+
+        $possibleModelName = str_replace(['ApiController', 'Controller'], '', $shortName);
+
+        return $possibleModelName;
+    }
+
+    /**
      * Try to find a concrete repository implementation for a model class.
      *
      * @param $modelName
@@ -88,19 +101,6 @@ class NamingConvention
     }
 
     /**
-     * @param ResourceControllerContract $object
-     * @return mixed
-     */
-    private static function modelNameForModuleController(ResourceControllerContract $object)
-    {
-        $shortName = Singleton::reflection($object)->getShortName();
-
-        $possibleModelName = str_replace(['ApiController', 'Controller'], '', $shortName);
-
-        return $possibleModelName;
-    }
-
-    /**
      * Get the full controller class via the module and the name of the controller.
      *
      * @param ModuleProvider $module
@@ -116,7 +116,7 @@ class NamingConvention
         if (!strpos($controllerName, 'Controller'))
             $controllerName .= 'Controller';
 
-        if(class_exists($controllerName))
+        if (class_exists($controllerName))
             return $controllerName;
 
         /**
