@@ -31,6 +31,7 @@ class MezzoModelReflection extends ModelReflection
 
     /**
      * Check if there is a module that wants to use this model.
+     *
      * @return bool
      */
     public function hasModule()

@@ -40,9 +40,15 @@ class Rule
     /**
      * @return array
      */
-    public function parameters()
+    public function parameters($index = null)
     {
-        return $this->parameters;
+        if($index === null)
+            return $this->parameters;
+
+        if(isset($this->parameters[$index]))
+            return $this->parameters[$index];
+
+        throw new MezzoException('The index ' . $index . ' does not exist for this rule.');
     }
 
     public function hasParameters()

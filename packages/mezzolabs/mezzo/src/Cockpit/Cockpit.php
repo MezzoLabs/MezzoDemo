@@ -33,6 +33,9 @@ class Cockpit
         return $this->serviceProvider;
     }
 
+    /**
+     * @return string
+     */
     public function startAction()
     {
         return '\\' . MainController::class . '@start';

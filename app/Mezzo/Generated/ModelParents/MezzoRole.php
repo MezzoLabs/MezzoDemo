@@ -7,6 +7,7 @@ namespace App\Mezzo\Generated\ModelParents;
 use App\Mezzo\BaseModel;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 abstract class MezzoRole extends BaseModel
 {
@@ -69,4 +70,15 @@ abstract class MezzoRole extends BaseModel
      * @var string
      */
     protected $updated_at;
+
+    /**
+     * @Mezzo\Attribute(type="RelationInputMultiple")
+     * @Mezzo\Relations\ManyToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="roles")
+     * @Mezzo\Relations\To(table="roles", primaryKey="id", naming="users")
+     * @Mezzo\Relations\PivotTable(name="role_user", fromColumn="user_id", toColumn="role_id")
+     *
+     * @var EloquentCollection
+     */
+    protected $users;
 }

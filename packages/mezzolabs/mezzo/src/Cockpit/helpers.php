@@ -1,6 +1,7 @@
 <?php
 
 use MezzoLabs\Mezzo\Cockpit\Html\HtmlHelper;
+use MezzoLabs\Mezzo\Cockpit\Html\Rendering\FormBuilder;
 
 if (!function_exists('cockpit_asset')){
     /**
@@ -50,5 +51,17 @@ if (!function_exists('cockpit_html')) {
     function cockpit_html()
     {
         return new HtmlHelper();
+    }
+}
+
+if (!function_exists('cockpit_form')) {
+    /**
+     * Retrieve the formbuilder instance.
+     *
+     * @return FormBuilder
+     */
+    function cockpit_form()
+    {
+        return app(FormBuilder::class);
     }
 }
