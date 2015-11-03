@@ -21,15 +21,20 @@ abstract class Controller extends IlluminateController
     use ValidatesRequests;
 
     /**
+     * @var ModuleProvider
+     */
+    protected $module;
+    /**
      * @var Collection
      */
     private $data;
 
+    public function qualifiedActionName($method)
+    {
+        $this->hasActionOrFail($method);
 
-    /**
-     * @var ModuleProvider
-     */
-    protected $module;
+        return get_class($this) . '@' . $method;
+    }
 
     /**
      * @param $method
@@ -67,13 +72,6 @@ abstract class Controller extends IlluminateController
         return get_class($this);
     }
 
-    public function qualifiedActionName($method)
-    {
-        $this->hasActionOrFail($method);
-
-        return get_class($this) . '@' . $method;
-    }
-
     /**
      * @return string
      */
@@ -98,42 +96,6 @@ abstract class Controller extends IlluminateController
             return false;
 
         return true;
-    }
-
-    /**
-     * @param null $key
-     * @param null $value
-     * @return Collection
-     */
-    public function data($key = null, $value = null)
-    {
-        if (!$this->data)
-            $this->data = new Collection();
-
-        if ($key !== null && $value !== null) {
-            $this->data->put($key, $value);
-        }
-
-        if (is_array($key))
-            $this->addData($key);
-
-        if ($key) {
-            $this->data->get($key);
-        }
-
-        return $this->data;
-    }
-
-    /**
-     * Add data to the controller data, which will later be passed to the view.
-     *
-     * @param $toAdd
-     * @return Collection|static
-     */
-    public function addData(array $toAdd)
-    {
-        $this->data = $this->data()->merge($toAdd);
-        return $this->data;
     }
 
     public function isValid()
@@ -170,6 +132,42 @@ abstract class Controller extends IlluminateController
         $page = $this->module()->makePage($class);
 
         return $page->template($parameters);
+    }
+
+    /**
+     * @param null $key
+     * @param null $value
+     * @return Collection
+     */
+    public function data($key = null, $value = null)
+    {
+        if (!$this->data)
+            $this->data = new Collection();
+
+        if ($key !== null && $value !== null) {
+            $this->data->put($key, $value);
+        }
+
+        if (is_array($key))
+            $this->addData($key);
+
+        if ($key) {
+            $this->data->get($key);
+        }
+
+        return $this->data;
+    }
+
+    /**
+     * Add data to the controller data, which will later be passed to the view.
+     *
+     * @param $toAdd
+     * @return Collection|static
+     */
+    public function addData(array $toAdd)
+    {
+        $this->data = $this->data()->merge($toAdd);
+        return $this->data;
     }
 
     /**

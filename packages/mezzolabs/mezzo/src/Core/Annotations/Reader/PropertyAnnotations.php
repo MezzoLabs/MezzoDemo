@@ -112,17 +112,25 @@ abstract class PropertyAnnotations
     /**
      * @return string
      */
-    public function name()
+    public function qualifiedName()
     {
-        return $this->name;
+        return $this->model()->modelClassName() . '.' . $this->name();
+    }
+
+    /**
+     * @return ModelAnnotations
+     */
+    public function model()
+    {
+        return $this->model;
     }
 
     /**
      * @return string
      */
-    public function qualifiedName()
+    public function name()
     {
-        return $this->model()->modelClassName() . '.' . $this->name();
+        return $this->name;
     }
 
     public function qualifiedColumn(){
@@ -135,14 +143,6 @@ abstract class PropertyAnnotations
     public function annotations()
     {
         return $this->annotations;
-    }
-
-    /**
-     * @return ModelAnnotations
-     */
-    public function model()
-    {
-        return $this->model;
     }
 
     /**

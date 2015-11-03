@@ -31,20 +31,6 @@ class TableHelper extends HtmlHelper
         return $this->finishContent();
     }
 
-
-    protected function renderBody()
-    {
-        foreach ($this->array as $line) {
-            $this->addContent('<tr>');
-            foreach ($line as $column) {
-                $this->addContent('<td>');
-                $this->addContent($column);
-                $this->addContent('</td>');
-            }
-            $this->addContent('</tr>');
-        }
-    }
-
     protected function renderHeader()
     {
         $first = $this->array->first();
@@ -60,6 +46,19 @@ class TableHelper extends HtmlHelper
 
         $this->addContent('</tr>');
 
+    }
+
+    protected function renderBody()
+    {
+        foreach ($this->array as $line) {
+            $this->addContent('<tr>');
+            foreach ($line as $column) {
+                $this->addContent('<td>');
+                $this->addContent($column);
+                $this->addContent('</td>');
+            }
+            $this->addContent('</tr>');
+        }
     }
 
 }

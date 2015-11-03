@@ -32,22 +32,6 @@ class RelationAttribute extends Attribute
     }
 
     /**
-     * @return bool
-     */
-    public function hasMultipleChildren()
-    {
-        return $this->relationSide->hasMultipleChildren();
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasOneChild()
-    {
-        return $this->relationSide->hasOneChild();
-    }
-
-    /**
      * Find out the input type based on the side of the relation we are on.
      *
      * @return RelationInputMultiple|RelationInputSingle
@@ -65,11 +49,19 @@ class RelationAttribute extends Attribute
     }
 
     /**
-     * @return RelationSide
+     * @return bool
      */
-    public function relationSide()
+    public function hasOneChild()
     {
-        return $this->relationSide;
+        return $this->relationSide->hasOneChild();
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasMultipleChildren()
+    {
+        return $this->relationSide->hasMultipleChildren();
     }
 
     /**
@@ -78,6 +70,14 @@ class RelationAttribute extends Attribute
     public function otherRelationSide()
     {
         return $this->relationSide()->otherSide();
+    }
+
+    /**
+     * @return RelationSide
+     */
+    public function relationSide()
+    {
+        return $this->relationSide;
     }
 
     /**
@@ -95,7 +95,7 @@ class RelationAttribute extends Attribute
      */
     public function modelReflection()
     {
-       return $this->relationSide()->modelReflection();
+        return $this->relationSide()->modelReflection();
     }
 
     /**

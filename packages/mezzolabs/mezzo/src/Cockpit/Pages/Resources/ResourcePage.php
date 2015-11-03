@@ -19,15 +19,13 @@ abstract class ResourcePage extends ModulePage
      * @var string
      */
     protected $model = "";
-
+    protected $options = [
+        'renderedByFrontend' => true,
+    ];
     /**
      * @var MezzoModelReflection
      */
     private $modelReflection;
-
-    protected $options = [
-        'renderedByFrontend' => true,
-    ];
 
     /**
      * @param ModuleProvider $module
@@ -49,15 +47,12 @@ abstract class ResourcePage extends ModulePage
     }
 
     /**
-     * @return bool
-     * @throws ModulePageException
+     * @return \MezzoLabs\Mezzo\Http\Controllers\ResourceControllerContract
+     * @throws \MezzoLabs\Mezzo\Exceptions\ModuleControllerException
      */
-    protected function assertThatPageHasModel()
+    protected function guessController()
     {
-        if (!$this->model())
-            throw new ModulePageException('Cannot find a model for this resource page.');
-
-        return true;
+        return $this->module()->resourceController($this->model()->name() . 'Controller');
     }
 
     /**
@@ -112,12 +107,15 @@ abstract class ResourcePage extends ModulePage
     }
 
     /**
-     * @return \MezzoLabs\Mezzo\Http\Controllers\ResourceControllerContract
-     * @throws \MezzoLabs\Mezzo\Exceptions\ModuleControllerException
+     * @return bool
+     * @throws ModulePageException
      */
-    protected function guessController()
+    protected function assertThatPageHasModel()
     {
-        return $this->module()->resourceController($this->model()->name() . 'Controller');
+        if (!$this->model())
+            throw new ModulePageException('Cannot find a model for this resource page.');
+
+        return true;
     }
 
 }

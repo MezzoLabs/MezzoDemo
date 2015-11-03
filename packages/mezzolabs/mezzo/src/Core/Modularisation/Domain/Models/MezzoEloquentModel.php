@@ -26,12 +26,11 @@ abstract class MezzoEloquentModel extends EloquentModel implements MezzoModel
     }
 
     /**
-     * @return \MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection
-     * @throws \MezzoLabs\Mezzo\Exceptions\ReflectionException
+     * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
      */
-    public function reflection()
+    public function attributeSchemas()
     {
-        return mezzo()->makeReflectionManager()->mezzoReflection(get_class($this));
+        return $this->schema()->attributes();
     }
 
     /**
@@ -43,11 +42,12 @@ abstract class MezzoEloquentModel extends EloquentModel implements MezzoModel
     }
 
     /**
-     * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
+     * @return \MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection
+     * @throws \MezzoLabs\Mezzo\Exceptions\ReflectionException
      */
-    public function attributeSchemas()
+    public function reflection()
     {
-        return $this->schema()->attributes();
+        return mezzo()->makeReflectionManager()->mezzoReflection(get_class($this));
     }
 
     /**

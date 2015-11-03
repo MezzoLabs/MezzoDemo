@@ -29,13 +29,13 @@ class AttributeHtmlValidation
 
         $rules = $this->attribute->rules();
 
-        if($this->maxLength() > 0)
+        if ($this->maxLength() > 0)
             $attributes->put('maxlength', $this->maxLength());
 
-        if($this->minLength() > 0)
+        if ($this->minLength() > 0)
             $attributes->put('minLength', $this->minLength());
 
-        if($rules->isRequired())
+        if ($rules->isRequired())
             $attributes->put('required', 'required');
 
         $attributes->put('data-validation-rules', $rules->toString());
@@ -49,15 +49,21 @@ class AttributeHtmlValidation
      * @return int
      * @throws \MezzoLabs\Mezzo\Exceptions\MezzoException
      */
-    protected function maxLength(){
-        if($this->rules()->has('max'))
+    protected function maxLength()
+    {
+        if ($this->rules()->has('max'))
             return $this->rules()->get('max')->parameters(0);
 
-        if($this->rules()->has('between'))
+        if ($this->rules()->has('between'))
             return $this->rules()->get('between')->parameters(1);
 
 
         return 0;
+    }
+
+    protected function rules()
+    {
+        return $this->attribute->rules();
     }
 
     /**
@@ -66,18 +72,15 @@ class AttributeHtmlValidation
      * @return int
      * @throws \MezzoLabs\Mezzo\Exceptions\MezzoException
      */
-    protected function minLength(){
-        if($this->rules()->has('min'))
+    protected function minLength()
+    {
+        if ($this->rules()->has('min'))
             return $this->rules()->get('min')->parameters(0);
 
-        if($this->rules()->has('between'))
+        if ($this->rules()->has('between'))
             return $this->rules()->get('between')->parameters(0);
 
 
         return 0;
-    }
-
-    protected function rules(){
-        return $this->attribute->rules();
     }
 }

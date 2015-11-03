@@ -9,15 +9,13 @@ class ResourceIndexController {
         this.removing = 0;
 
 
-        $http.get('/api/tutorials', {
-            headers: {
-                Accept: 'application/vnd.MezzoLabs.v1+json'
-            }
-        }).success(models => {
-            this.models = models;
+        $http.get('/api/tutorials')
+            .success(models => {
+                this.models = models;
 
-            this.models.forEach(model => model._meta = {});
-        }).error(err => console.error(err));
+                this.models.forEach(model => model._meta = {});
+            })
+            .error(err => console.error(err));
     }
 
     getModels(){

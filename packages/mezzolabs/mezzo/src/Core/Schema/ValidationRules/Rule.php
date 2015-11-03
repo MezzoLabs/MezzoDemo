@@ -28,13 +28,12 @@ class Rule
         $this->parameters = $parameters;
     }
 
-
-    /**
-     * @return string
-     */
-    public function name()
+    public static function makeFromRuleArray($ruleArray)
     {
-        return $this->name;
+        if (count($ruleArray) != 2)
+            throw new MezzoException('Rule is not valid.');
+
+        return new Rule($ruleArray[0], $ruleArray[1]);
     }
 
     /**
@@ -42,27 +41,13 @@ class Rule
      */
     public function parameters($index = null)
     {
-        if($index === null)
+        if ($index === null)
             return $this->parameters;
 
-        if(isset($this->parameters[$index]))
+        if (isset($this->parameters[$index]))
             return $this->parameters[$index];
 
         throw new MezzoException('The index ' . $index . ' does not exist for this rule.');
-    }
-
-    public function hasParameters()
-    {
-        return count($this->parameters) > 0;
-    }
-
-
-    public static function makeFromRuleArray($ruleArray)
-    {
-        if (count($ruleArray) != 2)
-            throw new MezzoException('Rule is not valid.');
-
-        return new Rule($ruleArray[0], $ruleArray[1]);
     }
 
     /**
@@ -76,6 +61,11 @@ class Rule
 
     }
 
+    public function hasParameters()
+    {
+        return count($this->parameters) > 0;
+    }
+
     /**
      * Get the name of this rule in snake case.
      *
@@ -84,6 +74,14 @@ class Rule
     protected function snakeName()
     {
         return Str::snake($this->name());
+    }
+
+    /**
+     * @return string
+     */
+    public function name()
+    {
+        return $this->name;
     }
 
 

@@ -19,16 +19,14 @@ abstract class ModelReflection
      * @var ModelReflectionConverter
      */
     protected $schemaConverter;
-
-    /**
-     * @var ModelReflectionSet
-     */
-    private $modelReflectionSet;
-
     /**
      * @var array
      */
     protected $rules;
+    /**
+     * @var ModelReflectionSet
+     */
+    private $modelReflectionSet;
 
     /**
      * Constructor is private so the factory method has to be used.
@@ -101,13 +99,11 @@ abstract class ModelReflection
     }
 
     /**
-     * Class name of the reflected eloquent model.
-     *
-     * @return EloquentModel
+     * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
      */
-    public function instance()
+    public function attributes()
     {
-        return $this->modelReflectionSet->instance();
+        return $this->schema()->attributes();
     }
 
     /**
@@ -120,14 +116,6 @@ abstract class ModelReflection
         }
 
         return $this->schema;
-    }
-
-    /**
-     * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
-     */
-    public function attributes()
-    {
-        return $this->schema()->attributes();
     }
 
     /**
@@ -171,8 +159,8 @@ abstract class ModelReflection
             $this->rules = $this->getRulesFromInstance();
         }
 
-        if ($attribute){
-            return (isset($this->rules[$attribute]))? $this->rules[$attribute] : "";
+        if ($attribute) {
+            return (isset($this->rules[$attribute])) ? $this->rules[$attribute] : "";
         }
 
         return $this->rules;
@@ -200,6 +188,16 @@ abstract class ModelReflection
         $reflectionProperty->setAccessible(true);
 
         return $reflectionProperty->getValue($this->instance());
+    }
+
+    /**
+     * Class name of the reflected eloquent model.
+     *
+     * @return EloquentModel
+     */
+    public function instance()
+    {
+        return $this->modelReflectionSet->instance();
     }
 
     /**

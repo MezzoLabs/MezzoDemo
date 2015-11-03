@@ -49,6 +49,14 @@ class ReflectionManager
     }
 
     /**
+     * @return ReflectionManager
+     */
+    public static function make()
+    {
+        return mezzo()->makeReflectionManager();
+    }
+
+    /**
      * @param string $model Short or long class name or even the name of the table.
      * @return ModelReflection
      */
@@ -60,6 +68,14 @@ class ReflectionManager
     }
 
     /**
+     * @return ModelReflectionSets
+     */
+    public function sets()
+    {
+        return $this->modelReflectionSets;
+    }
+
+    /**
      * Checks if a model is reflected.
      *
      * @param $model
@@ -68,22 +84,6 @@ class ReflectionManager
     public function modelIsReflected($model)
     {
         return $this->sets()->hasModel($model);
-    }
-
-    /**
-     * @param string $model Short or long class name or even the name of the table.
-     * @return ModelReflection
-     * @throws InvalidArgumentException
-     */
-    public function mezzoReflection($model)
-    {
-        $reflectionSet = $this->sets()->getOrCreate($model);
-
-        if($reflectionSet->isMezzoModel())
-            return $reflectionSet->mezzoReflection();
-
-        throw new ReflectionException($model . ' is not a valid MezzoModel.');
-
     }
 
     /**
@@ -102,15 +102,6 @@ class ReflectionManager
         return $this->mezzoModelsReflector;
     }
 
-    /**
-     * @return ModelReflectionSets
-     */
-    public function sets()
-    {
-        return $this->modelReflectionSets;
-    }
-
-
     public function addToModelLookup(ModelReflectionSet $reflectionSet){
         mezzo()->makeModelLookup()->add($reflectionSet);
     }
@@ -121,14 +112,6 @@ class ReflectionManager
     }
 
     /**
-     * @return ReflectionManager
-     */
-    public static function make()
-    {
-        return mezzo()->makeReflectionManager();
-    }
-
-    /**
      * @param string $model
      * @return \MezzoLabs\Mezzo\Core\Schema\ModelSchema
      * @throws ReflectionException
@@ -136,6 +119,22 @@ class ReflectionManager
     public function modelSchema($model)
     {
         return $this->mezzoReflection($model)->schema();
+    }
+
+    /**
+     * @param string $model Short or long class name or even the name of the table.
+     * @return ModelReflection
+     * @throws InvalidArgumentException
+     */
+    public function mezzoReflection($model)
+    {
+        $reflectionSet = $this->sets()->getOrCreate($model);
+
+        if ($reflectionSet->isMezzoModel())
+            return $reflectionSet->mezzoReflection();
+
+        throw new ReflectionException($model . ' is not a valid MezzoModel.');
+
     }
 
 

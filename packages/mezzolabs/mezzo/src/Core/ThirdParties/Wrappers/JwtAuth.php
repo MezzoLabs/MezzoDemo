@@ -57,7 +57,7 @@ class JwtAuhth extends ThirdPartyWrapper
      */
     public function getDingoRouter()
     {
-        if(!$this->dingoRouter)
+        if (!$this->dingoRouter)
             throw new RoutingException('Cannot get dingo router. Maybe the package is not yet loaded.');
 
         return $this->dingoRouter;

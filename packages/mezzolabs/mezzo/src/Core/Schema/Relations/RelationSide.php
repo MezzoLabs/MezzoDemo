@@ -41,14 +41,6 @@ class RelationSide
     /**
      * @return bool
      */
-    public function hasMultipleChildren()
-    {
-        return !$this->hasOneChild();
-    }
-
-    /**
-     * @return bool
-     */
     public function hasOneChild()
     {
         if ($this->hasOneChild === null) {
@@ -56,13 +48,6 @@ class RelationSide
         }
 
         return $this->hasOneChild;
-    }
-
-    protected function sideType()
-    {
-        if ($this->relation()->fromTable() == $this->table) return 'from';
-
-        return 'to';
     }
 
     /**
@@ -92,14 +77,6 @@ class RelationSide
     }
 
     /**
-     * @return Relation
-     */
-    public function relation()
-    {
-        return $this->relation;
-    }
-
-    /**
      * Checks if this side has the connecting column.
      *
      * @return bool
@@ -116,20 +93,12 @@ class RelationSide
             return $this->relation->joinTable() === $this->table;
     }
 
-
     /**
-     * Get the other side of the relation
-     *
-     * @return RelationSide
+     * @return bool
      */
-    public function otherSide()
+    public function hasMultipleChildren()
     {
-        if ($this->sideType() === 'from')
-            $table = $this->relation()->toTable();
-        else
-            $table = $this->relation()->fromTable();
-
-        return new RelationSide($this->relation(), $table);
+        return !$this->hasOneChild();
     }
 
     /**
@@ -145,12 +114,19 @@ class RelationSide
         return $this->relation()->toPrimaryKey();
     }
 
-    /**
-     * @return string
-     */
-    public function table()
+    protected function sideType()
     {
-        return $this->table;
+        if ($this->relation()->fromTable() == $this->table) return 'from';
+
+        return 'to';
+    }
+
+    /**
+     * @return Relation
+     */
+    public function relation()
+    {
+        return $this->relation;
     }
 
     /**
@@ -179,6 +155,14 @@ class RelationSide
     }
 
     /**
+     * @return string
+     */
+    public function table()
+    {
+        return $this->table;
+    }
+
+    /**
      * Get the model reflection for the model on the other side of the relation.
      *
      * @return MezzoModelReflection
@@ -187,5 +171,20 @@ class RelationSide
     {
         $otherTable = $this->otherSide()->table();
         return mezzo()->makeReflectionManager()->mezzoReflection($otherTable);
+    }
+
+    /**
+     * Get the other side of the relation
+     *
+     * @return RelationSide
+     */
+    public function otherSide()
+    {
+        if ($this->sideType() === 'from')
+            $table = $this->relation()->toTable();
+        else
+            $table = $this->relation()->fromTable();
+
+        return new RelationSide($this->relation(), $table);
     }
 } 

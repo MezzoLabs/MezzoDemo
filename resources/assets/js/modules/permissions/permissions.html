@@ -1,0 +1,46 @@
+<div class="wrapper">
+    <div class="row">
+        <div class="col-sm-6 center-block">
+            <div class="well">
+
+                <h2>Permissions</h2>
+
+                <hr>
+
+                <table class="table table-responsive table-hover">
+                    <thead>
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Model</th>
+                        <th>Name</th>
+                        <th>Label</th>
+                    </tr>
+
+                    </thead>
+                    <tbody>
+
+                    <tr ng-show="vm.loading">
+                        <td colspan="4">
+                            <div class="progress" ng-show="vm.loading">
+                                <div class="progress-bar progress-bar-striped active" style="width: 100%">Please be patient...</div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr ng-repeat="permission in vm.permissions track by permission.id">
+                        <td>
+                            <strong ng-bind="permission.id"></strong>
+                        </td>
+                        <td ng-bind="permission.model"></td>
+                        <td ng-bind="permission.name"></td>
+                        <td ng-bind="permission.label"></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
