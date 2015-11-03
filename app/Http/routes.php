@@ -20,19 +20,32 @@ use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 
 Route::get('/', function () {
-        return view('welcome');
+    return view('welcome');
 });
 
 
-Route::get('random',function(){
+Route::get('random', function () {
     mezzo_dump((new \MezzoLabs\Mezzo\Modules\Sample\Http\Controllers\TutorialController())->module());
 
-   return str_random(16);
+    return str_random(16);
 });
 
 Route::get('debug/tutorial', function () {
     $tutorial = \App\Tutorial::findOrFail(1);
-    mezzo_dd($tutorial->first());
+
+    $repo = new \MezzoLabs\Mezzo\Modules\Sample\Domain\Repositories\TutorialRepository();
+    $repo->update(
+        [
+            'title' => 'Tutorial 1',
+            'user_id' => 102,
+            'parent_id' => 5,
+            'comments' => [
+                1, 2, 3
+            ]
+        ]
+        , 1);
+
+
     echo "hi";
 });
 
@@ -70,7 +83,7 @@ Route::get('debug/generator', function () {
     //return view('debugmodels', ['generator' => $generator]);
 });
 
-Route::get('debug/commands', function(){
+Route::get('debug/commands', function () {
     /** @var \MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields $generateForeignFields */
 
 
@@ -80,7 +93,7 @@ Route::get('debug/commands', function(){
     $generateForeignFields->handle();
 });
 
-Route::get('debug/migrationGenerator', function(){
+Route::get('debug/migrationGenerator', function () {
     /** @var \MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields $generateForeignFields */
 
     $generateForeignFields = app()->make(GenerateForeignFields::class);
@@ -90,7 +103,7 @@ Route::get('debug/migrationGenerator', function(){
     $generateForeignFields->handle();
 });
 
-Route::get('debug/annotations', function(){
+Route::get('debug/annotations', function () {
 
     $reader = new FileCacheReader(
         new AnnotationReader(),

@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -122,9 +123,10 @@ class ModelRepository
 
         $model = $this->findByOrFail($attribute, $id);
 
-        $result = $this->updateRow($values->atomicOnly(), $id, $attribute);
 
-        $relationResult = $this->updateRelations($model, $values->relationsOnly());
+        $result = $this->updateRow($values->inMainTableOnly(), $id, $attribute);
+
+        $relationResult = $this->updateRelations($model, $values->inForeignTablesOnly());
 
         return $result;
     }
@@ -172,18 +174,37 @@ class ModelRepository
      * @throws \Exception
      * @throws \MezzoLabs\Mezzo\Exceptions\ReflectionException
      */
-    public function updateRelation(MezzoEloquentModel $model, $relationName, $id)
+    protected function updateRelation(MezzoEloquentModel $model, $relationName, $id)
     {
-        $relation = $model->relation($relationName);
+        $eloquentRelation = $model->relation($relationName);
+        $relationSchema = $model->schema()->relations()->get($relationName);
+        mezzo_dd($relationName);
 
-        if ($relation instanceof BelongsToMany)
-            return $this->updateBelongsToManyRelation($relation, $id);
 
-        if ($relation instanceof HasOne)
-            return $this->updateHasOneRelation($relation, $id);
+        /**
+         * m:n Relation -> update the Pivot
+         */
+        if ($eloquentRelation instanceof BelongsToMany)
+            return $this->updateBelongsToManyRelation($eloquentRelation, $id);
 
-        if ($relation instanceof HasMany)
-            return $this->updateHasManyRelation($relation, $id, $model);
+        /**
+         * 1:n Relation (Left side) -> update the child rows in the foreign table
+         */
+        if ($eloquentRelation instanceof HasMany)
+            return $this->updateHasManyRelation($eloquentRelation, $id, $model);
+
+
+        /**
+         * 1:n Relation (Left side) -> update the child rows in the foreign table
+         */
+        if ($eloquentRelation instanceof BelongsTo)
+
+
+            /**
+             * 1:1 Relation or n:1 (Left side) -> Exception, use the column instead (updateRow)
+             */
+            if ($eloquentRelation instanceof HasOne)
+                throw new RepositoryException('You should not update the relation "' . $relationName . '". Use the column instead.');
 
         throw new \Exception('This type of relation is not yet supported');
 

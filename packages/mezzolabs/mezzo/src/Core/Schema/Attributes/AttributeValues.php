@@ -21,6 +21,30 @@ class AttributeValues extends StrictCollection
     }
 
     /**
+     * Only return scalar attributes that represent a column in the main table of the model.
+     *
+     * @return AttributeValues
+     */
+    public function inMainTableOnly()
+    {
+        return $this->filter(function (AttributeValue $value) {
+            return $value->attribute()->isAtomic() || $value->isInteger();
+        });
+    }
+
+    /**
+     * Only return attributes that have to be updated on foreign tables.
+     *
+     * @return AttributeValues
+     */
+    public function inForeignTablesOnly()
+    {
+        return $this->filter(function (AttributeValue $value) {
+            return !$value->attribute()->isAtomic() && !$value->isInteger();
+        });
+    }
+
+    /**
      * Returns a filtered Value collection that only consists out of atomic attributes.
      *
      * @return AttributeValues
@@ -28,7 +52,7 @@ class AttributeValues extends StrictCollection
     public function atomicOnly()
     {
         return $this->filter(function(AttributeValue $value){
-            return $value->attribute()->isAtomic() || $value->isInteger();
+            return $value->attribute()->isAtomic();
         });
     }
 

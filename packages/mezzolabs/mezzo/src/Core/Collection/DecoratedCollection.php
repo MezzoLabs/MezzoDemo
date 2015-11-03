@@ -95,4 +95,15 @@ abstract class DecoratedCollection
     {
         return $this->collection()->get($key, $default);
     }
+
+    /**
+     * Get the items in the collection that are not present in the given items.
+     *
+     * @param  mixed $items
+     * @return static
+     */
+    public function diff($items)
+    {
+        return $this->collection()->diff($items);
+    }
 }

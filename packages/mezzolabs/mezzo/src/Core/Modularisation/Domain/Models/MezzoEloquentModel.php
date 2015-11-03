@@ -101,7 +101,23 @@ abstract class MezzoEloquentModel extends EloquentModel implements MezzoModel
      */
     public function fill(array $attributes)
     {
-        return parent::fill($attributes);
+        parent::fill($attributes);
+        $this->syncMezzoAttributes();
+        return $this;
+    }
+
+    /**
+     * Set a given attribute on the model.
+     *
+     * @param  string $key
+     * @param  mixed $value
+     * @return $this
+     */
+    public function setAttribute($key, $value)
+    {
+        parent::setAttribute($key, $value);
+        $this->syncMezzoAttributes();
+        return $this;
     }
 
 
@@ -116,6 +132,10 @@ abstract class MezzoEloquentModel extends EloquentModel implements MezzoModel
         return parent::syncOriginal();
     }
 
+    /**
+     * Make sure that the attributes for protected calls are the same.
+     * $this->$attribute will not reach the getter.
+     */
     protected function syncMezzoAttributes()
     {
         foreach ($this->attributes as $key => $attribute) {
