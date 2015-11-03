@@ -63,7 +63,6 @@ class MigrationSchema extends FileSchema
     {
         $parts = $this->nameParts();
 
-
         foreach ($parts as &$part) $part = strtolower($part);
 
         $date = date('Y_m_d_His');

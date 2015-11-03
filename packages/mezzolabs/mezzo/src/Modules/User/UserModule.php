@@ -39,11 +39,12 @@ class UserModule extends ModuleProvider
      */
     public function ready()
     {
-
+        /**
         $this->registerTransformers([
             User::class => UserTransformer::class,
             Role::class => RoleTransformer::class
         ]);
+         * **/
         //dd($tutorialReflection->relationships());
     }
 }

@@ -30,7 +30,6 @@ class TransformerRegistrar
         app('Dingo\Api\Transformer\Factory')->register($class, $transformer);
         $this->bindings->put($class, $transformer);
 
-
     }
 
     /**

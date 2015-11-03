@@ -84,6 +84,13 @@ abstract class MezzoUser extends BaseModel
     protected $updated_at;
 
     /**
+     *
+     * @Mezzo\Attribute(type="TextInput")
+     * @var String
+     */
+    protected $remember_token;
+
+    /**
      * @Mezzo\Attribute(type="RelationInputMultiple")
      * @Mezzo\Relations\ManyToMany
      * @Mezzo\Relations\From(table="users", primaryKey="id", naming="roles")
@@ -93,8 +100,6 @@ abstract class MezzoUser extends BaseModel
      * @var EloquentCollection
      */
     protected $roles;
-
-
 
     /**
      * @Mezzo\Attribute(type="RelationInputMultiple")
@@ -106,4 +111,6 @@ abstract class MezzoUser extends BaseModel
      * @var EloquentCollection
      */
     protected $tutorials;
+
+
 }

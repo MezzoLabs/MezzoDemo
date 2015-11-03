@@ -21,11 +21,9 @@ use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 use MezzoLabs\Mezzo\Http\Controllers\ApiResourceController;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Controllers\Controller;
-use MezzoLabs\Mezzo\Http\Controllers\ResourceControllerContract;
 use MezzoLabs\Mezzo\Http\Pages\ModulePage;
 use MezzoLabs\Mezzo\Http\Pages\ModulePages;
 use MezzoLabs\Mezzo\Http\Transformers\TransformerRegistrar;
-use PhpSpec\Exception\Locator\ResourceCreationException;
 
 abstract class ModuleProvider extends ServiceProvider
 {
@@ -344,7 +342,7 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function groupName()
     {
-        if(empty($this->group))
+        if (empty($this->group))
             return 'general';
 
         return $this->group;
@@ -357,7 +355,7 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function options($key = null, $default = null)
     {
-        if($key)
+        if ($key)
             return $this->options->get($key, $default);
 
         return $this->options;
@@ -439,7 +437,7 @@ abstract class ModuleProvider extends ServiceProvider
      */
     public function title()
     {
-        if($this->options->get('title'))
+        if ($this->options->get('title'))
             return $this->options->get('title');
 
         return $this->shortName();
@@ -457,8 +455,10 @@ abstract class ModuleProvider extends ServiceProvider
     /**
      * Register the eloquent model transformers.
      */
-    protected function registerTransformers($array = []){
+    protected function registerTransformers($array = [])
+    {
         app(TransformerRegistrar::class)->addTransformers($array);
+
     }
 
     /**
@@ -466,7 +466,8 @@ abstract class ModuleProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(){
+    public function boot()
+    {
 
     }
 

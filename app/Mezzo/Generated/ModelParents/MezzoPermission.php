@@ -7,6 +7,7 @@ namespace App\Mezzo\Generated\ModelParents;
 use App\Mezzo\BaseModel;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 abstract class MezzoPermission extends BaseModel
 {
@@ -25,6 +26,8 @@ abstract class MezzoPermission extends BaseModel
      * @var array
      */
     protected $fillable = ['model', 'name', 'label'];
+
+    public $timestamps = false;
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -63,17 +66,15 @@ abstract class MezzoPermission extends BaseModel
      */
     protected $label;
 
-    /**
-     *
-     * @Mezzo\Attribute(type="DateInput")
-     * @var string
-     */
-    protected $created_at;
 
     /**
+     * @Mezzo\Attribute(type="RelationInputMultiple")
+     * @Mezzo\Relations\ManyToMany
+     * @Mezzo\Relations\From(table="permissions", primaryKey="id", naming="roles")
+     * @Mezzo\Relations\To(table="roles", primaryKey="id", naming="permissions")
+     * @Mezzo\Relations\PivotTable(name="permission_role", fromColumn="permission_id", toColumn="user_id")
      *
-     * @Mezzo\Attribute(type="DateInput")
-     * @var string
+     * @var EloquentCollection
      */
-    protected $updated_at;
+    protected $roles;
 }

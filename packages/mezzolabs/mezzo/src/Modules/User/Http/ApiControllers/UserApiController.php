@@ -10,7 +10,6 @@ use MezzoLabs\Mezzo\Http\Requests\Resource\ShowResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\StoreResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\UpdateResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ApiResponseFactory;
-use MezzoLabs\Mezzo\Modules\User\Http\Transformers\UserTransformer;
 
 class UserApiController extends ApiResourceController
 {

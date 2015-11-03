@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Facades\DB;
 use MezzoLabs\Mezzo\Core\Cache\ResourceExistsCache;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
@@ -122,19 +121,44 @@ class ModelRepository
         $values = $this->values($data);
 
         $model = $this->findByOrFail($attribute, $id);
-        $result = $this->query()->where($attribute, '=', $id)->update($values->atomicOnly()->toArray());
 
-        $this->updateRelations($model, $values->relationsOnly());
+        $result = $this->updateRow($values->atomicOnly(), $id, $attribute);
+
+        $relationResult = $this->updateRelations($model, $values->relationsOnly());
 
         return $result;
     }
 
+    /**
+     *
+     *
+     * @param AttributeValues $atomicAttributes
+     * @param $id
+     * @param $attribute
+     * @return int
+     */
+    protected function updateRow(AttributeValues $atomicAttributes, $id, $attribute)
+    {
+        $values = $atomicAttributes->toArray();
 
-    protected function updateRelations(MezzoEloquentModel $model, AttributeValues $relationAttributes){
+        if (empty($values))
+            return 1;
+
+        return $this->query()->where($attribute, '=', $id)->update($values);
+
+    }
+
+    /**
+     * @param MezzoEloquentModel $model
+     * @param AttributeValues $relationAttributes
+     * @return bool
+     */
+    protected function updateRelations(MezzoEloquentModel $model, AttributeValues $relationAttributes)
+    {
         $relationAttributes->each(function (AttributeValue $attributeValue) use ($model) {
             $relationUpdate = $this->updateRelation($model, $attributeValue->name(), $attributeValue->value());
 
-            if(!$relationUpdate)
+            if (!$relationUpdate)
                 throw new RepositoryException('Cannot update the relation ' . $attributeValue->name());
         });
 
@@ -158,7 +182,7 @@ class ModelRepository
         if ($relation instanceof HasOne)
             return $this->updateHasOneRelation($relation, $id);
 
-        if($relation instanceof HasMany)
+        if ($relation instanceof HasMany)
             return $this->updateHasManyRelation($relation, $id, $model);
 
         throw new \Exception('This type of relation is not yet supported');
@@ -188,15 +212,15 @@ class ModelRepository
     {
         $foreignKey = $relation->getPlainForeignKey();
 
-        foreach($ids as $id){
-            if(!is_integer($id))
+        foreach ($ids as $id) {
+            if (!is_integer($id))
                 throw new InvalidArgumentException($id);
 
             $foreignModel = $relation->getRelated();
             $foreignChild = $foreignModel->newQuery()->where($foreignModel->getQualifiedKeyName(), '=', $id);
             $result = $foreignChild->update([$foreignKey => $parent->id]);
 
-            if(!$result)
+            if (!$result)
                 return false;
         }
 
@@ -304,9 +328,9 @@ class ModelRepository
 
     public function exists($id, $table = null)
     {
-        if(!$table) $table = $this->modelReflection()->tableName();
+        if (!$table) $table = $this->modelReflection()->tableName();
 
-        return ResourceExistsCache::checkExistence($table, $id, function() use ($table, $id){
+        return ResourceExistsCache::checkExistence($table, $id, function () use ($table, $id) {
             return $this->table($table)->where('id', '=', $id)->count() == 1;
         });
     }
@@ -356,7 +380,8 @@ class ModelRepository
      * @param $table
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function table($table){
+    protected function table($table)
+    {
         return $this->mysqlConnection()->table($table);
     }
 

@@ -13,6 +13,10 @@ use MezzoLabs\Mezzo\Http\Transformers\ModelTransformer;
 
 class UserTransformer extends EloquentModelTransformer
 {
+    /**
+     * @var string
+     */
+    protected $modelName = User::class;
 
     /**
      * List of resources possible to include
@@ -25,7 +29,7 @@ class UserTransformer extends EloquentModelTransformer
     ];
 
     protected $defaultIncludes = [
-        'roles'
+
     ];
 
     public function transform($model)

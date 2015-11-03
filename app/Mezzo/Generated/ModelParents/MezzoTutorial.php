@@ -107,6 +107,7 @@ abstract class MezzoTutorial extends BaseModel
     protected $parent;
 
     /**
+     * @Mezzo\Attribute(type="RelationInputMultiple")
      * @Mezzo\Relations\ManyToMany
      * @Mezzo\Relations\From(table="tutorials", primaryKey="id", naming="plannedCategories")
      * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="plannedTutorials")
@@ -123,6 +124,7 @@ abstract class MezzoTutorial extends BaseModel
     protected $mainImage;
 
     /**
+     * @Mezzo\Attribute(type="RelationInputMultiple")
      * @Mezzo\Relations\OneToMany
      * @Mezzo\Relations\From(table="tutorials", primaryKey="id", naming="comments")
      * @Mezzo\Relations\To(table="comments", primaryKey="id", naming="tutorial")

@@ -44,6 +44,18 @@ class AttributeValues extends StrictCollection
         });
     }
 
+    /**
+     * Returns a filtered Value collection that only consists out of visible attributes.
+     *
+     * @return AttributeValues
+     */
+    public function visibleOnly()
+    {
+        return $this->filter(function(AttributeValue $value){
+            return $value->attribute()->isVisible();
+        });
+    }
+
     protected function checkItem($value)
     {
         return $value instanceof AttributeValue;
@@ -100,8 +112,10 @@ class AttributeValues extends StrictCollection
         foreach ($array as $key => $value) {
             $attribute = $model->attributes($key);
 
-            if (!$attribute)
+            if (!$attribute){
                 throw new HttpException("\"" . $key . "\" is not a valid attribute in " . $model->className());
+
+            }
 
             $value = new AttributeValue($value, $attribute);
             $values->add($value);
