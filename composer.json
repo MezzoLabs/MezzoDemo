@@ -11,7 +11,11 @@
         "barryvdh/laravel-ide-helper": "^2.0@dev",
         "barryvdh/laravel-debugbar": "^2.0@dev",
         "doctrine/dbal": "~2.5",
-        "tymon/jwt-auth": "0.5.*"
+      "tymon/jwt-auth": "0.5.*",
+      "codesleeve/laravel-stapler": "1.0.*",
+      "kalnoy/nestedset": "3.*",
+      "league/glide": "0.*",
+      "spatie/laravel-glide": "dev-master"
 
     },
     "require-dev": {

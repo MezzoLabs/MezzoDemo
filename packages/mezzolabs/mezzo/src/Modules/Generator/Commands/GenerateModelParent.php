@@ -9,7 +9,7 @@ use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 use MezzoLabs\Mezzo\Modules\Generator\Generators\MigrationGenerator;
 use MezzoLabs\Mezzo\Modules\Generator\Migration\ChangeSet;
 
-class GenerateForeignFields extends MezzoCommand
+class GenerateModelParent extends MezzoCommand
 {
     /**
      * The name and signature of the console command.
