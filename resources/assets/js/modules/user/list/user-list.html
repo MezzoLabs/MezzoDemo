@@ -10,36 +10,38 @@
                 <table class="table table-responsive table-hover">
                     <thead>
 
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Created at</th>
-                            <th>Updated at</th>
-                        </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Created at</th>
+                        <th>Updated at</th>
+                    </tr>
 
                     </thead>
                     <tbody>
 
-                        <tr ng-show="vm.loading">
-                            <td colspan="5">
-                                <div class="progress" ng-show="vm.loading">
-                                    <div class="progress-bar progress-bar-striped active" style="width: 100%">Please be patient...</div>
+                    <tr ng-show="vm.loading">
+                        <td colspan="5">
+                            <div class="progress" ng-show="vm.loading">
+                                <div class="progress-bar progress-bar-striped active" style="width: 100%">Please be
+                                    patient...
                                 </div>
-                            </td>
-                        </tr>
+                            </div>
+                        </td>
+                    </tr>
 
-                        <tr ng-repeat="user in vm.users track by user.id">
-                            <td>
-                                <strong ng-bind="user.id"></strong>
-                            </td>
-                            <td>
-                                <a ui-sref="user-show({ userId: user.id })" ng-bind="user.name"></a>
-                            </td>
-                            <td ng-bind="user.email"></td>
-                            <td ng-bind="vm.moment(user.updated_at)" title="{{user.updated_at}}" data-toggle="tooltip"></td>
-                            <td ng-bind="vm.moment(user.created_at)" title="{{user.created_at}}" data-toggle="tooltip"></td>
-                        </tr>
+                    <tr ng-repeat="user in vm.users track by user.id">
+                        <td>
+                            <strong ng-bind="user.id"></strong>
+                        </td>
+                        <td>
+                            <a ui-sref="user-show({ userId: user.id })" ng-bind="user.name"></a>
+                        </td>
+                        <td ng-bind="user.email"></td>
+                        <td ng-bind="vm.moment(user.updated_at)" title="{{user.updated_at}}" data-toggle="tooltip"></td>
+                        <td ng-bind="vm.moment(user.created_at)" title="{{user.created_at}}" data-toggle="tooltip"></td>
+                    </tr>
 
                     </tbody>
                 </table>

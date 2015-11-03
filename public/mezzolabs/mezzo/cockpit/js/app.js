@@ -15,13 +15,13 @@ var _register = require('./register');
 
 var _register2 = _interopRequireDefault(_register);
 
-var app = angular.module('Mezzo', ['ui.router', 'templates', 'angular-sortable-view', 'ngFileUpload', 'ngMessages']);
+    var app = angular.module('Mezzo', ['ui.router', 'templates', 'angular-sortable-view', 'ngFileUpload', 'ngMessages']);
 
 app.config(_setupConfig2['default']);
 app.run(_setupRun2['default']);
 (0, _register2['default'])(app);
 
-},{"./register":51,"./setup/config":52,"./setup/run":54}],2:[function(require,module,exports){
+}, {"./register": 51, "./setup/config": 52, "./setup/run": 54}], 2: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -226,7 +226,36 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _get = function get(_x2, _x3, _x4) { var _again = true; _function: while (_again) { var object = _x2, property = _x3, receiver = _x4; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x2 = parent; _x3 = property; _x4 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+    var _get = function get(_x2, _x3, _x4) {
+        var _again = true;
+        _function: while (_again) {
+            var object = _x2, property = _x3, receiver = _x4;
+            desc = parent = getter = undefined;
+            _again = false;
+            if (object === null) object = Function.prototype;
+            var desc = Object.getOwnPropertyDescriptor(object, property);
+            if (desc === undefined) {
+                var parent = Object.getPrototypeOf(object);
+                if (parent === null) {
+                    return undefined;
+                } else {
+                    _x2 = parent;
+                    _x3 = property;
+                    _x4 = receiver;
+                    _again = true;
+                    continue _function;
+                }
+            } else if ('value' in desc) {
+                return desc.value;
+            } else {
+                var getter = desc.get;
+                if (getter === undefined) {
+                    return undefined;
+                }
+                return getter.call(receiver);
+            }
+        }
+    };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -1420,147 +1449,181 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _commonState = require('../../common/State');
-
-var _commonState2 = _interopRequireDefault(_commonState);
-
-exports['default'] = new _commonState2['default']('permissions', 'permissions', {
-    main: {
-        templateUrl: 'modules/permissions/permissions.html',
-        controller: 'PermissionsController',
-        controllerAs: 'vm'
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {'default': obj};
     }
-});
-module.exports = exports['default'];
 
-},{"../../common/State":3}],41:[function(require,module,exports){
-'use strict';
+    var _commonState = require('../../common/State');
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+    var _commonState2 = _interopRequireDefault(_commonState);
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var PermissionsController =
-
-/*@ngInject*/function PermissionsController($http) {
-    var _this = this;
-
-    _classCallCheck(this, PermissionsController);
-
-    this.$http = $http;
-    this.permissions = [];
-    this.loading = true;
-
-    this.$http.get('/api/permissions').then(function (response) {
-        _this.loading = false;
-        _this.permissions = response.data;
-    })['catch'](function (err) {
-        return console.error(err);
+    exports['default'] = new _commonState2['default']('permissions', 'permissions', {
+        main: {
+            templateUrl: 'modules/permissions/permissions.html',
+            controller: 'PermissionsController',
+            controllerAs: 'vm'
+        }
     });
-};
+    module.exports = exports['default'];
 
-exports['default'] = { name: 'PermissionsController', controller: PermissionsController };
-module.exports = exports['default'];
+}, {"../../common/State": 3}], 41: [function (require, module, exports) {
+    'use strict';
 
-},{}],42:[function(require,module,exports){
-'use strict';
+    Object.defineProperty(exports, '__esModule', {
+        value: true
+    });
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError('Cannot call a class as a function');
+        }
+    }
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+    var PermissionsController =
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+        /*@ngInject*/function PermissionsController($http) {
+        var _this = this;
 
-var ResourceCreateController = (function () {
-
-    /*@ngInject*/
-    function ResourceCreateController($http) {
-        _classCallCheck(this, ResourceCreateController);
+        _classCallCheck(this, PermissionsController);
 
         this.$http = $http;
-        this.model = {};
+        this.permissions = [];
+        this.loading = true;
 
-        /* Fake data */
-        this.users = [{ id: 0, name: 'Simon' }, { id: 1, name: 'Marc' }, { id: 2, name: 'John Doe' }, { id: 3, name: 'MSDOS Manfred' }];
-        this.tutorials = [{ id: 0, name: 'Mezzo Tutorial' }, { id: 1, name: 'How to peel an Egg Tutorial Part 1' }, { id: 2, name: 'How to sit down Tutorial' }];
-        /* Fake data */
-    }
+        this.$http.get('/api/permissions').then(function (response) {
+            _this.loading = false;
+            _this.permissions = response.data;
+        })['catch'](function (err) {
+            return console.error(err);
+        });
+    };
 
-    _createClass(ResourceCreateController, [{
-        key: 'submit',
-        value: function submit() {
-            if (this.form.$invalid) {
-                return false;
-            }
+    exports['default'] = {name: 'PermissionsController', controller: PermissionsController};
+    module.exports = exports['default'];
 
-            var payload = {
-                title: this.model.title,
-                body: this.model.body,
-                created_at: this.model.createdAt,
-                updated_at: this.model.updatedAt,
-                user_id: this.model.userId,
-                parent: this.model.parent
-            };
+}, {}], 42: [function (require, module, exports) {
+    'use strict';
 
-            this.$http.post('/api/tutorials', payload).then(function (result) {
-                console.log(result);
-            })['catch'](function (err) {
-                return console.error(err);
-            });
-        }
-    }, {
-        key: 'hasError',
-        value: function hasError(formControl) {
-            if (Object.keys(formControl.$error).length && formControl.$dirty) {
-                return 'has-error';
-            }
-        }
-    }]);
-
-    return ResourceCreateController;
-})();
-
-exports['default'] = { name: 'ResourceCreateController', controller: ResourceCreateController };
-module.exports = exports['default'];
-
-},{}],43:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _commonState = require('../../../common/State');
-
-var _commonState2 = _interopRequireDefault(_commonState);
-
-exports['default'] = new _commonState2['default']('resource-create', 'model/create', {
-    main: {
-        templateUrl: '/mezzo/sample/tutorial/create.html',
-        controller: 'ResourceCreateController',
-        controllerAs: 'vm'
-    }
-});
-module.exports = exports['default'];
-
-},{"../../../common/State":3}],44:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+    Object.defineProperty(exports, '__esModule', {
+        value: true
+    });
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+    var ResourceCreateController = (function () {
+
+        /*@ngInject*/
+        function ResourceCreateController($http) {
+            _classCallCheck(this, ResourceCreateController);
+
+            this.$http = $http;
+            this.model = {};
+
+            /* Fake data */
+            this.users = [{id: 0, name: 'Simon'}, {id: 1, name: 'Marc'}, {id: 2, name: 'John Doe'}, {
+                id: 3,
+                name: 'MSDOS Manfred'
+            }];
+            this.tutorials = [{id: 0, name: 'Mezzo Tutorial'}, {
+                id: 1,
+                name: 'How to peel an Egg Tutorial Part 1'
+            }, {id: 2, name: 'How to sit down Tutorial'}];
+            /* Fake data */
+        }
+
+        _createClass(ResourceCreateController, [{
+            key: 'submit',
+            value: function submit() {
+                if (this.form.$invalid) {
+                    return false;
+                }
+
+                var payload = {
+                    title: this.model.title,
+                    body: this.model.body,
+                    created_at: this.model.createdAt,
+                    updated_at: this.model.updatedAt,
+                    user_id: this.model.userId,
+                    parent: this.model.parent
+                };
+
+                this.$http.post('/api/tutorials', payload).then(function (result) {
+                    console.log(result);
+                })['catch'](function (err) {
+                    return console.error(err);
+                });
+            }
+        }, {
+            key: 'hasError',
+            value: function hasError(formControl) {
+                if (Object.keys(formControl.$error).length && formControl.$dirty) {
+                    return 'has-error';
+                }
+            }
+        }]);
+
+        return ResourceCreateController;
+    })();
+
+    exports['default'] = {name: 'ResourceCreateController', controller: ResourceCreateController};
+    module.exports = exports['default'];
+
+}, {}], 43: [function (require, module, exports) {
+    'use strict';
+
+    Object.defineProperty(exports, '__esModule', {
+        value: true
+    });
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {'default': obj};
+    }
+
+    var _commonState = require('../../../common/State');
+
+    var _commonState2 = _interopRequireDefault(_commonState);
+
+    exports['default'] = new _commonState2['default']('resource-create', 'model/create', {
+        main: {
+            templateUrl: '/mezzo/sample/tutorial/create.html',
+            controller: 'ResourceCreateController',
+            controllerAs: 'vm'
+        }
+    });
+    module.exports = exports['default'];
+
+}, {"../../../common/State": 3}], 44: [function (require, module, exports) {
+    'use strict';
+
+    Object.defineProperty(exports, '__esModule', {
+        value: true
+    });
+
+    var _createClass = (function () {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || false;
+                descriptor.configurable = true;
+                if ('value' in descriptor) descriptor.writable = true;
+                Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+            if (protoProps) defineProperties(Constructor.prototype, protoProps);
+            if (staticProps) defineProperties(Constructor, staticProps);
+            return Constructor;
+        };
+    })();
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError('Cannot call a class as a function');
+        }
+    }
 
 var ResourceIndexController = (function () {
 
@@ -1755,7 +1818,7 @@ var ResourceIndexController = (function () {
 exports['default'] = { name: 'ResourceIndexController', controller: ResourceIndexController };
 module.exports = exports['default'];
 
-},{}],45:[function(require,module,exports){
+}, {}], 45: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1768,7 +1831,7 @@ var _commonState = require('../../../common/State');
 
 var _commonState2 = _interopRequireDefault(_commonState);
 
-exports['default'] = new _commonState2['default']('resource-index', 'model/list', {
+    exports['default'] = new _commonState2['default']('resource-index', 'model/list', {
     main: {
         templateUrl: '/mezzo/sample/tutorial/index.html',
         controller: 'ResourceIndexController',
@@ -1777,210 +1840,256 @@ exports['default'] = new _commonState2['default']('resource-index', 'model/list'
 });
 module.exports = exports['default'];
 
-},{"../../../common/State":3}],46:[function(require,module,exports){
+}, {"../../../common/State": 3}], 46: [function (require, module, exports) {
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+    Object.defineProperty(exports, '__esModule', {
+        value: true
+    });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _commonState = require('../../../common/State');
-
-var _commonState2 = _interopRequireDefault(_commonState);
-
-exports['default'] = new _commonState2['default']('user-list', 'users', {
-    main: {
-        templateUrl: 'modules/user/list/user-list.html',
-        controller: 'UserListController',
-        controllerAs: 'vm'
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {'default': obj};
     }
-});
-module.exports = exports['default'];
 
-},{"../../../common/State":3}],47:[function(require,module,exports){
-'use strict';
+    var _commonState = require('../../../common/State');
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+    var _commonState2 = _interopRequireDefault(_commonState);
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+    exports['default'] = new _commonState2['default']('user-list', 'users', {
+        main: {
+            templateUrl: 'modules/user/list/user-list.html',
+            controller: 'UserListController',
+            controllerAs: 'vm'
+        }
+    });
+    module.exports = exports['default'];
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+}, {"../../../common/State": 3}], 47: [function (require, module, exports) {
+    'use strict';
 
-var UserListController = (function () {
+    Object.defineProperty(exports, '__esModule', {
+        value: true
+    });
+
+    var _createClass = (function () {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || false;
+                descriptor.configurable = true;
+                if ('value' in descriptor) descriptor.writable = true;
+                Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+            if (protoProps) defineProperties(Constructor.prototype, protoProps);
+            if (staticProps) defineProperties(Constructor, staticProps);
+            return Constructor;
+        };
+    })();
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError('Cannot call a class as a function');
+        }
+    }
+
+    var UserListController = (function () {
+
+        /*@ngInject*/
+        function UserListController($http, userService) {
+            _classCallCheck(this, UserListController);
+
+            this.$http = $http;
+            this.userService = userService;
+            this.users = userService.users || [];
+
+            if (!this.users || this.users.length === 0) {
+                this.loadUsers();
+            }
+        }
+
+        _createClass(UserListController, [{
+            key: 'loadUsers',
+            value: function loadUsers() {
+                var _this = this;
+
+                this.loading = true;
+
+                this.$http.get('/api/users').then(function (response) {
+                    _this.loading = false;
+                    _this.users = response.data;
+                    _this.userService.users = _this.users;
+
+                    setTimeout(_this.initTooltips, 1);
+                })['catch'](function (err) {
+                    return console.error(err);
+                });
+            }
+        }, {
+            key: 'moment',
+            value: (function (_moment) {
+                function moment(_x) {
+                    return _moment.apply(this, arguments);
+                }
+
+                moment.toString = function () {
+                    return _moment.toString();
+                };
+
+                return moment;
+            })(function (date) {
+                return moment(date).fromNow();
+            })
+        }, {
+            key: 'initTooltips',
+            value: function initTooltips() {
+                $('[data-toggle="tooltip"]').tooltip({
+                    container: 'body'
+                });
+            }
+        }]);
+
+        return UserListController;
+    })();
+
+    exports['default'] = {name: 'UserListController', controller: UserListController};
+    module.exports = exports['default'];
+
+}, {}], 48: [function (require, module, exports) {
+    'use strict';
+
+    Object.defineProperty(exports, '__esModule', {
+        value: true
+    });
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {'default': obj};
+    }
+
+    var _commonState = require('../../../common/State');
+
+    var _commonState2 = _interopRequireDefault(_commonState);
+
+    exports['default'] = new _commonState2['default']('user-show', 'user/:userId', {
+        main: {
+            templateUrl: 'modules/user/show/user-show.html',
+            controller: 'UserShowController',
+            controllerAs: 'vm'
+        }
+    });
+    module.exports = exports['default'];
+
+}, {"../../../common/State": 3}], 49: [function (require, module, exports) {
+    'use strict';
+
+    Object.defineProperty(exports, '__esModule', {
+        value: true
+    });
+
+    var _createClass = (function () {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || false;
+                descriptor.configurable = true;
+                if ('value' in descriptor) descriptor.writable = true;
+                Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+            if (protoProps) defineProperties(Constructor.prototype, protoProps);
+            if (staticProps) defineProperties(Constructor, staticProps);
+            return Constructor;
+        };
+    })();
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError('Cannot call a class as a function');
+        }
+    }
+
+    var UserShowController = (function () {
+
+        /*@ngInject*/
+        function UserShowController($http, $stateParams) {
+            _classCallCheck(this, UserShowController);
+
+            this.$http = $http;
+            this.$routeParams = $stateParams;
+            this.user = null;
+            this.userId = $stateParams.userId;
+
+            this.loadUser(this.userId);
+        }
+
+        _createClass(UserShowController, [{
+            key: 'loadUser',
+            value: function loadUser(userId) {
+                var _this = this;
+
+                this.loading = true;
+                var apiUrl = '/api/users/' + userId;
+
+                this.$http.get(apiUrl).then(function (response) {
+                    _this.loading = false;
+                    _this.user = response.data.user;
+                })['catch'](function (err) {
+                    return console.error(err);
+                });
+            }
+        }, {
+            key: 'saveUser',
+            value: function saveUser() {
+                this.$http.put('/api/users/' + this.userId, this.user).then(function (response) {
+                    console.log(response);
+                })['catch'](function (err) {
+                    return console.error(err);
+                });
+            }
+        }, {
+            key: 'moment',
+            value: (function (_moment) {
+                function moment(_x) {
+                    return _moment.apply(this, arguments);
+                }
+
+                moment.toString = function () {
+                    return _moment.toString();
+                };
+
+                return moment;
+            })(function (date) {
+                return moment(date).fromNow();
+            })
+        }]);
+
+        return UserShowController;
+    })();
+
+    exports['default'] = {name: 'UserShowController', controller: UserShowController};
+    module.exports = exports['default'];
+
+}, {}], 50: [function (require, module, exports) {
+    'use strict';
+
+    Object.defineProperty(exports, '__esModule', {
+        value: true
+    });
+    exports['default'] = {name: 'userService', service: service};
 
     /*@ngInject*/
-    function UserListController($http, userService) {
-        _classCallCheck(this, UserListController);
-
-        this.$http = $http;
-        this.userService = userService;
-        this.users = userService.users || [];
-
-        if (!this.users || this.users.length === 0) {
-            this.loadUsers();
-        }
+    function service() {
+        return {};
     }
 
-    _createClass(UserListController, [{
-        key: 'loadUsers',
-        value: function loadUsers() {
-            var _this = this;
+    module.exports = exports['default'];
 
-            this.loading = true;
-
-            this.$http.get('/api/users').then(function (response) {
-                _this.loading = false;
-                _this.users = response.data;
-                _this.userService.users = _this.users;
-
-                setTimeout(_this.initTooltips, 1);
-            })['catch'](function (err) {
-                return console.error(err);
-            });
-        }
-    }, {
-        key: 'moment',
-        value: (function (_moment) {
-            function moment(_x) {
-                return _moment.apply(this, arguments);
-            }
-
-            moment.toString = function () {
-                return _moment.toString();
-            };
-
-            return moment;
-        })(function (date) {
-            return moment(date).fromNow();
-        })
-    }, {
-        key: 'initTooltips',
-        value: function initTooltips() {
-            $('[data-toggle="tooltip"]').tooltip({
-                container: 'body'
-            });
-        }
-    }]);
-
-    return UserListController;
-})();
-
-exports['default'] = { name: 'UserListController', controller: UserListController };
-module.exports = exports['default'];
-
-},{}],48:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _commonState = require('../../../common/State');
-
-var _commonState2 = _interopRequireDefault(_commonState);
-
-exports['default'] = new _commonState2['default']('user-show', 'user/:userId', {
-    main: {
-        templateUrl: 'modules/user/show/user-show.html',
-        controller: 'UserShowController',
-        controllerAs: 'vm'
-    }
-});
-module.exports = exports['default'];
-
-},{"../../../common/State":3}],49:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var UserShowController = (function () {
-
-    /*@ngInject*/
-    function UserShowController($http, $stateParams) {
-        _classCallCheck(this, UserShowController);
-
-        this.$http = $http;
-        this.$routeParams = $stateParams;
-        this.user = null;
-        this.userId = $stateParams.userId;
-
-        this.loadUser(this.userId);
-    }
-
-    _createClass(UserShowController, [{
-        key: 'loadUser',
-        value: function loadUser(userId) {
-            var _this = this;
-
-            this.loading = true;
-            var apiUrl = '/api/users/' + userId;
-
-            this.$http.get(apiUrl).then(function (response) {
-                _this.loading = false;
-                _this.user = response.data.user;
-            })['catch'](function (err) {
-                return console.error(err);
-            });
-        }
-    }, {
-        key: 'saveUser',
-        value: function saveUser() {
-            this.$http.put('/api/users/' + this.userId, this.user).then(function (response) {
-                console.log(response);
-            })['catch'](function (err) {
-                return console.error(err);
-            });
-        }
-    }, {
-        key: 'moment',
-        value: (function (_moment) {
-            function moment(_x) {
-                return _moment.apply(this, arguments);
-            }
-
-            moment.toString = function () {
-                return _moment.toString();
-            };
-
-            return moment;
-        })(function (date) {
-            return moment(date).fromNow();
-        })
-    }]);
-
-    return UserShowController;
-})();
-
-exports['default'] = { name: 'UserShowController', controller: UserShowController };
-module.exports = exports['default'];
-
-},{}],50:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-exports['default'] = { name: 'userService', service: service };
-
-/*@ngInject*/function service() {
-    return {};
-}
-module.exports = exports['default'];
-
-},{}],51:[function(require,module,exports){
-'use strict';
+}, {}], 51: [function (require, module, exports) {
+    'use strict';
 
 module.exports = function (app) {
 				register(require('./common/compile.directive.js'));
@@ -1995,25 +2104,25 @@ module.exports = function (app) {
 				register(require('./modules/model-builder/model-builder.service.js'));
 				register(require('./modules/page-builder/aside.controller.js'));
 				register(require('./modules/page-builder/main.controller.js'));
-				register(require('./modules/permissions/permissions.controller.js'));
-				register(require('./modules/user/user.service.js'));
+    register(require('./modules/permissions/permissions.controller.js'));
+    register(require('./modules/user/user.service.js'));
 				register(require('./modules/model-builder/components/component.service.js'));
-				register(require('./modules/user/list/user-list.controller.js'));
-				register(require('./modules/user/show/user-show.controller.js'));
-				register(require('./modules/resource/create/resource-create.controller.js'));
+    register(require('./modules/user/list/user-list.controller.js'));
+    register(require('./modules/user/show/user-show.controller.js'));
+    register(require('./modules/resource/create/resource-create.controller.js'));
 				register(require('./modules/resource/index/resource-index.controller.js'));
 				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
 				register(require('./modules/model-builder/components/owner/owner.directive.js'));
-				register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
-				register(require('./modules/model-builder/components/dropdown/dropdown.directive.js'));
-				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
-				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
+    register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
+    register(require('./modules/model-builder/components/dropdown/dropdown.directive.js'));
+    register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
+    register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
 				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
 				register(require('./modules/model-builder/components/relation/relation.directive.js'));
 				register(require('./modules/model-builder/components/text-single/text-single-options.directive.js'));
 				register(require('./modules/model-builder/components/text-single/text-single.directive.js'));
-				register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
-				register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
+    register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
+    register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
 
 				function register(module) {
 								if (module.controller) {
@@ -2030,7 +2139,39 @@ module.exports = function (app) {
 				}
 };
 
-},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/uid.service.js":6,"./modules/file-manager/aside.controller.js":9,"./modules/file-manager/draggable.directive.js":10,"./modules/file-manager/droppable.directive.js":11,"./modules/file-manager/file-manager.service.js":12,"./modules/file-manager/main.controller.js":13,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":17,"./modules/model-builder/components/checkbox/checkbox.directive.js":18,"./modules/model-builder/components/component.service.js":19,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":20,"./modules/model-builder/components/dropdown/dropdown.directive.js":21,"./modules/model-builder/components/owner/owner-options.directive.js":22,"./modules/model-builder/components/owner/owner.directive.js":23,"./modules/model-builder/components/relation/relation-options.directive.js":27,"./modules/model-builder/components/relation/relation.directive.js":28,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":30,"./modules/model-builder/components/text-multi/text-multi.directive.js":31,"./modules/model-builder/components/text-single/text-single-options.directive.js":32,"./modules/model-builder/components/text-single/text-single.directive.js":33,"./modules/model-builder/model-builder.controller.js":34,"./modules/model-builder/model-builder.service.js":35,"./modules/page-builder/aside.controller.js":37,"./modules/page-builder/main.controller.js":38,"./modules/permissions/permissions.controller.js":41,"./modules/resource/create/resource-create.controller.js":42,"./modules/resource/index/resource-index.controller.js":44,"./modules/user/list/user-list.controller.js":47,"./modules/user/show/user-show.controller.js":49,"./modules/user/user.service.js":50}],52:[function(require,module,exports){
+}, {
+    "./common/compile.directive.js": 4,
+    "./common/enter.directive.js": 5,
+    "./common/uid.service.js": 6,
+    "./modules/file-manager/aside.controller.js": 9,
+    "./modules/file-manager/draggable.directive.js": 10,
+    "./modules/file-manager/droppable.directive.js": 11,
+    "./modules/file-manager/file-manager.service.js": 12,
+    "./modules/file-manager/main.controller.js": 13,
+    "./modules/model-builder/components/checkbox/checkbox-options.directive.js": 17,
+    "./modules/model-builder/components/checkbox/checkbox.directive.js": 18,
+    "./modules/model-builder/components/component.service.js": 19,
+    "./modules/model-builder/components/dropdown/dropdown-options.directive.js": 20,
+    "./modules/model-builder/components/dropdown/dropdown.directive.js": 21,
+    "./modules/model-builder/components/owner/owner-options.directive.js": 22,
+    "./modules/model-builder/components/owner/owner.directive.js": 23,
+    "./modules/model-builder/components/relation/relation-options.directive.js": 27,
+    "./modules/model-builder/components/relation/relation.directive.js": 28,
+    "./modules/model-builder/components/text-multi/text-multi-options.directive.js": 30,
+    "./modules/model-builder/components/text-multi/text-multi.directive.js": 31,
+    "./modules/model-builder/components/text-single/text-single-options.directive.js": 32,
+    "./modules/model-builder/components/text-single/text-single.directive.js": 33,
+    "./modules/model-builder/model-builder.controller.js": 34,
+    "./modules/model-builder/model-builder.service.js": 35,
+    "./modules/page-builder/aside.controller.js": 37,
+    "./modules/page-builder/main.controller.js": 38,
+    "./modules/permissions/permissions.controller.js": 41,
+    "./modules/resource/create/resource-create.controller.js": 42,
+    "./modules/resource/index/resource-index.controller.js": 44,
+    "./modules/user/list/user-list.controller.js": 47,
+    "./modules/user/show/user-show.controller.js": 49,
+    "./modules/user/user.service.js": 50
+}], 52: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2045,8 +2186,9 @@ var _states2 = _interopRequireDefault(_states);
 
 exports['default'] = config;
 
-/*@ngInject*/function config($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
-    $httpProvider.defaults.headers.common.Accept = 'application/vnd.MezzoLabs.v1+json';
+    /*@ngInject*/
+    function config($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
+        $httpProvider.defaults.headers.common.Accept = 'application/vnd.MezzoLabs.v1+json';
 
     $locationProvider.html5Mode(true);
     $urlRouterProvider.otherwise('/mezzo');
@@ -2056,7 +2198,7 @@ exports['default'] = config;
 }
 module.exports = exports['default'];
 
-},{"./states":55}],53:[function(require,module,exports){
+}, {"./states": 55}], 53: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2136,7 +2278,7 @@ function init() {
 }
 module.exports = exports['default'];
 
-},{}],54:[function(require,module,exports){
+}, {}], 54: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2168,7 +2310,7 @@ exports['default'] = run;
 }
 module.exports = exports['default'];
 
-},{"./jquery":53}],55:[function(require,module,exports){
+}, {"./jquery": 53}], 55: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2193,23 +2335,33 @@ var _modulesResourceIndexState = require('../modules/resource/index/state');
 
 var _modulesResourceIndexState2 = _interopRequireDefault(_modulesResourceIndexState);
 
-var _modulesResourceCreateState = require('../modules/resource/create/state');
+    var _modulesResourceCreateState = require('../modules/resource/create/state');
 
-var _modulesResourceCreateState2 = _interopRequireDefault(_modulesResourceCreateState);
+    var _modulesResourceCreateState2 = _interopRequireDefault(_modulesResourceCreateState);
 
-var _modulesUserList = require('../modules/user/list');
+    var _modulesUserList = require('../modules/user/list');
 
-var _modulesUserList2 = _interopRequireDefault(_modulesUserList);
+    var _modulesUserList2 = _interopRequireDefault(_modulesUserList);
 
-var _modulesUserShow = require('../modules/user/show');
+    var _modulesUserShow = require('../modules/user/show');
 
-var _modulesUserShow2 = _interopRequireDefault(_modulesUserShow);
+    var _modulesUserShow2 = _interopRequireDefault(_modulesUserShow);
 
-var _modulesPermissions = require('../modules/permissions');
+    var _modulesPermissions = require('../modules/permissions');
 
-var _modulesPermissions2 = _interopRequireDefault(_modulesPermissions);
+    var _modulesPermissions2 = _interopRequireDefault(_modulesPermissions);
 
-exports['default'] = [_modulesModelBuilderState2['default'], _modulesPageBuilderStateJs2['default'], _modulesFileManagerState2['default'], _modulesResourceIndexState2['default'], _modulesResourceCreateState2['default'], _modulesUserList2['default'], _modulesUserShow2['default'], _modulesPermissions2['default']];
+    exports['default'] = [_modulesModelBuilderState2['default'], _modulesPageBuilderStateJs2['default'], _modulesFileManagerState2['default'], _modulesResourceIndexState2['default'], _modulesResourceCreateState2['default'], _modulesUserList2['default'], _modulesUserShow2['default'], _modulesPermissions2['default']];
 module.exports = exports['default'];
 
-},{"../modules/file-manager/state":14,"../modules/model-builder/state":36,"../modules/page-builder/state.js":39,"../modules/permissions":40,"../modules/resource/create/state":43,"../modules/resource/index/state":45,"../modules/user/list":46,"../modules/user/show":48}]},{},[1]);
+}, {
+    "../modules/file-manager/state": 14,
+    "../modules/model-builder/state": 36,
+    "../modules/page-builder/state.js": 39,
+    "../modules/permissions": 40,
+    "../modules/resource/create/state": 43,
+    "../modules/resource/index/state": 45,
+    "../modules/user/list": 46,
+    "../modules/user/show": 48
+}]
+}, {}, [1]);

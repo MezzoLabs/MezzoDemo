@@ -49,6 +49,16 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return $this->hasMany(Tutorial::class, 'user_id');
     }
 
+    /**
+     * Get the password for the user.
+     *
+     * @return string
+     */
+    public function getAuthPassword()
+    {
+        return $this->getAttribute('password');
+    }
+
 
 
 }

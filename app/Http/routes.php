@@ -13,6 +13,7 @@
 
 
 use App\Tutorial;
+use App\User;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\FileCacheReader;
 use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
@@ -27,6 +28,10 @@ Route::get('random',function(){
     mezzo_dump((new \MezzoLabs\Mezzo\Modules\Sample\Http\Controllers\TutorialController())->module());
 
    return str_random(16);
+});
+
+Route::get('debug/auth', function(){
+    $user = User::where('email', '=', 'trigger3@hotmail.de')->first();
 });
 
 Route::get('debug/rules', function () {

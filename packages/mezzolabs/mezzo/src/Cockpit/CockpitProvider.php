@@ -102,8 +102,8 @@ class CockpitProvider extends ServiceProvider
             $moduleProvider->includeRoutes();
         });
 
-        if (! $this->app->routesAreCached()) {
-            require __DIR__.'/Http/routes.php';
+        if (!$this->app->routesAreCached()) {
+            require __DIR__ . '/Http/routes.php';
         }
     }
 

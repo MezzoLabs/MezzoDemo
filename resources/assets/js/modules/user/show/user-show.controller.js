@@ -1,6 +1,7 @@
 class UserShowController {
 
-    /*@ngInject*/ constructor($http, $stateParams){
+    /*@ngInject*/
+    constructor($http, $stateParams) {
         this.$http = $http;
         this.$routeParams = $stateParams;
         this.user = null;
@@ -9,30 +10,47 @@ class UserShowController {
         this.loadUser(this.userId);
     }
 
-    loadUser(userId){
+    loadUser(userId) {
         this.loading = true;
         var apiUrl = '/api/users/' + userId;
 
         this.$http.get(apiUrl)
-            .then(response => {
-                this.loading = false;
-                this.user = response.data.user;
-            })
-            .catch(err => console.error(err));
+            .then(response = > {
+            this.loading = false;
+        this.user = response.data.user;
     }
 
-    saveUser(){
-        this.$http.put('/api/users/' + this.userId, this.user)
-            .then(response => {
-                console.log(response);
-            })
-            .catch(err => console.error(err));
-    }
+)
+.
+    catch(err =
 
-    moment(date){
-        return moment(date).fromNow();
-    }
+>
+    console
+.
+    error(err)
+
+)
+    ;
+}
+
+saveUser()
+{
+    this.$http.put('/api/users/' + this.userId, this.user)
+        .then(response = > {
+        console.log(response);
+}
+)
+.
+catch(err = > console.error(err)
+)
+;
+}
+
+moment(date)
+{
+    return moment(date).fromNow();
+}
 
 }
 
-export default { name: 'UserShowController', controller: UserShowController };
+export default {name: 'UserShowController', controller: UserShowController};
