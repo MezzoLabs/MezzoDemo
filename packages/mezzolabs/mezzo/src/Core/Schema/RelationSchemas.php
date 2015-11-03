@@ -115,7 +115,7 @@ class RelationSchemas
 
     /**
      * @param $key
-     * @return mixed
+     * @return Relation
      */
     public function get($key)
     {

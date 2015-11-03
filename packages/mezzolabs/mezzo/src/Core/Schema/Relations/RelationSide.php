@@ -187,4 +187,29 @@ class RelationSide
 
         return new RelationSide($this->relation(), $table);
     }
+
+    public function isManyToMany()
+    {
+        return $this->relation()->isManyToMany();
+    }
+
+    public function isOneToMany()
+    {
+        return $this->relation()->isOneToMany() && $this->hasMultipleChildren();
+    }
+
+    public function isManyToOne()
+    {
+        return $this->relation()->isOneToMany() && $this->hasOneChild();
+    }
+
+    public function isOneToOne()
+    {
+        return $this->relation()->isOneToOne();
+    }
+
+    public function isOneToOneOrMany()
+    {
+        return $this->relation()->isOneToOneOrMany();
+    }
 } 

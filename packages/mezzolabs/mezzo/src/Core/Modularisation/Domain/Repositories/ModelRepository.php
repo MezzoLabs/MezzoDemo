@@ -20,10 +20,11 @@ use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValue;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValues;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 
-class ModelRepository
+class ModelRepository extends EloquentRepository
 {
     /**
      * @var MezzoModelReflection
@@ -107,6 +108,7 @@ class ModelRepository
      */
     public function create(array $data)
     {
+        //TODO Check for Relations
         $values = $this->values($data);
         return $this->modelInstance()->create($data);
     }
@@ -158,7 +160,8 @@ class ModelRepository
     protected function updateRelations(MezzoEloquentModel $model, AttributeValues $relationAttributes)
     {
         $relationAttributes->each(function (AttributeValue $attributeValue) use ($model) {
-            $relationUpdate = $this->updateRelation($model, $attributeValue->name(), $attributeValue->value());
+            $relationUpdater = new RelationUpdater($model, $attributeValue);
+            $relationUpdate = $relationUpdater->run();
 
             if (!$relationUpdate)
                 throw new RepositoryException('Cannot update the relation ' . $attributeValue->name());
@@ -174,24 +177,23 @@ class ModelRepository
      * @throws \Exception
      * @throws \MezzoLabs\Mezzo\Exceptions\ReflectionException
      */
-    protected function updateRelation(MezzoEloquentModel $model, $relationName, $id)
+    protected function updateRelation(MezzoEloquentModel $model, AttributeValue $attributeValue)
     {
+
+
+        $id = $attributeValue->value();
+        $relationName = $attributeValue->name();
         $eloquentRelation = $model->relation($relationName);
         $relationSchema = $model->schema()->relations()->get($relationName);
-        mezzo_dd($relationName);
-
+        $relationSide = $attributeValue->attribute()->relationSide();
 
         /**
          * m:n Relation -> update the Pivot
          */
-        if ($eloquentRelation instanceof BelongsToMany)
+        if ($relationSchema->isManyToMany())
             return $this->updateBelongsToManyRelation($eloquentRelation, $id);
 
-        /**
-         * 1:n Relation (Left side) -> update the child rows in the foreign table
-         */
-        if ($eloquentRelation instanceof HasMany)
-            return $this->updateHasManyRelation($eloquentRelation, $id, $model);
+
 
 
         /**
@@ -210,43 +212,6 @@ class ModelRepository
 
     }
 
-    /**
-     * @param BelongsToMany $relation
-     * @param array $ids
-     * @return array
-     */
-    private function updateBelongsToManyRelation(BelongsToMany $relation, array $ids)
-    {
-        return $relation->sync($ids);
-    }
-
-    /**
-     * Set the parent of many child resources.
-     *
-     * @param HasMany $relation
-     * @param array $ids
-     * @param MezzoEloquentModel $parent
-     * @return bool
-     * @throws InvalidArgumentException
-     */
-    private function updateHasManyRelation(HasMany $relation, array $ids, MezzoEloquentModel $parent)
-    {
-        $foreignKey = $relation->getPlainForeignKey();
-
-        foreach ($ids as $id) {
-            if (!is_integer($id))
-                throw new InvalidArgumentException($id);
-
-            $foreignModel = $relation->getRelated();
-            $foreignChild = $foreignModel->newQuery()->where($foreignModel->getQualifiedKeyName(), '=', $id);
-            $result = $foreignChild->update([$foreignKey => $parent->id]);
-
-            if (!$result)
-                return false;
-        }
-
-        return true;
-    }
 
     /**
      * @param HasOne $relation
@@ -347,14 +312,7 @@ class ModelRepository
 
     }
 
-    public function exists($id, $table = null)
-    {
-        if (!$table) $table = $this->modelReflection()->tableName();
 
-        return ResourceExistsCache::checkExistence($table, $id, function () use ($table, $id) {
-            return $this->table($table)->where('id', '=', $id)->count() == 1;
-        });
-    }
 
     /**
      * @param array $data
@@ -381,6 +339,7 @@ class ModelRepository
         return $this->modelReflection;
     }
 
+
     /**
      * @return \MezzoLabs\Mezzo\Core\Schema\ModelSchema
      */
@@ -389,21 +348,12 @@ class ModelRepository
         return $this->modelReflection()->schema();
     }
 
-    /**
-     * @return \Illuminate\Database\MySqlConnection
-     */
-    protected function mysqlConnection()
+    public function exists($id, $table = null)
     {
-        return app('db');
+        if (!$table) $table = $this->modelReflection()->tableName();
+
+        return parent::exists($id, $table);
     }
 
-    /**
-     * @param $table
-     * @return \Illuminate\Database\Query\Builder
-     */
-    protected function table($table)
-    {
-        return $this->mysqlConnection()->table($table);
-    }
 
 }

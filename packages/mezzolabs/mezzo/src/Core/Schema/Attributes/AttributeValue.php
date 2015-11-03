@@ -38,7 +38,7 @@ class AttributeValue
     }
 
     /**
-     * @return Attribute
+     * @return Attribute|RelationAttribute
      */
     public function attribute()
     {
