@@ -30,8 +30,10 @@ Route::get('random',function(){
    return str_random(16);
 });
 
-Route::get('debug/auth', function(){
-    $user = User::where('email', '=', 'trigger3@hotmail.de')->first();
+Route::get('debug/tutorial', function () {
+    $tutorial = \App\Tutorial::findOrFail(1);
+    mezzo_dd($tutorial->first());
+    echo "hi";
 });
 
 Route::get('debug/rules', function () {
