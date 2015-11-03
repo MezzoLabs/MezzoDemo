@@ -48,12 +48,118 @@ class RelationUpdater extends EloquentRepository
         $this->validate();
     }
 
+    /**
+     * Check if the construct parameters are correct.
+     *
+     * @return bool
+     * @throws RepositoryException
+     */
     protected function validate()
     {
         if (!$this->attribute() instanceof RelationAttribute)
             throw new RepositoryException($this->attribute()->qualifiedName() . ' is not a relation.');
 
         return true;
+    }
+
+    /**
+     * @return array|bool
+     * @throws InvalidArgumentException
+     * @throws RepositoryException
+     */
+    public function run()
+    {
+        /**
+         * m:n Relation -> sync the Pivot
+         */
+        if ($this->relationSide()->isManyToMany())
+            return $this->updateBelongsToManyRelation($this->eloquentRelation(), $this->newId());
+
+        /**
+         * 1:n Relation (Left side) -> update the child rows in the foreign table
+         */
+        if ($this->relationSide()->isOneToMany() && $this->relationSide()->hasMultipleChildren())
+            return $this->updateHasManyRelation($this->eloquentRelation(), $this->newId());
+
+        /**
+         * 1:1 Relation (Side without the joining column) -> update the foreign joining column
+         */
+        if ($this->relationSide()->isOneToOne() && $this->relationSide()->containsTheJoinColumn())
+            return $this->updateHasOneRelation($this->eloquentRelation(), $this->newId());
+
+        throw new RepositoryException('This relation should not be updated with the relation updater. ' .
+            'Since it is a simple atomic value you should update the column of the main table instead.');
+
+    }
+
+    /**
+     * Updates m:n relationships.
+     *
+     * @param BelongsToMany $relation
+     * @param array $ids
+     * @return array
+     */
+    protected function updateBelongsToManyRelation(BelongsToMany $relation, array $ids)
+    {
+        $result = $relation->sync($ids);
+        return (is_array($result));
+    }
+
+    /**
+     * Update the part of a 1:1 relation that contains the joining column.
+     *
+     * @param HasOne $relation
+     * @param $id
+     * @return bool
+     * @throws RepositoryException
+     */
+    protected function updateHasOneRelation(HasOne $relation, $id)
+    {
+        if (!is_integer($id))
+            throw new RepositoryException('You need a simple integer to update the 1:1 relation '
+                . '"' . $this->qualifiedName() . '"');
+
+        $foreignModel = $relation->getRelated();
+        $foreignChild = $foreignModel->newQuery()->where($foreignModel->getQualifiedKeyName(), '=', $id);
+        $foreignKey = $relation->getPlainForeignKey();
+        $result = $foreignChild->update([$foreignKey => $this->parentId()]);
+
+        return $result == 1;
+    }
+
+
+    /**
+     * Set the parent of many child resources (Left side of a 1:n relationship)
+     *
+     * @param HasMany $relation
+     * @param array $ids
+     * @param MezzoEloquentModel $parent
+     * @return bool
+     * @throws InvalidArgumentException
+     */
+    protected function updateHasManyRelation(HasMany $relation, array $ids)
+    {
+        $foreignKey = $relation->getPlainForeignKey();
+
+        foreach ($ids as $id) {
+            if (!is_integer($id))
+                throw new InvalidArgumentException($id);
+
+            $foreignModel = $relation->getRelated();
+            $foreignChild = $foreignModel->newQuery()->where($foreignModel->getQualifiedKeyName(), '=', $id);
+            $result = $foreignChild->update([$foreignKey => $this->parentId()]);
+
+            if ($result != 1)
+                return false;
+        }
+
+        return true;
+    }
+
+
+    public function relationSide()
+    {
+        return $this->attribute()->relationSide();
     }
 
     /**
@@ -72,65 +178,6 @@ class RelationUpdater extends EloquentRepository
         return $this->attributeValue;
     }
 
-    public function run()
-    {
-        /**
-         * m:n Relation -> sync the Pivot
-         */
-        if ($this->relationSide()->isManyToMany())
-            return $this->updateBelongsToManyRelation($this->eloquentRelation(), $this->newId());
-
-        /**
-         * 1:n Relation (Left side) -> update the child rows in the foreign table
-         */
-        if ($this->relationSide()->isOneToMany() && $this->relationSide()->hasMultipleChildren())
-            return $this->updateHasManyRelation($this->eloquentRelation(), $this->newId(), $this->eloquentModel());
-
-    }
-
-    /**
-     * @param BelongsToMany $relation
-     * @param array $ids
-     * @return array
-     */
-    protected function updateBelongsToManyRelation(BelongsToMany $relation, array $ids)
-    {
-        return $relation->sync($ids);
-    }
-
-    /**
-     * Set the parent of many child resources.
-     *
-     * @param HasMany $relation
-     * @param array $ids
-     * @param MezzoEloquentModel $parent
-     * @return bool
-     * @throws InvalidArgumentException
-     */
-    protected function updateHasManyRelation(HasMany $relation, array $ids, MezzoEloquentModel $parent)
-    {
-        $foreignKey = $relation->getPlainForeignKey();
-
-        foreach ($ids as $id) {
-            if (!is_integer($id))
-                throw new InvalidArgumentException($id);
-
-            $foreignModel = $relation->getRelated();
-            $foreignChild = $foreignModel->newQuery()->where($foreignModel->getQualifiedKeyName(), '=', $id);
-            $result = $foreignChild->update([$foreignKey => $parent->id]);
-
-            if (!$result)
-                return false;
-        }
-
-        return true;
-    }
-
-    public function relationSide()
-    {
-        return $this->attribute()->relationSide();
-    }
-
     /**
      * Id(s) that we have to update.
      *
@@ -139,6 +186,11 @@ class RelationUpdater extends EloquentRepository
     public function newId()
     {
         return $this->attributeValue()->value();
+    }
+
+    public function parentId()
+    {
+        return $this->eloquentModel()->id;
     }
 
     /**
@@ -152,6 +204,7 @@ class RelationUpdater extends EloquentRepository
     /**
      * @param $eloquentRelationClass
      * @return bool
+     * @throws RepositoryException
      */
     protected function relationHasToBe($eloquentRelationClass)
     {
@@ -173,6 +226,11 @@ class RelationUpdater extends EloquentRepository
     public function relationName()
     {
         return $this->attribute()->name();
+    }
+
+    public function qualifiedName()
+    {
+        return $this->relationSide()->relation()->qualifiedName();
     }
 
 

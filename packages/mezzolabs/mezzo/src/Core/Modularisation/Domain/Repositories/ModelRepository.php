@@ -160,8 +160,6 @@ class ModelRepository extends EloquentRepository
     protected function updateRelations(MezzoEloquentModel $model, AttributeValues $relationAttributes)
     {
         $relationAttributes->each(function (AttributeValue $attributeValue) use ($model) {
-            $relationUpdater = new RelationUpdater($model, $attributeValue);
-            $relationUpdate = $relationUpdater->run();
 
             if (!$relationUpdate)
                 throw new RepositoryException('Cannot update the relation ' . $attributeValue->name());
@@ -171,44 +169,17 @@ class ModelRepository extends EloquentRepository
     }
 
     /**
-     * @param string $relationName
-     * @param array|integer $id
+     * @param MezzoEloquentModel $model
+     * @param AttributeValue $attributeValue
      * @return array
-     * @throws \Exception
-     * @throws \MezzoLabs\Mezzo\Exceptions\ReflectionException
+     * @throws RepositoryExceptionRefactored Refacto
      */
     protected function updateRelation(MezzoEloquentModel $model, AttributeValue $attributeValue)
     {
 
+        $relationUpdater = new RelationUpdater($model, $attributeValue);
 
-        $id = $attributeValue->value();
-        $relationName = $attributeValue->name();
-        $eloquentRelation = $model->relation($relationName);
-        $relationSchema = $model->schema()->relations()->get($relationName);
-        $relationSide = $attributeValue->attribute()->relationSide();
-
-        /**
-         * m:n Relation -> update the Pivot
-         */
-        if ($relationSchema->isManyToMany())
-            return $this->updateBelongsToManyRelation($eloquentRelation, $id);
-
-
-
-
-        /**
-         * 1:n Relation (Left side) -> update the child rows in the foreign table
-         */
-        if ($eloquentRelation instanceof BelongsTo)
-
-
-            /**
-             * 1:1 Relation or n:1 (Left side) -> Exception, use the column instead (updateRow)
-             */
-            if ($eloquentRelation instanceof HasOne)
-                throw new RepositoryException('You should not update the relation "' . $relationName . '". Use the column instead.');
-
-        throw new \Exception('This type of relation is not yet supported');
+        return $relationUpdater->run();
 
     }
 
