@@ -171,7 +171,7 @@ return [
 
     'formats' => [
 
-        'json' => 'Dingo\Api\Http\Response\Format\Json',
+        'json' => MezzoLabs\Mezzo\Http\Format\Json::class
 
     ]
 

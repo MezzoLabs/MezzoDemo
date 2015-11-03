@@ -5,6 +5,7 @@ namespace App\Mezzo\Generated\ModelParents;
 
 
 use App\Mezzo\BaseModel;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
@@ -26,14 +27,14 @@ abstract class MezzoUser extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password', 'roles'];
+    protected $fillable = ['name', 'email', 'password'];
 
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = [ 'remember_token', 'password'];
 
     /**
      * @var array
@@ -71,16 +72,23 @@ abstract class MezzoUser extends BaseModel
     /**
      *
      * @Mezzo\Attribute(type="DateTimeInput")
-     * @var string
+     * @var Carbon
      */
     protected $created_at;
 
     /**
      *
      * @Mezzo\Attribute(type="DateTimeInput")
-     * @var string
+     * @var Carbon
      */
     protected $updated_at;
+
+    /**
+     *
+     * @Mezzo\Attribute(type="TextInput")
+     * @var String
+     */
+    protected $remember_token;
 
     /**
      * @Mezzo\Attribute(type="RelationInputMultiple")
@@ -92,4 +100,17 @@ abstract class MezzoUser extends BaseModel
      * @var EloquentCollection
      */
     protected $roles;
+
+    /**
+     * @Mezzo\Attribute(type="RelationInputMultiple")
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="tutorials")
+     * @Mezzo\Relations\To(table="tutorials", primaryKey="id", naming="parent")
+     * @Mezzo\Relations\JoinColumn(table="tutorials", column="user_id")
+     *
+     * @var EloquentCollection
+     */
+    protected $tutorials;
+
+
 }

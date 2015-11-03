@@ -21,6 +21,7 @@ use MezzoLabs\Mezzo\Core\Routing\ApiConfig;
 use MezzoLabs\Mezzo\Core\Routing\Uri;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
 use MezzoLabs\Mezzo\Http\Requests\Request;
+use MezzoLabs\Mezzo\Http\Transformers\TransformerRegistrar;
 use MezzoLabs\Mezzo\Modules\General\GeneralModule;
 
 class RegisterBindings implements Bootstrapper
@@ -49,7 +50,8 @@ class RegisterBindings implements Bootstrapper
     protected $singletons = [
         ApiConfig::class,
         Uri::class,
-        NamingConvention::class
+        NamingConvention::class,
+        TransformerRegistrar::class
     ];
 
 

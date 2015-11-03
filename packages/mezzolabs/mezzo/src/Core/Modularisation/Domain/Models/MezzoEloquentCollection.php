@@ -20,14 +20,14 @@ class MezzoEloquentCollection
 
     public function asList()
     {
-        if ($this->isEmpty())
+        if($this->isEmpty())
             return [];
 
         $first = $this->collection->first();
         $titleAttribute = $this->detectTitleAttribute($first);
 
         $list = new Collection();
-        $this->each(function (MezzoEloquentModel $model) use ($list, $titleAttribute) {
+        $this->each(function(MezzoEloquentModel $model) use ($list, $titleAttribute){
             $list->put($model->id, $model->id . ' - ' . $model->getAttribute($titleAttribute));
         });
 
@@ -40,28 +40,6 @@ class MezzoEloquentCollection
     public function isEmpty()
     {
         return $this->collection->isEmpty();
-    }
-
-    protected function detectTitleAttribute(MezzoEloquentModel $model)
-    {
-        if ($model->getAttribute('title'))
-            return 'title';
-
-        if ($model->getAttribute('name'))
-            return 'name';
-
-        if ($model->getAttribute('key'))
-            return 'key';
-
-        if ($model->getAttribute('slug'))
-            return 'slug';
-
-        foreach ($model->getAttributes() as $key => $value) {
-            if (!in_array($key, $model->getHidden()) && in_array($key, $model->getFillable()))
-                return $key;
-        }
-
-        return 'id';
     }
 
     /**
@@ -79,5 +57,29 @@ class MezzoEloquentCollection
     public function eloquentCollection()
     {
         return $this->collection;
+    }
+
+    protected function detectTitleAttribute(MezzoEloquentModel $model){
+        if($model->getAttribute('title'))
+            return 'title';
+
+        if($model->getAttribute('label'))
+            return 'label';
+
+        if($model->getAttribute('name'))
+            return 'name';
+
+        if($model->getAttribute('key'))
+            return 'key';
+
+        if($model->getAttribute('slug'))
+            return 'slug';
+
+        foreach($model->getAttributes() as $key => $value){
+            if(!in_array($key, $model->getHidden()) && in_array($key, $model->getFillable()))
+                return $key;
+        }
+
+        return 'id';
     }
 }

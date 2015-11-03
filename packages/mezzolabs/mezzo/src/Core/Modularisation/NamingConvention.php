@@ -10,6 +10,8 @@ use MezzoLabs\Mezzo\Exceptions\NamingConventionException;
 use MezzoLabs\Mezzo\Http\Controllers\Controller;
 use MezzoLabs\Mezzo\Http\Controllers\ResourceControllerContract;
 use MezzoLabs\Mezzo\Http\Pages\ModulePage;
+use MezzoLabs\Mezzo\Http\Transformers\EloquentModelTransformer;
+use MezzoLabs\Mezzo\Http\Transformers\GenericEloquentModelTransformer;
 
 class NamingConvention
 {
@@ -65,20 +67,10 @@ class NamingConvention
         if ($object instanceof ResourceControllerContract)
             return static::modelNameForModuleController($object);
 
+        if($object instanceof EloquentModelTransformer)
+            return static::modelNameForTransformer($object);
+
         throw new NamingConventionException('Cannot find model name for ' . get_class($object));
-    }
-
-    /**
-     * @param ResourceControllerContract $object
-     * @return mixed
-     */
-    private static function modelNameForModuleController(ResourceControllerContract $object)
-    {
-        $shortName = Singleton::reflection($object)->getShortName();
-
-        $possibleModelName = str_replace(['ApiController', 'Controller'], '', $shortName);
-
-        return $possibleModelName;
     }
 
     /**
@@ -101,6 +93,31 @@ class NamingConvention
     }
 
     /**
+     * @param ResourceControllerContract $object
+     * @return mixed
+     */
+    private static function modelNameForModuleController(ResourceControllerContract $object)
+    {
+        $shortName = Singleton::reflection($object)->getShortName();
+
+        $possibleModelName = str_replace(['ApiController', 'Controller'], '', $shortName);
+
+        return $possibleModelName;
+    }
+
+    private static function modelNameForTransformer($object)
+    {
+        if($object instanceof GenericEloquentModelTransformer)
+            throw new NamingConventionException('Cannot find model for a generic model transformer.');
+
+        $shortName = Singleton::reflection($object)->getShortName();
+
+        $possibleModelName = str_replace(['Transformer'], '', $shortName);
+
+        return $possibleModelName;
+    }
+
+    /**
      * Get the full controller class via the module and the name of the controller.
      *
      * @param ModuleProvider $module
@@ -116,7 +133,7 @@ class NamingConvention
         if (!strpos($controllerName, 'Controller'))
             $controllerName .= 'Controller';
 
-        if (class_exists($controllerName))
+        if(class_exists($controllerName))
             return $controllerName;
 
         /**

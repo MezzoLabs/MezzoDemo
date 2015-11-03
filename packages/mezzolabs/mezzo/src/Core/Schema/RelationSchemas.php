@@ -113,4 +113,13 @@ class RelationSchemas
         return $this->relations;
     }
 
+    /**
+     * @param $key
+     * @return Relation
+     */
+    public function get($key)
+    {
+        return $this->relations->get($key);
+    }
+
 }

@@ -19,6 +19,65 @@ class Attributes extends Collection
     }
 
     /**
+     * @param Attribute $attribute
+     * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
+     * @throws InvalidArgumentException
+     */
+    public function addAttribute(Attribute $attribute)
+    {
+        return $this->put($attribute->name(), $attribute);
+    }
+
+    /**
+     * @return static
+     */
+    public function atomicAttributes()
+    {
+        return $this->filter(function (Attribute $attribute) {
+            return $attribute instanceof AtomicAttribute;
+        });
+    }
+
+    /**
+     * @return static
+     */
+    public function relationAttributes()
+    {
+        return $this->filter(function (Attribute $attribute) {
+            return $attribute instanceof RelationAttribute;
+        });
+    }
+
+    /**
+     * @return static
+     */
+    public function visibleOnly()
+    {
+        return $this->filter(function(Attribute $attribute){
+            return $attribute->isVisible();
+        });
+    }
+
+    /**
+     * @return static
+     */
+    public function hiddenOnly()
+    {
+        return $this->diff($this->visibleOnly());
+    }
+
+
+    /**
+     * @return static
+     */
+    public function fillableOnly()
+    {
+        return $this->filter(function(Attribute $attribute){
+            return $attribute->isFillable();
+        });
+    }
+
+    /**
      * Returns an Attribute Collection via the converted columns
      *
      * @param Collection|Columns $columns
@@ -34,57 +93,5 @@ class Attributes extends Collection
         });
 
         return $attributes;
-    }
-
-    /**
-     * @param Attribute $attribute
-     * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
-     * @throws InvalidArgumentException
-     */
-    public function addAttribute(Attribute $attribute)
-    {
-        return $this->put($attribute->name(), $attribute);
-    }
-
-    /**
-     * @return Collection
-     */
-    public function atomicAttributes()
-    {
-        return $this->filter(function (Attribute $attribute) {
-            return $attribute instanceof AtomicAttribute;
-        });
-    }
-
-    /**
-     * @return Collection
-     */
-    public function relationAttributes()
-    {
-        return $this->filter(function (Attribute $attribute) {
-            return $attribute instanceof RelationAttribute;
-        });
-    }
-
-    /**
-     * @return Attributes
-     */
-    public function hiddenOnly()
-    {
-        return $this->diff($this->visibleOnly());
-    }
-
-    public function visibleOnly()
-    {
-        return $this->filter(function (Attribute $attribute) {
-            return $attribute->isVisible();
-        });
-    }
-
-    public function fillableOnly()
-    {
-        return $this->filter(function (Attribute $attribute) {
-            return $attribute->isFillable();
-        });
     }
 } 

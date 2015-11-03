@@ -37,7 +37,7 @@ class Tutorial extends MezzoTutorial
 
     public function parent()
     {
-        return $this->hasOne('App\Tutorial', 'parent');
+        return $this->hasOne('App\Tutorial', 'id', 'parent_id');
     }
 
     public function comments()

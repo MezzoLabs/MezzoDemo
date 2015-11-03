@@ -6,13 +6,25 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use MezzoLabs\Mezzo\Core\Cache\ResourceExistsCache;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValue;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValues;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
+use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 
-class ModelRepository
+class ModelRepository extends EloquentRepository
 {
     /**
      * @var MezzoModelReflection
@@ -96,6 +108,8 @@ class ModelRepository
      */
     public function create(array $data)
     {
+        //TODO Check for Relations
+        $values = $this->values($data);
         return $this->modelInstance()->create($data);
     }
 
@@ -107,7 +121,74 @@ class ModelRepository
      */
     public function update(array $data, $id, $attribute = "id")
     {
-        return $this->query()->where($attribute, '=', $id)->update($data);
+        $values = $this->values($data);
+
+        $model = $this->findByOrFail($attribute, $id);
+
+        $result = $this->updateRow($values->inMainTableOnly(), $id, $attribute);
+
+        $relationResult = $this->updateRelations($model, $values->inForeignTablesOnly());
+
+        if (!$relationResult)
+            $result = -1;
+
+        return $result;
+    }
+
+    /**
+     *
+     *
+     * @param AttributeValues $atomicAttributes
+     * @param $id
+     * @param $attribute
+     * @return int
+     */
+    protected function updateRow(AttributeValues $atomicAttributes, $id, $attribute)
+    {
+        $values = $atomicAttributes->toArray();
+
+        if (empty($values))
+            return 1;
+
+        return $this->query()->where($attribute, '=', $id)->update($values);
+
+    }
+
+    /**
+     * @param MezzoEloquentModel $model
+     * @param AttributeValues $relationAttributes
+     * @return bool
+     */
+    protected function updateRelations(MezzoEloquentModel $model, AttributeValues $relationAttributes)
+    {
+        $relationAttributes->each(function (AttributeValue $attributeValue) use ($model) {
+            $result = $this->updateRelation($model, $attributeValue);
+            if (!$result)
+                throw new RepositoryException('Cannot update the relation ' . $attributeValue->name());
+        });
+
+        return true;
+    }
+
+    /**
+     * @param MezzoEloquentModel $model
+     * @param AttributeValue $attributeValue
+     * @return array
+     * @throws RepositoryException
+     */
+    protected function updateRelation(MezzoEloquentModel $model, AttributeValue $attributeValue)
+    {
+        $relationUpdater = new RelationUpdater($model, $attributeValue);
+        return $relationUpdater->run();
+    }
+
+    /**
+     * @param $relation
+     * @return BelongsToMany|Relation
+     */
+    protected function getRelation($relation)
+    {
+        return $this->modelInstance()->$relation();
     }
 
     /**
@@ -122,17 +203,18 @@ class ModelRepository
     /**
      * @param $id
      * @param array $columns
-     * @return mixed
+     * @return MezzoEloquentModel
      */
     public function find($id, $columns = array('*'))
     {
         return $this->query()->find($id, $columns);
     }
 
+
     /**
      * @param $id
      * @param array $columns
-     * @return Collection|Model
+     * @return Collection|MezzoEloquentModel
      */
     public function findOrFail($id, $columns = array('*'))
     {
@@ -152,6 +234,22 @@ class ModelRepository
     }
 
     /**
+     * @param $attribute
+     * @param $value
+     * @param array $columns
+     * @return mixed
+     */
+    public function findByOrFail($attribute, $value, $columns = ['*'])
+    {
+        $found = $this->findBy($attribute, $value, $columns);
+
+        if (!$found)
+            throw new ModelNotFoundException();
+
+        return $found;
+    }
+
+    /**
      * Create a new generic model repository for a given model class.
      *
      * @param string|ModelReflection|ModelReflectionSet $model
@@ -168,6 +266,17 @@ class ModelRepository
 
     }
 
+
+
+    /**
+     * @param array $data
+     * @return AttributeValues
+     */
+    protected function values(array $data)
+    {
+        return AttributeValues::fromArray($this->modelSchema(), $data);
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -175,5 +284,30 @@ class ModelRepository
     {
         return $this->modelReflection->instance();
     }
+
+    /**
+     * @return MezzoModelReflection
+     */
+    public function modelReflection()
+    {
+        return $this->modelReflection;
+    }
+
+
+    /**
+     * @return \MezzoLabs\Mezzo\Core\Schema\ModelSchema
+     */
+    public function modelSchema()
+    {
+        return $this->modelReflection()->schema();
+    }
+
+    public function exists($id, $table = null)
+    {
+        if (!$table) $table = $this->modelReflection()->tableName();
+
+        return parent::exists($id, $table);
+    }
+
 
 }

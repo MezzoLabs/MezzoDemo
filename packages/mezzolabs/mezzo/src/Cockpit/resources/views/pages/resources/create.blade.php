@@ -12,9 +12,12 @@
                     <!-- Title -->
                     <div class="form-group" ng-class="vm.hasError(vm.form.title)">
                         <label>Title</label>
-                        <input type="text" name="title" class="form-control" placeholder="Title" ng-model="vm.model.title"
+                        <input type="text" name="title" class="form-control" placeholder="Title"
+                               ng-model="vm.model.title"
                                required minlength="3" maxlength="30">
-                        <div class="help-block text-danger" ng-messages="vm.form.title.$error" ng-show="vm.form.title.$dirty">
+
+                        <div class="help-block text-danger" ng-messages="vm.form.title.$error"
+                             ng-show="vm.form.title.$dirty">
                             <div ng-message="required">required</div>
                             <div ng-message="minlength">minlength</div>
                             <div ng-message="maxlength">maxlength</div>
@@ -28,7 +31,9 @@
                         <textarea name="body" class="form-control" placeholder="Body" ng-model="vm.model.body"
                                   required minlength="10" maxlength="1000">
                         </textarea>
-                        <div class="help-block text-danger" ng-messages="vm.form.body.$error" ng-show="vm.form.body.$dirty">
+
+                        <div class="help-block text-danger" ng-messages="vm.form.body.$error"
+                             ng-show="vm.form.body.$dirty">
                             <div ng-message="required">required</div>
                             <div ng-message="minlength">minlength</div>
                             <div ng-message="maxlength">maxlength</div>
@@ -39,9 +44,12 @@
                     <!-- Created at -->
                     <div class="form-group" ng-class="vm.hasError(vm.form.createdAt)">
                         <label>Created at</label>
-                        <input type="datetime-local" name="createdAt" class="form-control" placeholder="Created at" ng-model="vm.model.createdAt"
+                        <input type="datetime-local" name="createdAt" class="form-control" placeholder="Created at"
+                               ng-model="vm.model.createdAt"
                                required>
-                        <div class="help-block text-danger" ng-messages="vm.form.createdAt.$error" ng-show="vm.form.createdAt.$dirty">
+
+                        <div class="help-block text-danger" ng-messages="vm.form.createdAt.$error"
+                             ng-show="vm.form.createdAt.$dirty">
                             <div ng-message="required">required</div>
                         </div>
                     </div>
@@ -50,9 +58,12 @@
                     <!-- Updated at -->
                     <div class="form-group" ng-class="vm.hasError(vm.form.updatedAt)">
                         <label>Updated at</label>
-                        <input type="datetime-local" name="updatedAt" class="form-control" placeholder="Updated at" ng-model="vm.model.updatedAt"
+                        <input type="datetime-local" name="updatedAt" class="form-control" placeholder="Updated at"
+                               ng-model="vm.model.updatedAt"
                                required>
-                        <div class="help-block text-danger" ng-messages="vm.form.updatedAt.$error" ng-show="vm.form.updateddAt.$dirty">
+
+                        <div class="help-block text-danger" ng-messages="vm.form.updatedAt.$error"
+                             ng-show="vm.form.updateddAt.$dirty">
                             <div ng-message="required">required</div>
                         </div>
                     </div>
@@ -65,7 +76,9 @@
                                 ng-options="user.name for user in vm.users track by user.id"
                                 required>
                         </select>
-                        <div class="help-block text-danger" ng-messages="vm.form.userId.$error" ng-show="vm.form.userId.$dirty">
+
+                        <div class="help-block text-danger" ng-messages="vm.form.userId.$error"
+                             ng-show="vm.form.userId.$dirty">
                             <div ng-message="required">required</div>
                         </div>
                     </div>

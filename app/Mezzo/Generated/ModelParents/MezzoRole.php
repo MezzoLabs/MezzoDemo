@@ -27,6 +27,9 @@ abstract class MezzoRole extends BaseModel
      */
     protected $fillable = ['name', 'label'];
 
+    public $timestamps = false;
+
+
     /**
      * The attributes excluded from the model's JSON form.
      *
@@ -35,8 +38,8 @@ abstract class MezzoRole extends BaseModel
     protected $hidden = [];
 
     protected $rules = [
-        'name' => 'required|max:255|alpha_dash',
-        'label' => 'required|max:255|alpha_num'
+        'name' => 'required|max:255|alpha_dash|unique:roles',
+        'label' => 'required|max:255|alpha_num|unique:roles'
     ];
 
     /**
@@ -57,19 +60,6 @@ abstract class MezzoRole extends BaseModel
      */
     protected $label;
 
-    /**
-     *
-     * @Mezzo\Attribute(type="DateInput")
-     * @var string
-     */
-    protected $created_at;
-
-    /**
-     *
-     * @Mezzo\Attribute(type="DateInput")
-     * @var string
-     */
-    protected $updated_at;
 
     /**
      * @Mezzo\Attribute(type="RelationInputMultiple")
@@ -81,4 +71,15 @@ abstract class MezzoRole extends BaseModel
      * @var EloquentCollection
      */
     protected $users;
+
+    /**
+     * @Mezzo\Attribute(type="RelationInputMultiple")
+     * @Mezzo\Relations\ManyToMany
+     * @Mezzo\Relations\From(table="roles", primaryKey="id", naming="permissions")
+     * @Mezzo\Relations\To(table="permissions", primaryKey="id", naming="roles")
+     * @Mezzo\Relations\PivotTable(name="permissions_role", fromColumn="role_id", toColumn="permission_id")
+     *
+     * @var EloquentCollection
+     */
+    protected $permissions;
 }

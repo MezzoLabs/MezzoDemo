@@ -10,6 +10,8 @@ module_route('User', [], function (Router $router, ApiRouter $api, CockpitRouter
     $api->resource('User');
     $api->resource('Permission');
     $api->resource('Role');
+
+    //$api->relation('User', 'roles');
 });
 
 

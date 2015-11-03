@@ -26,13 +26,13 @@ class AttributeRenderer extends AttributeSchemaRenderer
      */
     public function render()
     {
-        if ($this->inputType() instanceof SimpleInput)
+        if($this->inputType() instanceof SimpleInput)
             return $this->renderSimpleInput($this->attribute());
 
-        if ($this->inputType() instanceof RelationInputSingle)
+        if($this->inputType() instanceof RelationInputSingle)
             return $this->renderRelationInputSingle($this->attribute());
 
-        if ($this->inputType() instanceof RelationInputMultiple)
+        if($this->inputType() instanceof RelationInputMultiple)
             return $this->renderRelationInputMultiple($this->attribute());
 
         return "!! Cannot render " . get_class($this->inputType());
@@ -49,6 +49,38 @@ class AttributeRenderer extends AttributeSchemaRenderer
     }
 
     /**
+     * @param RelationAttribute $attribute
+     * @return string
+     */
+    protected function renderRelationInputSingle(RelationAttribute $attribute)
+    {
+        $list = $this->makeEloquentList($attribute, true);
+        return $this->formBuilder()->select($attribute->name(),  $list, null, $this->htmlAttributes());
+    }
+
+
+    protected function renderRelationInputMultiple(RelationAttribute $attribute)
+    {
+        $list = $this->makeEloquentList($attribute, false);
+        return $this->formBuilder()->select($attribute->name(),  $list, null, $this->htmlAttributes());
+    }
+
+    /**
+     * Create a list for a select box.
+     *
+     * @param RelationAttribute $attribute
+     * @return static
+     */
+    protected function makeEloquentList(RelationAttribute $attribute, $addPleaseSelect = true){
+        $collection = new MezzoEloquentCollection($attribute->otherModelReflection()->all());
+        if(!$addPleaseSelect)
+            return $collection->asList();
+
+        return $collection->asList()->merge([null=>'Please Select']);
+
+    }
+
+    /**
      * @return FormBuilder
      */
     public function formBuilder()
@@ -56,24 +88,6 @@ class AttributeRenderer extends AttributeSchemaRenderer
         return app(FormBuilder::class);
     }
 
-    /**
-     * Create an array of html attributes for this attribute schema.
-     *
-     * @return array
-     */
-    protected function htmlAttributes()
-    {
-        $attributes = new Collection();
-
-        $attributes->put('class', $this->cssClass);
-
-        $attributes = $attributes->merge($this->validationAttributes());
-
-        if ($this->attribute->isRelationAttribute())
-            $attributes = $attributes->merge($this->relationAttributes($this->attribute()));
-
-        return $attributes->toArray();
-    }
 
     /**
      * Generate the attributes that angular can use for validation.
@@ -94,39 +108,29 @@ class AttributeRenderer extends AttributeSchemaRenderer
 
         $attributes->put('data-multiple', $attribute->hasMultipleChildren());
 
-        if ($attribute->hasMultipleChildren())
+        if($attribute->hasMultipleChildren())
             $attributes->put('multiple', 'multiple');
 
         return $attributes;
     }
 
     /**
-     * @param RelationAttribute $attribute
-     * @return string
-     */
-    protected function renderRelationInputSingle(RelationAttribute $attribute)
-    {
-        $list = $this->makeEloquentList($attribute);
-        return $this->formBuilder()->select($attribute->name(), $list, null, $this->htmlAttributes());
-    }
-
-    /**
-     * Create a list for a select box.
+     * Create an array of html attributes for this attribute schema.
      *
-     * @param RelationAttribute $attribute
-     * @return static
+     * @return array
      */
-    protected function makeEloquentList(RelationAttribute $attribute)
+    protected function htmlAttributes()
     {
-        $collection = new MezzoEloquentCollection($attribute->otherModelReflection()->all());
-        $list = $collection->asList()->merge([null => 'Please Select']);
-        return $list;
-    }
+        $attributes = new Collection();
 
-    protected function renderRelationInputMultiple(RelationAttribute $attribute)
-    {
-        $list = $this->makeEloquentList($attribute);
-        return $this->formBuilder()->select($attribute->name(), $list, null, $this->htmlAttributes());
+        $attributes->put('class', $this->cssClass);
+
+        $attributes = $attributes->merge($this->validationAttributes());
+
+        if($this->attribute->isRelationAttribute())
+            $attributes = $attributes->merge($this->relationAttributes($this->attribute()));
+
+        return $attributes->toArray();
     }
 
 

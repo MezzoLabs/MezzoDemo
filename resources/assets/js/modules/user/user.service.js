@@ -1,5 +1,6 @@
-export default { name: 'userService', service };
+export default {name: 'userService', service};
 
-/*@ngInject*/ function service(){
+/*@ngInject*/
+function service() {
     return {};
 }

@@ -254,6 +254,26 @@ abstract class Relation
         return static::class;
     }
 
+    public function isManyToMany()
+    {
+        return $this instanceof ManyToMany;
+    }
+
+    public function isOneToMany()
+    {
+        return $this instanceof OneToMany;
+    }
+
+    public function isOneToOne()
+    {
+        return $this instanceof OneToOne;
+    }
+
+    public function isOneToOneOrMany()
+    {
+        return $this instanceof OneToOneOrMany;
+    }
+
     public function shortType()
     {
         $parts = explode('\\', $this->type());

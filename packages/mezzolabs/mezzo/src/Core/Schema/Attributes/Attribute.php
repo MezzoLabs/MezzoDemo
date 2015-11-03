@@ -221,6 +221,9 @@ class Attribute
         return $this instanceof RelationAttribute;
     }
 
+    /**
+     * @return string
+     */
     public function title()
     {
         if (!$this->title) {

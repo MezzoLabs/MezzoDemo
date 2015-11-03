@@ -130,6 +130,18 @@ class ApiRouter
         $this->delete($uri . '/{id}', $controller->qualifiedActionName('destroy'));
     }
 
+    public function relation($modelName, $relationName, $controllerName = "")
+    {
+        if (empty($controllerName))
+            $controllerName = $modelName . 'ApiController';
+
+        $controller = $this->module->apiResourceController($controllerName);
+
+        $uri = $this->modelUri($controller->model()) . '/' . $relationName;
+
+        $this->get($uri, $controller->qualifiedActionName($relationName . 'Index'));
+    }
+
 
 
     public function modelUri(ModelReflection $model)

@@ -17,6 +17,7 @@ use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterConsoleCommands;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterInternalProviders;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterMiddleware;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterModuleProviders;
+use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RegisterTransformers;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RunModelReflection;
 use MezzoLabs\Mezzo\Core\Booting\Bootstrappers\RunThirdPartyWrappers;
 use MezzoLabs\Mezzo\Core\Mezzo;
@@ -73,7 +74,8 @@ class BootManager
             RegisterMiddleware::class,
             IncludeMezzoRouting::class,
             IncludeCockpitRouting::class,
-            AddBladeDirectives::class
+            AddBladeDirectives::class,
+            RegisterTransformers::class
         ]
     ];
 

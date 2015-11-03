@@ -7,6 +7,8 @@ use App\Permission;
 use App\Role;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Modules\User\Http\Transformers\RoleTransformer;
+use MezzoLabs\Mezzo\Modules\User\Http\Transformers\UserTransformer;
 
 class UserModule extends ModuleProvider
 {
@@ -14,6 +16,10 @@ class UserModule extends ModuleProvider
         User::class,
         Role::class,
         Permission::class
+    ];
+
+    protected $transformers = [
+
     ];
 
     /**
@@ -33,8 +39,12 @@ class UserModule extends ModuleProvider
      */
     public function ready()
     {
-
-
+        /**
+        $this->registerTransformers([
+            User::class => UserTransformer::class,
+            Role::class => RoleTransformer::class
+        ]);
+         * **/
         //dd($tutorialReflection->relationships());
     }
 }
