@@ -2,13 +2,14 @@
 
 namespace App;
 
+use App\Mezzo\Generated\ModelParents\MezzoComment;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * App\Comments
  *
  */
-class Comment extends Model
+class Comment extends MezzoComment
 {
 
     public function tutorial()

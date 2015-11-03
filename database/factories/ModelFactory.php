@@ -1,5 +1,6 @@
 <?php
 
+use App\Comment;
 use App\Tutorial;
 use App\User;
 
@@ -49,6 +50,20 @@ $factory->define(Tutorial::class, function(Faker\Generator $faker){
 
     if ($parent)
         $array['parent'] = $parent;
+
+    return $array;
+});
+
+$factory->define(Comment::class, function (Faker\Generator $faker) {
+    $users = User::all()->lists('id')->keys();
+
+    $tutorials = Tutorial::all()->lists('id')->keys();
+
+    $array = [
+        'content' => $faker->text(700),
+        'user_id' => $users->random(),
+        'tutorial_id' => $tutorials->random()
+    ];
 
     return $array;
 });

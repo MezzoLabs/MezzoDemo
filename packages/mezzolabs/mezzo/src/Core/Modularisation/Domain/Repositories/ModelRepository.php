@@ -125,10 +125,12 @@ class ModelRepository extends EloquentRepository
 
         $model = $this->findByOrFail($attribute, $id);
 
-
         $result = $this->updateRow($values->inMainTableOnly(), $id, $attribute);
 
         $relationResult = $this->updateRelations($model, $values->inForeignTablesOnly());
+
+        if (!$relationResult)
+            $result = -1;
 
         return $result;
     }
@@ -160,8 +162,8 @@ class ModelRepository extends EloquentRepository
     protected function updateRelations(MezzoEloquentModel $model, AttributeValues $relationAttributes)
     {
         $relationAttributes->each(function (AttributeValue $attributeValue) use ($model) {
-
-            if (!$relationUpdate)
+            $result = $this->updateRelation($model, $attributeValue);
+            if (!$result)
                 throw new RepositoryException('Cannot update the relation ' . $attributeValue->name());
         });
 
@@ -172,31 +174,12 @@ class ModelRepository extends EloquentRepository
      * @param MezzoEloquentModel $model
      * @param AttributeValue $attributeValue
      * @return array
-     * @throws RepositoryExceptionRefactored Refacto
+     * @throws RepositoryException
      */
     protected function updateRelation(MezzoEloquentModel $model, AttributeValue $attributeValue)
     {
-
         $relationUpdater = new RelationUpdater($model, $attributeValue);
-
         return $relationUpdater->run();
-
-    }
-
-
-    /**
-     * @param HasOne $relation
-     * @param $id
-     * @throws InvalidArgumentException
-     */
-    private function updateHasOneRelation(HasOne $relation, $id)
-    {
-        if (!is_integer($id))
-            throw new InvalidArgumentException($id);
-
-
-        mezzo_dd($relation);
-
     }
 
     /**
