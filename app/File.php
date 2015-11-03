@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Mezzo\Generated\ModelParents\MezzoFile;
 
-class File extends Model
+class File extends MezzoFile
 {
     public function images()
     {

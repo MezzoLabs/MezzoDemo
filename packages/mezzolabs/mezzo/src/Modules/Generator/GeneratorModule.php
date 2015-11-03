@@ -9,6 +9,7 @@ use App\User;
 use Illuminate\Support\Facades\Blade;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
+use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateModelParent;
 
 class GeneratorModule extends ModuleProvider
 {
@@ -19,7 +20,8 @@ class GeneratorModule extends ModuleProvider
     protected $generatorFactory;
 
     protected $commands = [
-        GenerateForeignFields::class
+        GenerateForeignFields::class,
+        GenerateModelParent::class
     ];
 
     protected $group = "development";

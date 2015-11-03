@@ -209,4 +209,12 @@ abstract class ModelReflection
         return $this->instance()->all($columns);
     }
 
+    /**
+     * @return string
+     */
+    public function fileName()
+    {
+        return $this->reflectionClass()->getFileName();
+    }
+
 }

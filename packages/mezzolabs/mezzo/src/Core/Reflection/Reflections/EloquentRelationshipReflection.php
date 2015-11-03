@@ -320,6 +320,7 @@ class EloquentRelationshipReflection
         if (!$this->counterpart) {
             $counterpartModel = $this->relatedModelReflection();
 
+
             $this->counterpart = $counterpartModel->relationshipReflections()->findCounterpartTo($this);
         }
 
@@ -361,11 +362,11 @@ class EloquentRelationshipReflection
     /**
      * Get the reflection of the related model.
      *
-     * @return ModelReflection
+     * @return EloquentModelReflection
      */
     public function relatedModelReflection()
     {
-        return MezzoModelsReflector::getReflection($this->instance()->getRelated());
+        return mezzo()->model($this->instance()->getRelated(), 'eloquent');
 
     }
 

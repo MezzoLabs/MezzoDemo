@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Reflection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentRelationshipReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentRelationshipReflections;

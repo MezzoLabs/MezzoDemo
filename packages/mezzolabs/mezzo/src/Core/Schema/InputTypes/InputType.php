@@ -39,23 +39,38 @@ abstract class InputType
 
     /**
      * @param $type
+     * @param string $columnName
      * @return InputType
      */
-    public static function fromColumnType($type)
+    public static function fromColumnType($type, $columnName = "")
     {
-        $class = TextInput::class;
+        $inputTypeClass = static::getClassByColumn($type, $columnName);
 
+        return new $inputTypeClass;
+    }
+
+
+    protected static function getClassByColumn($type, $columnName)
+    {
         //@TODO: Add more, move to config
-        switch ($type) {
-            case 'text':
-                $class = TextArea::class;
-                break;
-            case 'integer':
-                $class = NumberInput::class;
-                break;
+
+        switch ($columnName) {
+            case 'id':
+                return PrimaryKeyInput::class;
+            case 'updated_at':
+            case 'created_at':
+                return DateTimeInput::class;
         }
 
-        return new $class;
+
+        switch ($type) {
+            case 'text':
+                return TextArea::class;
+            case 'integer':
+                return NumberInput::class;
+        }
+
+        return TextInput::class;
     }
 
     /**

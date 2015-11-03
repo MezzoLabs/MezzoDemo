@@ -128,9 +128,12 @@ class FluentAttribute extends Fluent
      */
     protected function makeAtomicAttribute()
     {
+        $name = $this->offsetGet('name');
+        $type = $this->get('type', 'string');
+
         $attribute = new AtomicAttribute(
-            $this->offsetGet('name'),
-            InputType::fromColumnType($this->get('type', 'string')),
+            $name,
+            InputType::fromColumnType($type, $name),
             $this->get('options', [])
         );
 

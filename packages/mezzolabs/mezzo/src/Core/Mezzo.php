@@ -80,11 +80,21 @@ class Mezzo
 
     /**
      * @param $modelName
+     * @param string $type
      * @return Reflection\Reflections\ModelReflection
      */
-    public function model($modelName)
+    public function model($modelName, $type = "best")
     {
-        return $this->makeReflectionManager()->modelReflection($modelName);
+        $reflectionManager = $this->makeReflectionManager();
+
+        if ($type == "mezzo")
+            return $reflectionManager->mezzoReflection($modelName);
+
+        if ($type == "eloquent")
+            return $reflectionManager->eloquentReflection($modelName);
+
+        return $reflectionManager->modelReflection($modelName);
+
     }
 
     /**

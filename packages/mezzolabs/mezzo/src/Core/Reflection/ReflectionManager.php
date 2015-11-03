@@ -124,7 +124,7 @@ class ReflectionManager
     /**
      * @param string $model Short or long class name or even the name of the table.
      * @return ModelReflection
-     * @throws InvalidArgumentException
+     * @throws ReflectionException
      */
     public function mezzoReflection($model)
     {
@@ -134,7 +134,17 @@ class ReflectionManager
             return $reflectionSet->mezzoReflection();
 
         throw new ReflectionException($model . ' is not a valid MezzoModel.');
+    }
 
+    /**
+     * @param $model
+     * @return Reflections\EloquentModelReflection
+     */
+    public function eloquentReflection($model)
+    {
+        $reflectionSet = $this->sets()->getOrCreate($model);
+
+        return $reflectionSet->eloquentReflection();
     }
 
 

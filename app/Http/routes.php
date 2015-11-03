@@ -72,13 +72,16 @@ Route::any('debug/controller', 'TestController@foo');
 
 Route::get('debug/generator', function () {
 
-    $generator = GeneratorModule::make();
+    $reflectionManager = mezzo()->makeReflectionManager();
+    $reflection = $reflectionManager->eloquentReflection('File');
+    $schema = $reflection->schema();
 
-    $reflector = mezzo()->reflector();
+    $schemas = new \MezzoLabs\Mezzo\Core\Schema\ModelSchemas();
+    $schemas->addSchema($schema);
 
-    $traitGenerator = $generator->generatorFactory()->modelTraitGenerator($reflector->modelSchemas());
-
-    $traitGenerator->run();
+    $generatorFactory = GeneratorModule::make()->generatorFactory();
+    $modelParentGenerator = $generatorFactory->modelParentGenerator($schemas);
+    $modelParentGenerator->run();
 
     //return view('debugmodels', ['generator' => $generator]);
 });

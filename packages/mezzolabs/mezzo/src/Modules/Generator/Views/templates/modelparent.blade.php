@@ -19,7 +19,7 @@ protected $table = '{{ $parent->table() }}';
 
 protected $rules = {!! $php->rulesArray($parent->modelSchema()) !!}
 
-@foreach($parent->attributeAnnotatinos() as $attribute)
+@foreach($parent->attributes() as $attribute)
     /**
     *
     {!! $annotation->attribute($attribute) !!}

@@ -23,7 +23,6 @@ class File
      */
     public function __construct($filename, $content)
     {
-
         $this->filename = $filename;
         $this->content = $content;
     }
@@ -58,5 +57,13 @@ class File
         if (!$saved) throw new CannotGenerateFileException($this->filename . ' cannot be written.');
 
         return true;
+    }
+
+    public function dump()
+    {
+        echo "<pre>";
+        echo $this->filename() . "\r\n";
+        var_export($this->content());
+        echo "</pre>";
     }
 } 

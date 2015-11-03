@@ -44,27 +44,8 @@ class GenerateModelParent extends MezzoCommand
     {
         $this->mezzo->makeDatabaseReader();
 
-        $notPersisted = $this->allJoinColumns()->filter(function (JoinColumn $column) {
-            return !$column->isPersisted();
-        });
-
-        $toAdd = Attributes::fromColumns($notPersisted);
-
-        $changeSet = new ChangeSet();
-        $changeSet->createAttributes($toAdd);
-
-        $migrationGenerator = new MigrationGenerator($changeSet);
-
-
-        $migrationGenerator->run();
-    }
-
-    /**
-     * @return Collection
-     */
-    protected function allJoinColumns()
-    {
-        return $this->mezzo->reflector()->relationSchemas()->joinColumns();
 
     }
+
+
 }
