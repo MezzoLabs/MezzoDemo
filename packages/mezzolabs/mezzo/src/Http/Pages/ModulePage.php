@@ -247,7 +247,7 @@ abstract class ModulePage implements ModulePageContract
     public function title()
     {
         if (!$this->title) {
-            $this->title = $this->name();
+            $this->title = ucfirst(snake_case($this->name(), ' '));
         }
 
         return $this->title;
