@@ -9,7 +9,7 @@ use App\Tutorial;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Modules\FileManager\FileUpload\FileUploader;
-
+#
 class FileManagerModule extends ModuleProvider
 {
 
@@ -18,7 +18,7 @@ class FileManagerModule extends ModuleProvider
     ];
 
     protected $options = [
-        'icon' => 'ion-file'
+        'icon' => 'ion-ios-folder'
     ];
 
     /**
