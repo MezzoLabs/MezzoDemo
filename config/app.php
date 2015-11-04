@@ -154,6 +154,7 @@ return [
         JeroenG\Packager\PackagerServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
+        Codesleeve\LaravelStapler\Providers\L5ServiceProvider::class,
 
         /*
          * Mezzo Provider - Mezzo is love

@@ -7,7 +7,7 @@ namespace MezzoLabs\Mezzo\Modules\Generator;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchemas;
 use MezzoLabs\Mezzo\Modules\Generator\Generators\MigrationGenerator;
-use MezzoLabs\Mezzo\Modules\Generator\Generators\ModelGenerator;
+use MezzoLabs\Mezzo\Modules\Generator\Generators\ModelParentGenerator;
 use MezzoLabs\Mezzo\Modules\Generator\Migration\ChangeSet;
 
 class GeneratorFactory
@@ -37,12 +37,12 @@ class GeneratorFactory
     }
 
     /**
-     * @param ModelSchemas $modelsSchema
-     * @return ModelGenerator
+     * @param ModelSchemas $modelSchemas
+     * @return ModelParentGenerator
      */
-    public function modelTraitGenerator(ModelSchemas $modelsSchema)
+    public function modelParentGenerator(ModelSchemas $modelSchemas)
     {
-        return new ModelGenerator($modelsSchema);
+        return new ModelParentGenerator($modelSchemas);
     }
 
 }

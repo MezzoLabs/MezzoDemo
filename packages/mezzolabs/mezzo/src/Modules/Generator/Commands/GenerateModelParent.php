@@ -9,7 +9,7 @@ use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
 use MezzoLabs\Mezzo\Modules\Generator\Generators\MigrationGenerator;
 use MezzoLabs\Mezzo\Modules\Generator\Migration\ChangeSet;
 
-class GenerateForeignFields extends MezzoCommand
+class GenerateModelParent extends MezzoCommand
 {
     /**
      * The name and signature of the console command.
@@ -44,27 +44,8 @@ class GenerateForeignFields extends MezzoCommand
     {
         $this->mezzo->makeDatabaseReader();
 
-        $notPersisted = $this->allJoinColumns()->filter(function (JoinColumn $column) {
-            return !$column->isPersisted();
-        });
-
-        $toAdd = Attributes::fromColumns($notPersisted);
-
-        $changeSet = new ChangeSet();
-        $changeSet->createAttributes($toAdd);
-
-        $migrationGenerator = new MigrationGenerator($changeSet);
-
-
-        $migrationGenerator->run();
-    }
-
-    /**
-     * @return Collection
-     */
-    protected function allJoinColumns()
-    {
-        return $this->mezzo->reflector()->relationSchemas()->joinColumns();
 
     }
+
+
 }

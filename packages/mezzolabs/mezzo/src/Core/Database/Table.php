@@ -52,7 +52,7 @@ class Table
     {
         $this->model = $model;
 
-        $this->reflection = MezzoModelsReflector::getReflection($model);
+        $this->reflection = mezzo()->makeReflectionManager()->eloquentReflection($model);
         $this->instance = $this->reflection->instance();
         $this->columns = new DatabaseColumns($this);
 

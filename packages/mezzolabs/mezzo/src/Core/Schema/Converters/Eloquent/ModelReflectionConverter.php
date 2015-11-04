@@ -81,7 +81,10 @@ class ModelReflectionConverter extends ModelConverter
                 $schema->addAttribute($attribute);
             });
 
-        mezzo()->reflector()->relationSchemas()->joinColumns()->each(
+        $eloquentModelReflector = mezzo()->makeReflectionManager()->eloquentModelsReflector();
+        $joinColumns = $eloquentModelReflector->relationSchemas()->joinColumns();
+
+        $joinColumns->each(
             function (JoinColumn $column) use ($schema) {
 
                 if (!$column->relation()->connectsTable($schema->tableName()))

@@ -11,7 +11,7 @@ use MezzoLabs\Mezzo\Modules\Generator\Schema\ModelParentSchema;
 use MezzoLabs\Mezzo\Modules\Generator\Schema\ModelParentSchemas;
 
 
-class ModelGenerator extends FileGenerator
+class ModelParentGenerator extends FileGenerator
 {
 
     /**
