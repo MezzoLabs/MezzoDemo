@@ -1,9 +1,9 @@
 import State from './State';
 
-export default {name: 'mezzoRegisterState', directive};
+export default { name: 'mezzoRegisterState', directive };
 
 /*@ngInject*/
-function directive(addState) {
+function directive($stateProvider) {
     return {
         restrict: 'A',
         link
@@ -12,13 +12,12 @@ function directive(addState) {
     function link(scope, element, attributes) {
         var uri = attributes.uri;
         var title = attributes.title;
-        var templateUrl = '/mezzo/' + uri + '.html';
         var state = new State(title, uri, {
             main: {
-                templateUrl
+                templateUrl: '/mezzo/' + uri + '.html'
             }
         });
 
-        addState(state);
+        $stateProvider.state(state.name, state.route);
     }
 }

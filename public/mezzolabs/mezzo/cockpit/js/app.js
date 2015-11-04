@@ -7,9 +7,9 @@ var _setupConfig = require('./setup/config');
 
 var _setupConfig2 = _interopRequireDefault(_setupConfig);
 
-var _setupAddState = require('./setup/add-state');
+var _setupStateProvider = require('./setup/state-provider');
 
-var _setupAddState2 = _interopRequireDefault(_setupAddState);
+var _setupStateProvider2 = _interopRequireDefault(_setupStateProvider);
 
 var _setupRun = require('./setup/run');
 
@@ -22,11 +22,11 @@ var _register2 = _interopRequireDefault(_register);
 var app = angular.module('Mezzo', ['ui.router', 'templates', 'angular-sortable-view', 'ngFileUpload', 'ngMessages']);
 
 app.config(_setupConfig2['default']);
-(0, _setupAddState2['default'])(app);
+(0, _setupStateProvider2['default'])(app);
 app.run(_setupRun2['default']);
 (0, _register2['default'])(app);
 
-},{"./register":52,"./setup/add-state":53,"./setup/config":54,"./setup/run":56}],2:[function(require,module,exports){
+},{"./register":52,"./setup/config":53,"./setup/run":55,"./setup/state-provider":56}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -135,7 +135,7 @@ var _State2 = _interopRequireDefault(_State);
 exports['default'] = { name: 'mezzoRegisterState', directive: directive };
 
 /*@ngInject*/
-function directive(addState) {
+function directive($stateProvider) {
     return {
         restrict: 'A',
         link: link
@@ -144,14 +144,13 @@ function directive(addState) {
     function link(scope, element, attributes) {
         var uri = attributes.uri;
         var title = attributes.title;
-        var templateUrl = '/mezzo/' + uri + '.html';
         var state = new _State2['default'](title, uri, {
             main: {
-                templateUrl: templateUrl
+                templateUrl: '/mezzo/' + uri + '.html'
             }
         });
 
-        addState(state);
+        $stateProvider.state(state.name, state.route);
     }
 }
 module.exports = exports['default'];
@@ -2041,20 +2040,20 @@ module.exports = function (app) {
 				register(require('./modules/permissions/permissions.controller.js'));
 				register(require('./modules/user/user.service.js'));
 				register(require('./modules/model-builder/components/component.service.js'));
-				register(require('./modules/user/list/user-list.controller.js'));
-				register(require('./modules/user/show/user-show.controller.js'));
 				register(require('./modules/resource/create/resource-create.controller.js'));
 				register(require('./modules/resource/index/resource-index.controller.js'));
-				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
-				register(require('./modules/model-builder/components/owner/owner.directive.js'));
+				register(require('./modules/user/show/user-show.controller.js'));
+				register(require('./modules/user/list/user-list.controller.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
 				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
 				register(require('./modules/model-builder/components/dropdown/dropdown.directive.js'));
-				register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
-				register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
+				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
+				register(require('./modules/model-builder/components/owner/owner.directive.js'));
 				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
 				register(require('./modules/model-builder/components/relation/relation.directive.js'));
+				register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
+				register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
 				register(require('./modules/model-builder/components/text-single/text-single-options.directive.js'));
 				register(require('./modules/model-builder/components/text-single/text-single.directive.js'));
 
@@ -2080,27 +2079,6 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-exports['default'] = function (app) {
-    app.provider('addState', /*@ngInject*/function ($stateProvider) {
-        this.$get = function () {
-            return addState;
-        };
-
-        function addState(state) {
-            $stateProvider.state(state.name, state.route);
-        }
-    });
-};
-
-module.exports = exports['default'];
-
-},{}],54:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _states = require('./states');
@@ -2120,7 +2098,7 @@ exports['default'] = config;
 }
 module.exports = exports['default'];
 
-},{"./states":57}],55:[function(require,module,exports){
+},{"./states":57}],54:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2200,7 +2178,7 @@ function init() {
 }
 module.exports = exports['default'];
 
-},{}],56:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2232,7 +2210,24 @@ exports['default'] = run;
 }
 module.exports = exports['default'];
 
-},{"./jquery":55}],57:[function(require,module,exports){
+},{"./jquery":54}],56:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+exports['default'] = function (app) {
+    app.provider('$stateProvider', /*@ngInject*/function ($stateProvider) {
+        this.$get = function () {
+            return $stateProvider;
+        };
+    });
+};
+
+module.exports = exports['default'];
+
+},{}],57:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
