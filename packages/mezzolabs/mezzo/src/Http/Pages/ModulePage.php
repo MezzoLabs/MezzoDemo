@@ -179,13 +179,7 @@ abstract class ModulePage implements ModulePageContract
          */
         $data = $this->additionalData()->merge($data)->toArray();
 
-        /**
-         * Return the view of this page without any surrounding template
-         */
-        if ($this->isRenderedByFrontend())
-            return $this->makeView($this->view, $data);
-
-        return $this->makeView('cockpit::layouts.default', $data)->nest('content_container', $this->view, $data);
+        return $this->makeView($this->view, $data);
     }
 
     /**
@@ -294,6 +288,11 @@ abstract class ModulePage implements ModulePageContract
     public function uri()
     {
         return mezzo()->uri()->toModulePage($this);
+    }
+
+    public function controllerName()
+    {
+        return $this->controller()->qualifiedName();
     }
 
 

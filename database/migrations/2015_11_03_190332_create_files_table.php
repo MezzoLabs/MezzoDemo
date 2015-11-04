@@ -18,11 +18,11 @@ class CreateFilesTable extends Migration
             $table->string('folder');
             $table->string('filename');
             $table->string('extension');
+            $table->string('driver');
             $table->text('info')->nullable();
             $table->timestamps();
 
             $table->unique(array('folder', 'filename', 'extension'));
-            $table->unique(array('folder', 'title'));
         });
     }
 

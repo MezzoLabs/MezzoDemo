@@ -45,7 +45,6 @@ class FileUploader
 
     protected function moveFile(UploadedFile $file, $destination)
     {
-
     }
 
 
@@ -91,7 +90,8 @@ class FileUploader
      */
     protected function fileName(UploadedFile $file, $folder)
     {
-        return $this->repository()->findUniqueFileName($file->getClientOriginalName(), $folder);
+        $baseFileName = str_slug($file->getClientOriginalName(), '_');
+        return $this->repository()->findUniqueFileName($baseFileName, $folder);
     }
 
 

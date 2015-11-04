@@ -30,12 +30,22 @@ Route::get('random', function () {
     return str_random(16);
 });
 
-Route::get('/test/file', function(){
+Route::get('/test/file', function () {
 
     return view('debugfile');
 });
 
-Route::post('test/file', function(\Illuminate\Http\Request $request){
+Route::get('/test/slug', function () {
+    $next = \MezzoLabs\Mezzo\Core\Helpers\Slug::findNext('file',
+        [
+
+        ]
+    );
+
+    mezzo_dd($next);
+});
+
+Route::post('test/file', function (\Illuminate\Http\Request $request) {
     $repo = new \MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories\FileRepository();
     $fileManager = \MezzoLabs\Mezzo\Modules\FileManager\FileManagerModule::make();
     $uploader = $fileManager->uploader();

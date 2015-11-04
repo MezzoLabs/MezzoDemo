@@ -107,21 +107,12 @@ class CockpitRouter
         $pageUri = mezzo()->uri()->toModulePage($page);
         $action = $this->shortenAction($page->qualifiedActionName());
 
-        /**
-         * Check if this page is rendered by the frontend.
-         * If not, send the /mezzo/MODULE_NAME/CONTROLLER/PAGE_ACTION through the controller action.
-         * Otherwise we will use the default start action for the cockpit.
-         */
-        if (!$page->isRenderedByFrontend())
-            $this->get($pageUri,
-                ['uses' => $action, 'as' => $page->slug()]
-            );
-        else
-            $this->get($pageUri,
-                ['uses' => mezzo()->makeCockpit()->startAction(), 'as' => $page->slug()]
-            );
 
-        /**
+        $this->get($pageUri,
+            ['uses' => mezzo()->makeCockpit()->startAction(), 'as' => $page->slug()]
+        );
+
+        /*
          * Send the PAGE_ACTION.html request through the controller action.
          */
         $this->get($pageUri . '.html',

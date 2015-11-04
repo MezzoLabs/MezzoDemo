@@ -24,7 +24,9 @@
                                 <ul>
                                     @foreach($module->pages()->filterVisibleInNavigation() as $page)
                                         <li>
-                                            <a href="mezzo/{{ $page->uri() }}" mezzo-register-state data-uri="{{ $page->uri() }}" data-title="{{ $page->title() }}">
+                                            <a href="mezzo/{{ $page->uri() }}" mezzo-register-state
+                                               data-action="{{ $page->action()}}" data-uri="{{ $page->uri() }}"
+                                               data-title="{{ $page->title() }}">
                                                 <span>{{ $page->title() }}</span>
                                             </a>
                                         </li>

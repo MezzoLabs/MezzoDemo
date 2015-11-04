@@ -28,6 +28,7 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
     public function index(IndexResourceRequest $request)
     {
         $response = $this->response()->collection($this->repository()->all(), $this->bestModelTransformer());
+
         return $response;
     }
 
