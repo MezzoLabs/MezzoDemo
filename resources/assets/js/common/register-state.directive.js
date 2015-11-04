@@ -12,12 +12,13 @@ function directive($stateProvider) {
     function link(scope, element, attributes) {
         var uri = attributes.uri;
         var title = attributes.title;
+        var action = attributes.action;
         var state = new State(title, uri, {
             main: {
                 templateUrl: '/mezzo/' + uri + '.html'
             }
         });
-
+        console.log(action);
         $stateProvider.state(state.name, state.route);
     }
 }

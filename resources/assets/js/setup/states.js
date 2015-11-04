@@ -5,7 +5,6 @@ import resourceIndexState from '../modules/resource/index/state';
 import resourceCreateState from '../modules/resource/create/state';
 import userListState from '../modules/user/list';
 import userShowState from '../modules/user/show';
-import permissionsState from '../modules/permissions';
 
 export default [
     moduleBuilderState,
@@ -14,6 +13,5 @@ export default [
     resourceIndexState,
     resourceCreateState,
     userListState,
-    userShowState,
-    permissionsState
+    userShowState
 ];
