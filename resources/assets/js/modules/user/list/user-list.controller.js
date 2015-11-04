@@ -1,14 +1,14 @@
 class UserListController {
 
     /*@ngInject*/ constructor($http, userService){
-    this.$http = $http;
-    this.userService = userService;
-    this.users = userService.users || [];
+        this.$http = $http;
+        this.userService = userService;
+        this.users = userService.users || [];
 
-    if(!this.users || this.users.length === 0){
-        this.loadUsers();
+        if(!this.users || this.users.length === 0){
+            this.loadUsers();
+        }
     }
-}
 
     loadUsers(){
         this.loading = true;
