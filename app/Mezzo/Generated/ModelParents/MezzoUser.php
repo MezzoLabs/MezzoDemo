@@ -27,7 +27,7 @@ abstract class MezzoUser extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'password', 'roles'];
 
     /**
      * The attributes excluded from the model's JSON form.

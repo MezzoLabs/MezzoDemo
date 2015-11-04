@@ -6,7 +6,7 @@ use Doctrine\DBAL\Types\Type;
 
 class DateTimeInput extends TextInput
 {
-    protected $htmlTag = 'input:date';
+    protected $htmlTag = 'input:datetime-local';
 
     protected $doctrineType = Type::DATETIME;
 

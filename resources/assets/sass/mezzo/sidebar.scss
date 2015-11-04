@@ -89,7 +89,7 @@
     display: block;
   }
 
-  a:hover {
+  a:hover, a.active {
     color: $mezzo-lightgray-light;
     text-decoration: none;
   }

@@ -25,10 +25,7 @@ class FileRepository extends ModelRepository
 
         if (!$filesInFolder)
             return $fileName;
-
-        $filesInFolder->each(function (File $file) {
-
-        });
+        mezzo_dd($filesInFolder);
     }
 
 }

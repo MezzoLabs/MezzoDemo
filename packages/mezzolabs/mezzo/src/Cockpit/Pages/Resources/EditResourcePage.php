@@ -9,7 +9,7 @@ class EditResourcePage extends ResourcePage
     protected $action = 'edit';
 
     protected $options = [
-        'visibleInNavigation' => true,
+        'visibleInNavigation' => false,
     ];
 
     protected $view = 'cockpit::pages.resources.edit';
