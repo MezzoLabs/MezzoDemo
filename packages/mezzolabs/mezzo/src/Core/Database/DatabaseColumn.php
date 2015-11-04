@@ -122,8 +122,9 @@ class DatabaseColumn
     public function joinColumn()
     {
         if ($this->joinColumn === false) {
-            $relationsSchema = mezzo()->reflector()->relationSchemas();
-            $this->joinColumn = $relationsSchema->joinColumns($this->table->name())
+            $relationSchemas = mezzo()->makeReflectionManager()->eloquentModelsReflector()->relationSchemas();
+
+            $this->joinColumn = $relationSchemas->joinColumns($this->table->name())
                 ->get($this->qualifiedName());
         }
 

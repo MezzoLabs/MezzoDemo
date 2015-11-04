@@ -62,8 +62,4 @@ class DatabaseColumnConverter extends Converter
     }
 
 
-    public function __construct()
-    {
-        // TODO: Implement __construct() method.
-    }
 }

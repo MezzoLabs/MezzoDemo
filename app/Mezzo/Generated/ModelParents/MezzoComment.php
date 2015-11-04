@@ -57,12 +57,6 @@ abstract class MezzoComment extends BaseModel
     protected $tutorial_id;
 
     /**
-     * @Mezzo\Attribute(type="RelationInputSingle")
-     * @var integer
-     */
-    protected $parent_id;
-
-    /**
      * @Mezzo\Relations\OneToMany
      * @Mezzo\Relations\From(table="users", primaryKey="id", naming="tutorials")
      * @Mezzo\Relations\To(table="comments", primaryKey="id", naming="user")

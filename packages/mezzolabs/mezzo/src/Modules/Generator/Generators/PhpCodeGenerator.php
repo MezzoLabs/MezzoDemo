@@ -55,7 +55,11 @@ class PhpCodeGenerator
 
         $rulesArray = [];
         $atomicAttributes->each(function (AtomicAttribute $attribute) use (&$rulesArray) {
-            $rulesArray[$attribute->name()] = $attribute->rules()->toString();
+            $name = $attribute->name();
+
+            if ($name == "id") return true;
+
+            $rulesArray[$name] = $attribute->rules()->toString();
         });
 
         return $this->arrayString($rulesArray);

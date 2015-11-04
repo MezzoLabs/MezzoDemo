@@ -108,7 +108,7 @@ abstract class ModuleProvider extends ServiceProvider
     /**
      * Factory method for creating a Mezzo module instance.
      *
-     * @return ModuleProvider
+     * @return static
      */
     public static function make()
     {
@@ -180,11 +180,15 @@ abstract class ModuleProvider extends ServiceProvider
      * @param $shortAbstract
      * @param $concrete
      */
-    public function bindWithPrefix($shortAbstract, $concrete)
+    public function bindWithPrefix($shortAbstract, $concrete, $singleton = false)
     {
         $abstract = 'modules.' . $this->slug() . '.' . $shortAbstract;
 
-        $this->app->bind($abstract, $concrete);
+        $this->app->bind($abstract, $concrete, $singleton);
+
+        if ($singleton)
+            $this->app->singleton($abstract, $concrete);
+
     }
 
     /**
