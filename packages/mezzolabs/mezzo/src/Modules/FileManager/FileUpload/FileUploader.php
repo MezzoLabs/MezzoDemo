@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\FileUpload;
 
 use Illuminate\Http\Request as IlluminateRequest;
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Files\StorageFactory;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories\FileRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -37,6 +38,7 @@ class FileUploader
             $title = $data->get('filename');
 
         $data->put('title', $title);
+        $data->put('disk', 'local');
 
         $this->moveFile($file, $data->get('folder') . $data->get('filename'));
 
@@ -45,6 +47,16 @@ class FileUploader
 
     protected function moveFile(UploadedFile $file, $destination)
     {
+        $saved = $file->move('/', 'test_' . str_random());
+        return $saved;
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    protected function fileSystem()
+    {
+        return StorageFactory::local();
     }
 
 

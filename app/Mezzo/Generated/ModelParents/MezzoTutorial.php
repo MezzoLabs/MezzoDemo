@@ -51,14 +51,14 @@ abstract class MezzoTutorial extends BaseModel
 
     /**
      *
-     * @Mezzo\Attribute(type="TextInput")
+     * @Mezzo\Attribute(type="DateTimeInput")
      * @var string
      */
     protected $created_at;
 
     /**
      *
-     * @Mezzo\Attribute(type="TextInput")
+     * @Mezzo\Attribute(type="DateTimeInput")
      * @var string
      */
     protected $updated_at;
