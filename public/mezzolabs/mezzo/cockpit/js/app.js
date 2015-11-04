@@ -267,7 +267,36 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _get = function get(_x2, _x3, _x4) { var _again = true; _function: while (_again) { var object = _x2, property = _x3, receiver = _x4; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x2 = parent; _x3 = property; _x4 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+    var _get = function get(_x2, _x3, _x4) {
+        var _again = true;
+        _function: while (_again) {
+            var object = _x2, property = _x3, receiver = _x4;
+            _again = false;
+            if (object === null) object = Function.prototype;
+            var desc = Object.getOwnPropertyDescriptor(object, property);
+            if (desc === undefined) {
+                var parent = Object.getPrototypeOf(object);
+                if (parent === null) {
+                    return undefined;
+                } else {
+                    _x2 = parent;
+                    _x3 = property;
+                    _x4 = receiver;
+                    _again = true;
+                    desc = parent = undefined;
+                    continue _function;
+                }
+            } else if ('value' in desc) {
+                return desc.value;
+            } else {
+                var getter = desc.get;
+                if (getter === undefined) {
+                    return undefined;
+                }
+                return getter.call(receiver);
+            }
+        }
+    };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -2028,16 +2057,16 @@ module.exports = function (app) {
 				register(require('./common/enter.directive.js'));
 				register(require('./common/register-state.directive.js'));
 				register(require('./common/uid.service.js'));
+    register(require('./modules/page-builder/aside.controller.js'));
+    register(require('./modules/page-builder/main.controller.js'));
+    register(require('./modules/model-builder/model-builder.controller.js'));
+    register(require('./modules/model-builder/model-builder.service.js'));
+    register(require('./modules/permissions/permissions.controller.js'));
 				register(require('./modules/file-manager/aside.controller.js'));
 				register(require('./modules/file-manager/main.controller.js'));
 				register(require('./modules/file-manager/draggable.directive.js'));
 				register(require('./modules/file-manager/droppable.directive.js'));
 				register(require('./modules/file-manager/file-manager.service.js'));
-				register(require('./modules/model-builder/model-builder.controller.js'));
-				register(require('./modules/model-builder/model-builder.service.js'));
-				register(require('./modules/page-builder/aside.controller.js'));
-				register(require('./modules/page-builder/main.controller.js'));
-				register(require('./modules/permissions/permissions.controller.js'));
 				register(require('./modules/user/user.service.js'));
 				register(require('./modules/model-builder/components/component.service.js'));
 				register(require('./modules/resource/create/resource-create.controller.js'));
