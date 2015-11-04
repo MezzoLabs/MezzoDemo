@@ -10,8 +10,8 @@ class ResourceIndexController {
 
 
     $http.get('/api/tutorials')
-        .success(models => {
-            this.models = models;
+        .success(response => {
+            this.models = response.data;
 
             this.models.forEach(model => model._meta = {});
         })
