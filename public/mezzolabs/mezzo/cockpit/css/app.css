@@ -8602,7 +8602,8 @@ a {
   .nav-main a {
     color: #999999;
     display: block; }
-  .nav-main a:hover {
+
+.nav-main a:hover, .nav-main a.active {
     color: #CCCCCC;
     text-decoration: none; }
   .nav-main > li > a {
@@ -8610,7 +8611,8 @@ a {
     position: relative; }
     .nav-main > li > a > span {
       margin-top: 5px;
-      margin-left: 10px; }
+      margin-left: 10 p;
+    }
   .nav-main > li > a:hover {
     background-color: rgba(0, 0, 0, 0.1); }
   .nav-main > li i {
