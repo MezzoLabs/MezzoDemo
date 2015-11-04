@@ -1,35 +1,22 @@
 class ResourceIndexController {
 
     /*@ngInject*/ constructor($scope, $http){
-        this.$scope = $scope;
-        this.$http = $http;
-        this.models = [];
-        this.searchText = '';
-        this.selectAll = false;
-        this.removing = 0;
+    this.$scope = $scope;
+    this.$http = $http;
+    this.models = [];
+    this.searchText = '';
+    this.selectAll = false;
+    this.removing = 0;
 
 
     $http.get('/api/tutorials')
-        .success(models = > {
-        this.models = models;
+        .success(models => {
+            this.models = models;
 
-    this.models.forEach(model = > model._meta = {}
-)
-    ;
+            this.models.forEach(model => model._meta = {});
+        })
+        .error(err => console.error(err));
 }
-
-)
-.
-    error(err =
-
->
-    console
-.
-    error(err)
-
-)
-    ;
-    }
 
     getModels(){
         if(this.searchText.length > 0){

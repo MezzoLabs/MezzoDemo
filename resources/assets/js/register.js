@@ -15,10 +15,10 @@ module.exports = app => {
 	register(require('./modules/permissions/permissions.controller.js'));
 	register(require('./modules/user/user.service.js'));
 	register(require('./modules/model-builder/components/component.service.js'));
+	register(require('./modules/resource/create/resource-create.controller.js'));
+	register(require('./modules/resource/index/resource-index.controller.js'));
 	register(require('./modules/user/list/user-list.controller.js'));
 	register(require('./modules/user/show/user-show.controller.js'));
-	register(require('./modules/resource/index/resource-index.controller.js'));
-	register(require('./modules/resource/create/resource-create.controller.js'));
 	register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
 	register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
 	register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));

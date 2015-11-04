@@ -8644,8 +8644,7 @@ textarea {
   resize: vertical; }
 
 .center-block {
-  float: none;
-}
+  float: none; }
 
 html, body {
   color: #555555;
