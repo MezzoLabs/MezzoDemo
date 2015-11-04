@@ -134,7 +134,8 @@ var _State2 = _interopRequireDefault(_State);
 
 exports['default'] = { name: 'mezzoRegisterState', directive: directive };
 
-/*@ngInject*/function directive(addState) {
+/*@ngInject*/
+function directive(addState) {
     return {
         restrict: 'A',
         link: link
@@ -1618,8 +1619,8 @@ var ResourceIndexController = (function () {
         this.selectAll = false;
         this.removing = 0;
 
-        $http.get('/api/tutorials').success(function (models) {
-            _this.models = models;
+        $http.get('/api/tutorials').success(function (response) {
+            _this.models = response.data;
 
             _this.models.forEach(function (model) {
                 return model._meta = {};
