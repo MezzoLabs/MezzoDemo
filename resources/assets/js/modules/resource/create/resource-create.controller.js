@@ -1,27 +1,26 @@
 class ResourceCreateController {
 
-    /*@ngInject*/
-    constructor($http) {
-        this.$http = $http;
-        this.model = {};
+    /*@ngInject*/ constructor($http) {
+    this.$http = $http;
+    this.model = {};
 
-        /* Fake data */
-        this.users = [
-            {id: 0, name: 'Simon'},
-            {id: 1, name: 'Marc'},
-            {id: 2, name: 'John Doe'},
-            {id: 3, name: 'MSDOS Manfred'}
-        ];
-        this.tutorials = [
-            {id: 0, name: 'Mezzo Tutorial'},
-            {id: 1, name: 'How to peel an Egg Tutorial Part 1'},
-            {id: 2, name: 'How to sit down Tutorial'}
-        ];
-        /* Fake data */
-    }
+    /* Fake data */
+    this.users = [
+        { id: 0, name: 'Simon' },
+        { id: 1, name: 'Marc' },
+        { id: 2, name: 'John Doe' },
+        { id: 3, name: 'MSDOS Manfred' }
+    ];
+    this.tutorials = [
+        { id: 0, name: 'Mezzo Tutorial' },
+        { id: 1, name: 'How to peel an Egg Tutorial Part 1' },
+        { id: 2, name: 'How to sit down Tutorial' }
+    ];
+    /* Fake data */
+}
 
-    submit() {
-        if (this.form.$invalid) {
+    submit(){
+        if(this.form.$invalid){
             return false;
         }
 
@@ -35,30 +34,18 @@ class ResourceCreateController {
         };
 
         this.$http.post('/api/tutorials', payload)
-            .then(result = > {
-            console.log(result);
+            .then(result => {
+                console.log(result);
+            })
+            .catch(err => console.error(err));
     }
 
-)
-.
-    catch(err =
-
->
-    console
-.
-    error(err)
-
-)
-    ;
-}
-
-hasError(formControl)
-{
-    if (Object.keys(formControl.$error).length && formControl.$dirty) {
-        return 'has-error';
+    hasError(formControl){
+        if(Object.keys(formControl.$error).length && formControl.$dirty){
+            return 'has-error';
+        }
     }
-}
 
 }
 
-export default {name: 'ResourceCreateController', controller: ResourceCreateController};
+export default { name: 'ResourceCreateController', controller: ResourceCreateController };
