@@ -226,7 +226,7 @@ class ModelRepository extends EloquentRepository
      * @param $attribute
      * @param $value
      * @param array $columns
-     * @return mixed
+     * @return null
      */
     public function findBy($attribute, $value, $columns = array('*'))
     {
@@ -255,15 +255,21 @@ class ModelRepository extends EloquentRepository
      * @param string|ModelReflection|ModelReflectionSet $model
      * @return static
      */
-    public static function makeRepository($model)
+    public static function makeRepository($model = null)
     {
-        /**
-         * Find the model reflection, normalize the $model variable.
-         */
-        $model = mezzo()->model($model);
+        if ($model) {
+            /**
+             * Find the model reflection, normalize the $model variable.
+             */
+            $model = mezzo()->model($model);
 
-        return new ModelRepository($model);
+            return new ModelRepository($model);
+        }
 
+        if (static::class === ModelRepository::class)
+            throw new RepositoryException('You need a model for a generic model repository.');
+
+        return mezzo()->make(static::class);
     }
 
 

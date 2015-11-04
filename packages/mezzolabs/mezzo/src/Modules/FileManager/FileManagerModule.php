@@ -8,6 +8,7 @@ use App\File;
 use App\Tutorial;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Modules\FileManager\FileUpload\FileUploader;
 
 class FileManagerModule extends ModuleProvider
 {
@@ -27,7 +28,7 @@ class FileManagerModule extends ModuleProvider
      */
     public function register()
     {
-
+        $this->bindWithPrefix('fileuploader', FileUploader::class, true);
     }
 
     /**
@@ -40,5 +41,13 @@ class FileManagerModule extends ModuleProvider
         $tutorialReflection = $this->modelReflectionSets->get(Tutorial::class);
 
         //dd($tutorialReflection->relationships());
+    }
+
+    /**
+     * @return FileUploader
+     */
+    public function uploader()
+    {
+        return app(FileUploader::class);
     }
 }
