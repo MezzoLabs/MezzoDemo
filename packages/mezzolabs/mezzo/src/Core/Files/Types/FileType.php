@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Files\Types;
 
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
+use MezzoLabs\Mezzo\Exceptions\FileTypeException;
 
 abstract class FileType
 {
@@ -21,17 +22,14 @@ abstract class FileType
      * @var array
      */
     protected $extensions = ["txt"];
-
-    /**
-     * @var Collection
-     */
-    private $extensionCollection;
-
     /**
      * @var string
      */
     protected $name;
-
+    /**
+     * @var Collection
+     */
+    private $extensionCollection;
 
     public function __construct()
     {
@@ -40,19 +38,6 @@ abstract class FileType
         foreach ($this->extensions as $extension) {
             $this->extensionCollection->push($this->normExtension($extension));
         }
-    }
-
-    /**
-     * Check if a extension fits this type of file.
-     *
-     * @param $extensionToMatch
-     * @return bool
-     */
-    public function matchesExtension($extensionToMatch)
-    {
-        $extensionToMatch = $this->normExtension($extensionToMatch);
-
-        return $this->extensionCollection->has($extensionToMatch);
     }
 
     /**
@@ -91,6 +76,38 @@ abstract class FileType
     public static function make()
     {
         return mezzo()->make(static::class);
+    }
+
+    /**
+     * Check if a extension fits this type of file.
+     *
+     * @param $extensionToMatch
+     * @return bool
+     */
+    public function matchesExtension($extensionToMatch)
+    {
+        $extensionToMatch = $this->normExtension($extensionToMatch);
+
+        return $this->extensionCollection->has($extensionToMatch);
+    }
+
+    /**
+     * @param $fileTypeClass
+     * @return FileType
+     * @throws FileTypeException
+     */
+    public static function makeByClass($fileTypeClass)
+    {
+        if (!$fileTypeClass || !is_string($fileTypeClass) || $fileTypeClass == UnknownFileType::class)
+            throw new FileTypeException('Cannot find a file type.');
+
+        $fileType = mezzo()->make($fileTypeClass);
+
+        if(! $fileType instanceof FileType)
+            throw new FileTypeException($fileTypeClass . ' is not a real file type.');
+
+        return $fileType;
+
     }
 
     /**

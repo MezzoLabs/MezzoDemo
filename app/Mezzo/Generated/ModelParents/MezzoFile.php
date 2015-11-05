@@ -5,23 +5,20 @@ namespace App\Mezzo\Generated\ModelParents;
 use App\Mezzo\BaseModel;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
-use MezzoLabs\Mezzo\Modules\FileManager\Domain\Traits\HasAnExtension;
+use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\HasAnExtension;
 
 abstract class MezzoFile extends BaseModel
 {
     use IsMezzoModel;
 
+    public $timestamps = true;
     /**
      * The table associated with the model.
      *
      * @var string
      */
     protected $table = 'files';
-
     protected $fillable = ['title', 'folder', 'filename', 'disk', 'extension', 'info'];
-
-    public $timestamps = true;
-
     protected $rules = [
         'title' => "",
         'folder' => "",

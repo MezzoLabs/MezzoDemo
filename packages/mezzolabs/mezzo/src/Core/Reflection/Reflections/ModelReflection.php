@@ -135,22 +135,6 @@ abstract class ModelReflection
     }
 
     /**
-     * @return \ReflectionClass
-     */
-    public function reflectionClass()
-    {
-        return $this->modelReflectionSet()->reflectionClass();
-    }
-
-    /**
-     * @return ModelReflectionSet
-     */
-    public function modelReflectionSet()
-    {
-        return $this->modelReflectionSet;
-    }
-
-    /**
      * @return array
      */
     public function rules($attribute = null)
@@ -191,13 +175,14 @@ abstract class ModelReflection
     }
 
     /**
-     * Class name of the reflected eloquent model.
+     * Returns an instance of the reflected Eloquent model.
      *
+     * @param bool $forceNew
      * @return EloquentModel
      */
-    public function instance()
+    public function instance($forceNew = false)
     {
-        return $this->modelReflectionSet->instance();
+        return $this->modelReflectionSet->instance($forceNew);
     }
 
     /**
@@ -215,6 +200,22 @@ abstract class ModelReflection
     public function fileName()
     {
         return $this->reflectionClass()->getFileName();
+    }
+
+    /**
+     * @return \ReflectionClass
+     */
+    public function reflectionClass()
+    {
+        return $this->modelReflectionSet()->reflectionClass();
+    }
+
+    /**
+     * @return ModelReflectionSet
+     */
+    public function modelReflectionSet()
+    {
+        return $this->modelReflectionSet;
     }
 
 }

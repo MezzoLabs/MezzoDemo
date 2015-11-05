@@ -4,7 +4,7 @@
 namespace MezzoLabs\Mezzo\Modules\FileManager\FileUpload\Exceptions;
 
 
-class MaximumFileSizeExceededException extends FileUploadException
+class MaximumFileSizeExceededException extends FileManagerException
 {
 
 }

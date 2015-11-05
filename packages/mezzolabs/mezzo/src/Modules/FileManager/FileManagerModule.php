@@ -5,17 +5,19 @@ namespace MezzoLabs\Mezzo\Modules\FileManager;
 
 
 use App\File;
+use App\ImageFile;
 use App\Tutorial;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\FileTypesMapper;
 use MezzoLabs\Mezzo\Modules\FileManager\FileUpload\FileUploader;
 
 #
 class FileManagerModule extends ModuleProvider
 {
-
     protected $models = [
-        File::class
+        File::class,
+        ImageFile::class
     ];
 
     protected $options = [
@@ -30,6 +32,7 @@ class FileManagerModule extends ModuleProvider
     public function register()
     {
         $this->bindWithPrefix('fileuploader', FileUploader::class, true);
+        $this->bindWithPrefix('typedfilemapper', FileTypesMapper::class, true);
     }
 
     /**
@@ -50,5 +53,13 @@ class FileManagerModule extends ModuleProvider
     public function uploader()
     {
         return app(FileUploader::class);
+    }
+
+    /**
+     * @return FileTypesMapper
+     */
+    public function fileTypesMapper()
+    {
+        return app(FileTypesMapper::class);
     }
 }

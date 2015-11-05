@@ -9,7 +9,7 @@ use MezzoLabs\Mezzo\Core\Files\File;
 use MezzoLabs\Mezzo\Core\Files\StorageFactory;
 use MezzoLabs\Mezzo\Core\Validation\Validator;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories\FileRepository;
-use MezzoLabs\Mezzo\Modules\FileManager\FileUpload\Exceptions\FileUploadException;
+use MezzoLabs\Mezzo\Modules\FileManager\FileUpload\Exceptions\FileManagerException;
 use MezzoLabs\Mezzo\Modules\FileManager\FileUpload\Exceptions\MaximumFileSizeExceededException;
 use MezzoLabs\Mezzo\Modules\FileManager\FileUpload\Exceptions\MimeTypeNotAllowed;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -32,47 +32,6 @@ class FileUploader
     }
 
     /**
-     * Upload a image.
-     *
-     * @param array $metaData
-     * @param UploadedFile $file
-     * @return bool
-     * @throws FileUploadException
-     * @throws MaximumFileSizeExceededException
-     * @throws MimeTypeNotAllowed
-     */
-    public function upload(array $metaData, UploadedFile $file)
-    {
-        $fileValidation = $this->validateFile($file);
-        if (!$fileValidation)
-            throw new FileUploadException('File validation failed.');
-
-        $metaData = new Collection($metaData);
-        $data = new Collection();
-
-        $data->put('extension', $this->extension($file));
-        $data->put('folder', $metaData->get('folder', '/'));
-        $data->put('filename', $this->uniqueFileName($file, $data['folder']));
-
-        $title = $metaData->get('title', "");
-        if (empty($title))
-            $title = File::removeExtension($data->get('filename'));
-
-        $data->put('title', $title);
-        $data->put('disk', 'local');
-        $data->put('info', $this->fileInfoJson($file));
-
-        if (!$this->validateData($data))
-            throw new FileUploadException('Validation failed.');
-
-        $fileSaved = $this->moveFile($file, $data->get('folder'), $data->get('filename'));
-
-        $databaseSaved = $this->repository()->create($data->toArray());
-
-        return $fileSaved && $databaseSaved;
-    }
-
-    /**
      * Upload the file in the current request.
      *
      * Read the request and upload the file.
@@ -91,62 +50,44 @@ class FileUploader
     }
 
     /**
-     * Validate the meta data that will be saved in the database.
+     * Upload a image.
      *
-     * @param Collection $data
+     * @param array $metaData
+     * @param UploadedFile $file
      * @return bool
+     * @throws FileUploadException
+     * @throws MaximumFileSizeExceededException
+     * @throws MimeTypeNotAllowed
      */
-    protected function validateData(Collection $data)
+    public function upload(array $metaData, UploadedFile $file)
     {
-        $rules = app(\App\File::class)->getRules();
+        $fileValidation = $this->validateFile($file);
+        if (!$fileValidation)
+            throw new FileManagerException('File validation failed.');
 
-        $validation = Validator::make($data->toArray(), $rules);
+        $metaData = new Collection($metaData);
+        $data = new Collection();
 
-        $this->lastValidation = $validation;
+        $data->put('extension', $this->extension($file));
+        $data->put('folder', $metaData->get('folder', '/'));
+        $data->put('filename', $this->uniqueFileName($file, $data['folder']));
 
-        return $validation->passes();
-    }
+        $title = $metaData->get('title', "");
+        if (empty($title))
+            $title = File::removeExtension($data->get('filename'));
 
-    /**
-     * Create a JSON string with all the "unimportant" file infos.
-     *
-     * @param UploadedFile $file
-     * @return string
-     */
-    protected function fileInfoJson(UploadedFile $file)
-    {
-        $info = new Collection();
+        $data->put('title', $title);
+        $data->put('disk', 'local');
+        $data->put('info', $this->fileInfoJson($file));
 
-        $info->put('size', $file->getClientSize());
-        $info->put('originalName', $file->getClientOriginalName());
+        if (!$this->validateData($data))
+            throw new FileManagerException('Validation failed.');
 
-        return $info->toJson();
-    }
+        $fileSaved = $this->moveFile($file, $data->get('folder'), $data->get('filename'));
 
-    /**
-     * Move the uploaded file to its destination
-     *
-     * @param UploadedFile $file
-     * @param $directory
-     * @param $fileName
-     * @return \Symfony\Component\HttpFoundation\File\File
-     */
-    protected function moveFile(UploadedFile $file, $directory, $fileName)
-    {
-        $storageDirectory = storage_path('mezzo/upload/' . $directory);
-        $saved = $file->move($storageDirectory, $fileName);
-        return $saved;
-    }
+        $databaseSaved = $this->repository()->create($data->toArray());
 
-
-    /**
-     * Get the instance for the local file system.
-     *
-     * @return \Illuminate\Contracts\Filesystem\Filesystem
-     */
-    protected function localFileSystem()
-    {
-        return StorageFactory::local();
+        return $fileSaved && $databaseSaved;
     }
 
     /**
@@ -168,6 +109,24 @@ class FileUploader
         return true;
     }
 
+    public function maximumFileSize()
+    {
+        return 3 * 1000 * 1000;
+    }
+
+    /**
+     * Check if the mimeType is allowed.
+     *
+     * @param string $mimeType
+     * @return bool
+     */
+    public function mimeTypeAllowed($mimeType)
+    {
+        return in_array($mimeType, [
+            'jpg', 'jpeg', 'text/markdown', 'txt'
+        ]);
+    }
+
     protected function extension(UploadedFile $file)
     {
         $guessed = $file->guessClientExtension();
@@ -175,11 +134,6 @@ class FileUploader
             return $guessed;
 
         return $file->getClientOriginalExtension();
-    }
-
-    public function maximumFileSize()
-    {
-        return 3 * 1000 * 1000;
     }
 
     /**
@@ -193,20 +147,6 @@ class FileUploader
     {
         $formatted = $this->formattedFileName($file);
         return $this->repository()->findUniqueFileName($formatted, $folder);
-    }
-
-
-    /**
-     * Check if the mimeType is allowed.
-     *
-     * @param string $mimeType
-     * @return bool
-     */
-    public function mimeTypeAllowed($mimeType)
-    {
-        return in_array($mimeType, [
-            'jpg', 'jpeg', 'text/markdown', 'txt'
-        ]);
     }
 
     /**
@@ -234,5 +174,63 @@ class FileUploader
     protected function repository()
     {
         return FileRepository::makeRepository();
+    }
+
+    /**
+     * Create a JSON string with all the "unimportant" file infos.
+     *
+     * @param UploadedFile $file
+     * @return string
+     */
+    protected function fileInfoJson(UploadedFile $file)
+    {
+        $info = new Collection();
+
+        $info->put('size', $file->getClientSize());
+        $info->put('originalName', $file->getClientOriginalName());
+
+        return $info->toJson();
+    }
+
+    /**
+     * Validate the meta data that will be saved in the database.
+     *
+     * @param Collection $data
+     * @return bool
+     */
+    protected function validateData(Collection $data)
+    {
+        $rules = app(\App\File::class)->getRules();
+
+        $validation = Validator::make($data->toArray(), $rules);
+
+        $this->lastValidation = $validation;
+
+        return $validation->passes();
+    }
+
+    /**
+     * Move the uploaded file to its destination
+     *
+     * @param UploadedFile $file
+     * @param $directory
+     * @param $fileName
+     * @return \Symfony\Component\HttpFoundation\File\File
+     */
+    protected function moveFile(UploadedFile $file, $directory, $fileName)
+    {
+        $storageDirectory = storage_path('mezzo/upload/' . $directory);
+        $saved = $file->move($storageDirectory, $fileName);
+        return $saved;
+    }
+
+    /**
+     * Get the instance for the local file system.
+     *
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    protected function localFileSystem()
+    {
+        return StorageFactory::local();
     }
 }
