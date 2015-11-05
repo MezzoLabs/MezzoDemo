@@ -12,12 +12,27 @@ function directive($stateProvider) {
     function link(scope, element, attributes) {
         var uri = attributes.uri;
         var title = attributes.title;
+        var action = attributes.action;
+        var controller = mapActionToController(action);
         var state = new State(title, uri, {
             main: {
-                templateUrl: '/mezzo/' + uri + '.html'
+                templateUrl: '/mezzo/' + uri + '.html',
+                controllerAs: 'vm',
+                controller: controller
+
             }
         });
 
         $stateProvider.state(state.name, state.route);
     }
+}
+
+function mapActionToController(action){
+    var controllers = {
+        index: 'ResourceIndexController',
+        create: 'ResourceCreateController',
+        edit: 'ResourceEditController'
+    };
+
+    return controllers[action];
 }
