@@ -3,7 +3,7 @@
 
 @section('content')
 
-    <div class="wrapper" ng-init="vm.init('{{ $model->name() }}')">
+    <div class="wrapper" ng-init="vm.init('{{ $model->name() }}', '{!! $model->defaultIncludes()->toJson() !!}')">
 
         <!-- Top Container -->
         <div class="panel panel-bordered">
@@ -57,27 +57,29 @@
             <div class="panel-body">
 
                 <div class="progress" ng-show="vm.loading">
-                    <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width: 100%">Please be patient...</div>
+                    <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width: 100%">Please
+                        be patient...
+                    </div>
                 </div>
 
                 <table class="table table-responsive">
                     <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" ng-model="vm.selectAll" ng-change="vm.updateSelectAll()">
-                            </th>
-                            @foreach($model->attributes() as $attribute)
-                                <th>{{ $attribute->title() }}</th>
-                            @endforeach
-                        </tr>
+                    <tr>
+                        <th>
+                            <input type="checkbox" ng-model="vm.selectAll" ng-change="vm.updateSelectAll()">
+                        </th>
+                        @foreach($model->attributes()->visibleOnly() as $attribute)
+                            <th>{{ $attribute->title() }}</th>
+                        @endforeach
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="model in vm.getModels() track by $index" ng-class="{ danger: model._meta.removed }">
-                            <td>
-                                <input type="checkbox" ng-model="model._meta.selected" ng-disabled="model._meta.removed">
-                            </td>
-                            <td ng-repeat="value in vm.getModelValues(model) track by $index" ng-bind="value"></td>
-                        </tr>
+                    <tr ng-repeat="model in vm.getModels() track by $index" ng-class="{ danger: model._meta.removed }">
+                        <td>
+                            <input type="checkbox" ng-model="model._meta.selected" ng-disabled="model._meta.removed">
+                        </td>
+                        <td ng-repeat="value in vm.getModelValues(model) track by $index" ng-bind="value"></td>
+                    </tr>
                     </tbody>
                 </table>
 

@@ -107,32 +107,6 @@ abstract class MezzoEloquentModel extends EloquentModel implements MezzoModel
     }
 
     /**
-     * Set a given attribute on the model.
-     *
-     * @param  string $key
-     * @param  mixed $value
-     * @return $this
-     */
-    public function setAttribute($key, $value)
-    {
-        parent::setAttribute($key, $value);
-        $this->syncMezzoAttributes();
-        return $this;
-    }
-
-
-    /**
-     * Sync the original attributes with the current.
-     *
-     * @return $this
-     */
-    public function syncOriginal()
-    {
-        $this->syncMezzoAttributes();
-        return parent::syncOriginal();
-    }
-
-    /**
      * Make sure that the attributes for protected calls are the same.
      * $this->$attribute will not reach the getter.
      */
@@ -143,6 +117,17 @@ abstract class MezzoEloquentModel extends EloquentModel implements MezzoModel
                 $this->$key = $attribute;
             }
         }
+    }
+
+    /**
+     * Sync the original attributes with the current.
+     *
+     * @return $this
+     */
+    public function syncOriginal()
+    {
+        $this->syncMezzoAttributes();
+        return parent::syncOriginal();
     }
 
     /**
@@ -162,6 +147,20 @@ abstract class MezzoEloquentModel extends EloquentModel implements MezzoModel
     }
 
     /**
+     * Set a given attribute on the model.
+     *
+     * @param  string $key
+     * @param  mixed $value
+     * @return $this
+     */
+    public function setAttribute($key, $value)
+    {
+        parent::setAttribute($key, $value);
+        $this->syncMezzoAttributes();
+        return $this;
+    }
+
+    /**
      * Set the value of the "updated at" attribute.
      *
      * @param  mixed $value
@@ -175,5 +174,7 @@ abstract class MezzoEloquentModel extends EloquentModel implements MezzoModel
 
         return $this;
     }
+
+
 
 }

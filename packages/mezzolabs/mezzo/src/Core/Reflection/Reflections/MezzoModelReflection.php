@@ -7,7 +7,6 @@ namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
-use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 
 class MezzoModelReflection extends ModelReflection
 {
@@ -75,5 +74,13 @@ class MezzoModelReflection extends ModelReflection
         return mezzo()->makeAnnotationReader()->model($this);
     }
 
+    /**
+     * @return static
+     */
+    public function defaultIncludes()
+    {
+        return $this->attributes()->relationAttributes()->visibleOnly()->keys();
+
+    }
 
 }
