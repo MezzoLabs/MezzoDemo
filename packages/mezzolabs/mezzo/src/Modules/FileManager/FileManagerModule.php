@@ -11,6 +11,7 @@ use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\DiskSynchronization;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\FileUploader;
+use MezzoLabs\Mezzo\Modules\FileManager\Domain\Observers\FileObserver;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\FileTypesMapper;
 
 #
@@ -55,6 +56,8 @@ class FileManagerModule extends ModuleProvider
      */
     public function ready()
     {
+        File::observe(FileObserver::class);
+
         $tutorialReflection = $this->modelReflectionSets->get(Tutorial::class);
 
         //dd($tutorialReflection->relationships());

@@ -33,7 +33,6 @@ Route::get('random', function () {
 Route::get('/test/file', function () {
     $repo = \MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories\FileRepository::makeRepository();
 
-    mezzo_dd(mezzo()->model('ImageFile')->schema()->attributes());
     /** @var \App\File $file */
     $file = $repo->find(4);
     $file->update(['title' => str_random()]);

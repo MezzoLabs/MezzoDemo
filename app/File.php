@@ -5,7 +5,6 @@ namespace App;
 use App\Mezzo\Generated\ModelParents\MezzoFile;
 use MezzoLabs\Mezzo\Core\Files\Types\FileType;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\DisksManager;
-use MezzoLabs\Mezzo\Modules\FileManager\Domain\Observers\FileObserver;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\TypedFileAddon;
 
 class File extends MezzoFile
@@ -20,12 +19,6 @@ class File extends MezzoFile
      */
     protected $typeAddon;
 
-    public static function boot()
-    {
-        parent::boot();
-
-        File::observe(FileObserver::class);
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
