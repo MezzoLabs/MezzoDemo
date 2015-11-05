@@ -31,15 +31,7 @@ Route::get('random', function () {
 });
 
 Route::get('/test/file', function () {
-    $repo = \MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories\FileRepository::makeRepository();
-
-    /** @var \App\File $file */
-    $file = $repo->find(4);
-    $file->update(['title' => str_random()]);
-
-    return "delete";
-
-    //return view('debugfile');
+    return view('debugfile');
 });
 
 Route::get('/test/slug', function () {

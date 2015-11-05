@@ -13,6 +13,8 @@ class ImageFile extends MezzoImageFile implements TypedFileAddon
 
     protected $fileType = ImageFileType::class;
 
+    protected $with = ['file'];
+
     public function file()
     {
         return $this->belongsTo(File::class);

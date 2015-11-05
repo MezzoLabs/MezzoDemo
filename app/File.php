@@ -70,14 +70,17 @@ class File extends MezzoFile
     /**
      * @return string
      */
-    public function shortPath()
+    public function shortPath($useOriginal = false)
     {
-        return $this->drives()->shortPath($this->folder, $this->filename);
+        $folder = ($useOriginal)? $this->getOriginal('folder') : $this->getAttribute('folder');
+        $filename = ($useOriginal)? $this->getOriginal('filename') : $this->getAttribute('filename');
+
+        return $this->drives()->shortPath($folder, $filename);
     }
 
-    public function existsOnDrive()
+    public function existsOnDrive($useOriginal = false)
     {
-        return $this->drives()->exists($this->disk, $this->shortPath());
+        return $this->drives()->exists($this->disk, $this->shortPath($useOriginal));
     }
 
 

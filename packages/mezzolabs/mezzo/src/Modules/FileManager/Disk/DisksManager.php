@@ -25,8 +25,8 @@ class DisksManager
      */
     public function moveFile($fromPath, $toPath, $disk = "local")
     {
-        $longPathFrom = $this->longPath($fromPath, $disk);
-        $longPathTo = $this->longPath($toPath, $disk);
+        $longPathFrom = $this->longPath($disk, $fromPath);
+        $longPathTo = $this->longPath($disk, $toPath);
 
         if($longPathFrom == $longPathTo)
             return true;
@@ -41,7 +41,6 @@ class DisksManager
      */
     public function longPath($diskName, $shortPath)
     {
-       //TODO: Allow other disks
        return $this->localStoragePath($shortPath);
     }
 
@@ -69,8 +68,7 @@ class DisksManager
      */
     public function deleteFile($shortPath, $diskName = "local")
     {
-        mezzo_dd('delete file');
-        $longPath = $this->longPath($shortPath, $diskName);
+        $longPath = $this->longPath($diskName, $shortPath);
 
         return $this->fileSystem()->delete($longPath);
     }
@@ -90,7 +88,8 @@ class DisksManager
 
     public function exists($diskName, $shortPath)
     {
-        $longPath = $this->longPath($shortPath, $diskName);
+        $longPath = $this->longPath($diskName, $shortPath);
+
         return $this->fileSystem()->exists($longPath);
     }
 

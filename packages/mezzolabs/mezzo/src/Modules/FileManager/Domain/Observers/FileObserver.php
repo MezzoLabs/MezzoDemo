@@ -17,9 +17,11 @@ class FileObserver
      */
     public function deleting(File $file)
     {
+        if(! $file->existsOnDrive())
+            return true;
+
+
         return $this->disks()->deleteFile($file->shortPath(), $file->getAttribute('disk'));
-
-
     }
 
     protected function disks(){
@@ -34,7 +36,7 @@ class FileObserver
      */
     public function updating(File $file)
     {
-        if(!$file->isDirty('filename', 'folder'))
+        if(!$file->isDirty('filename', 'folder') || ! $file->existsOnDrive(true))
             return true;
 
         $fromPath = $this->disks()->shortPath($file->getOriginal('folder'), $file->getOriginal('filename'));

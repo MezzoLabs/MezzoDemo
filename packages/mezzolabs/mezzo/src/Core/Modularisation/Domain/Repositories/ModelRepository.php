@@ -284,6 +284,7 @@ class ModelRepository extends EloquentRepository
     {
         return $this->query()->find($id, $columns);
     }
+    
 
     /**
      * @param $id
