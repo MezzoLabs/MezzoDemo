@@ -5,8 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Helpers;
 
 
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
-use MezzoLabs\Mezzo\Exceptions\MezzoException;
+use MezzoLabs\Mezzo\Core\Files\File;
 use MezzoLabs\Mezzo\Exceptions\UnexpectedException;
 
 class Slug
@@ -19,20 +18,29 @@ class Slug
      * @return string
      * @throws UnexpectedException
      */
-    public static function findNext($name, $neighbors, $options = ['separator' => '_'])
+    public static function findNext($name, $neighbors, $options = ['separator' => '_', 'hasExtension' => false])
     {
         $options = new Collection($options);
         $neighbors = new Collection($neighbors);
 
-        $separator = $options->get('seperator', '_');
+        $separator = $options->get('separator', '_');
+        $hasExtension = $options->get('hasExtension', false);
+
+        if ($hasExtension) {
+            $extension = '.' . File::getExtension($name);
+            $name = File::removeExtension($name);
+        } else {
+            $extension = "";
+        }
+
 
         $i = 1;
         while ($i < 9999) {
 
             if ($i == 1)
-                $possibleName = $name;
+                $possibleName = $name . $extension;
             else
-                $possibleName = $name . $separator . ($i);
+                $possibleName = $name . $separator . ($i) . $extension;
 
             if (!$neighbors->contains($possibleName))
                 return $possibleName;

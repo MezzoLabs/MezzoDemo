@@ -109,8 +109,12 @@ class ModelRepository extends EloquentRepository
     public function create(array $data)
     {
         //TODO Check for Relations
-        $values = $this->values($data);
-        return $this->modelInstance()->create($data);
+        $values = $this->values($data)->inMainTableOnly();
+
+        $modelInstance = $this->modelInstance();
+        $modelInstance->fill($values->toArray());
+
+        return $modelInstance->save(['timestamps' => true]);
     }
 
     /**

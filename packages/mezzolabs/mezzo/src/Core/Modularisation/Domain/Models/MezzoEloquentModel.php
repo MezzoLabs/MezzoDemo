@@ -145,4 +145,35 @@ abstract class MezzoEloquentModel extends EloquentModel implements MezzoModel
         }
     }
 
+    /**
+     * Set the value of the "created at" attribute.
+     *
+     * @param  mixed $value
+     * @return $this
+     */
+    public function setCreatedAt($value)
+    {
+        $this->setAttribute(static::CREATED_AT, $value);
+
+        $this->syncMezzoAttributes();
+
+
+        return $this;
+    }
+
+    /**
+     * Set the value of the "updated at" attribute.
+     *
+     * @param  mixed $value
+     * @return $this
+     */
+    public function setUpdatedAt($value)
+    {
+        $this->setAttribute(static::UPDATED_AT, $value);
+
+        $this->syncMezzoAttributes();
+
+        return $this;
+    }
+
 }

@@ -10,6 +10,7 @@ use MezzoLabs\Mezzo\Core\Annotations\Reader\AnnotationReader;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Database\Reader;
+use MezzoLabs\Mezzo\Core\Files\FileTypeDetector;
 use MezzoLabs\Mezzo\Core\Helpers\Path;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleCenter;
@@ -51,7 +52,7 @@ class RegisterBindings implements Bootstrapper
         ApiConfig::class,
         Uri::class,
         NamingConvention::class,
-        TransformerRegistrar::class
+        TransformerRegistrar::class,
     ];
 
 

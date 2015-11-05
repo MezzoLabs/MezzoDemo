@@ -54,7 +54,7 @@ class UserController extends CockpitResourceController
      * @param  int $id
      * @return ModuleResponse
      */
-    public function edit(ResourceRequest $request, $id)
+    public function edit(ResourceRequest $request, $id = 0)
     {
         return $this->page(EditUserPage::class);
     }
