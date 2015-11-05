@@ -1,22 +1,38 @@
 class ResourceIndexController {
 
-    /*@ngInject*/ constructor($scope, $http){
-    this.$scope = $scope;
-    this.$http = $http;
-    this.models = [];
-    this.searchText = '';
-    this.selectAll = false;
-    this.removing = 0;
+    /*@ngInject*/
+    constructor($scope, $http){
+        this.$scope = $scope;
+        this.$http = $http;
+        this.models = [];
+        this.searchText = '';
+        this.selectAll = false;
+        this.loading = false;
+        this.removing = 0;
+    }
 
+    init(modelName){
+        this.modelName = modelName;
+        var plural = this.modelName.toLowerCase() + 's';
+        this.apiUrl = '/api/' + plural;
 
-    $http.get('/api/tutorials')
-        .success(response => {
-            this.models = response.data;
+        this.loadModels();
+    }
 
-            this.models.forEach(model => model._meta = {});
-        })
-        .error(err => console.error(err));
-}
+    loadModels(){
+        this.loading = true;
+
+        return this.$http.get(this.apiUrl)
+            .then(response => {
+                this.loading = false;
+                this.models = response.data.data;
+
+                this.models.forEach(model => model._meta = {});
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
 
     getModels(){
         if(this.searchText.length > 0){
@@ -132,11 +148,7 @@ class ResourceIndexController {
     }
 
     removeRemoteModel(model){
-        return this.$http.delete('/api/tutorials/' + model.id, {
-            headers: {
-                Accept: 'application/vnd.MezzoLabs.v1+json'
-            }
-        });
+        return this.$http.delete(this.apiUrl + '/' + model.id);
     }
 
     countSelected(){
