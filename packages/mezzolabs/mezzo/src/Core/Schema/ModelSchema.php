@@ -208,14 +208,16 @@ class ModelSchema
         $attributesArray = array();
         $this->attributes()->each(function (Attribute $attribute) use (&$attributesArray) {
             $attributesArray[$attribute->name()] = [
-                'type' => $attribute->type()->name()
+                'type' => $attribute->type()->name(),
+                'returnType' => $attribute->type()->doctrineTypeName()
             ];
         });
 
         $relationsArray = array();
         $this->relationSides()->each(function (RelationSide $side) use (&$relationsArray) {
             $relationsArray[$side->naming()] = [
-
+                'type' => $side->relation()->shortType(),
+                'children' => ($side->hasOneChild()) ? 'one' : 'many'
             ];
         });
 
