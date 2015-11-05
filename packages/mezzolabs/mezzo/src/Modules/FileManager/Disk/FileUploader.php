@@ -1,17 +1,16 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Modules\FileManager\FileUpload;
+namespace MezzoLabs\Mezzo\Modules\FileManager\Disk;
 
 use Illuminate\Http\Request as IlluminateRequest;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Files\File;
-use MezzoLabs\Mezzo\Core\Files\StorageFactory;
 use MezzoLabs\Mezzo\Core\Validation\Validator;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\FileUploadException;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\MaximumFileSizeExceededException;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\MimeTypeNotAllowedException;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories\FileRepository;
-use MezzoLabs\Mezzo\Modules\FileManager\FileUpload\Exceptions\FileManagerException;
-use MezzoLabs\Mezzo\Modules\FileManager\FileUpload\Exceptions\MaximumFileSizeExceededException;
-use MezzoLabs\Mezzo\Modules\FileManager\FileUpload\Exceptions\MimeTypeNotAllowed;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploader
@@ -57,13 +56,14 @@ class FileUploader
      * @return bool
      * @throws FileUploadException
      * @throws MaximumFileSizeExceededException
-     * @throws MimeTypeNotAllowed
+     * @throws MimeTypeNotAllowedException
      */
     public function upload(array $metaData, UploadedFile $file)
     {
         $fileValidation = $this->validateFile($file);
         if (!$fileValidation)
-            throw new FileManagerException('File validation failed.');
+            throw new FileUploadException('File validation failed.');
+
 
         $metaData = new Collection($metaData);
         $data = new Collection();
@@ -81,13 +81,15 @@ class FileUploader
         $data->put('info', $this->fileInfoJson($file));
 
         if (!$this->validateData($data))
-            throw new FileManagerException('Validation failed.');
+            throw new FileUploadException('Validation failed.');
+
+        $newFile = $this->repository()->create($data->toArray());
+
 
         $fileSaved = $this->moveFile($file, $data->get('folder'), $data->get('filename'));
 
-        $databaseSaved = $this->repository()->create($data->toArray());
 
-        return $fileSaved && $databaseSaved;
+        return $fileSaved && $newFile;
     }
 
     /**
@@ -96,7 +98,7 @@ class FileUploader
      * @param UploadedFile $file
      * @return bool
      * @throws MaximumFileSizeExceededException
-     * @throws MimeTypeNotAllowed
+     * @throws MimeTypeNotAllowedException
      */
     public function validateFile(UploadedFile $file)
     {
@@ -104,7 +106,7 @@ class FileUploader
             throw new MaximumFileSizeExceededException();
 
         if (!$this->mimeTypeAllowed($file->getClientMimeType()))
-            throw new MimeTypeNotAllowed();
+            throw new MimeTypeNotAllowedException();
 
         return true;
     }
@@ -123,10 +125,15 @@ class FileUploader
     public function mimeTypeAllowed($mimeType)
     {
         return in_array($mimeType, [
-            'jpg', 'jpeg', 'text/markdown', 'txt'
+            'image/gif', 'image/jpeg', 'image/png', 'text/markdown', 'audio/mpeg',
+            'video/mpeg', 'audio/x-wav'
         ]);
     }
 
+    /**
+     * @param UploadedFile $file
+     * @return null|string
+     */
     protected function extension(UploadedFile $file)
     {
         $guessed = $file->guessClientExtension();
@@ -158,11 +165,15 @@ class FileUploader
      */
     protected function formattedFileName(UploadedFile $file)
     {
+        $baseName = File::removeExtension($file->getClientOriginalName());
         $extension = $this->extension($file);
 
-        $baseName = str_slug(File::removeExtension($file->getClientOriginalName()), '_');
+        return $this->disks()->formattedFileName($baseName, $extension);
+    }
 
-        return $baseName . '.' . $extension;
+    public function disks()
+    {
+        return app(DisksManager::class);
     }
 
     /**
@@ -219,18 +230,8 @@ class FileUploader
      */
     protected function moveFile(UploadedFile $file, $directory, $fileName)
     {
-        $storageDirectory = storage_path('mezzo/upload/' . $directory);
+        $storageDirectory = $this->disks()->localStoragePath($directory);
         $saved = $file->move($storageDirectory, $fileName);
         return $saved;
-    }
-
-    /**
-     * Get the instance for the local file system.
-     *
-     * @return \Illuminate\Contracts\Filesystem\Filesystem
-     */
-    protected function localFileSystem()
-    {
-        return StorageFactory::local();
     }
 }

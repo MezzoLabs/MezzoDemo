@@ -9,8 +9,9 @@ use App\ImageFile;
 use App\Tutorial;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\DiskSynchronization;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\FileUploader;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\FileTypesMapper;
-use MezzoLabs\Mezzo\Modules\FileManager\FileUpload\FileUploader;
 
 #
 class FileManagerModule extends ModuleProvider
@@ -33,6 +34,18 @@ class FileManagerModule extends ModuleProvider
     {
         $this->bindWithPrefix('fileuploader', FileUploader::class, true);
         $this->bindWithPrefix('typedfilemapper', FileTypesMapper::class, true);
+        $this->bindWithPrefix('drivesnychronization', DiskSynchronization::class, true);
+
+        $this->driveSynchronization()->setListeners();
+
+    }
+
+    /**
+     * @return DiskSynchronization
+     */
+    public function driveSynchronization()
+    {
+        return app(DiskSynchronization::class);
     }
 
     /**
@@ -62,4 +75,6 @@ class FileManagerModule extends ModuleProvider
     {
         return app(FileTypesMapper::class);
     }
+
+
 }

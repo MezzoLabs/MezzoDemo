@@ -4,7 +4,7 @@
 namespace MezzoLabs\Mezzo\Core\Files;
 
 
-use MezzoLabs\Mezzo\Modules\FileManager\FileUpload\Exceptions\FileManagerException;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\FileManagerException;
 use MezzoLabs\Mezzo\Modules\Generator\CannotGenerateFileException;
 
 class File

@@ -218,4 +218,16 @@ abstract class ModelReflection
         return $this->modelReflectionSet;
     }
 
+    /**
+     * Gives you an array of properties that influence eloquent behaviour
+     */
+    public function specialOptionProperties()
+    {
+        return [
+            'hidden' => $this->instance()->getHidden(),
+            'timestamps' => $this->instance()->usesTimestamps(),
+            'fillable' => $this->instance()->getFillable(),
+        ];
+    }
+
 }

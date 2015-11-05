@@ -74,6 +74,7 @@ class ModelRepository extends EloquentRepository
      *
      * @param string|ModelReflection|ModelReflectionSet $model
      * @return static
+     * @throws RepositoryException
      */
     public static function makeRepository($model = null)
     {

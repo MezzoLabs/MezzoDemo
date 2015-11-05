@@ -60,35 +60,14 @@ abstract class FileType
     public static function find($extension)
     {
         foreach (static::$fileTypes as $fileTypeClass) {
-            $fileType = static::make();
+            $fileType = static::makeByClass($fileTypeClass);
 
             if ($fileType->matchesExtension($extension))
                 return $fileType;
         }
 
-        return UnknownFileType::make();
-    }
 
-    /**
-     * @param $fileTypeClass
-     * @return static
-     */
-    public static function make()
-    {
-        return mezzo()->make(static::class);
-    }
-
-    /**
-     * Check if a extension fits this type of file.
-     *
-     * @param $extensionToMatch
-     * @return bool
-     */
-    public function matchesExtension($extensionToMatch)
-    {
-        $extensionToMatch = $this->normExtension($extensionToMatch);
-
-        return $this->extensionCollection->has($extensionToMatch);
+        return app()->make(UnknownFileType::class);
     }
 
     /**
@@ -103,11 +82,33 @@ abstract class FileType
 
         $fileType = mezzo()->make($fileTypeClass);
 
-        if(! $fileType instanceof FileType)
+        if (!$fileType instanceof FileType)
             throw new FileTypeException($fileTypeClass . ' is not a real file type.');
 
         return $fileType;
 
+    }
+
+    /**
+     * Check if a extension fits this type of file.
+     *
+     * @param $extensionToMatch
+     * @return bool
+     */
+    public function matchesExtension($extensionToMatch)
+    {
+        $extensionToMatch = $this->normExtension($extensionToMatch);
+
+        return $this->extensionCollection->contains($extensionToMatch);
+    }
+
+    /**
+     * @return static
+     * @internal param $fileTypeClass
+     */
+    public static function make()
+    {
+        return mezzo()->make(static::class);
     }
 
     /**

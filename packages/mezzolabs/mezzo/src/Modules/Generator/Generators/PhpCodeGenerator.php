@@ -28,7 +28,6 @@ class PhpCodeGenerator
         $rulesArray = [];
         $atomicAttributes->each(function (AtomicAttribute $attribute) use (&$rulesArray) {
             $name = $attribute->name();
-
             if (in_array($name, $this->noRulesFor)) return true;
 
             $rulesArray[$name] = $attribute->rules()->toString();
@@ -37,7 +36,7 @@ class PhpCodeGenerator
         return $this->arrayString($rulesArray);
     }
 
-    /**
+        /**
      * Form an array string out of a Collection or an array.
      *
      * @param array $array
@@ -103,6 +102,26 @@ class PhpCodeGenerator
         }
 
         return "\r\n" . $indent;
+    }
+
+    public function hiddenArray(ModelSchema $model)
+    {
+        return $this->arrayString($model->option('hidden'));
+    }
+
+    public function fillableArray(ModelSchema $model)
+    {
+        return $this->arrayString($model->option('fillable'));
+    }
+
+    public function timestampsBoolean(ModelSchema $model)
+    {
+        return $this->booleanString($model->option('timestamps'));
+    }
+
+    public function booleanString($boolean)
+    {
+        return ($boolean) ? 'true;' : 'false;';
     }
 
     public function openingTag()

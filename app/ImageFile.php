@@ -17,4 +17,16 @@ class ImageFile extends MezzoImageFile implements TypedFileAddon
     {
         return $this->belongsTo(File::class);
     }
+
+    /**
+     * Delete the the parent file only.
+     * The database will delete this image file via the cascade.
+     *
+     * @return bool|null
+     * @throws \Exception
+     */
+    public function delete()
+    {
+        return $this->file->delete();
+    }
 }

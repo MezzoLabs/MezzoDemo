@@ -31,8 +31,16 @@ Route::get('random', function () {
 });
 
 Route::get('/test/file', function () {
+    $repo = \MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories\FileRepository::makeRepository();
 
-    return view('debugfile');
+    mezzo_dd(mezzo()->model('ImageFile')->schema()->attributes());
+    /** @var \App\File $file */
+    $file = $repo->find(4);
+    $file->update(['title' => str_random()]);
+
+    return "delete";
+
+    //return view('debugfile');
 });
 
 Route::get('/test/slug', function () {
@@ -49,6 +57,7 @@ Route::post('test/file', function (\Illuminate\Http\Request $request) {
     $repo = new \MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories\FileRepository();
     $fileManager = \MezzoLabs\Mezzo\Modules\FileManager\FileManagerModule::make();
     $uploader = $fileManager->uploader();
+
 
     $uploader->uploadInput($request);
 

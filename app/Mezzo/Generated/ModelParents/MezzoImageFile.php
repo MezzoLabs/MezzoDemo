@@ -6,64 +6,92 @@ use App\Mezzo\BaseModel;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
+/**
+* App\ImageFile
+*
+* @property  integer $id
+* @property string $cropping
+* @property  float $file_id
+* @property \Carbon\Carbon $created_at
+* @property \Carbon\Carbon $updated_at
+*/
 abstract class MezzoImageFile extends BaseModel
 {
     use IsMezzoModel;
 
     /**
+    * Indicates if the model should be timestamped.
+    *
+    * @var  bool
+    */
+    public $timestamps = true;
+    /**
     * The table associated with the model.
     *
-    * @var string            
+    * @var string
     */
     protected $table = 'image_files';
-
+    /**
+    * Set of rules that will be validated in resource requests.
+    *
+    * @var  array
+    */
     protected $rules = [
-        'cropping' => ""
+        'cropping' => "",
+        'file_id' => ""
     ];
+    /**
+    * The attributes that should be hidden for arrays.
+    *
+    * @var  array
+    */
+    protected $hidden = [
+        "file_id",
+        "cropping"
+    ];
+    /**
+    * The attributes that are mass assignable.
+    *
+    * @var  array
+    */
+    protected $fillable = [
 
+    ];
     /**
     *
     * @Mezzo\Attribute(type="PrimaryKeyInput")
     * @var integer            
     */
-    protected $id;
+    protected $_id;
 
     /**
     *
     * @Mezzo\Attribute(type="TextArea")
     * @var string            
     */
-    protected $cropping;
+    protected $_cropping;
 
     /**
     *
-    * @Mezzo\Attribute(type="RelationInputSingle")
-    * @var integer            
+    * @Mezzo\Attribute(type="NumberInput")
+    * @var float            
     */
-    protected $file_id;
-
-    /**
-    *
-    * @Mezzo\Attribute(type="DateTimeInput")
-    * @var \Carbon\Carbon            
-    */
-    protected $created_at;
+    protected $_file_id;
 
     /**
     *
     * @Mezzo\Attribute(type="DateTimeInput")
     * @var \Carbon\Carbon            
     */
-    protected $updated_at;
-
+    protected $_created_at;
 
     /**
-    * @Mezzo\Relations\OneToOne
-    * @Mezzo\Relations\From(table="image_files", primaryKey="id", naming="file")
-    * @Mezzo\Relations\To(table="files", primaryKey="id", naming="images")
-    * @Mezzo\Relations\JoinColumn(table="files", column="id")
+    *
+    * @Mezzo\Attribute(type="DateTimeInput")
+    * @var \Carbon\Carbon            
     */
-    protected $file;
+    protected $_updated_at;
+
 
 
 }

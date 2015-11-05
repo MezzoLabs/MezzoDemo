@@ -7,8 +7,10 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Generators;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
+use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\RelationSide;
+use MezzoLabs\Mezzo\Modules\Generator\Schema\ModelParentSchema;
 
 class AnnotationGenerator
 {
@@ -75,11 +77,22 @@ class AnnotationGenerator
     }
 
     /**
+     * Add a line to the buffer.
+     *
+     * @param string $line
+     */
+    protected function addLine($line)
+    {
+        $this->lines->push($line);
+    }
+
+    /**
+     * @param string $indent
      * @return string
      */
-    protected function pullLines()
+    protected function pullLines($indent = '    ')
     {
-        $string = $this->multiple($this->lines->toArray());
+        $string = $this->multiple($this->lines->toArray(), $indent);
 
         $this->lines = new Collection();
 
@@ -89,12 +102,32 @@ class AnnotationGenerator
     /**
      * Make a string out of multiple annotation strings
      *
-     * @param $lines
+     * @param array $lines
+     * @param string $indent
      * @return string
      */
-    protected function multiple(array $lines = [])
+    protected function multiple(array $lines = [], $indent  = '    ')
     {
-        return implode("\n    ", $lines);
+        return implode("\n" . $indent, $lines);
+    }
+
+    /**
+     * @param ModelSchema $modelSchema
+     * @return string
+     */
+    public function classAnnotations(ModelParentSchema $modelParent)
+    {
+        $modelSchema = $modelParent->modelSchema();
+
+        $this->addLine('* App\Mezzo\Generated\ModelParents\\' . $modelParent->name());
+        $this->addLine('*');
+
+        $modelSchema->attributes()->each(function(Attribute $attribute){
+            $this->addLine('* @property '. $attribute->type()->variableType() . ' $' . $attribute->name());
+        });
+
+
+        return $this->pullLines('');
     }
 
     public function relation(RelationSide $relationSide)
@@ -130,16 +163,6 @@ class AnnotationGenerator
 
 
         return $this->pullLines();
-    }
-
-    /**
-     * Add a line to the buffer.
-     *
-     * @param string $line
-     */
-    protected function addLine($line)
-    {
-        $this->lines->push($line);
     }
 
     public function phpGenerator()

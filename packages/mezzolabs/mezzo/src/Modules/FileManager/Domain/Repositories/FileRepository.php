@@ -14,6 +14,11 @@ class FileRepository extends ModelRepository
 {
     protected $model = File::class;
 
+    public static function removeFromDrive($this)
+    {
+
+    }
+
     /**
      * @param array $data
      * @return File
@@ -31,7 +36,8 @@ class FileRepository extends ModelRepository
      * @param array $data
      * @return File
      */
-    protected function createFile(array $data){
+    protected function createFile(array $data)
+    {
         return parent::create($data);
     }
 
@@ -45,7 +51,7 @@ class FileRepository extends ModelRepository
 
         $newTypedFile = $this->typedFileAddonInstance($fileType);
 
-        if(!$newTypedFile)
+        if (!$newTypedFile)
             return null;
 
         $newTypedFile->file_id = $newFile->id;

@@ -46,7 +46,7 @@ class FileTypesMapper
 
         if(!$class) return null;
 
-        return app()->make($fileType);
+        return app()->make($class);
     }
 
     /**

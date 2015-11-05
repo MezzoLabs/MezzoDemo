@@ -7,7 +7,6 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles;
 use App\File;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MezzoLabs\Mezzo\Core\Files\Types\FileType;
-use MezzoLabs\Mezzo\Core\Files\Types\UnknownFileType;
 
 /**
  * @property File $file
@@ -15,10 +14,6 @@ use MezzoLabs\Mezzo\Core\Files\Types\UnknownFileType;
  */
 trait IsFileWithType
 {
-    /**
-     * @var string
-     */
-    protected $fileType = UnknownFileType::class;
 
     /**
      * @var FileType
