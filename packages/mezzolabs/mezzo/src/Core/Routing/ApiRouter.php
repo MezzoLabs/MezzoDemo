@@ -124,6 +124,7 @@ class ApiRouter
         $uri = $this->modelUri($controller->model());
 
         $this->get($uri, $controller->qualifiedActionName('index'));
+        $this->get($uri . '/info', $controller->qualifiedActionName('info'));
         $this->get($uri . '/{id}', $controller->qualifiedActionName('show'));
         $this->post($uri, $controller->qualifiedActionName('store'));
         $this->put($uri . '/{id}', $controller->qualifiedActionName('update'));

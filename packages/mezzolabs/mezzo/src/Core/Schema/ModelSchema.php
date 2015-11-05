@@ -85,7 +85,7 @@ class ModelSchema
      */
     public function attributes($name = null)
     {
-        if(!$name)
+        if (!$name)
             return $this->mainTable()->attributes();
 
         return $this->mainTable()->attributes()->get($name);
@@ -201,5 +201,27 @@ class ModelSchema
         $nameSpaceFolders = explode('\\', $this->className());
 
         return $nameSpaceFolders[count($nameSpaceFolders) - 1];
+    }
+
+    public function toArray()
+    {
+        $attributesArray = array();
+        $this->attributes()->each(function (Attribute $attribute) use (&$attributesArray) {
+            $attributesArray[$attribute->name()] = [
+                'type' => $attribute->type()->name()
+            ];
+        });
+
+        $relationsArray = array();
+        $this->relationSides()->each(function (RelationSide $side) use (&$relationsArray) {
+            $relationsArray[$side->naming()] = [
+
+            ];
+        });
+
+        return [
+            'attributes' => $attributesArray,
+            'relations' => $relationsArray
+        ];
     }
 } 

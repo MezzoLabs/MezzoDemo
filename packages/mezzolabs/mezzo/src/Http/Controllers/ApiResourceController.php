@@ -86,12 +86,21 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
     }
 
     /**
+     * @return \Dingo\Api\Http\Response
+     */
+    public function info()
+    {
+
+        return $this->response()->withArray($this->model()->schema()->toArray());
+    }
+
+    /**
      * @param $id
      * @return NotFoundHttpException
      */
     public function assertResourceExists($id)
     {
-        if(!$this->repository()->exists($id))
+        if (!$this->repository()->exists($id))
             throw new NotFoundHttpException();
         return true;
     }
@@ -120,7 +129,7 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
      */
     protected function bestModelTransformer($modelClass = "")
     {
-        if(empty($modelClass))
+        if (empty($modelClass))
             $modelClass = $this->model()->className();
 
         return EloquentModelTransformer::makeBest($modelClass);
