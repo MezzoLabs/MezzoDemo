@@ -2,9 +2,10 @@
 
 namespace App\Mezzo\Generated\ModelParents;
 
-use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
+use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 use App\Mezzo\BaseModel;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 /**
 *-------------------------------------------------------------------------------------------------------------------
