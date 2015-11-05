@@ -27,4 +27,26 @@ class TutorialController extends CockpitResourceController
         return $this->page(CreateTutorialPage::class);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @param ResourceRequest $request
+     * @return ModuleResponse
+     */
+    public function show(ResourceRequest $request, $id)
+    {
+        // TODO: Implement show() method.
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return ModuleResponse
+     */
+    public function edit(ResourceRequest $request, $id)
+    {
+        // TODO: Implement edit() method.
+    }
 }

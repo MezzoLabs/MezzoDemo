@@ -2,6 +2,8 @@
 
 namespace MezzoLabs\Mezzo\Http\Controllers;
 
+use MezzoLabs\Mezzo\Cockpit\Pages\Resources\EditResourcePage;
+use MezzoLabs\Mezzo\Cockpit\Pages\Resources\IndexResourcePage;
 use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ShowResourcePage;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 use MezzoLabs\Mezzo\Http\Requests\Request;
@@ -20,10 +22,7 @@ abstract class CockpitResourceController extends CockpitController implements Re
      * @param Request $request
      * @return ModuleResponse
      */
-    public function index(ResourceRequest $request)
-    {
-
-    }
+    abstract public function index(ResourceRequest $request);
 
 
     /**
@@ -32,10 +31,7 @@ abstract class CockpitResourceController extends CockpitController implements Re
      * @param ResourceRequest $request
      * @return ModuleResponse
      */
-    public function create(ResourceRequest $request)
-    {
-        mezzo_dd($request);
-    }
+    abstract public function create(ResourceRequest $request);
 
 
     /**
@@ -45,12 +41,7 @@ abstract class CockpitResourceController extends CockpitController implements Re
      * @param ResourceRequest $request
      * @return ModuleResponse
      */
-    public function show(ResourceRequest $request)
-    {
-        $resource = $this->repository->findOrFail($request->get('id', null));
-
-        $this->page(ShowResourcePage::class);
-    }
+    abstract public function show(ResourceRequest $request, $id);
 
     /**
      * Show the form for editing the specified resource.
@@ -58,10 +49,7 @@ abstract class CockpitResourceController extends CockpitController implements Re
      * @param  int $id
      * @return ModuleResponse
      */
-    public function edit($id)
-    {
-
-    }
+    abstract public function edit(ResourceRequest $request, $id);
 
     /**
      * Check if this resource controller is correctly named (<ModelName>Controller)
@@ -76,6 +64,5 @@ abstract class CockpitResourceController extends CockpitController implements Re
         return $this->assertResourceIsReflectedModel();
 
     }
-
 
 }

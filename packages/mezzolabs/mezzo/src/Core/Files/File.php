@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Core\Files;
 
 
+use MezzoLabs\Mezzo\Modules\FileManager\FileUpload\Exceptions\FileUploadException;
 use MezzoLabs\Mezzo\Modules\Generator\CannotGenerateFileException;
 
 class File
@@ -21,10 +22,34 @@ class File
      * @param string $filename
      * @param string $content
      */
-    public function __construct($filename, $content)
+    public function __construct($filename, $content = "")
     {
         $this->filename = $filename;
         $this->content = $content;
+    }
+
+    public static function removeExtension($fileName)
+    {
+        $parts = explode('.', $fileName);
+
+        if (count($parts) == 1)
+            return $fileName;
+
+        if (empty($parts[0]))
+            throw new FileUploadException('Cannot handle file names that only contain a extension.');
+
+        $parts = array_splice($parts, 0, count($parts) - 1);
+
+
+        return implode('.', $parts);
+
+    }
+
+    public static function getExtension($fileName)
+    {
+        $parts = explode('.', $fileName);
+
+        return $parts[count($parts) - 1];
     }
 
     /**

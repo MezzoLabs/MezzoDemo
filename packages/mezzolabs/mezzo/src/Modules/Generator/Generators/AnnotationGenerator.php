@@ -68,7 +68,7 @@ class AnnotationGenerator
     public function attribute(Attribute $attribute)
     {
         $this->addLine($this->doctrine('Mezzo\Attribute', [
-            'inputType' => $attribute->type()->name()
+            'type' => $attribute->type()->name()
         ]));
 
         return $this->pullLines();

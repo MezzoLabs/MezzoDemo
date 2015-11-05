@@ -5,7 +5,7 @@
     <div class="wrapper">
         <div class="panel panel-bordered">
             <div class="panel-heading">
-                <h3>New {{ $model->name() }}</h3>
+                <h3>Edit {{ $model->name() }} {{ $model->id }}</h3>
 
                 <div class="panel-actions">
                 </div>

@@ -5,6 +5,7 @@ namespace App\Mezzo\Generated\ModelParents;
 use App\Mezzo\BaseModel;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
+use MezzoLabs\Mezzo\Modules\FileManager\Domain\Traits\HasAnExtension;
 
 abstract class MezzoFile extends BaseModel
 {
@@ -16,6 +17,10 @@ abstract class MezzoFile extends BaseModel
      * @var string
      */
     protected $table = 'files';
+
+    protected $fillable = ['title', 'folder', 'filename', 'disk', 'extension', 'info'];
+
+    public $timestamps = true;
 
     protected $rules = [
         'title' => "",
@@ -29,59 +34,66 @@ abstract class MezzoFile extends BaseModel
 
     /**
      *
-     * @Mezzo\Attribute(inputType="PrimaryKeyInput")
+     * @Mezzo\Attribute(type="PrimaryKeyInput")
      * @var integer
      */
     protected $id;
 
     /**
      *
-     * @Mezzo\Attribute(inputType="TextInput")
+     * @Mezzo\Attribute(type="TextInput")
+     * @var string
+     */
+    protected $disk;
+
+    /**
+     *
+     * @Mezzo\Attribute(type="TextInput")
      * @var string
      */
     protected $title;
 
     /**
      *
-     * @Mezzo\Attribute(inputType="TextInput")
+     * @Mezzo\Attribute(type="TextInput")
      * @var string
      */
     protected $folder;
 
     /**
      *
-     * @Mezzo\Attribute(inputType="TextInput")
+     * @Mezzo\Attribute(type="TextInput")
      * @var string
      */
     protected $filename;
 
     /**
      *
-     * @Mezzo\Attribute(inputType="TextInput")
+     * @Mezzo\Attribute(type="TextInput")
      * @var string
      */
     protected $extension;
 
     /**
      *
-     * @Mezzo\Attribute(inputType="TextArea")
+     * @Mezzo\Attribute(type="TextArea")
      * @var string
      */
     protected $info;
 
     /**
      *
-     * @Mezzo\Attribute(inputType="DateTimeInput")
+     * @Mezzo\Attribute(type="DateTimeInput")
      * @var \Carbon\Carbon
      */
-    protected $created_at;
+    protected $created_at = false;
 
     /**
      *
-     * @Mezzo\Attribute(inputType="DateTimeInput")
+     * @Mezzo\Attribute(type="DateTimeInput")
      * @var \Carbon\Carbon
      */
-    protected $updated_at;
+    protected $updated_at = false;
 
 
     /**

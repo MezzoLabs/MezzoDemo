@@ -5,10 +5,33 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories;
 
 
 use App\File;
+use MezzoLabs\Mezzo\Core\Helpers\Slug;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
 
 class FileRepository extends ModelRepository
 {
+    /**
+     * @param array $data
+     * @return File
+     */
+    public function create(array $data)
+    {
+        $values = $this->values($data)->inMainTableOnly();
+
+        $newFile = $this->fileInstance();
+        $newFile->fill($values->toArray());
+        $newFile->save();
+
+        $this->createTypedFile($newFile);
+    }
+
+    protected function createTypedFile(File $newFile)
+    {
+        $fileType = $newFile->fileType();
+
+
+    }
+
     /**
      * @param $folder
      * @param array $columns
@@ -21,11 +44,31 @@ class FileRepository extends ModelRepository
 
     public function findUniqueFileName($fileName, $folder)
     {
-        $filesInFolder = $this->filesInFolder($folder, ['id', 'title']);
+        $filesInFolder = $this->filesInFolder($folder, ['filename']);
 
         if (!$filesInFolder)
             return $fileName;
-        mezzo_dd($filesInFolder);
+
+        $fileNames = $filesInFolder->lists('filename');
+
+        return Slug::findNext($fileName, $fileNames, [
+            'separator' => '_',
+            'hasExtension' => true
+        ]);
     }
+
+    /**
+     * @return File
+     */
+    protected function fileInstance()
+    {
+        return parent::modelInstance();
+    }
+
+    protected function typedFileInstance()
+    {
+
+    }
+
 
 }
