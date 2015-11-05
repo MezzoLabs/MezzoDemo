@@ -131,7 +131,9 @@ class ModelRepository extends EloquentRepository
         $modelInstance = $this->modelInstance();
         $modelInstance->fill($values->toArray());
 
-        return $modelInstance->save(['timestamps' => true]);
+        $modelInstance->save(['timestamps' => true]);
+
+        return $modelInstance;
     }
 
     /**

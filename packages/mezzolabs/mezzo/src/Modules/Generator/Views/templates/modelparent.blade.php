@@ -8,16 +8,16 @@ use App\Mezzo\BaseModel;
 
 abstract class {{ $parent->name() }} extends BaseModel
 {
-use IsMezzoModel;
+    use IsMezzoModel;
 
-/**
-* The table associated with the model.
-*
-@annotation('var', 'string')
-*/
-protected $table = '{{ $parent->table() }}';
+    /**
+    * The table associated with the model.
+    *
+    @annotation('var', 'string')
+    */
+    protected $table = '{{ $parent->table() }}';
 
-protected $rules = {!! $php->rulesArray($parent->modelSchema()) !!}
+    protected $rules = {!! $php->rulesArray($parent->modelSchema()) !!}
 
 @foreach($parent->attributes() as $attribute)
     /**

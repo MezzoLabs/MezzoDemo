@@ -5,7 +5,7 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles;
 
 use MezzoLabs\Mezzo\Core\Files\Types\FileType;
 
-interface TypedFileContract
+interface TypedFileAddon
 {
     /**
      * @return FileType

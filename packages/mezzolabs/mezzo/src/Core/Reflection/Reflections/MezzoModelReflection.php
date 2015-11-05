@@ -62,7 +62,7 @@ class MezzoModelReflection extends ModelReflection
      * @param bool $forceNew Should we create a new instance or use the singleton approach
      * @return MezzoEloquentModel
      */
-    public function instance($forceNew)
+    public function instance($forceNew = false)
     {
         return parent::instance($forceNew);
     }

@@ -5,18 +5,14 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories;
 
 
 use App\File;
-use App\ImageFile;
 use MezzoLabs\Mezzo\Core\Files\Types\FileType;
-use MezzoLabs\Mezzo\Core\Files\Types\ImageFileType;
 use MezzoLabs\Mezzo\Core\Helpers\Slug;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\FileTypesMapper;
 
 class FileRepository extends ModelRepository
 {
-    public $fileTypes = [
-        ImageFileType::class => ImageFile::class
-    ];
+    protected $model = File::class;
 
     /**
      * @param array $data
@@ -24,37 +20,48 @@ class FileRepository extends ModelRepository
      */
     public function create(array $data)
     {
-        $values = $this->values($data)->inMainTableOnly();
+        $newFile = $this->createFile($data);
+        $typeAddon = $this->createTypedFile($newFile);
 
-        $newFile = $this->fileInstance();
-        $newFile->fill($values->toArray());
-        $newFile->save();
-
-        $this->createTypedFile($newFile);
+        return $newFile;
     }
 
     /**
+     *
+     * @param array $data
      * @return File
      */
-    protected function fileInstance()
-    {
-        return parent::modelInstance();
+    protected function createFile(array $data){
+        return parent::create($data);
     }
 
+    /**
+     * @param File $newFile
+     * @return \MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\TypedFileAddon|null
+     */
     protected function createTypedFile(File $newFile)
     {
         $fileType = $newFile->fileType();
 
-        $newTypedFile = $this->typedFileInstance($fileType);
+        $newTypedFile = $this->typedFileAddonInstance($fileType);
 
+        if(!$newTypedFile)
+            return null;
 
+        $newTypedFile->file_id = $newFile->id;
+
+        $newTypedFile->save();
+
+        return $newTypedFile;
     }
 
-    protected function typedFileInstance(FileType $fileType)
+    protected function typedFileAddonInstance(FileType $fileType)
     {
-        mezzo()->make(FileTypesMapper::class);
+        $mapper = app()->make(FileTypesMapper::class);
 
+        $fileTypeModel = $mapper->modelInstance($fileType);
 
+        return $fileTypeModel;
     }
 
     public function findUniqueFileName($fileName, $folder)
@@ -80,6 +87,14 @@ class FileRepository extends ModelRepository
     public function filesInFolder($folder, $columns = ['*'])
     {
         return $this->query()->where('folder', '=', $folder)->get($columns);
+    }
+
+    /**
+     * @return File
+     */
+    protected function fileInstance()
+    {
+        return parent::modelInstance();
     }
 
 

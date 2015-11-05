@@ -29,13 +29,25 @@ class FileTypesMapper
 
         $allModels->each(function(ModelReflection $modelReflection){
             $instance = $modelReflection->instance();
-            if(! $instance instanceof TypedFileContract)
+            if(! $instance instanceof TypedFileAddon)
                 return true;
 
             $this->lookup->put(get_class($instance->fileType()), get_class($instance));
         });
     }
 
+    /**
+     * @param FileType $fileType
+     * @return TypedFileAddon|null
+     */
+    public function modelInstance(FileType $fileType)
+    {
+        $class = $this->modelClass($fileType);
+
+        if(!$class) return null;
+
+        return app()->make($fileType);
+    }
 
     /**
      * @param FileType $fileType

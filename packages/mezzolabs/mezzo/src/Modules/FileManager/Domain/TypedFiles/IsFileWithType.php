@@ -11,28 +11,29 @@ use MezzoLabs\Mezzo\Core\Files\Types\UnknownFileType;
 
 /**
  * @property File $file
+ * @property integer $file_id
  */
 trait IsFileWithType
 {
     /**
      * @var string
      */
-    protected $fileTypeClass = UnknownFileType::class;
+    protected $fileType = UnknownFileType::class;
 
     /**
      * @var FileType
      */
-    protected $fileType;
+    protected $fileTypeObject;
 
     /**
      * @return FileType
      */
     public function fileType()
     {
-        if(!$this->fileType)
-            $this->fileType = FileType::makeByClass($this->fileTypeClass);
+        if(!$this->fileTypeObject)
+            $this->fileTypeObject = FileType::makeByClass($this->fileType);
 
-        return $this->fileType;
+        return $this->fileTypeObject;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App;
 
 use App\Mezzo\Generated\ModelParents\MezzoFile;
 use MezzoLabs\Mezzo\Core\Files\Types\FileType;
+use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\TypedFileAddon;
 
 class File extends MezzoFile
 {
@@ -13,11 +14,16 @@ class File extends MezzoFile
     protected $fileType;
 
     /**
+     * @var TypedFileAddon
+     */
+    protected $typeAddon;
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function images()
     {
-        return $this->hasMany(ImageFile::class);
+        return $this->hasOne(ImageFile::class);
     }
 
     /**
@@ -30,4 +36,22 @@ class File extends MezzoFile
 
         return $this->fileType;
     }
+
+    /**
+     * @return TypedFileAddon
+     */
+    public function getTypeAddon()
+    {
+        return $this->typeAddon;
+    }
+
+    /**
+     * @param TypedFileAddon $typeAddon
+     */
+    public function setTypeAddon(TypedFileAddon $typeAddon)
+    {
+        $this->typeAddon = $typeAddon;
+    }
+
+
 }

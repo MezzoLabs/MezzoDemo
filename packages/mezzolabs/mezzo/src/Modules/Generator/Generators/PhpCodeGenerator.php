@@ -10,6 +10,7 @@ use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 class PhpCodeGenerator
 {
 
+    public $noRulesFor = ['id', 'created_at', 'updated_at', 'deleted_at'];
     /**
      * @var array
      */
@@ -18,6 +19,22 @@ class PhpCodeGenerator
     public function __construct()
     {
 
+    }
+
+    public function rulesArray(ModelSchema $model)
+    {
+        $atomicAttributes = $model->attributes()->atomicAttributes();
+
+        $rulesArray = [];
+        $atomicAttributes->each(function (AtomicAttribute $attribute) use (&$rulesArray) {
+            $name = $attribute->name();
+
+            if (in_array($name, $this->noRulesFor)) return true;
+
+            $rulesArray[$name] = $attribute->rules()->toString();
+        });
+
+        return $this->arrayString($rulesArray);
     }
 
     /**
@@ -49,44 +66,9 @@ class PhpCodeGenerator
         return '[' . static::nl(2) . $elementsString . static::nl(1) . '];';
     }
 
-    public function rulesArray(ModelSchema $model)
-    {
-        $atomicAttributes = $model->attributes()->atomicAttributes();
-
-        $rulesArray = [];
-        $atomicAttributes->each(function (AtomicAttribute $attribute) use (&$rulesArray) {
-            $name = $attribute->name();
-
-            if ($name == "id") return true;
-
-            $rulesArray[$name] = $attribute->rules()->toString();
-        });
-
-        return $this->arrayString($rulesArray);
-    }
-
-    public function openingTag()
-    {
-        return '<?php';
-    }
-
-    private function set($string)
-    {
-        $this->string = $string;
-    }
-
-
     private function toParameter($var)
     {
         return static::parameterize($var);
-    }
-
-    /**
-     * @return AnnotationGenerator
-     */
-    public function annotationGenerator()
-    {
-        return new AnnotationGenerator();
     }
 
     /**
@@ -100,6 +82,11 @@ class PhpCodeGenerator
         if (is_numeric($var)) return $var;
 
         return "\"" . $var . "\"";
+    }
+
+    private function line($line)
+    {
+        $this->lines[] = $line;
     }
 
     /**
@@ -118,8 +105,21 @@ class PhpCodeGenerator
         return "\r\n" . $indent;
     }
 
-    private function line($line)
+    public function openingTag()
     {
-        $this->lines[] = $line;
+        return '<?php';
+    }
+
+    /**
+     * @return AnnotationGenerator
+     */
+    public function annotationGenerator()
+    {
+        return new AnnotationGenerator();
+    }
+
+    private function set($string)
+    {
+        $this->string = $string;
     }
 }
