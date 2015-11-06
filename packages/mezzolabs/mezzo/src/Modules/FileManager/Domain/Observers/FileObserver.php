@@ -6,6 +6,9 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Domain\Observers;
 
 use App\File;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\DisksManager;
+use MezzoLabs\Mezzo\Modules\FileManager\Exceptions\FileNotSnychronizedException;
+use MezzoLabs\Mezzo\Modules\FileManager\Exceptions\FileNotSynchronized;
+use MezzoLabs\Mezzo\Modules\FileManager\Exceptions\FileNotSynchronizedException;
 
 class FileObserver
 {
@@ -33,10 +36,14 @@ class FileObserver
      *
      * @param File $file
      * @return bool|void
+     * @throws FileNotSnychronizedException
      */
     public function updating(File $file)
     {
-        if(!$file->isDirty('filename', 'folder') || ! $file->existsOnDrive(true))
+        if(! $file->existsOnDrive(true))
+            throw new FileNotSnychronizedException($file);
+
+        if(!$file->isDirty('filename', 'folder'))
             return true;
 
         $fromPath = $this->disks()->shortPath($file->getOriginal('folder'), $file->getOriginal('filename'));
@@ -44,4 +51,5 @@ class FileObserver
 
         return $this->disks()->moveFile($fromPath, $toPath);
     }
+
 }

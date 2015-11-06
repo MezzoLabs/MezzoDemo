@@ -182,7 +182,7 @@ class ModelRepository extends EloquentRepository
 
         $model = $this->findByOrFail($attribute, $id);
 
-        $result = $this->updateRow($values->inMainTableOnly(), $id, $attribute);
+        $result = $this->updateRow($values->inMainTableOnly(), $model);
 
         $relationResult = $this->updateRelations($model, $values->inForeignTablesOnly());
 
@@ -220,22 +220,20 @@ class ModelRepository extends EloquentRepository
     }
 
     /**
-     *
-     *
      * @param AttributeValues $atomicAttributes
-     * @param $id
-     * @param $attribute
-     * @return int
+     * @param MezzoEloquentModel $model
+     * @return MezzoEloquentModel
      */
-    protected function updateRow(AttributeValues $atomicAttributes, $id, $attribute)
+    protected function updateRow(AttributeValues $atomicAttributes, MezzoEloquentModel $model)
     {
         $values = $atomicAttributes->toArray();
 
         if (empty($values))
-            return 1;
+            return $model;
 
-        return $this->query()->where($attribute, '=', $id)->update($values);
+        $model->update($values);
 
+        return $model;
     }
 
     /**
@@ -284,7 +282,7 @@ class ModelRepository extends EloquentRepository
     {
         return $this->query()->find($id, $columns);
     }
-    
+
 
     /**
      * @param $id

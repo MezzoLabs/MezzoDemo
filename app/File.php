@@ -58,9 +58,9 @@ class File extends MezzoFile
     /**
      * @return string
      */
-    public function longPath()
+    public function longPath($useOriginal = false)
     {
-        return $this->drives()->longPath($this->disk, $this->shortPath());
+        return $this->drives()->longPath($this->disk, $this->shortPath($useOriginal));
     }
 
     protected function drives(){

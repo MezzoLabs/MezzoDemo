@@ -35,19 +35,8 @@ class FileManagerModule extends ModuleProvider
     {
         $this->bindWithPrefix('fileuploader', FileUploader::class, true);
         $this->bindWithPrefix('typedfilemapper', FileTypesMapper::class, true);
-        $this->bindWithPrefix('drivesnychronization', DiskSynchronization::class, true);
-
-        $this->driveSynchronization()->setListeners();
-
     }
 
-    /**
-     * @return DiskSynchronization
-     */
-    public function driveSynchronization()
-    {
-        return app(DiskSynchronization::class);
-    }
 
     /**
      * Called when module is ready, model reflections are loaded.

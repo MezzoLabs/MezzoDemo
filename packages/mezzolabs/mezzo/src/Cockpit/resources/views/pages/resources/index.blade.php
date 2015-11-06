@@ -3,7 +3,7 @@
 
 @section('content')
 
-    <div class="wrapper" ng-init="vm.init('{{ $model->name() }}', '{!! $model->defaultIncludes()->toJson() !!}')">
+    <div class="wrapper" ng-init="vm.init('{{ $model->name() }}', {!! str_replace('"', "'", $model->defaultIncludes()->toJson()) !!})">
 
         <!-- Top Container -->
         <div class="panel panel-bordered">

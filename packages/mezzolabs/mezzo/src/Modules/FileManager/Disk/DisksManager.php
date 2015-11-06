@@ -4,11 +4,15 @@
 namespace MezzoLabs\Mezzo\Modules\FileManager\Disk;
 
 
+use Illuminate\Filesystem\Filesystem as IlluminateFilesystem;
 use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Core\Files\StorageFactory;
+use MezzoLabs\Mezzo\Core\Traits\IsShared;
 
 class DisksManager
 {
+    use IsShared;
+
     public function formattedFileName($baseName, $extension)
     {
         $baseName = str_slug($baseName, '_');
@@ -31,6 +35,11 @@ class DisksManager
         if($longPathFrom == $longPathTo)
             return true;
 
+        $parts = explode('/', $longPathTo);
+        $folderTo = implode('/', array_splice($parts, 0, count($parts) - 1));
+
+        //
+        $this->fileSystem()->makeDirectory($folderTo, $mode = 0777, true, true);
         return $this->fileSystem()->move($longPathFrom, $longPathTo);
     }
 
@@ -54,7 +63,7 @@ class DisksManager
     }
 
     /**
-     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     * @return \Illuminate\Contracts\Filesystem\Filesystem|IlluminateFilesystem
      */
     public function fileSystem()
     {

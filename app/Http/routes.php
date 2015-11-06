@@ -34,25 +34,8 @@ Route::get('/test/file', function () {
     return view('debugfile');
 });
 
-Route::get('/test/slug', function () {
-    $next = \MezzoLabs\Mezzo\Core\Helpers\Slug::findNext('file',
-        [
 
-        ]
-    );
-
-    mezzo_dd($next);
-});
-
-Route::post('test/file', function (\Illuminate\Http\Request $request) {
-    $repo = new \MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories\FileRepository();
-    $fileManager = \MezzoLabs\Mezzo\Modules\FileManager\FileManagerModule::make();
-    $uploader = $fileManager->uploader();
-
-
-    $uploader->uploadInput($request);
-
-});
+Route::post('test/file/{id}', 'TestController@updateFile');
 
 Route::get('debug/tutorial', function () {
     $tutorial = \App\Tutorial::findOrFail(1);

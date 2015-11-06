@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
 
 class MezzoModelReflection extends ModelReflection
@@ -80,8 +81,14 @@ class MezzoModelReflection extends ModelReflection
      */
     public function defaultIncludes()
     {
-        return $this->attributes()->relationAttributes()->visibleOnly()->keys();
 
+        $attributes = $this->attributes()->relationAttributes()->visibleOnly();
+
+        $attributes = $attributes->keyBy(function (RelationAttribute $relationAttribute) {
+            return $relationAttribute->relationSide()->naming();
+        });
+
+        return $attributes->keys();
     }
 
 }

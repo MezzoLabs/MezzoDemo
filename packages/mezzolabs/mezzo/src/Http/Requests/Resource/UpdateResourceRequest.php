@@ -35,4 +35,11 @@ class UpdateResourceRequest extends UpdateOrStoreResourceRequest
     {
         return true;
     }
+
+    /**
+     * @return int
+     */
+    protected function id(){
+        return intval($this->route('id'));
+    }
 }
