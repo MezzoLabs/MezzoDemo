@@ -47,6 +47,7 @@ class FileManagerModule extends ModuleProvider
     {
         File::observe(FileObserver::class);
 
+        $this->loadViews();
         $tutorialReflection = $this->modelReflectionSets->get(Tutorial::class);
 
         //dd($tutorialReflection->relationships());
