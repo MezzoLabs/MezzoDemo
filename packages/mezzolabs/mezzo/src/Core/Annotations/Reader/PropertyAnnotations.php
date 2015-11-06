@@ -66,7 +66,7 @@ abstract class PropertyAnnotations
 
         if ($annotations->count() === 0) return null;
 
-        return static::makeByAnnotationCollection($property->getName(), $annotations, $model);
+        return static::makeByAnnotationCollection(ltrim($property->getName(), '_'), $annotations, $model);
 
     }
 

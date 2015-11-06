@@ -7,7 +7,6 @@ namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Reflection\ModelFinder;
-use MezzoLabs\Mezzo\Core\Reflection\ReflectionManager;
 
 class ModelReflectionSet
 {
@@ -60,7 +59,8 @@ class ModelReflectionSet
      * @return bool
      * @throws \ReflectionException
      */
-    protected function assertValidEloquentModel(){
+    protected function assertValidEloquentModel()
+    {
         if (!class_exists($this->className))
             throw new \ReflectionException('Class ' . $this->className . ' does not exist.');
 
@@ -71,11 +71,42 @@ class ModelReflectionSet
     }
 
     /**
+     * @return bool
+     */
+    protected function checkIfEloquentModel()
+    {
+        return $this->instance() instanceof EloquentModel;
+    }
+
+    /**
+     * Returns an instance of the reflected Eloquent model.
+     *
+     * @param bool $forceNew
+     * @return EloquentModel
+     */
+    public function instance($forceNew = false)
+    {
+        if (!$this->instance && !$forceNew) {
+            $this->instance = mezzo()->make($this->className());
+        }
+
+        return $this->instance;
+    }
+
+    /**
      * @return string
      */
     public function className()
     {
         return $this->className;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function checkIfMezzoModel()
+    {
+        return ModelFinder::classUsesMezzoTrait($this->className());
     }
 
     /**
@@ -89,28 +120,11 @@ class ModelReflectionSet
     }
 
     /**
-     * @return MezzoModelReflection
+     * @return string
      */
-    public function mezzoReflection()
+    public function fileName()
     {
-        if(!$this->isMezzoModel())
-            return null;
-
-        if($this->mezzoModelReflection === null)
-            $this->mezzoModelReflection = new MezzoModelReflection($this);
-
-        return $this->mezzoModelReflection;
-    }
-
-    /**
-     * @return EloquentModelReflection
-     */
-    public function eloquentReflection()
-    {
-        if($this->eloquentModelReflection === null){
-            $this->eloquentModelReflection = new EloquentModelReflection($this);
-        }
-        return $this->eloquentModelReflection;
+        return $this->reflectionClass()->getFileName();
     }
 
     /**
@@ -128,31 +142,26 @@ class ModelReflectionSet
     }
 
     /**
-     * @return EloquentModel
-     */
-    public function instance()
-    {
-        if (!$this->instance) {
-            $this->instance = mezzo()->make($this->className());
-        }
-
-        return $this->instance;
-    }
-
-    /**
-     * @return string
-     */
-    public function fileName()
-    {
-        return $this->reflectionClass()->getFileName();
-    }
-
-    /**
      * @return string
      */
     public function shortName()
     {
         return $this->reflectionClass()->getShortName();
+    }
+
+    /**
+     * Returns a MezzoModelReflection if this model uses the model
+     *
+     * @param bool $forceEloquentReflection
+     * @return EloquentModelReflection|MezzoModelReflection
+     */
+    public function bestReflection($forceEloquentReflection = false)
+    {
+        if ($this->isMezzoModel() && !$forceEloquentReflection)
+            return $this->mezzoReflection();
+
+        return $this->eloquentReflection();
+
     }
 
     /**
@@ -164,31 +173,28 @@ class ModelReflectionSet
     }
 
     /**
-     * Returns a MezzoModelReflection if this model uses the model
-     *
-     * @param bool $forceEloquentReflection
-     * @return EloquentModelReflection|MezzoModelReflection
+     * @return MezzoModelReflection
      */
-    public function bestReflection($forceEloquentReflection = false){
-        if($this->isMezzoModel() && !$forceEloquentReflection)
-            return $this->mezzoReflection();
+    public function mezzoReflection()
+    {
+        if (!$this->isMezzoModel())
+            return null;
 
-        return $this->eloquentReflection();
+        if ($this->mezzoModelReflection === null)
+            $this->mezzoModelReflection = new MezzoModelReflection($this);
 
+        return $this->mezzoModelReflection;
     }
 
     /**
-     * @return bool
+     * @return EloquentModelReflection
      */
-    protected function checkIfMezzoModel(){
-        return ModelFinder::classUsesMezzoTrait($this->className());
-    }
-
-    /**
-     * @return bool
-     */
-    protected function checkIfEloquentModel(){
-        return $this->instance() instanceof EloquentModel;
+    public function eloquentReflection()
+    {
+        if ($this->eloquentModelReflection === null) {
+            $this->eloquentModelReflection = new EloquentModelReflection($this);
+        }
+        return $this->eloquentModelReflection;
     }
 
 }

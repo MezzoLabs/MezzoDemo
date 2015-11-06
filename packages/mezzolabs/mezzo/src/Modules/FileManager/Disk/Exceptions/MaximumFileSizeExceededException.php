@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Modules\FileManager\FileUpload\Exceptions;
+namespace MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions;
 
 
 class MaximumFileSizeExceededException extends FileUploadException

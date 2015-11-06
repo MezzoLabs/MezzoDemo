@@ -30,17 +30,41 @@ class ModelSchema
     protected $tables;
 
     /**
+     * @var Collection
+     */
+    protected $options;
+
+    /**
+     * @var array
+     */
+    protected $defaultOptions = ['timestamps' => true];
+
+    /**
      * @param string $className
      * @param bool $tableName
      */
-    public function __construct($className, $tableName = false)
+    public function __construct($className, $tableName = false, $options = [])
     {
         $this->className = $className;
 
         $this->tables = new ModelTables();
         $this->tables->setModel($this);
 
+        $this->options = $this->readOptions($options);
+
         $this->addMainTable($tableName);
+    }
+
+    /**
+     * @param $options
+     * @return Collection|static
+     */
+    protected function readOptions($options)
+    {
+        $defaultOptions = new Collection($this->defaultOptions);
+        $this->options = $defaultOptions->merge($options);
+
+        return $this->options;
     }
 
     /**
@@ -51,14 +75,6 @@ class ModelSchema
         if (empty($tableName)) $tableName = $this->defaultTableName();
 
         $this->tables->addMainTable(new TableSchema($tableName));
-    }
-
-    /**
-     * @return string
-     */
-    public function tableName()
-    {
-        return $this->mainTable()->name();
     }
 
     /**
@@ -81,36 +97,6 @@ class ModelSchema
     }
 
     /**
-     * @return Attributes|Attribute
-     */
-    public function attributes($name = null)
-    {
-        if (!$name)
-            return $this->mainTable()->attributes();
-
-        return $this->mainTable()->attributes()->get($name);
-    }
-
-    /**
-     * Get attributes from all tables.
-     * Not only the main table that is connected to the model but also the tables that are connected via relations.
-     *
-     * @return Attributes\Attributes
-     */
-    public function allAttributes()
-    {
-        return $this->tables->attributes();
-    }
-
-    /**
-     * @return TableSchema
-     */
-    public function mainTable()
-    {
-        return $this->tables->main();
-    }
-
-    /**
      * Check if this model contains a certain attribute.
      *
      * @param $attribute
@@ -130,11 +116,22 @@ class ModelSchema
     }
 
     /**
-     * @return string
+     * @return Attributes|Attribute
      */
-    public function className()
+    public function attributes($name = null)
     {
-        return $this->className;
+        if (!$name)
+            return $this->mainTable()->attributes();
+
+        return $this->mainTable()->attributes()->get($name);
+    }
+
+    /**
+     * @return TableSchema
+     */
+    public function mainTable()
+    {
+        return $this->tables->main();
     }
 
     /**
@@ -146,6 +143,26 @@ class ModelSchema
     {
         if (!$this->shortName) $this->shortName = $this->makeShortName();
         return $this->shortName;
+    }
+
+    /**
+     * Get the short class name of the given full class name.
+     *
+     * @return string
+     */
+    private function makeShortName()
+    {
+        $nameSpaceFolders = explode('\\', $this->className());
+
+        return $nameSpaceFolders[count($nameSpaceFolders) - 1];
+    }
+
+    /**
+     * @return string
+     */
+    public function className()
+    {
+        return $this->className;
     }
 
     /**
@@ -166,6 +183,41 @@ class ModelSchema
         });
 
         return $relations;
+    }
+
+    /**
+     * Get attributes from all tables.
+     * Not only the main table that is connected to the model but also the tables that are connected via relations.
+     *
+     * @return Attributes\Attributes
+     */
+    public function allAttributes()
+    {
+        return $this->tables->attributes();
+    }
+
+    public function toArray()
+    {
+        $attributesArray = array();
+        $this->attributes()->each(function (Attribute $attribute) use (&$attributesArray) {
+            $attributesArray[$attribute->name()] = [
+                'type' => $attribute->type()->name(),
+                'returnType' => $attribute->type()->doctrineTypeName()
+            ];
+        });
+
+        $relationsArray = array();
+        $this->relationSides()->each(function (RelationSide $side) use (&$relationsArray) {
+            $relationsArray[$side->naming()] = [
+                'type' => $side->relation()->shortType(),
+                'children' => ($side->hasOneChild()) ? 'one' : 'many'
+            ];
+        });
+
+        return [
+            'attributes' => $attributesArray,
+            'relations' => $relationsArray
+        ];
     }
 
     /**
@@ -192,38 +244,19 @@ class ModelSchema
     }
 
     /**
-     * Get the short class name of the given full class name.
-     *
      * @return string
      */
-    private function makeShortName()
+    public function tableName()
     {
-        $nameSpaceFolders = explode('\\', $this->className());
-
-        return $nameSpaceFolders[count($nameSpaceFolders) - 1];
+        return $this->mainTable()->name();
     }
 
-    public function toArray()
+    /**
+     * @param $key
+     * @return mixed
+     */
+    public function option($key, $default = "")
     {
-        $attributesArray = array();
-        $this->attributes()->each(function (Attribute $attribute) use (&$attributesArray) {
-            $attributesArray[$attribute->name()] = [
-                'type' => $attribute->type()->name(),
-                'returnType' => $attribute->type()->doctrineTypeName()
-            ];
-        });
-
-        $relationsArray = array();
-        $this->relationSides()->each(function (RelationSide $side) use (&$relationsArray) {
-            $relationsArray[$side->naming()] = [
-                'type' => $side->relation()->shortType(),
-                'children' => ($side->hasOneChild()) ? 'one' : 'many'
-            ];
-        });
-
-        return [
-            'attributes' => $attributesArray,
-            'relations' => $relationsArray
-        ];
+        return $this->options->get($key, $default);
     }
 } 

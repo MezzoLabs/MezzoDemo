@@ -7,21 +7,22 @@ use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
 /**
-* App\Comment
+* App\ImageFile
 *
 * @property  integer $id
-* @property string $content
-* @property  float $tutorial_id
-* @property  float $user_id
+* @property string $cropping
+* @property  float $file_id
+* @property \Carbon\Carbon $created_at
+* @property \Carbon\Carbon $updated_at
 */
-abstract class MezzoComment extends BaseModel
+abstract class MezzoImageFile extends BaseModel
 {
     use IsMezzoModel;
 
     /**
     * Indicates if the model should be timestamped.
     *
-    * @var bool
+    * @var  bool
     */
     public $timestamps = true;
     /**
@@ -29,29 +30,29 @@ abstract class MezzoComment extends BaseModel
     *
     * @var string
     */
-    protected $table = 'comments';
+    protected $table = 'image_files';
     /**
     * Set of rules that will be validated in resource requests.
     *
-    * @var array
+    * @var  array
     */
     protected $rules = [
-        'content' => "required|between:10,1000",
-        'tutorial_id' => "",
-        'user_id' => ""
+        'cropping' => "",
+        'file_id' => ""
     ];
     /**
     * The attributes that should be hidden for arrays.
     *
-    * @var array
+    * @var  array
     */
     protected $hidden = [
-
+        "file_id",
+        "cropping"
     ];
     /**
     * The attributes that are mass assignable.
     *
-    * @var array
+    * @var  array
     */
     protected $fillable = [
 
@@ -68,21 +69,28 @@ abstract class MezzoComment extends BaseModel
     * @Mezzo\Attribute(type="TextArea")
     * @var string            
     */
-    protected $_content;
+    protected $_cropping;
 
     /**
     *
     * @Mezzo\Attribute(type="NumberInput")
     * @var float            
     */
-    protected $_tutorial_id;
+    protected $_file_id;
 
     /**
     *
-    * @Mezzo\Attribute(type="NumberInput")
-    * @var float            
+    * @Mezzo\Attribute(type="DateTimeInput")
+    * @var \Carbon\Carbon            
     */
-    protected $_user_id;
+    protected $_created_at;
+
+    /**
+    *
+    * @Mezzo\Attribute(type="DateTimeInput")
+    * @var \Carbon\Carbon            
+    */
+    protected $_updated_at;
 
 
 

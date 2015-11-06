@@ -16,7 +16,7 @@ class GenerateForeignFields extends MezzoCommand
      *
      * @var string
      */
-    protected $signature = 'mezzo:generate:foreignFields';
+    protected $signature = 'mezzo:generate:foreign-fields';
 
     /**
      * The console command description.

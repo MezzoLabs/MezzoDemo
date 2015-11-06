@@ -57,7 +57,7 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
      */
     public function store(StoreResourceRequest $request)
     {
-        return $this->response()->result($this->repository()->create($request->all()));
+        return $this->response()->item($this->repository()->create($request->all()), $this->bestModelTransformer());
     }
 
     /**

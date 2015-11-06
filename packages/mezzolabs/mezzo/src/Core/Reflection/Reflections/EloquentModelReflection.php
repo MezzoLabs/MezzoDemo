@@ -58,4 +58,6 @@ class EloquentModelReflection extends ModelReflection
 
         return $this->databaseTable;
     }
+
+
 }

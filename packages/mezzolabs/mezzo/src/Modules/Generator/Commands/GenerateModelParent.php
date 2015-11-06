@@ -2,12 +2,9 @@
 
 namespace MezzoLabs\Mezzo\Modules\Generator\Commands;
 
-use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Console\Commands\MezzoCommand;
-use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
-use MezzoLabs\Mezzo\Core\Schema\Columns\JoinColumn;
-use MezzoLabs\Mezzo\Modules\Generator\Generators\MigrationGenerator;
-use MezzoLabs\Mezzo\Modules\Generator\Migration\ChangeSet;
+use MezzoLabs\Mezzo\Core\Files\File;
+use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 
 class GenerateModelParent extends MezzoCommand
 {
@@ -42,7 +39,22 @@ class GenerateModelParent extends MezzoCommand
      */
     public function handle()
     {
-        $this->mezzo->makeDatabaseReader();
+        $modelName = $this->ask('For which model?');
+
+        $reflectionManager = mezzo()->makeReflectionManager();
+        $reflection = $reflectionManager->eloquentReflection($modelName);
+        $schema = $reflection->schema();
+
+        $schemas = new \MezzoLabs\Mezzo\Core\Schema\ModelSchemas();
+        $schemas->addSchema($schema);
+
+        $generatorFactory = GeneratorModule::make()->generatorFactory();
+        $modelParentGenerator = $generatorFactory->modelParentGenerator($schemas);
+        $modelParentGenerator->run();
+
+        $modelParentGenerator->files()->each(function(File $file){
+            $this->info('Created: ' . $file->filename());
+        });
 
 
     }
