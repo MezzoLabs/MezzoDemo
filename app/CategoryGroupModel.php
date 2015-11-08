@@ -2,9 +2,9 @@
 
 namespace App;
 
-use App\Mezzo\Generated\ModelParents\MezzoCategory;
+use Illuminate\Database\Eloquent\Model;
 
-class Category extends MezzoCategory
+class CategoryGroupModel extends Model
 {
     public function group(){
         return $this->belongsTo(CategoryGroup::class, 'category_group_id');

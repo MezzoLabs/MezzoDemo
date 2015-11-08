@@ -6,6 +6,8 @@ namespace MezzoLabs\Mezzo\Core;
 
 use Illuminate\Foundation\Application;
 use MezzoLabs\Mezzo\Core\Booting\BootManager;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Traits\CanFireEvents;
 use MezzoLabs\Mezzo\Core\Traits\CanMakeInstances;
 use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
@@ -17,33 +19,29 @@ class Mezzo
     use CanMakeInstances, CanFireEvents;
 
     /**
+     * The mezzo service provider that starts all this stuff.
+     *
+     * @var MezzoServiceProvider
+     */
+    public $serviceProvider;
+    /**
      * Indicates if mezzo has "booted".
      *
      * @var bool
      */
     protected $booted = false;
-
     /**
      * The Laravel Application
      *
      * @var Application
      */
     protected $app;
-
     /**
      * The core boot service that runs all the bootstrappers we need.
      *
      * @var BootManager
      */
     protected $bootManager;
-
-    /**
-     * The mezzo service provider that starts all this stuff.
-     *
-     * @var MezzoServiceProvider
-     */
-    public $serviceProvider;
-
 
     /**
      * Create the one and only Mezzo instance
@@ -80,17 +78,17 @@ class Mezzo
 
     /**
      * @param $modelName
-     * @param string $type
-     * @return Reflection\Reflections\ModelReflection
+     * @param string $reflectionType
+     * @return Reflection\Reflections\ModelReflection|MezzoModelReflection|EloquentModelReflection
      */
-    public function model($modelName, $type = "best")
+    public function model($modelName, $reflectionType = "best")
     {
         $reflectionManager = $this->makeReflectionManager();
 
-        if ($type == "mezzo")
+        if ($reflectionType == "mezzo")
             return $reflectionManager->mezzoReflection($modelName);
 
-        if ($type == "eloquent")
+        if ($reflectionType == "eloquent")
             return $reflectionManager->eloquentReflection($modelName);
 
         return $reflectionManager->modelReflection($modelName);

@@ -27,7 +27,7 @@ class MezzoEloquentCollection
         $titleAttribute = $this->detectTitleAttribute($first);
 
         $list = new Collection();
-        $this->each(function(MezzoEloquentModel $model) use ($list, $titleAttribute){
+        $this->each(function(MezzoModel $model) use ($list, $titleAttribute){
             $list->put($model->id, $model->id . ' - ' . $model->getAttribute($titleAttribute));
         });
 
@@ -40,23 +40,6 @@ class MezzoEloquentCollection
     public function isEmpty()
     {
         return $this->collection->isEmpty();
-    }
-
-    /**
-     * @param callable $callback
-     * @return $this
-     */
-    public function each(callable $callback)
-    {
-        return $this->collection->each($callback);
-    }
-
-    /**
-     * @return EloquentCollection
-     */
-    public function eloquentCollection()
-    {
-        return $this->collection;
     }
 
     protected function detectTitleAttribute(MezzoEloquentModel $model){
@@ -81,5 +64,22 @@ class MezzoEloquentCollection
         }
 
         return 'id';
+    }
+
+    /**
+     * @param callable $callback
+     * @return $this
+     */
+    public function each(callable $callback)
+    {
+        return $this->collection->each($callback);
+    }
+
+    /**
+     * @return EloquentCollection
+     */
+    public function eloquentCollection()
+    {
+        return $this->collection;
     }
 }

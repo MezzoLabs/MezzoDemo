@@ -30,8 +30,11 @@ Route::get('random', function () {
     return str_random(16);
 });
 
-Route::get('/test/file', function () {
-    return view('debugfile');
+Route::get('/test/counterpart', function () {
+    $reflection = mezzo()->model(\App\Category::class, 'eloquent');
+
+
+    mezzo_dd($reflection);
 });
 
 

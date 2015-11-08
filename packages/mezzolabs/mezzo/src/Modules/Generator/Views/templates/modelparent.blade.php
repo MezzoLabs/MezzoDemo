@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 *
 *-------------------------------------------------------------------------------------------------------------------
 *
-* Please not edit, use "{{ $parent->modelSchema()->className() }}" instead. Thank you.
+* Please do not edit, use "{{ $parent->modelSchema()->className() }}" instead. Thank you.
 *
 *-------------------------------------------------------------------------------------------------------------------
 * Welcome to the model parent. This file is auto generated and tells Mezzo something about
