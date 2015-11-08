@@ -22,6 +22,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 * App\Mezzo\Generated\ModelParents\MezzoCategoryGroupModel
 *
 * @property  integer $category_group_id
+* @property  string $model
 */
 abstract class MezzoCategoryGroupModel extends BaseModel
 {
@@ -71,7 +72,7 @@ abstract class MezzoCategoryGroupModel extends BaseModel
     * @var array
     */
     protected $fillable = [
-
+        'category_group_id', 'model'
     ];
 
     /*
@@ -79,7 +80,7 @@ abstract class MezzoCategoryGroupModel extends BaseModel
     | Attribute annotation properties
     |-------------------------------------------------------------------------------------------------------------------    |
     | In this section you will find some annotated properties.
-    | They are not really important, but they will tell Mezzo something about
+    | They are not really important for you, but they will tell Mezzo something about
     | the attributes of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
@@ -91,13 +92,20 @@ abstract class MezzoCategoryGroupModel extends BaseModel
     */
     protected $_category_group_id;
 
+    /**
+     * Attribute annotation property for model
+     *
+     * @Mezzo\Attribute(type="TextInput")
+     * @var string
+     */
+    protected $_model;
 
     /*
     |-------------------------------------------------------------------------------------------------------------------
     | Relation annotation properties
     |-------------------------------------------------------------------------------------------------------------------
     | In this section you will find some annotated properties.
-    | They are not really important, but they will tell Mezzo something about
+    | They are not really important for you, but they will tell Mezzo something about
     | the relations of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */

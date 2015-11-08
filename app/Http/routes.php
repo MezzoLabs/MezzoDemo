@@ -12,6 +12,7 @@
 */
 
 
+use App\CategoryGroup;
 use App\Tutorial;
 use App\User;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -35,6 +36,18 @@ Route::get('/test/counterpart', function () {
 
 
     mezzo_dd($reflection);
+});
+
+Route::get('/test/category', function () {
+
+    /** @var CategoryGroup $group */
+    $group = \App\CategoryGroup::find(7);
+
+    $group->syncModels([
+        Tutorial::class, File::class
+    ]);
+
+
 });
 
 

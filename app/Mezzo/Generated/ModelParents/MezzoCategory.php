@@ -83,7 +83,7 @@ abstract class MezzoCategory extends MezzoNestedSetNode
     * @var array
     */
     protected $fillable = [
-
+        'label'
     ];
 
     /*

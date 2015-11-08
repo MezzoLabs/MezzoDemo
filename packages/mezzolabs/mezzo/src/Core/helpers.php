@@ -113,6 +113,23 @@ if (!function_exists('space_case')) {
     }
 }
 
+if (!function_exists('camel_to_slug')) {
+    /**
+     * Transforms camel case to a slug that separates big chars with a "-"
+     *
+     * @param $camelCase
+     * @param string $separator
+     * @return string
+     */
+    function camel_to_slug($camelCase, $separator = "-")
+    {
+        $space_case = space_case($camelCase);
+
+        return str_slug($space_case, $separator);
+    }
+}
+
+
 if (!function_exists('cockpit_template')) {
     /**
      * @return string

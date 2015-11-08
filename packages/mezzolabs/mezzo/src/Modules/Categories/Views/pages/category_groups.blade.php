@@ -5,7 +5,7 @@
     <div class="wrapper">
         <div class="panel panel-bordered">
             <div class="panel-heading">
-                <h3>Manage Categories</h3>
+                <h3>Category groups</h3>
 
                 <div class="panel-actions">
                 </div>

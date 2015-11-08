@@ -17,7 +17,8 @@ class ThirdParties extends Collection
      */
     protected $toLoad = [
         "DingoApi" => Wrappers\DingoApi::class,
-        "Html" => Wrappers\Html::class
+        "Html" => Wrappers\Html::class,
+        "EloquentSluggable" => Wrappers\EloquentSluggable::class
     ];
 
     /**
@@ -57,6 +58,20 @@ class ThirdParties extends Collection
     }
 
     /**
+     * @param $class
+     * @return ThirdPartyWrapper
+     */
+    protected function createWrapper($class)
+    {
+        $wrapper = $this->mezzo->make($class);
+
+        $this->mezzo->app()->instance(get_class($wrapper), $wrapper);
+
+        return $wrapper;
+
+    }
+
+    /**
      * Register the wrapped package service providers
      */
     public function registerServiceProviders()
@@ -92,20 +107,6 @@ class ThirdParties extends Collection
             throw new MezzoException('Cannot find third party with the name ' . $thirdParty);
 
         return $this->get($thirdParty);
-    }
-
-    /**
-     * @param $class
-     * @return ThirdPartyWrapper
-     */
-    protected function createWrapper($class)
-    {
-        $wrapper = $this->mezzo->make($class);
-
-        $this->mezzo->app()->instance(get_class($wrapper), $wrapper);
-
-        return $wrapper;
-
     }
 
 } 

@@ -81,7 +81,7 @@ abstract class Controller extends IlluminateController
 
         $shortName = str_replace('Controller', '', $shortName);
 
-        return snake_case($shortName);
+        return camel_to_slug($shortName);
     }
 
     /**

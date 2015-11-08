@@ -192,7 +192,7 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
-     * Returns the key of the module based on the ModuleProvider class name in snake case.
+     * Returns the key of the module based on the ModuleProvider class name in "slug case".
      *
      * Example: MySampleModule -> my-sample
      *
@@ -203,7 +203,7 @@ abstract class ModuleProvider extends ServiceProvider
         $class = $this->reflection()->getShortName();
         $class = preg_replace('/Module/', '', $class);
 
-        return str_slug($class);
+        return camel_to_slug($class);
     }
 
     /**
@@ -248,30 +248,6 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
-     * Create a new controller instance.
-     *
-     * @param $controllerName
-     * @return Controller
-     * @throws InvalidArgumentException
-     * @throws ModuleControllerException
-     */
-    public function makeController($controllerName)
-    {
-        if (is_object($controllerName)) {
-            if ($controllerName instanceof Controller) return $controllerName;
-
-            throw new InvalidArgumentException($controllerName);
-        }
-
-        $controller = mezzo()->make($this->controllerClass($controllerName));
-
-        if (!($controller instanceof Controller))
-            throw new ModuleControllerException('Not a valid module controller.');
-
-        return $controller;
-    }
-
-    /**
      * @param $name
      * @return ModulePage
      * @throws InvalidArgumentException
@@ -288,18 +264,6 @@ abstract class ModuleProvider extends ServiceProvider
         $pageClass = NamingConvention::findPageClass($this, $name);
 
         return new $pageClass($this);
-    }
-
-    /**
-     * Find the full class name for a controller.
-     *
-     * @param $controllerName
-     * @return string
-     * @throws ModuleControllerException
-     */
-    public function controllerClass($controllerName)
-    {
-        return NamingConvention::controllerClass($this, $controllerName);
     }
 
     /**
@@ -321,16 +285,6 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
-     * @return mixed
-     */
-    public function shortName()
-    {
-        $classShortName = Singleton::reflection($this)->getShortName();
-
-        return str_replace('Module', '', $classShortName);
-    }
-
-    /**
      * @return ModulePages
      */
     public function pages()
@@ -339,6 +293,13 @@ abstract class ModuleProvider extends ServiceProvider
             $this->pages = $this->collectPages();
 
         return $this->pages;
+    }
+
+    protected function collectPages()
+    {
+        $pages = new ModulePages();
+        $pages->collectFromModule($this);
+        return $pages;
     }
 
     /**
@@ -365,6 +326,118 @@ abstract class ModuleProvider extends ServiceProvider
         return $this->options;
     }
 
+    /**
+     * Get the api resource controller with the ControllerName
+     *
+     * @param $controllerName
+     * @return ApiResourceController|CockpitResourceController
+     * @throws ModuleControllerException
+     */
+    public function apiResourceController($controllerName)
+    {
+        $controller = $this->resourceController($controllerName);
+
+        if (!($controller instanceof ApiResourceController))
+            throw new ModuleControllerException($controller->qualifiedName() . ' is not an API resource controller. ');
+
+        return $controller;
+    }
+
+    /**
+     * @param $controllerName
+     * @return ResourceController
+     * @throws InvalidArgumentException
+     * @throws ModuleControllerException
+     */
+    public function resourceController($controllerName)
+    {
+        $controller = $this->makeController($controllerName);
+
+        if (!$controller->isResourceController())
+            throw new ModuleControllerException($controller->qualifiedName() . ' is not a valid resource controller.');
+
+        return $controller;
+    }
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param $controllerName
+     * @return Controller
+     * @throws InvalidArgumentException
+     * @throws ModuleControllerException
+     */
+    public function makeController($controllerName)
+    {
+        if (is_object($controllerName)) {
+            if ($controllerName instanceof Controller) return $controllerName;
+
+            throw new InvalidArgumentException($controllerName);
+        }
+
+        $controller = mezzo()->make($this->controllerClass($controllerName));
+
+        if (!($controller instanceof Controller))
+            throw new ModuleControllerException('Not a valid module controller.');
+
+        return $controller;
+    }
+
+    /**
+     * Find the full class name for a controller.
+     *
+     * @param $controllerName
+     * @return string
+     * @throws ModuleControllerException
+     */
+    public function controllerClass($controllerName)
+    {
+        return NamingConvention::controllerClass($this, $controllerName);
+    }
+
+    public function generateRoutes()
+    {
+        $this->router()->generateRoutes();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function title()
+    {
+        if ($this->options->get('title'))
+            return $this->options->get('title');
+
+        return $this->shortName();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function shortName()
+    {
+        $classShortName = Singleton::reflection($this)->getShortName();
+
+        return str_replace('Module', '', $classShortName);
+    }
+
+    /**
+     * @return string
+     */
+    public function uri()
+    {
+        return mezzo()->uri()->toModule($this);
+    }
+
+    /**
+     * Called when all service pro
+     *
+     * @return void
+     */
+    public function boot()
+    {
+
+    }
 
     /**
      * Load views from the "views" folder inside the module root.
@@ -392,86 +465,11 @@ abstract class ModuleProvider extends ServiceProvider
     }
 
     /**
-     * @param $controllerName
-     * @return ResourceController
-     * @throws InvalidArgumentException
-     * @throws ModuleControllerException
-     */
-    public function resourceController($controllerName)
-    {
-        $controller = $this->makeController($controllerName);
-
-        if (!$controller->isResourceController())
-            throw new ModuleControllerException($controller->qualifiedName() . ' is not a valid resource controller.');
-
-        return $controller;
-    }
-
-    /**
-     * Get the api resource controller with the ControllerName
-     *
-     * @param $controllerName
-     * @return ApiResourceController|CockpitResourceController
-     * @throws ModuleControllerException
-     */
-    public function apiResourceController($controllerName)
-    {
-        $controller = $this->resourceController($controllerName);
-
-        if (!($controller instanceof ApiResourceController))
-            throw new ModuleControllerException($controller->qualifiedName() . ' is not an API resource controller. ');
-
-        return $controller;
-    }
-
-    protected function collectPages()
-    {
-        $pages = new ModulePages();
-        $pages->collectFromModule($this);
-        return $pages;
-    }
-
-    public function generateRoutes()
-    {
-        $this->router()->generateRoutes();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function title()
-    {
-        if ($this->options->get('title'))
-            return $this->options->get('title');
-
-        return $this->shortName();
-    }
-
-    /**
-     * @return string
-     */
-    public function uri()
-    {
-        return mezzo()->uri()->toModule($this);
-    }
-
-
-    /**
      * Register the eloquent model transformers.
      */
     protected function registerTransformers($array = [])
     {
         app(TransformerRegistrar::class)->addTransformers($array);
-
-    }
-
-    /**
-     * Called when all service pro
-     *
-     * @return void
-     */
-    public function boot()
-    {
 
     }
 

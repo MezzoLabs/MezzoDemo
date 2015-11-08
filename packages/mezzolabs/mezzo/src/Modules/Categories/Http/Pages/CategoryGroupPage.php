@@ -7,7 +7,7 @@ use App\Permission;
 use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ResourcePage;
 use MezzoLabs\Mezzo\Modules\Categories\Http\Controllers\CategoryGroupController;
 
-class CategoryPage extends ResourcePage
+class CategoryGroupPage extends ResourcePage
 {
     protected $action = "index";
 

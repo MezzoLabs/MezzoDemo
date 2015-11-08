@@ -3,6 +3,7 @@
 namespace App\Mezzo\Generated\ModelParents;
 
 use App\Mezzo\BaseModel;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
@@ -68,7 +69,6 @@ abstract class MezzoCategoryGroup extends BaseModel
     * @var array
     */
     protected $hidden = [
-
     ];
     /**
     * The attributes that are mass assignable.
@@ -76,7 +76,7 @@ abstract class MezzoCategoryGroup extends BaseModel
     * @var array
     */
     protected $fillable = [
-
+        'label'
     ];
 
     /*
@@ -145,6 +145,8 @@ abstract class MezzoCategoryGroup extends BaseModel
     * @Mezzo\Relations\From(table="category_group_models", primaryKey="id", naming="group")
     * @Mezzo\Relations\To(table="category_groups", primaryKey="id", naming="models")
     * @Mezzo\Relations\JoinColumn(table="category_groups", column="id")
+     *
+     * @var EloquentCollection
     */
     protected $models;
 
