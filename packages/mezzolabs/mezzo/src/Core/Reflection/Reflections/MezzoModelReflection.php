@@ -6,8 +6,8 @@ namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
-use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 
 class MezzoModelReflection extends ModelReflection
 {
@@ -60,11 +60,12 @@ class MezzoModelReflection extends ModelReflection
     /**
      * Class name of the reflected eloquent model.
      *
+     * @param bool $forceNew Should we create a new instance or use the singleton approach
      * @return MezzoEloquentModel
      */
-    public function instance()
+    public function instance($forceNew = false)
     {
-        return parent::instance();
+        return parent::instance($forceNew);
     }
 
     /**
@@ -75,5 +76,19 @@ class MezzoModelReflection extends ModelReflection
         return mezzo()->makeAnnotationReader()->model($this);
     }
 
+    /**
+     * @return static
+     */
+    public function defaultIncludes()
+    {
+
+        $attributes = $this->attributes()->relationAttributes()->visibleOnly();
+
+        $attributes = $attributes->keyBy(function (RelationAttribute $relationAttribute) {
+            return $relationAttribute->relationSide()->naming();
+        });
+
+        return $attributes->keys();
+    }
 
 }

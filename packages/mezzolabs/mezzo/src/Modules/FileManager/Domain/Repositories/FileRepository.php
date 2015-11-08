@@ -5,41 +5,69 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories;
 
 
 use App\File;
+use MezzoLabs\Mezzo\Core\Files\Types\FileType;
 use MezzoLabs\Mezzo\Core\Helpers\Slug;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
+use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\FileTypesMapper;
 
 class FileRepository extends ModelRepository
 {
+    protected $model = File::class;
+
+    public static function removeFromDrive($this)
+    {
+
+    }
+
     /**
      * @param array $data
      * @return File
      */
     public function create(array $data)
     {
-        $values = $this->values($data)->inMainTableOnly();
+        $newFile = $this->createFile($data);
+        $typeAddon = $this->createTypedFile($newFile);
 
-        $newFile = $this->fileInstance();
-        $newFile->fill($values->toArray());
-        $newFile->save();
-
-        $this->createTypedFile($newFile);
+        return $newFile;
     }
 
+    /**
+     *
+     * @param array $data
+     * @return File
+     */
+    protected function createFile(array $data)
+    {
+        return parent::create($data);
+    }
+
+    /**
+     * @param File $newFile
+     * @return \MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\TypedFileAddon|null
+     */
     protected function createTypedFile(File $newFile)
     {
         $fileType = $newFile->fileType();
 
+        $newTypedFile = $this->typedFileAddonInstance($fileType);
 
+        if (!$newTypedFile)
+            return null;
+
+        $newTypedFile->file_id = $newFile->id;
+
+        $newTypedFile->save();
+
+        return $newTypedFile;
     }
 
-    /**
-     * @param $folder
-     * @param array $columns
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
-     */
-    public function filesInFolder($folder, $columns = ['*'])
+    protected function typedFileAddonInstance(FileType $fileType)
     {
-        return $this->query()->where('folder', '=', $folder)->get($columns);
+        $mapper = app()->make(FileTypesMapper::class);
+
+        $fileTypeModel = $mapper->modelInstance($fileType);
+
+        return $fileTypeModel;
     }
 
     public function findUniqueFileName($fileName, $folder)
@@ -58,16 +86,21 @@ class FileRepository extends ModelRepository
     }
 
     /**
+     * @param $folder
+     * @param array $columns
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function filesInFolder($folder, $columns = ['*'])
+    {
+        return $this->query()->where('folder', '=', $folder)->get($columns);
+    }
+
+    /**
      * @return File
      */
     protected function fileInstance()
     {
         return parent::modelInstance();
-    }
-
-    protected function typedFileInstance()
-    {
-
     }
 
 

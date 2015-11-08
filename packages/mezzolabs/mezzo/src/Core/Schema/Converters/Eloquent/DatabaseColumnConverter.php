@@ -33,6 +33,10 @@ class DatabaseColumnConverter extends Converter
     {
         $fluentAttribute = new FluentAttribute();
 
+        $model = $databaseColumn->table()->modelReflection();
+
+        $ruleString = $model->rules($databaseColumn->name());
+
         if ($databaseColumn->isForeignKey()) {
             $fluentAttribute
                 ->joinColumn($databaseColumn->joinColumn());
@@ -40,7 +44,8 @@ class DatabaseColumnConverter extends Converter
             $fluentAttribute
                 ->name($databaseColumn->name())
                 ->type($databaseColumn->type())
-                ->table($databaseColumn->table()->name());
+                ->table($databaseColumn->table()->name())
+                ->rules($ruleString);
         }
 
         $attribute = $fluentAttribute->make();

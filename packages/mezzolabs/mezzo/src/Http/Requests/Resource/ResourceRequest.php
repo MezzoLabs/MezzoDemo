@@ -16,6 +16,13 @@ class ResourceRequest extends Request
 {
     use ValidatesApiRequests;
 
+    public $model = "";
+
+    /**
+     * @var null
+     */
+    protected $modelObject = null;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -36,6 +43,30 @@ class ResourceRequest extends Request
         return [];
     }
 
+    /**
+     * @return \MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection
+     * @throws ModuleControllerException
+     */
+    public function model()
+    {
+        if (!$this->modelObject) {
+            $this->modelObject = $this->findModel();
+        }
+
+        return $this->modelObject;
+    }
+
+    /**
+     * @return \MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection
+     * @throws ModuleControllerException
+     */
+    protected function findModel()
+    {
+        if (!empty($this->model))
+            return mezzo()->model($this->model, 'mezzo');
+
+        return $this->controller()->model();
+    }
 
     /**
      * @return Controller|ResourceControllerContract
@@ -51,15 +82,6 @@ class ResourceRequest extends Request
                 'Please use a correctly named ResourceController.');
 
         return $controller;
-    }
-
-    /**
-     * @return \MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection
-     * @throws ModuleControllerException
-     */
-    public function model()
-    {
-        return $this->controller()->model();
     }
 
     /**
@@ -90,7 +112,6 @@ class ResourceRequest extends Request
 
         return $this->failedApiAuthorization();
     }
-
 
 
 }

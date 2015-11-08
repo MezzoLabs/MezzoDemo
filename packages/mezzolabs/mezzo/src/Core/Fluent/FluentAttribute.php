@@ -14,12 +14,6 @@ use MezzoLabs\Mezzo\Core\Schema\Relations\RelationSide;
 class FluentAttribute extends Fluent
 {
 
-    public function isRelation()
-    {
-        $this->offsetSet('type', 'relation');
-        return $this;
-    }
-
     /**
      * @return $this
      */
@@ -40,6 +34,12 @@ class FluentAttribute extends Fluent
         return $this;
     }
 
+    public function isRelation()
+    {
+        $this->offsetSet('type', 'relation');
+        return $this;
+    }
+
     /**
      * @param string $table
      * @return $this
@@ -47,6 +47,24 @@ class FluentAttribute extends Fluent
     public function table($table)
     {
         $this->offsetSet('table', $table);
+        return $this;
+    }
+
+    /**
+     * @param string $rulesString
+     * @return $this
+     */
+    public function rules($rulesString)
+    {
+        return $this->setOption('rules', $rulesString);
+    }
+
+    public function setOption($key, $value)
+    {
+        $options = $this->get('options', []);
+
+        $options[$key] = $value;
+        $this->offsetSet('options', $options);
         return $this;
     }
 

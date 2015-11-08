@@ -4,7 +4,7 @@
 namespace MezzoLabs\Mezzo\Core\Files;
 
 
-use MezzoLabs\Mezzo\Modules\FileManager\FileUpload\Exceptions\FileUploadException;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\FileManagerException;
 use MezzoLabs\Mezzo\Modules\Generator\CannotGenerateFileException;
 
 class File
@@ -36,7 +36,7 @@ class File
             return $fileName;
 
         if (empty($parts[0]))
-            throw new FileUploadException('Cannot handle file names that only contain a extension.');
+            throw new FileManagerException('Cannot handle file names that only contain a extension.');
 
         $parts = array_splice($parts, 0, count($parts) - 1);
 
@@ -53,22 +53,6 @@ class File
     }
 
     /**
-     * @return string
-     */
-    public function filename()
-    {
-        return $this->filename;
-    }
-
-    /**
-     * @return string
-     */
-    public function content()
-    {
-        return $this->content;
-    }
-
-    /**
      * Save the file under the given filename.
      *
      * @throws \Exception
@@ -82,6 +66,22 @@ class File
         if (!$saved) throw new CannotGenerateFileException($this->filename . ' cannot be written.');
 
         return true;
+    }
+
+    /**
+     * @return string
+     */
+    public function filename()
+    {
+        return $this->filename;
+    }
+
+    /**
+     * @return string
+     */
+    public function content()
+    {
+        return $this->content;
     }
 
     public function dump()

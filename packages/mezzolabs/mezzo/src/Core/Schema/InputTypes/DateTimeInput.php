@@ -10,6 +10,6 @@ class DateTimeInput extends TextInput
 
     protected $doctrineType = Type::DATETIME;
 
-    protected $variableType = Carbon::class;
+    protected $variableType = '\\' . Carbon::class;
 
 }

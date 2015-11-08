@@ -73,7 +73,9 @@ class ModelReflectionConverter extends ModelConverter
 
     protected function fromEloquentReflectionToSchema(EloquentModelReflection $reflection)
     {
-        $schema = new ModelSchema($reflection->className(), $reflection->databaseTable()->name());
+        $schema = new ModelSchema($reflection->className(), $reflection->databaseTable()->name(),
+                $reflection->specialOptionProperties()
+            );
 
         $reflection->databaseTable()->allColumns()->each(
             function (DatabaseColumn $column) use ($schema) {

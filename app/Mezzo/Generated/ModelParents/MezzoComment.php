@@ -3,74 +3,87 @@
 namespace App\Mezzo\Generated\ModelParents;
 
 use App\Mezzo\BaseModel;
-use App\Tutorial;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
+/**
+* App\Comment
+*
+* @property  integer $id
+* @property string $content
+* @property  float $tutorial_id
+* @property  float $user_id
+*/
 abstract class MezzoComment extends BaseModel
 {
     use IsMezzoModel;
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = "comments";
-
-    public $timestamps = false;
-
+    * Indicates if the model should be timestamped.
+    *
+    * @var bool
+    */
+    public $timestamps = true;
+    /**
+    * The table associated with the model.
+    *
+    * @var string
+    */
+    protected $table = 'comments';
+    /**
+    * Set of rules that will be validated in resource requests.
+    *
+    * @var array
+    */
     protected $rules = [
-        "content" => "required|between:10,1000",
-        "user_id" => "",
-        "tutorial_id" => ""
+        'content' => "required|between:10,1000",
+        'tutorial_id' => "",
+        'user_id' => ""
     ];
+    /**
+    * The attributes that should be hidden for arrays.
+    *
+    * @var array
+    */
+    protected $hidden = [
 
+    ];
+    /**
+    * The attributes that are mass assignable.
+    *
+    * @var array
+    */
     protected $fillable = [
-        'content', 'user_id', 'tutorial_id'
+
     ];
+    /**
+    *
+    * @Mezzo\Attribute(type="PrimaryKeyInput")
+    * @var integer            
+    */
+    protected $_id;
 
     /**
-     * @Mezzo\Attribute(type="PrimaryKeyInput")
-     * @var float
-     */
-    protected $id;
+    *
+    * @Mezzo\Attribute(type="TextArea")
+    * @var string            
+    */
+    protected $_content;
 
     /**
-     *
-     * @Mezzo\Attribute(type="TextArea")
-     * @var string
-     */
-    protected $content;
-
-
-    /**
-     * @Mezzo\Attribute(type="RelationInputSingle")
-     * @var integer
-     */
-    protected $user_id;
+    *
+    * @Mezzo\Attribute(type="NumberInput")
+    * @var float            
+    */
+    protected $_tutorial_id;
 
     /**
-     * @Mezzo\Attribute(type="RelationInputSingle")
-     * @var integer
-     */
-    protected $tutorial_id;
+    *
+    * @Mezzo\Attribute(type="NumberInput")
+    * @var float            
+    */
+    protected $_user_id;
 
-    /**
-     * @Mezzo\Relations\OneToMany
-     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="tutorials")
-     * @Mezzo\Relations\To(table="comments", primaryKey="id", naming="user")
-     * @Mezzo\Relations\JoinColumn(table="comments", column="user_id")
-     */
-    protected $user;
-
-    /**
-     * @Mezzo\Relations\OneToMany
-     * @Mezzo\Relations\From(table="tutorials", primaryKey="id", naming="comments")
-     * @Mezzo\Relations\To(table="comments", primaryKey="id", naming="tutorial")
-     * @Mezzo\Relations\JoinColumn(table="comments", column="tutorial_id")
-     */
-    protected $tutorial;
 
 
 }
