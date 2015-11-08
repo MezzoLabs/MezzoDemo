@@ -1,11 +1,10 @@
-{!! $php->openingTag() !!}
+<?php
 
 namespace App\Mezzo\Generated\ModelParents;
 
+use App\Mezzo\BaseModel;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
-use App\Mezzo\BaseModel;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 /**
 *-------------------------------------------------------------------------------------------------------------------
@@ -14,15 +13,17 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 *
 *-------------------------------------------------------------------------------------------------------------------
 *
-* Please do not edit, use "{{ $parent->modelSchema()->className() }}" instead. Thank you.
+* Please do not edit, use "App\CategoryGroupModel" instead. Thank you.
 *
 *-------------------------------------------------------------------------------------------------------------------
 * Welcome to the model parent. This file is auto generated and tells Mezzo something about
 * your model. If you feel the need to overwrite something use the child class.
 *
-{!! $annotation->classAnnotations($parent) !!}
+* App\Mezzo\Generated\ModelParents\MezzoCategoryGroupModel
+*
+* @property  integer $category_group_id
 */
-abstract class {{ $parent->name() }} extends BaseModel
+abstract class MezzoCategoryGroupModel extends BaseModel
 {
     use IsMezzoModel;
 
@@ -37,78 +38,78 @@ abstract class {{ $parent->name() }} extends BaseModel
     */
 
     /**
+    * Indicates if the model should be timestamped.
+    *
+    * @var bool
+    */
+    public $timestamps = true;
+    /**
     * The table associated with the model.
     *
-    @annotation('var', 'string')
+    * @var string
     */
-    protected $table = '{{ $parent->table() }}';
-
+    protected $table = 'category_group_models';
     /**
     * Set of rules that will be validated in resource requests.
     *
-    @annotation('var', 'array')
+    * @var array
     */
-    protected $rules = {!! $php->rulesArray($parent->modelSchema()) !!}
+    protected $rules = [
 
+    ];
     /**
     * The attributes that should be hidden for arrays.
     *
-    @annotation('var', 'array')
+    * @var array
     */
-    protected $hidden = {!! $php->hiddenArray($parent->modelSchema()) !!}
+    protected $hidden = [
 
+    ];
     /**
     * The attributes that are mass assignable.
     *
-    @annotation('var', 'array')
+    * @var array
     */
-    protected $fillable = {!! $php->fillableArray($parent->modelSchema()) !!}
+    protected $fillable = [
 
-    /**
-    * Indicates if the model should be timestamped.
-    *
-    @annotation('var', 'bool')
-    */
-    public $timestamps = {!! $php->timestampsBoolean($parent->modelSchema()) !!}
+    ];
 
     /*
     |-------------------------------------------------------------------------------------------------------------------
     | Attribute annotation properties
     |-------------------------------------------------------------------------------------------------------------------    |
     | In this section you will find some annotated properties.
-    | They are not really important for you, but they will tell Mezzo something about
+    | They are not really important, but they will tell Mezzo something about
     | the attributes of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
-
-@foreach($parent->attributes() as $attribute)
     /**
-    * Attribute annotation property for {{ $attribute->name() }}
+    * Attribute annotation property for category_group_id
     *
-    {!! $annotation->attribute($attribute) !!}
-    @annotation('var', $attribute->type()->variableType())
+    * @Mezzo\Attribute(type="RelationInputSingle")
+    * @var integer            
     */
-    protected $_{{ $attribute->name() }};
+    protected $_category_group_id;
 
-@endforeach
 
     /*
     |-------------------------------------------------------------------------------------------------------------------
     | Relation annotation properties
     |-------------------------------------------------------------------------------------------------------------------
     | In this section you will find some annotated properties.
-    | They are not really important for you, but they will tell Mezzo something about
+    | They are not really important, but they will tell Mezzo something about
     | the relations of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
 
-@foreach($parent->relationSides() as $relationSide)
     /**
-    * Relation annotation property for {{ $attribute->name() }}
-    {!! $annotation->relation($relationSide) !!}
+    * Relation annotation property for category_group_id
+    * @Mezzo\Relations\OneToMany
+    * @Mezzo\Relations\From(table="category_group_models", primaryKey="id", naming="group")
+    * @Mezzo\Relations\To(table="category_groups", primaryKey="id", naming="models")
+    * @Mezzo\Relations\JoinColumn(table="category_groups", column="id")
     */
-    protected ${{ $relationSide->naming() }};
+    protected $group;
 
-@endforeach
 
 }
