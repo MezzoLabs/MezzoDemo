@@ -3,8 +3,7 @@ module.exports = app => {
 	register(require('./common/enter.directive.js'));
 	register(require('./common/register-state.directive.js'));
 	register(require('./common/uid.service.js'));
-	register(require('./modules/file-manager/aside.controller.js'));
-	register(require('./modules/file-manager/main.controller.js'));
+	register(require('./modules/file-manager/file-manager.controller.js'));
 	register(require('./modules/file-manager/draggable.directive.js'));
 	register(require('./modules/file-manager/droppable.directive.js'));
 	register(require('./modules/file-manager/file-manager.service.js'));
@@ -18,14 +17,14 @@ module.exports = app => {
 	register(require('./modules/model-builder/components/component.service.js'));
 	register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
 	register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
-	register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
-	register(require('./modules/model-builder/components/owner/owner.directive.js'));
 	register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
 	register(require('./modules/model-builder/components/dropdown/dropdown.directive.js'));
-	register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
-	register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
+	register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
+	register(require('./modules/model-builder/components/owner/owner.directive.js'));
 	register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
 	register(require('./modules/model-builder/components/relation/relation.directive.js'));
+	register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
+	register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
 	register(require('./modules/model-builder/components/text-single/text-single-options.directive.js'));
 	register(require('./modules/model-builder/components/text-single/text-single.directive.js'));
 

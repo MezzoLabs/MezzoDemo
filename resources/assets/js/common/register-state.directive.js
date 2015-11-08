@@ -11,10 +11,10 @@ function directive($stateProvider) {
 
     function link(scope, element, attributes) {
         var uri = attributes.uri;
-        var title = attributes.title;
+        var page = attributes.page;
         var action = attributes.action;
         var controller = mapActionToController(action);
-        var state = new State(title, uri, {
+        var state = new State(page, uri, {
             main: {
                 templateUrl: '/mezzo/' + uri + '.html',
                 controllerAs: 'vm',
