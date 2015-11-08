@@ -91,7 +91,7 @@ abstract class MezzoCategory extends MezzoNestedSetNode
     | Attribute annotation properties
     |-------------------------------------------------------------------------------------------------------------------    |
     | In this section you will find some annotated properties.
-    | They are not really important, but they will tell Mezzo something about
+    | They are not really important for you, but they will tell Mezzo something about
     | the attributes of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
@@ -173,7 +173,7 @@ abstract class MezzoCategory extends MezzoNestedSetNode
     | Relation annotation properties
     |-------------------------------------------------------------------------------------------------------------------
     | In this section you will find some annotated properties.
-    | They are not really important, but they will tell Mezzo something about
+    | They are not really important for you, but they will tell Mezzo something about
     | the relations of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
@@ -183,7 +183,7 @@ abstract class MezzoCategory extends MezzoNestedSetNode
     * @Mezzo\Relations\OneToMany
     * @Mezzo\Relations\From(table="category_groups", primaryKey="id", naming="categories")
     * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="group")
-    * @Mezzo\Relations\JoinColumn(table="categories", column="id")
+    * @Mezzo\Relations\JoinColumn(table="categories", column="category_group_id")
     */
     protected $group;
 
