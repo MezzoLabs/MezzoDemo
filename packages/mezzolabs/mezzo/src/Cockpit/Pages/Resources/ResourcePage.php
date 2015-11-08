@@ -19,8 +19,10 @@ abstract class ResourcePage extends ModulePage
      * @var string
      */
     protected $model = "";
+
     protected $options = [
         'renderedByFrontend' => true,
+        'visibleInNaviation' => true
     ];
     /**
      * @var MezzoModelReflection
@@ -72,7 +74,7 @@ abstract class ResourcePage extends ModulePage
      */
     protected function makeModelReflection()
     {
-        if (!empty($this->mode)) {
+        if (!empty($this->model)) {
             return mezzo()->model($this->model);
         }
 

@@ -1,17 +1,15 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Modules\User\Http\Controllers;
+namespace MezzoLabs\Mezzo\Modules\Categories\Http\Controllers;
 
 
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\ResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
-use MezzoLabs\Mezzo\Modules\Permission\Http\Pages\Permission\CreateCategoryPage;
-use MezzoLabs\Mezzo\Modules\Permission\Http\Pages\Permission\EditPermissionPage;
-use MezzoLabs\Mezzo\Modules\Permission\Http\Pages\Permission\IndexCategoryPage;
-use MezzoLabs\Mezzo\Modules\Permission\Http\Pages\Permission\ShowCategoryPage;
+use MezzoLabs\Mezzo\Modules\Categories\Http\Pages\CategoryPage;
 
-class PermissionController extends CockpitResourceController
+
+class CategoryController extends CockpitResourceController
 {
     /**
      * Display a listing of the resource.
@@ -21,7 +19,7 @@ class PermissionController extends CockpitResourceController
      */
     public function index(ResourceRequest $request)
     {
-        return $this->page(IndexCategoryPage::class);
+        return $this->page(CategoryPage::class);
     }
 
 
@@ -33,7 +31,7 @@ class PermissionController extends CockpitResourceController
      */
     public function create(ResourceRequest $request)
     {
-        return $this->page(CreateCategoryPage::class);
+        return $this->page(CategoryPage::class);
     }
 
     /**
@@ -45,7 +43,7 @@ class PermissionController extends CockpitResourceController
      */
     public function show(ResourceRequest $request, $id)
     {
-        return $this->page(ShowCategoryPage::class);
+        return $this->page(CategoryPage::class);
     }
 
     /**
@@ -56,6 +54,6 @@ class PermissionController extends CockpitResourceController
      */
     public function edit(ResourceRequest $request, $id)
     {
-        return $this->page(EditPermissionPage::class);
+        return $this->page(CategoryPage::class);
     }
 }

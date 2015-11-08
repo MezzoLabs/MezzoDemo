@@ -63,7 +63,7 @@ abstract class ModulePage implements ModulePageContract
         /*
          * Should this page be display in the sidebar navigation?
          */
-        'visibleInNavigation' => false,
+        'visibleInNavigation' => true,
         /*
          * Is this page rendered by a Javascript SPA-Framework like Angular?
          * Then /mezzo/MODULE_NAME/PAGE_ACTION will output the cockpit without any content.
@@ -101,6 +101,9 @@ abstract class ModulePage implements ModulePageContract
     {
         if (!$this->controller())
             throw new ModulePageException('There is no controller for ' . $this->qualifiedName());
+
+        if(empty($this->action()))
+            throw new ModulePageException('A module page needs a controller action: ' . get_class($this));
 
         $this->controller()->hasActionOrFail($this->action());
 
@@ -199,6 +202,28 @@ abstract class ModulePage implements ModulePageContract
     }
 
     /**
+     * @param $view
+     * @param array $data
+     * @return \Illuminate\View\View
+     */
+    protected function makeView($view, $data = [])
+    {
+
+        if (class_exists(\Debugbar::class))
+            \Debugbar::disable();
+
+        return $this->viewFactory()->make($view, $data);
+    }
+
+    /**
+     * @return \Illuminate\View\Factory
+     */
+    protected function viewFactory()
+    {
+        return mezzo()->makeViewFactory();
+    }
+
+    /**
      * @return boolean
      */
     public function isRenderedByFrontend()
@@ -220,28 +245,6 @@ abstract class ModulePage implements ModulePageContract
             return $this->options()->get($key);
 
         return $this->options()->put($key, $value);
-    }
-
-    /**
-     * @param $view
-     * @param array $data
-     * @return \Illuminate\View\View
-     */
-    protected function makeView($view, $data = [])
-    {
-
-        if (class_exists(\Debugbar::class))
-            \Debugbar::disable();
-
-        return $this->viewFactory()->make($view, $data);
-    }
-
-    /**
-     * @return \Illuminate\View\Factory
-     */
-    protected function viewFactory()
-    {
-        return mezzo()->makeViewFactory();
     }
 
     public function title()

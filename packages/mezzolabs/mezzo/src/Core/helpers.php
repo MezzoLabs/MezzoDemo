@@ -112,3 +112,14 @@ if (!function_exists('space_case')) {
         return ucfirst($space_case);
     }
 }
+
+if (!function_exists('cockpit_template')) {
+    /**
+     * @return string
+     */
+    function cockpit_template()
+    {
+        return "cockpit::layouts.default.content.container";
+
+    }
+}

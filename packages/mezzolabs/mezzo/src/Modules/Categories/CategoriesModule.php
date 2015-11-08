@@ -1,21 +1,21 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Modules\User;
+namespace MezzoLabs\Mezzo\Modules\Categories;
 
-use App\Permission;
-use App\Role;
-use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
-class UserModule extends ModuleProvider
+class CategoriesModule extends ModuleProvider
 {
     protected $group = "admin";
 
     protected $models = [
-        User::class,
-        Role::class,
-        Permission::class
+        //Category::class
+    ];
+
+    protected $options = [
+        'title' => 'Categorization',
+        'icon' => 'ion-ios-pricetags'
     ];
 
     protected $transformers = [
@@ -29,7 +29,7 @@ class UserModule extends ModuleProvider
      */
     public function register()
     {
-
+        $this->loadViews();
     }
 
     /**
@@ -39,12 +39,5 @@ class UserModule extends ModuleProvider
      */
     public function ready()
     {
-        /**
-        $this->registerTransformers([
-            User::class => UserTransformer::class,
-            Role::class => RoleTransformer::class
-        ]);
-         * **/
-        //dd($tutorialReflection->relationships());
     }
 }
