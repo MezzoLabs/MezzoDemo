@@ -17,7 +17,7 @@ export default { name: 'mezzoDroppable', directive };
                     var {draggable} = ui;
 
                     ui.helper.remove();
-                    fileManager.drop(element, draggable);
+                    fileManager.onDrop(element, draggable);
                 }
             });
         }

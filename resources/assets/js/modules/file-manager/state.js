@@ -1,12 +1,8 @@
 import State from '../../common/State';
 
-export default new State('files', 'files', {
-    aside: {
-        templateUrl: 'modules/file-manager/aside.html',
-        controller: 'FilesAsideController as vm'
-    },
+export default new State('files', 'filemanager', {
     main: {
-        templateUrl: 'modules/file-manager/main.html',
-        controller: 'FilesMainController as vm'
+        templateUrl: 'mezzo/filemanager/file/create.html',
+        controller: 'FileManagerController as vm'
     }
 });

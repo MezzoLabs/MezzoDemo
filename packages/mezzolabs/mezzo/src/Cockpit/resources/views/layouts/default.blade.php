@@ -35,7 +35,7 @@
         {!! cockpit_script('/components/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js') !!}
         {!! cockpit_script('/components/select2/dist/js/select2.js') !!}
         {!! cockpit_script('/components/gridster/dist/jquery.gridster.min.js') !!}
-        {!! cockpit_script('/components/angular/angular.min.js') !!}
+        {!! cockpit_script('/components/angular/angular.js') !!}
         {!! cockpit_script('/components/angular-ui-router/release/angular-ui-router.min.js') !!}
         {!! cockpit_script('/components/angular-messages/angular-messages.min.js') !!}
         {!! cockpit_script('/components/angular-sortable-view/src/angular-sortable-view.min.js') !!}
