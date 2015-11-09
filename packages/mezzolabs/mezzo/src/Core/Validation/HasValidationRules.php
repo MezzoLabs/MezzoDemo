@@ -15,8 +15,16 @@ trait HasValidationRules
 
     public static function bootHasValidationRules()
     {
+        static::saving(function($model){
+            return $model->validateOrFail($model->getAttributes(), 'create');
+        });
 
+        static::updating(function($model){
+            return $model->validateOrFail($model->getAttributes(), 'update');
+        });
     }
+
+
 
     public function validateOrFail($data = [], $mode = "create")
     {
@@ -34,7 +42,9 @@ trait HasValidationRules
     /**
      * @param array $data
      * @param array $rules
+     * @param bool $orFail
      * @return \Illuminate\Validation\Validator
+     * @throws ModelValidationFailedException
      */
     public function validateWithRules($data = [], $rules = [], $orFail = true)
     {

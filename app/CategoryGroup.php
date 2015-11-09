@@ -123,7 +123,7 @@ class CategoryGroup extends MezzoCategoryGroup implements SluggableInterface
 
     /**
      * @param $label
-     * @return bool|mixed
+     * @return \App\Category
      */
     public function createCategory($label, $parent = null)
     {

@@ -16,7 +16,6 @@ use App\Tutorial;
 use App\User;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\FileCacheReader;
-use MezzoLabs\Mezzo\Modules\Categories\Domain\Repositories\CategoryRepository;
 use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 
@@ -40,18 +39,9 @@ Route::get('/test/relations', function () {
 });
 
 Route::get('/test/category', function () {
-    $categoryRepo = new CategoryRepository();
+    $seeder = app(CategoryTableSeeder::class);
 
-    $found = $categoryRepo->findByGroupAndSlug('content', 'default');
-
-    \App\Category::createInGroup('content', str_random(), 'default');
-
-
-    /** @var Tutorial $tutorial */
-    $tutorial = \App\Tutorial::all()->first();
-
-    $tutorial->addCategory('default');
-
+    $seeder->run();
 
 });
 

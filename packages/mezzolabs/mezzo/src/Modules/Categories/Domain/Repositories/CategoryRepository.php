@@ -4,8 +4,8 @@
 namespace MezzoLabs\Mezzo\Modules\Categories\Domain\Repositories;
 
 
-use App\Category as AppCategory;
 use App\Category;
+use App\Category as AppCategory;
 use App\CategoryGroup as AppCategoryGroup;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
@@ -13,6 +13,14 @@ use MezzoLabs\Mezzo\Modules\Categories\Exceptions\CannotFindCategoryException;
 
 class CategoryRepository extends ModelRepository
 {
+    /**
+     * @param $groupIdentifier
+     * @param $label
+     * @param null $parentIdentifier
+     * @return Category
+     * @throws CannotFindCategoryException
+     * @throws \MezzoLabs\Mezzo\Modules\Categories\Exceptions\CannotFindCategoryGroupException
+     */
     public function createInGroup($groupIdentifier, $label, $parentIdentifier = null)
     {
         $group = $this->groupRepository()->findByIdentifierOrFail($groupIdentifier);
@@ -87,7 +95,7 @@ class CategoryRepository extends ModelRepository
         if (!$group) return null;
 
         $result = $this->query()->where('category_group_id', '=', $group->id)
-            ->where('slug', '=', $categorySlug)->first();
+            ->where('slug', '=', str_slug($categorySlug))->first();
 
         return $result;
     }

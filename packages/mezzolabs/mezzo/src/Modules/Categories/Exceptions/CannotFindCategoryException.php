@@ -13,6 +13,6 @@ class CannotFindCategoryException extends MezzoException
         if(is_object($categoryGroup))
             $categoryGroup = get_class($categoryGroup);
 
-        $this->add("Cannot find Category \”{$categoryGroup}\".");
+        $this->add("Cannot find Category \"{$categoryGroup}\".");
     }
 }

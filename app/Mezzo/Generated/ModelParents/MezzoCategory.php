@@ -186,7 +186,7 @@ abstract class MezzoCategory extends MezzoNestedSetNode
      * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="group")
      * @Mezzo\Relations\JoinColumn(table="categories", column="category_group_id")
      */
-    protected $group;
+    protected $_group;
 
 
 }

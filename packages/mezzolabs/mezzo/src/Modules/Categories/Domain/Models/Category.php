@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Modules\Categories\Models;
 
 
+use App\CategoryGroup as AppCategoryGroup;
 use App\Mezzo\Generated\ModelParents\MezzoCategory;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
@@ -35,7 +36,8 @@ abstract class Category extends MezzoCategory implements SluggableInterface
     /**
      * @return CategoryRepository
      */
-    protected static function repository(){
+    protected static function repository()
+    {
         return new CategoryRepository();
     }
 
@@ -65,8 +67,21 @@ abstract class Category extends MezzoCategory implements SluggableInterface
     /**
      * @return CategoryGroupRepository
      */
-    protected static function groupRepository(){
+    protected static function groupRepository()
+    {
         return new CategoryGroupRepository();
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(AppCategoryGroup::class, 'category_group_id', 'id');
+    }
+
+    public function createAndAppend($label)
+    {
+        return $this->repository()->createCategory(
+            $data = ['label' => $label], $this->group, $this
+        );
     }
 
 }

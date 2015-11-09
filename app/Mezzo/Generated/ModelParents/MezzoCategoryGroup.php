@@ -60,7 +60,7 @@ abstract class MezzoCategoryGroup extends BaseModel
     */
     protected $rules = [
         'slug' => "",
-        'label' => ""
+        'label' => "unique:category_groups"
     ];
     /**
     * The attributes that should be hidden for arrays.
