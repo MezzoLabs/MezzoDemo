@@ -134,7 +134,7 @@ class CategoryGroup extends MezzoCategoryGroup implements SluggableInterface
 
     public function tree()
     {
-        mezzo_dd($this->categories()->get()->toTree());
+        return $this->categories()->get()->toTree();
     }
 
     public function categories()

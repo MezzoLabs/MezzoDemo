@@ -37,6 +37,20 @@ class HtmlHelper
         $this->cssClasses = [];
     }
 
+    public function ul($array = null)
+    {
+        $this->resetBuffers();
+        $tableHelper = new ListHelper($array, 'ul');
+        return $tableHelper->render();
+    }
+
+    public function ol($array = null)
+    {
+        $this->resetBuffers();
+        $tableHelper = new ListHelper($array, 'ol');
+        return $tableHelper->render();
+    }
+
     public function css($key, $parameters)
     {
         $this->startNewCssClass();
