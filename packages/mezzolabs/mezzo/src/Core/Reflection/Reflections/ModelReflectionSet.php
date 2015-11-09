@@ -75,30 +75,7 @@ class ModelReflectionSet
      */
     protected function checkIfEloquentModel()
     {
-        return $this->instance() instanceof EloquentModel;
-    }
-
-    /**
-     * Returns an instance of the reflected Eloquent model.
-     *
-     * @param bool $forceNew
-     * @return EloquentModel
-     */
-    public function instance($forceNew = false)
-    {
-        if (!$this->instance && !$forceNew) {
-            $this->instance = mezzo()->make($this->className());
-        }
-
-        return $this->instance;
-    }
-
-    /**
-     * @return string
-     */
-    public function className()
-    {
-        return $this->className;
+        return is_subclass_of($this->className, EloquentModel::class);
     }
 
     /**
@@ -110,6 +87,14 @@ class ModelReflectionSet
     }
 
     /**
+     * @return string
+     */
+    public function className()
+    {
+        return $this->className;
+    }
+
+    /**
      * The table name for this model class.
      *
      * @return string
@@ -117,6 +102,22 @@ class ModelReflectionSet
     public function tableName()
     {
         return $this->instance()->getTable();
+    }
+
+    /**
+     * Returns an instance of the reflected Eloquent model.
+     *
+     * @param bool $forceNew
+     * @return EloquentModel
+     */
+    public function instance($forceNew = false)
+    {
+        if (!$this->instance && !$forceNew) {
+
+            $this->instance = mezzo()->make($this->className());
+        }
+
+        return $this->instance;
     }
 
     /**

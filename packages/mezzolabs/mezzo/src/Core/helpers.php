@@ -45,7 +45,7 @@ if (!function_exists('mezzo_dump')) {
         if (!empty($title))
             $title = "<b>$title</b> ";
 
-        $title .= '<small>(' . debug_backtrace()[$stepsBack]['file'] . ':' . debug_backtrace()[0]['line'] . ')</small>';
+        $title .= '<small>(' . debug_backtrace()[$stepsBack]['file'] . ':' . debug_backtrace()[$stepsBack]['line'] . ')</small>';
 
         echo $title . ':<br/>';
 
