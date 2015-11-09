@@ -2,11 +2,9 @@
 
 namespace App;
 
-use App\Mezzo\BaseModel;
 use App\Mezzo\Generated\ModelParents\MezzoTutorial;
-use Illuminate\Database\Eloquent\Model;
-use \MezzoLabs\Mezzo\Core\Annotations as Mezzo;
-use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
+use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
+use MezzoLabs\Mezzo\Modules\Categories\Domain\Traits\HasCategories;
 
 
 /**
@@ -27,6 +25,8 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  */
 class Tutorial extends MezzoTutorial
 {
+    use HasCategories;
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -48,21 +48,6 @@ class Tutorial extends MezzoTutorial
     public function owner()
     {
         return $this->belongsTo('App\User', 'user_id');
-    }
-
-    public function categories()
-    {
-        return $this->belongsToMany('App\Category');
-    }
-
-    public function plannedCategories()
-    {
-        return $this->belongsToMany(Category::class, 'planned_tutorial_category');
-    }
-
-    public function mainCategory()
-    {
-        return $this->belongsTo('App\Category', 'main_category');
     }
 
     public function foo()

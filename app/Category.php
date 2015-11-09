@@ -2,24 +2,23 @@
 
 namespace App;
 
-use App\Mezzo\Generated\ModelParents\MezzoCategory;
-use Cviebrock\EloquentSluggable\SluggableInterface;
-use Cviebrock\EloquentSluggable\SluggableTrait;
+use MezzoLabs\Mezzo\Modules\Categories\Models\Category as BaseCategory;
 
-class Category extends MezzoCategory implements SluggableInterface
+/**
+ * Class Category
+ * @package App
+ *
+ * @property CategoryGroup $group
+ */
+class Category extends BaseCategory
 {
-    use SluggableTrait;
-
-    protected $sluggable = [
-        'build_from' => 'label',
-        'save_to'    => 'slug',
-    ];
-
-    protected $fillable = [
-        'label'
-    ];
 
     public function group(){
         return $this->belongsTo(CategoryGroup::class, 'category_group_id');
+    }
+
+    public function tutorials()
+    {
+        return $this->belongsToMany(Tutorial::class);
     }
 }

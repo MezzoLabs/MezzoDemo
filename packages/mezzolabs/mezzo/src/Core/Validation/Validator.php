@@ -20,4 +20,18 @@ class Validator
     {
         return \Illuminate\Support\Facades\Validator::make($data, $rules, $messages, $customAttributes);
     }
+
+    /**
+     * @param $rulesArray
+     * @return array
+     */
+    public static function removeRequiredRules($rulesArray)
+    {
+        $updateRules = [];
+        foreach($rulesArray as &$rule){
+            $updateRules[] = str_replace(['required|', 'required'], '', $rule);
+        }
+
+        return $updateRules;
+    }
 }

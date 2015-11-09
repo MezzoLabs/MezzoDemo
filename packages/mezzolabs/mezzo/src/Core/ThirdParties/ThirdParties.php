@@ -18,7 +18,8 @@ class ThirdParties extends Collection
     protected $toLoad = [
         "DingoApi" => Wrappers\DingoApi::class,
         "Html" => Wrappers\Html::class,
-        "EloquentSluggable" => Wrappers\EloquentSluggable::class
+        "EloquentSluggable" => Wrappers\EloquentSluggable::class,
+        'UniqueWithValidator' => Wrappers\UniqueWithValidator::class
     ];
 
     /**

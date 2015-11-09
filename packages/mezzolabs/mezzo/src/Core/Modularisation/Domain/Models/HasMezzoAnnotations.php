@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany as EloquentBelongsToMan
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany as EloquentHasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValues;
+use MezzoLabs\Mezzo\Core\Validation\HasValidationRules;
 use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 
 /**
@@ -17,15 +18,13 @@ use MezzoLabs\Mezzo\Exceptions\ReflectionException;
  */
 trait HasMezzoAnnotations
 {
+    use HasValidationRules;
+
     /**
      * @var AttributeValues
      */
     protected $attributeValues;
 
-    public function getRules()
-    {
-        return $this->rules;
-    }
 
     /**
      * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes

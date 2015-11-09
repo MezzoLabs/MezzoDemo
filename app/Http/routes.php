@@ -12,11 +12,11 @@
 */
 
 
-use App\CategoryGroup;
 use App\Tutorial;
 use App\User;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\FileCacheReader;
+use MezzoLabs\Mezzo\Modules\Categories\Domain\Repositories\CategoryRepository;
 use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 
@@ -31,21 +31,26 @@ Route::get('random', function () {
     return str_random(16);
 });
 
-Route::get('/test/counterpart', function () {
-    $reflection = mezzo()->model(\App\Category::class, 'eloquent');
+Route::get('/test/relations', function () {
+    $reflection = mezzo()->model(\App\CategoryGroup::class, 'eloquent');
 
 
-    mezzo_dd($reflection);
+    mezzo_dump($reflection->relations());
+    mezzo_dd($reflection->relationshipReflections());
 });
 
 Route::get('/test/category', function () {
+    $categoryRepo = new CategoryRepository();
 
-    /** @var CategoryGroup $group */
-    $group = \App\CategoryGroup::find(7);
+    $found = $categoryRepo->findByGroupAndSlug('content', 'default');
 
-    $group->syncModels([
-        Tutorial::class, File::class
-    ]);
+    \App\Category::createInGroup('content', str_random(), 'default');
+
+
+    /** @var Tutorial $tutorial */
+    $tutorial = \App\Tutorial::all()->first();
+
+    $tutorial->addCategory('default');
 
 
 });

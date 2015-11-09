@@ -36,6 +36,15 @@ class Request extends FormRequest
     }
 
     /**
+     * @return array
+     */
+    public static function allInput()
+    {
+        $request = app()->make(static::class);
+        return $request->all();
+    }
+
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -53,6 +62,16 @@ class Request extends FormRequest
     public function rules()
     {
         return [];
+    }
+
+    /**
+     * Check if the current request comes via the API
+     *
+     * @return bool
+     */
+    public function isApi()
+    {
+        return $this->controller() instanceof ApiController;
     }
 
     /**
@@ -90,13 +109,4 @@ class Request extends FormRequest
     }
 
 
-    /**
-     * Check if the current request comes via the API
-     *
-     * @return bool
-     */
-    public function isApi()
-    {
-        return $this->controller() instanceof ApiController;
-    }
 }

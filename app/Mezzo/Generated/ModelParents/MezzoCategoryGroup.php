@@ -3,7 +3,6 @@
 namespace App\Mezzo\Generated\ModelParents;
 
 use App\Mezzo\BaseModel;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
@@ -69,6 +68,7 @@ abstract class MezzoCategoryGroup extends BaseModel
     * @var array
     */
     protected $hidden = [
+
     ];
     /**
     * The attributes that are mass assignable.
@@ -76,7 +76,7 @@ abstract class MezzoCategoryGroup extends BaseModel
     * @var array
     */
     protected $fillable = [
-        'label'
+        "label"
     ];
 
     /*
@@ -84,7 +84,7 @@ abstract class MezzoCategoryGroup extends BaseModel
     | Attribute annotation properties
     |-------------------------------------------------------------------------------------------------------------------    |
     | In this section you will find some annotated properties.
-    | They are not really important, but they will tell Mezzo something about
+    | They are not really important for you, but they will tell Mezzo something about
     | the attributes of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
@@ -134,21 +134,10 @@ abstract class MezzoCategoryGroup extends BaseModel
     | Relation annotation properties
     |-------------------------------------------------------------------------------------------------------------------
     | In this section you will find some annotated properties.
-    | They are not really important, but they will tell Mezzo something about
+    | They are not really important for you, but they will tell Mezzo something about
     | the relations of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
-
-    /**
-    * Relation annotation property for updated_at
-    * @Mezzo\Relations\OneToMany
-    * @Mezzo\Relations\From(table="category_group_models", primaryKey="id", naming="group")
-    * @Mezzo\Relations\To(table="category_groups", primaryKey="id", naming="models")
-    * @Mezzo\Relations\JoinColumn(table="category_groups", column="id")
-     *
-     * @var EloquentCollection
-    */
-    protected $models;
 
 
 }

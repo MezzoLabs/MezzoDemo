@@ -7,30 +7,30 @@ use MezzoLabs\Mezzo\Core\ThirdParties\NestedSet\MezzoNestedSetNode;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
 /**
-*-------------------------------------------------------------------------------------------------------------------
-*
-* AUTO GENERATED - MEZZO - MODEL PARENT
-*
-*-------------------------------------------------------------------------------------------------------------------
-*
-* Please do not edit, use "App\Category" instead. Thank you.
-*
-*-------------------------------------------------------------------------------------------------------------------
-* Welcome to the model parent. This file is auto generated and tells Mezzo something about
-* your model. If you feel the need to overwrite something use the child class.
-*
-* App\Mezzo\Generated\ModelParents\MezzoCategory
-*
-* @property  integer $id
-* @property  string $slug
-* @property  string $label
-* @property  integer $category_group_id
-* @property \Carbon\Carbon $created_at
-* @property \Carbon\Carbon $updated_at
-* @property  float $_lft
-* @property  float $_rgt
-* @property  float $parent_id
-*/
+ *-------------------------------------------------------------------------------------------------------------------
+ *
+ * AUTO GENERATED - MEZZO - MODEL PARENT
+ *
+ *-------------------------------------------------------------------------------------------------------------------
+ *
+ * Please do not edit, use "App\Category" instead. Thank you.
+ *
+ *-------------------------------------------------------------------------------------------------------------------
+ * Welcome to the model parent. This file is auto generated and tells Mezzo something about
+ * your model. If you feel the need to overwrite something use the child class.
+ *
+ * App\Mezzo\Generated\ModelParents\MezzoCategory
+ *
+ * @property  integer $id
+ * @property  string $slug
+ * @property  string $label
+ * @property  integer $category_group_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property  float $_lft
+ * @property  float $_rgt
+ * @property  float $parent_id
+ */
 abstract class MezzoCategory extends MezzoNestedSetNode
 {
     use IsMezzoModel;
@@ -46,44 +46,45 @@ abstract class MezzoCategory extends MezzoNestedSetNode
     */
 
     /**
-    * Indicates if the model should be timestamped.
-    *
-    * @var bool
-    */
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
     public $timestamps = true;
     /**
-    * The table associated with the model.
-    *
-    * @var string
-    */
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'categories';
     /**
-    * Set of rules that will be validated in resource requests.
-    *
-    * @var array
-    */
+     * Set of rules that will be validated in resource requests.
+     *
+     * @var array
+     */
     protected $rules = [
-        'slug' => "",
-        'label' => "",
+        'slug' => "unique",
+        'label' => "required|unique_with:categories, category_group_id",
         '_lft' => "",
         '_rgt' => "",
-        'parent_id' => ""
+        'parent_id' => "",
+        'category_group_id' => 'required|exists:category_groups,id'
     ];
     /**
-    * The attributes that should be hidden for arrays.
-    *
-    * @var array
-    */
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
     protected $hidden = [
 
     ];
     /**
-    * The attributes that are mass assignable.
-    *
-    * @var array
-    */
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
-        'label'
+        'label', 'slug', 'category_group_id', 'parent_id'
     ];
 
     /*
@@ -96,75 +97,75 @@ abstract class MezzoCategory extends MezzoNestedSetNode
     |-------------------------------------------------------------------------------------------------------------------
     */
     /**
-    * Attribute annotation property for id
-    *
-    * @Mezzo\Attribute(type="PrimaryKeyInput")
-    * @var integer            
-    */
+     * Attribute annotation property for id
+     *
+     * @Mezzo\Attribute(type="PrimaryKeyInput")
+     * @var integer
+     */
     protected $_id;
 
     /**
-    * Attribute annotation property for slug
-    *
-    * @Mezzo\Attribute(type="TextInput")
-    * @var string            
-    */
+     * Attribute annotation property for slug
+     *
+     * @Mezzo\Attribute(type="TextInput")
+     * @var string
+     */
     protected $_slug;
 
     /**
-    * Attribute annotation property for label
-    *
-    * @Mezzo\Attribute(type="TextInput")
-    * @var string            
-    */
+     * Attribute annotation property for label
+     *
+     * @Mezzo\Attribute(type="TextInput")
+     * @var string
+     */
     protected $_label;
 
     /**
-    * Attribute annotation property for category_group_id
-    *
-    * @Mezzo\Attribute(type="RelationInputSingle")
-    * @var integer            
-    */
+     * Attribute annotation property for category_group_id
+     *
+     * @Mezzo\Attribute(type="RelationInputSingle")
+     * @var integer
+     */
     protected $_category_group_id;
 
     /**
-    * Attribute annotation property for created_at
-    *
-    * @Mezzo\Attribute(type="DateTimeInput")
-    * @var \Carbon\Carbon            
-    */
+     * Attribute annotation property for created_at
+     *
+     * @Mezzo\Attribute(type="DateTimeInput")
+     * @var \Carbon\Carbon
+     */
     protected $_created_at;
 
     /**
-    * Attribute annotation property for updated_at
-    *
-    * @Mezzo\Attribute(type="DateTimeInput")
-    * @var \Carbon\Carbon            
-    */
+     * Attribute annotation property for updated_at
+     *
+     * @Mezzo\Attribute(type="DateTimeInput")
+     * @var \Carbon\Carbon
+     */
     protected $_updated_at;
 
     /**
-    * Attribute annotation property for _lft
-    *
-    * @Mezzo\Attribute(type="NumberInput")
-    * @var float            
-    */
+     * Attribute annotation property for _lft
+     *
+     * @Mezzo\Attribute(type="NumberInput")
+     * @var float
+     */
     protected $__lft;
 
     /**
-    * Attribute annotation property for _rgt
-    *
-    * @Mezzo\Attribute(type="NumberInput")
-    * @var float            
-    */
+     * Attribute annotation property for _rgt
+     *
+     * @Mezzo\Attribute(type="NumberInput")
+     * @var float
+     */
     protected $__rgt;
 
     /**
-    * Attribute annotation property for parent_id
-    *
-    * @Mezzo\Attribute(type="NumberInput")
-    * @var float            
-    */
+     * Attribute annotation property for parent_id
+     *
+     * @Mezzo\Attribute(type="NumberInput")
+     * @var float
+     */
     protected $_parent_id;
 
 
@@ -179,12 +180,12 @@ abstract class MezzoCategory extends MezzoNestedSetNode
     */
 
     /**
-    * Relation annotation property for parent_id
-    * @Mezzo\Relations\OneToMany
-    * @Mezzo\Relations\From(table="category_groups", primaryKey="id", naming="categories")
-    * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="group")
-    * @Mezzo\Relations\JoinColumn(table="categories", column="category_group_id")
-    */
+     * Relation annotation property for parent_id
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="category_groups", primaryKey="id", naming="categories")
+     * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="group")
+     * @Mezzo\Relations\JoinColumn(table="categories", column="category_group_id")
+     */
     protected $group;
 
 

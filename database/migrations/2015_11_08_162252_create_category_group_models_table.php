@@ -28,6 +28,6 @@ class CreateCategoryGroupModelsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('category_group_model');
+        Schema::drop('category_group_models');
     }
 }

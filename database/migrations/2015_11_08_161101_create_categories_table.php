@@ -19,6 +19,8 @@ class CreateCategoriesTable extends Migration
             $table->integer('category_group_id')->unsigned()->index();
             $table->foreign('category_group_id')->references('id')->on('category_groups')->onDelete('cascade');
 
+            $table->unique(['label', 'category_group_id']);
+
             $table->timestamps();
             \Kalnoy\Nestedset\NestedSet::columns($table);
         });
