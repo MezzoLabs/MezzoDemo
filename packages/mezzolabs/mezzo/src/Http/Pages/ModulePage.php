@@ -102,7 +102,7 @@ abstract class ModulePage implements ModulePageContract
         if (!$this->controller())
             throw new ModulePageException('There is no controller for ' . $this->qualifiedName());
 
-        if(empty($this->action()))
+        if (empty($this->action()))
             throw new ModulePageException('A module page needs a controller action: ' . get_class($this));
 
         $this->controller()->hasActionOrFail($this->action());
@@ -180,7 +180,7 @@ abstract class ModulePage implements ModulePageContract
         /**
          * Add some additional data to the view data.
          */
-        $data = $this->additionalData()->merge($data)->toArray();
+        $data = $this->additionalData()->merge($data);
 
         return $this->makeView($this->view, $data);
     }
@@ -208,11 +208,24 @@ abstract class ModulePage implements ModulePageContract
      */
     protected function makeView($view, $data = [])
     {
-
         if (class_exists(\Debugbar::class))
             \Debugbar::disable();
 
+        if ($data instanceof Collection)
+            $data = $this->collectionToArray($data);
+
         return $this->viewFactory()->make($view, $data);
+    }
+
+    protected function collectionToArray(Collection $data)
+    {
+        $array = [];
+
+        foreach ($data as $key => $value) {
+            $array[$key] = $value;
+        }
+
+        return $array;
     }
 
     /**

@@ -72,7 +72,7 @@ trait HasMezzoAnnotations
         $hasRelation = method_exists($this, $relationName);
 
         if (!$hasRelation)
-            throw new ReflectionException('The Model ' . get_class($this) . " doesn't has a relation named " . $relationName);
+            throw new ReflectionException('The Model ' . get_class($this) . " doesn't have a relation named " . $relationName);
 
         $relation = $this->$relationName();
 

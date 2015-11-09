@@ -141,8 +141,9 @@ abstract class Controller extends IlluminateController
      */
     public function data($key = null, $value = null)
     {
+
         if (!$this->data)
-            $this->data = new Collection();
+            $this->data = new Collection($this->defaultData());
 
         if ($key !== null && $value !== null) {
             $this->data->put($key, $value);
@@ -156,6 +157,11 @@ abstract class Controller extends IlluminateController
         }
 
         return $this->data;
+    }
+
+    protected function defaultData()
+    {
+        return [];
     }
 
     /**

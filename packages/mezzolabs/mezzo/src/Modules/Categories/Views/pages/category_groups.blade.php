@@ -1,4 +1,4 @@
-@extends(cockpit_template())
+@extends(cockpit_content_container())
 
 
 @section('content')

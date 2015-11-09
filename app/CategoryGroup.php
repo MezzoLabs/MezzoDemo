@@ -63,11 +63,6 @@ class CategoryGroup extends MezzoCategoryGroup implements SluggableInterface
         return $this->hasMany(CategoryGroupModel::class);
     }
 
-    public function categories()
-    {
-        return $this->hasMany(Category::class);
-    }
-
     /**
      * @param array $modelClasses
      * @throws \MezzoLabs\Mezzo\Exceptions\MezzoException
@@ -135,5 +130,15 @@ class CategoryGroup extends MezzoCategoryGroup implements SluggableInterface
      */
     protected static function categoryRepository(){
         return new CategoryRepository();
+    }
+
+    public function tree()
+    {
+        mezzo_dd($this->categories()->get()->toTree());
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
     }
 }

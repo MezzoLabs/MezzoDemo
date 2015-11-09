@@ -3,14 +3,41 @@
 namespace MezzoLabs\Mezzo\Modules\Categories\Http\Controllers;
 
 
+use App\Tutorial;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\ResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
+use MezzoLabs\Mezzo\Modules\Categories\Domain\Repositories\CategoryGroupRepository;
+use MezzoLabs\Mezzo\Modules\Categories\Domain\Repositories\CategoryRepository;
 use MezzoLabs\Mezzo\Modules\Categories\Http\Pages\CategoryPage;
 
 
 class CategoryController extends CockpitResourceController
 {
+    public function defaultData()
+    {
+        return [
+            'categories' => $this->repository()->all()->toTree(),
+            'category_groups' => $this->groupRepository()->all()
+        ];
+    }
+
+    /**
+     * @return CategoryRepository
+     */
+    public function repository()
+    {
+        return parent::repository();
+    }
+
+    /**
+     * @return CategoryGroupRepository
+     */
+    public function groupRepository()
+    {
+        return app(CategoryGroupRepository::class);
+    }
+
     /**
      * Display a listing of the resource.
      *

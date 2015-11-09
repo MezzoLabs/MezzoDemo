@@ -130,11 +130,11 @@ if (!function_exists('camel_to_slug')) {
 }
 
 
-if (!function_exists('cockpit_template')) {
+if (!function_exists('cockpit_content_container')) {
     /**
      * @return string
      */
-    function cockpit_template()
+    function cockpit_content_container()
     {
         return "cockpit::layouts.default.content.container";
 

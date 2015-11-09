@@ -44,9 +44,14 @@ class CategoryTableSeeder extends Seeder
         $wine->createAndAppend('Other');
 
         $food = $shopGroup->createCategory('Food');
-        $wine->createAndAppend('Noodles');
-        $wine->createAndAppend('Sushi');
+        $noodles = $food->createAndAppend('Noodles');
+        $food->createAndAppend('Sushi');
         $wine->createAndAppend('Saumagen');
+
+        $noodles->createAndAppend('Italian');
+        $noodles->createAndAppend('Chinese');
+        $noodles->createAndAppend('Schwäbisch');
+
 
         Model::reguard();
     }

@@ -1,5 +1,4 @@
-@extends(cockpit_template())
-
+@extends(cockpit_content_container())
 
 @section('content')
     <div class="wrapper">
@@ -11,8 +10,9 @@
                 </div>
             </div>
             <div class="panel-body">
+                @foreach($category_groups as $group)
 
-
+                @endforeach
             </div>
         </div>
     </div>

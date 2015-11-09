@@ -15,13 +15,8 @@ trait HasValidationRules
 
     public static function bootHasValidationRules()
     {
-        static::saving(function($model){
-            return $model->validateOrFail($model->getAttributes(), 'create');
-        });
-
-        static::updating(function($model){
-            return $model->validateOrFail($model->getAttributes(), 'update');
-        });
+        static::saving(\MezzoLabs\Mezzo\Core\Validation\Validator::class . '@onSaving');
+        static::updating(\MezzoLabs\Mezzo\Core\Validation\Validator::class . '@onUpdating');
     }
 
 

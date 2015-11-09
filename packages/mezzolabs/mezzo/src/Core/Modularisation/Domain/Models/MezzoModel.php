@@ -58,4 +58,6 @@ interface MezzoModel extends EloquentInterface
      * @return array
      */
     public function getAttributes();
+
+    public function validateOrFail($data = [], $mode = "create");
 }

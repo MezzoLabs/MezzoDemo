@@ -30,12 +30,19 @@ Route::get('random', function () {
     return str_random(16);
 });
 
+Route::get('/test/file', function () {
+   return view('debugfile', ['tutorials' => Tutorial::all()]);
+});
+
+
 Route::get('/test/relations', function () {
     $reflection = mezzo()->model(\App\CategoryGroup::class, 'eloquent');
 
 
     mezzo_dump($reflection->relations());
     mezzo_dd($reflection->relationshipReflections());
+
+
 });
 
 Route::get('/test/category', function () {
@@ -43,6 +50,20 @@ Route::get('/test/category', function () {
 
     $seeder->run();
 
+});
+
+Route::get('/test/tutorial', function () {
+    $tutorial = new Tutorial();
+
+    $tutorial->title = str_random();
+    $tutorial->body = str_random();
+    $tutorial->user_id = 1;
+
+    $tutorial->save();
+
+    $dispatcher = app(Illuminate\Events\Dispatcher::class);
+
+    mezzo_dd($dispatcher);
 });
 
 

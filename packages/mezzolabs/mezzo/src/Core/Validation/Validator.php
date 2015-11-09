@@ -4,6 +4,8 @@
 namespace MezzoLabs\Mezzo\Core\Validation;
 
 
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
+
 class Validator
 {
     /**
@@ -33,5 +35,15 @@ class Validator
         }
 
         return $updateRules;
+    }
+
+    public function onSaving(MezzoModel $model)
+    {
+        $model->validateOrFail($model->getAttributes(), 'create');
+    }
+
+    public function onUpdating(MezzoModel $model)
+    {
+        $model->validateOrFail($model->getAttributes(), 'update');
     }
 }
