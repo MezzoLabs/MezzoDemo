@@ -33,53 +33,53 @@ abstract class MezzoTutorial extends BaseModel
      * @Mezzo\Attribute(type="NumberInput")
      * @var float
      */
-    protected $id;
+    protected $_id;
 
     /**
      *
      * @Mezzo\Attribute(type="TextInput")
      * @var string
      */
-    protected $title;
+    protected $_title;
 
     /**
      *
      * @Mezzo\Attribute(type="TextArea")
      * @var string
      */
-    protected $body;
+    protected $_body;
 
     /**
      *
      * @Mezzo\Attribute(type="DateTimeInput")
      * @var string
      */
-    protected $created_at;
+    protected $_created_at;
 
     /**
      *
      * @Mezzo\Attribute(type="DateTimeInput")
      * @var string
      */
-    protected $updated_at;
+    protected $_updated_at;
 
     /**
      * @Mezzo\Attribute(type="RelationInputSingle")
      * @var integer
      */
-    protected $user_id;
+    protected $_user_id;
 
     /**
      * @Mezzo\Attribute(type="RelationInputSingle")
      * @var integer
      */
-    protected $parent_id;
+    protected $_parent_id;
 
     /**
      * @Mezzo\Attribute(type="RelationInputSingle")
      * @var integer
      */
-    protected $main_category;
+    protected $_main_category;
 
     /**
      * @Mezzo\Relations\OneToMany
@@ -87,7 +87,7 @@ abstract class MezzoTutorial extends BaseModel
      * @Mezzo\Relations\To(table="tutorials", primaryKey="id", naming="owner")
      * @Mezzo\Relations\JoinColumn(table="tutorials", column="user_id")
      */
-    protected $owner;
+    protected $_owner;
 
     /**
      * @Mezzo\Relations\OneToMany
@@ -95,7 +95,7 @@ abstract class MezzoTutorial extends BaseModel
      * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="mainTutorials")
      * @Mezzo\Relations\JoinColumn(table="tutorials", column="main_category")
      */
-    protected $mainCategory;
+    protected $_mainCategory;
 
     /**
      * @Mezzo\Relations\OneToOne
@@ -103,7 +103,7 @@ abstract class MezzoTutorial extends BaseModel
      * @Mezzo\Relations\To(table="tutorials", primaryKey="id", naming="")
      * @Mezzo\Relations\JoinColumn(table="tutorials", column="parent_id")
      */
-    protected $parent;
+    protected $_parent;
 
     /**
      * @Mezzo\Attribute(type="RelationInputMultiple")
@@ -112,7 +112,7 @@ abstract class MezzoTutorial extends BaseModel
      * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="plannedTutorials")
      * @Mezzo\Relations\PivotTable(name="planned_tutorial_category", fromColumn="tutorial_id", toColumn="category_id")
      */
-    protected $plannedCategories;
+    protected $_plannedCategories;
 
     /**
      * @Mezzo\Relations\OneToOne
@@ -120,7 +120,7 @@ abstract class MezzoTutorial extends BaseModel
      * @Mezzo\Relations\To(table="images", primaryKey="id", naming="tutorial")
      * @Mezzo\Relations\JoinColumn(table="images", column="tutorial_id")
      */
-    protected $mainImage;
+    protected $_mainImage;
 
     /**
      * @Mezzo\Attribute(type="RelationInputMultiple")
@@ -129,7 +129,7 @@ abstract class MezzoTutorial extends BaseModel
      * @Mezzo\Relations\To(table="comments", primaryKey="id", naming="tutorial")
      * @Mezzo\Relations\JoinColumn(table="categories", column="tutorial_id")
      */
-    protected $comments;
+    protected $_comments;
 
 
 }

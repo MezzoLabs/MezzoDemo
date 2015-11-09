@@ -9,6 +9,7 @@ return [
         \MezzoLabs\Mezzo\Modules\User\UserModule::class,
         \MezzoLabs\Mezzo\Modules\Generator\GeneratorModule::class,
         \MezzoLabs\Mezzo\Modules\DeveloperDashboard\DeveloperDashboardModule::class,
+        \MezzoLabs\Mezzo\Modules\Categories\CategoriesModule::class,
     ],
 
     "api" => [

@@ -4,6 +4,8 @@
 namespace MezzoLabs\Mezzo\Core\Validation;
 
 
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
+
 class Validator
 {
     /**
@@ -19,5 +21,29 @@ class Validator
     public static function make($data, $rules, $messages = array(), $customAttributes = array())
     {
         return \Illuminate\Support\Facades\Validator::make($data, $rules, $messages, $customAttributes);
+    }
+
+    /**
+     * @param $rulesArray
+     * @return array
+     */
+    public static function removeRequiredRules($rulesArray)
+    {
+        $updateRules = [];
+        foreach($rulesArray as &$rule){
+            $updateRules[] = str_replace(['required|', 'required'], '', $rule);
+        }
+
+        return $updateRules;
+    }
+
+    public function onSaving(MezzoModel $model)
+    {
+        $model->validateOrFail($model->getAttributes(), 'create');
+    }
+
+    public function onUpdating(MezzoModel $model)
+    {
+        $model->validateOrFail($model->getAttributes(), 'update');
     }
 }

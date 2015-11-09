@@ -7,11 +7,11 @@ use App\Permission;
 use App\Role;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Modules\User\Http\Transformers\RoleTransformer;
-use MezzoLabs\Mezzo\Modules\User\Http\Transformers\UserTransformer;
 
 class UserModule extends ModuleProvider
 {
+    protected $group = "admin";
+
     protected $models = [
         User::class,
         Role::class,

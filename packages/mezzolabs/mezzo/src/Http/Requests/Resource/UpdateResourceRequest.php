@@ -4,6 +4,8 @@
 namespace MezzoLabs\Mezzo\Http\Requests\Resource;
 
 
+use MezzoLabs\Mezzo\Core\Validation\Validator;
+
 class UpdateResourceRequest extends UpdateOrStoreResourceRequest
 {
     /**
@@ -14,15 +16,7 @@ class UpdateResourceRequest extends UpdateOrStoreResourceRequest
     public function rules()
     {
         $rules = parent::rules();
-
-        /**
-         * Remove "required" rules for partially updates.
-         */
-        foreach($rules as &$rule){
-            $rule = str_replace(['required|', 'required'], '', $rule);
-        }
-
-        return $rules;
+        return Validator::removeRequiredRules($rules);
     }
 
 

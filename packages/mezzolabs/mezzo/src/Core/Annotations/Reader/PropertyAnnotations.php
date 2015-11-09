@@ -3,6 +3,7 @@
 
 namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 
+use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Exceptions\AnnotationException;
 use MezzoLabs\Mezzo\Exceptions\ReflectionException;
@@ -66,7 +67,14 @@ abstract class PropertyAnnotations
 
         if ($annotations->count() === 0) return null;
 
-        return static::makeByAnnotationCollection(ltrim($property->getName(), '_'), $annotations, $model);
+        // Remove one "_" from the property name. If we would use the correct attribute names
+        // for the annotations eloquent would freak out.
+        $name = $property->getName();
+
+        if(Str::startsWith($name, '_'))
+            $name = substr($name, 1);
+
+        return static::makeByAnnotationCollection($name, $annotations, $model);
 
     }
 

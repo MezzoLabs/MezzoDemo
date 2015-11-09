@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 *
 *-------------------------------------------------------------------------------------------------------------------
 *
-* Please not edit, use "{{ $parent->modelSchema()->className() }}" instead. Thank you.
+* Please do not edit, use "{{ $parent->modelSchema()->className() }}" instead. Thank you.
 *
 *-------------------------------------------------------------------------------------------------------------------
 * Welcome to the model parent. This file is auto generated and tells Mezzo something about
@@ -76,7 +76,7 @@ abstract class {{ $parent->name() }} extends BaseModel
     | Attribute annotation properties
     |-------------------------------------------------------------------------------------------------------------------    |
     | In this section you will find some annotated properties.
-    | They are not really important, but they will tell Mezzo something about
+    | They are not really important for you, but they will tell Mezzo something about
     | the attributes of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
@@ -97,7 +97,7 @@ abstract class {{ $parent->name() }} extends BaseModel
     | Relation annotation properties
     |-------------------------------------------------------------------------------------------------------------------
     | In this section you will find some annotated properties.
-    | They are not really important, but they will tell Mezzo something about
+    | They are not really important for you, but they will tell Mezzo something about
     | the relations of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
@@ -107,7 +107,7 @@ abstract class {{ $parent->name() }} extends BaseModel
     * Relation annotation property for {{ $attribute->name() }}
     {!! $annotation->relation($relationSide) !!}
     */
-    protected ${{ $relationSide->naming() }};
+    protected $_{{ $relationSide->naming() }};
 
 @endforeach
 

@@ -2,25 +2,19 @@
 
 namespace App;
 
-use App\Mezzo\Generated\ModelTraits\MezzoTutorial;
-use Illuminate\Database\Eloquent\Model;
-use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
+use MezzoLabs\Mezzo\Modules\Categories\Models\Category as BaseCategory;
 
-
-class Category extends Model
+/**
+ * Class Category
+ * @package App
+ *
+ * @property CategoryGroup $group
+ */
+class Category extends BaseCategory
 {
-    public function tutorials(){
+    public function tutorials()
+    {
         return $this->belongsToMany(Tutorial::class);
     }
-
-    public function plannedTutorials(){
-        return $this->belongsToMany(Tutorial::class, 'planned_tutorial_category');
-    }
-
-    public function mainTutorials(){
-        return $this->hasMany(Tutorial::class, 'main_category');
-    }
-
-
 
 }

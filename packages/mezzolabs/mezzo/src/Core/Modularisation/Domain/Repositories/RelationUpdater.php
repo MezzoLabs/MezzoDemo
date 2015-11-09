@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
-use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValue;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
@@ -19,7 +19,7 @@ use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 class RelationUpdater extends EloquentRepository
 {
     /**
-     * @var MezzoEloquentModel
+     * @var MezzoModel
      */
     protected $eloquentModel;
 
@@ -34,10 +34,10 @@ class RelationUpdater extends EloquentRepository
     protected $eloquentRelation;
 
     /**
-     * @param MezzoEloquentModel $model
+     * @param MezzoModel $model
      * @param AttributeValue $attributeValue
      */
-    public function __construct(MezzoEloquentModel $model, AttributeValue $attributeValue)
+    public function __construct(MezzoModel $model, AttributeValue $attributeValue)
     {
         $this->eloquentModel = $model;
         $this->attributeValue = $attributeValue;
@@ -60,6 +60,22 @@ class RelationUpdater extends EloquentRepository
             throw new RepositoryException($this->attribute()->qualifiedName() . ' is not a relation.');
 
         return true;
+    }
+
+    /**
+     * @return RelationAttribute
+     */
+    public function attribute()
+    {
+        return $this->attributeValue()->attribute();
+    }
+
+    /**
+     * @return AttributeValue
+     */
+    public function attributeValue()
+    {
+        return $this->attributeValue;
     }
 
     /**
@@ -92,6 +108,11 @@ class RelationUpdater extends EloquentRepository
 
     }
 
+    public function relationSide()
+    {
+        return $this->attribute()->relationSide();
+    }
+
     /**
      * Updates m:n relationships.
      *
@@ -103,6 +124,64 @@ class RelationUpdater extends EloquentRepository
     {
         $result = $relation->sync($ids);
         return (is_array($result));
+    }
+
+    /**
+     * @return BelongsTo|BelongsToMany|HasMany|HasOne|HasOneOrMany|EloquentRelation
+     */
+    public function eloquentRelation()
+    {
+        return $this->eloquentRelation;
+    }
+
+    /**
+     * Id(s) that we have to update.
+     *
+     * @return integer|array
+     */
+    public function newId()
+    {
+        return $this->attributeValue()->value();
+    }
+
+    /**
+     * Set the parent of many child resources (Left side of a 1:n relationship)
+     *
+     * @param HasMany $relation
+     * @param array $ids
+     * @return bool
+     * @throws InvalidArgumentException
+     */
+    protected function updateHasManyRelation(HasMany $relation, array $ids)
+    {
+        $foreignKey = $relation->getPlainForeignKey();
+
+        foreach ($ids as $id) {
+            if (!is_integer($id))
+                throw new InvalidArgumentException($id);
+
+            $foreignModel = $relation->getRelated();
+            $foreignChild = $foreignModel->newQuery()->where($foreignModel->getQualifiedKeyName(), '=', $id);
+            $result = $foreignChild->update([$foreignKey => $this->parentId()]);
+
+            if ($result != 1)
+                return false;
+        }
+
+        return true;
+    }
+
+    public function parentId()
+    {
+        return $this->eloquentModel()->id;
+    }
+
+    /**
+     * @return MezzoModel
+     */
+    public function eloquentModel()
+    {
+        return $this->eloquentModel;
     }
 
     /**
@@ -127,78 +206,9 @@ class RelationUpdater extends EloquentRepository
         return $result == 1;
     }
 
-
-    /**
-     * Set the parent of many child resources (Left side of a 1:n relationship)
-     *
-     * @param HasMany $relation
-     * @param array $ids
-     * @param MezzoEloquentModel $parent
-     * @return bool
-     * @throws InvalidArgumentException
-     */
-    protected function updateHasManyRelation(HasMany $relation, array $ids)
+    public function qualifiedName()
     {
-        $foreignKey = $relation->getPlainForeignKey();
-
-        foreach ($ids as $id) {
-            if (!is_integer($id))
-                throw new InvalidArgumentException($id);
-
-            $foreignModel = $relation->getRelated();
-            $foreignChild = $foreignModel->newQuery()->where($foreignModel->getQualifiedKeyName(), '=', $id);
-            $result = $foreignChild->update([$foreignKey => $this->parentId()]);
-
-            if ($result != 1)
-                return false;
-        }
-
-        return true;
-    }
-
-
-    public function relationSide()
-    {
-        return $this->attribute()->relationSide();
-    }
-
-    /**
-     * @return RelationAttribute
-     */
-    public function attribute()
-    {
-        return $this->attributeValue()->attribute();
-    }
-
-    /**
-     * @return AttributeValue
-     */
-    public function attributeValue()
-    {
-        return $this->attributeValue;
-    }
-
-    /**
-     * Id(s) that we have to update.
-     *
-     * @return integer|array
-     */
-    public function newId()
-    {
-        return $this->attributeValue()->value();
-    }
-
-    public function parentId()
-    {
-        return $this->eloquentModel()->id;
-    }
-
-    /**
-     * @return MezzoEloquentModel
-     */
-    public function eloquentModel()
-    {
-        return $this->eloquentModel;
+        return $this->relationSide()->relation()->qualifiedName();
     }
 
     /**
@@ -214,23 +224,9 @@ class RelationUpdater extends EloquentRepository
         return true;
     }
 
-    /**
-     * @return BelongsTo|BelongsToMany|HasMany|HasOne|HasOneOrMany|EloquentRelation
-     */
-    public function eloquentRelation()
-    {
-        return $this->eloquentRelation;
-    }
-
-
     public function relationName()
     {
         return $this->attribute()->name();
-    }
-
-    public function qualifiedName()
-    {
-        return $this->relationSide()->relation()->qualifiedName();
     }
 
 

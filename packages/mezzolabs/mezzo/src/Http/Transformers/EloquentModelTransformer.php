@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Modularisation\NamingConvention;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValue;
@@ -60,25 +60,54 @@ abstract class EloquentModelTransformer extends ModelTransformer
     }
 
     /**
-     * @return mixed|null|string
-     * @throws \MezzoLabs\Mezzo\Exceptions\NamingConventionException
+     * Adds the relations of the associated model to the available includes.
+     * You can then use them in the ?include parameter.
+     * Fractal will call include<RelationName> - this will be catched by the magic function.
      */
-    protected function defaultModelName()
+    protected function addRelationsAsIncludes()
     {
-        if ($this->modelName)
-            return $this->modelName;
+        $relationAttributes = $this->model()->attributes()->relationAttributes();
 
-        return NamingConvention::modelName($this);
+        $relationAttributes->each(function(RelationAttribute $attribute){
+            $this->availableIncludes[] = $attribute->relationSide()->naming();
+        });
+
+        $this->availableIncludes = array_unique($this->availableIncludes);
     }
 
     /**
-     * @param $model
+     * @return \MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection
+     */
+    protected function model()
+    {
+        return mezzo()->model($this->getModelName());
+    }
+
+    /**
+     * @return string
+     */
+    public function getModelName()
+    {
+        return $this->modelName;
+    }
+
+    /**
+     * @param string $modelName
+     */
+    public function setModelName($modelName)
+    {
+
+        $this->modelName = $modelName;
+    }
+
+    /**
+     * @param MezzoModel $model
      * @return array
      * @throws InvalidArgumentException
      */
     public function transform($model)
     {
-        if (!$model instanceof MezzoEloquentModel)
+        if (!$model instanceof MezzoModel)
             throw new InvalidArgumentException($model);
 
         $returnCollection = new Collection();
@@ -117,50 +146,48 @@ abstract class EloquentModelTransformer extends ModelTransformer
     }
 
     /**
-     * @return string
-     */
-    public function getModelName()
-    {
-        return $this->modelName;
-    }
-
-    /**
-     * @param string $modelName
-     */
-    public function setModelName($modelName)
-    {
-
-        $this->modelName = $modelName;
-    }
-
-
-    /**
-     * @param $modelClass
-     * @return EloquentModelTransformer
-     */
-    public static function makeBest($modelClass)
-    {
-        if ($modelClass == "") {
-            return new Transformer();
-        }
-
-        $registrar = TransformerRegistrar::make();
-
-        $transformerClass = $registrar->findTransformerClass($modelClass);
-
-        if (!$transformerClass)
-            return new GenericEloquentModelTransformer($modelClass);
-
-        $transformer = app()->make($transformerClass, [$modelClass]);
-        return $transformer;
-    }
-
-    /**
      * @return TransformerRegistrar
      */
     protected static function registrar()
     {
         return TransformerRegistrar::make();
+    }
+
+    /**
+     * Call magic methods beginning with "with".
+     *
+     * @param string $method
+     * @param array $parameters
+     *
+     * @throws \ErrorException
+     *
+     * @return mixed
+     */
+    public function __call($method, $parameters)
+    {
+        if (Str::startsWith($method, 'include'))
+            return $this->callMagicInclude(Str::camel(substr($method, 7)), $parameters[0]);
+    }
+
+    /**
+     * @param $relationName
+     * @param MezzoModel $model
+     * @return \League\Fractal\Resource\Collection|\League\Fractal\Resource\Item
+     * @throws TransformerException
+     */
+    protected function callMagicInclude($relationName, MezzoModel $model)
+    {
+        if (!in_array($relationName, $this->availableIncludes))
+            throw new TransformerException('Cannot call magic include ' . $relationName . ' ' .
+                'because this relation is not in the available includes.');
+
+        $relationElements = $model->$relationName;
+
+        if($relationElements instanceof EloquentCollection)
+            return $this->automaticCollection($relationElements);
+
+        if($relationElements instanceof MezzoModel)
+            return $this->automaticItem($relationElements);
     }
 
     /**
@@ -183,7 +210,28 @@ abstract class EloquentModelTransformer extends ModelTransformer
         return $this->collection($collection, $transformer);
     }
 
-    protected function automaticItem(MezzoEloquentModel $model)
+    /**
+     * @param $modelClass
+     * @return EloquentModelTransformer
+     */
+    public static function makeBest($modelClass)
+    {
+        if ($modelClass == "") {
+            return new Transformer();
+        }
+
+        $registrar = TransformerRegistrar::make();
+
+        $transformerClass = $registrar->findTransformerClass($modelClass);
+
+        if (!$transformerClass)
+            return new GenericEloquentModelTransformer($modelClass);
+
+        $transformer = app()->make($transformerClass, [$modelClass]);
+        return $transformer;
+    }
+
+    protected function automaticItem(MezzoModel $model)
     {
         $transformer = $this->makeBest(get_class($model));
 
@@ -191,57 +239,14 @@ abstract class EloquentModelTransformer extends ModelTransformer
     }
 
     /**
-     * Adds the relations of the associated model to the available includes.
-     * You can then use them in the ?include parameter.
-     * Fractal will call include<RelationName> - this will be catched by the magic function.
+     * @return mixed|null|string
+     * @throws \MezzoLabs\Mezzo\Exceptions\NamingConventionException
      */
-    protected function addRelationsAsIncludes()
+    protected function defaultModelName()
     {
-        $relationAttributes = $this->model()->attributes()->relationAttributes();
+        if ($this->modelName)
+            return $this->modelName;
 
-        $relationAttributes->each(function(RelationAttribute $attribute){
-            $this->availableIncludes[] = $attribute->relationSide()->naming();
-        });
-
-        $this->availableIncludes = array_unique($this->availableIncludes);
-    }
-
-    /**
-     * @return \MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection
-     */
-    protected function model()
-    {
-        return mezzo()->model($this->getModelName());
-    }
-
-    /**
-     * Call magic methods beginning with "with".
-     *
-     * @param string $method
-     * @param array $parameters
-     *
-     * @throws \ErrorException
-     *
-     * @return mixed
-     */
-    public function __call($method, $parameters)
-    {
-        if (Str::startsWith($method, 'include'))
-            return $this->callMagicInclude(Str::camel(substr($method, 7)), $parameters[0]);
-    }
-
-    protected function callMagicInclude($relationName, MezzoEloquentModel $model)
-    {
-        if (!in_array($relationName, $this->availableIncludes))
-            throw new TransformerException('Cannot call magic include ' . $relationName . ' ' .
-                'because this relation is not in the available includes.');
-
-        $relationElements = $model->$relationName;
-
-        if($relationElements instanceof EloquentCollection)
-            return $this->automaticCollection($relationElements);
-
-        if($relationElements instanceof MezzoEloquentModel)
-            return $this->automaticItem($relationElements);
+        return NamingConvention::modelName($this);
     }
 }
