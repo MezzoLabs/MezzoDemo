@@ -43,7 +43,7 @@ trait HasValidationRules
         $validator = $this->validator($data, $rules);
 
         if($orFail && $validator->fails()){
-            throw new ModelValidationFailedException2($validator);
+            throw new ModelValidationFailedexception($validator);
         }
 
         return $validator;
