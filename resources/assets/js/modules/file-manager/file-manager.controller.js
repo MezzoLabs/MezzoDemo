@@ -1,11 +1,24 @@
 import File from './File';
 import Folder from './Folder';
 
-class FilesMainController {
+class FileManagerController {
 
-    /*@ngInject*/ constructor($scope, fileManager){
+    /*@ngInject*/
+    constructor($scope, fileManager){
         this.$scope = $scope;
         this.fileManager = fileManager;
+
+        this.categories = [
+            { label: 'Everything', icon: 'ion-ios-home', everything: true },
+            { label: 'Images', icon: 'ion-ios-photos', filter: file => file.isImage() },
+            { label: 'Videos', icon: 'ion-ios-videocam', filter: file => file.isVideo() },
+            { label: 'Audio', icon: 'ion-ios-mic', filter: file => file.isAudio() },
+            { label: 'Documents', icon: 'ion-ios-paper', filter: file => file.isDocument() }
+        ];
+        this.category = this.categories[0];
+        this.orderOptions = [ 'Title', 'Last modified' ];
+        this.orderBy = this.orderOptions[0];
+
 
         this.selected = null;
         this.library = new Folder('Library');
@@ -27,7 +40,7 @@ class FilesMainController {
         this.folder = this.library;
         this.files = this.library.files;
 
-        fileManager.onDrop = (droppable, draggable) => {
+        this.fileManager.onDrop = (droppable, draggable) => {
             var files = this.sortedFiles();
             var folderIndex = $(droppable).data('index');
             var draggedIndex = $(draggable).data('index');
@@ -38,6 +51,18 @@ class FilesMainController {
             this.$scope.$apply();
         };
     }
+
+    isActive(category){
+        if(category === this.category){
+            return 'active';
+        }
+    }
+
+    selectCategory(category){
+        this.category = category;
+    }
+
+
 
     selectFile(file){
         if(file === this.selected){
@@ -70,11 +95,11 @@ class FilesMainController {
     }
 
     showFolderHierarchy(){
-        return this.category().everything && !this.search;
+        return this.category.everything && !this.search;
     }
 
     showCategoryAsFolderHierarchy(){
-        return !this.category().everything && !this.search;
+        return !this.category.everything && !this.search;
     }
 
     addFolder(name){
@@ -94,7 +119,7 @@ class FilesMainController {
             return this.searchFiles();
         }
 
-        var category = this.fileManager.category;
+        var category = this.category;
 
         if(category.everything){
             return this.files;
@@ -117,9 +142,9 @@ class FilesMainController {
         var lowerSearch = this.search.toLowerCase();
 
         files.forEach(file => {
-           if(file.title.toLowerCase().indexOf(lowerSearch) !== -1){
-               found.push(file);
-           }
+            if(file.title.toLowerCase().indexOf(lowerSearch) !== -1){
+                found.push(file);
+            }
         });
 
         return found;
@@ -163,10 +188,6 @@ class FilesMainController {
         }
 
         return count + ' ' + (count === 1 ? 'item': 'items');
-    }
-
-    category(){
-        return this.fileManager.category;
     }
 
     deleteFiles(){
@@ -226,4 +247,4 @@ class FilesMainController {
 
 }
 
-export default { name: 'FilesMainController', controller: FilesMainController };
+export default { name: 'FileManagerController', controller: FileManagerController };
