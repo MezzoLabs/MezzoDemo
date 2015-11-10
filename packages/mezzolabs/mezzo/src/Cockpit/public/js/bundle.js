@@ -480,7 +480,7 @@ exports.controller = /*@ngInject*/function ModelBuilderController($scope, compon
 
 module.exports = function (app) {
 				register(require('./common/compile.directive.js'));
-				register(require('./common/uid.service.js'));
+				register(require('./common/uidService.js'));
 				register(require('./model-builder/model-builder.controller.js'));
 				register(require('./model-builder/components/component.service.js'));
 				register(require('./model-builder/components/checkbox/checkbox-options.directive.js'));

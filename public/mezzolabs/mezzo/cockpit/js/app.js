@@ -3,89 +3,60 @@
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
+require('./setup/jquery');
+
+require('./modules/file-manager');
+
 var _setupConfig = require('./setup/config');
 
 var _setupConfig2 = _interopRequireDefault(_setupConfig);
 
-var _setupStateProvider = require('./setup/state-provider');
+var _setupStateProvider = require('./setup/stateProvider');
 
 var _setupStateProvider2 = _interopRequireDefault(_setupStateProvider);
 
-var _setupRun = require('./setup/run');
+var _commonCompileDirective = require('./common/compileDirective');
 
-var _setupRun2 = _interopRequireDefault(_setupRun);
+var _commonCompileDirective2 = _interopRequireDefault(_commonCompileDirective);
 
-var _register = require('./register');
+var _commonEnterDirectiveJs = require('./common/enterDirective.js');
 
-var _register2 = _interopRequireDefault(_register);
+var _commonEnterDirectiveJs2 = _interopRequireDefault(_commonEnterDirectiveJs);
 
-require('./modules/file-manager');
+var _commonRegisterStateDirectiveJs = require('./common/registerStateDirective.js');
 
-var app = angular.module('Mezzo', ['ui.router', 'templates', 'angular-sortable-view', 'ngFileUpload', 'ngMessages', 'MezzoFileManager']);
+var _commonRegisterStateDirectiveJs2 = _interopRequireDefault(_commonRegisterStateDirectiveJs);
+
+var _commonUidServiceJs = require('./common/uidService.js');
+
+var _commonUidServiceJs2 = _interopRequireDefault(_commonUidServiceJs);
+
+var app = angular.module('Mezzo', ['ui.router', 'ngMessages', 'angular-sortable-view', 'ngFileUpload', 'MezzoFileManager']);
 
 app.config(_setupConfig2['default']);
-(0, _setupStateProvider2['default'])(app);
-app.run(_setupRun2['default']);
-(0, _register2['default'])(app);
+app.provider('$stateProvider', _setupStateProvider2['default']);
+app.directive('mezzoCompile', _commonCompileDirective2['default']);
+app.directive('mezzoEnter', _commonEnterDirectiveJs2['default']);
+app.directive('mezzoRegisterState', _commonRegisterStateDirectiveJs2['default']);
+app.factory('uid', _commonUidServiceJs2['default']);
 
-},{"./modules/file-manager":16,"./register":45,"./setup/config":46,"./setup/run":48,"./setup/state-provider":49}],2:[function(require,module,exports){
+},{"./common/compileDirective":2,"./common/enterDirective.js":3,"./common/registerStateDirective.js":4,"./common/uidService.js":5,"./modules/file-manager":14,"./setup/config":15,"./setup/jquery":16,"./setup/stateProvider":17}],2:[function(require,module,exports){
+/*@ngInject*/
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
+exports['default'] = compileDirective;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var prefix = '/mezzo/';
-
-var Route = function Route(url, views) {
-    _classCallCheck(this, Route);
-
-    this.url = prefix + url;
-    this.views = views;
-};
-
-exports['default'] = Route;
-module.exports = exports['default'];
-
-},{}],3:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var _Route = require('./Route');
-
-var _Route2 = _interopRequireDefault(_Route);
-
-var State = function State(name, url, views) {
-    _classCallCheck(this, State);
-
-    this.name = name;
-    this.route = new _Route2['default'](url, views);
-};
-
-exports['default'] = State;
-module.exports = exports['default'];
-
-},{"./Route":2}],4:[function(require,module,exports){
-'use strict';
-
-exports.name = 'mezzoCompile';
-exports.directive = /*@ngInject*/function ($compile) {
+function compileDirective() {
     return {
         restrict: 'A',
         link: link
     };
 
-    function link(scope, element, attrs) {
-        scope.$watch(attrs.mezzoCompile, function (directive) {
+    function link(scope, element, attributes) {
+        scope.$watch(attributes.mezzoCompile, function (directive) {
             if (directive) {
                 var html = '<' + directive + ' >';
 
@@ -94,17 +65,21 @@ exports.directive = /*@ngInject*/function ($compile) {
             }
         });
     }
-};
+}
 
-},{}],5:[function(require,module,exports){
+;
+module.exports = exports['default'];
+
+},{}],3:[function(require,module,exports){
+/*@ngInject*/
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-exports['default'] = { name: 'mezzoEnter', directive: directive };
+exports['default'] = enterDirective;
 
-/*@ngInject*/function directive() {
+function enterDirective() {
     return {
         restrict: 'A',
         link: link
@@ -119,25 +94,19 @@ exports['default'] = { name: 'mezzoEnter', directive: directive };
         });
     }
 }
+
 module.exports = exports['default'];
 
-},{}],6:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
+/*@ngInject*/
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
+exports['default'] = registerStateDirective;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _State = require('./State');
-
-var _State2 = _interopRequireDefault(_State);
-
-exports['default'] = { name: 'mezzoRegisterState', directive: directive };
-
-/*@ngInject*/
-function directive($stateProvider) {
+function registerStateDirective($stateProvider) {
     return {
         restrict: 'A',
         link: link
@@ -148,50 +117,58 @@ function directive($stateProvider) {
         var page = attributes.page;
         var action = attributes.action;
         var controller = mapActionToController(action);
-        var state = new _State2['default'](page, uri, {
-            main: {
-                templateUrl: '/mezzo/' + uri + '.html',
-                controllerAs: 'vm',
-                controller: controller
 
-            }
+        $stateProvider.state(page, {
+            url: uri,
+            templateUrl: '/mezzo/' + uri + '.html',
+            controller: controller,
+            controllerAs: 'vm'
         });
-
-        $stateProvider.state(state.name, state.route);
     }
 }
 
 function mapActionToController(action) {
-    var controllers = {
-        index: 'ResourceIndexController',
-        create: 'ResourceCreateController',
-        edit: 'ResourceEditController'
-    };
+    if (action === 'index') {
+        return 'ResourceIndexController';
+    }
 
-    return controllers[action];
+    if (action === 'create') {
+        return 'ResourceCreateController';
+    }
+
+    if (action === 'edit') {
+        return 'ResourceEditController';
+    }
+
+    if (action === 'show') {
+        return 'ResourceShowController';
+    }
+
+    throw new Error('No suitable Controller found for action "' + action + '"!');
 }
 module.exports = exports['default'];
 
-},{"./State":3}],7:[function(require,module,exports){
-'use strict';
+},{}],5:[function(require,module,exports){
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports["default"] = uidService;
 var id = 0;
 
-exports['default'] = { name: 'uid', service: service };
+/*@ngInject*/
 
-/*@ngInject*/function service() {
-    return uid;
+function uidService() {
+    return nextUid;
 }
 
-function uid() {
+function nextUid() {
     return id++;
 }
-module.exports = exports['default'];
+module.exports = exports["default"];
 
-},{}],8:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -215,7 +192,7 @@ var Category = function Category(label, icon) {
 exports["default"] = Category;
 module.exports = exports["default"];
 
-},{}],9:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -301,7 +278,7 @@ var File = (function () {
 exports['default'] = File;
 module.exports = exports['default'];
 
-},{}],10:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -590,7 +567,7 @@ var FileManagerController = (function () {
 exports['default'] = FileManagerController;
 module.exports = exports['default'];
 
-},{"./File":9,"./Folder":11,"./categories":12}],11:[function(require,module,exports){
+},{"./File":7,"./Folder":9,"./categories":10}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -631,7 +608,7 @@ var Folder = (function (_File) {
 exports['default'] = Folder;
 module.exports = exports['default'];
 
-},{"./File":9}],12:[function(require,module,exports){
+},{"./File":7}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -663,7 +640,7 @@ function documentFilter(file) {
 }
 module.exports = exports['default'];
 
-},{"./Category":8}],13:[function(require,module,exports){
+},{"./Category":6}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -689,7 +666,7 @@ function draggableDirective() {
 
 module.exports = exports['default'];
 
-},{}],14:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -724,7 +701,7 @@ function droppableDirective(fileManager) {
 
 module.exports = exports['default'];
 
-},{}],15:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /*@ngInject*/
 "use strict";
 
@@ -741,14 +718,10 @@ function fileManagerService() {
 
 module.exports = exports["default"];
 
-},{}],16:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _commonState = require('../../common/State');
-
-var _commonState2 = _interopRequireDefault(_commonState);
 
 var _fileManagerServiceJs = require('./fileManagerService.js');
 
@@ -766,17 +739,15 @@ var _FileManagerControllerJs = require('./FileManagerController.js');
 
 var _FileManagerControllerJs2 = _interopRequireDefault(_FileManagerControllerJs);
 
-var state = new _commonState2['default']('FileManager', 'filemanager', {
-    main: {
-        templateUrl: 'mezzo/filemanager/file/create.html',
-        controller: 'FileManagerController as vm'
-    }
-});
-
 var _module = angular.module('MezzoFileManager', ['ui.router']);
 
 _module.config(function ($stateProvider) {
-    $stateProvider.state(state.name, state.route);
+    $stateProvider.state('FileManager', {
+        url: '/mezzo/filemanager',
+        templateUrl: 'mezzo/filemanager/file/create.html',
+        controller: 'FileManagerController',
+        controllerAs: 'vm'
+    });
 });
 
 _module.factory('fileManager', _fileManagerServiceJs2['default']);
@@ -784,1241 +755,121 @@ _module.directive('mezzoDraggable', _draggableDirectiveJs2['default']);
 _module.directive('mezzoDroppable', _droppableDirectiveJs2['default']);
 _module.controller('FileManagerController', _FileManagerControllerJs2['default']);
 
-},{"../../common/State":3,"./FileManagerController.js":10,"./draggableDirective.js":13,"./droppableDirective.js":14,"./fileManagerService.js":15}],17:[function(require,module,exports){
+},{"./FileManagerController.js":8,"./draggableDirective.js":11,"./droppableDirective.js":12,"./fileManagerService.js":13}],15:[function(require,module,exports){
+/*@ngInject*/
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
+exports['default'] = config;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function config($locationProvider, $urlRouterProvider, $httpProvider, $interpolateProvider) {
+    $httpProvider.defaults.headers.common.Accept = 'application/vnd.MezzoLabs.v1+json';
 
-var Component = function Component(name, templateUrl, modifyOptions) {
-    _classCallCheck(this, Component);
-
-    this.name = name;
-    this.directive = directive(templateUrl, modifyOptions);
-};
-
-exports['default'] = Component;
-
-function directive(templateUrl, modifyOptions) {
-    return (/*@ngInject*/function inject(componentService) {
-            return {
-                restrict: 'E',
-                templateUrl: 'modules/model-builder/components/' + templateUrl,
-                link: link
-            };
-
-            function link(scope) {
-                var options = componentService.options;
-                scope.options = options;
-
-                modifyOptions(options);
-            }
-        }
-    );
+    $locationProvider.html5Mode(true);
+    $urlRouterProvider.otherwise('/mezzo');
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
 }
+
 module.exports = exports['default'];
 
-},{}],18:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
+exports['default'] = jquery;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function jquery() {
+    $(function () {
+        $('.sidebar-pin').click(function () {
+            var sidebarIsPinned = $('body').hasClass('sidebar-pinned');
 
-var ComponentOptions = function ComponentOptions(name, templateUrl, controller) {
-    _classCallCheck(this, ComponentOptions);
+            if (sidebarIsPinned) {
+                $('body').addClass('sidebar-unpinned').removeClass('sidebar-pinned');
+                $(this).addClass('fa-circle-o').removeClass('fa-dot-circle-o');
+            } else {
+                $('body').addClass('sidebar-pinned').removeClass('sidebar-unpinned');
+                $(this).addClass('fa-dot-circle-o').removeClass('fa-circle-o');
+            }
+        });
 
-    this.name = name;
-    this.directive = directive(templateUrl, controller);
-};
+        $('#sidebar').mouseenter(function () {
+            $('body').addClass('sidebar-mousein').removeClass('sidebar-mouseout');
+        });
 
-exports['default'] = ComponentOptions;
+        $('#sidebar').mouseleave(function () {
+            $('body').addClass('sidebar-mouseout').removeClass('sidebar-mousein');
 
-function directive(templateUrl, controller) {
-    return (/*@ngInject*/function inject(componentService) {
-            return {
-                restrict: 'E',
-                templateUrl: 'modules/model-builder/components/' + templateUrl,
-                link: link
-            };
+            if ($('body').hasClass('sidebar-unpinned')) $('.nav-main .opened').removeClass('opened');
+        });
 
-            function link(scope) {
-                componentService.onOptionsChange(function (options) {
-                    scope.options = options;
-                });
+        $('.nav-main > li.has-pages > a .dropdown').click(function () {
+            $(this).parents('li').toggleClass('opened');
+        });
 
-                if (controller) {
-                    controller(scope);
-                }
+        $('.trigger-quickview').click(function () {
+            quickviewVisible(!quickviewIsVisible());
+            return false;
+        });
+
+        $('#quickview .btn-close').click(function () {
+            quickviewVisible(false);
+        });
+
+        $('#content-main, #view-overlay').click(function () {
+            quickviewVisible(false);
+        });
+
+        function quickviewIsVisible() {
+            return $('#quickview').hasClass('opened');
+        }
+
+        function quickviewVisible(open) {
+            if (open) {
+                $('#quickview').addClass('opened');
+                $('#view-overlay').addClass('opened');
+            } else {
+                $('#quickview').removeClass('opened');
+                $('#view-overlay').removeClass('opened');
             }
         }
-    );
+
+        /**
+         * Form stuff
+         */
+        $.fn.editable.defaults.mode = 'inline';
+
+        $.fn.editableform.buttons = '<button type="submit" class="btn btn-primary btn-sm editable-submit">' + '<i class=ion-checkmark></i>' + '</button>' + '<button type="button" class="btn btn-default btn-sm editable-cancel">' + '<i class="ion-close"></i>' + '</button>';
+
+        $('.editable').editable();
+
+        //$('select').select2(); uncomment for model builder
+    });
 }
+
 module.exports = exports['default'];
 
-},{}],19:[function(require,module,exports){
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _ComponentOptions = require('../ComponentOptions');
-
-var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
-
-module.exports = new _ComponentOptions2['default']('mezzoCheckboxOptions', 'checkbox/checkbox-options.html');
-
-},{"../ComponentOptions":18}],20:[function(require,module,exports){
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _Component = require('../Component');
-
-var _Component2 = _interopRequireDefault(_Component);
-
-module.exports = new _Component2['default']('mezzoCheckbox', 'checkbox/checkbox.html', modifyOptions);
-
-function modifyOptions(options) {
-    options.label = 'Label';
-}
-
-},{"../Component":17}],21:[function(require,module,exports){
-'use strict';
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-exports.name = 'componentService';
-exports.service = function inject() {
-    return new ComponentService();
-};
-
-var ComponentService = (function () {
-    function ComponentService() {
-        _classCallCheck(this, ComponentService);
-
-        this.options = null;
-        this.eventListeners = [];
-    }
-
-    _createClass(ComponentService, [{
-        key: 'setOptions',
-        value: function setOptions(options) {
-            this.options = options;
-
-            this.eventListeners.forEach(function (eventListener) {
-                eventListener(options);
-            });
-        }
-    }, {
-        key: 'onOptionsChange',
-        value: function onOptionsChange(eventListener) {
-            eventListener(this.options);
-            this.eventListeners.push(eventListener);
-        }
-    }]);
-
-    return ComponentService;
-})();
-
-},{}],22:[function(require,module,exports){
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _ComponentOptions = require('../ComponentOptions');
-
-var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
-
-module.exports = new _ComponentOptions2['default']('mezzoDropdownOptions', 'dropdown/dropdown-options.html', controller);
-
-function controller(scope) {
-    scope.addItem = function (label, value) {
-        var item = { label: label, value: value };
-
-        scope.options.items.push(item);
-    };
-
-    scope.removeItem = function (index) {
-        scope.options.items.splice(index, 1);
-    };
-}
-
-},{"../ComponentOptions":18}],23:[function(require,module,exports){
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _Component = require('../Component');
-
-var _Component2 = _interopRequireDefault(_Component);
-
-module.exports = new _Component2['default']('mezzoDropdown', 'dropdown/dropdown.html', modifyOptions);
-
-function modifyOptions(options) {
-    options.label = 'Label';
-    options.items = [];
-    options.multiple = false;
-}
-
-},{"../Component":17}],24:[function(require,module,exports){
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _ComponentOptions = require('../ComponentOptions');
-
-var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
-
-module.exports = new _ComponentOptions2['default']('mezzoOwnerOptions', 'owner/owner-options.html');
-
-},{"../ComponentOptions":18}],25:[function(require,module,exports){
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _Component = require('../Component');
-
-var _Component2 = _interopRequireDefault(_Component);
-
-module.exports = new _Component2['default']('mezzoOwner', 'owner/owner.html', modifyOptions);
-
-function modifyOptions(options) {}
-
-},{"../Component":17}],26:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-exports['default'] = {
-    ONE: '1',
-    MANY: 'n'
-};
-module.exports = exports['default'];
-
-},{}],27:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var _Mode = require('./Mode');
-
-var _Mode2 = _interopRequireDefault(_Mode);
-
-var Model = (function () {
-    function Model(id, name) {
-        _classCallCheck(this, Model);
-
-        this.id = id;
-        this.name = name;
-        this.mode = _Mode2['default'].ONE;
-
-        this.updateNaming();
-        this.updateColumn();
-    }
-
-    _createClass(Model, [{
-        key: 'label',
-        value: function label() {
-            if (this.mode === _Mode2['default'].ONE) {
-                return this.name;
-            }
-
-            if (this.mode === _Mode2['default'].MANY) {
-                return pluralize(this.name);
-            }
-
-            return this.name;
-        }
-    }, {
-        key: 'updateNaming',
-        value: function updateNaming() {
-            this.naming = this.name.toLowerCase();
-        }
-    }, {
-        key: 'updateColumn',
-        value: function updateColumn() {
-            this.column = this.name.toLowerCase() + '_id';
-        }
-    }]);
-
-    return Model;
-})();
-
-exports['default'] = Model;
-module.exports = exports['default'];
-
-},{"./Mode":26}],28:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
+/*@ngInject*/
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports["default"] = alphabetical;
+exports["default"] = stateProvider;
 
-function alphabetical(str1, str2) {
-    if (str1 < str2) {
-        return -1;
+function stateProvider($stateProvider) {
+    this.$get = $get;
+
+    function $get() {
+        return $stateProvider;
     }
-
-    if (str1 > str2) {
-        return 1;
-    }
-
-    return 0;
 }
+
 module.exports = exports["default"];
 
-},{}],29:[function(require,module,exports){
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _ComponentOptions = require('../ComponentOptions');
-
-var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
-
-module.exports = new _ComponentOptions2['default']('mezzoRelationOptions', 'relation/relation-options.html');
-
-},{"../ComponentOptions":18}],30:[function(require,module,exports){
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _Component = require('../Component');
-
-var _Component2 = _interopRequireDefault(_Component);
-
-var _Model = require('./Model');
-
-var _Model2 = _interopRequireDefault(_Model);
-
-var _Mode = require('./Mode');
-
-var _Mode2 = _interopRequireDefault(_Mode);
-
-var _sentence = require('./sentence');
-
-var _sentence2 = _interopRequireDefault(_sentence);
-
-var _alphabetical = require('./alphabetical');
-
-var _alphabetical2 = _interopRequireDefault(_alphabetical);
-
-var Position = {
-    LEFT: 0,
-    RIGHT: 1
-};
-
-module.exports = new _Component2['default']('mezzoRelation', 'relation/relation.html', modifyOptions);
-
-function modifyOptions(options) {
-    options.models = [new _Model2['default'](1, 'User'), new _Model2['default'](2, 'Category')];
-    options.leftModel = new _Model2['default'](0, 'Tutorial');
-    options.rightModel = options.models[0];
-    options.title = null;
-    options.columnPosition = Position.LEFT;
-    options.pivotTable = null;
-    options.Mode = _Mode2['default'];
-    options.Position = Position;
-
-    options.sentence = function () {
-        return (0, _sentence2['default'])(options.leftModel, options.rightModel);
-    };
-    options.onModelUpdate = onModelUpdate;
-    options.showPivotTable = function () {
-        return options.leftModel.mode === _Mode2['default'].MANY && options.rightModel.mode === _Mode2['default'].MANY;
-    };
-    options.showLeftColumn = function () {
-        return options.columnPosition === Position.LEFT && !options.showPivotTable();
-    };
-    options.showRightColumn = function () {
-        return options.columnPosition === Position.RIGHT && !options.showPivotTable();
-    };
-    options.hasOrHave = function () {
-        return options.leftModel.mode === _Mode2['default'].ONE ? 'has' : 'have';
-    };
-
-    onModelUpdate();
-
-    function onModelUpdate() {
-        options.title = options.rightModel.label();
-        options.pivotTable = getPivotTableName();
-
-        options.rightModel.updateNaming();
-        options.rightModel.updateColumn();
-    }
-
-    function getPivotTableName() {
-        var modelNames = [options.leftModel.name.toLowerCase(), options.rightModel.name.toLocaleLowerCase()];
-        var sortedNames = modelNames.sort(_alphabetical2['default']);
-
-        return sortedNames.join('_');
-    }
-}
-
-},{"../Component":17,"./Mode":26,"./Model":27,"./alphabetical":28,"./sentence":31}],31:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _Mode = require('./Mode');
-
-var _Mode2 = _interopRequireDefault(_Mode);
-
-exports['default'] = phrase;
-
-function phrase(model1, model2) {
-    var sentence = [];
-
-    if (model1.mode === _Mode2['default'].ONE) {
-        sentence.push('One ' + model1.label() + ' has');
-    } else {
-        sentence.push('Many ' + model1.label() + ' have');
-    }
-
-    if (model2.mode === _Mode2['default'].ONE) {
-        sentence.push('one');
-    } else {
-        sentence.push('many');
-    }
-
-    sentence.push(model2.label());
-
-    return sentence.join(' ');
-}
-module.exports = exports['default'];
-
-},{"./Mode":26}],32:[function(require,module,exports){
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _ComponentOptions = require('../ComponentOptions');
-
-var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
-
-module.exports = new _ComponentOptions2['default']('mezzoTextMultiOptions', 'text-multi/text-multi-options.html');
-
-},{"../ComponentOptions":18}],33:[function(require,module,exports){
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _Component = require('../Component');
-
-var _Component2 = _interopRequireDefault(_Component);
-
-module.exports = new _Component2['default']('mezzoTextMulti', 'text-multi/text-multi.html', modifyOptions);
-
-function modifyOptions(options) {
-    options.label = 'Label';
-    options.placeholder = 'Placeholder';
-}
-
-},{"../Component":17}],34:[function(require,module,exports){
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _ComponentOptions = require('../ComponentOptions');
-
-var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
-
-module.exports = new _ComponentOptions2['default']('mezzoTextSingleOptions', 'text-single/text-single-options.html');
-
-},{"../ComponentOptions":18}],35:[function(require,module,exports){
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _Component = require('../Component');
-
-var _Component2 = _interopRequireDefault(_Component);
-
-module.exports = new _Component2['default']('mezzoTextSingle', 'text-single/text-single.html', modifyOptions);
-
-function modifyOptions(options) {
-    options.label = 'Label';
-    options.placeholder = 'Placeholder';
-}
-
-},{"../Component":17}],36:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var ModelBuilderController =
-
-/*@ngInject*/function ModelBuilderController(modelBuilder) {
-    _classCallCheck(this, ModelBuilderController);
-
-    this.modelBuilder = modelBuilder;
-    this.buttons = [button('Single line text', 'ion-document', 'text-single'), button('Paragraph text', 'ion-document-text', 'text-multi'), button('Checkbox', 'ion-android-checkbox-outline', 'checkbox'), button('Dropdown', 'ion-android-arrow-dropdown-circle', 'dropdown'), button('Relation', 'ion-arrow-swap', 'relation'), button('Owner', 'ion-person', 'owner')];
-};
-
-exports['default'] = { name: 'ModelBuilderController', controller: ModelBuilderController };
-
-function button(label, icon, component) {
-    return { label: label, icon: icon, component: component };
-}
-module.exports = exports['default'];
-
-},{}],37:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-exports['default'] = { name: 'modelBuilder', service: service };
-
-/*@ngInject*/function service(componentService, uid) {
-    return new ModelBuilder(componentService, uid);
-}
-
-var ModelBuilder = (function () {
-    function ModelBuilder(componentService, uid) {
-        _classCallCheck(this, ModelBuilder);
-
-        this.componentService = componentService;
-        this.uid = uid;
-        this.fields = [];
-        this.selectedField = null;
-    }
-
-    _createClass(ModelBuilder, [{
-        key: 'addField',
-        value: function addField(name) {
-            var field = {
-                id: this.uid(),
-                name: name,
-                options: {
-                    validationRules: []
-                },
-                mainDirective: 'mezzo-' + name,
-                optionsDirective: 'mezzo-' + name + '-options'
-            };
-
-            this.componentService.setOptions(field.options);
-            this.fields.push(field);
-        }
-    }, {
-        key: 'deleteField',
-        value: function deleteField(deleted) {
-            $('a[href="#add-field-tab"]').tab('show');
-
-            this.selectedField = null;
-
-            for (var i = 0; i < this.fields.length; i++) {
-                var field = this.fields[i];
-
-                if (field.id === deleted.id) {
-                    this.fields.splice(i, 1);
-                    return;
-                }
-            }
-        }
-    }, {
-        key: 'selectField',
-        value: function selectField(field) {
-            $('a[href="#edit-field-tab"]').tab('show');
-
-            this.selectedField = field;
-
-            this.componentService.setOptions(field.options);
-        }
-    }, {
-        key: 'addValidationRule',
-        value: function addValidationRule() {
-            var rule = this.validationRule.toLowerCase();
-
-            if (!rule || rule.length === 0 || this.hasValidationRule(rule)) {
-                return false;
-            }
-
-            this.validationRule = '';
-
-            this.selectedField.options.validationRules.push(rule);
-        }
-    }, {
-        key: 'removeValidationRule',
-        value: function removeValidationRule(validationRule) {
-            var rules = this.selectedField.options.validationRules;
-
-            for (var i = 0; i < rules.length; i++) {
-                if (rules[i] === validationRule) {
-                    rules.splice(i, 1);
-                    return;
-                }
-            }
-        }
-    }, {
-        key: 'hasValidationRule',
-        value: function hasValidationRule(validationRule) {
-            var rules = this.selectedField.options.validationRules;
-
-            for (var i = 0; i < rules.length; i++) {
-                if (rules[i] === validationRule) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-    }]);
-
-    return ModelBuilder;
-})();
-
-module.exports = exports['default'];
-
-},{}],38:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _commonState = require('../../common/State');
-
-var _commonState2 = _interopRequireDefault(_commonState);
-
-exports['default'] = new _commonState2['default']('models', 'models', {
-    aside: {
-        templateUrl: 'modules/model-builder/aside.html',
-        controller: 'ModelBuilderController as vm'
-    },
-    main: {
-        templateUrl: 'modules/model-builder/main.html',
-        controller: 'ModelBuilderController as vm'
-    }
-});
-module.exports = exports['default'];
-
-},{"../../common/State":3}],39:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-exports['default'] = { name: 'PagesAsideController', controller: controller };
-
-/*@ngInject*/function controller($scope) {
-    $scope.addWidget = addWidget;
-
-    function addWidget() {
-        var gridster = $('div.gridster').gridster().data('gridster');
-
-        gridster.add_widget('<div class="panel panel-bordered"><i class="ion-close"></i></div>');
-
-        $('.panel .ion-close').click(function () {
-            gridster.remove_widget($(this).parent('.panel'));
-        });
-    }
-}
-module.exports = exports['default'];
-
-},{}],40:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-exports['default'] = { name: 'PagesMainController', controller: controller };
-
-function controller() {
-    $('div.gridster').gridster({
-        widget_margins: [10, 10],
-        widget_base_dimensions: [140, 140],
-        widget_selector: 'div',
-        resize: {
-            enabled: true
-        }
-    });
-}
-module.exports = exports['default'];
-
-},{}],41:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _commonState = require('../../common/State');
-
-var _commonState2 = _interopRequireDefault(_commonState);
-
-exports['default'] = new _commonState2['default']('pages', 'pages', {
-    aside: {
-        templateUrl: 'modules/page-builder/aside.html',
-        controller: 'PagesAsideController'
-    },
-    main: {
-        templateUrl: 'modules/page-builder/main.html',
-        controller: 'PagesMainController'
-    }
-});
-module.exports = exports['default'];
-
-},{"../../common/State":3}],42:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var ResourceCreateController = (function () {
-
-    /*@ngInject*/
-
-    function ResourceCreateController($http) {
-        _classCallCheck(this, ResourceCreateController);
-
-        console.log('ResourceCreateController');
-        this.$http = $http;
-        this.model = {};
-
-        /* Fake data */
-        this.users = [{ id: 0, name: 'Simon' }, { id: 1, name: 'Marc' }, { id: 2, name: 'John Doe' }, { id: 3, name: 'MSDOS Manfred' }];
-        this.tutorials = [{ id: 0, name: 'Mezzo Tutorial' }, { id: 1, name: 'How to peel an Egg Tutorial Part 1' }, { id: 2, name: 'How to sit down Tutorial' }];
-        /* Fake data */
-    }
-
-    _createClass(ResourceCreateController, [{
-        key: 'submit',
-        value: function submit() {
-            if (this.form.$invalid) {
-                return false;
-            }
-
-            var payload = {
-                title: this.model.title,
-                body: this.model.body,
-                created_at: this.model.createdAt,
-                updated_at: this.model.updatedAt,
-                user_id: this.model.userId,
-                parent: this.model.parent
-            };
-
-            this.$http.post('/api/tutorials', payload).then(function (result) {
-                console.log(result);
-            })['catch'](function (err) {
-                return console.error(err);
-            });
-        }
-    }, {
-        key: 'hasError',
-        value: function hasError(formControl) {
-            if (Object.keys(formControl.$error).length && formControl.$dirty) {
-                return 'has-error';
-            }
-        }
-    }]);
-
-    return ResourceCreateController;
-})();
-
-exports['default'] = { name: 'ResourceCreateController', controller: ResourceCreateController };
-module.exports = exports['default'];
-
-},{}],43:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var ResourceEditController =
-
-/*@ngInject*/
-function ResourceEditController() {
-    _classCallCheck(this, ResourceEditController);
-
-    console.log('ResourceEditController');
-};
-
-exports['default'] = { name: 'ResourceEditController', controller: ResourceEditController };
-module.exports = exports['default'];
-
-},{}],44:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var ResourceIndexController = (function () {
-
-    /*@ngInject*/
-
-    function ResourceIndexController($scope, $http) {
-        _classCallCheck(this, ResourceIndexController);
-
-        this.$scope = $scope;
-        this.$http = $http;
-        this.models = [];
-        this.searchText = '';
-        this.selectAll = false;
-        this.loading = false;
-        this.removing = 0;
-    }
-
-    _createClass(ResourceIndexController, [{
-        key: 'init',
-        value: function init(modelName) {
-            this.modelName = modelName;
-            var plural = this.modelName.toLowerCase() + 's';
-            this.apiUrl = '/api/' + plural;
-
-            this.loadModels();
-        }
-    }, {
-        key: 'loadModels',
-        value: function loadModels() {
-            var _this = this;
-
-            this.loading = true;
-
-            return this.$http.get(this.apiUrl).then(function (response) {
-                _this.loading = false;
-                _this.models = response.data.data;
-
-                _this.models.forEach(function (model) {
-                    return model._meta = {};
-                });
-            })['catch'](function (err) {
-                console.error(err);
-            });
-        }
-    }, {
-        key: 'getModels',
-        value: function getModels() {
-            if (this.searchText.length > 0) {
-                return this.search();
-            }
-
-            return this.models;
-        }
-    }, {
-        key: 'getModelKeys',
-        value: function getModelKeys(model) {
-            if (this.models.length > 0 && !model) {
-                model = this.models[0];
-            }
-
-            if (!model) {
-                return [];
-            }
-
-            var keys = Object.keys(model);
-
-            return keys.filter(function (key) {
-                return key !== '_meta' && model.hasOwnProperty(key);
-            });
-        }
-    }, {
-        key: 'getModelValues',
-        value: function getModelValues(model) {
-            var keys = this.getModelKeys(model);
-            var values = [];
-
-            keys.forEach(function (key) {
-                return values.push(model[key]);
-            });
-
-            return values;
-        }
-    }, {
-        key: 'canEdit',
-        value: function canEdit() {
-            return this.selected().length === 1;
-        }
-    }, {
-        key: 'canRemove',
-        value: function canRemove() {
-            return this.selected().length > 0;
-        }
-    }, {
-        key: 'search',
-        value: function search() {
-            var _this2 = this;
-
-            return this.models.filter(function (model) {
-                for (var key in model) {
-                    if (model.hasOwnProperty(key)) {
-                        var value = model[key];
-
-                        if (String(value).indexOf(_this2.searchText) !== -1) {
-                            return true;
-                        }
-                    }
-                }
-            });
-        }
-    }, {
-        key: 'updateSelectAll',
-        value: function updateSelectAll() {
-            var _this3 = this;
-
-            var models = this.getModels();
-
-            models.forEach(function (model) {
-                return model._meta.selected = _this3.selectAll;
-            });
-        }
-    }, {
-        key: 'selected',
-        value: function selected() {
-            return this.models.filter(function (model) {
-                return model._meta.selected;
-            });
-        }
-    }, {
-        key: 'create',
-        value: function create() {
-            //TODO
-        }
-    }, {
-        key: 'edit',
-        value: function edit() {
-            //TODO
-        }
-    }, {
-        key: 'remove',
-        value: function remove() {
-            var _this4 = this;
-
-            var selected = this.selected();
-
-            swal({
-                title: 'Are you sure?',
-                text: selected.length + ' models will be deleted!',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete them!',
-                confirmButtonColor: '#fb503b'
-            }, function (confirmed) {
-                if (!confirmed) {
-                    return;
-                }
-
-                selected.forEach(function (model) {
-                    return _this4.removeModel(model);
-                });
-            });
-        }
-    }, {
-        key: 'removeModel',
-        value: function removeModel(model) {
-            var _this5 = this;
-
-            this.removing++;
-            this.selectAll = false;
-            model._meta.selected = false;
-            model._meta.removed = true;
-
-            this.removeRemoteModel(model).success(function (result) {
-                console.log(result);
-                _this5.removeLocalModel(model);
-            }).error(function (err) {
-                return console.error(err);
-            })['finally'](function () {
-                return _this5.removing--;
-            });
-        }
-    }, {
-        key: 'removeLocalModel',
-        value: function removeLocalModel(model) {
-            for (var i = 0; i < this.models.length; i++) {
-                if (this.models[i] === model) {
-                    return this.models.splice(i, 1);
-                }
-            }
-        }
-    }, {
-        key: 'removeRemoteModel',
-        value: function removeRemoteModel(model) {
-            return this.$http['delete'](this.apiUrl + '/' + model.id);
-        }
-    }, {
-        key: 'countSelected',
-        value: function countSelected() {
-            return this.selected().length;
-        }
-    }]);
-
-    return ResourceIndexController;
-})();
-
-exports['default'] = { name: 'ResourceIndexController', controller: ResourceIndexController };
-module.exports = exports['default'];
-
-},{}],45:[function(require,module,exports){
-'use strict';
-
-module.exports = function (app) {
-				register(require('./common/compile.directive.js'));
-				register(require('./common/enter.directive.js'));
-				register(require('./common/register-state.directive.js'));
-				register(require('./common/uid.service.js'));
-				register(require('./modules/model-builder/model-builder.controller.js'));
-				register(require('./modules/model-builder/model-builder.service.js'));
-				register(require('./modules/page-builder/aside.controller.js'));
-				register(require('./modules/page-builder/main.controller.js'));
-				register(require('./modules/resource/resource-create.controller.js'));
-				register(require('./modules/resource/resource-edit.controller.js'));
-				register(require('./modules/resource/resource-index.controller.js'));
-				register(require('./modules/model-builder/components/component.service.js'));
-				register(require('./modules/model-builder/components/checkbox/checkbox-options.directive.js'));
-				register(require('./modules/model-builder/components/checkbox/checkbox.directive.js'));
-				register(require('./modules/model-builder/components/dropdown/dropdown-options.directive.js'));
-				register(require('./modules/model-builder/components/dropdown/dropdown.directive.js'));
-				register(require('./modules/model-builder/components/owner/owner-options.directive.js'));
-				register(require('./modules/model-builder/components/owner/owner.directive.js'));
-				register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
-				register(require('./modules/model-builder/components/relation/relation.directive.js'));
-				register(require('./modules/model-builder/components/text-single/text-single-options.directive.js'));
-				register(require('./modules/model-builder/components/text-single/text-single.directive.js'));
-				register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
-				register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
-
-				function register(module) {
-								if (module.controller) {
-												return app.controller(module.name, module.controller);
-								}
-
-								if (module.directive) {
-												return app.directive(module.name, module.directive);
-								}
-
-								if (module.service) {
-												return app.factory(module.name, module.service);
-								}
-				}
-};
-
-},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/register-state.directive.js":6,"./common/uid.service.js":7,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":19,"./modules/model-builder/components/checkbox/checkbox.directive.js":20,"./modules/model-builder/components/component.service.js":21,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":22,"./modules/model-builder/components/dropdown/dropdown.directive.js":23,"./modules/model-builder/components/owner/owner-options.directive.js":24,"./modules/model-builder/components/owner/owner.directive.js":25,"./modules/model-builder/components/relation/relation-options.directive.js":29,"./modules/model-builder/components/relation/relation.directive.js":30,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":32,"./modules/model-builder/components/text-multi/text-multi.directive.js":33,"./modules/model-builder/components/text-single/text-single-options.directive.js":34,"./modules/model-builder/components/text-single/text-single.directive.js":35,"./modules/model-builder/model-builder.controller.js":36,"./modules/model-builder/model-builder.service.js":37,"./modules/page-builder/aside.controller.js":39,"./modules/page-builder/main.controller.js":40,"./modules/resource/resource-create.controller.js":42,"./modules/resource/resource-edit.controller.js":43,"./modules/resource/resource-index.controller.js":44}],46:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _states = require('./states');
-
-var _states2 = _interopRequireDefault(_states);
-
-exports['default'] = config;
-
-/*@ngInject*/function config($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider, $interpolateProvider) {
-
-    $httpProvider.defaults.headers.common.Accept = 'application/vnd.MezzoLabs.v1+json';
-
-    $locationProvider.html5Mode(true);
-
-    $urlRouterProvider.otherwise('/mezzo');
-
-    _states2['default'].forEach(function (state) {
-        return $stateProvider.state(state.name, state.route);
-    });
-
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-}
-module.exports = exports['default'];
-
-},{"./states":50}],47:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-exports['default'] = function () {
-    $(function () {
-        return init();
-    });
-};
-
-function init() {
-    $('.sidebar-pin').click(function () {
-        var sidebarIsPinned = $('body').hasClass('sidebar-pinned');
-
-        if (sidebarIsPinned) {
-            $('body').addClass('sidebar-unpinned').removeClass('sidebar-pinned');
-            $(this).addClass('fa-circle-o').removeClass('fa-dot-circle-o');
-        } else {
-            $('body').addClass('sidebar-pinned').removeClass('sidebar-unpinned');
-            $(this).addClass('fa-dot-circle-o').removeClass('fa-circle-o');
-        }
-    });
-
-    $('#sidebar').mouseenter(function () {
-        $('body').addClass('sidebar-mousein').removeClass('sidebar-mouseout');
-    });
-
-    $('#sidebar').mouseleave(function () {
-        $('body').addClass('sidebar-mouseout').removeClass('sidebar-mousein');
-
-        if ($('body').hasClass('sidebar-unpinned')) $('.nav-main .opened').removeClass('opened');
-    });
-
-    $('.nav-main > li.has-pages > a .dropdown').click(function () {
-        $(this).parents('li').toggleClass('opened');
-    });
-
-    $('.trigger-quickview').click(function () {
-        quickviewVisible(!quickviewIsVisible());
-        return false;
-    });
-
-    $('#quickview .btn-close').click(function () {
-        quickviewVisible(false);
-    });
-
-    $('#content-main, #view-overlay').click(function () {
-        quickviewVisible(false);
-    });
-
-    function quickviewIsVisible() {
-        return $('#quickview').hasClass('opened');
-    }
-
-    function quickviewVisible(open) {
-        if (open) {
-            $('#quickview').addClass('opened');
-            $('#view-overlay').addClass('opened');
-        } else {
-            $('#quickview').removeClass('opened');
-            $('#view-overlay').removeClass('opened');
-        }
-    }
-
-    /**
-     * Form stuff
-     */
-    $.fn.editable.defaults.mode = 'inline';
-
-    $.fn.editableform.buttons = '<button type="submit" class="btn btn-primary btn-sm editable-submit">' + '<i class=ion-checkmark></i>' + '</button>' + '<button type="button" class="btn btn-default btn-sm editable-cancel">' + '<i class="ion-close"></i>' + '</button>';
-
-    $('.editable').editable();
-
-    //$('select').select2(); uncomment for model builder
-}
-module.exports = exports['default'];
-
-},{}],48:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _jquery = require('./jquery');
-
-var _jquery2 = _interopRequireDefault(_jquery);
-
-exports['default'] = run;
-
-/*@ngInject*/function run($rootScope, $state) {
-    $rootScope.aside = aside;
-
-    (0, _jquery2['default'])();
-
-    function aside() {
-        var views = $state.current.views;
-
-        if (views) {
-            return views.aside;
-        }
-
-        return false;
-    }
-}
-module.exports = exports['default'];
-
-},{"./jquery":47}],49:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-exports['default'] = function (app) {
-    app.provider('$stateProvider', /*@ngInject*/function ($stateProvider) {
-        this.$get = function () {
-            return $stateProvider;
-        };
-    });
-};
-
-module.exports = exports['default'];
-
-},{}],50:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _modulesModelBuilderState = require('../modules/model-builder/state');
-
-var _modulesModelBuilderState2 = _interopRequireDefault(_modulesModelBuilderState);
-
-var _modulesPageBuilderStateJs = require('../modules/page-builder/state.js');
-
-var _modulesPageBuilderStateJs2 = _interopRequireDefault(_modulesPageBuilderStateJs);
-
-exports['default'] = [_modulesModelBuilderState2['default'], _modulesPageBuilderStateJs2['default']];
-module.exports = exports['default'];
-
-},{"../modules/model-builder/state":38,"../modules/page-builder/state.js":41}]},{},[1]);
+},{}]},{},[1]);

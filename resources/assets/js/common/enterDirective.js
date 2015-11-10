@@ -1,6 +1,5 @@
-export default { name: 'mezzoEnter', directive };
-
-/*@ngInject*/ function directive(){
+/*@ngInject*/
+export default function enterDirective(){
     return {
         restrict: 'A',
         link

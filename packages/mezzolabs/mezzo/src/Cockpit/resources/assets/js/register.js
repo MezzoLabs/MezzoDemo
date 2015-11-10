@@ -1,7 +1,7 @@
 module.exports = app => {
 	register(require('./common/compile.directive.js'));
-	register(require('./common/enter.directive.js'));
-	register(require('./common/uid.service.js'));
+	register(require('./common/enterDirective.js'));
+	register(require('./common/uidService.js'));
 	register(require('./layout/content/content.directive.js'));
 	register(require('./layout/quickview/quickview.directive.js'));
 	register(require('./layout/quickview/trigger.directive.js'));

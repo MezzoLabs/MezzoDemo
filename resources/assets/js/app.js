@@ -1,19 +1,23 @@
-import config from './setup/config';
-import stateProvider from './setup/state-provider';
-import run from './setup/run';
-import register from './register';
+import './setup/jquery';
 import './modules/file-manager';
+import config from './setup/config';
+import stateProvider from './setup/stateProvider';
+import compileDirective from './common/compileDirective';
+import enterDirective from './common/enterDirective.js';
+import registerStateDirective from './common/registerStateDirective.js';
+import uidService from './common/uidService.js';
 
 var app = angular.module('Mezzo', [
     'ui.router',
-    'templates',
+    'ngMessages',
     'angular-sortable-view',
     'ngFileUpload',
-    'ngMessages',
     'MezzoFileManager'
 ]);
 
 app.config(config);
-stateProvider(app);
-app.run(run);
-register(app);
+app.provider('$stateProvider', stateProvider);
+app.directive('mezzoCompile', compileDirective);
+app.directive('mezzoEnter', enterDirective);
+app.directive('mezzoRegisterState', registerStateDirective);
+app.factory('uid', uidService);
