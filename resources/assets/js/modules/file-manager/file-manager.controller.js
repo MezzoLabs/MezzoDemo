@@ -1,5 +1,6 @@
 import File from './File';
 import Folder from './Folder';
+import categories from './categories';
 
 class FileManagerController {
 
@@ -8,13 +9,7 @@ class FileManagerController {
         this.$scope = $scope;
         this.fileManager = fileManager;
 
-        this.categories = [
-            { label: 'Everything', icon: 'ion-ios-home', everything: true },
-            { label: 'Images', icon: 'ion-ios-photos', filter: file => file.isImage() },
-            { label: 'Videos', icon: 'ion-ios-videocam', filter: file => file.isVideo() },
-            { label: 'Audio', icon: 'ion-ios-mic', filter: file => file.isAudio() },
-            { label: 'Documents', icon: 'ion-ios-paper', filter: file => file.isDocument() }
-        ];
+        this.categories = categories;
         this.category = this.categories[0];
         this.orderOptions = [ 'Title', 'Last modified' ];
         this.orderBy = this.orderOptions[0];
@@ -39,6 +34,7 @@ class FileManagerController {
 
         this.folder = this.library;
         this.files = this.library.files;
+
 
         this.fileManager.onDrop = (droppable, draggable) => {
             var files = this.sortedFiles();

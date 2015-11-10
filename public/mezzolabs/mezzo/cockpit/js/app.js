@@ -26,7 +26,7 @@ app.config(_setupConfig2['default']);
 app.run(_setupRun2['default']);
 (0, _register2['default'])(app);
 
-},{"./register":43,"./setup/config":44,"./setup/run":46,"./setup/state-provider":47}],2:[function(require,module,exports){
+},{"./register":45,"./setup/config":46,"./setup/run":48,"./setup/state-provider":49}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -190,6 +190,30 @@ function uid() {
 module.exports = exports['default'];
 
 },{}],8:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Category = function Category(label, icon) {
+    var filter = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+    var everything = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
+
+    _classCallCheck(this, Category);
+
+    this.label = label;
+    this.icon = icon;
+    this.filter = filter;
+    this.everything = everything;
+};
+
+exports["default"] = Category;
+module.exports = exports["default"];
+
+},{}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -275,7 +299,7 @@ var File = (function () {
 exports['default'] = File;
 module.exports = exports['default'];
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -316,7 +340,39 @@ var Folder = (function (_File) {
 exports['default'] = Folder;
 module.exports = exports['default'];
 
-},{"./File":8}],10:[function(require,module,exports){
+},{"./File":9}],11:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _Category = require('./Category');
+
+var _Category2 = _interopRequireDefault(_Category);
+
+exports['default'] = [new _Category2['default']('Everything', 'ion-ios-home', null, true), new _Category2['default']('Images', 'ion-ios-photos', imageFilter), new _Category2['default']('Videos', 'ion-ios-videocam', videoFilter), new _Category2['default']('Audio', 'ion-ios-mic', audioFilter), new _Category2['default']('Documents', 'ion-ios-paper', documentFilter)];
+
+function imageFilter(file) {
+    return file.isImage();
+}
+
+function videoFilter(file) {
+    return file.isVideo();
+}
+
+function audioFilter(file) {
+    return file.isAudio();
+}
+
+function documentFilter(file) {
+    return file.isDocument();
+}
+module.exports = exports['default'];
+
+},{"./Category":8}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -341,7 +397,7 @@ exports['default'] = { name: 'mezzoDraggable', directive: directive };
 }
 module.exports = exports['default'];
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -374,7 +430,7 @@ exports['default'] = { name: 'mezzoDroppable', directive: directive };
 }
 module.exports = exports['default'];
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -395,6 +451,10 @@ var _Folder = require('./Folder');
 
 var _Folder2 = _interopRequireDefault(_Folder);
 
+var _categories = require('./categories');
+
+var _categories2 = _interopRequireDefault(_categories);
+
 var FileManagerController = (function () {
 
     /*@ngInject*/
@@ -407,15 +467,7 @@ var FileManagerController = (function () {
         this.$scope = $scope;
         this.fileManager = fileManager;
 
-        this.categories = [{ label: 'Everything', icon: 'ion-ios-home', everything: true }, { label: 'Images', icon: 'ion-ios-photos', filter: function filter(file) {
-                return file.isImage();
-            } }, { label: 'Videos', icon: 'ion-ios-videocam', filter: function filter(file) {
-                return file.isVideo();
-            } }, { label: 'Audio', icon: 'ion-ios-mic', filter: function filter(file) {
-                return file.isAudio();
-            } }, { label: 'Documents', icon: 'ion-ios-paper', filter: function filter(file) {
-                return file.isDocument();
-            } }];
+        this.categories = _categories2['default'];
         this.category = this.categories[0];
         this.orderOptions = ['Title', 'Last modified'];
         this.orderBy = this.orderOptions[0];
@@ -667,7 +719,7 @@ var FileManagerController = (function () {
 exports['default'] = { name: 'FileManagerController', controller: FileManagerController };
 module.exports = exports['default'];
 
-},{"./File":8,"./Folder":9}],13:[function(require,module,exports){
+},{"./File":9,"./Folder":10,"./categories":11}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -683,7 +735,7 @@ function service() {
 }
 module.exports = exports['default'];
 
-},{}],14:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -704,7 +756,7 @@ exports['default'] = new _commonState2['default']('files', 'filemanager', {
 });
 module.exports = exports['default'];
 
-},{"../../common/State":3}],15:[function(require,module,exports){
+},{"../../common/State":3}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -741,7 +793,7 @@ function directive(templateUrl, modifyOptions) {
 }
 module.exports = exports['default'];
 
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -781,7 +833,7 @@ function directive(templateUrl, controller) {
 }
 module.exports = exports['default'];
 
-},{}],17:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -792,7 +844,7 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoCheckboxOptions', 'checkbox/checkbox-options.html');
 
-},{"../ComponentOptions":16}],18:[function(require,module,exports){
+},{"../ComponentOptions":18}],20:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -807,7 +859,7 @@ function modifyOptions(options) {
     options.label = 'Label';
 }
 
-},{"../Component":15}],19:[function(require,module,exports){
+},{"../Component":17}],21:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -847,7 +899,7 @@ var ComponentService = (function () {
     return ComponentService;
 })();
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -870,7 +922,7 @@ function controller(scope) {
     };
 }
 
-},{"../ComponentOptions":16}],21:[function(require,module,exports){
+},{"../ComponentOptions":18}],23:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -887,7 +939,7 @@ function modifyOptions(options) {
     options.multiple = false;
 }
 
-},{"../Component":15}],22:[function(require,module,exports){
+},{"../Component":17}],24:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -898,7 +950,7 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoOwnerOptions', 'owner/owner-options.html');
 
-},{"../ComponentOptions":16}],23:[function(require,module,exports){
+},{"../ComponentOptions":18}],25:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -911,7 +963,7 @@ module.exports = new _Component2['default']('mezzoOwner', 'owner/owner.html', mo
 
 function modifyOptions(options) {}
 
-},{"../Component":15}],24:[function(require,module,exports){
+},{"../Component":17}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -923,7 +975,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -983,7 +1035,7 @@ var Model = (function () {
 exports['default'] = Model;
 module.exports = exports['default'];
 
-},{"./Mode":24}],26:[function(require,module,exports){
+},{"./Mode":26}],28:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1004,7 +1056,7 @@ function alphabetical(str1, str2) {
 }
 module.exports = exports["default"];
 
-},{}],27:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1015,7 +1067,7 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoRelationOptions', 'relation/relation-options.html');
 
-},{"../ComponentOptions":16}],28:[function(require,module,exports){
+},{"../ComponentOptions":18}],30:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1092,7 +1144,7 @@ function modifyOptions(options) {
     }
 }
 
-},{"../Component":15,"./Mode":24,"./Model":25,"./alphabetical":26,"./sentence":29}],29:[function(require,module,exports){
+},{"../Component":17,"./Mode":26,"./Model":27,"./alphabetical":28,"./sentence":31}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1128,7 +1180,7 @@ function phrase(model1, model2) {
 }
 module.exports = exports['default'];
 
-},{"./Mode":24}],30:[function(require,module,exports){
+},{"./Mode":26}],32:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1139,7 +1191,7 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoTextMultiOptions', 'text-multi/text-multi-options.html');
 
-},{"../ComponentOptions":16}],31:[function(require,module,exports){
+},{"../ComponentOptions":18}],33:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1155,7 +1207,7 @@ function modifyOptions(options) {
     options.placeholder = 'Placeholder';
 }
 
-},{"../Component":15}],32:[function(require,module,exports){
+},{"../Component":17}],34:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1166,7 +1218,7 @@ var _ComponentOptions2 = _interopRequireDefault(_ComponentOptions);
 
 module.exports = new _ComponentOptions2['default']('mezzoTextSingleOptions', 'text-single/text-single-options.html');
 
-},{"../ComponentOptions":16}],33:[function(require,module,exports){
+},{"../ComponentOptions":18}],35:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1182,7 +1234,7 @@ function modifyOptions(options) {
     options.placeholder = 'Placeholder';
 }
 
-},{"../Component":15}],34:[function(require,module,exports){
+},{"../Component":17}],36:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1207,7 +1259,7 @@ function button(label, icon, component) {
 }
 module.exports = exports['default'];
 
-},{}],35:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1320,7 +1372,7 @@ var ModelBuilder = (function () {
 
 module.exports = exports['default'];
 
-},{}],36:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1345,7 +1397,7 @@ exports['default'] = new _commonState2['default']('models', 'models', {
 });
 module.exports = exports['default'];
 
-},{"../../common/State":3}],37:[function(require,module,exports){
+},{"../../common/State":3}],39:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1368,7 +1420,7 @@ exports['default'] = { name: 'PagesAsideController', controller: controller };
 }
 module.exports = exports['default'];
 
-},{}],38:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1388,7 +1440,7 @@ function controller() {
 }
 module.exports = exports['default'];
 
-},{}],39:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1413,7 +1465,7 @@ exports['default'] = new _commonState2['default']('pages', 'pages', {
 });
 module.exports = exports['default'];
 
-},{"../../common/State":3}],40:[function(require,module,exports){
+},{"../../common/State":3}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1478,7 +1530,7 @@ var ResourceCreateController = (function () {
 exports['default'] = { name: 'ResourceCreateController', controller: ResourceCreateController };
 module.exports = exports['default'];
 
-},{}],41:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1499,7 +1551,7 @@ function ResourceEditController() {
 exports['default'] = { name: 'ResourceEditController', controller: ResourceEditController };
 module.exports = exports['default'];
 
-},{}],42:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1716,7 +1768,7 @@ var ResourceIndexController = (function () {
 exports['default'] = { name: 'ResourceIndexController', controller: ResourceIndexController };
 module.exports = exports['default'];
 
-},{}],43:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 module.exports = function (app) {
@@ -1764,7 +1816,7 @@ module.exports = function (app) {
 				}
 };
 
-},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/register-state.directive.js":6,"./common/uid.service.js":7,"./modules/file-manager/draggable.directive.js":10,"./modules/file-manager/droppable.directive.js":11,"./modules/file-manager/file-manager.controller.js":12,"./modules/file-manager/file-manager.service.js":13,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":17,"./modules/model-builder/components/checkbox/checkbox.directive.js":18,"./modules/model-builder/components/component.service.js":19,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":20,"./modules/model-builder/components/dropdown/dropdown.directive.js":21,"./modules/model-builder/components/owner/owner-options.directive.js":22,"./modules/model-builder/components/owner/owner.directive.js":23,"./modules/model-builder/components/relation/relation-options.directive.js":27,"./modules/model-builder/components/relation/relation.directive.js":28,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":30,"./modules/model-builder/components/text-multi/text-multi.directive.js":31,"./modules/model-builder/components/text-single/text-single-options.directive.js":32,"./modules/model-builder/components/text-single/text-single.directive.js":33,"./modules/model-builder/model-builder.controller.js":34,"./modules/model-builder/model-builder.service.js":35,"./modules/page-builder/aside.controller.js":37,"./modules/page-builder/main.controller.js":38,"./modules/resource/resource-create.controller.js":40,"./modules/resource/resource-edit.controller.js":41,"./modules/resource/resource-index.controller.js":42}],44:[function(require,module,exports){
+},{"./common/compile.directive.js":4,"./common/enter.directive.js":5,"./common/register-state.directive.js":6,"./common/uid.service.js":7,"./modules/file-manager/draggable.directive.js":12,"./modules/file-manager/droppable.directive.js":13,"./modules/file-manager/file-manager.controller.js":14,"./modules/file-manager/file-manager.service.js":15,"./modules/model-builder/components/checkbox/checkbox-options.directive.js":19,"./modules/model-builder/components/checkbox/checkbox.directive.js":20,"./modules/model-builder/components/component.service.js":21,"./modules/model-builder/components/dropdown/dropdown-options.directive.js":22,"./modules/model-builder/components/dropdown/dropdown.directive.js":23,"./modules/model-builder/components/owner/owner-options.directive.js":24,"./modules/model-builder/components/owner/owner.directive.js":25,"./modules/model-builder/components/relation/relation-options.directive.js":29,"./modules/model-builder/components/relation/relation.directive.js":30,"./modules/model-builder/components/text-multi/text-multi-options.directive.js":32,"./modules/model-builder/components/text-multi/text-multi.directive.js":33,"./modules/model-builder/components/text-single/text-single-options.directive.js":34,"./modules/model-builder/components/text-single/text-single.directive.js":35,"./modules/model-builder/model-builder.controller.js":36,"./modules/model-builder/model-builder.service.js":37,"./modules/page-builder/aside.controller.js":39,"./modules/page-builder/main.controller.js":40,"./modules/resource/resource-create.controller.js":42,"./modules/resource/resource-edit.controller.js":43,"./modules/resource/resource-index.controller.js":44}],46:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1796,7 +1848,7 @@ exports['default'] = config;
 }
 module.exports = exports['default'];
 
-},{"./states":48}],45:[function(require,module,exports){
+},{"./states":50}],47:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1876,7 +1928,7 @@ function init() {
 }
 module.exports = exports['default'];
 
-},{}],46:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1908,7 +1960,7 @@ exports['default'] = run;
 }
 module.exports = exports['default'];
 
-},{"./jquery":45}],47:[function(require,module,exports){
+},{"./jquery":47}],49:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1925,7 +1977,7 @@ exports['default'] = function (app) {
 
 module.exports = exports['default'];
 
-},{}],48:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1949,4 +2001,4 @@ var _modulesFileManagerState2 = _interopRequireDefault(_modulesFileManagerState)
 exports['default'] = [_modulesModelBuilderState2['default'], _modulesPageBuilderStateJs2['default'], _modulesFileManagerState2['default']];
 module.exports = exports['default'];
 
-},{"../modules/file-manager/state":14,"../modules/model-builder/state":36,"../modules/page-builder/state.js":39}]},{},[1]);
+},{"../modules/file-manager/state":16,"../modules/model-builder/state":38,"../modules/page-builder/state.js":41}]},{},[1]);
