@@ -5,15 +5,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 require('./setup/jquery');
 
-require('./modules/file-manager');
+require('./modules/resource');
+
+require('./modules/fileManager');
 
 var _setupConfig = require('./setup/config');
 
 var _setupConfig2 = _interopRequireDefault(_setupConfig);
-
-var _modulesResourceStateProvider = require('./modules/resource/stateProvider');
-
-var _modulesResourceStateProvider2 = _interopRequireDefault(_modulesResourceStateProvider);
 
 var _commonCompileDirective = require('./common/compileDirective');
 
@@ -23,24 +21,18 @@ var _commonEnterDirectiveJs = require('./common/enterDirective.js');
 
 var _commonEnterDirectiveJs2 = _interopRequireDefault(_commonEnterDirectiveJs);
 
-var _commonRegisterStateDirectiveJs = require('./common/registerStateDirective.js');
-
-var _commonRegisterStateDirectiveJs2 = _interopRequireDefault(_commonRegisterStateDirectiveJs);
-
 var _commonUidServiceJs = require('./common/uidService.js');
 
 var _commonUidServiceJs2 = _interopRequireDefault(_commonUidServiceJs);
 
-var app = angular.module('Mezzo', ['ui.router', 'ngMessages', 'angular-sortable-view', 'ngFileUpload', 'MezzoFileManager']);
+var app = angular.module('Mezzo', ['ui.router', 'ngMessages', 'angular-sortable-view', 'ngFileUpload', 'MezzoFileManager', 'MezzoResources']);
 
 app.config(_setupConfig2['default']);
-app.provider('$stateProvider', _modulesResourceStateProvider2['default']);
 app.directive('mezzoCompile', _commonCompileDirective2['default']);
 app.directive('mezzoEnter', _commonEnterDirectiveJs2['default']);
-app.directive('mezzoRegisterState', _commonRegisterStateDirectiveJs2['default']);
 app.factory('uid', _commonUidServiceJs2['default']);
 
-},{"./common/compileDirective":2,"./common/enterDirective.js":3,"./common/registerStateDirective.js":4,"./common/uidService.js":5,"./modules/file-manager":14,"./modules/resource/stateProvider":15,"./setup/config":16,"./setup/jquery":17}],2:[function(require,module,exports){
+},{"./common/compileDirective":2,"./common/enterDirective.js":3,"./common/uidService.js":4,"./modules/fileManager":13,"./modules/resource":17,"./setup/config":20,"./setup/jquery":21}],2:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -98,57 +90,6 @@ function enterDirective() {
 module.exports = exports['default'];
 
 },{}],4:[function(require,module,exports){
-/*@ngInject*/
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-exports['default'] = registerStateDirective;
-
-function registerStateDirective($stateProvider) {
-    return {
-        restrict: 'A',
-        link: link
-    };
-
-    function link(scope, element, attributes) {
-        var uri = attributes.uri;
-        var page = attributes.page;
-        var action = attributes.action;
-        var controller = mapActionToController(action);
-
-        $stateProvider.state(page, {
-            url: uri,
-            templateUrl: '/mezzo/' + uri + '.html',
-            controller: controller,
-            controllerAs: 'vm'
-        });
-    }
-}
-
-function mapActionToController(action) {
-    if (action === 'index') {
-        return 'ResourceIndexController';
-    }
-
-    if (action === 'create') {
-        return 'ResourceCreateController';
-    }
-
-    if (action === 'edit') {
-        return 'ResourceEditController';
-    }
-
-    if (action === 'show') {
-        return 'ResourceShowController';
-    }
-
-    throw new Error('No suitable Controller found for action "' + action + '"!');
-}
-module.exports = exports['default'];
-
-},{}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -168,7 +109,7 @@ function nextUid() {
 }
 module.exports = exports["default"];
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -192,7 +133,7 @@ var Category = function Category(label, icon) {
 exports["default"] = Category;
 module.exports = exports["default"];
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -278,7 +219,7 @@ var File = (function () {
 exports['default'] = File;
 module.exports = exports['default'];
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -567,7 +508,7 @@ var FileManagerController = (function () {
 exports['default'] = FileManagerController;
 module.exports = exports['default'];
 
-},{"./File":7,"./Folder":9,"./categories":10}],9:[function(require,module,exports){
+},{"./File":6,"./Folder":8,"./categories":9}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -608,7 +549,7 @@ var Folder = (function (_File) {
 exports['default'] = Folder;
 module.exports = exports['default'];
 
-},{"./File":7}],10:[function(require,module,exports){
+},{"./File":6}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -640,7 +581,7 @@ function documentFilter(file) {
 }
 module.exports = exports['default'];
 
-},{"./Category":6}],11:[function(require,module,exports){
+},{"./Category":5}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -666,7 +607,7 @@ function draggableDirective() {
 
 module.exports = exports['default'];
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -701,7 +642,7 @@ function droppableDirective(fileManager) {
 
 module.exports = exports['default'];
 
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /*@ngInject*/
 "use strict";
 
@@ -718,7 +659,7 @@ function fileManagerService() {
 
 module.exports = exports["default"];
 
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -755,7 +696,394 @@ _module.directive('mezzoDraggable', _draggableDirectiveJs2['default']);
 _module.directive('mezzoDroppable', _droppableDirectiveJs2['default']);
 _module.controller('FileManagerController', _FileManagerControllerJs2['default']);
 
-},{"./FileManagerController.js":8,"./draggableDirective.js":11,"./droppableDirective.js":12,"./fileManagerService.js":13}],15:[function(require,module,exports){
+},{"./FileManagerController.js":7,"./draggableDirective.js":10,"./droppableDirective.js":11,"./fileManagerService.js":12}],14:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var ResourceCreateController = (function () {
+
+    /*@ngInject*/
+
+    function ResourceCreateController($http) {
+        _classCallCheck(this, ResourceCreateController);
+
+        console.log('ResourceCreateController');
+        this.$http = $http;
+        this.model = {};
+
+        /* Fake data */
+        this.users = [{ id: 0, name: 'Simon' }, { id: 1, name: 'Marc' }, { id: 2, name: 'John Doe' }, { id: 3, name: 'MSDOS Manfred' }];
+        this.tutorials = [{ id: 0, name: 'Mezzo Tutorial' }, { id: 1, name: 'How to peel an Egg Tutorial Part 1' }, { id: 2, name: 'How to sit down Tutorial' }];
+        /* Fake data */
+    }
+
+    _createClass(ResourceCreateController, [{
+        key: 'submit',
+        value: function submit() {
+            if (this.form.$invalid) {
+                return false;
+            }
+
+            var payload = {
+                title: this.model.title,
+                body: this.model.body,
+                created_at: this.model.createdAt,
+                updated_at: this.model.updatedAt,
+                user_id: this.model.userId,
+                parent: this.model.parent
+            };
+
+            this.$http.post('/api/tutorials', payload).then(function (result) {
+                console.log(result);
+            })['catch'](function (err) {
+                return console.error(err);
+            });
+        }
+    }, {
+        key: 'hasError',
+        value: function hasError(formControl) {
+            if (Object.keys(formControl.$error).length && formControl.$dirty) {
+                return 'has-error';
+            }
+        }
+    }]);
+
+    return ResourceCreateController;
+})();
+
+exports['default'] = ResourceCreateController;
+module.exports = exports['default'];
+
+},{}],15:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var ResourceEditController =
+
+/*@ngInject*/
+function ResourceEditController() {
+    _classCallCheck(this, ResourceEditController);
+
+    console.log('ResourceEditController');
+};
+
+exports['default'] = ResourceEditController;
+module.exports = exports['default'];
+
+},{}],16:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var ResourceIndexController = (function () {
+
+    /*@ngInject*/
+
+    function ResourceIndexController($scope, $http) {
+        _classCallCheck(this, ResourceIndexController);
+
+        this.$scope = $scope;
+        this.$http = $http;
+        this.models = [];
+        this.searchText = '';
+        this.selectAll = false;
+        this.loading = false;
+        this.removing = 0;
+    }
+
+    _createClass(ResourceIndexController, [{
+        key: 'init',
+        value: function init(modelName) {
+            this.modelName = modelName;
+            var plural = this.modelName.toLowerCase() + 's';
+            this.apiUrl = '/api/' + plural;
+
+            this.loadModels();
+        }
+    }, {
+        key: 'loadModels',
+        value: function loadModels() {
+            var _this = this;
+
+            this.loading = true;
+
+            return this.$http.get(this.apiUrl).then(function (response) {
+                _this.loading = false;
+                _this.models = response.data.data;
+
+                _this.models.forEach(function (model) {
+                    return model._meta = {};
+                });
+            })['catch'](function (err) {
+                console.error(err);
+            });
+        }
+    }, {
+        key: 'getModels',
+        value: function getModels() {
+            if (this.searchText.length > 0) {
+                return this.search();
+            }
+
+            return this.models;
+        }
+    }, {
+        key: 'getModelKeys',
+        value: function getModelKeys(model) {
+            if (this.models.length > 0 && !model) {
+                model = this.models[0];
+            }
+
+            if (!model) {
+                return [];
+            }
+
+            var keys = Object.keys(model);
+
+            return keys.filter(function (key) {
+                return key !== '_meta' && model.hasOwnProperty(key);
+            });
+        }
+    }, {
+        key: 'getModelValues',
+        value: function getModelValues(model) {
+            var keys = this.getModelKeys(model);
+            var values = [];
+
+            keys.forEach(function (key) {
+                return values.push(model[key]);
+            });
+
+            return values;
+        }
+    }, {
+        key: 'canEdit',
+        value: function canEdit() {
+            return this.selected().length === 1;
+        }
+    }, {
+        key: 'canRemove',
+        value: function canRemove() {
+            return this.selected().length > 0;
+        }
+    }, {
+        key: 'search',
+        value: function search() {
+            var _this2 = this;
+
+            return this.models.filter(function (model) {
+                for (var key in model) {
+                    if (model.hasOwnProperty(key)) {
+                        var value = model[key];
+
+                        if (String(value).indexOf(_this2.searchText) !== -1) {
+                            return true;
+                        }
+                    }
+                }
+            });
+        }
+    }, {
+        key: 'updateSelectAll',
+        value: function updateSelectAll() {
+            var _this3 = this;
+
+            var models = this.getModels();
+
+            models.forEach(function (model) {
+                return model._meta.selected = _this3.selectAll;
+            });
+        }
+    }, {
+        key: 'selected',
+        value: function selected() {
+            return this.models.filter(function (model) {
+                return model._meta.selected;
+            });
+        }
+    }, {
+        key: 'create',
+        value: function create() {
+            //TODO
+        }
+    }, {
+        key: 'edit',
+        value: function edit() {
+            //TODO
+        }
+    }, {
+        key: 'remove',
+        value: function remove() {
+            var _this4 = this;
+
+            var selected = this.selected();
+
+            swal({
+                title: 'Are you sure?',
+                text: selected.length + ' models will be deleted!',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete them!',
+                confirmButtonColor: '#fb503b'
+            }, function (confirmed) {
+                if (!confirmed) {
+                    return;
+                }
+
+                selected.forEach(function (model) {
+                    return _this4.removeModel(model);
+                });
+            });
+        }
+    }, {
+        key: 'removeModel',
+        value: function removeModel(model) {
+            var _this5 = this;
+
+            this.removing++;
+            this.selectAll = false;
+            model._meta.selected = false;
+            model._meta.removed = true;
+
+            this.removeRemoteModel(model).success(function (result) {
+                console.log(result);
+                _this5.removeLocalModel(model);
+            }).error(function (err) {
+                return console.error(err);
+            })['finally'](function () {
+                return _this5.removing--;
+            });
+        }
+    }, {
+        key: 'removeLocalModel',
+        value: function removeLocalModel(model) {
+            for (var i = 0; i < this.models.length; i++) {
+                if (this.models[i] === model) {
+                    return this.models.splice(i, 1);
+                }
+            }
+        }
+    }, {
+        key: 'removeRemoteModel',
+        value: function removeRemoteModel(model) {
+            return this.$http['delete'](this.apiUrl + '/' + model.id);
+        }
+    }, {
+        key: 'countSelected',
+        value: function countSelected() {
+            return this.selected().length;
+        }
+    }]);
+
+    return ResourceIndexController;
+})();
+
+exports['default'] = ResourceIndexController;
+module.exports = exports['default'];
+
+},{}],17:[function(require,module,exports){
+'use strict';
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _stateProvider = require('./stateProvider');
+
+var _stateProvider2 = _interopRequireDefault(_stateProvider);
+
+var _registerStateDirective = require('./registerStateDirective');
+
+var _registerStateDirective2 = _interopRequireDefault(_registerStateDirective);
+
+var _ResourceIndexController = require('./ResourceIndexController');
+
+var _ResourceIndexController2 = _interopRequireDefault(_ResourceIndexController);
+
+var _ResourceCreateController = require('./ResourceCreateController');
+
+var _ResourceCreateController2 = _interopRequireDefault(_ResourceCreateController);
+
+var _ResourceEditController = require('./ResourceEditController');
+
+var _ResourceEditController2 = _interopRequireDefault(_ResourceEditController);
+
+var _module = angular.module('MezzoResources', []);
+
+_module.provider('$stateProvider', _stateProvider2['default']);
+_module.directive('mezzoRegisterState', _registerStateDirective2['default']);
+_module.controller('ResourceIndexController', _ResourceIndexController2['default']);
+_module.controller('ResourceCreateController', _ResourceCreateController2['default']);
+_module.controller('ResourceEditController', _ResourceEditController2['default']);
+
+},{"./ResourceCreateController":14,"./ResourceEditController":15,"./ResourceIndexController":16,"./registerStateDirective":18,"./stateProvider":19}],18:[function(require,module,exports){
+/*@ngInject*/
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+exports['default'] = registerStateDirective;
+
+function registerStateDirective($stateProvider) {
+    return {
+        restrict: 'A',
+        link: link
+    };
+
+    function link(scope, element, attributes) {
+        var uri = attributes.uri;
+        var page = attributes.page;
+        var action = attributes.action;
+        var controller = mapActionToController(action);
+
+        $stateProvider.state(page, {
+            url: '/mezzo/' + uri,
+            templateUrl: '/mezzo/' + uri + '.html',
+            controller: controller,
+            controllerAs: 'vm'
+        });
+    }
+}
+
+function mapActionToController(action) {
+    if (action === 'index') {
+        return 'ResourceIndexController';
+    }
+
+    if (action === 'create') {
+        return 'ResourceCreateController';
+    }
+
+    if (action === 'edit') {
+        return 'ResourceEditController';
+    }
+
+    if (action === 'show') {
+        return 'ResourceShowController';
+    }
+
+    throw new Error('No suitable Controller found for action "' + action + '"!');
+}
+module.exports = exports['default'];
+
+},{}],19:[function(require,module,exports){
 /*@ngInject*/
 "use strict";
 
@@ -774,7 +1102,7 @@ function stateProvider($stateProvider) {
 
 module.exports = exports["default"];
 
-},{}],16:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -794,82 +1122,73 @@ function config($locationProvider, $urlRouterProvider, $httpProvider, $interpola
 
 module.exports = exports['default'];
 
-},{}],17:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-exports['default'] = jquery;
+$(function () {
+    $('.sidebar-pin').click(function () {
+        var sidebarIsPinned = $('body').hasClass('sidebar-pinned');
 
-function jquery() {
-    $(function () {
-        $('.sidebar-pin').click(function () {
-            var sidebarIsPinned = $('body').hasClass('sidebar-pinned');
-
-            if (sidebarIsPinned) {
-                $('body').addClass('sidebar-unpinned').removeClass('sidebar-pinned');
-                $(this).addClass('fa-circle-o').removeClass('fa-dot-circle-o');
-            } else {
-                $('body').addClass('sidebar-pinned').removeClass('sidebar-unpinned');
-                $(this).addClass('fa-dot-circle-o').removeClass('fa-circle-o');
-            }
-        });
-
-        $('#sidebar').mouseenter(function () {
-            $('body').addClass('sidebar-mousein').removeClass('sidebar-mouseout');
-        });
-
-        $('#sidebar').mouseleave(function () {
-            $('body').addClass('sidebar-mouseout').removeClass('sidebar-mousein');
-
-            if ($('body').hasClass('sidebar-unpinned')) $('.nav-main .opened').removeClass('opened');
-        });
-
-        $('.nav-main > li.has-pages > a .dropdown').click(function () {
-            $(this).parents('li').toggleClass('opened');
-        });
-
-        $('.trigger-quickview').click(function () {
-            quickviewVisible(!quickviewIsVisible());
-            return false;
-        });
-
-        $('#quickview .btn-close').click(function () {
-            quickviewVisible(false);
-        });
-
-        $('#content-main, #view-overlay').click(function () {
-            quickviewVisible(false);
-        });
-
-        function quickviewIsVisible() {
-            return $('#quickview').hasClass('opened');
+        if (sidebarIsPinned) {
+            $('body').addClass('sidebar-unpinned').removeClass('sidebar-pinned');
+            $(this).addClass('fa-circle-o').removeClass('fa-dot-circle-o');
+        } else {
+            $('body').addClass('sidebar-pinned').removeClass('sidebar-unpinned');
+            $(this).addClass('fa-dot-circle-o').removeClass('fa-circle-o');
         }
-
-        function quickviewVisible(open) {
-            if (open) {
-                $('#quickview').addClass('opened');
-                $('#view-overlay').addClass('opened');
-            } else {
-                $('#quickview').removeClass('opened');
-                $('#view-overlay').removeClass('opened');
-            }
-        }
-
-        /**
-         * Form stuff
-         */
-        $.fn.editable.defaults.mode = 'inline';
-
-        $.fn.editableform.buttons = '<button type="submit" class="btn btn-primary btn-sm editable-submit">' + '<i class=ion-checkmark></i>' + '</button>' + '<button type="button" class="btn btn-default btn-sm editable-cancel">' + '<i class="ion-close"></i>' + '</button>';
-
-        $('.editable').editable();
-
-        //$('select').select2(); uncomment for model builder
     });
-}
 
-module.exports = exports['default'];
+    $('#sidebar').mouseenter(function () {
+        $('body').addClass('sidebar-mousein').removeClass('sidebar-mouseout');
+    });
+
+    $('#sidebar').mouseleave(function () {
+        $('body').addClass('sidebar-mouseout').removeClass('sidebar-mousein');
+
+        if ($('body').hasClass('sidebar-unpinned')) $('.nav-main .opened').removeClass('opened');
+    });
+
+    $('.nav-main > li.has-pages > a .dropdown').click(function () {
+        $(this).parents('li').toggleClass('opened');
+    });
+
+    $('.trigger-quickview').click(function () {
+        quickviewVisible(!quickviewIsVisible());
+        return false;
+    });
+
+    $('#quickview .btn-close').click(function () {
+        quickviewVisible(false);
+    });
+
+    $('#content-main, #view-overlay').click(function () {
+        quickviewVisible(false);
+    });
+
+    function quickviewIsVisible() {
+        return $('#quickview').hasClass('opened');
+    }
+
+    function quickviewVisible(open) {
+        if (open) {
+            $('#quickview').addClass('opened');
+            $('#view-overlay').addClass('opened');
+        } else {
+            $('#quickview').removeClass('opened');
+            $('#view-overlay').removeClass('opened');
+        }
+    }
+
+    /**
+     * Form stuff
+     */
+    $.fn.editable.defaults.mode = 'inline';
+
+    $.fn.editableform.buttons = '<button type="submit" class="btn btn-primary btn-sm editable-submit">' + '<i class=ion-checkmark></i>' + '</button>' + '<button type="button" class="btn btn-default btn-sm editable-cancel">' + '<i class="ion-close"></i>' + '</button>';
+
+    $('.editable').editable();
+
+    //$('select').select2(); uncomment for model builder
+});
 
 },{}]},{},[1]);

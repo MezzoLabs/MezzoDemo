@@ -12,7 +12,7 @@ export default function registerStateDirective($stateProvider) {
         var controller = mapActionToController(action);
 
         $stateProvider.state(page, {
-            url: uri,
+            url: '/mezzo/' + uri,
             templateUrl: '/mezzo/' + uri + '.html',
             controller: controller,
             controllerAs: 'vm'
