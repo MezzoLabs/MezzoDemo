@@ -3,10 +3,6 @@ module.exports = app => {
 	register(require('./common/enter.directive.js'));
 	register(require('./common/register-state.directive.js'));
 	register(require('./common/uid.service.js'));
-	register(require('./modules/file-manager/file-manager.controller.js'));
-	register(require('./modules/file-manager/draggable.directive.js'));
-	register(require('./modules/file-manager/droppable.directive.js'));
-	register(require('./modules/file-manager/file-manager.service.js'));
 	register(require('./modules/model-builder/model-builder.controller.js'));
 	register(require('./modules/model-builder/model-builder.service.js'));
 	register(require('./modules/page-builder/aside.controller.js'));
@@ -23,10 +19,10 @@ module.exports = app => {
 	register(require('./modules/model-builder/components/owner/owner.directive.js'));
 	register(require('./modules/model-builder/components/relation/relation-options.directive.js'));
 	register(require('./modules/model-builder/components/relation/relation.directive.js'));
-	register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
-	register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
 	register(require('./modules/model-builder/components/text-single/text-single-options.directive.js'));
 	register(require('./modules/model-builder/components/text-single/text-single.directive.js'));
+	register(require('./modules/model-builder/components/text-multi/text-multi-options.directive.js'));
+	register(require('./modules/model-builder/components/text-multi/text-multi.directive.js'));
 
     function register(module){
         if(module.controller){

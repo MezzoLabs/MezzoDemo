@@ -1,6 +1,4 @@
-export default { name: 'mezzoDraggable', directive };
-
-/*@ngInject*/ function directive(){
+export default function draggableDirective(){
     return {
         restrict: 'A',
         link

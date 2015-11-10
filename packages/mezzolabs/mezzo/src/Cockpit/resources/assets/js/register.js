@@ -10,9 +10,9 @@ module.exports = app => {
 	register(require('./layout/topbar/topbar.directive.js'));
 	register(require('./modules/files/aside.controller.js'));
 	register(require('./modules/files/main.controller.js'));
-	register(require('./modules/files/draggable.directive.js'));
-	register(require('./modules/files/droppable.directive.js'));
-	register(require('./modules/files/file-manager.service.js'));
+	register(require('./modules/files/draggableDirective.js'));
+	register(require('./modules/files/droppableDirective.js'));
+	register(require('./modules/files/fileManagerService.js'));
 	register(require('./modules/model-builder/model-builder.controller.js'));
 	register(require('./modules/model-builder/model-builder.service.js'));
 	register(require('./modules/pages/aside.controller.js'));

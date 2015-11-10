@@ -2,7 +2,7 @@ import File from './File';
 import Folder from './Folder';
 import categories from './categories';
 
-class FileManagerController {
+export default class FileManagerController {
 
     /*@ngInject*/
     constructor($scope, fileManager){
@@ -242,5 +242,3 @@ class FileManagerController {
     }
 
 }
-
-export default { name: 'FileManagerController', controller: FileManagerController };

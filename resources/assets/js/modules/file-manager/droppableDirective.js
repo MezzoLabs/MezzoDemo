@@ -1,6 +1,5 @@
-export default { name: 'mezzoDroppable', directive };
-
-/*@ngInject*/ function directive(fileManager){
+/*@ngInject*/
+export default function droppableDirective(fileManager){
     return {
         restrict: 'A',
         link
