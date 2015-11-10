@@ -25,14 +25,137 @@ var _commonUidServiceJs = require('./common/uidService.js');
 
 var _commonUidServiceJs2 = _interopRequireDefault(_commonUidServiceJs);
 
+var _commonApiApiService = require('./common/api/apiService');
+
+var _commonApiApiService2 = _interopRequireDefault(_commonApiApiService);
+
 var app = angular.module('Mezzo', ['ui.router', 'ngMessages', 'angular-sortable-view', 'ngFileUpload', 'MezzoFileManager', 'MezzoResources']);
 
 app.config(_setupConfig2['default']);
 app.directive('mezzoCompile', _commonCompileDirective2['default']);
 app.directive('mezzoEnter', _commonEnterDirectiveJs2['default']);
 app.factory('uid', _commonUidServiceJs2['default']);
+app.factory('api', _commonApiApiService2['default']);
 
-},{"./common/compileDirective":2,"./common/enterDirective.js":3,"./common/uidService.js":4,"./modules/fileManager":13,"./modules/resource":17,"./setup/config":20,"./setup/jquery":21}],2:[function(require,module,exports){
+},{"./common/api/apiService":4,"./common/compileDirective":5,"./common/enterDirective.js":6,"./common/uidService.js":7,"./modules/fileManager":16,"./modules/resource":20,"./setup/config":23,"./setup/jquery":24}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _ModelApi = require('./ModelApi');
+
+var _ModelApi2 = _interopRequireDefault(_ModelApi);
+
+var Api = (function () {
+    function Api($http) {
+        _classCallCheck(this, Api);
+
+        this.$http = $http;
+    }
+
+    _createClass(Api, [{
+        key: 'get',
+        value: function get(url) {
+            return this.apiPromise(this.$http.get(url));
+        }
+    }, {
+        key: 'delete',
+        value: function _delete(url) {
+            return this.apiPromise(this.$http['delete'](url));
+        }
+    }, {
+        key: 'model',
+        value: function model(modelName) {
+            return new _ModelApi2['default'](this, modelName);
+        }
+    }, {
+        key: 'apiPromise',
+        value: function apiPromise($httpPromise) {
+            return $httpPromise.then(function (response) {
+                return response.data.data;
+            })['catch'](function (err) {
+                console.error(err);
+                throw err;
+            });
+        }
+    }]);
+
+    return Api;
+})();
+
+exports['default'] = Api;
+module.exports = exports['default'];
+
+},{"./ModelApi":3}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var ModelApi = (function () {
+    function ModelApi(api, modelName) {
+        _classCallCheck(this, ModelApi);
+
+        this.api = api;
+        this.modelName = modelName;
+        this.modelPlural = this.modelName.toLowerCase() + 's';
+        this.apiUrl = '/api/' + this.modelPlural;
+    }
+
+    _createClass(ModelApi, [{
+        key: 'index',
+        value: function index() {
+            return this.api.get(this.apiUrl);
+        }
+    }, {
+        key: 'delete',
+        value: function _delete(modelId) {
+            return this.api['delete'](this.apiUrl + '/' + modelId);
+        }
+    }]);
+
+    return ModelApi;
+})();
+
+exports['default'] = ModelApi;
+module.exports = exports['default'];
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+exports['default'] = apiService;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _Api = require('./Api');
+
+var _Api2 = _interopRequireDefault(_Api);
+
+/*@ngInject*/
+
+function apiService($http) {
+    return new _Api2['default']($http);
+}
+
+module.exports = exports['default'];
+
+},{"./Api":2}],5:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -62,7 +185,7 @@ function compileDirective() {
 ;
 module.exports = exports['default'];
 
-},{}],3:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -89,7 +212,7 @@ function enterDirective() {
 
 module.exports = exports['default'];
 
-},{}],4:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -109,7 +232,7 @@ function nextUid() {
 }
 module.exports = exports["default"];
 
-},{}],5:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -133,7 +256,7 @@ var Category = function Category(label, icon) {
 exports["default"] = Category;
 module.exports = exports["default"];
 
-},{}],6:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -219,7 +342,7 @@ var File = (function () {
 exports['default'] = File;
 module.exports = exports['default'];
 
-},{}],7:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -508,7 +631,7 @@ var FileManagerController = (function () {
 exports['default'] = FileManagerController;
 module.exports = exports['default'];
 
-},{"./File":6,"./Folder":8,"./categories":9}],8:[function(require,module,exports){
+},{"./File":9,"./Folder":11,"./categories":12}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -549,7 +672,7 @@ var Folder = (function (_File) {
 exports['default'] = Folder;
 module.exports = exports['default'];
 
-},{"./File":6}],9:[function(require,module,exports){
+},{"./File":9}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -581,7 +704,7 @@ function documentFilter(file) {
 }
 module.exports = exports['default'];
 
-},{"./Category":5}],10:[function(require,module,exports){
+},{"./Category":8}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -607,7 +730,7 @@ function draggableDirective() {
 
 module.exports = exports['default'];
 
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -642,7 +765,7 @@ function droppableDirective(fileManager) {
 
 module.exports = exports['default'];
 
-},{}],12:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /*@ngInject*/
 "use strict";
 
@@ -659,7 +782,7 @@ function fileManagerService() {
 
 module.exports = exports["default"];
 
-},{}],13:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -696,7 +819,7 @@ _module.directive('mezzoDraggable', _draggableDirectiveJs2['default']);
 _module.directive('mezzoDroppable', _droppableDirectiveJs2['default']);
 _module.controller('FileManagerController', _FileManagerControllerJs2['default']);
 
-},{"./FileManagerController.js":7,"./draggableDirective.js":10,"./droppableDirective.js":11,"./fileManagerService.js":12}],14:[function(require,module,exports){
+},{"./FileManagerController.js":10,"./draggableDirective.js":13,"./droppableDirective.js":14,"./fileManagerService.js":15}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -711,17 +834,10 @@ var ResourceCreateController = (function () {
 
     /*@ngInject*/
 
-    function ResourceCreateController($http) {
+    function ResourceCreateController(api) {
         _classCallCheck(this, ResourceCreateController);
 
-        console.log('ResourceCreateController');
-        this.$http = $http;
-        this.model = {};
-
-        /* Fake data */
-        this.users = [{ id: 0, name: 'Simon' }, { id: 1, name: 'Marc' }, { id: 2, name: 'John Doe' }, { id: 3, name: 'MSDOS Manfred' }];
-        this.tutorials = [{ id: 0, name: 'Mezzo Tutorial' }, { id: 1, name: 'How to peel an Egg Tutorial Part 1' }, { id: 2, name: 'How to sit down Tutorial' }];
-        /* Fake data */
+        this.api = api;
     }
 
     _createClass(ResourceCreateController, [{
@@ -731,20 +847,7 @@ var ResourceCreateController = (function () {
                 return false;
             }
 
-            var payload = {
-                title: this.model.title,
-                body: this.model.body,
-                created_at: this.model.createdAt,
-                updated_at: this.model.updatedAt,
-                user_id: this.model.userId,
-                parent: this.model.parent
-            };
-
-            this.$http.post('/api/tutorials', payload).then(function (result) {
-                console.log(result);
-            })['catch'](function (err) {
-                return console.error(err);
-            });
+            //TODO
         }
     }, {
         key: 'hasError',
@@ -761,7 +864,7 @@ var ResourceCreateController = (function () {
 exports['default'] = ResourceCreateController;
 module.exports = exports['default'];
 
-},{}],15:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -782,7 +885,7 @@ function ResourceEditController() {
 exports['default'] = ResourceEditController;
 module.exports = exports['default'];
 
-},{}],16:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -797,11 +900,11 @@ var ResourceIndexController = (function () {
 
     /*@ngInject*/
 
-    function ResourceIndexController($scope, $http) {
+    function ResourceIndexController($scope, api) {
         _classCallCheck(this, ResourceIndexController);
 
         this.$scope = $scope;
-        this.$http = $http;
+        this.api = api;
         this.models = [];
         this.searchText = '';
         this.selectAll = false;
@@ -812,9 +915,7 @@ var ResourceIndexController = (function () {
     _createClass(ResourceIndexController, [{
         key: 'init',
         value: function init(modelName) {
-            this.modelName = modelName;
-            var plural = this.modelName.toLowerCase() + 's';
-            this.apiUrl = '/api/' + plural;
+            this.modelApi = this.api.model(modelName);
 
             this.loadModels();
         }
@@ -825,15 +926,13 @@ var ResourceIndexController = (function () {
 
             this.loading = true;
 
-            return this.$http.get(this.apiUrl).then(function (response) {
+            return this.modelApi.index().then(function (data) {
                 _this.loading = false;
-                _this.models = response.data.data;
+                _this.models = data;
 
                 _this.models.forEach(function (model) {
                     return model._meta = {};
                 });
-            })['catch'](function (err) {
-                console.error(err);
             });
         }
     }, {
@@ -963,12 +1062,9 @@ var ResourceIndexController = (function () {
             model._meta.selected = false;
             model._meta.removed = true;
 
-            this.removeRemoteModel(model).success(function (result) {
-                console.log(result);
-                _this5.removeLocalModel(model);
-            }).error(function (err) {
-                return console.error(err);
-            })['finally'](function () {
+            this.removeRemoteModel(model).then(function () {
+                return _this5.removeLocalModel(model);
+            })['catch'](function () {
                 return _this5.removing--;
             });
         }
@@ -984,7 +1080,7 @@ var ResourceIndexController = (function () {
     }, {
         key: 'removeRemoteModel',
         value: function removeRemoteModel(model) {
-            return this.$http['delete'](this.apiUrl + '/' + model.id);
+            return this.modelApi['delete'](model.id);
         }
     }, {
         key: 'countSelected',
@@ -999,7 +1095,7 @@ var ResourceIndexController = (function () {
 exports['default'] = ResourceIndexController;
 module.exports = exports['default'];
 
-},{}],17:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1032,7 +1128,7 @@ _module.controller('ResourceIndexController', _ResourceIndexController2['default
 _module.controller('ResourceCreateController', _ResourceCreateController2['default']);
 _module.controller('ResourceEditController', _ResourceEditController2['default']);
 
-},{"./ResourceCreateController":14,"./ResourceEditController":15,"./ResourceIndexController":16,"./registerStateDirective":18,"./stateProvider":19}],18:[function(require,module,exports){
+},{"./ResourceCreateController":17,"./ResourceEditController":18,"./ResourceIndexController":19,"./registerStateDirective":21,"./stateProvider":22}],21:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -1083,7 +1179,7 @@ function mapActionToController(action) {
 }
 module.exports = exports['default'];
 
-},{}],19:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /*@ngInject*/
 "use strict";
 
@@ -1102,7 +1198,7 @@ function stateProvider($stateProvider) {
 
 module.exports = exports["default"];
 
-},{}],20:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -1122,7 +1218,7 @@ function config($locationProvider, $urlRouterProvider, $httpProvider, $interpola
 
 module.exports = exports['default'];
 
-},{}],21:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 $(function () {

@@ -1,9 +1,9 @@
 export default class ResourceIndexController {
 
     /*@ngInject*/
-    constructor($scope, $http){
+    constructor($scope, api){
         this.$scope = $scope;
-        this.$http = $http;
+        this.api = api;
         this.models = [];
         this.searchText = '';
         this.selectAll = false;
@@ -12,9 +12,7 @@ export default class ResourceIndexController {
     }
 
     init(modelName){
-        this.modelName = modelName;
-        var plural = this.modelName.toLowerCase() + 's';
-        this.apiUrl = '/api/' + plural;
+        this.modelApi = this.api.model(modelName);
 
         this.loadModels();
     }
@@ -22,15 +20,12 @@ export default class ResourceIndexController {
     loadModels(){
         this.loading = true;
 
-        return this.$http.get(this.apiUrl)
-            .then(response => {
+        return this.modelApi.index()
+            .then(data => {
                 this.loading = false;
-                this.models = response.data.data;
+                this.models = data;
 
                 this.models.forEach(model => model._meta = {});
-            })
-            .catch(err => {
-                console.error(err);
             });
     }
 
@@ -131,12 +126,8 @@ export default class ResourceIndexController {
         model._meta.removed = true;
 
         this.removeRemoteModel(model)
-            .success(result => {
-                console.log(result);
-                this.removeLocalModel(model);
-            })
-            .error(err => console.error(err))
-            .finally(() => this.removing--);
+            .then(() => this.removeLocalModel(model))
+            .catch(() => this.removing--);
     }
 
     removeLocalModel(model){
@@ -148,7 +139,7 @@ export default class ResourceIndexController {
     }
 
     removeRemoteModel(model){
-        return this.$http.delete(this.apiUrl + '/' + model.id);
+        return this.modelApi.delete(model.id);
     }
 
     countSelected(){
