@@ -1,18 +1,9 @@
-import states from './states';
-
-export default config;
-
-/*@ngInject*/ function config($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider, $interpolateProvider){
-
+/*@ngInject*/
+export default function config($locationProvider, $urlRouterProvider, $httpProvider, $interpolateProvider){
     $httpProvider.defaults.headers.common.Accept = 'application/vnd.MezzoLabs.v1+json';
 
     $locationProvider.html5Mode(true);
-
     $urlRouterProvider.otherwise('/mezzo');
-
-    states.forEach(state => $stateProvider.state(state.name, state.route));
-
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
-
 }
