@@ -63,7 +63,7 @@ abstract class MezzoFile extends BaseModel
     * @var array
     */
     protected $rules = [
-        'title' => "",
+        'title' => "unique_with: files, folder",
         'disk' => "",
         'folder' => "",
         'filename' => "",

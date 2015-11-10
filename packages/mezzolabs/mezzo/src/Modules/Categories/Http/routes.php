@@ -8,6 +8,7 @@ mezzo()->module('Categories')->generateRoutes();
 
 module_route('Categories', [], function (Router $router, ApiRouter $api, CockpitRouter $cockpit) {
     $api->resource('Category');
+    $api->resource('CategoryGroup');
 
     //$api->relation('Category', 'roles');
 });

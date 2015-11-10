@@ -12,13 +12,9 @@
                 </div>
             </div>
             <div class="panel-body">
-                {!! cockpit_form()->open() !!}
-                @foreach($model->attributes()->fillableOnly() as $attribute)
-                    <div class="form-group">
-                        <label>{{ $attribute->title() }}</label>
-                        {!! $attribute->render() !!}
-                    </div>
-                @endforeach
+                {!! cockpit_form()->open(['action' => '']) !!}
+                    {!! cockpit_form()->file('file') !!}
+                    {!! cockpit_form()->text('directory') !!}
                 {!! cockpit_form()->submit() !!}
                 {!! cockpit_form()->close() !!}
 

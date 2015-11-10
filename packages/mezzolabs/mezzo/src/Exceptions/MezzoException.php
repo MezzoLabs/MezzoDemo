@@ -4,6 +4,8 @@
 namespace MezzoLabs\Mezzo\Exceptions;
 
 
+use Illuminate\Validation\Validator;
+
 class MezzoException extends \Exception
 {
     /**
@@ -16,6 +18,11 @@ class MezzoException extends \Exception
         $this->message .= $string . "\n";
     }
 
+    protected function getCallingFunction()
+    {
+        return $this->getTraceEnd()['function'];
+    }
+
     /**
      * @return array
      */
@@ -24,8 +31,10 @@ class MezzoException extends \Exception
         return $this->getTrace()[0];
     }
 
-    protected function getCallingFunction()
+    protected function validationMessages(Validator $validator)
     {
-        return $this->getTraceEnd()['function'];
+        $this->message = "Validation failed: ";
+
+        $this->message .= implode('. ', $validator->messages()->all());
     }
 }

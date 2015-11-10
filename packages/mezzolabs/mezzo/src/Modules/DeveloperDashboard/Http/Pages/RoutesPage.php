@@ -16,6 +16,6 @@ class RoutesPage extends ModulePage
 
     protected $action = 'show';
 
-    protected $view = 'modules.developerdashboard::routes';
+    protected $view = 'modules.developer-dashboard::routes';
 
 }
