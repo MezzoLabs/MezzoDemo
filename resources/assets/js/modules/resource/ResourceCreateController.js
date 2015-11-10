@@ -1,4 +1,4 @@
-class ResourceCreateController {
+export default class ResourceCreateController {
 
     /*@ngInject*/
     constructor($http) {
@@ -49,5 +49,3 @@ class ResourceCreateController {
     }
 
 }
-
-export default { name: 'ResourceCreateController', controller: ResourceCreateController };

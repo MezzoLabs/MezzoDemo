@@ -1,4 +1,4 @@
-class ResourceIndexController {
+export default class ResourceIndexController {
 
     /*@ngInject*/
     constructor($scope, $http){
@@ -156,5 +156,3 @@ class ResourceIndexController {
     }
 
 }
-
-export default { name: 'ResourceIndexController', controller: ResourceIndexController };
