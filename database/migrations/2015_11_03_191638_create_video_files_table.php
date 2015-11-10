@@ -12,9 +12,8 @@ class CreateVideoFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('image_files', function (Blueprint $table) {
+        Schema::create('video_files', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('cropping')->nullable();
             $table->integer('file_id')->unsigned()->index();
             $table->timestamps();
 

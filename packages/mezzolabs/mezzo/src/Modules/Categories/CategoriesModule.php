@@ -3,6 +3,7 @@
 
 namespace MezzoLabs\Mezzo\Modules\Categories;
 
+use App\Category;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
 class CategoriesModule extends ModuleProvider
@@ -10,7 +11,7 @@ class CategoriesModule extends ModuleProvider
     protected $group = "admin";
 
     protected $models = [
-        //Category::class
+        Category::class
     ];
 
     protected $options = [
