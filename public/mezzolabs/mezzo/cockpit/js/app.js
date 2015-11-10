@@ -11,9 +11,9 @@ var _setupConfig = require('./setup/config');
 
 var _setupConfig2 = _interopRequireDefault(_setupConfig);
 
-var _setupStateProvider = require('./setup/stateProvider');
+var _modulesResourceStateProvider = require('./modules/resource/stateProvider');
 
-var _setupStateProvider2 = _interopRequireDefault(_setupStateProvider);
+var _modulesResourceStateProvider2 = _interopRequireDefault(_modulesResourceStateProvider);
 
 var _commonCompileDirective = require('./common/compileDirective');
 
@@ -34,13 +34,13 @@ var _commonUidServiceJs2 = _interopRequireDefault(_commonUidServiceJs);
 var app = angular.module('Mezzo', ['ui.router', 'ngMessages', 'angular-sortable-view', 'ngFileUpload', 'MezzoFileManager']);
 
 app.config(_setupConfig2['default']);
-app.provider('$stateProvider', _setupStateProvider2['default']);
+app.provider('$stateProvider', _modulesResourceStateProvider2['default']);
 app.directive('mezzoCompile', _commonCompileDirective2['default']);
 app.directive('mezzoEnter', _commonEnterDirectiveJs2['default']);
 app.directive('mezzoRegisterState', _commonRegisterStateDirectiveJs2['default']);
 app.factory('uid', _commonUidServiceJs2['default']);
 
-},{"./common/compileDirective":2,"./common/enterDirective.js":3,"./common/registerStateDirective.js":4,"./common/uidService.js":5,"./modules/file-manager":14,"./setup/config":15,"./setup/jquery":16,"./setup/stateProvider":17}],2:[function(require,module,exports){
+},{"./common/compileDirective":2,"./common/enterDirective.js":3,"./common/registerStateDirective.js":4,"./common/uidService.js":5,"./modules/file-manager":14,"./modules/resource/stateProvider":15,"./setup/config":16,"./setup/jquery":17}],2:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -757,6 +757,25 @@ _module.controller('FileManagerController', _FileManagerControllerJs2['default']
 
 },{"./FileManagerController.js":8,"./draggableDirective.js":11,"./droppableDirective.js":12,"./fileManagerService.js":13}],15:[function(require,module,exports){
 /*@ngInject*/
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports["default"] = stateProvider;
+
+function stateProvider($stateProvider) {
+    this.$get = $get;
+
+    function $get() {
+        return $stateProvider;
+    }
+}
+
+module.exports = exports["default"];
+
+},{}],16:[function(require,module,exports){
+/*@ngInject*/
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -775,7 +794,7 @@ function config($locationProvider, $urlRouterProvider, $httpProvider, $interpola
 
 module.exports = exports['default'];
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -852,24 +871,5 @@ function jquery() {
 }
 
 module.exports = exports['default'];
-
-},{}],17:[function(require,module,exports){
-/*@ngInject*/
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports["default"] = stateProvider;
-
-function stateProvider($stateProvider) {
-    this.$get = $get;
-
-    function $get() {
-        return $stateProvider;
-    }
-}
-
-module.exports = exports["default"];
 
 },{}]},{},[1]);
