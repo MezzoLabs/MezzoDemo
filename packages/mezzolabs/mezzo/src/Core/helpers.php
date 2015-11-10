@@ -45,7 +45,7 @@ if (!function_exists('mezzo_dump')) {
         if (!empty($title))
             $title = "<b>$title</b> ";
 
-        $title .= '<small>(' . debug_backtrace()[$stepsBack]['file'] . ':' . debug_backtrace()[0]['line'] . ')</small>';
+        $title .= '<small>(' . debug_backtrace()[$stepsBack]['file'] . ':' . debug_backtrace()[$stepsBack]['line'] . ')</small>';
 
         echo $title . ':<br/>';
 
@@ -110,5 +110,33 @@ if (!function_exists('space_case')) {
         $space_case = strtolower(preg_replace("/(?<=[a-zA-Z])(?=[A-Z])/", " ", $studlyCase));
 
         return ucfirst($space_case);
+    }
+}
+
+if (!function_exists('camel_to_slug')) {
+    /**
+     * Transforms camel case to a slug that separates big chars with a "-"
+     *
+     * @param $camelCase
+     * @param string $separator
+     * @return string
+     */
+    function camel_to_slug($camelCase, $separator = "-")
+    {
+        $space_case = space_case($camelCase);
+
+        return str_slug($space_case, $separator);
+    }
+}
+
+
+if (!function_exists('cockpit_content_container')) {
+    /**
+     * @return string
+     */
+    function cockpit_content_container()
+    {
+        return "cockpit::layouts.default.content.container";
+
     }
 }

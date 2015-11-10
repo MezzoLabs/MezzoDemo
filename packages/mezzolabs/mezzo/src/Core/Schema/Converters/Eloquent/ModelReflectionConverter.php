@@ -57,10 +57,10 @@ class ModelReflectionConverter extends ModelConverter
      */
     protected function fromModelReflectionToSchema(ModelReflection $reflection)
     {
-        if($reflection instanceof MezzoModelReflection)
+        if ($reflection instanceof MezzoModelReflection)
             return $this->fromMezzoReflectionToSchema($reflection);
 
-        if($reflection instanceof EloquentModelReflection)
+        if ($reflection instanceof EloquentModelReflection)
             return $this->fromEloquentReflectionToSchema($reflection);
 
         throw new UnexpectedException();
@@ -71,18 +71,26 @@ class ModelReflectionConverter extends ModelConverter
         return $this->annotationsConverter->run($reflection->annotations());
     }
 
+    /**
+     * Converts a EloquentModelReflection to a more generic ModelSchema
+     *
+     * @param EloquentModelReflection $reflection
+     * @return ModelSchema
+     */
     protected function fromEloquentReflectionToSchema(EloquentModelReflection $reflection)
     {
         $schema = new ModelSchema($reflection->className(), $reflection->databaseTable()->name(),
-                $reflection->specialOptionProperties()
-            );
+            $reflection->specialOptionProperties()
+        );
 
+        // Add all columns to the model schema that are atomic / in the main table,
         $reflection->databaseTable()->allColumns()->each(
             function (DatabaseColumn $column) use ($schema) {
                 $attribute = $this->attributeConverter->viaDatabaseColumn($column);
                 $schema->addAttribute($attribute);
             });
 
+        // Add the join columns of other tables that are connected via relationships
         $eloquentModelReflector = mezzo()->makeReflectionManager()->eloquentModelsReflector();
         $joinColumns = $eloquentModelReflector->relationSchemas()->joinColumns();
 

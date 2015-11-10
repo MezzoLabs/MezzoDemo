@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
-use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
@@ -221,10 +221,10 @@ class ModelRepository extends EloquentRepository
 
     /**
      * @param AttributeValues $atomicAttributes
-     * @param MezzoEloquentModel $model
-     * @return MezzoEloquentModel
+     * @param MezzoModel $model
+     * @return MezzoModel
      */
-    protected function updateRow(AttributeValues $atomicAttributes, MezzoEloquentModel $model)
+    protected function updateRow(AttributeValues $atomicAttributes, MezzoModel $model)
     {
         $values = $atomicAttributes->toArray();
 
@@ -237,11 +237,11 @@ class ModelRepository extends EloquentRepository
     }
 
     /**
-     * @param MezzoEloquentModel $model
+     * @param MezzoModel $model
      * @param AttributeValues $relationAttributes
      * @return bool
      */
-    protected function updateRelations(MezzoEloquentModel $model, AttributeValues $relationAttributes)
+    protected function updateRelations(MezzoModel $model, AttributeValues $relationAttributes)
     {
         $relationAttributes->each(function (AttributeValue $attributeValue) use ($model) {
             $result = $this->updateRelation($model, $attributeValue);
@@ -253,12 +253,12 @@ class ModelRepository extends EloquentRepository
     }
 
     /**
-     * @param MezzoEloquentModel $model
+     * @param MezzoModel $model
      * @param AttributeValue $attributeValue
      * @return array
      * @throws RepositoryException
      */
-    protected function updateRelation(MezzoEloquentModel $model, AttributeValue $attributeValue)
+    protected function updateRelation(MezzoModel $model, AttributeValue $attributeValue)
     {
         $relationUpdater = new RelationUpdater($model, $attributeValue);
         return $relationUpdater->run();
@@ -276,7 +276,7 @@ class ModelRepository extends EloquentRepository
     /**
      * @param $id
      * @param array $columns
-     * @return MezzoEloquentModel
+     * @return MezzoModel
      */
     public function find($id, $columns = array('*'))
     {
@@ -287,7 +287,7 @@ class ModelRepository extends EloquentRepository
     /**
      * @param $id
      * @param array $columns
-     * @return Collection|MezzoEloquentModel
+     * @return Collection|MezzoModel
      */
     public function findOrFail($id, $columns = array('*'))
     {

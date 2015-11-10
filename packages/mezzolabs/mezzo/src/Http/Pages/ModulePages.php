@@ -11,13 +11,11 @@ use MezzoLabs\Mezzo\Exceptions\ModulePageException;
 
 class ModulePages extends Collection
 {
-    public function add(ModulePageContract $modulePage)
+    public function collectFromModule(ModuleProvider $module)
     {
-        if ($this->has($modulePage->name())) {
-            throw new ModulePageException('The page ' . $modulePage->name() . ' is already registered for this module.');
-        }
+        $pagesFolder = $module->path() . '/Http/Pages/';
 
-        $this->put($modulePage->name(), $modulePage);
+        $this->collectFromFolder($pagesFolder, $module);
     }
 
     public function collectFromFolder($folder, $module)
@@ -26,7 +24,6 @@ class ModulePages extends Collection
             return false;
 
         $pageClasses = (new ClassFinder())->findClasses($folder);
-
         foreach ($pageClasses as $pageClass) {
             if (!is_subclass_of($pageClass, ModulePage::class))
                 throw new ModulePageException($pageClass . ' is not a valid module page.');
@@ -35,12 +32,13 @@ class ModulePages extends Collection
         }
     }
 
-
-    public function collectFromModule(ModuleProvider $module)
+    public function add(ModulePageContract $modulePage)
     {
-        $pagesFolder = $module->path() . '/Http/Pages/';
+        if ($this->has($modulePage->name())) {
+            throw new ModulePageException('The page ' . $modulePage->name() . ' is already registered for this module.');
+        }
 
-        $this->collectFromFolder($pagesFolder, $module);
+        $this->put($modulePage->name(), $modulePage);
     }
 
     public function registerRoutes()

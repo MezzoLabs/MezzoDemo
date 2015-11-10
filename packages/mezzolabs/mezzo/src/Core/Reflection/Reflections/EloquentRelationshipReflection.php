@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
-use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
 use MezzoLabs\Mezzo\Core\Schema\Converters\Eloquent\RelationshipReflectionConverter;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToOne;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation as MezzoRelation;
@@ -88,6 +87,14 @@ class EloquentRelationshipReflection
     }
 
     /**
+     * @return \ReflectionClass
+     */
+    public function instanceReflection()
+    {
+        return Singleton::reflection($this->instance);
+    }
+
+    /**
      * Check if a relation is allowed.
      *
      * @param $string
@@ -99,76 +106,14 @@ class EloquentRelationshipReflection
     }
 
     /**
-     * @return BelongsTo|BelongsToMany|HasOneOrMany|Relation
-     */
-    public function instance()
-    {
-        return $this->instance;
-    }
-
-    /**
-     * Get a qualified name for this relationship.
+     * Get the qualified column of the related table.
      *
      * @return string
+     * @throws MezzoException
      */
-    public function qualifiedName()
+    public function qualifiedRelatedColumn()
     {
-        return $this->modelReflection->className() . '.' . $this->functionName;
-    }
-
-    /**
-     * Get the unqualified name of this relationship (the name of the function)
-     *
-     * @return string
-     */
-    public function name()
-    {
-        return $this->functionName;
-    }
-
-    /**
-     * @return string
-     */
-    public function type()
-    {
-        return $this->type;
-    }
-
-    /**
-     * Checks if the relation is a 'hasMany', 'hasOne'...
-     *
-     * @param string $type
-     * @return bool
-     */
-    public function is($type)
-    {
-        return strtolower($type) == strtolower($this->type());
-    }
-
-    /**
-     * @return \ReflectionClass
-     */
-    public function instanceReflection()
-    {
-        return Singleton::reflection($this->instance);
-    }
-
-    /**
-     * Checks if this relation has the foreign key as a column in the connected database table.
-     */
-    public function isBelongsTo()
-    {
-        return $this->type == 'BelongsTo' || $this->type == 'BelongsToMany';
-    }
-
-    /**
-     * Get the name of the model table
-     *
-     * @return string
-     */
-    public function tableName()
-    {
-        return $this->modelReflection->databaseTable()->name();
+        return $this->relatedTableName() . '.' . $this->relatedColumn();
     }
 
     /**
@@ -182,16 +127,11 @@ class EloquentRelationshipReflection
     }
 
     /**
-     * Returns the pivot table if the relation is many to many (belongsToMany)
-     *
-     * @return string
+     * @return BelongsTo|BelongsToMany|HasOneOrMany|Relation
      */
-    public function pivotTable()
+    public function instance()
     {
-        if (!$this->is('BelongsToMany'))
-            return "";
-
-        return $this->instance()->getTable();
+        return $this->instance;
     }
 
     /**
@@ -223,14 +163,54 @@ class EloquentRelationshipReflection
     }
 
     /**
-     * Get the qualified column of the related table.
+     * @return string
+     */
+    public function type()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Get a qualified name for this relationship.
+     *
+     * @return string
+     */
+    public function qualifiedName()
+    {
+        return $this->modelReflection->className() . '.' . $this->functionName;
+    }
+
+    /**
+     * Remove the table name from a column.
+     *
+     * @param string $columnName
+     * @return string
+     */
+    private function disqualifyColumn($columnName)
+    {
+        return DatabaseColumn::disqualifyName($columnName);
+    }
+
+    /**
+     * Returns the column that is needed for connecting two tables (Not for many to many relationships).
      *
      * @return string
      * @throws MezzoException
      */
-    public function qualifiedRelatedColumn()
+    public function joinColumn()
     {
-        return $this->relatedTableName() . '.' . $this->relatedColumn();
+        if ($this->isBelongsTo())
+            return $this->localColumn();
+
+        return $this->relatedColumn();
+    }
+
+    /**
+     * Checks if this relation has the foreign key as a column in the connected database table.
+     */
+    public function isBelongsTo()
+    {
+        return $this->type == 'BelongsTo' || $this->type == 'BelongsToMany';
     }
 
     /**
@@ -262,20 +242,6 @@ class EloquentRelationshipReflection
     }
 
     /**
-     * Returns the column that is needed for connecting two tables (Not for many to many relationships).
-     *
-     * @return string
-     * @throws MezzoException
-     */
-    public function joinColumn()
-    {
-        if ($this->isBelongsTo())
-            return $this->localColumn();
-
-        return $this->relatedColumn();
-    }
-
-    /**
      * Returns the table which contains the extra column.
      *
      * @return string
@@ -286,6 +252,16 @@ class EloquentRelationshipReflection
             return $this->tableName();
 
         return $this->relatedTableName();
+    }
+
+    /**
+     * Get the name of the model table
+     *
+     * @return string
+     */
+    public function tableName()
+    {
+        return $this->modelReflection->databaseTable()->name();
     }
 
     /**
@@ -300,34 +276,6 @@ class EloquentRelationshipReflection
     }
 
     /**
-     * Remove the table name from a column.
-     *
-     * @param string $columnName
-     * @return string
-     */
-    private function disqualifyColumn($columnName)
-    {
-        return DatabaseColumn::disqualifyName($columnName);
-    }
-
-    /**
-     * Get the counterpart if this relationship reflection
-     *
-     * @return EloquentRelationshipReflection
-     */
-    public function counterpart()
-    {
-        if (!$this->counterpart) {
-            $counterpartModel = $this->relatedModelReflection();
-
-
-            $this->counterpart = $counterpartModel->relationshipReflections()->findCounterpartTo($this);
-        }
-
-        return $this->counterpart;
-    }
-
-    /**
      * Check if a relationship reflection is the inverse part of this.
      *
      * @param EloquentRelationshipReflection $check
@@ -337,13 +285,40 @@ class EloquentRelationshipReflection
     public function isCounterpart(EloquentRelationshipReflection $check)
     {
         $correctTables = $check->tableName() == $this->relatedTableName();
+
         $correctColumns = $check->localColumn() == $this->relatedColumn() &&
             $check->relatedColumn() == $this->localColumn();
 
         if ($this->is('BelongsToMany'))
             return $correctTables && $correctColumns && $check->pivotTable() == $this->pivotTable();
 
+        if(!$correctTables) return false;
+
         return $correctTables && $correctColumns;
+    }
+
+    /**
+     * Checks if the relation is a 'hasMany', 'hasOne'...
+     *
+     * @param string $type
+     * @return bool
+     */
+    public function is($type)
+    {
+        return strtolower($type) == strtolower($this->type());
+    }
+
+    /**
+     * Returns the pivot table if the relation is many to many (belongsToMany)
+     *
+     * @return string
+     */
+    public function pivotTable()
+    {
+        if (!$this->is('BelongsToMany'))
+            return "";
+
+        return $this->instance()->getTable();
     }
 
     /**
@@ -360,6 +335,22 @@ class EloquentRelationshipReflection
     }
 
     /**
+     * Get the counterpart if this relationship reflection
+     *
+     * @return EloquentRelationshipReflection
+     */
+    public function counterpart()
+    {
+        if (!$this->counterpart) {
+            $counterpartModel = $this->relatedModelReflection();
+
+            $this->counterpart = $counterpartModel->relationshipReflections()->findCounterpartTo($this);
+        }
+
+        return $this->counterpart;
+    }
+
+    /**
      * Get the reflection of the related model.
      *
      * @return EloquentModelReflection
@@ -368,6 +359,16 @@ class EloquentRelationshipReflection
     {
         return mezzo()->model($this->instance()->getRelated(), 'eloquent');
 
+    }
+
+    /**
+     * Get the unqualified name of this relationship (the name of the function)
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return $this->functionName;
     }
 
     /**

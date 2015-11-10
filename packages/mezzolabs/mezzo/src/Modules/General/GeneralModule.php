@@ -10,6 +10,14 @@ class GeneralModule extends AbstractGeneralModule
 {
     protected $models = [];
 
+    protected $group = "admin";
+
+    protected $options = [
+        'icon' => 'ion-speedometer'
+    ];
+
+
+
     /**
      * Register the service provider.
      *

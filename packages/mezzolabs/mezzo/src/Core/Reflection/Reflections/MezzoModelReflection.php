@@ -3,8 +3,7 @@
 
 namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
-
-use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
@@ -61,7 +60,7 @@ class MezzoModelReflection extends ModelReflection
      * Class name of the reflected eloquent model.
      *
      * @param bool $forceNew Should we create a new instance or use the singleton approach
-     * @return MezzoEloquentModel
+     * @return MezzoModel
      */
     public function instance($forceNew = false)
     {

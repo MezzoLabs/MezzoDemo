@@ -65,7 +65,7 @@ class EventServiceProvider extends ServiceProvider
         });
 
         $dispatcher->listen('eloquent.', function ($param = null, $param2 = null) use ($dispatcher) {
-            mezzo_dump($dispatcher->firing());
+            //mezzo_dump($dispatcher->firing());
         });
     }
 

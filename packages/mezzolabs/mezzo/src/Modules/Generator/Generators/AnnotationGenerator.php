@@ -126,6 +126,10 @@ class AnnotationGenerator
             $this->addLine('* @property '. $attribute->type()->variableType() . ' $' . $attribute->name());
         });
 
+        $modelSchema->relationSides()->each(function(RelationSide $relationSide){
+            $this->addLine('* @property EloquentCollection $' . $relationSide->naming());
+        });
+
 
         return $this->pullLines('');
     }

@@ -6,18 +6,18 @@ namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 
 use Illuminate\Support\Facades\Input;
 use MezzoLabs\Mezzo\Core\Collection\StrictCollection;
-use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentModel;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Exceptions\HttpException;
 
 class AttributeValues extends StrictCollection
 {
     /**
-     * @param MezzoEloquentModel $model
+     * @param MezzoModel $model
      * @return AttributeValues
      * @throws HttpException
      */
-    public static function fromModel(MezzoEloquentModel $model)
+    public static function fromModel(MezzoModel $model)
     {
         return static::fromArray($model->schema(), $model->getAttributes());
     }

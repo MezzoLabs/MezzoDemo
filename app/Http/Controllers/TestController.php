@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TestRequest;
 use Dingo\Api\Routing\Helpers;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\FileUploader;
 use MezzoLabs\Mezzo\Modules\FileManager\Http\Requests\UpdateFileRequest;
+use MezzoLabs\Mezzo\Modules\FileManager\Http\Requests\UploadFileRequest;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
-class TestController extends Controller{
+class TestController extends Controller
+{
 
     use Helpers;
 
-    public function sayHi(){
+    public function sayHi()
+    {
 
         throw new ConflictHttpException('User was updated prior to your request.');
     }
@@ -27,12 +31,24 @@ class TestController extends Controller{
         $file = \App\File::find($id);
         $file->delete();
         /**
-
-        $repo = FileRepository::makeRepository();
-        $repo->update($request->all(), $id);
+         *
+         * $repo = FileRepository::makeRepository();
+         * $repo->update($request->all(), $id);
          * **/
 
         return "update file";
+    }
+
+    public function uploadFile(UploadFileRequest $request)
+    {
+        $uploader = new FileUploader();
+
+        $uploader->uploadInput($request);
+    }
+
+    public function deleteFile(UploadFileRequest $request)
+    {
+
     }
 
 

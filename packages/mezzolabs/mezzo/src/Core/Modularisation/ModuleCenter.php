@@ -106,6 +106,7 @@ class ModuleCenter
 
         $this->slugAliases->put($slug, $moduleProviderClass);
 
+
         $this->mezzo->app()->register($moduleProvider);
         $this->mezzo->app()->instance(get_class($moduleProvider), $moduleProvider);
 
@@ -222,8 +223,8 @@ class ModuleCenter
         if (!is_string($module))
             throw new MezzoException('Cannot convert ' . gettype($module) . ' into a module class.');
 
-        if ($this->slugAliases->has(strtolower($module)))
-            return $this->slugAliases->get(strtolower($module));
+        if ($this->slugAliases->has(camel_to_slug($module)))
+            return $this->slugAliases->get(camel_to_slug($module));
 
         if ($this->modules()->has($module))
             return $module;

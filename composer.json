@@ -16,7 +16,8 @@
       "kalnoy/nestedset": "3.*",
       "league/glide": "0.*",
       "spatie/laravel-glide": "dev-master",
-      "felixkiss/uniquewith-validator": "2.*"
+      "felixkiss/uniquewith-validator": "2.*",
+        "cviebrock/eloquent-sluggable": "dev-master"
 
     },
     "require-dev": {
