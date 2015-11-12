@@ -9,6 +9,8 @@ require('./modules/resource');
 
 require('./modules/fileManager');
 
+require('./modules/contentBuilder');
+
 var _setupConfig = require('./setup/config');
 
 var _setupConfig2 = _interopRequireDefault(_setupConfig);
@@ -29,7 +31,7 @@ var _commonApiApiService = require('./common/api/apiService');
 
 var _commonApiApiService2 = _interopRequireDefault(_commonApiApiService);
 
-var app = angular.module('Mezzo', ['ui.router', 'ngMessages', 'angular-sortable-view', 'ngFileUpload', 'MezzoFileManager', 'MezzoResources']);
+var app = angular.module('Mezzo', ['ui.router', 'ngMessages', 'angular-sortable-view', 'ngFileUpload', 'MezzoFileManager', 'MezzoResources', 'MezzoContentBuilder']);
 
 app.config(_setupConfig2['default']);
 app.directive('mezzoCompile', _commonCompileDirective2['default']);
@@ -37,7 +39,7 @@ app.directive('mezzoEnter', _commonEnterDirectiveJs2['default']);
 app.factory('uid', _commonUidServiceJs2['default']);
 app.factory('api', _commonApiApiService2['default']);
 
-},{"./common/api/apiService":4,"./common/compileDirective":5,"./common/enterDirective.js":6,"./common/uidService.js":7,"./modules/fileManager":15,"./modules/resource":19,"./setup/config":22,"./setup/jquery":23}],2:[function(require,module,exports){
+},{"./common/api/apiService":4,"./common/compileDirective":5,"./common/enterDirective.js":6,"./common/uidService.js":7,"./modules/contentBuilder":9,"./modules/fileManager":17,"./modules/resource":21,"./setup/config":24,"./setup/jquery":25}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -246,6 +248,47 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var ContentBuilderController =
+
+/*@ngInject*/
+function ContentBuilderController() {
+    _classCallCheck(this, ContentBuilderController);
+};
+
+exports["default"] = ContentBuilderController;
+module.exports = exports["default"];
+
+},{}],9:[function(require,module,exports){
+'use strict';
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _ContentBuilderController = require('./ContentBuilderController');
+
+var _ContentBuilderController2 = _interopRequireDefault(_ContentBuilderController);
+
+var _module = angular.module('MezzoContentBuilder', ['ui.router']);
+
+_module.config(function ($stateProvider) {
+    $stateProvider.state('ContentBuilder', {
+        url: '/mezzo/content-builder',
+        templateUrl: 'mezzo/file-manager/file/create.html',
+        controller: 'ContentBuilderController',
+        controllerAs: 'vm'
+    });
+});
+
+_module.controller('ContentBuilderController', _ContentBuilderController2['default']);
+
+},{"./ContentBuilderController":8}],10:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var Category = function Category(label, icon) {
     var filter = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
     var everything = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
@@ -261,7 +304,7 @@ var Category = function Category(label, icon) {
 exports["default"] = Category;
 module.exports = exports["default"];
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -347,7 +390,7 @@ var File = (function () {
 exports['default'] = File;
 module.exports = exports['default'];
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -659,7 +702,7 @@ var FileManagerController = (function () {
 exports['default'] = FileManagerController;
 module.exports = exports['default'];
 
-},{"./File":9,"./Folder":11,"./categories":12}],11:[function(require,module,exports){
+},{"./File":11,"./Folder":13,"./categories":14}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -700,7 +743,7 @@ var Folder = (function (_File) {
 exports['default'] = Folder;
 module.exports = exports['default'];
 
-},{"./File":9}],12:[function(require,module,exports){
+},{"./File":11}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -732,7 +775,7 @@ function documentFilter(file) {
 }
 module.exports = exports['default'];
 
-},{"./Category":8}],13:[function(require,module,exports){
+},{"./Category":10}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -758,7 +801,7 @@ function draggableDirective() {
 
 module.exports = exports['default'];
 
-},{}],14:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -793,7 +836,7 @@ function droppableDirective() {
 
 module.exports = exports['default'];
 
-},{}],15:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -825,7 +868,7 @@ _module.directive('mezzoDraggable', _draggableDirectiveJs2['default']);
 _module.directive('mezzoDroppable', _droppableDirectiveJs2['default']);
 _module.controller('FileManagerController', _FileManagerControllerJs2['default']);
 
-},{"./FileManagerController.js":10,"./draggableDirective.js":13,"./droppableDirective.js":14}],16:[function(require,module,exports){
+},{"./FileManagerController.js":12,"./draggableDirective.js":15,"./droppableDirective.js":16}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -870,7 +913,7 @@ var ResourceCreateController = (function () {
 exports['default'] = ResourceCreateController;
 module.exports = exports['default'];
 
-},{}],17:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -891,7 +934,7 @@ function ResourceEditController() {
 exports['default'] = ResourceEditController;
 module.exports = exports['default'];
 
-},{}],18:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1101,7 +1144,7 @@ var ResourceIndexController = (function () {
 exports['default'] = ResourceIndexController;
 module.exports = exports['default'];
 
-},{}],19:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1134,7 +1177,7 @@ _module.controller('ResourceIndexController', _ResourceIndexController2['default
 _module.controller('ResourceCreateController', _ResourceCreateController2['default']);
 _module.controller('ResourceEditController', _ResourceEditController2['default']);
 
-},{"./ResourceCreateController":16,"./ResourceEditController":17,"./ResourceIndexController":18,"./registerStateDirective":20,"./stateProvider":21}],20:[function(require,module,exports){
+},{"./ResourceCreateController":18,"./ResourceEditController":19,"./ResourceIndexController":20,"./registerStateDirective":22,"./stateProvider":23}],22:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -1185,7 +1228,7 @@ function mapActionToController(action) {
 }
 module.exports = exports['default'];
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 /*@ngInject*/
 "use strict";
 
@@ -1204,7 +1247,7 @@ function stateProvider($stateProvider) {
 
 module.exports = exports["default"];
 
-},{}],22:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -1224,7 +1267,7 @@ function config($locationProvider, $urlRouterProvider, $httpProvider, $interpola
 
 module.exports = exports['default'];
 
-},{}],23:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 $(function () {

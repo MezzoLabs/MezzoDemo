@@ -1,6 +1,7 @@
 import './setup/jquery';
 import './modules/resource';
 import './modules/fileManager';
+import './modules/contentBuilder';
 import config from './setup/config';
 import compileDirective from './common/compileDirective';
 import enterDirective from './common/enterDirective.js';
@@ -13,7 +14,8 @@ var app = angular.module('Mezzo', [
     'angular-sortable-view',
     'ngFileUpload',
     'MezzoFileManager',
-    'MezzoResources'
+    'MezzoResources',
+    'MezzoContentBuilder'
 ]);
 
 app.config(config);
