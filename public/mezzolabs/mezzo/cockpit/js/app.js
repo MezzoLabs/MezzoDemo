@@ -376,33 +376,40 @@ var FileManagerController = (function () {
 
     /*@ngInject*/
 
-    function FileManagerController($scope, api) {
-        var _this = this;
-
+    function FileManagerController($scope, api, Upload) {
         _classCallCheck(this, FileManagerController);
 
         this.$scope = $scope;
         this.api = api;
+        this.Upload = Upload;
 
         this.categories = _categories2['default'];
         this.category = this.categories[0];
         this.orderOptions = ['Title', 'Last modified'];
         this.orderBy = this.orderOptions[0];
         this.selected = null;
-        this.library = new _Folder2['default']('Library');
-        this.folder = this.library;
-        this.files = this.library.files;
 
-        this.api.files().then(function (apiFiles) {
-            apiFiles.forEach(function (apiFile) {
-                var file = new _File2['default'](apiFile.filename, apiFile.filename, apiFile.extension);
-
-                _this.library.files.push(file);
-            });
-        });
+        this.initFiles();
     }
 
     _createClass(FileManagerController, [{
+        key: 'initFiles',
+        value: function initFiles() {
+            var _this = this;
+
+            this.library = new _Folder2['default']('Library');
+            this.folder = this.library;
+            this.files = this.library.files;
+
+            this.api.files().then(function (apiFiles) {
+                apiFiles.forEach(function (apiFile) {
+                    var file = new _File2['default'](apiFile.filename, apiFile.filename, apiFile.extension);
+
+                    _this.library.files.push(file);
+                });
+            });
+        }
+    }, {
         key: 'isActive',
         value: function isActive(category) {
             if (category === this.category) {
@@ -614,8 +621,23 @@ var FileManagerController = (function () {
         }
     }, {
         key: 'upload',
-        value: function upload(files) {
-            // TODO: implement upload
+        value: function upload(file) {
+            var _this4 = this;
+
+            this.Upload.upload({
+                url: '/api/files/upload',
+                data: {
+                    file: file
+                },
+                headers: {
+                    Accept: 'application/vnd.MezzoLabs.v1+json'
+                }
+            }).then(function (response) {
+                console.log(response);
+                _this4.initFiles();
+            })['catch'](function (err) {
+                console.error(err);
+            });
         }
     }, {
         key: 'onDrop',

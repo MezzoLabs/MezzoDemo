@@ -5,15 +5,21 @@ import categories from './categories';
 export default class FileManagerController {
 
     /*@ngInject*/
-    constructor($scope, api){
+    constructor($scope, api, Upload){
         this.$scope = $scope;
         this.api = api;
+        this.Upload = Upload;
 
         this.categories = categories;
         this.category = this.categories[0];
         this.orderOptions = [ 'Title', 'Last modified' ];
         this.orderBy = this.orderOptions[0];
         this.selected = null;
+
+        this.initFiles();
+    }
+
+    initFiles(){
         this.library = new Folder('Library');
         this.folder = this.library;
         this.files = this.library.files;
@@ -214,8 +220,21 @@ export default class FileManagerController {
         folder.files.push(file);
     }
 
-    upload(files){
-        // TODO: implement upload
+    upload(file){
+        this.Upload.upload({
+            url: '/api/files/upload',
+            data: {
+                file: file
+            },
+            headers: {
+                Accept: 'application/vnd.MezzoLabs.v1+json'
+            }
+        }).then(response => {
+            console.log(response);
+            this.initFiles();
+        }).catch(err => {
+            console.error(err);
+        });
     }
 
     onDrop(droppable, draggable){

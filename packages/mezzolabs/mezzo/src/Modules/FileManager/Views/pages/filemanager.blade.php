@@ -77,7 +77,7 @@
             <!-- Search -->
             <!-- Upload & Add folder -->
             <div class="btn-group">
-                <button type="button" class="btn btn-primary" ngf-select="vm.upload($files)" ngf-multiple="true" ngf-drop="vm.upload($files)">
+                <button type="button" class="btn btn-primary" ngf-select="vm.upload($file)">
                 <span style="display: inline-block; width: 20px">
                     <span class="ion-ios-cloud-upload"></span>
                 </span>
