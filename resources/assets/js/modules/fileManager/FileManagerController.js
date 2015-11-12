@@ -12,8 +12,6 @@ export default class FileManagerController {
         this.category = this.categories[0];
         this.orderOptions = [ 'Title', 'Last modified' ];
         this.orderBy = this.orderOptions[0];
-
-
         this.selected = null;
         this.library = new Folder('Library');
         var folder1 = new Folder('folder1', this.library);
@@ -44,8 +42,6 @@ export default class FileManagerController {
     selectCategory(category){
         this.category = category;
     }
-
-
 
     selectFile(file){
         if(file === this.selected){
