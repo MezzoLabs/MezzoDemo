@@ -807,8 +807,8 @@ var _module = angular.module('MezzoFileManager', ['ui.router']);
 
 _module.config(function ($stateProvider) {
     $stateProvider.state('FileManager', {
-        url: '/mezzo/filemanager',
-        templateUrl: 'mezzo/filemanager/file/create.html',
+        url: '/mezzo/file-manager',
+        templateUrl: 'mezzo/file-manager/file/create.html',
         controller: 'FileManagerController',
         controllerAs: 'vm'
     });
