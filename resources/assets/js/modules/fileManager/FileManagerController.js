@@ -5,9 +5,8 @@ import categories from './categories';
 export default class FileManagerController {
 
     /*@ngInject*/
-    constructor($scope, fileManager){
+    constructor($scope){
         this.$scope = $scope;
-        this.fileManager = fileManager;
 
         this.categories = categories;
         this.category = this.categories[0];
@@ -34,18 +33,6 @@ export default class FileManagerController {
 
         this.folder = this.library;
         this.files = this.library.files;
-
-
-        this.fileManager.onDrop = (droppable, draggable) => {
-            var files = this.sortedFiles();
-            var folderIndex = $(droppable).data('index');
-            var draggedIndex = $(draggable).data('index');
-            var folder = files[folderIndex];
-            var dragged = files[draggedIndex];
-
-            this.moveFile(dragged, folder);
-            this.$scope.$apply();
-        };
     }
 
     isActive(category){
@@ -239,6 +226,17 @@ export default class FileManagerController {
 
     upload(files){
         // TODO: implement upload
+    }
+
+    onDrop(droppable, draggable){
+        var files = this.sortedFiles();
+        var folderIndex = $(droppable).data('index');
+        var draggedIndex = $(draggable).data('index');
+        var folder = files[folderIndex];
+        var dragged = files[draggedIndex];
+
+        this.moveFile(dragged, folder);
+        this.$scope.$apply();
     }
 
 }

@@ -37,7 +37,7 @@ app.directive('mezzoEnter', _commonEnterDirectiveJs2['default']);
 app.factory('uid', _commonUidServiceJs2['default']);
 app.factory('api', _commonApiApiService2['default']);
 
-},{"./common/api/apiService":4,"./common/compileDirective":5,"./common/enterDirective.js":6,"./common/uidService.js":7,"./modules/fileManager":16,"./modules/resource":20,"./setup/config":23,"./setup/jquery":24}],2:[function(require,module,exports){
+},{"./common/api/apiService":4,"./common/compileDirective":5,"./common/enterDirective.js":6,"./common/uidService.js":7,"./modules/fileManager":15,"./modules/resource":19,"./setup/config":22,"./setup/jquery":23}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -371,13 +371,10 @@ var FileManagerController = (function () {
 
     /*@ngInject*/
 
-    function FileManagerController($scope, fileManager) {
-        var _this = this;
-
+    function FileManagerController($scope) {
         _classCallCheck(this, FileManagerController);
 
         this.$scope = $scope;
-        this.fileManager = fileManager;
 
         this.categories = _categories2['default'];
         this.category = this.categories[0];
@@ -395,17 +392,6 @@ var FileManagerController = (function () {
 
         this.folder = this.library;
         this.files = this.library.files;
-
-        this.fileManager.onDrop = function (droppable, draggable) {
-            var files = _this.sortedFiles();
-            var folderIndex = $(droppable).data('index');
-            var draggedIndex = $(draggable).data('index');
-            var folder = files[folderIndex];
-            var dragged = files[draggedIndex];
-
-            _this.moveFile(dragged, folder);
-            _this.$scope.$apply();
-        };
     }
 
     _createClass(FileManagerController, [{
@@ -534,7 +520,7 @@ var FileManagerController = (function () {
     }, {
         key: 'allFiles',
         value: function allFiles() {
-            var _this2 = this;
+            var _this = this;
 
             var folder = arguments.length <= 0 || arguments[0] === undefined ? this.library : arguments[0];
 
@@ -544,7 +530,7 @@ var FileManagerController = (function () {
                 files.push(file);
 
                 if (file.isFolder) {
-                    files = files.concat(_this2.allFiles(file));
+                    files = files.concat(_this.allFiles(file));
                 }
             });
 
@@ -564,7 +550,7 @@ var FileManagerController = (function () {
     }, {
         key: 'deleteFiles',
         value: function deleteFiles() {
-            var _this3 = this;
+            var _this2 = this;
 
             var file = this.selected;
 
@@ -582,10 +568,10 @@ var FileManagerController = (function () {
                         return;
                     }
 
-                    _this3.selected = null;
+                    _this2.selected = null;
 
-                    _this3.deleteFile(file);
-                    _this3.$scope.$apply();
+                    _this2.deleteFile(file);
+                    _this2.$scope.$apply();
                 });
             }
         }
@@ -622,6 +608,18 @@ var FileManagerController = (function () {
         key: 'upload',
         value: function upload(files) {
             // TODO: implement upload
+        }
+    }, {
+        key: 'onDrop',
+        value: function onDrop(droppable, draggable) {
+            var files = this.sortedFiles();
+            var folderIndex = $(droppable).data('index');
+            var draggedIndex = $(draggable).data('index');
+            var folder = files[folderIndex];
+            var dragged = files[draggedIndex];
+
+            this.moveFile(dragged, folder);
+            this.$scope.$apply();
         }
     }]);
 
@@ -731,7 +729,6 @@ function draggableDirective() {
 module.exports = exports['default'];
 
 },{}],14:[function(require,module,exports){
-/*@ngInject*/
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -739,7 +736,7 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports['default'] = droppableDirective;
 
-function droppableDirective(fileManager) {
+function droppableDirective() {
     return {
         restrict: 'A',
         link: link
@@ -748,6 +745,7 @@ function droppableDirective(fileManager) {
     function link(scope, element, attributes) {
         var $element = $(element);
         var droppable = attributes.mezzoDroppable;
+        var controller = scope.vm;
 
         if (droppable === 'true') {
             $element.droppable({
@@ -756,7 +754,7 @@ function droppableDirective(fileManager) {
                     var draggable = ui.draggable;
 
                     ui.helper.remove();
-                    fileManager.onDrop(element, draggable);
+                    controller.onDrop(element, draggable);
                 }
             });
         }
@@ -766,30 +764,9 @@ function droppableDirective(fileManager) {
 module.exports = exports['default'];
 
 },{}],15:[function(require,module,exports){
-/*@ngInject*/
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports["default"] = fileManagerService;
-
-function fileManagerService() {
-    return {
-        onDrop: null
-    };
-}
-
-module.exports = exports["default"];
-
-},{}],16:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _fileManagerServiceJs = require('./fileManagerService.js');
-
-var _fileManagerServiceJs2 = _interopRequireDefault(_fileManagerServiceJs);
 
 var _draggableDirectiveJs = require('./draggableDirective.js');
 
@@ -814,12 +791,11 @@ _module.config(function ($stateProvider) {
     });
 });
 
-_module.factory('fileManager', _fileManagerServiceJs2['default']);
 _module.directive('mezzoDraggable', _draggableDirectiveJs2['default']);
 _module.directive('mezzoDroppable', _droppableDirectiveJs2['default']);
 _module.controller('FileManagerController', _FileManagerControllerJs2['default']);
 
-},{"./FileManagerController.js":10,"./draggableDirective.js":13,"./droppableDirective.js":14,"./fileManagerService.js":15}],17:[function(require,module,exports){
+},{"./FileManagerController.js":10,"./draggableDirective.js":13,"./droppableDirective.js":14}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -864,7 +840,7 @@ var ResourceCreateController = (function () {
 exports['default'] = ResourceCreateController;
 module.exports = exports['default'];
 
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -885,7 +861,7 @@ function ResourceEditController() {
 exports['default'] = ResourceEditController;
 module.exports = exports['default'];
 
-},{}],19:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1095,7 +1071,7 @@ var ResourceIndexController = (function () {
 exports['default'] = ResourceIndexController;
 module.exports = exports['default'];
 
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1128,7 +1104,7 @@ _module.controller('ResourceIndexController', _ResourceIndexController2['default
 _module.controller('ResourceCreateController', _ResourceCreateController2['default']);
 _module.controller('ResourceEditController', _ResourceEditController2['default']);
 
-},{"./ResourceCreateController":17,"./ResourceEditController":18,"./ResourceIndexController":19,"./registerStateDirective":21,"./stateProvider":22}],21:[function(require,module,exports){
+},{"./ResourceCreateController":16,"./ResourceEditController":17,"./ResourceIndexController":18,"./registerStateDirective":20,"./stateProvider":21}],20:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -1179,7 +1155,7 @@ function mapActionToController(action) {
 }
 module.exports = exports['default'];
 
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /*@ngInject*/
 "use strict";
 
@@ -1198,7 +1174,7 @@ function stateProvider($stateProvider) {
 
 module.exports = exports["default"];
 
-},{}],23:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -1218,7 +1194,7 @@ function config($locationProvider, $urlRouterProvider, $httpProvider, $interpola
 
 module.exports = exports['default'];
 
-},{}],24:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 $(function () {
