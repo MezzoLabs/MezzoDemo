@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Modules\FileManager\Disk;
 
 
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Filesystem\Filesystem as IlluminateFilesystem;
 use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Core\Files\StorageFactory;
@@ -12,6 +13,19 @@ use MezzoLabs\Mezzo\Core\Traits\IsShared;
 class DisksManager
 {
     use IsShared;
+
+    /**
+     * @var UrlGenerator
+     */
+    protected $urlGenerator;
+
+    /**
+     * @param UrlGenerator $urlGenerator
+     */
+    public function __construct(UrlGenerator $urlGenerator)
+    {
+        $this->urlGenerator = $urlGenerator;
+    }
 
     public function formattedFileName($baseName, $extension)
     {
@@ -100,6 +114,11 @@ class DisksManager
         $longPath = $this->longPath($diskName, $shortPath);
 
         return $this->fileSystem()->exists($longPath);
+    }
+
+    public function url($shortPath, $diskName = "local")
+    {
+        return $this->urlGenerator->to('mezzo/upload/' . $shortPath);
     }
 
 }

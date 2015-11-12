@@ -4,10 +4,6 @@ use MezzoLabs\Mezzo\Core\Routing\ApiRouter;
 use MezzoLabs\Mezzo\Core\Routing\CockpitRouter;
 use MezzoLabs\Mezzo\Core\Routing\Router;
 
-$fileManager = mezzo()->module('FileManager');
-
-$fileManager->generateRoutes();
-
 module_route('FileManager', [], function (Router $router, ApiRouter $api, CockpitRouter $cockpit) {
 
     $file = mezzo()->model('File');
@@ -15,6 +11,12 @@ module_route('FileManager', [], function (Router $router, ApiRouter $api, Cockpi
     $controller = $fileManager->apiResourceController('FileApiController');
     $api->post($api->modelUri($file) . '/upload', $controller->qualifiedActionName('upload'));
 
+    $cockpit->get('upload/{path?}', [
+        'uses' => 'Controllers\PublishFilesController@publish',
+        'as' => 'publish'
+    ])->where('path', '.+');;
+
+    $router->getModule()->generateRoutes();
     $api->resource('File');
 
 });

@@ -121,7 +121,11 @@ abstract class FileType
         }
 
         return $this->name;
+    }
 
+    public function isImage()
+    {
+        return ($this instanceof ImageFileType);
     }
 
 
