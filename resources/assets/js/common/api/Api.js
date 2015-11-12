@@ -29,4 +29,8 @@ export default class Api {
             });
     }
 
+    files(){
+        return this.get('/api/files');
+    }
+
 }

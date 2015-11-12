@@ -86,6 +86,11 @@ var Api = (function () {
                 throw err;
             });
         }
+    }, {
+        key: 'files',
+        value: function files() {
+            return this.get('/api/files');
+        }
     }]);
 
     return Api;
@@ -371,27 +376,30 @@ var FileManagerController = (function () {
 
     /*@ngInject*/
 
-    function FileManagerController($scope) {
+    function FileManagerController($scope, api) {
+        var _this = this;
+
         _classCallCheck(this, FileManagerController);
 
         this.$scope = $scope;
+        this.api = api;
 
         this.categories = _categories2['default'];
         this.category = this.categories[0];
         this.orderOptions = ['Title', 'Last modified'];
         this.orderBy = this.orderOptions[0];
-
         this.selected = null;
         this.library = new _Folder2['default']('Library');
-        var folder1 = new _Folder2['default']('folder1', this.library);
-        var folder2 = new _Folder2['default']('folder2', this.library);
-        var folder3 = new _Folder2['default']('folder3', folder1);
-        folder1.files = [folder3, new _File2['default']('File 3', 'file3', 'mp3')];
-
-        this.library.files = [folder1, folder2, new _File2['default']('File 1', 'file1', 'txt'), new _File2['default']('File 2', 'file2', 'jpg')];
-
         this.folder = this.library;
         this.files = this.library.files;
+
+        this.api.files().then(function (apiFiles) {
+            apiFiles.forEach(function (apiFile) {
+                var file = new _File2['default'](apiFile.filename, apiFile.filename, apiFile.extension);
+
+                _this.library.files.push(file);
+            });
+        });
     }
 
     _createClass(FileManagerController, [{
@@ -520,7 +528,7 @@ var FileManagerController = (function () {
     }, {
         key: 'allFiles',
         value: function allFiles() {
-            var _this = this;
+            var _this2 = this;
 
             var folder = arguments.length <= 0 || arguments[0] === undefined ? this.library : arguments[0];
 
@@ -530,7 +538,7 @@ var FileManagerController = (function () {
                 files.push(file);
 
                 if (file.isFolder) {
-                    files = files.concat(_this.allFiles(file));
+                    files = files.concat(_this2.allFiles(file));
                 }
             });
 
@@ -550,7 +558,7 @@ var FileManagerController = (function () {
     }, {
         key: 'deleteFiles',
         value: function deleteFiles() {
-            var _this2 = this;
+            var _this3 = this;
 
             var file = this.selected;
 
@@ -568,10 +576,10 @@ var FileManagerController = (function () {
                         return;
                     }
 
-                    _this2.selected = null;
+                    _this3.selected = null;
 
-                    _this2.deleteFile(file);
-                    _this2.$scope.$apply();
+                    _this3.deleteFile(file);
+                    _this3.$scope.$apply();
                 });
             }
         }

@@ -5,8 +5,9 @@ import categories from './categories';
 export default class FileManagerController {
 
     /*@ngInject*/
-    constructor($scope){
+    constructor($scope, api){
         this.$scope = $scope;
+        this.api = api;
 
         this.categories = categories;
         this.category = this.categories[0];
@@ -14,23 +15,16 @@ export default class FileManagerController {
         this.orderBy = this.orderOptions[0];
         this.selected = null;
         this.library = new Folder('Library');
-        var folder1 = new Folder('folder1', this.library);
-        var folder2 = new Folder('folder2', this.library);
-        var folder3 = new Folder('folder3', folder1);
-        folder1.files = [
-            folder3,
-            new File('File 3', 'file3', 'mp3')
-        ];
-
-        this.library.files = [
-            folder1,
-            folder2,
-            new File('File 1', 'file1', 'txt'),
-            new File('File 2', 'file2', 'jpg')
-        ];
-
         this.folder = this.library;
         this.files = this.library.files;
+
+        this.api.files().then(apiFiles => {
+            apiFiles.forEach(apiFile => {
+                var file = new File(apiFile.filename, apiFile.filename, apiFile.extension);
+
+                this.library.files.push(file);
+            });
+        });
     }
 
     isActive(category){
