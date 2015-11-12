@@ -1,4 +1,4 @@
-class File {
+export default class File {
 
     constructor(title, name, extension){
         this.title = title;
@@ -29,7 +29,7 @@ class File {
     }
 
     isImage(){
-        return this.hasExtension('png', 'jpg', 'gif');
+        return this.hasExtension('png', 'jpg', 'gif', 'jpeg');
     }
 
     isVideo(){
@@ -58,5 +58,3 @@ class File {
     }
 
 }
-
-export default File;

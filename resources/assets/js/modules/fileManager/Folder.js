@@ -1,6 +1,6 @@
 import File from './File';
 
-class Folder extends File {
+export default class Folder extends File {
 
     constructor(name, parent = null){
         super(name, name, '');
@@ -12,5 +12,3 @@ class Folder extends File {
     }
 
 }
-
-export default Folder;

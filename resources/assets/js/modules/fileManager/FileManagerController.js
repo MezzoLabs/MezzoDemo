@@ -5,47 +5,32 @@ import categories from './categories';
 export default class FileManagerController {
 
     /*@ngInject*/
-    constructor($scope, fileManager){
+    constructor($scope, api, Upload){
         this.$scope = $scope;
-        this.fileManager = fileManager;
+        this.api = api;
+        this.Upload = Upload;
 
         this.categories = categories;
         this.category = this.categories[0];
         this.orderOptions = [ 'Title', 'Last modified' ];
         this.orderBy = this.orderOptions[0];
-
-
         this.selected = null;
+
+        this.initFiles();
+    }
+
+    initFiles(){
         this.library = new Folder('Library');
-        var folder1 = new Folder('folder1', this.library);
-        var folder2 = new Folder('folder2', this.library);
-        var folder3 = new Folder('folder3', folder1);
-        folder1.files = [
-            folder3,
-            new File('File 3', 'file3', 'mp3')
-        ];
-
-        this.library.files = [
-            folder1,
-            folder2,
-            new File('File 1', 'file1', 'txt'),
-            new File('File 2', 'file2', 'jpg')
-        ];
-
         this.folder = this.library;
         this.files = this.library.files;
 
+        this.api.files().then(apiFiles => {
+            apiFiles.forEach(apiFile => {
+                var file = new File(apiFile.filename, apiFile.filename, apiFile.extension);
 
-        this.fileManager.onDrop = (droppable, draggable) => {
-            var files = this.sortedFiles();
-            var folderIndex = $(droppable).data('index');
-            var draggedIndex = $(draggable).data('index');
-            var folder = files[folderIndex];
-            var dragged = files[draggedIndex];
-
-            this.moveFile(dragged, folder);
-            this.$scope.$apply();
-        };
+                this.library.files.push(file);
+            });
+        });
     }
 
     isActive(category){
@@ -57,8 +42,6 @@ export default class FileManagerController {
     selectCategory(category){
         this.category = category;
     }
-
-
 
     selectFile(file){
         if(file === this.selected){
@@ -237,8 +220,32 @@ export default class FileManagerController {
         folder.files.push(file);
     }
 
-    upload(files){
-        // TODO: implement upload
+    upload(file){
+        this.Upload.upload({
+            url: '/api/files/upload',
+            data: {
+                file: file
+            },
+            headers: {
+                Accept: 'application/vnd.MezzoLabs.v1+json'
+            }
+        }).then(response => {
+            console.log(response);
+            this.initFiles();
+        }).catch(err => {
+            console.error(err);
+        });
+    }
+
+    onDrop(droppable, draggable){
+        var files = this.sortedFiles();
+        var folderIndex = $(droppable).data('index');
+        var draggedIndex = $(draggable).data('index');
+        var folder = files[folderIndex];
+        var dragged = files[draggedIndex];
+
+        this.moveFile(dragged, folder);
+        this.$scope.$apply();
     }
 
 }

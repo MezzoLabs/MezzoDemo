@@ -77,7 +77,7 @@
             <!-- Search -->
             <!-- Upload & Add folder -->
             <div class="btn-group">
-                <button type="button" class="btn btn-primary" ngf-select="vm.upload($files)" ngf-multiple="true" ngf-drop="vm.upload($files)">
+                <button type="button" class="btn btn-primary" ngf-select="vm.upload($file)">
                 <span style="display: inline-block; width: 20px">
                     <span class="ion-ios-cloud-upload"></span>
                 </span>
@@ -118,7 +118,7 @@
     <!-- Folder Navigation -->
     <ol class="breadcrumb" style="margin-bottom: 0">
         <li ng-bind="vm.search" ng-if="vm.search"></li>
-        <li ng-bind="vm.category().label" ng-if="vm.showCategoryAsFolderHierarchy()"></li>
+        <li ng-bind="vm.category.label" ng-if="vm.showCategoryAsFolderHierarchy()"></li>
         <li ng-repeat="folder in vm.folderHierarchy()" ng-class="{ active: $last }" ng-if="vm.showFolderHierarchy()">
             <a href="" ng-bind="folder.title" ng-click="vm.enterFolder(folder)" ng-if="!$last"></a>
             <span ng-bind="folder.title" ng-if="$last"></span>
