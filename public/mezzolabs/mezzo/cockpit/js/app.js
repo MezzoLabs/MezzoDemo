@@ -307,7 +307,7 @@ var File = (function () {
     }, {
         key: 'isImage',
         value: function isImage() {
-            return this.hasExtension('png', 'jpg', 'gif');
+            return this.hasExtension('png', 'jpg', 'gif', 'jpeg');
         }
     }, {
         key: 'isVideo',
