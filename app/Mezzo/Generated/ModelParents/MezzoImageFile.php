@@ -46,8 +46,7 @@ abstract class MezzoImageFile extends BaseModel
     * @var  array
     */
     protected $hidden = [
-        "file_id",
-        "cropping"
+        "file_id", "file"
     ];
     /**
     * The attributes that are mass assignable.

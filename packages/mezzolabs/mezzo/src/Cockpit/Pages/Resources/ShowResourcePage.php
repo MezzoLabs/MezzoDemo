@@ -9,4 +9,8 @@ class ShowResourcePage extends ResourcePage
     protected $action = 'show';
 
     protected $view = 'cockpit::pages.resources.show';
+
+    protected $options = [
+        'visibleInNavigation' => false,
+    ];
 }

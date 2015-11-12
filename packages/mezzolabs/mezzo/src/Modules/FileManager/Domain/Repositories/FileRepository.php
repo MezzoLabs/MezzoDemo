@@ -96,6 +96,18 @@ class FileRepository extends ModelRepository
     }
 
     /**
+     * @param $filename
+     * @param $folder
+     * @return File|null
+     */
+    public function findByFilenameAndFolder($filename, $folder)
+    {
+        $folder = trim($folder, '/');
+
+        return $this->query()->where('folder', '=', $folder)->where('filename','=', $filename)->first();
+    }
+
+    /**
      * @return File
      */
     protected function fileInstance()

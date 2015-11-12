@@ -21,6 +21,15 @@ trait IsFileWithType
     protected $fileTypeObject;
 
     /**
+     * @param File $file
+     * @return null|TypedFileAddon
+     */
+    public static function findByFile(File $file)
+    {
+        return static::where('file_id', '=', $file->id)->first();
+    }
+
+    /**
      * @return FileType
      */
     public function fileType()
@@ -40,5 +49,6 @@ trait IsFileWithType
     {
         return $this->belongsTo(File::class);
     }
+
 
 }

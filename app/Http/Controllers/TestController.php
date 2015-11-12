@@ -39,6 +39,11 @@ class TestController extends Controller
         return "update file";
     }
 
+    /**
+     * Uploads a file.
+     *
+     * @param UploadFileRequest $request
+     */
     public function uploadFile(UploadFileRequest $request)
     {
         $uploader = new FileUploader();
