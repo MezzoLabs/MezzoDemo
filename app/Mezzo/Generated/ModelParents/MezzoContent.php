@@ -49,6 +49,8 @@ abstract class MezzoContent extends BaseModel
     * @var bool
     */
     public $timestamps = true;
+
+
     /**
     * The table associated with the model.
     *
