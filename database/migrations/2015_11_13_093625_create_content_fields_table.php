@@ -14,8 +14,7 @@ class CreateContentFieldsTable extends Migration
     {
         Schema::create('content_fields', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('field_key');
-            $table->string('value_type');
+            $table->integer('name');
             $table->text('value');
 
             $table->integer('content_block_id')->unsigned()->index();

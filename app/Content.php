@@ -2,14 +2,12 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Mezzo\Generated\ModelParents\MezzoContent;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Content extends Model
+class Content extends MezzoContent
 {
     use SoftDeletes;
-
-    use SoftDeletingScope
 
     protected $dates = ['deleted_at'];
 

@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Mezzo\Generated\ModelParents\MezzoContentBlock;
 
-class ContentBlock extends Model
+class ContentBlock extends MezzoContentBlock
 {
     public function fields()
     {

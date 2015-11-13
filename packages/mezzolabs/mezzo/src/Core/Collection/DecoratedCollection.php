@@ -75,6 +75,29 @@ abstract class DecoratedCollection
     }
 
     /**
+     * Push an item onto the end of the collection.
+     *
+     * @param  mixed $value
+     * @return $this
+     */
+    public function push($value)
+    {
+        return $this->collection()->push($value);
+    }
+
+    /**
+     * Synonym for push.
+     *
+     * @param  mixed $value
+     * @return $this
+     */
+    public function add($value)
+    {
+        return $this->push($value);
+    }
+
+
+    /**
      * Get the collection of items as a plain array.
      *
      * @return array
@@ -105,5 +128,28 @@ abstract class DecoratedCollection
     public function diff($items)
     {
         return $this->collection()->diff($items);
+    }
+
+    /**
+     * Determine if an item exists in the collection by key.
+     *
+     * @param  mixed $key
+     * @return bool
+     */
+    public function has($key)
+    {
+        return $this->collection()->has($key);
+    }
+
+    /**
+     * Determine if an item exists in the collection.
+     *
+     * @param  mixed $key
+     * @param  mixed $value
+     * @return bool
+     */
+    public function contains($key, $value = null)
+    {
+        return $this->collection()->contains($key, $value);
     }
 }

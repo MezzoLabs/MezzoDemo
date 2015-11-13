@@ -65,9 +65,10 @@ abstract class MezzoContentBlock extends BaseModel
     * @var array
     */
     protected $rules = [
-        'sort' => "",
-        'type' => "",
-        'options' => ""
+        'sort' => "unique_with: content_blocks, content_id",
+        'type' => "required|between:2,50",
+        'options' => "",
+        'content_id' => "required"
     ];
     /**
     * The attributes that should be hidden for arrays.

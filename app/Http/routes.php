@@ -16,6 +16,9 @@ use App\Tutorial;
 use App\User;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\FileCacheReader;
+use MezzoLabs\Mezzo\Modules\Contents\BlockTypes\ContentBlockTypeRegistrar;
+use MezzoLabs\Mezzo\Modules\Contents\Contracts\ContentBlockTypeContract;
+use MezzoLabs\Mezzo\Modules\Contents\Contracts\ContentFieldTypeContract;
 use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 
@@ -30,8 +33,20 @@ Route::get('random', function () {
     return str_random(16);
 });
 
-Route::get('/test/file', function () {
-   return view('debugfile', ['tutorials' => Tutorial::all()]);
+Route::get('/test/contents', function () {
+    $blockRegistrar = ContentBlockTypeRegistrar::make();
+
+    echo '<ol>';
+    $blockRegistrar->all()->each(function (ContentBlockTypeContract $block) {
+        echo '<li>' . $block->title() . '</li>';
+        echo '<ol>';
+        $block->fields()->each(function (ContentFieldTypeContract $field) {
+            echo '<li>' . $field->name() . ' => ' . get_class($field) . '</li>';
+        });
+
+        echo '</ol>';
+    });
+    echo '</ol>';
 });
 
 Route::post('/test/file', 'TestController@uploadFile');

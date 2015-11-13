@@ -25,6 +25,7 @@ use MezzoLabs\Mezzo\Http\Controllers\Controller;
 use MezzoLabs\Mezzo\Http\Pages\ModulePage;
 use MezzoLabs\Mezzo\Http\Pages\ModulePages;
 use MezzoLabs\Mezzo\Http\Transformers\TransformerRegistrar;
+use MezzoLabs\Mezzo\Modules\Contents\BlockTypes\ContentBlockTypeRegistrar;
 
 abstract class ModuleProvider extends ServiceProvider
 {
@@ -185,10 +186,12 @@ abstract class ModuleProvider extends ServiceProvider
     {
         $abstract = 'modules.' . $this->slug() . '.' . $shortAbstract;
 
-        $this->app->bind($abstract, $concrete, $singleton);
+        $this->app->bind($concrete, $concrete, $singleton);
+        $this->app->alias($concrete, $abstract);
 
-        if ($singleton)
+        if ($singleton) {
             $this->app->singleton($abstract, $concrete);
+        }
 
     }
 
@@ -482,6 +485,16 @@ abstract class ModuleProvider extends ServiceProvider
     protected function registerApiException(callable $callback)
     {
         app(ApiExceptionHandler::class)->register($callback);
+    }
+
+    /**
+     * Register a group of content blocks that will be in the selection of the content builder.
+     *
+     * @param array $contentBlocks
+     */
+    protected function registerContentBlocks(array $contentBlocks)
+    {
+        ContentBlockTypeRegistrar::register($contentBlocks);
     }
 
 }

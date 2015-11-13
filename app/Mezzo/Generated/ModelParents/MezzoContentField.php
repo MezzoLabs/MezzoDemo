@@ -23,7 +23,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 * App\Mezzo\Generated\ModelParents\MezzoContentField
 *
 * @property  integer $id
-* @property  float $field_key
+ * @property  float $name
 * @property  string $value_type
 * @property string $value
 * @property  integer $content_block_id
@@ -64,9 +64,9 @@ abstract class MezzoContentField extends BaseModel
     * @var array
     */
     protected $rules = [
-        'field_key' => "",
-        'value_type' => "",
-        'value' => ""
+        'name' => "required",
+        'value_type' => "required",
+        'value' => "required|min:2"
     ];
     /**
     * The attributes that should be hidden for arrays.
@@ -103,12 +103,12 @@ abstract class MezzoContentField extends BaseModel
     protected $_id;
 
     /**
-    * Attribute annotation property for field_key
+     * Attribute annotation property for name
     *
     * @Mezzo\Attribute(type="NumberInput")
     * @var float            
     */
-    protected $_field_key;
+    protected $_name;
 
     /**
     * Attribute annotation property for value_type

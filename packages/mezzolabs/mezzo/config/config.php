@@ -10,6 +10,7 @@ return [
         \MezzoLabs\Mezzo\Modules\Generator\GeneratorModule::class,
         \MezzoLabs\Mezzo\Modules\DeveloperDashboard\DeveloperDashboardModule::class,
         \MezzoLabs\Mezzo\Modules\Categories\CategoriesModule::class,
+        \MezzoLabs\Mezzo\Modules\Contents\ContentsModule::class,
     ],
 
     "api" => [
