@@ -17,10 +17,12 @@ class CreateContentFieldsTable extends Migration
             $table->integer('field_key');
             $table->string('value_type');
             $table->text('value');
-            $table->timestamps();
 
             $table->integer('content_block_id')->unsigned()->index();
             $table->foreign('content_block_id')->references('id')->on('content_blocks')->onDelete('cascade');
+            
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 

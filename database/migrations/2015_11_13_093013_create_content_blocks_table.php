@@ -17,10 +17,12 @@ class CreateContentBlocksTable extends Migration
             $table->integer('sort');
             $table->string('type');
             $table->text('options');
-            $table->timestamps();
 
             $table->integer('content_id')->unsigned()->index();
             $table->foreign('content_id')->references('id')->on('contents')->onDelete('cascade');
+
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
