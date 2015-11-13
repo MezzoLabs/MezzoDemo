@@ -3,8 +3,6 @@
   "devDependencies": {
     "bootstrap-sass": "^3.3.5",
     "gulp": "^3.9.0",
-    "gulp-angular-templatecache": "^1.8.0",
-    "gulp-ng-register": "0.0.5",
     "laravel-elixir": "^3.4.2"
   }
 }

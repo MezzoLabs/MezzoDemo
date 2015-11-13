@@ -17,7 +17,7 @@ class File extends MezzoFile
     /**
      * @var TypedFileAddon
      */
-    protected $typeAddon;
+    protected $typeAddon = false;
 
 
     /**
@@ -29,6 +29,26 @@ class File extends MezzoFile
     }
 
     /**
+     * @return TypedFileAddon
+     */
+    public function typeAddon()
+    {
+        if ($this->typeAddon === false) {
+            $this->typeAddon = $this->findTypeAddon();
+        }
+
+        return $this->typeAddon;
+    }
+
+    protected function findTypeAddon()
+    {
+        if($this->fileType()->isImage())
+            return ImageFile::findByFile($this);
+
+        return null;
+    }
+
+    /**
      * @return FileType|null
      */
     public function fileType()
@@ -37,14 +57,6 @@ class File extends MezzoFile
             $this->fileType = FileType::find($this->extension);
 
         return $this->fileType;
-    }
-
-    /**
-     * @return TypedFileAddon
-     */
-    public function getTypeAddon()
-    {
-        return $this->typeAddon;
     }
 
     /**
@@ -63,7 +75,8 @@ class File extends MezzoFile
         return $this->drives()->longPath($this->disk, $this->shortPath($useOriginal));
     }
 
-    protected function drives(){
+    protected function drives()
+    {
         return app()->make(DisksManager::class);
     }
 
@@ -72,8 +85,8 @@ class File extends MezzoFile
      */
     public function shortPath($useOriginal = false)
     {
-        $folder = ($useOriginal)? $this->getOriginal('folder') : $this->getAttribute('folder');
-        $filename = ($useOriginal)? $this->getOriginal('filename') : $this->getAttribute('filename');
+        $folder = ($useOriginal) ? $this->getOriginal('folder') : $this->getAttribute('folder');
+        $filename = ($useOriginal) ? $this->getOriginal('filename') : $this->getAttribute('filename');
 
         return $this->drives()->shortPath($folder, $filename);
     }
@@ -82,6 +95,12 @@ class File extends MezzoFile
     {
         return $this->drives()->exists($this->disk, $this->shortPath($useOriginal));
     }
+
+    public function url()
+    {
+        return $this->drives()->url($this->shortPath(), $this->disk);
+    }
+
 
 
 }

@@ -13,6 +13,7 @@ use MezzoLabs\Mezzo\Modules\FileManager\Disk\DiskSynchronization;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\FileUploader;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\Observers\FileObserver;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\FileTypesMapper;
+use MezzoLabs\Mezzo\Modules\FileManager\Http\Transformers\FileTransFormer;
 
 #
 class FileManagerModule extends ModuleProvider
@@ -48,7 +49,10 @@ class FileManagerModule extends ModuleProvider
         File::observe(FileObserver::class);
 
         $this->loadViews();
-        $tutorialReflection = $this->modelReflectionSets->get(Tutorial::class);
+
+        $this->registerTransformers([
+            File::class => FileTransFormer::class
+        ]);
 
         //dd($tutorialReflection->relationships());
     }

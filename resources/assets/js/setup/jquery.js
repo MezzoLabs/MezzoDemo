@@ -1,8 +1,4 @@
-export default () => {
-    $(() => init());
-};
-
-function init(){
+$(() => {
     $('.sidebar-pin').click(function(){
         var sidebarIsPinned = $('body').hasClass('sidebar-pinned');
 
@@ -17,7 +13,6 @@ function init(){
         }
 
     });
-
 
     $('#sidebar').mouseenter(function(){
         $('body').addClass('sidebar-mousein').removeClass('sidebar-mouseout');
@@ -79,4 +74,4 @@ function init(){
 
 
     //$('select').select2(); uncomment for model builder
-}
+});

@@ -34,6 +34,8 @@ Route::get('/test/file', function () {
    return view('debugfile', ['tutorials' => Tutorial::all()]);
 });
 
+Route::post('/test/file', 'TestController@uploadFile');
+
 
 Route::get('/test/relations', function () {
     $reflection = mezzo()->model(\App\CategoryGroup::class, 'eloquent');

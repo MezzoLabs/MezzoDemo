@@ -8,8 +8,10 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Files\File;
 use MezzoLabs\Mezzo\Core\Validation\Validator;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\FileUploadException;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\FileUploadValidationFailedException;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\MaximumFileSizeExceededException;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\MimeTypeNotAllowedException;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\UploadedFileEmptyException;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories\FileRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -37,6 +39,8 @@ class FileUploader
      *
      * @param IlluminateRequest $request
      * @return bool
+     * @throws FileUploadException
+     * @throws UploadedFileEmptyException
      */
     public function uploadInput(IlluminateRequest $request)
     {
@@ -44,6 +48,9 @@ class FileUploader
             'title' => $request->get('title', ''),
             'folder' => $request->get('folder', 'default'),
         ];
+
+        if(!$request->hasFile('file'))
+            throw new UploadedFileEmptyException("There is no file to upload.");
 
         return $this->upload($data, $request->file('file'));
     }
@@ -81,7 +88,7 @@ class FileUploader
         $data->put('info', $this->fileInfoJson($file));
 
         if (!$this->validateData($data))
-            throw new FileUploadException('Validation failed.');
+            throw new FileUploadValidationFailedException($this->lastValidation);
 
         $newFile = $this->repository()->create($data->toArray());
 
@@ -103,17 +110,17 @@ class FileUploader
     public function validateFile(UploadedFile $file)
     {
         if ($file->getClientSize() > $this->maximumFileSize())
-            throw new MaximumFileSizeExceededException();
+            throw new MaximumFileSizeExceededException($file->getClientSize(), $this->maximumFileSize());
 
         if (!$this->mimeTypeAllowed($file->getClientMimeType()))
-            throw new MimeTypeNotAllowedException();
+            throw new MimeTypeNotAllowedException($file->getClientMimeType());
 
         return true;
     }
 
     public function maximumFileSize()
     {
-        return 3 * 1000 * 1000;
+        return 10 * 1000 * 1000;
     }
 
     /**

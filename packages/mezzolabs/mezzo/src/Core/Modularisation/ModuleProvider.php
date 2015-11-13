@@ -14,6 +14,7 @@ use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflections;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSets;
+use MezzoLabs\Mezzo\Core\Routing\ApiExceptionHandler;
 use MezzoLabs\Mezzo\Core\Routing\ModuleRouter;
 use MezzoLabs\Mezzo\Exceptions\DirectoryNotFound;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
@@ -471,6 +472,16 @@ abstract class ModuleProvider extends ServiceProvider
     {
         app(TransformerRegistrar::class)->addTransformers($array);
 
+    }
+
+    /**
+     * Register a Exception and use your own callback to handle it.
+     *
+     * @param callable $callback
+     */
+    protected function registerApiException(callable $callback)
+    {
+        app(ApiExceptionHandler::class)->register($callback);
     }
 
 }
