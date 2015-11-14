@@ -41,4 +41,11 @@ interface ContentBlockTypeContract
      * @return ContentFieldTypeCollection
      */
     public function fields();
+
+    /**
+     * Create the evaluated view contents for this block.
+     *
+     * @return string
+     */
+    public function renderInputs();
 }

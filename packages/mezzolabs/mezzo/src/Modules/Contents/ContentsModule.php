@@ -38,6 +38,8 @@ class ContentsModule extends ModuleProvider
      */
     public function ready()
     {
+        $this->loadViews();
+
         $this->registerBlock([
             TextOnly::class
         ]);
@@ -46,7 +48,7 @@ class ContentsModule extends ModuleProvider
     /**
      * @return ContentBlockTypeRegistrar
      */
-    public function blockRegistrar()
+    public function getBlockRegistrar()
     {
         return app()->make(ContentBlockTypeRegistrar::class);
     }
@@ -56,6 +58,6 @@ class ContentsModule extends ModuleProvider
      */
     public function registerBlock($contentBlock)
     {
-        $this->blockRegistrar()->register($contentBlock);
+        $this->getBlockRegistrar()->register($contentBlock);
     }
 }

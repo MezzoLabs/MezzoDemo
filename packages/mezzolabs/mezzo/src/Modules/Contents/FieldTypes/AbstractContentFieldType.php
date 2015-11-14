@@ -107,4 +107,9 @@ abstract class AbstractContentFieldType implements ContentFieldTypeContract
     {
         return $this->name;
     }
+
+    public function title()
+    {
+        return space_case($this->name);
+    }
 }

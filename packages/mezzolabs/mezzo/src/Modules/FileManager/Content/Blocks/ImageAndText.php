@@ -21,4 +21,14 @@ class ImageAndText extends AbstractContentBlockType
         $this->addField(new ImageField('image'));
     }
 
+    /**
+     * Create the evaluated view contents for this block.
+     *
+     * @return string
+     */
+    public function renderInputs()
+    {
+        return $this->makeView('modules.file-manager::content_blocks.image_and_text');
+
+    }
 }

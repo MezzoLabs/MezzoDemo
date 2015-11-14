@@ -18,4 +18,16 @@ class TextOnly extends AbstractContentBlockType
     {
         $this->addField(new TextField('text'));
     }
+
+    /**
+     * Create the evaluated view contents for this block.
+     *
+     * @return string
+     */
+    public function renderInputs()
+    {
+        return $this->makeView('modules.contents::blocks.text_only');
+    }
+
+
 }

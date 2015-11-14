@@ -80,7 +80,7 @@ class ContentBlockTypeRegistrar
      */
     public function all()
     {
-        return $this->blocks;
+        return $this->blocks->collection();
     }
 
     /**

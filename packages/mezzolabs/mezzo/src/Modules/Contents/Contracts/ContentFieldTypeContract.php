@@ -17,6 +17,13 @@ interface ContentFieldTypeContract
     public function name();
 
     /**
+     * The title that will be displayed in the dashboard.
+     *
+     * @return string
+     */
+    public function title();
+
+    /**
      * Returns the input type of this content field.
      *
      * @return InputType

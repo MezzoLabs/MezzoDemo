@@ -70,4 +70,19 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
         return $this->fields;
     }
 
+    /**
+     * Creates a view with some variables filled in.
+     *
+     * @param $viewKey
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\View
+     */
+    protected function makeView($viewKey, $mergeData = [])
+    {
+        return view()->make($viewKey, [
+            'block' => $this,
+            'fields' => $this->fields()
+        ], $mergeData);
+    }
+
 }
