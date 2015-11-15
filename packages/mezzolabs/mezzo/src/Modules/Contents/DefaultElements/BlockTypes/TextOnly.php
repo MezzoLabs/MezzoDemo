@@ -4,8 +4,8 @@
 namespace MezzoLabs\Mezzo\Modules\Contents\DefaultElements\BlockTypes;
 
 
-use MezzoLabs\Mezzo\Modules\Contents\BlockTypes\AbstractContentBlockType;
 use MezzoLabs\Mezzo\Modules\Contents\DefaultElements\FieldTypes\TextField;
+use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\AbstractContentBlockType;
 
 class TextOnly extends AbstractContentBlockType
 {

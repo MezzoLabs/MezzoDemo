@@ -13,9 +13,3 @@
 <h3>Debug Contents</h3>
 
 {{ Form::open() }}
-@foreach($blocks as $block)
-    <div class="block-{{ $block->key() }}">
-        <h3>{{ $block->title() }}</h3>
-        {!! $block->renderInputs() !!}
-    </div>
-@endforeach

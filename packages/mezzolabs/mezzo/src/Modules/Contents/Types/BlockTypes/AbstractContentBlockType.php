@@ -1,14 +1,14 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Modules\Contents\BlockTypes;
+namespace MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes;
 
 
 use MezzoLabs\Mezzo\Modules\Contents\Contracts\ContentBlockTypeContract;
 use MezzoLabs\Mezzo\Modules\Contents\Contracts\ContentFieldTypeContract;
 use MezzoLabs\Mezzo\Modules\Contents\Exceptions\ContentBlockException;
 use MezzoLabs\Mezzo\Modules\Contents\Exceptions\NoKeyForContentBlockException;
-use MezzoLabs\Mezzo\Modules\Contents\FieldTypes\ContentFieldTypeCollection;
+use MezzoLabs\Mezzo\Modules\Contents\Types\FieldTypes\ContentFieldTypeCollection;
 
 abstract class AbstractContentBlockType implements ContentBlockTypeContract
 {
@@ -113,9 +113,25 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
     private function formName()
     {
         if (empty($this->formName))
-            $this->formName = $this->key() . '.' . str_random(5);
+            $this->formName = str_random(5);
 
         return $this->formName;
+    }
+
+    /**
+     * Returns the rules of all fields
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        $rules = [];
+
+        $this->fields()->each(function (ContentFieldTypeContract $field) use (&$rules) {
+            $rules[$field->name()] = $field->rulesString();
+        });
+
+        return $rules;
     }
 
 }

@@ -107,7 +107,6 @@ class CockpitRouter
         $pageUri = mezzo()->uri()->toModulePage($page);
         $action = $this->shortenAction($page->qualifiedActionName());
 
-
         $this->get($pageUri,
             ['uses' => mezzo()->makeCockpit()->startAction(), 'as' => $page->slug()]
         );
@@ -161,5 +160,55 @@ class CockpitRouter
     {
         return $this->laravelRouter()->get($uri, $action);
     }
+
+    /**
+     * Register a new POST route with the router.
+     *
+     * @param  string $uri
+     * @param  \Closure|array|string $action
+     * @return \Illuminate\Routing\Route
+     */
+    public function post($uri, $action)
+    {
+        return $this->laravelRouter()->post($uri, $action);
+    }
+
+    /**
+     * Register a new PUT route with the router.
+     *
+     * @param  string $uri
+     * @param  \Closure|array|string $action
+     * @return \Illuminate\Routing\Route
+     */
+    public function put($uri, $action)
+    {
+        return $this->laravelRouter()->put($uri, $action);
+    }
+
+    /**
+     * Register a new PATCH route with the router.
+     *
+     * @param  string $uri
+     * @param  \Closure|array|string $action
+     * @return \Illuminate\Routing\Route
+     */
+    public function patch($uri, $action)
+    {
+        return $this->laravelRouter()->patch($uri, $action);
+    }
+
+    /**
+     * Register a new DELETE route with the router.
+     *
+     * @param  string $uri
+     * @param  \Closure|array|string $action
+     * @return \Illuminate\Routing\Route
+     */
+    public function delete($uri, $action)
+    {
+        return $this->laravelRouter()->delete($uri, $action);
+    }
+
+
 
 }

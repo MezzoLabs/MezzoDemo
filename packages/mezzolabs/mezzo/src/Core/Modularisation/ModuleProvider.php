@@ -25,7 +25,7 @@ use MezzoLabs\Mezzo\Http\Controllers\Controller;
 use MezzoLabs\Mezzo\Http\Pages\ModulePage;
 use MezzoLabs\Mezzo\Http\Pages\ModulePages;
 use MezzoLabs\Mezzo\Http\Transformers\TransformerRegistrar;
-use MezzoLabs\Mezzo\Modules\Contents\BlockTypes\ContentBlockTypeRegistrar;
+use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar;
 
 abstract class ModuleProvider extends ServiceProvider
 {
@@ -451,10 +451,10 @@ abstract class ModuleProvider extends ServiceProvider
      */
     protected function loadViews()
     {
-        if (!is_dir($this->path() . '/Views'))
-            throw new DirectoryNotFound($this->path() . '/Views');
+        if (!is_dir($this->path() . '/Resources/views'))
+            throw new DirectoryNotFound($this->path() . '/Resources/views');
 
-        $this->loadViewsFrom($this->path() . '/Views', 'modules.' . $this->slug());
+        $this->loadViewsFrom($this->path() . '/Resources/views', 'modules.' . $this->slug());
     }
 
     /**

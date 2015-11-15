@@ -24,7 +24,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 *
 * @property  integer $id
 * @property  float $sort
-* @property  string $type
+ * @property  string $class
 * @property string $options
 * @property  integer $content_id
 * @property  string $deleted_at
@@ -66,7 +66,7 @@ abstract class MezzoContentBlock extends BaseModel
     */
     protected $rules = [
         'sort' => "unique_with: content_blocks, content_id",
-        'type' => "required|between:2,50",
+        'class' => "required|between:2,50",
         'options' => "",
         'content_id' => "required"
     ];
@@ -113,12 +113,12 @@ abstract class MezzoContentBlock extends BaseModel
     protected $_sort;
 
     /**
-    * Attribute annotation property for type
+     * Attribute annotation property for class
     *
     * @Mezzo\Attribute(type="TextInput")
     * @var string            
     */
-    protected $_type;
+    protected $_class;
 
     /**
     * Attribute annotation property for options

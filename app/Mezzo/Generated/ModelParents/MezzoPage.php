@@ -2,9 +2,9 @@
 
 namespace App\Mezzo\Generated\ModelParents;
 
-use App\Mezzo\BaseModel;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
+use MezzoLabs\Mezzo\Core\ThirdParties\NestedSet\MezzoNestedSetNode;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
 /**
@@ -32,7 +32,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  * @property  string $deleted_at
  * @property EloquentCollection $content
  */
-abstract class MezzoPage extends BaseModel
+abstract class MezzoPage extends MezzoNestedSetNode
 {
     use IsMezzoModel;
 
@@ -59,8 +59,8 @@ abstract class MezzoPage extends BaseModel
      * @var array
      */
     protected $rules = [
-        'title' => "",
-        'teaser' => "",
+        'title' => "required|between:3,255",
+        'teaser' => "between:5,2500",
         'slug' => ""
     ];
 
@@ -79,7 +79,7 @@ abstract class MezzoPage extends BaseModel
      * @var array
      */
     protected $fillable = [
-
+        "title", "teaser", "slug"
     ];
 
     /**
@@ -180,7 +180,7 @@ abstract class MezzoPage extends BaseModel
      * @Mezzo\Relations\OneToOne
      * @Mezzo\Relations\From(table="pages", primaryKey="id", naming="content")
      * @Mezzo\Relations\To(table="contents", primaryKey="id", naming="page")
-     * @Mezzo\Relations\JoinColumn(table="contents", column="id")
+     * @Mezzo\Relations\JoinColumn(table="pages", column="content_id")
      */
     protected $_content;
 

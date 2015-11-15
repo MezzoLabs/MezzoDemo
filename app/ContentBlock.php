@@ -2,9 +2,9 @@
 
 namespace App;
 
-use App\Mezzo\Generated\ModelParents\MezzoContentBlock;
+use MezzoLabs\Mezzo\Modules\Contents\Domain\Models\ContentBlock as ContentsModuleContentBlock;
 
-class ContentBlock extends MezzoContentBlock
+class ContentBlock extends ContentsModuleContentBlock
 {
     public function fields()
     {

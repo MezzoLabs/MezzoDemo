@@ -21,7 +21,7 @@ class PagesModule extends ModuleProvider
      */
     public function register()
     {
-
+        $this->loadViews();
     }
 
     /**

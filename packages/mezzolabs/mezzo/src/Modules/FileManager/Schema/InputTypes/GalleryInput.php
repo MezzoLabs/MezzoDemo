@@ -6,7 +6,7 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Schema\InputTypes;
 
 use App\ImageFile;
 
-class ImageInput extends FileInput
+class GalleryInput extends FilesInput
 {
     protected $related = ImageFile::class;
 }

@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use MezzoLabs\Mezzo\Modules\Pages\Domain\Models\Page as PagesModulePage;
 
-class Page extends Model
+class Page extends PagesModulePage
 {
     public function content()
     {

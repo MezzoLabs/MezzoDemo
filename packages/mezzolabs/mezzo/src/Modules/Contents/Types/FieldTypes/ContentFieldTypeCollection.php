@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Modules\Contents\FieldTypes;
+namespace MezzoLabs\Mezzo\Modules\Contents\Types\FieldTypes;
 
 
 use MezzoLabs\Mezzo\Core\Collection\StrictCollection;

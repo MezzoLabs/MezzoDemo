@@ -10,8 +10,8 @@ use App\ContentField;
 use App\Tutorial;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Modules\Contents\BlockTypes\ContentBlockTypeRegistrar;
 use MezzoLabs\Mezzo\Modules\Contents\DefaultElements\BlockTypes\TextOnly;
+use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar;
 
 class ContentsModule extends ModuleProvider
 {

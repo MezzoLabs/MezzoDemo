@@ -16,7 +16,7 @@ class CreateContentBlocksTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('sort');
-            $table->string('type');
+            $table->string('class');
             $table->text('options');
 
             $table->integer('content_id')->unsigned()->index();

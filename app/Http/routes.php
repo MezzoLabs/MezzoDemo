@@ -16,7 +16,7 @@ use App\Tutorial;
 use App\User;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\FileCacheReader;
-use MezzoLabs\Mezzo\Modules\Contents\BlockTypes\ContentBlockTypeRegistrar;
+use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar;
 use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 

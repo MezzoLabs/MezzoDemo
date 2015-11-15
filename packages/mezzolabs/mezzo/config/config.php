@@ -4,6 +4,7 @@ return [
     "hello" => "there",
 
     "moduleProviders" => [
+        \MezzoLabs\Mezzo\Modules\Pages\PagesModule::class,
         \MezzoLabs\Mezzo\Modules\FileManager\FileManagerModule::class,
         \MezzoLabs\Mezzo\Modules\Sample\SampleModule::class,
         \MezzoLabs\Mezzo\Modules\User\UserModule::class,

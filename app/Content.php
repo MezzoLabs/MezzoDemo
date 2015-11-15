@@ -2,10 +2,10 @@
 
 namespace App;
 
-use App\Mezzo\Generated\ModelParents\MezzoContent;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use MezzoLabs\Mezzo\Modules\Contents\Domain\Models\Content as ContendsModuleContent;
 
-class Content extends MezzoContent
+class Content extends ContendsModuleContent
 {
     use SoftDeletes;
 

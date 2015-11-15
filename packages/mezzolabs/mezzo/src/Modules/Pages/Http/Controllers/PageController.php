@@ -5,11 +5,23 @@ namespace MezzoLabs\Mezzo\Modules\Pages\Http\Controllers;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\ResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
+use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar;
 use MezzoLabs\Mezzo\Modules\Pages\Http\Pages\CreatePagePage;
 use MezzoLabs\Mezzo\Modules\Pages\Http\Pages\IndexPagePage;
+use StorePageRequest;
 
 class PageController extends CockpitResourceController
 {
+    protected function defaultData()
+    {
+        $blockRegistrar = ContentBlockTypeRegistrar::make();
+
+        return [
+            'blocks' => $blockRegistrar->all()
+        ];
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -48,5 +60,11 @@ class PageController extends CockpitResourceController
     public function edit(ResourceRequest $request, $id)
     {
         // TODO: Implement edit() method.
+    }
+
+    public function store(StorePageRequest $request)
+    {
+
+
     }
 }

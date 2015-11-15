@@ -39,6 +39,11 @@ interface ContentFieldTypeContract
     public function options();
 
     /**
+     * @return string
+     */
+    public function rulesString();
+
+    /**
      * Check if this field has to be filled out before a block can be saved.
      *
      * @return boolean

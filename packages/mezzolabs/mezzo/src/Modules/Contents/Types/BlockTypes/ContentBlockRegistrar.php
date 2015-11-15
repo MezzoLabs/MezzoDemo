@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Modules\Contents\BlockTypes;
+namespace MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes;
 
 
 use MezzoLabs\Mezzo\Core\Helpers\Parameter;

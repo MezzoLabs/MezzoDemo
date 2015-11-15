@@ -8,6 +8,12 @@ mezzo()->module('Pages')->generateRoutes();
 
 module_route('Pages', [], function (Router $router, ApiRouter $api, CockpitRouter $cockpit) {
     $api->resource('Page');
+
+    $cockpit->post('pages/page', [
+        'uses' => 'Controllers\PageController@store',
+        'as' => 'store_page'
+    ]);
+
 });
 
 

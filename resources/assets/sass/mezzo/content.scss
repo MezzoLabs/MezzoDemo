@@ -4,6 +4,14 @@
   min-height: 100%;
 }
 
+.has-errors #content-container {
+  padding-top: 0px;
+}
+
+#errors-container {
+  padding-top: $topbar-height;
+}
+
 #content-main{
 
 }

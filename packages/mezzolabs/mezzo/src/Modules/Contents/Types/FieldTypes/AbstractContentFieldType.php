@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Modules\Contents\FieldTypes;
+namespace MezzoLabs\Mezzo\Modules\Contents\Types\FieldTypes;
 
 
 use Illuminate\Support\Collection;
@@ -34,6 +34,11 @@ abstract class AbstractContentFieldType implements ContentFieldTypeContract
     private $name;
 
     /**
+     * @var string
+     */
+    protected $rulesString = "";
+
+    /**
      * Create a new content field that will be visible inside a content block.
      *
      * @param $name
@@ -42,6 +47,10 @@ abstract class AbstractContentFieldType implements ContentFieldTypeContract
     public function __construct($name, $options = [])
     {
         $this->options = new Collection($options);
+
+        if ($this->options->has('rules'))
+            $this->rulesString = $this->options->get('rules');
+
         $this->name = $name;
     }
 
@@ -95,7 +104,8 @@ abstract class AbstractContentFieldType implements ContentFieldTypeContract
      */
     public function isRequired()
     {
-        return $this->options()->get('required', true);
+        $rules = explode('|', $this->rulesString);
+        return in_array('required', $rules);
     }
 
     /**
@@ -111,5 +121,13 @@ abstract class AbstractContentFieldType implements ContentFieldTypeContract
     public function title()
     {
         return space_case($this->name);
+    }
+
+    /**
+     * @return string
+     */
+    public function rulesString()
+    {
+        return $this->rulesString;
     }
 }

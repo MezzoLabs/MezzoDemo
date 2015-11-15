@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Kalnoy\Nestedset\NestedSet;
 
 class CreatePagesTable extends Migration
 {
@@ -19,6 +20,8 @@ class CreatePagesTable extends Migration
             $table->string('slug')->unique();
             $table->integer('content_id')->unsigned()->index();
             $table->foreign('content_id')->references('id')->on('contents');
+
+            NestedSet::columns($table);
 
             $table->timestamps();
             $table->softDeletes();

@@ -4,7 +4,7 @@
 namespace MezzoLabs\Mezzo\Modules\Contents\Contracts;
 
 
-use MezzoLabs\Mezzo\Modules\Contents\FieldTypes\ContentFieldTypeCollection;
+use MezzoLabs\Mezzo\Modules\Contents\Types\FieldTypes\ContentFieldTypeCollection;
 
 interface ContentBlockTypeContract
 {
@@ -64,4 +64,11 @@ interface ContentBlockTypeContract
      * @return string
      */
     public function optionInputName($optionName);
+
+    /**
+     * Returns the rules of all fields
+     *
+     * @return array
+     */
+    public function rules();
 }
