@@ -31,4 +31,6 @@ class ImageAndText extends AbstractContentBlockType
         return $this->makeView('modules.file-manager::content_blocks.image_and_text');
 
     }
+
+
 }

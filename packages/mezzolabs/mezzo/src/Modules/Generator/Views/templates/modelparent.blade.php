@@ -104,7 +104,7 @@ abstract class {{ $parent->name() }} extends BaseModel
 
 @foreach($parent->relationSides() as $relationSide)
     /**
-    * Relation annotation property for {{ $relationSide->name() }}
+    * Relation annotation property for {{ $relationSide->naming() }}
     {!! $annotation->relation($relationSide) !!}
     */
     protected $_{{ $relationSide->naming() }};

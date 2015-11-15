@@ -15,4 +15,9 @@ class Content extends MezzoContent
     {
         return $this->hasMany(ContentBlock::class, 'content_id', 'id');
     }
+
+    public function page()
+    {
+        return $this->hasOne(Page::class, 'content_id', 'id');
+    }
 }

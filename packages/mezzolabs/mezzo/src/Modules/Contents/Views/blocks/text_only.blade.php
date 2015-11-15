@@ -1,4 +1,4 @@
 <div class="form-group">
     <label>{{ $fields['text']->title() }}</label>
-    <textarea class="form-control"></textarea>
+    <textarea name="{{ $block->inputName('text') }}" class="form-control"></textarea>
 </div>

@@ -19,6 +19,8 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
      */
     protected $fields;
 
+    private $formName = "";
+
     /**
      * Returns the unique key of this content block.
      * @return string
@@ -46,6 +48,7 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
      * Adds a field to the schema of the content block.
      *
      * @param ContentFieldTypeContract $fieldType
+     * @throws ContentBlockException
      */
     public function addField(ContentFieldTypeContract $fieldType)
     {
@@ -83,6 +86,36 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
             'block' => $this,
             'fields' => $this->fields()
         ], $mergeData);
+    }
+
+    /**
+     * The name attribute that represents a content field in the form array.
+     *
+     * @param $fieldName
+     * @return string
+     */
+    public function inputName($fieldName)
+    {
+        return "blocks[" . $this->formName() . "][fields][" . $fieldName . "]";
+    }
+
+    /**
+     * The name attribute that represents a content field in the form array.
+     *
+     * @param $optionName
+     * @return string
+     */
+    public function optionInputName($optionName)
+    {
+        return "blocks[" . $this->formName() . "][options][" . $optionName . "]";
+    }
+
+    private function formName()
+    {
+        if (empty($this->formName))
+            $this->formName = $this->key() . '.' . str_random(5);
+
+        return $this->formName;
     }
 
 }

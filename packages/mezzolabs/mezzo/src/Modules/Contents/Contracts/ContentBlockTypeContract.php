@@ -48,4 +48,20 @@ interface ContentBlockTypeContract
      * @return string
      */
     public function renderInputs();
+
+    /**
+     * The name attribute that represents a content field in the form array.
+     *
+     * @param $fieldName
+     * @return string
+     */
+    public function inputName($fieldName);
+
+    /**
+     * The name attribute that represents a content field in the form array.
+     *
+     * @param $optionName
+     * @return string
+     */
+    public function optionInputName($optionName);
 }

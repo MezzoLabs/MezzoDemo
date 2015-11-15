@@ -93,6 +93,7 @@ class RelationSide
             return $this->relation->joinTable() === $this->table;
     }
 
+
     /**
      * @return bool
      */
