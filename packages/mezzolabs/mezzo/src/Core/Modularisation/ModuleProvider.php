@@ -451,10 +451,10 @@ abstract class ModuleProvider extends ServiceProvider
      */
     protected function loadViews()
     {
-        if (!is_dir($this->path() . '/Resources/views'))
-            throw new DirectoryNotFound($this->path() . '/Resources/views');
+        if (!is_dir($this->path() . '/Resources/Views'))
+            throw new DirectoryNotFound($this->path() . '/Resources/Views');
 
-        $this->loadViewsFrom($this->path() . '/Resources/views', 'modules.' . $this->slug());
+        $this->loadViewsFrom($this->path() . '/Resources/Views', 'modules.' . $this->slug());
     }
 
     /**
