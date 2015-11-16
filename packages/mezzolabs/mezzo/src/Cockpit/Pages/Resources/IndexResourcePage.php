@@ -12,5 +12,6 @@ abstract class IndexResourcePage extends ResourcePage
 
     protected $options = [
         'visibleInNavigation' => true,
+        'appendToUri' => ''
     ];
 }

@@ -79,7 +79,7 @@ abstract class MezzoPage extends MezzoNestedSetNode
      * @var array
      */
     protected $fillable = [
-        "title", "teaser", "slug"
+        "title", "teaser", "slug", "content_id"
     ];
 
     /**
@@ -162,6 +162,30 @@ abstract class MezzoPage extends MezzoNestedSetNode
      * @var string
      */
     protected $_deleted_at;
+
+    /**
+     * Attribute annotation property for _lft
+     *
+     * @Mezzo\Attribute(type="NumberInput")
+     * @var float
+     */
+    protected $__lft;
+
+    /**
+     * Attribute annotation property for _rgt
+     *
+     * @Mezzo\Attribute(type="NumberInput")
+     * @var float
+     */
+    protected $__rgt;
+
+    /**
+     * Attribute annotation property for parent_id
+     *
+     * @Mezzo\Attribute(type="NumberInput")
+     * @var float
+     */
+    protected $_parent_id;
 
 
     /*

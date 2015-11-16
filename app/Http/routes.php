@@ -31,7 +31,9 @@ Route::get('random', function () {
 });
 
 Route::get('/test/contents', function () {
-    mezzo_dd();
+    $repo = app()->make(\MezzoLabs\Mezzo\Modules\Contents\Domain\Repositories\ContentRepository::class);
+
+    $repo->updateRecentText(5);
 });
 
 Route::post('/test/file', 'TestController@uploadFile');

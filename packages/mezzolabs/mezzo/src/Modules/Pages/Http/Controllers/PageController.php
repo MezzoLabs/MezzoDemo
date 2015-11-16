@@ -7,6 +7,7 @@ use MezzoLabs\Mezzo\Http\Requests\Resource\ResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
 use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar;
 use MezzoLabs\Mezzo\Modules\Pages\Http\Pages\CreatePagePage;
+use MezzoLabs\Mezzo\Modules\Pages\Http\Pages\EditPagePage;
 use MezzoLabs\Mezzo\Modules\Pages\Http\Pages\IndexPagePage;
 use StorePageRequest;
 
@@ -57,16 +58,17 @@ class PageController extends CockpitResourceController
      * @param  int $id
      * @return ModuleResponse
      */
-    public function edit(ResourceRequest $request, $id)
+    public function edit(ResourceRequest $request, $id = null)
     {
-        // TODO: Implement edit() method.
+        return $this->page(EditPagePage::class);
     }
 
     public function store(StorePageRequest $request)
     {
-        $this->repository()->create($request->all();)
+        $data = $request->all();
+        $page = $this->repository()->create($data);
 
-
+        return $this->redirectToPage(EditPagePage::class, ['id' => $page->getAttribute('id')]);
     }
 
 

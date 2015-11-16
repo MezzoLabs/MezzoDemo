@@ -23,6 +23,10 @@ class ContentBlockRepository extends ModelRepository
         $attributesData->forget(['fields']);
         $attributesData->put('options', json_encode($optionsArray));
 
+        if (empty($attributesData->get('name')))
+            $attributesData->put('name', str_random());
+
+
         $block = parent::create($attributesData->toArray());
 
         foreach ($fieldValues as $name => $value) {

@@ -123,4 +123,25 @@ abstract class ResourcePage extends ModulePage
         return true;
     }
 
+
+    /**
+     * @return string
+     */
+    public function slug()
+    {
+        $slug = parent::slug();
+
+        $slugParts = explode('.', $slug);
+
+        if (!in_array(strtolower($slugParts[0]), static::$types)) {
+            return $slug;
+        }
+
+        $slugParts[] = $slugParts[0];
+        unset($slugParts[0]);
+
+        return implode('.', $slugParts);
+    }
+
+
 }

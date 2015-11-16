@@ -75,7 +75,7 @@ class AttributeRenderer extends AttributeSchemaRenderer
         if(!$addPleaseSelect)
             return $collection->asList();
 
-        return $collection->asList()->merge([null=>'Please Select']);
+        return (new Collection($collection->asList()))->merge([null => 'Please Select']);
 
     }
 

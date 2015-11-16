@@ -92,23 +92,27 @@ class CockpitRouter
     {
         foreach ($pageTypes as $pageType) {
             $pageName = ucfirst($pageType) . ucfirst($modelName) . 'Page';
-            $this->page($pageName);
+            $this->page($pageName, $needsId);
         }
     }
 
     /**
      * @param $pageName
+     * @param bool $needsId
      * @throws \MezzoLabs\Mezzo\Exceptions\InvalidArgumentException
+     * @throws \MezzoLabs\Mezzo\Exceptions\UnexpectedException
      */
-    public function page($pageName)
+    public function page($pageName, $needsId = false)
     {
         $page = $this->module->makePage($pageName);
 
         $pageUri = mezzo()->uri()->toModulePage($page);
         $action = $this->shortenAction($page->qualifiedActionName());
 
-        $this->get($pageUri,
-            ['uses' => mezzo()->makeCockpit()->startAction(), 'as' => $page->slug()]
+        $cockpitAction = ($page->isRenderedByFrontend()) ? mezzo()->makeCockpit()->startAction() : $action;
+
+        $this->get($pageUri . $page->options('appendToUri'),
+            ['uses' => $cockpitAction, 'as' => $page->slug()]
         );
 
         /*

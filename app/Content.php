@@ -9,6 +9,8 @@ class Content extends ContendsModuleContent
 {
     use SoftDeletes;
 
+    protected $with = ['blocks'];
+
     protected $dates = ['deleted_at'];
 
     public function blocks()
@@ -20,4 +22,6 @@ class Content extends ContendsModuleContent
     {
         return $this->hasOne(Page::class, 'content_id', 'id');
     }
+
+
 }

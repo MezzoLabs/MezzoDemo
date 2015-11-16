@@ -6,6 +6,8 @@ use MezzoLabs\Mezzo\Modules\Contents\Domain\Models\ContentBlock as ContentsModul
 
 class ContentBlock extends ContentsModuleContentBlock
 {
+    protected $with = ['fields'];
+
     public function fields()
     {
         return $this->hasMany(ContentField::class, 'content_block_id', 'id');

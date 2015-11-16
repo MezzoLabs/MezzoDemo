@@ -122,6 +122,14 @@ abstract class MezzoContentBlock extends BaseModel
     protected $_class;
 
     /**
+     * Attribute annotation property for name
+     *
+     * @Mezzo\Attribute(type="TextInput")
+     * @var string
+     */
+    protected $_name;
+
+    /**
     * Attribute annotation property for options
     *
     * @Mezzo\Attribute(type="TextArea")

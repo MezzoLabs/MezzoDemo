@@ -21,8 +21,32 @@ class ContentRepository extends ModelRepository
             $this->blockRepository()->create($blockData);
         }
 
+        $this->updateRecentText($content->id);
+
         return $content;
     }
+
+    public function updateRecentText($content_id)
+    {
+        $content = $this->findOrFail($content_id);
+
+        $content->recent_text = $content->text();
+
+        $content->save();
+
+        return $content;
+    }
+
+    /**
+     * @param $id
+     * @param array $columns
+     * @return \App\Content
+     */
+    public function findOrFail($id, $columns = array('*'))
+    {
+        return parent::findOrFail($id, $columns);
+    }
+
 
     /**
      * Get an instance of the repository that handles the content blocks.

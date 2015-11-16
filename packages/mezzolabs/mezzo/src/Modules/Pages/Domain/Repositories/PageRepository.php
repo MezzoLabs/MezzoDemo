@@ -24,7 +24,7 @@ class PageRepository extends ModelRepository
 
         $attributesData->put('content_id', $content->id);
 
-        $page = parent::create($attributesData->toArray());
+        return parent::create($attributesData->toArray());
     }
 
     /**

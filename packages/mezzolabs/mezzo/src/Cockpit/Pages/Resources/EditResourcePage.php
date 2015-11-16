@@ -10,6 +10,7 @@ class EditResourcePage extends ResourcePage
 
     protected $options = [
         'visibleInNavigation' => false,
+        'appendToUri' => '/{id}'
     ];
 
     protected $view = 'cockpit::pages.resources.edit';

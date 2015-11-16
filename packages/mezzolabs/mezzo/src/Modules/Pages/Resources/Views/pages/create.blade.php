@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="wrapper">
-        {!! cockpit_form()->open(['route' => 'cockpit::store_page', 'method' => 'POST']) !!}
+        {!! cockpit_form()->open(['route' => 'cockpit::page.store', 'method' => 'POST']) !!}
         <div class="panel panel-bordered">
             <div class="panel-heading">
                 <h3>New {{ $model->name() }}</h3>

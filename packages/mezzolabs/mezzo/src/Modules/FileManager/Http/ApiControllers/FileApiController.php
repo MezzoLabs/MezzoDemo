@@ -14,16 +14,13 @@ class FileApiController extends ApiResourceController
     public function upload(UploadFileRequest $request)
     {
         try {
-            $uploaded = $this->uploader()->uploadInput($request);
+            $file = $this->uploader()->uploadInput($request);
 
         } catch (FileUploadException $exception) {
             throw new BadRequestHttpException($exception->getMessage());
         }
 
-        if (!$uploaded)
-            throw new BadRequestHttpException('File upload failed unexpected.');
-
-        return $this->response()->result(1);
+        return $this->response()->item($file, $this->bestModelTransformer());
     }
 
     /**

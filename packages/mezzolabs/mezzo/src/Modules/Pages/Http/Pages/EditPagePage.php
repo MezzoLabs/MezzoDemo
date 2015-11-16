@@ -10,4 +10,10 @@ class EditPagePage extends EditResourcePage
 {
     protected $model = Page::class;
 
+    protected $options = [
+        'visibleInNavigation' => false,
+        'renderedByFrontend' => false,
+        'appendToUri' => '/{id}'
+    ];
+
 }

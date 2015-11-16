@@ -69,6 +69,13 @@ class ModuleGroup
         return $this->modules;
     }
 
+    public function visibleModules()
+    {
+        return $this->modules->filter(function (ModuleProvider $module) {
+            return $module->isVisible();
+        });
+    }
+
     /**
      * Add a module to this group.
      *

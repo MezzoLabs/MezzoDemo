@@ -11,7 +11,7 @@ module_route('Pages', [], function (Router $router, ApiRouter $api, CockpitRoute
 
     $cockpit->post('pages/page', [
         'uses' => 'Controllers\PageController@store',
-        'as' => 'store_page'
+        'as' => 'page.store'
     ]);
 
 });

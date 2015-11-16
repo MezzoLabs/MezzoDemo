@@ -497,4 +497,12 @@ abstract class ModuleProvider extends ServiceProvider
         ContentBlockTypeRegistrar::register($contentBlocks);
     }
 
+    /**
+     * @return boolean
+     */
+    public function isVisible()
+    {
+        return $this->options()->get('visible', true);
+    }
+
 }

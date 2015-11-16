@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Modules\Contents\Domain\Models;
 
 use App\Mezzo\Generated\ModelParents\MezzoContentBlock;
 use MezzoLabs\Mezzo\Modules\Contents\Contracts\ContentBlockTypeContract;
+use MezzoLabs\Mezzo\Modules\Contents\Contracts\ContentFieldTypeContract;
 
 abstract class ContentBlock extends MezzoContentBlock
 {
@@ -63,5 +64,30 @@ abstract class ContentBlock extends MezzoContentBlock
         $block->setType($contentBlockType);
 
         return $block;
+    }
+
+    /**
+     * @param $name
+     * @return ContentFieldTypeContract|null
+     */
+    public function typeOfField($name)
+    {
+        return $this->getType()->fields()->get($name, null);
+    }
+
+
+    public function text()
+    {
+        $textArray = [];
+        $this->fields->each(function (\App\ContentField $field) use (&$textArray) {
+            $text = $field->text();
+
+            if (empty($text))
+                return true;
+
+            $textArray[] = $text;
+        });
+
+        return implode("\r\n", $textArray);
     }
 }
