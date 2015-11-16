@@ -88,6 +88,15 @@ abstract class MezzoContentBlock extends BaseModel
         'class', 'name', 'content_id', 'options'
     ];
 
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'options' => 'array',
+    ];
+
     /*
     |-------------------------------------------------------------------------------------------------------------------
     | Attribute annotation properties

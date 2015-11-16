@@ -90,4 +90,5 @@ abstract class ContentBlock extends MezzoContentBlock
 
         return implode("\r\n", $textArray);
     }
+
 }
