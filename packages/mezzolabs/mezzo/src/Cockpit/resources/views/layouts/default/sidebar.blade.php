@@ -13,7 +13,7 @@
                         <h3>{{ $group->label() }}</h3>
                         <ul class="nav-main">
 
-                            @foreach($group->modules() as $module )
+                            @foreach($group->visibleModules() as $module )
 
                                 <li class="{{ cockpit_html()->css('sidebar', $module) }}">
                                     <a href="mezzo/{{ $module->uri() }}">

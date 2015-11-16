@@ -130,11 +130,7 @@ class ModelRepository extends EloquentRepository
         $values = $this->values($data)->inMainTableOnly();
 
         $modelInstance = $this->modelInstance();
-        $modelInstance->fill($values->toArray());
-
-        $modelInstance->save(['timestamps' => true]);
-
-        return $modelInstance;
+        return $modelInstance->create($values->toArray());
     }
 
     /**

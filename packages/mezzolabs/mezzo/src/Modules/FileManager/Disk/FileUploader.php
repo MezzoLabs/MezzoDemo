@@ -38,8 +38,9 @@ class FileUploader
      * Read the request and upload the file.
      *
      * @param IlluminateRequest $request
-     * @return bool
+     * @return \App\File
      * @throws FileUploadException
+     * @throws FileUploadValidationFailedException
      * @throws UploadedFileEmptyException
      */
     public function uploadInput(IlluminateRequest $request)
@@ -56,12 +57,14 @@ class FileUploader
     }
 
     /**
-     * Upload a image.
+     * Upload a file and save a connected record to the database.
      *
      * @param array $metaData
      * @param UploadedFile $file
-     * @return bool
+     * @return \App\File
+     * @throws Exceptions\FileManagerException
      * @throws FileUploadException
+     * @throws FileUploadValidationFailedException
      * @throws MaximumFileSizeExceededException
      * @throws MimeTypeNotAllowedException
      */
@@ -91,12 +94,12 @@ class FileUploader
             throw new FileUploadValidationFailedException($this->lastValidation);
 
         $newFile = $this->repository()->create($data->toArray());
-
-
         $fileSaved = $this->moveFile($file, $data->get('folder'), $data->get('filename'));
 
+        if (!$newFile || !$fileSaved)
+            throw new FileUploadException('Unexpected error during file upload.');
 
-        return $fileSaved && $newFile;
+        return $newFile;
     }
 
     /**

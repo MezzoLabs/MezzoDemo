@@ -1,11 +1,11 @@
-{!! $php->openingTag() !!}
+<?php
 
 namespace App\Mezzo\Generated\ModelParents;
 
-use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
-use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 use App\Mezzo\BaseModel;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
+use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
 /**
 *-------------------------------------------------------------------------------------------------------------------
@@ -14,15 +14,22 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 *
 *-------------------------------------------------------------------------------------------------------------------
 *
-* Please do not edit, use "{{ $parent->modelSchema()->className() }}" instead. Thank you.
+* Please do not edit, use "App\Content" instead. Thank you.
 *
 *-------------------------------------------------------------------------------------------------------------------
 * Welcome to the model parent. This file is auto generated and tells Mezzo something about
 * your model. If you feel the need to overwrite something use the child class.
 *
-{!! $annotation->classAnnotations($parent) !!}
+* App\Mezzo\Generated\ModelParents\MezzoContent
+*
+* @property  integer $id
+* @property string $recent_text
+* @property  string $deleted_at
+* @property \Carbon\Carbon $created_at
+* @property \Carbon\Carbon $updated_at
+* @property EloquentCollection $blocks
 */
-abstract class {{ $parent->name() }} extends BaseModel
+abstract class MezzoContent extends BaseModel
 {
     use IsMezzoModel;
 
@@ -37,39 +44,43 @@ abstract class {{ $parent->name() }} extends BaseModel
     */
 
     /**
+    * Indicates if the model should be timestamped.
+    *
+    * @var bool
+    */
+    public $timestamps = true;
+
+
+    /**
     * The table associated with the model.
     *
-    @annotation('var', 'string')
+    * @var string
     */
-    protected $table = '{{ $parent->table() }}';
-
+    protected $table = 'contents';
     /**
     * Set of rules that will be validated in resource requests.
     *
-    @annotation('var', 'array')
+    * @var array
     */
-    protected $rules = {!! $php->rulesArray($parent->modelSchema()) !!}
-
+    protected $rules = [
+        'recent_text' => ""
+    ];
     /**
     * The attributes that should be hidden for arrays.
     *
-    @annotation('var', 'array')
+    * @var array
     */
-    protected $hidden = {!! $php->hiddenArray($parent->modelSchema()) !!}
+    protected $hidden = [
 
+    ];
     /**
     * The attributes that are mass assignable.
     *
-    @annotation('var', 'array')
+    * @var array
     */
-    protected $fillable = {!! $php->fillableArray($parent->modelSchema()) !!}
+    protected $fillable = [
 
-    /**
-    * Indicates if the model should be timestamped.
-    *
-    @annotation('var', 'bool')
-    */
-    public $timestamps = {!! $php->timestampsBoolean($parent->modelSchema()) !!}
+    ];
 
     /*
     |-------------------------------------------------------------------------------------------------------------------
@@ -80,17 +91,46 @@ abstract class {{ $parent->name() }} extends BaseModel
     | the attributes of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
-
-@foreach($parent->attributes() as $attribute)
     /**
-    * Attribute annotation property for {{ $attribute->name() }}
+    * Attribute annotation property for id
     *
-    {!! $annotation->attribute($attribute) !!}
-    @annotation('var', $attribute->type()->variableType())
+    * @Mezzo\Attribute(type="PrimaryKeyInput")
+    * @var integer            
     */
-    protected $_{{ $attribute->name() }};
+    protected $_id;
 
-@endforeach
+    /**
+    * Attribute annotation property for recent_text
+    *
+    * @Mezzo\Attribute(type="TextArea")
+    * @var string            
+    */
+    protected $_recent_text;
+
+    /**
+    * Attribute annotation property for deleted_at
+    *
+    * @Mezzo\Attribute(type="TextInput")
+    * @var string            
+    */
+    protected $_deleted_at;
+
+    /**
+    * Attribute annotation property for created_at
+    *
+    * @Mezzo\Attribute(type="DateTimeInput")
+    * @var \Carbon\Carbon            
+    */
+    protected $_created_at;
+
+    /**
+    * Attribute annotation property for updated_at
+    *
+    * @Mezzo\Attribute(type="DateTimeInput")
+    * @var \Carbon\Carbon            
+    */
+    protected $_updated_at;
+
 
     /*
     |-------------------------------------------------------------------------------------------------------------------
@@ -102,13 +142,14 @@ abstract class {{ $parent->name() }} extends BaseModel
     |-------------------------------------------------------------------------------------------------------------------
     */
 
-@foreach($parent->relationSides() as $relationSide)
     /**
-    * Relation annotation property for {{ $attribute->name() }}
-    {!! $annotation->relation($relationSide) !!}
+    * Relation annotation property for updated_at
+    * @Mezzo\Relations\OneToMany
+    * @Mezzo\Relations\From(table="content_blocks", primaryKey="id", naming="content")
+    * @Mezzo\Relations\To(table="contents", primaryKey="id", naming="blocks")
+    * @Mezzo\Relations\JoinColumn(table="contents", column="id")
     */
-    protected $_{{ $relationSide->naming() }};
+    protected $_blocks;
 
-@endforeach
 
 }

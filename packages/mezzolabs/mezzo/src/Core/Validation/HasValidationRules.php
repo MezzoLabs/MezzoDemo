@@ -26,7 +26,7 @@ trait HasValidationRules
         if($mode == "create")
             return $this->validateCreate($data, true);
 
-        return $this->validateUpdate($data, $mode);
+        return $this->validateUpdate($data, true);
     }
 
     public function validateCreate($data = [], $orFail = true)
@@ -43,8 +43,6 @@ trait HasValidationRules
      */
     public function validateWithRules($data = [], $rules = [], $orFail = true)
     {
-        if (empty($data)) $data = $this->defaultData();
-
         $validator = $this->validator($data, $rules);
 
         if($orFail && $validator->fails()){

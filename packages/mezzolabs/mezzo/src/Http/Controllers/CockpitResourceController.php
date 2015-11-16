@@ -2,9 +2,6 @@
 
 namespace MezzoLabs\Mezzo\Http\Controllers;
 
-use MezzoLabs\Mezzo\Cockpit\Pages\Resources\EditResourcePage;
-use MezzoLabs\Mezzo\Cockpit\Pages\Resources\IndexResourcePage;
-use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ShowResourcePage;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 use MezzoLabs\Mezzo\Http\Requests\Request;
 use MezzoLabs\Mezzo\Http\Requests\Resource\ResourceRequest;
@@ -62,7 +59,6 @@ abstract class CockpitResourceController extends CockpitController implements Re
         parent::isValid();
 
         return $this->assertResourceIsReflectedModel();
-
     }
 
 }

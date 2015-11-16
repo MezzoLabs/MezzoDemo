@@ -9,6 +9,7 @@ use App\ImageFile;
 use App\Tutorial;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Modules\FileManager\Content\Blocks\ImageAndText;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\DiskSynchronization;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\FileUploader;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\Observers\FileObserver;
@@ -54,7 +55,9 @@ class FileManagerModule extends ModuleProvider
             File::class => FileTransFormer::class
         ]);
 
-        //dd($tutorialReflection->relationships());
+        $this->registerContentBlocks([
+            ImageAndText::class
+        ]);
     }
 
     /**

@@ -3,7 +3,6 @@
 
 namespace MezzoLabs\Mezzo\Core\Collection;
 
-use Illuminate\Support\Collection as IlluminateCollection;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
 abstract class StrictCollection extends DecoratedCollection
@@ -18,9 +17,21 @@ abstract class StrictCollection extends DecoratedCollection
     public function put($key, $value)
     {
         $this->assertThatItemIsValue($value);
-
-        $this->collection()->put($key, $value);
+        return parent::put($key, $value);
     }
+
+    /**
+     * Push an item onto the end of the collection.
+     *
+     * @param  mixed $value
+     * @return $this
+     */
+    public function push($value)
+    {
+        $this->assertThatItemIsValue($value);
+        return parent::push($value);
+    }
+
 
     protected function assertThatItemIsValue($value){
         if(!$this->checkItem($value))

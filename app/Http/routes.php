@@ -30,8 +30,10 @@ Route::get('random', function () {
     return str_random(16);
 });
 
-Route::get('/test/file', function () {
-   return view('debugfile', ['tutorials' => Tutorial::all()]);
+Route::get('/test/contents', function () {
+    $repo = app()->make(\MezzoLabs\Mezzo\Modules\Contents\Domain\Repositories\ContentRepository::class);
+
+    $repo->updateRecentText(5);
 });
 
 Route::post('/test/file', 'TestController@uploadFile');
@@ -53,6 +55,7 @@ Route::get('/test/category', function () {
     $seeder->run();
 
 });
+
 
 Route::get('/test/tutorial', function () {
     $tutorial = new Tutorial();

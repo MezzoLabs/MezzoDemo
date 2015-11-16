@@ -15,4 +15,5 @@ class StoreResourceRequest extends UpdateOrStoreResourceRequest
     {
         return true;
     }
+
 }

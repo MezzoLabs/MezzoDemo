@@ -1,4 +1,4 @@
-@extends('cockpit::layouts.default.content.container')
+@extends(cockpit_content_container())
 
 
 @section('content')

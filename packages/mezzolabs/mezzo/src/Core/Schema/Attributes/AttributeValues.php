@@ -19,7 +19,14 @@ class AttributeValues extends StrictCollection
      */
     public static function fromModel(MezzoModel $model)
     {
-        return static::fromArray($model->schema(), $model->getAttributes());
+        $rawValues = $model->getAttributes();
+
+        $values = [];
+        foreach ($rawValues as $valueName => $value) {
+            $values[$valueName] = $model->$valueName;
+        }
+
+        return static::fromArray($model->schema(), $values);
     }
 
     /**
@@ -35,10 +42,10 @@ class AttributeValues extends StrictCollection
         foreach ($array as $key => $value) {
             $attribute = $model->attributes($key);
 
-            if($key == "_token")
+            if ($key == "_token")
                 continue;
 
-            if (!$attribute){
+            if (!$attribute) {
                 throw new HttpException("\"" . $key . "\" is not a valid attribute in " . $model->className());
 
             }
@@ -51,10 +58,6 @@ class AttributeValues extends StrictCollection
 
     }
 
-    public function add(AttributeValue $value)
-    {
-        $this->put($value->attribute()->name(), $value);
-    }
 
     /**
      * @param ModelSchema $model
@@ -101,7 +104,7 @@ class AttributeValues extends StrictCollection
      */
     public function atomicOnly()
     {
-        return $this->filter(function(AttributeValue $value){
+        return $this->filter(function (AttributeValue $value) {
             return $value->attribute()->isAtomic();
         });
     }
@@ -113,7 +116,7 @@ class AttributeValues extends StrictCollection
      */
     public function relationsOnly()
     {
-        return $this->filter(function(AttributeValue $value){
+        return $this->filter(function (AttributeValue $value) {
             return $value->attribute()->isRelationAttribute();
         });
     }
@@ -125,7 +128,7 @@ class AttributeValues extends StrictCollection
      */
     public function visibleOnly()
     {
-        return $this->filter(function(AttributeValue $value){
+        return $this->filter(function (AttributeValue $value) {
             return $value->attribute()->isVisible();
         });
     }
@@ -137,7 +140,7 @@ class AttributeValues extends StrictCollection
     {
         $array = [];
 
-        $this->each(function(AttributeValue $value) use (&$array){
+        $this->each(function (AttributeValue $value) use (&$array) {
             $array[$value->name()] = $value->value();
         });
 

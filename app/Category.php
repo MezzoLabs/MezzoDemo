@@ -2,7 +2,7 @@
 
 namespace App;
 
-use MezzoLabs\Mezzo\Modules\Categories\Models\Category as BaseCategory;
+use MezzoLabs\Mezzo\Modules\Categories\Models\Category as CategoriesModuleCategory;
 
 /**
  * Class Category
@@ -10,7 +10,7 @@ use MezzoLabs\Mezzo\Modules\Categories\Models\Category as BaseCategory;
  *
  * @property CategoryGroup $group
  */
-class Category extends BaseCategory
+class Category extends CategoriesModuleCategory
 {
     public function tutorials()
     {

@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Cockpit\Pages\Resources;
 
 
+use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
@@ -95,8 +96,10 @@ abstract class ResourcePage extends ModulePage
     {
         $pageName = strtolower(Singleton::reflection($this)->getShortName());
 
-        $possibleModel = str_replace('page', '', $pageName);
-        $possibleModel = str_replace(static::$types, '', $possibleModel);
+        $possibleModel = str_replace(static::$types, '', $pageName);
+
+        if (Str::endsWith($possibleModel, 'page') && $possibleModel != "page")
+            $possibleModel = substr($possibleModel, 0, strlen($possibleModel) - 4);
 
         if (empty($possibleModel))
             throw new CannotGuessModelException('Cannot guess model for page ' . get_class($this) . '.');
@@ -119,5 +122,26 @@ abstract class ResourcePage extends ModulePage
 
         return true;
     }
+
+
+    /**
+     * @return string
+     */
+    public function slug()
+    {
+        $slug = parent::slug();
+
+        $slugParts = explode('.', $slug);
+
+        if (!in_array(strtolower($slugParts[0]), static::$types)) {
+            return $slug;
+        }
+
+        $slugParts[] = $slugParts[0];
+        unset($slugParts[0]);
+
+        return implode('.', $slugParts);
+    }
+
 
 }

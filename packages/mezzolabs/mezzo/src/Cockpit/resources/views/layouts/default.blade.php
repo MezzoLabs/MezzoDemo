@@ -18,12 +18,13 @@
         {!! cockpit_stylesheet('/css/app.css') !!}
         <!-- CSS -->
     </head>
-    <body class="@yield('body-class', 'sidebar-pinned')">
+    <body class="@yield('body-class', 'sidebar-pinned') @if($errors->has()) has-errors @endif">
         <!-- Content -->
         <div id="page-container">
             @include('cockpit::layouts.default.sidebar')
             <div id="view-main">
                 @include('cockpit::layouts.default.topbar')
+                @include('cockpit::layouts.default.errors')
                 <div ui-view></div>
             </div>
         </div>

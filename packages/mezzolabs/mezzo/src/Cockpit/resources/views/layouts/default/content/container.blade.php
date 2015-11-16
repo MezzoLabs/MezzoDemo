@@ -1,5 +1,4 @@
 <main id="content-container">
-
     @if (cockpit_html()->sectionExists('content-aside')))
     <div id="content-aside">
         @yield('content-aside')

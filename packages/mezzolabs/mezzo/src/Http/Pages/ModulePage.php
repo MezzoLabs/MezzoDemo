@@ -3,6 +3,7 @@
 namespace MezzoLabs\Mezzo\Http\Pages;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ResourcePage;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
@@ -70,6 +71,8 @@ abstract class ModulePage implements ModulePageContract
          * mezzo/MODULE_NAME/PAGE_ACTION.html will output the content of this page.
          */
         'renderedByFrontend' => true,
+
+        'appendToUri' => ''
     ];
     /**
      * The short name of this page.
@@ -148,7 +151,11 @@ abstract class ModulePage implements ModulePageContract
     {
         if (!$this->name) {
             $reflection = Singleton::reflection($this);
-            $this->name = str_replace('Page', '', $reflection->getShortName());
+            $this->name = $reflection->getShortName();
+
+            if (Str::endsWith($this->name(), 'Page'))
+                $this->name = substr($this->name, 0, strlen($this->name) - 4);
+
         }
 
         return $this->name;
@@ -272,9 +279,9 @@ abstract class ModulePage implements ModulePageContract
     /**
      * @return string
      */
-    final public function slug()
+    public function slug()
     {
-        return snake_case($this->name());
+        return snake_case($this->name(), '.');
     }
 
     public function qualifiedActionName()
@@ -306,9 +313,15 @@ abstract class ModulePage implements ModulePageContract
         return mezzo()->uri()->toModulePage($this);
     }
 
+
     public function controllerName()
     {
         return $this->controller()->qualifiedName();
+    }
+
+    public function routeName()
+    {
+        return 'cockpit::' . $this->slug();
     }
 
 
