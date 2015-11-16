@@ -66,7 +66,7 @@ abstract class MezzoContentBlock extends BaseModel
     */
     protected $rules = [
         'sort' => "unique_with: content_blocks, content_id",
-        'class' => "required|between:2,50",
+        'class' => "required|between:2,200",
         'options' => "",
         'content_id' => "required"
     ];
@@ -84,7 +84,7 @@ abstract class MezzoContentBlock extends BaseModel
     * @var array
     */
     protected $fillable = [
-
+        'class'
     ];
 
     /*

@@ -58,7 +58,6 @@ class ContentBlockTypeRegistrar
      */
     public function registerContentBlock(ContentBlockTypeContract $contentBlock)
     {
-        $contentBlock->boot();
         $this->blocks->put($contentBlock->key(), $contentBlock);
     }
 
@@ -92,4 +91,5 @@ class ContentBlockTypeRegistrar
     {
         return app()->make(static::class);
     }
+
 }

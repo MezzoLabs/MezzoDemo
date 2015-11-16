@@ -64,7 +64,8 @@ class PageController extends CockpitResourceController
 
     public function store(StorePageRequest $request)
     {
-
+        $page = $this->repository()->create($request->only(['title', 'teaser']));
+        mezzo_dd($page);
 
     }
 }

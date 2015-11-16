@@ -21,6 +21,13 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
 
     private $formName = "";
 
+    protected $isBooted;
+
+    public function __construct()
+    {
+        $this->boot();
+    }
+
     /**
      * Returns the unique key of this content block.
      * @return string
@@ -89,6 +96,14 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
     }
 
     /**
+     * @return string
+     */
+    public function propertyInputName($propertyName)
+    {
+        return "blocks[" . $this->formName() . "][" . $propertyName . "]";
+    }
+
+    /**
      * The name attribute that represents a content field in the form array.
      *
      * @param $fieldName
@@ -123,7 +138,7 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
      *
      * @return array
      */
-    public function rules()
+    public function fieldsRules()
     {
         $rules = [];
 

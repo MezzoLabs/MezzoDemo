@@ -4,7 +4,6 @@
 namespace MezzoLabs\Mezzo\Cockpit\Html\Rendering;
 
 
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentCollection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AtomicAttribute;
@@ -45,7 +44,7 @@ class AttributeRenderer extends AttributeSchemaRenderer
     protected function renderSimpleInput(AtomicAttribute $attribute)
     {
         $inputType = $attribute->type()->htmlType();
-        return $this->formBuilder()->input($inputType, $attribute->name(), null, $this->htmlAttributes());
+        return $this->formBuilder()->input($inputType, $attribute->name(), old($attribute->name()), $this->htmlAttributes());
     }
 
     /**

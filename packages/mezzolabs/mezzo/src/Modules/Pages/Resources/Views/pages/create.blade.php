@@ -27,7 +27,7 @@
             </div>
             <div class="panel-body">
                 @foreach($blocks as $block)
-                    <input type="hidden" name="{{ $block->inputName('_class') }}" value="{{ $block->key() }}">
+                    <input type="hidden" name="{{ $block->propertyInputName('class') }}" value="{{ $block->key() }}">
                     <div class="block-{{ $block->key() }}">
                         <h3>{{ $block->title() }}</h3>
                         {!! $block->renderInputs() !!}

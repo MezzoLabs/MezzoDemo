@@ -70,5 +70,5 @@ interface ContentBlockTypeContract
      *
      * @return array
      */
-    public function rules();
+    public function fieldsRules();
 }

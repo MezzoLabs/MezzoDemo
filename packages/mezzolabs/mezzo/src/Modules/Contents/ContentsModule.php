@@ -10,7 +10,7 @@ use App\ContentField;
 use App\Tutorial;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Modules\Contents\DefaultElements\BlockTypes\TextOnly;
+use MezzoLabs\Mezzo\Modules\Contents\DefaultTypes\BlockTypes\TextOnly;
 use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar;
 
 class ContentsModule extends ModuleProvider
@@ -19,6 +19,10 @@ class ContentsModule extends ModuleProvider
         Content::class,
         ContentBlock::class,
         ContentField::class,
+    ];
+
+    protected $options = [
+        'visible' => false
     ];
 
     /**

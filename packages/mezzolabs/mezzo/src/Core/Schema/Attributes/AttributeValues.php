@@ -51,10 +51,6 @@ class AttributeValues extends StrictCollection
 
     }
 
-    public function add(AttributeValue $value)
-    {
-        $this->put($value->attribute()->name(), $value);
-    }
 
     /**
      * @param ModelSchema $model
