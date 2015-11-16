@@ -65,8 +65,9 @@ abstract class MezzoContentBlock extends BaseModel
     * @var array
     */
     protected $rules = [
-        'sort' => "unique_with: content_blocks, content_id",
+        'sort' => "unique_with:content_blocks,<content_id",
         'class' => "required|between:2,200",
+        'name' => "between:2,200|alpha_num|unique_with:content_blocks,content_id",
         'options' => "",
         'content_id' => "required"
     ];
@@ -84,7 +85,7 @@ abstract class MezzoContentBlock extends BaseModel
     * @var array
     */
     protected $fillable = [
-        'class'
+        'class', 'name'
     ];
 
     /*
@@ -176,7 +177,7 @@ abstract class MezzoContentBlock extends BaseModel
     * @Mezzo\Relations\OneToMany
     * @Mezzo\Relations\From(table="content_blocks", primaryKey="id", naming="content")
     * @Mezzo\Relations\To(table="contents", primaryKey="id", naming="blocks")
-    * @Mezzo\Relations\JoinColumn(table="contents", column="id")
+     * @Mezzo\Relations\JoinColumn(table="content_blocks", column="content_id")
     */
     protected $_content;
 

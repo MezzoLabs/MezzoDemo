@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Modules\Pages\Http\Controllers;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\ResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
+use MezzoLabs\Mezzo\Modules\Contents\Domain\Repositories\ContentRepository;
 use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar;
 use MezzoLabs\Mezzo\Modules\Pages\Http\Pages\CreatePagePage;
 use MezzoLabs\Mezzo\Modules\Pages\Http\Pages\IndexPagePage;
@@ -64,8 +65,17 @@ class PageController extends CockpitResourceController
 
     public function store(StorePageRequest $request)
     {
-        $page = $this->repository()->create($request->only(['title', 'teaser']));
-        mezzo_dd($page);
+        $content = $this->contentRepository()->createWithBlocks($request->get('blocks'));
 
+        $page = $this->repository()->create($request->only(['title', 'teaser']));
+
+    }
+
+    /**
+     * @return ContentRepository
+     */
+    protected function contentRepository()
+    {
+        return app()->make(ContentRepository::class);
     }
 }

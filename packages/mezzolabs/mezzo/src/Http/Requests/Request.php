@@ -40,7 +40,7 @@ class Request extends FormRequest
      */
     public static function allInput()
     {
-        $request = app()->make(static::class);
+        $request = app()->make(\Illuminate\Http\Request::class);
         return $request->all();
     }
 
