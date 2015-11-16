@@ -43,9 +43,6 @@ trait HasValidationRules
      */
     public function validateWithRules($data = [], $rules = [], $orFail = true)
     {
-        if (empty($data)) $data = $this->defaultData();
-
-
         $validator = $this->validator($data, $rules);
 
         if($orFail && $validator->fails()){

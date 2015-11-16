@@ -8,14 +8,20 @@ use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
 
 class ContentRepository extends ModelRepository
 {
+    /**
+     * @param array $blocksData
+     * @return \Illuminate\Database\Eloquent\Model
+     */
     public function createWithBlocks(array $blocksData)
     {
-        $content = $this->create([]);
+        $content = parent::create([]);
 
         foreach ($blocksData as &$blockData) {
             $blockData['content_id'] = $content->id;
             $this->blockRepository()->create($blockData);
         }
+
+        return $content;
     }
 
     /**

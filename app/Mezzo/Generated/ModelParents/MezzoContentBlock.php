@@ -85,7 +85,7 @@ abstract class MezzoContentBlock extends BaseModel
     * @var array
     */
     protected $fillable = [
-        'class', 'name'
+        'class', 'name', 'content_id', 'options'
     ];
 
     /*

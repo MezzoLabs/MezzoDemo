@@ -16,15 +16,47 @@ class ContentBlockRepository extends ModelRepository
     public function create(array $data)
     {
         $data = new Collection($data);
-        $fields = $data->get('fields', []);
-        $options = $data->get('options' []);
+        $fieldValues = $data->get('fields', []);
+        $optionsArray = $data->get('options', []);
 
         $attributesData = new Collection($data);
-        $attributesData->forget(['optinos', 'fields']);
+        $attributesData->forget(['fields']);
+        $attributesData->put('options', json_encode($optionsArray));
 
-        $block = parent::create($data);
+        $block = parent::create($attributesData->toArray());
 
-        mezzo_dd($block);
+        foreach ($fieldValues as $name => $value) {
+            $this->createField($block, $name, $value);
+        }
+
+
+    }
+
+    /**
+     * @param \App\ContentBlock $block
+     * @param $name
+     * @param $value
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    protected function createField(\App\ContentBlock $block, $name, $value)
+    {
+        $data = [
+            'content_block_id' => $block->id,
+            'name' => $name,
+            'value' => $value
+        ];
+
+        return $this->fieldRepository()->create($data);
+    }
+
+    protected function fieldRepository()
+    {
+        return app()->make(ContentFieldRepository::class);
+    }
+
+    public function updateRecentText($content_id, $prepend = "")
+    {
+
     }
 
 }

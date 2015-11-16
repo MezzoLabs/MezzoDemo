@@ -65,8 +65,7 @@ abstract class MezzoContentField extends BaseModel
     */
     protected $rules = [
         'name' => "required",
-        'value_type' => "required",
-        'value' => "required|min:2"
+        'value' => "required"
     ];
     /**
     * The attributes that should be hidden for arrays.
@@ -82,7 +81,7 @@ abstract class MezzoContentField extends BaseModel
     * @var array
     */
     protected $fillable = [
-
+        'name', 'value', 'content_block_id'
     ];
 
     /*
@@ -109,14 +108,6 @@ abstract class MezzoContentField extends BaseModel
     * @var float            
     */
     protected $_name;
-
-    /**
-    * Attribute annotation property for value_type
-    *
-    * @Mezzo\Attribute(type="TextInput")
-    * @var string            
-    */
-    protected $_value_type;
 
     /**
     * Attribute annotation property for value
@@ -158,7 +149,6 @@ abstract class MezzoContentField extends BaseModel
     */
     protected $_updated_at;
 
-
     /*
     |-------------------------------------------------------------------------------------------------------------------
     | Relation annotation properties
@@ -174,7 +164,7 @@ abstract class MezzoContentField extends BaseModel
     * @Mezzo\Relations\OneToMany
     * @Mezzo\Relations\From(table="content_fields", primaryKey="id", naming="block")
     * @Mezzo\Relations\To(table="content_blocks", primaryKey="id", naming="fields")
-    * @Mezzo\Relations\JoinColumn(table="content_blocks", column="id")
+     * @Mezzo\Relations\JoinColumn(table="content_fields", column="content_block_id")
     */
     protected $_block;
 

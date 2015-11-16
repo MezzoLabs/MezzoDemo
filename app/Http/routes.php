@@ -16,7 +16,6 @@ use App\Tutorial;
 use App\User;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\FileCacheReader;
-use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar;
 use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 
@@ -32,9 +31,7 @@ Route::get('random', function () {
 });
 
 Route::get('/test/contents', function () {
-    $blockRegistrar = ContentBlockTypeRegistrar::make();
-
-    return view('debugcontents', ['blocks' => $blockRegistrar->all()]);
+    mezzo_dd();
 });
 
 Route::post('/test/file', 'TestController@uploadFile');
@@ -56,6 +53,7 @@ Route::get('/test/category', function () {
     $seeder->run();
 
 });
+
 
 Route::get('/test/tutorial', function () {
     $tutorial = new Tutorial();
