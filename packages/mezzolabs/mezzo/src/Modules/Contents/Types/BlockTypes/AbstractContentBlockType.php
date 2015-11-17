@@ -149,4 +149,13 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
         return $rules;
     }
 
+    /**
+     * A hash value of the key that is easier to handle in URLs.
+     *
+     * @return string
+     */
+    public function hash()
+    {
+        return md5($this->key());
+    }
 }

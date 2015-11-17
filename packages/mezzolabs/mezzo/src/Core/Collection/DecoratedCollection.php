@@ -12,6 +12,8 @@ use Traversable;
 
 abstract class DecoratedCollection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 {
+    use HasLookupTable;
+
     /**
      * @var IlluminateCollection
      */

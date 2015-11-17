@@ -77,6 +77,7 @@ class Attributes extends Collection
         });
     }
 
+
     /**
      * Returns an Attribute Collection via the converted columns
      *

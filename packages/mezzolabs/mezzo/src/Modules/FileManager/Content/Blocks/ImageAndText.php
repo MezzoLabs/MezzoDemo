@@ -26,7 +26,7 @@ class ImageAndText extends AbstractContentBlockType
      *
      * @return string
      */
-    public function renderInputs()
+    public function inputsView()
     {
         return $this->makeView('modules.file-manager::content_blocks.image_and_text');
 

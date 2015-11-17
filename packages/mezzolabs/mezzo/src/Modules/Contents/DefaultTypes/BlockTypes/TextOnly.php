@@ -24,7 +24,7 @@ class TextOnly extends AbstractContentBlockType
      *
      * @return string
      */
-    public function renderInputs()
+    public function inputsView()
     {
         return $this->makeView('modules.contents::blocks.text_only');
     }

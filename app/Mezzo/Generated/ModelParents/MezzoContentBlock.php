@@ -194,7 +194,7 @@ abstract class MezzoContentBlock extends BaseModel
     * @Mezzo\Relations\OneToMany
     * @Mezzo\Relations\From(table="content_blocks", primaryKey="id", naming="content")
     * @Mezzo\Relations\To(table="contents", primaryKey="id", naming="blocks")
-     * @Mezzo\Relations\JoinColumn(table="content_blocks", column="content_id")
+    * @Mezzo\Relations\JoinColumn(table="content_blocks", column="content_id")
     */
     protected $_content;
 
