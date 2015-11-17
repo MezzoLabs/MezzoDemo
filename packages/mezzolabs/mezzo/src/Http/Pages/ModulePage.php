@@ -189,7 +189,12 @@ abstract class ModulePage implements ModulePageContract
          */
         $data = $this->additionalData()->merge($data);
 
-        return $this->makeView($this->view, $data);
+        $view = $this->makeView($this->view, $data);
+
+        if (!$this->isRenderedByFrontend())
+            return $this->viewFactory()->make('cockpit::start')->with('content_container', $view);
+
+        return $view;
     }
 
     /**

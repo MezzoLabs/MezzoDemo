@@ -26,10 +26,15 @@ class ContentBlockTypeTransformer extends Transformer
         if (!$blockType instanceof ContentBlockTypeContract)
             throw new InvalidArgumentException($blockType);
 
+
+        $html = (\Input::get('html') != 'raw') ?
+            route('cockpit::contents.block-type.html', ['hash' => $blockType->hash()]) :
+            $blockType->inputsView()->render();
+
         return [
             'key' => $blockType->key(),
-            'hash' => md5($blockType->key()),
-            'html' => $blockType->inputsView()->render()
+            'hash' => $blockType->hash(),
+            'html' => $html
         ];
     }
 

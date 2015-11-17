@@ -88,7 +88,7 @@ class ContentBlockTypeRegistrar
      *
      * @param  mixed $key
      * @param  mixed $default
-     * @return mixed
+     * @return ContentBlockTypeContract
      */
     public function get($key, $default = null)
     {

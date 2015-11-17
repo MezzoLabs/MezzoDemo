@@ -169,7 +169,7 @@ abstract class DecoratedCollection implements ArrayAccess, Arrayable, Countable,
      */
     public function getIterator()
     {
-        // TODO: Implement getIterator() method.
+        return $this->collection()->getIterator();
     }
 
     /**
@@ -186,7 +186,7 @@ abstract class DecoratedCollection implements ArrayAccess, Arrayable, Countable,
      */
     public function offsetExists($offset)
     {
-        // TODO: Implement offsetExists() method.
+        return $this->collection()->offsetExists($offset);
     }
 
     /**

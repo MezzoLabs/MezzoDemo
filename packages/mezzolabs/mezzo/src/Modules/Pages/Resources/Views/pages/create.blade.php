@@ -21,14 +21,17 @@
             </div>
         </div>
         <div class="panel panel-bordered">
-
             <div class="panel-heading">
                 <h3>Content</h3>
 
                 <div class="panel-actions">
                 </div>
             </div>
-            @foreach($blocks as $block)
+            <div class="panel-body">
+                @include('modules.contents::block_type_select')
+            </div>
+
+        @foreach($blocks as $block)
                 <div class="panel-heading">
                     <h3>{{ $block->title() }}</h3>
 
@@ -36,7 +39,6 @@
                     </div>
                 </div>
                 <div class="panel-body">
-
                     <input type="hidden" name="{{ $block->propertyInputName('class') }}" value="{{ $block->key() }}">
 
                     <div class="block-{{ $block->key() }}">

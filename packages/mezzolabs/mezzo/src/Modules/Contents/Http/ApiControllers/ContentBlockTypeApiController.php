@@ -3,6 +3,7 @@
 namespace MezzoLabs\Mezzo\Modules\Contents\Http\ApiControllers;
 
 
+use Dingo\Api\Http\Request as DingoApiRequest;
 use MezzoLabs\Mezzo\Http\Controllers\ApiController;
 use MezzoLabs\Mezzo\Modules\Contents\Http\Transformers\ContentBlockTypeTransformer;
 use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar;
@@ -14,9 +15,16 @@ class ContentBlockTypeApiController extends ApiController
         return $this->response()->collection($this->typeRegistrar()->all(), new ContentBlockTypeTransformer());
     }
 
-    public function show($hash)
+    public function show(DingoApiRequest $request, $hash)
     {
-        return $this->response()->item($this->typeRegistrar()->get($hash, null), new ContentBlockTypeTransformer());
+        $type = $this->typeRegistrar()->get($hash, null);
+
+        if ($request->acceptsHtml()) {
+            \Debugbar::disable();
+            return $type->inputsView();
+        }
+
+        return $this->response()->item($type, new ContentBlockTypeTransformer());
     }
 
     /**

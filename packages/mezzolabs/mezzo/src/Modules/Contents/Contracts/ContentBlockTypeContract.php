@@ -31,6 +31,13 @@ interface ContentBlockTypeContract
     public function title();
 
     /**
+     * Returns the title that will be displayed in the dashboard.
+     *
+     * @return string
+     */
+    public function icon();
+
+    /**
      * Called when a content block type is booted.
      * Now is the time to add some field types to this type of content block.
      */
