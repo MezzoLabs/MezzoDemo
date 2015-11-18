@@ -114,6 +114,11 @@ class PhpCodeGenerator
         return $this->arrayString($model->option('fillable'));
     }
 
+    public function castsArray(ModelSchema $model)
+    {
+        return $this->arrayString($model->option('casts'));
+    }
+
     public function timestampsBoolean(ModelSchema $model)
     {
         return $this->booleanString($model->option('timestamps'));

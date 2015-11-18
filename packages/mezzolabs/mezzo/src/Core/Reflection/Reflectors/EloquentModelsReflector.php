@@ -13,6 +13,17 @@ use MezzoLabs\Mezzo\Core\Schema\RelationSchemas;
 
 class EloquentModelsReflector extends ModelsReflector
 {
+    /**
+     * Boot up the Reflector. Gather all the needed data.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->modelReflections();
+        $this->relationReflections();
+        $this->relationSchemas();
+    }
 
     /**
      * @return ModelReflectionSet
@@ -113,4 +124,6 @@ class EloquentModelsReflector extends ModelsReflector
     {
         return parent::findModelReflections(false);
     }
+
+
 }

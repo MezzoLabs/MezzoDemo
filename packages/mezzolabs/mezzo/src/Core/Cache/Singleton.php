@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Cache;
 
 use Closure;
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use ReflectionClass;
 
 class Singleton
@@ -48,6 +49,24 @@ class Singleton
 
         return Singleton::get('reflection.' . $class, function () use ($class) {
             return new \ReflectionClass($class);
+        });
+
+    }
+
+    /**
+     * Gives you the singleton instance of a object reflection.
+     *
+     * @param $object
+     * @return ReflectionClass
+     * @throws InvalidArgumentException
+     */
+    public static function reflectionObject($object)
+    {
+        if (!is_object($object))
+            throw new InvalidArgumentException($object);
+
+        return Singleton::get('reflectionObject.' . get_class($object), function () use ($object) {
+            return new \ReflectionObject($object);
         });
 
     }

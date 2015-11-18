@@ -104,7 +104,7 @@ class ModuleCenter
             throw new MezzoException('Module with the slug ' . $slug . ' is already registered. ' .
                 'Conflict between ' . $moduleProviderClass . ' and ' . $this->slugAliases->get($slug));
 
-        $this->slugAliases->put($slug, $moduleProviderClass);
+        $this->slugAliases->put($slug, get_class($moduleProvider));
 
 
         $this->mezzo->app()->register($moduleProvider);
@@ -298,8 +298,8 @@ class ModuleCenter
     {
         $groups = ModuleGroup::groupsFromConfiguration();
 
-        $this->modules()->each(function(ModuleProvider $module) use ($groups){
-            if(!$groups->has($module->groupName()))
+        $this->modules()->each(function (ModuleProvider $module) use ($groups) {
+            if (!$groups->has($module->groupName()))
                 throw new ModuleCenterException('Module group ' . $module->groupName() . ' ' .
                     'is not defined in the configuration.');
 

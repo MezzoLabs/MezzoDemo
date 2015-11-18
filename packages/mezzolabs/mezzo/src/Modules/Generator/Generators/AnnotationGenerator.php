@@ -161,8 +161,8 @@ class AnnotationGenerator
             ]));
         else
             $this->addLine($this->doctrine('Mezzo\\Relations\\JoinColumn', [
-                'table' => $relation->toTable(),
-                'column' => $relation->toPrimaryKey(),
+                'table' => $relation->joinTable(),
+                'column' => $relation->joinColumn()
             ]));
 
 

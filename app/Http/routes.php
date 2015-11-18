@@ -39,21 +39,21 @@ Route::get('/test/contents', function () {
 Route::post('/test/file', 'TestController@uploadFile');
 
 
-Route::get('/test/relations', function () {
-    $reflection = mezzo()->model(\App\CategoryGroup::class, 'eloquent');
+Route::get('/test/reflection', function () {
+    $reflectionManager = mezzo()->makeReflectionManager();
+    $reflectionManager->eloquentModelsReflector()->boot();
+    $reflection = $reflectionManager->eloquentReflection('ContentBlock');
+    $schema = $reflection->schema();
 
+    mezzo_dump($reflection->relationshipReflections());
+    mezzo_dd($schema->relations()->all());
 
-    mezzo_dump($reflection->relations());
-    mezzo_dd($reflection->relationshipReflections());
-
-
+    echo "freude";
 });
 
 Route::get('/test/category', function () {
     $seeder = app(CategoryTableSeeder::class);
-
     $seeder->run();
-
 });
 
 
