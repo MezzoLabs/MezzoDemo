@@ -41,14 +41,8 @@ Route::post('/test/file', 'TestController@uploadFile');
 
 Route::get('/test/reflection', function () {
     $reflectionManager = mezzo()->makeReflectionManager();
-    $reflectionManager->eloquentModelsReflector()->boot();
-    $reflection = $reflectionManager->eloquentReflection('ContentBlock');
-    $schema = $reflection->schema();
-
-    mezzo_dump($reflection->relationshipReflections());
-    mezzo_dd($schema->relations()->all());
-
-    echo "freude";
+    $reflection = $reflectionManager->mezzoReflection('Content');
+    mezzo_dd($reflection->schema()->attributes());
 });
 
 Route::get('/test/category', function () {

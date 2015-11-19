@@ -282,4 +282,24 @@ class Attribute
         $this->rules = Rules::makeCollection($this->options->get('rules', ""));
     }
 
+    /**
+     * @param $formName
+     * @return bool
+     */
+    public function visibleInForm($formName)
+    {
+        $hiddenByAnnotation = in_array($formName, $this->hiddenInForms());
+        $hiddenByFillable = !$this->isFillable();
+
+        return !$hiddenByAnnotation && !$hiddenByFillable;
+    }
+
+    /**
+     * @return array
+     */
+    public function hiddenInForms()
+    {
+        return $this->options()->get('hiddenInForms', []);
+    }
+
 } 

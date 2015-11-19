@@ -63,7 +63,7 @@ abstract class MezzoContentBlock extends BaseModel
     protected $rules = [
         'name' => "between:2,200|alpha_num|unique_with:content_blocks,content_id",
         'sort' => "unique_with:content_blocks,content_id",
-        'class' => "required|between:2,200",
+        'class' => "required|between:2,200", 
         'options' => ""
     ];
 
@@ -84,7 +84,7 @@ abstract class MezzoContentBlock extends BaseModel
     protected $fillable = [
         "class",
         "name",
-        "content_id",
+        "content_id", 
         "options"
     ];
 
@@ -94,7 +94,7 @@ abstract class MezzoContentBlock extends BaseModel
      * * @var array
      */
     protected $casts = [
-        'content_id' => "integer",
+        'content_id' => "integer", 
         'options' => "array"
     ];
 
@@ -106,16 +106,15 @@ abstract class MezzoContentBlock extends BaseModel
     public $timestamps = true;
 
 
-
     /*
-    |-------------------------------------------------------------------------------------------------------------------
-    | Attribute annotation properties
-    |-------------------------------------------------------------------------------------------------------------------    |
-    | In this section you will find some annotated properties.
-    | They are not really important for you, but they will tell Mezzo something about
-    | the attributes of this model.
-    |-------------------------------------------------------------------------------------------------------------------
-    */
+        |-------------------------------------------------------------------------------------------------------------------
+        | Attribute annotation properties
+        |-------------------------------------------------------------------------------------------------------------------    |
+        | In this section you will find some annotated properties.
+        | They are not really important for you, but they will tell Mezzo something about
+        | the attributes of this model.
+        |-------------------------------------------------------------------------------------------------------------------
+        */
 
     /**
     * Attribute annotation property for id

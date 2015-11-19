@@ -12,4 +12,5 @@ class Attribute extends Annotation
     public $type;
 
     public $hidden;
+
 }
