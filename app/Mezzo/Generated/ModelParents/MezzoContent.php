@@ -94,8 +94,8 @@ abstract class MezzoContent extends BaseModel
     /**
     * Attribute annotation property for id
     *
-    * @Mezzo\Attribute(type="PrimaryKeyInput")
-    * @var integer            
+     * @Mezzo\Attribute(type="PrimaryKeyInput", hidden="create,edit")
+     * @var integer
     */
     protected $_id;
 

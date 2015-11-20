@@ -5,5 +5,5 @@
 @endsection
 
 @section('content')
-    <div ui-view="main"></div>
+    abcd
 @endsection

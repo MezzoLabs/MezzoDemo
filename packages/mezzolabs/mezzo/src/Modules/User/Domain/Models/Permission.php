@@ -13,4 +13,25 @@ abstract class Permission extends MezzoPermission
     {
         return $this->belongsToMany(AppRole::class);
     }
+
+    /**
+     * @param $key
+     * @return bool
+     */
+    public function equals($key)
+    {
+        $key = strtolower($key);
+
+        return $key === $this->key();
+    }
+
+    public function key()
+    {
+        $name = strtolower($this->name);
+
+        if (!empty($this->model))
+            return strtolower($this->model) . '.' . $name;
+
+        return $name;
+    }
 }

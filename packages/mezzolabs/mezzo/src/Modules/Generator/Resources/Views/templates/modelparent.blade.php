@@ -65,13 +65,21 @@ abstract class {{ $parent->name() }} extends BaseModel
     protected $fillable = {!! $php->fillableArray($parent->modelSchema()) !!}
 
     /**
+* The attributes that should be casted to native types.
+*
+* @annotation('var', 'array')
+*/
+protected $casts = {!! $php->castsArray($parent->modelSchema()) !!}
+
+/**
     * Indicates if the model should be timestamped.
     *
     @annotation('var', 'bool')
     */
     public $timestamps = {!! $php->timestampsBoolean($parent->modelSchema()) !!}
 
-    /*
+
+/*
     |-------------------------------------------------------------------------------------------------------------------
     | Attribute annotation properties
     |-------------------------------------------------------------------------------------------------------------------    |

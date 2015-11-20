@@ -13,6 +13,6 @@ class IndexResourceRequest extends ResourceRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->permissionGuard()->allowsShow($this->modelReflection()->instance());
     }
 }

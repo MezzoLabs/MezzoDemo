@@ -120,8 +120,8 @@ abstract class MezzoFile extends BaseModel
     /**
     * Attribute annotation property for disk
     *
-    * @Mezzo\Attribute(type="TextInput")
-    * @var string            
+     * @Mezzo\Attribute(type="TextInput", hidden="create,edit")
+     * @var string
     */
     protected $_disk;
 

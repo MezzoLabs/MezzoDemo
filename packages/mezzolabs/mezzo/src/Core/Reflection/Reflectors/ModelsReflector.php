@@ -7,7 +7,6 @@ namespace MezzoLabs\Mezzo\Core\Reflection\Reflectors;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Reflection\ModelFinder;
-use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSets;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchemas;
@@ -84,8 +83,11 @@ abstract class ModelsReflector
     public function findModelReflections($useMezzoReflections = true){
         $modelReflections = new Collection();
 
-        $this->modelReflectionSets()->each(function(ModelReflectionSet $set, $key) use ($modelReflections, $useMezzoReflections){
+        $this->manager()->sets()->each(function (ModelReflectionSet $set, $key) use ($modelReflections, $useMezzoReflections) {
             $modelReflection = ($useMezzoReflections) ? $set->mezzoReflection() : $set->eloquentReflection();
+
+            if (empty($modelReflection)) return true;
+
             $modelReflections->put($key, $modelReflection);
         });
 

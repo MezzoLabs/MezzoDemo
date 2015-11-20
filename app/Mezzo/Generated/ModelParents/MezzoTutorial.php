@@ -26,7 +26,7 @@ abstract class MezzoTutorial extends BaseModel
     ];
 
     protected $fillable = [
-        'title', 'body', 'created_at', 'updated_at', 'user_id', 'main_category_id', 'parent_id'
+        'title', 'body', 'created_at', 'updated_at', 'user_id', 'main_category_id', 'parent_id', 'comments'
     ];
 
     /**
@@ -51,20 +51,20 @@ abstract class MezzoTutorial extends BaseModel
 
     /**
      *
-     * @Mezzo\Attribute(type="DateTimeInput")
+     * @Mezzo\Attribute(type="DateTimeInput", hidden="create")
      * @var string
      */
     protected $_created_at;
 
     /**
      *
-     * @Mezzo\Attribute(type="DateTimeInput")
+     * @Mezzo\Attribute(type="DateTimeInput", hidden="create,update")
      * @var string
      */
     protected $_updated_at;
 
     /**
-     * @Mezzo\Attribute(type="RelationInputSingle")
+     * @Mezzo\Attribute(type="RelationInputSingle", hidden="create")
      * @var integer
      */
     protected $_user_id;
@@ -115,15 +115,7 @@ abstract class MezzoTutorial extends BaseModel
     protected $_plannedCategories;
 
     /**
-     * @Mezzo\Relations\OneToOne
-     * @Mezzo\Relations\From(table="tutorials", primaryKey="id", naming="mainImage")
-     * @Mezzo\Relations\To(table="images", primaryKey="id", naming="tutorial")
-     * @Mezzo\Relations\JoinColumn(table="images", column="tutorial_id")
-     */
-    protected $_mainImage;
-
-    /**
-     * @Mezzo\Attribute(type="RelationInputMultiple")
+     * @Mezzo\Attribute(type="RelationInputMultiple", hidden="create,edit")
      * @Mezzo\Relations\OneToMany
      * @Mezzo\Relations\From(table="tutorials", primaryKey="id", naming="comments")
      * @Mezzo\Relations\To(table="comments", primaryKey="id", naming="tutorial")

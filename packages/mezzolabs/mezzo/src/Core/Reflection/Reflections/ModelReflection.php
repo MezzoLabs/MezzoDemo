@@ -227,7 +227,23 @@ abstract class ModelReflection
             'hidden' => $this->instance()->getHidden(),
             'timestamps' => $this->instance()->usesTimestamps(),
             'fillable' => $this->instance()->getFillable(),
+            'casts' => $this->getCastsArray()
         ];
+    }
+
+    /**
+     * Read the protected casts array from a model.
+     *
+     * @return array
+     * @throws \MezzoLabs\Mezzo\Exceptions\InvalidArgumentException
+     */
+    public function getCastsArray()
+    {
+        $reflectionObject = Singleton::reflectionObject($this->instance());
+        $property = $reflectionObject->getProperty('casts');
+        $property->setAccessible(true);
+
+        return $property->getValue($this->instance());
     }
 
 }

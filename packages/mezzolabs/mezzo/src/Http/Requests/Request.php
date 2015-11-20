@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Permission\PermissionGuard;
 use MezzoLabs\Mezzo\Exceptions\HttpException;
 use MezzoLabs\Mezzo\Http\Controllers\ApiController;
 use MezzoLabs\Mezzo\Http\Controllers\Controller;
@@ -106,6 +107,15 @@ class Request extends FormRequest
             throw new HttpException('The controller has to be ' . Controller::class);
 
         return $controller;
+    }
+
+
+    /**
+     * @return PermissionGuard
+     */
+    protected function permissionGuard()
+    {
+        return app()->make(PermissionGuard::class);
     }
 
 

@@ -13,6 +13,6 @@ class DestroyResourceRequest extends ResourceRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->permissionGuard()->allowsDelete($this->currentModelInstance());
     }
 }

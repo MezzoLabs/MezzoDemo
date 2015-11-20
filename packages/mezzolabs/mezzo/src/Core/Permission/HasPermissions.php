@@ -1,33 +1,79 @@
 <?php
-/**
- * Project: MezzoDemo | HasPermissions.php
- * Author: Simon - www.triggerdesign.de
- * Date: 26.10.2015
- * Time: 07:24
- */
 
 namespace MezzoLabs\Mezzo\Core\Permission;
 
 
-use App\Role;
+use App\Permission;
+use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Modules\User\Domain\Repositories\PermissionRepository;
+use MezzoLabs\Mezzo\Modules\User\Domain\Repositories\RoleRepository;
+use MezzoLabs\Mezzo\Modules\User\Domain\Repositories\UserRepository;
 
+/**
+ * Class HasPermissions
+ * @package MezzoLabs\Mezzo\Core\Permission
+ *
+ * @property Collection $roles
+ * @property Collection $permissions
+ */
 trait HasPermissions
 {
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
+
+    private $permissions;
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     * @return Collection
+     * @throws \MezzoLabs\Mezzo\Exceptions\RepositoryException
      */
     public function permissions()
     {
-        return $this->hasManyThrough(Permission::class, Role::class);
+        if (!$this->permissions) {
+            $this->permissions = UserRepository::makeRepository()->permissions($this);
+        }
+
+        return $this->permissions;
     }
+
+    public function attachRole($role)
+    {
+        UserRepository::instance()->attachRole($this, $role);
+    }
+
+    public function detachRole($role)
+    {
+        UserRepository::instance()->detachRole($this, $role);
+    }
+
+    /**
+     * @param $key
+     * @return bool
+     */
+    public function hasPermission($key)
+    {
+        if ($key instanceof \App\Permission)
+            $key = $key->key();
+
+        $hasPermission = false;
+        $this->permissions()->each(function (Permission $permission) use ($key, &$hasPermission) {
+            if ($permission->equals($key)) {
+                $hasPermission = true;
+                return false;
+            }
+        });
+
+        return $hasPermission;
+    }
+
+    protected function roleRepository()
+    {
+        return app()->make(RoleRepository::class);
+    }
+
+    protected function permissionRepository()
+    {
+        return app()->make(PermissionRepository::class);
+    }
+
 
 
 }

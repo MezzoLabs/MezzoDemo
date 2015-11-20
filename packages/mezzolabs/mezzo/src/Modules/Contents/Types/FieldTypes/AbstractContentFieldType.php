@@ -61,7 +61,7 @@ abstract class AbstractContentFieldType implements ContentFieldTypeContract
      */
     public function inputType()
     {
-        if (!$this->inputType())
+        if (!$this->inputTypeInstance)
             $this->inputTypeInstance = $this->makeInputType();
 
         return $this->inputTypeInstance;
@@ -79,6 +79,7 @@ abstract class AbstractContentFieldType implements ContentFieldTypeContract
             throw new ContentFieldException('No input type set for ' . get_class($this));
 
         $inputType = app()->make($this->inputType);
+
 
         if (!$inputType instanceof InputType)
             throw new ContentFieldException('Input type for "' . get_class($this) . '" is not valid.');

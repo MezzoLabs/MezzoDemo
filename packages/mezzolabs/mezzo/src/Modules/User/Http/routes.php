@@ -12,6 +12,10 @@ module_route('User', [], function (Router $router, ApiRouter $api, CockpitRouter
     $api->resource('Role');
 
     //$api->relation('User', 'roles');
+
+    $cockpit->put('role/update/{id}',
+        ['uses' => 'Controllers\RoleController@update', 'as' => 'role.update']
+    );
 });
 
 

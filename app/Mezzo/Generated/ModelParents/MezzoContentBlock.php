@@ -23,6 +23,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 * App\Mezzo\Generated\ModelParents\MezzoContentBlock
 *
 * @property  integer $id
+ * @property  string $name
 * @property  float $sort
  * @property  string $class
 * @property string $options
@@ -48,64 +49,73 @@ abstract class MezzoContentBlock extends BaseModel
     */
 
     /**
-    * Indicates if the model should be timestamped.
-    *
-    * @var bool
-    */
-    public $timestamps = true;
-    /**
     * The table associated with the model.
     *
-    * @var string
+     * @var string
     */
     protected $table = 'content_blocks';
+
     /**
     * Set of rules that will be validated in resource requests.
     *
-    * @var array
+     * @var array
     */
     protected $rules = [
-        'sort' => "unique_with:content_blocks,<content_id",
-        'class' => "required|between:2,200",
         'name' => "between:2,200|alpha_num|unique_with:content_blocks,content_id",
-        'options' => "",
-        'content_id' => "required"
+        'sort' => "unique_with:content_blocks,content_id",
+        'class' => "required|between:2,200", 
+        'options' => ""
     ];
+
     /**
     * The attributes that should be hidden for arrays.
     *
-    * @var array
+     * @var array
     */
     protected $hidden = [
 
     ];
+
     /**
     * The attributes that are mass assignable.
     *
-    * @var array
+     * @var array
     */
     protected $fillable = [
-        'class', 'name', 'content_id', 'options'
+        "class",
+        "name",
+        "content_id", 
+        "options"
     ];
 
     /**
      * The attributes that should be casted to native types.
      *
-     * @var array
+     * * @var array
      */
     protected $casts = [
-        'options' => 'array',
+        'content_id' => "integer", 
+        'options' => "array"
     ];
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = true;
+
+
     /*
-    |-------------------------------------------------------------------------------------------------------------------
-    | Attribute annotation properties
-    |-------------------------------------------------------------------------------------------------------------------    |
-    | In this section you will find some annotated properties.
-    | They are not really important for you, but they will tell Mezzo something about
-    | the attributes of this model.
-    |-------------------------------------------------------------------------------------------------------------------
-    */
+        |-------------------------------------------------------------------------------------------------------------------
+        | Attribute annotation properties
+        |-------------------------------------------------------------------------------------------------------------------    |
+        | In this section you will find some annotated properties.
+        | They are not really important for you, but they will tell Mezzo something about
+        | the attributes of this model.
+        |-------------------------------------------------------------------------------------------------------------------
+        */
+
     /**
     * Attribute annotation property for id
     *
@@ -113,6 +123,14 @@ abstract class MezzoContentBlock extends BaseModel
     * @var integer            
     */
     protected $_id;
+
+    /**
+     * Attribute annotation property for name
+     *
+     * @Mezzo\Attribute(type="TextInput")
+     * @var string
+     */
+    protected $_name;
 
     /**
     * Attribute annotation property for sort
@@ -129,14 +147,6 @@ abstract class MezzoContentBlock extends BaseModel
     * @var string            
     */
     protected $_class;
-
-    /**
-     * Attribute annotation property for name
-     *
-     * @Mezzo\Attribute(type="TextInput")
-     * @var string
-     */
-    protected $_name;
 
     /**
     * Attribute annotation property for options
@@ -190,20 +200,20 @@ abstract class MezzoContentBlock extends BaseModel
     */
 
     /**
-    * Relation annotation property for updated_at
+     * Relation annotation property for content
     * @Mezzo\Relations\OneToMany
     * @Mezzo\Relations\From(table="content_blocks", primaryKey="id", naming="content")
     * @Mezzo\Relations\To(table="contents", primaryKey="id", naming="blocks")
-     * @Mezzo\Relations\JoinColumn(table="content_blocks", column="content_id")
+    * @Mezzo\Relations\JoinColumn(table="content_blocks", column="content_id")
     */
     protected $_content;
 
     /**
-    * Relation annotation property for updated_at
+     * Relation annotation property for fields
     * @Mezzo\Relations\OneToMany
     * @Mezzo\Relations\From(table="content_fields", primaryKey="id", naming="block")
     * @Mezzo\Relations\To(table="content_blocks", primaryKey="id", naming="fields")
-    * @Mezzo\Relations\JoinColumn(table="content_blocks", column="id")
+     * @Mezzo\Relations\JoinColumn(table="content_fields", column="content_block_id")
     */
     protected $_fields;
 
