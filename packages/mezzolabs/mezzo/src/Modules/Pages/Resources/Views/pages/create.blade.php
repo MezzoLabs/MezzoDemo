@@ -20,19 +20,30 @@
                 @endforeach
             </div>
             <div class="panel-heading">
+                <h3>Content Blocks</h3>
+            </div>
+            <div class="panel-body">
+                <button type="button" class="btn btn-primary" style="margin-right: 10px" ng-repeat="button in vm.contentBlockButtons" ng-click="vm.addContentBlock(button.contentBlock)">
+                    <span ng-class="button.icon"></span>
+                    <span ng-bind="button.label"></span>
+                </button>
+            </div>
+            <div class="panel-heading">
                 <h3>Content</h3>
 
                 <div class="panel-actions">
                 </div>
             </div>
             <div class="panel-body">
-                @foreach($blocks as $block)
-                    <input type="hidden" name="{{ $block->propertyInputName('class') }}" value="{{ $block->key() }}">
-                    <div class="block-{{ $block->key() }}">
-                        <h3>{{ $block->title() }}</h3>
-                        {!! $block->renderInputs() !!}
+
+                <div sv-root sv-part="vm.contentBlocks">
+                    <div ng-repeat="contentBlock in vm.contentBlocks" sv-element>
+                        <div mezzo-compile="contentBlock.directive"></div>
                     </div>
-                @endforeach
+                </div>
+
+                <hr>
+
                 {!! cockpit_form()->submit('Save as new ' . $model->name()) !!}
 
             </div>
