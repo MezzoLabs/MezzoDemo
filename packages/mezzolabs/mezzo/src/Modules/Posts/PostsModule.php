@@ -1,17 +1,15 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Modules\Events;
+namespace MezzoLabs\Mezzo\Modules\Posts;
 
 
-use App\Tutorial;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
-class EventsModule extends ModuleProvider
+class PostsModule extends ModuleProvider
 {
     protected $models = [
-
     ];
 
     /**
@@ -21,7 +19,6 @@ class EventsModule extends ModuleProvider
      */
     public function register()
     {
-
     }
 
     /**
@@ -31,5 +28,6 @@ class EventsModule extends ModuleProvider
      */
     public function ready()
     {
+        $this->loadViews();
     }
 }

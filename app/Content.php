@@ -23,5 +23,10 @@ class Content extends ContendsModuleContent
         return $this->hasOne(Page::class, 'content_id', 'id');
     }
 
+    public function post()
+    {
+        return $this->hasOne(Post::class);
+    }
+
 
 }

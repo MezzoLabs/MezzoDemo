@@ -66,6 +66,11 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return $this->belongsToMany(Role::class);
     }
 
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
 
 
 }

@@ -13,6 +13,6 @@ class CreateResourceRequest extends ShowResourceRequest
      */
     public function authorize()
     {
-        return $this->permissionGuard()->allowsCreate($this->currentModelInstance());
+        return $this->permissionGuard()->allowsCreate($this->newModelInstance());
     }
 }
