@@ -32,7 +32,7 @@ class UserRepository extends ModelRepository
     {
         $role = $this->roleRepository()->normalizeRole($role);
 
-        $user->roles()->attach($role->id);
+        $user->roles()->sync([$role->id], false);
     }
 
     /**
@@ -49,5 +49,16 @@ class UserRepository extends ModelRepository
     protected function  roleRepository()
     {
         return app()->make(RoleRepository::class);
+    }
+
+    /**
+     * @param $attribute
+     * @param $value
+     * @param array $columns
+     * @return \App\User
+     */
+    public function findByOrFail($attribute, $value, $columns = ['*'])
+    {
+        return parent::findByOrFail($attribute, $value, $columns);
     }
 }

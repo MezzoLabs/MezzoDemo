@@ -6,6 +6,7 @@ use MezzoLabs\Mezzo\Console\Commands\MezzoCommand;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Modules\User\Domain\Repositories\PermissionRepository;
 use MezzoLabs\Mezzo\Modules\User\Domain\Repositories\RoleRepository;
+use MezzoLabs\Mezzo\Modules\User\Domain\Repositories\UserRepository;
 
 class SeedPermissions extends MezzoCommand
 {
@@ -56,6 +57,19 @@ class SeedPermissions extends MezzoCommand
         $admin = $this->roleRepository()->findOrCreateAdmin();
 
         $admin->givePermissions($allPermissions);
+
+        $adminUserId = $this->ask('Enter the email of the user which will crowned as the eternal administrator:');
+
+        if ($adminUserId) {
+            $adminUser = $this->userRepository()->findByOrFail('email', $adminUserId);
+
+            $adminUser->attachRole($admin);
+
+            $this->info('Long live the king!');
+        }
+
+        $this->info('--> All default permissions are in the table.');
+
     }
 
     /**
@@ -72,6 +86,14 @@ class SeedPermissions extends MezzoCommand
     protected function roleRepository()
     {
         return app()->make(RoleRepository::class);
+    }
+
+    /**
+     * @return UserRepository
+     */
+    protected function userRepository()
+    {
+        return app()->make(UserRepository::class);
     }
 
     protected function allPermissionArray()
