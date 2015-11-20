@@ -240,47 +240,40 @@ function nextUid() {
 module.exports = exports["default"];
 
 },{}],8:[function(require,module,exports){
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var ContentBuilderController =
+var CreatePageController =
 
 /*@ngInject*/
-function ContentBuilderController() {
-    _classCallCheck(this, ContentBuilderController);
+function CreatePageController() {
+    _classCallCheck(this, CreatePageController);
+
+    console.log('Constructor CreatePageController');
 };
 
-exports["default"] = ContentBuilderController;
-module.exports = exports["default"];
+exports['default'] = CreatePageController;
+module.exports = exports['default'];
 
 },{}],9:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _ContentBuilderController = require('./ContentBuilderController');
+var _CreatePageController = require('./CreatePageController');
 
-var _ContentBuilderController2 = _interopRequireDefault(_ContentBuilderController);
+var _CreatePageController2 = _interopRequireDefault(_CreatePageController);
 
-var _module = angular.module('MezzoContentBuilder', ['ui.router']);
+var _module = angular.module('MezzoContentBuilder', []);
 
-_module.config(function ($stateProvider) {
-    $stateProvider.state('ContentBuilder', {
-        url: '/mezzo/content-builder',
-        templateUrl: 'mezzo/file-manager/file/create.html',
-        controller: 'ContentBuilderController',
-        controllerAs: 'vm'
-    });
-});
+_module.controller('CreatePageController', _CreatePageController2['default']);
 
-_module.controller('ContentBuilderController', _ContentBuilderController2['default']);
-
-},{"./ContentBuilderController":8}],10:[function(require,module,exports){
+},{"./CreatePageController":8}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1186,7 +1179,7 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports['default'] = registerStateDirective;
 
-function registerStateDirective($stateProvider) {
+function registerStateDirective($stateProvider, $controller) {
     return {
         restrict: 'A',
         link: link
@@ -1196,7 +1189,11 @@ function registerStateDirective($stateProvider) {
         var uri = attributes.uri;
         var page = attributes.page;
         var action = attributes.action;
-        var controller = mapActionToController(action);
+        var controller = controllerForPage(page);
+
+        if (!controller) {
+            controller = controllerForAction(action);
+        }
 
         $stateProvider.state(page, {
             url: '/mezzo/' + uri,
@@ -1205,27 +1202,40 @@ function registerStateDirective($stateProvider) {
             controllerAs: 'vm'
         });
     }
+
+    function controllerForPage(page) {
+        try {
+            var controllerName = page + 'Controller';
+
+            $controller(controllerName);
+
+            return controllerName;
+        } catch (err) {
+            return null;
+        }
+    }
+
+    function controllerForAction(action) {
+        if (action === 'index') {
+            return 'ResourceIndexController';
+        }
+
+        if (action === 'create') {
+            return 'ResourceCreateController';
+        }
+
+        if (action === 'edit') {
+            return 'ResourceEditController';
+        }
+
+        if (action === 'show') {
+            return 'ResourceShowController';
+        }
+
+        throw new Error('No suitable Controller found for action "' + action + '"!');
+    }
 }
 
-function mapActionToController(action) {
-    if (action === 'index') {
-        return 'ResourceIndexController';
-    }
-
-    if (action === 'create') {
-        return 'ResourceCreateController';
-    }
-
-    if (action === 'edit') {
-        return 'ResourceEditController';
-    }
-
-    if (action === 'show') {
-        return 'ResourceShowController';
-    }
-
-    throw new Error('No suitable Controller found for action "' + action + '"!');
-}
 module.exports = exports['default'];
 
 },{}],23:[function(require,module,exports){
