@@ -70,7 +70,8 @@ class AnnotationGenerator
     public function attribute(Attribute $attribute)
     {
         $this->addLine($this->doctrine('Mezzo\Attribute', [
-            'type' => $attribute->type()->name()
+            'type' => $attribute->type()->name(),
+            'hidden' => implode(',', $attribute->hiddenInForms())
         ]));
 
         return $this->pullLines();
@@ -161,8 +162,8 @@ class AnnotationGenerator
             ]));
         else
             $this->addLine($this->doctrine('Mezzo\\Relations\\JoinColumn', [
-                'table' => $relation->toTable(),
-                'column' => $relation->toPrimaryKey(),
+                'table' => $relation->joinTable(),
+                'column' => $relation->joinColumn()
             ]));
 
 

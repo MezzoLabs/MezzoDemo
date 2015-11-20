@@ -5,11 +5,9 @@ namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 
 
 use MezzoLabs\Mezzo\Core\Annotations\Attribute as AttributeAnnotation;
-use MezzoLabs\Mezzo\Core\Annotations\Relations\RelationAnnotation;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
-use MezzoLabs\Mezzo\Core\Schema\ValidationRules\Rules;
 use MezzoLabs\Mezzo\Exceptions\AnnotationException;
 
 class AttributeAnnotations extends PropertyAnnotations
@@ -24,6 +22,14 @@ class AttributeAnnotations extends PropertyAnnotations
      */
     protected $relation;
 
+    protected $defaultHiddenInForms = [
+        'id' => ['create', 'edit'],
+        'slug' => ['create', 'edit'],
+        'created_at' => ['create'],
+        'updated_at' => ['create', 'update'],
+        'deleted_at' => ['create', 'update'],
+    ];
+
     /**
      * @return array
      */
@@ -33,7 +39,26 @@ class AttributeAnnotations extends PropertyAnnotations
             'rules' => $this->modelReflection()->rules($this->name()),
             'visible' => !in_array($this->name(), $this->modelReflection()->instance()->getHidden()),
             'fillable' => in_array($this->name(), $this->modelReflection()->instance()->getFillable()),
+            'hiddenInForms' => $this->hiddenInFormsArray()
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function hiddenInFormsArray()
+    {
+        $hiddenString = $this->attributeAnnotation()->hidden;
+
+        if ($hiddenString === null && in_array($this->name(), $this->defaultHiddenInForms)) {
+            return $this->defaultHiddenInForms[$this->name()];
+        }
+
+        if (empty($hiddenString)) {
+            return [];
+        }
+
+        return explode(',', $hiddenString);
     }
 
     /**
@@ -94,23 +119,25 @@ class AttributeAnnotations extends PropertyAnnotations
         return $this->get('Attribute');
     }
 
+
     /**
      * @return Relation|null
      * @throws AnnotationException
      */
-    protected function findRelation(){
+    protected function findRelation()
+    {
         $relationAnnotationsCollection = $this->model()->relationAnnotations();
 
         $relation = null;
 
-        $relationAnnotationsCollection->each(function(RelationAnnotations $relationAnnotations) use (&$relation){
+        $relationAnnotationsCollection->each(function (RelationAnnotations $relationAnnotations) use (&$relation) {
             if ($this->belongsToRelationAnnotations($relationAnnotations)) {
                 $relation = $relationAnnotations->relation();
                 return false;
             }
         });
 
-        if(!$relation){
+        if (!$relation) {
             throw new AnnotationException('Cannot find a relation for attribute ' . $this->qualifiedColumn());
         }
 

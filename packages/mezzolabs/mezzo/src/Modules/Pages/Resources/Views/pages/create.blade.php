@@ -12,13 +12,15 @@
                 </div>
             </div>
             <div class="panel-body">
-                @foreach($model->attributes()->fillableOnly() as $attribute)
+                @foreach($model->attributes()->fillableOnly()->forget(['content_id', 'slug']) as $attribute)
                     <div class="form-group">
                         <label>{{ $attribute->title() }}</label>
                         {!! $attribute->render() !!}
                     </div>
                 @endforeach
             </div>
+        </div>
+        <div class="panel panel-bordered">
             <div class="panel-heading">
                 <h3>Content</h3>
 
@@ -26,18 +28,32 @@
                 </div>
             </div>
             <div class="panel-body">
-                @foreach($blocks as $block)
-                    <input type="hidden" name="{{ $block->propertyInputName('class') }}" value="{{ $block->key() }}">
-                    <div class="block-{{ $block->key() }}">
-                        <h3>{{ $block->title() }}</h3>
-                        {!! $block->renderInputs() !!}
-                    </div>
-                @endforeach
-                {!! cockpit_form()->submit('Save as new ' . $model->name()) !!}
-
+                @include('modules.contents::block_type_select')
             </div>
 
+        @foreach($blocks as $block)
+                <div class="panel-heading">
+                    <h3>{{ $block->title() }}</h3>
+
+                    <div class="panel-actions">
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <input type="hidden" name="{{ $block->propertyInputName('class') }}" value="{{ $block->key() }}">
+
+                    <div class="block-{{ $block->key() }}">
+                        {!! $block->inputsView() !!}
+                    </div>
+                </div>
+            @endforeach
         </div>
+
+        <div class="panel panel-bordered">
+
+            {!! cockpit_form()->submit('Save as new ' . $model->name()) !!}
+        </div>
+
+
         {!! cockpit_form()->close() !!}
     </div>
 

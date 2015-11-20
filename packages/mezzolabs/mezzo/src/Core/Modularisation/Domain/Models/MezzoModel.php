@@ -60,4 +60,12 @@ interface MezzoModel extends EloquentInterface
     public function getAttributes();
 
     public function validateOrFail($data = [], $mode = "create");
+
+
+    /**
+     * Check if the user owns this model.
+     *
+     * @return boolean
+     */
+    public function isOwnedByUser(\App\User $user);
 }

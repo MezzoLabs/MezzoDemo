@@ -59,6 +59,7 @@ class ContentBlockTypeRegistrar
     public function registerContentBlock(ContentBlockTypeContract $contentBlock)
     {
         $this->blocks->put($contentBlock->key(), $contentBlock);
+        $this->blocks->addLookup('hashes', $contentBlock->hash(), $contentBlock);
     }
 
     /**
@@ -80,6 +81,23 @@ class ContentBlockTypeRegistrar
     public function all()
     {
         return $this->blocks->collection();
+    }
+
+    /**
+     * Get an item from the collection by key.
+     *
+     * @param  mixed $key
+     * @param  mixed $default
+     * @return ContentBlockTypeContract
+     */
+    public function get($key, $default = null)
+    {
+        $block = $this->blocks->get($key, $default);
+
+        if ($block)
+            return $block;
+
+        return $this->blocks->lookup($key);
     }
 
     /**

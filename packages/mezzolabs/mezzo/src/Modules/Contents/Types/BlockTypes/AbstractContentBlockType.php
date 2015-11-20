@@ -23,6 +23,10 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
 
     protected $isBooted;
 
+    protected $options = [
+        'icon' => 'ion-cube'
+    ];
+
     public function __construct()
     {
         $this->boot();
@@ -149,4 +153,23 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
         return $rules;
     }
 
+    /**
+     * A hash value of the key that is easier to handle in URLs.
+     *
+     * @return string
+     */
+    public function hash()
+    {
+        return md5($this->key());
+    }
+
+    /**
+     * Returns the title that will be displayed in the dashboard.
+     *
+     * @return string
+     */
+    public function icon()
+    {
+        return $this->options['icon'];
+    }
 }

@@ -66,7 +66,6 @@ class Attributes extends Collection
         return $this->diff($this->visibleOnly());
     }
 
-
     /**
      * @return static
      */
@@ -76,6 +75,21 @@ class Attributes extends Collection
             return $attribute->isFillable();
         });
     }
+
+    /**
+     * Filter all attributes that are not allowed in this form.
+     * You can influence this by setting the Mezzo\Attribute.hidden annotation.
+     *
+     * @param $formName
+     * @return static
+     */
+    public function visibleInForm($formName)
+    {
+        return $this->filter(function (Attribute $attribute) use ($formName) {
+            return $attribute->visibleInForm($formName);
+        });
+    }
+
 
     /**
      * Returns an Attribute Collection via the converted columns

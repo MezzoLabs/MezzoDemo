@@ -4,6 +4,7 @@ namespace MezzoLabs\Mezzo\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use MezzoLabs\Mezzo\Core\Permission\PermissionGuard;
 
 class Authenticate extends MezzoMiddleware
 {
@@ -17,13 +18,20 @@ class Authenticate extends MezzoMiddleware
     protected $auth;
 
     /**
+     * @var PermissionGuard
+     */
+    protected $permissionGuard;
+
+    /**
      * Create a new filter instance.
      *
      * @param  Guard $auth
+     * @param PermissionGuard $permissionGuard
      */
-    public function __construct(Guard $auth)
+    public function __construct(Guard $auth, PermissionGuard $permissionGuard)
     {
         $this->auth = $auth;
+        $this->permissionGuard = $permissionGuard;
     }
 
     /**
@@ -42,6 +50,8 @@ class Authenticate extends MezzoMiddleware
                 return redirect()->guest('mezzo/auth/login');
             }
         }
+        if (!$this->permissionGuard->allowsCockpit())
+            return response('Unauthorized. You are not allow to view the cockpit.', 401);
 
         return $next($request);
     }

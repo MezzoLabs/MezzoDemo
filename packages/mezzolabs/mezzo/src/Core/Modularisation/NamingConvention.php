@@ -7,7 +7,6 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\NamingConventionException;
-use MezzoLabs\Mezzo\Http\Controllers\Controller;
 use MezzoLabs\Mezzo\Http\Controllers\ResourceControllerContract;
 use MezzoLabs\Mezzo\Http\Pages\ModulePage;
 use MezzoLabs\Mezzo\Http\Transformers\EloquentModelTransformer;
@@ -22,34 +21,45 @@ class NamingConvention
      */
     public static function findModule($object)
     {
-        if ($object instanceof Controller)
-            return static::findModuleOfController($object);
+        if (is_object($object) || is_string($object))
+            return static::findModuleOfClass($object);
 
         throw new NamingConventionException('Cannot find module for ' . get_class($object));
     }
 
     /**
-     * @param Controller $controller
-     * @return ModuleProvider
+     * @param $className
+     * @return null
+     * @throws InvalidArgumentException
      * @throws NamingConventionException
      */
-    protected static function findModuleOfController(Controller $controller)
+    public static function findModuleOfClass($className)
     {
-        $controllerClass = get_class($controller);
-        $moduleNamespaceEnd = strpos($controllerClass, 'Http\Controllers');
+        if (is_object($className))
+            $className = get_class($className);
 
-        if (!$moduleNamespaceEnd)
-            $moduleNamespaceEnd = strpos($controllerClass, 'Http\ApiControllers');
+        if (!is_string($className))
+            throw new InvalidArgumentException($className);
 
-        if (!$moduleNamespaceEnd)
-            throw new NamingConventionException("This module controller isn't located inside a real module. " .
-                "Check if the controller is inside the Http\\Controllers or the ApiControllers Folder.");
+        $modules = mezzo()->moduleCenter()->modules();
 
-        $moduleNamespace = explode('\\', substr($controllerClass, 0, $moduleNamespaceEnd - 1));
-        $moduleKey = $moduleNamespace[count($moduleNamespace) - 1];
+        $found = null;
 
-        return mezzo()->module($moduleKey);
+        $modules->each(function (ModuleProvider $module) use ($className, &$found) {
+            $namespace = $module->getNamespaceName();
+
+            if (strpos($className, $namespace) !== false) {
+                $found = $module;
+                return false;
+            }
+        });
+
+        if (!$found)
+            throw new NamingConventionException('The class "' . $className . '" is not inside a registered module.');
+
+        return $found;
     }
+
 
     /**
      * Try to find the model that is connected via the naming.
@@ -67,7 +77,7 @@ class NamingConvention
         if ($object instanceof ResourceControllerContract)
             return static::modelNameForModuleController($object);
 
-        if($object instanceof EloquentModelTransformer)
+        if ($object instanceof EloquentModelTransformer)
             return static::modelNameForTransformer($object);
 
         throw new NamingConventionException('Cannot find model name for ' . get_class($object));
@@ -107,7 +117,7 @@ class NamingConvention
 
     private static function modelNameForTransformer($object)
     {
-        if($object instanceof GenericEloquentModelTransformer)
+        if ($object instanceof GenericEloquentModelTransformer)
             throw new NamingConventionException('Cannot find model for a generic model transformer.');
 
         $shortName = Singleton::reflection($object)->getShortName();
@@ -133,7 +143,7 @@ class NamingConvention
         if (!strpos($controllerName, 'Controller'))
             $controllerName .= 'Controller';
 
-        if(class_exists($controllerName))
+        if (class_exists($controllerName))
             return $controllerName;
 
         /**

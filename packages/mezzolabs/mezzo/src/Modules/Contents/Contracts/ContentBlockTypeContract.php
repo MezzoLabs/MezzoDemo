@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Modules\Contents\Contracts;
 
 
+use Illuminate\View\View;
 use MezzoLabs\Mezzo\Modules\Contents\Types\FieldTypes\ContentFieldTypeCollection;
 
 interface ContentBlockTypeContract
@@ -16,11 +17,25 @@ interface ContentBlockTypeContract
     public function key();
 
     /**
+     * A hash value of the key that is easier to handle in URLs.
+     *
+     * @return string
+     */
+    public function hash();
+
+    /**
      * Returns the title that will be displayed in the dashboard.
      *
      * @return string
      */
     public function title();
+
+    /**
+     * Returns the title that will be displayed in the dashboard.
+     *
+     * @return string
+     */
+    public function icon();
 
     /**
      * Called when a content block type is booted.
@@ -45,9 +60,9 @@ interface ContentBlockTypeContract
     /**
      * Create the evaluated view contents for this block.
      *
-     * @return string
+     * @return View
      */
-    public function renderInputs();
+    public function inputsView();
 
     /**
      * The name attribute that represents a content field in the form array.

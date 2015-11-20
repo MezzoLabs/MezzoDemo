@@ -3,7 +3,7 @@
 
 namespace MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories;
 
-
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use MezzoLabs\Mezzo\Core\Cache\ResourceExistsCache;
 
 abstract class EloquentRepository
@@ -37,5 +37,14 @@ abstract class EloquentRepository
         return ResourceExistsCache::checkExistence($table, $id, function () use ($table, $id) {
             return $this->table($table)->where('id', '=', $id)->count() == 1;
         });
+    }
+
+    /**
+     * @param EloquentCollection $collection
+     * @return EloquentCollection
+     */
+    public function pluckIds(EloquentCollection $collection)
+    {
+        return $collection->pluck('id');
     }
 }

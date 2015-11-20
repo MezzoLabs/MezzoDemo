@@ -25,6 +25,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 * @property  integer $id
 * @property  string $name
 * @property  string $label
+ * @property  EloquentCollection $permissions
 */
 abstract class MezzoRole extends BaseModel
 {
@@ -133,7 +134,7 @@ abstract class MezzoRole extends BaseModel
      *
      * @var EloquentCollection
      */
-    protected $users;
+    protected $_users;
 
     /**
      * @Mezzo\Attribute(type="RelationInputMultiple")
@@ -144,7 +145,7 @@ abstract class MezzoRole extends BaseModel
      *
      * @var EloquentCollection
      */
-    protected $permissions;
+    protected $_permissions;
 
 
 }

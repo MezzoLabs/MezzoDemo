@@ -11,6 +11,9 @@ use MezzoLabs\Mezzo\Modules\FileManager\Content\Fields\ImageField;
 class ImageAndText extends AbstractContentBlockType
 {
 
+    protected $options = [
+        'icon' => 'ion-image'
+    ];
     /**
      * Called when a content block type is booted.
      * Now is the time to add some field types to this type of content block.
@@ -26,7 +29,7 @@ class ImageAndText extends AbstractContentBlockType
      *
      * @return string
      */
-    public function renderInputs()
+    public function inputsView()
     {
         return $this->makeView('modules.file-manager::content_blocks.image_and_text');
 

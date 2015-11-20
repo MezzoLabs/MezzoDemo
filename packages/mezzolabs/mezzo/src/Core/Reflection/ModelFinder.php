@@ -3,8 +3,8 @@
 
 namespace MezzoLabs\Mezzo\Core\Reflection;
 
-use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Filesystem\ClassFinder;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
@@ -125,6 +125,7 @@ class ModelFinder
     }
 
     protected function checkIfConcreteSubclass($class, $parentClass){
+
         if (!is_subclass_of($class, $parentClass))
             return false;
 
