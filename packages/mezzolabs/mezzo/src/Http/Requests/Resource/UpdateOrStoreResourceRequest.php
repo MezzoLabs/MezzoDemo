@@ -13,6 +13,6 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
      */
     public function rules()
     {
-        return $this->model()->rules();
+        return $this->modelReflection()->rules();
     }
 }

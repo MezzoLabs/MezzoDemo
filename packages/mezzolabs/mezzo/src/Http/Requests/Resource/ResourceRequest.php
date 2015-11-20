@@ -11,6 +11,7 @@ use MezzoLabs\Mezzo\Http\Controllers\Controller;
 use MezzoLabs\Mezzo\Http\Controllers\ResourceControllerContract;
 use MezzoLabs\Mezzo\Http\Requests\Request;
 use MezzoLabs\Mezzo\Http\Requests\ValidatesApiRequests;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ResourceRequest extends Request
 {
@@ -47,13 +48,32 @@ class ResourceRequest extends Request
      * @return \MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection
      * @throws ModuleControllerException
      */
-    public function model()
+    public function modelReflection()
     {
         if (!$this->modelObject) {
             $this->modelObject = $this->findModel();
         }
 
         return $this->modelObject;
+    }
+
+    public function newModelInstance()
+    {
+        return $this->modelReflection()->instance(true);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function currentModelInstance()
+    {
+        $id = $this->route('id');
+        if (!$id) $id = $this->get('id');
+
+        if ($id || !is_integer($id))
+            throw new BadRequestHttpException('This request needs an id.');
+
+        return $this->modelReflection()->instance()->query()->findOrFail($id);
     }
 
     /**

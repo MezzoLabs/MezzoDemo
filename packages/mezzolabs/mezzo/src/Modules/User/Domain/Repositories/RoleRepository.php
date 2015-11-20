@@ -36,7 +36,7 @@ class RoleRepository extends ModelRepository
         if ($permissions instanceof EloquentCollection)
             $permissions = $this->pluckIds($permissions)->toArray();
 
-        $role->permissions()->attach($permissions);
+        $role->permissions()->sync($permissions, false);
     }
 
     /**

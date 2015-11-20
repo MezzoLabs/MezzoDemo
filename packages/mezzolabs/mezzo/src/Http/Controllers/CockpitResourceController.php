@@ -11,6 +11,7 @@ use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
 
 abstract class CockpitResourceController extends CockpitController implements ResourceControllerContract
 {
+
     use HasModelResource;
 
     protected $allowStaticRepositories = false;

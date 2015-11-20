@@ -23,10 +23,10 @@ trait ValidatesApiRequests
     protected function failedApiValidation(Validator $validator)
     {
         if ($this instanceof StoreResourceRequest)
-            throw new StoreResourceFailedException('Could not create new ' . $this->model()->name() . '.', $validator->errors());
+            throw new StoreResourceFailedException('Could not create new ' . $this->modelReflection()->name() . '.', $validator->errors());
 
         if ($this instanceof UpdateResourceRequest)
-            throw new UpdateResourceFailedException('Could not update ' . $this->model()->name() . '.', $validator->errors());
+            throw new UpdateResourceFailedException('Could not update ' . $this->modelReflection()->name() . '.', $validator->errors());
 
         throw new HttpException('Unknown validation error.');
     }
@@ -39,5 +39,5 @@ trait ValidatesApiRequests
     /**
      * @return \MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection
      */
-    abstract function model();
+    abstract function modelReflection();
 }

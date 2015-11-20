@@ -93,9 +93,9 @@ class RoleController extends CockpitResourceController
     {
         $role = $this->repository()->findOrFail($id);
 
-        $syncArray = $this->repository()->syncPermissions($role, array_keys($request->get('permissions')));
+        $this->repository()->syncPermissions($role, array_keys($request->get('permissions', [])));
 
-        return $this->redirectToPage(IndexRolePage::class)->with('message', 'Permissions for ' . $role->label . ' updated.');
+        return $this->redirectToPage(IndexRolePage::class, ['role' => $role->name])->with('message', 'The permissions for the "' . $role->label . '" role were updated.');
     }
 
     /**

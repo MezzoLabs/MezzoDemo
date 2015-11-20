@@ -1,10 +1,4 @@
 <?php
-/**
- * Project: MezzoDemo | HasPermissions.php
- * Author: Simon - www.triggerdesign.de
- * Date: 26.10.2015
- * Time: 07:24
- */
 
 namespace MezzoLabs\Mezzo\Core\Permission;
 
@@ -28,7 +22,8 @@ trait HasPermissions
     private $permissions;
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     * @return Collection
+     * @throws \MezzoLabs\Mezzo\Exceptions\RepositoryException
      */
     public function permissions()
     {
@@ -59,7 +54,7 @@ trait HasPermissions
             $key = $key->key();
 
         $hasPermission = false;
-        $this->permissions->each(function (Permission $permission) use ($key, &$hasPermission) {
+        $this->permissions()->each(function (Permission $permission) use ($key, &$hasPermission) {
             if ($permission->equals($key)) {
                 $hasPermission = true;
                 return false;

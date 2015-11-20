@@ -100,4 +100,19 @@ trait HasMezzoAnnotations
     {
         return $this - $this->schema()->attributes()->has($name);
     }
+
+    /**
+     * Check if the user owns this model.
+     *
+     * @return boolean
+     */
+    public function isOwnedByUser(\App\User $user)
+    {
+        $ownerId = $this->getOwnerId();
+
+        if(!$ownerId)
+            return false;
+
+        return intval($ownerId) === intval($user->id);
+    }
 }
