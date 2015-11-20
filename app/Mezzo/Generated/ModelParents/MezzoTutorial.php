@@ -115,14 +115,6 @@ abstract class MezzoTutorial extends BaseModel
     protected $_plannedCategories;
 
     /**
-     * @Mezzo\Relations\OneToOne
-     * @Mezzo\Relations\From(table="tutorials", primaryKey="id", naming="mainImage")
-     * @Mezzo\Relations\To(table="images", primaryKey="id", naming="tutorial")
-     * @Mezzo\Relations\JoinColumn(table="images", column="tutorial_id")
-     */
-    protected $_mainImage;
-
-    /**
      * @Mezzo\Attribute(type="RelationInputMultiple", hidden="create,edit")
      * @Mezzo\Relations\OneToMany
      * @Mezzo\Relations\From(table="tutorials", primaryKey="id", naming="comments")

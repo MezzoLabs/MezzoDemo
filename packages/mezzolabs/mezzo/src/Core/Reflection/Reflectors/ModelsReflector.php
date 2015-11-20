@@ -85,6 +85,9 @@ abstract class ModelsReflector
 
         $this->manager()->sets()->each(function (ModelReflectionSet $set, $key) use ($modelReflections, $useMezzoReflections) {
             $modelReflection = ($useMezzoReflections) ? $set->mezzoReflection() : $set->eloquentReflection();
+
+            if (empty($modelReflection)) return true;
+
             $modelReflections->put($key, $modelReflection);
         });
 

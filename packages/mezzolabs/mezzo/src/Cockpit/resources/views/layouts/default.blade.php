@@ -18,7 +18,7 @@
     {!! cockpit_stylesheet('/css/app.css') !!}
             <!-- CSS -->
 </head>
-<body class="@yield('body-class', 'sidebar-pinned') @if($errors->has()) has-errors @endif">
+<body class="@yield('body-class', 'sidebar-pinned') @if($errors->has() || session('message')) has-errors @endif">
 <!-- Content -->
 <div id="page-container">
     @include('cockpit::layouts.default.sidebar')

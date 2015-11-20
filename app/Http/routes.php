@@ -30,10 +30,10 @@ Route::get('random', function () {
     return str_random(16);
 });
 
-Route::get('/test/contents', function () {
-    $repo = app()->make(\MezzoLabs\Mezzo\Modules\Contents\Domain\Repositories\ContentRepository::class);
+Route::get('/test/permissions', function () {
+    $user = Auth::user();
 
-    $repo->updateRecentText(5);
+    mezzo_dd($user->permissions());
 });
 
 Route::post('/test/file', 'TestController@uploadFile');
@@ -51,18 +51,10 @@ Route::get('/test/category', function () {
 });
 
 
-Route::get('/test/tutorial', function () {
-    $tutorial = new Tutorial();
+Route::get('/test/models', function () {
+    $allModels = mezzo()->reflector()->modelReflections();
 
-    $tutorial->title = str_random();
-    $tutorial->body = str_random();
-    $tutorial->user_id = 1;
-
-    $tutorial->save();
-
-    $dispatcher = app(Illuminate\Events\Dispatcher::class);
-
-    mezzo_dd($dispatcher);
+    mezzo_dd($allModels);
 });
 
 

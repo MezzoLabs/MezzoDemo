@@ -7,10 +7,15 @@ use App\Permission;
 use App\Role;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Modules\User\Commands\SeedPermissions;
 
 class UserModule extends ModuleProvider
 {
     protected $group = "admin";
+
+    protected $commands = [
+        SeedPermissions::class
+    ];
 
     protected $models = [
         User::class,
@@ -39,12 +44,6 @@ class UserModule extends ModuleProvider
      */
     public function ready()
     {
-        /**
-        $this->registerTransformers([
-            User::class => UserTransformer::class,
-            Role::class => RoleTransformer::class
-        ]);
-         * **/
-        //dd($tutorialReflection->relationships());
+        $this->loadViews();
     }
 }

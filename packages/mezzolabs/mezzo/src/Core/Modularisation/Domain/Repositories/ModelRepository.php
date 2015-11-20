@@ -94,6 +94,15 @@ class ModelRepository extends EloquentRepository
     }
 
     /**
+     * @return static
+     * @throws RepositoryException
+     */
+    public static function instance()
+    {
+        return static::makeRepository(null);
+    }
+
+    /**
      * @param array $columns
      * @return Collection
      */
@@ -208,7 +217,7 @@ class ModelRepository extends EloquentRepository
      * @param $attribute
      * @param $value
      * @param array $columns
-     * @return null
+     * @return Model
      */
     public function findBy($attribute, $value, $columns = array('*'))
     {
@@ -227,7 +236,13 @@ class ModelRepository extends EloquentRepository
         if (empty($values))
             return $model;
 
-        $model->update($values);
+        $model->fill($values);
+
+        if (count($model->getDirty()) == 0) {
+            return $model;
+        }
+
+        $model->save();
 
         return $model;
     }

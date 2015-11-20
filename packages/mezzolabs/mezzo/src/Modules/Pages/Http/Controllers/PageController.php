@@ -3,7 +3,10 @@
 namespace MezzoLabs\Mezzo\Modules\Pages\Http\Controllers;
 
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
-use MezzoLabs\Mezzo\Http\Requests\Resource\ResourceRequest;
+use MezzoLabs\Mezzo\Http\Requests\Resource\CreateResourceRequest;
+use MezzoLabs\Mezzo\Http\Requests\Resource\EditResourceRequest;
+use MezzoLabs\Mezzo\Http\Requests\Resource\IndexResourceRequest;
+use MezzoLabs\Mezzo\Http\Requests\Resource\ShowResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
 use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar;
 use MezzoLabs\Mezzo\Modules\Pages\Http\Pages\CreatePagePage;
@@ -26,16 +29,20 @@ class PageController extends CockpitResourceController
     /**
      * Display a listing of the resource.
      *
-     * @param ResourceRequest $request
+     * @param IndexResourceRequest $request
      * @return ModuleResponse
      */
-    public function index(ResourceRequest $request)
+    public function index(IndexResourceRequest $request)
     {
         return $this->page(IndexPagePage::class);
     }
 
 
-    public function create(ResourceRequest $request)
+    /**
+     * @param CreateResourceRequest $request
+     * @return string
+     */
+    public function create(CreateResourceRequest $request)
     {
         return $this->page(CreatePagePage::class);
     }
@@ -43,11 +50,11 @@ class PageController extends CockpitResourceController
     /**
      * Display the specified resource.
      *
+     * @param ShowResourceRequest $request
      * @param  int $id
-     * @param ResourceRequest $request
      * @return ModuleResponse
      */
-    public function show(ResourceRequest $request, $id)
+    public function show(ShowResourceRequest $request, $id)
     {
         // TODO: Implement show() method.
     }
@@ -55,14 +62,19 @@ class PageController extends CockpitResourceController
     /**
      * Show the form for editing the specified resource.
      *
+     * @param EditResourceRequest $request
      * @param  int $id
      * @return ModuleResponse
      */
-    public function edit(ResourceRequest $request, $id = null)
+    public function edit(EditResourceRequest $request, $id = null)
     {
         return $this->page(EditPagePage::class);
     }
 
+    /**
+     * @param StorePageRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(StorePageRequest $request)
     {
         $data = $request->all();

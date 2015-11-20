@@ -21,7 +21,7 @@ abstract class CockpitController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws \MezzoLabs\Mezzo\Exceptions\InvalidArgumentException
      */
-    protected function redirectToPage($pageName = "index", $parameters)
+    protected function redirectToPage($pageName = "index", $parameters = [])
     {
         $page = $this->module()->makePage($pageName);
 

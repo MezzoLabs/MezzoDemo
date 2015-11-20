@@ -81,4 +81,23 @@ trait HasMezzoAnnotations
 
         return $relation;
     }
+
+    /**
+     * @return null|int
+     */
+    public function getOwnerId()
+    {
+        $ownerColumns = ['user_id', 'owner_id', 'creator_id'];
+
+        foreach ($ownerColumns as $ownerColumn) {
+            if ($this->hasAttribute($ownerColumn)) return $this->getAttribute($ownerColumn);
+        }
+
+        return null;
+    }
+
+    public function hasAttribute($name)
+    {
+        return $this - $this->schema()->attributes()->has($name);
+    }
 }

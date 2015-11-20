@@ -58,4 +58,14 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
     }
 
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+
+
 }
