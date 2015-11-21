@@ -11,7 +11,7 @@ export default function registerStateDirective($stateProvider, $controller) {
         var action = attributes.action;
         var controller = controllerForPage(page);
 
-        if(!controller){
+        if (!controller) {
             controller = controllerForAction(action);
         }
 
@@ -23,32 +23,32 @@ export default function registerStateDirective($stateProvider, $controller) {
         });
     }
 
-    function controllerForPage(page){
-        try{
+    function controllerForPage(page) {
+        try {
             var controllerName = page + 'Controller';
 
             $controller(controllerName);
 
             return controllerName;
-        }catch(err){
+        } catch (err) {
             return null;
         }
     }
 
-    function controllerForAction(action){
-        if(action === 'index'){
+    function controllerForAction(action) {
+        if (action === 'index') {
             return 'ResourceIndexController';
         }
 
-        if(action === 'create'){
+        if (action === 'create') {
             return 'ResourceCreateController';
         }
 
-        if(action === 'edit'){
+        if (action === 'edit') {
             return 'ResourceEditController';
         }
 
-        if(action === 'show'){
+        if (action === 'show') {
             return 'ResourceShowController';
         }
 

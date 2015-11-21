@@ -256,60 +256,76 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+    var _createClass = (function () {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || false;
+                descriptor.configurable = true;
+                if ("value" in descriptor) descriptor.writable = true;
+                Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+            if (protoProps) defineProperties(Constructor.prototype, protoProps);
+            if (staticProps) defineProperties(Constructor, staticProps);
+            return Constructor;
+        };
+    })();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var CreatePageController = (function () {
+    var CreatePageController = (function () {
 
-    /*@ngInject*/
+        /*@ngInject*/
 
-    function CreatePageController(api, $sce) {
-        _classCallCheck(this, CreatePageController);
+        function CreatePageController(api, $sce) {
+            _classCallCheck(this, CreatePageController);
 
-        this.api = api;
-        this.$sce = $sce;
-        this.contentBlocks = [];
-        this.templates = {};
-    }
-
-    _createClass(CreatePageController, [{
-        key: "addContentBlock",
-        value: function addContentBlock(key, title, hash, propertyInputName) {
-            var contentBlock = {
-                key: key,
-                title: title,
-                hash: hash,
-                propertyInputName: propertyInputName,
-                template: null
-            };
-
-            this.fillTemplate(contentBlock);
-            this.contentBlocks.push(contentBlock);
+            this.api = api;
+            this.$sce = $sce;
+            this.contentBlocks = [];
+            this.templates = {};
         }
-    }, {
-        key: "fillTemplate",
-        value: function fillTemplate(contentBlock) {
-            var _this = this;
 
-            var cachedTemplate = this.templates[contentBlock.hash];
+        _createClass(CreatePageController, [{
+            key: "addContentBlock",
+            value: function addContentBlock(key, title, hash, propertyInputName) {
+                var contentBlock = {
+                    key: key,
+                    title: title,
+                    hash: hash,
+                    propertyInputName: propertyInputName,
+                    template: null
+                };
 
-            if (cachedTemplate) {
-                return contentBlock.template = cachedTemplate;
+                this.fillTemplate(contentBlock);
+                this.contentBlocks.push(contentBlock);
+            }
+        }, {
+            key: "fillTemplate",
+            value: function fillTemplate(contentBlock) {
+                var _this = this;
+
+                var cachedTemplate = this.templates[contentBlock.hash];
+
+                if (cachedTemplate) {
+                    return contentBlock.template = cachedTemplate;
             }
 
-            this.api.contentBlockTemplate(contentBlock.hash).then(function (template) {
-                var trustedTemplate = _this.$sce.trustAsHtml(template);
-                contentBlock.template = trustedTemplate;
-                _this.templates[contentBlock.hash] = trustedTemplate;
-            });
-        }
-    }]);
+                this.api.contentBlockTemplate(contentBlock.hash).then(function (template) {
+                    var trustedTemplate = _this.$sce.trustAsHtml(template);
+                    contentBlock.template = trustedTemplate;
+                    _this.templates[contentBlock.hash] = trustedTemplate;
+                });
+            }
+        }]);
 
-    return CreatePageController;
-})();
+        return CreatePageController;
+    })();
 
-exports["default"] = CreatePageController;
+    exports["default"] = CreatePageController;
 module.exports = exports["default"];
 
 },{}],9:[function(require,module,exports){
@@ -317,15 +333,16 @@ module.exports = exports["default"];
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _CreatePageController = require('./CreatePageController');
+    var _CreatePageController = require('./CreatePageController');
 
-var _CreatePageController2 = _interopRequireDefault(_CreatePageController);
+    var _CreatePageController2 = _interopRequireDefault(_CreatePageController);
 
-var _module = angular.module('MezzoContentBuilder', []);
+    var _module = angular.module('MezzoContentBuilder', []);
 
-_module.controller('CreatePageController', _CreatePageController2['default']);
+    _module.controller('CreatePageController', _CreatePageController2['default']);
 
-},{"./CreatePageController":8}],10:[function(require,module,exports){
+}, {"./CreatePageController": 8}],
+    10: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1231,7 +1248,7 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports['default'] = registerStateDirective;
 
-function registerStateDirective($stateProvider, $controller) {
+        function registerStateDirective($stateProvider, $controller) {
     return {
         restrict: 'A',
         link: link
@@ -1255,40 +1272,40 @@ function registerStateDirective($stateProvider, $controller) {
         });
     }
 
-    function controllerForPage(page) {
-        try {
-            var controllerName = page + 'Controller';
+            function controllerForPage(page) {
+                try {
+                    var controllerName = page + 'Controller';
 
-            $controller(controllerName);
+                    $controller(controllerName);
 
-            return controllerName;
-        } catch (err) {
-            return null;
-        }
+                    return controllerName;
+                } catch (err) {
+                    return null;
+                }
     }
 
-    function controllerForAction(action) {
-        if (action === 'index') {
-            return 'ResourceIndexController';
-        }
+            function controllerForAction(action) {
+                if (action === 'index') {
+                    return 'ResourceIndexController';
+                }
 
-        if (action === 'create') {
-            return 'ResourceCreateController';
-        }
+                if (action === 'create') {
+                    return 'ResourceCreateController';
+                }
 
-        if (action === 'edit') {
-            return 'ResourceEditController';
-        }
+                if (action === 'edit') {
+                    return 'ResourceEditController';
+                }
 
-        if (action === 'show') {
-            return 'ResourceShowController';
-        }
+                if (action === 'show') {
+                    return 'ResourceShowController';
+                }
 
-        throw new Error('No suitable Controller found for action "' + action + '"!');
-    }
+                throw new Error('No suitable Controller found for action "' + action + '"!');
+            }
 }
 
-module.exports = exports['default'];
+        module.exports = exports['default'];
 
 },{}],23:[function(require,module,exports){
 /*@ngInject*/
