@@ -8582,12 +8582,10 @@ a {
   min-height: 100%; }
 
 .has-errors #content-container {
-  padding-top: 0px;
-}
+  padding-top: 0px; }
 
 #errors-container {
-  padding-top: 60px;
-}
+  padding-top: 60px; }
 
 #content-main > .content {
   min-height: calc(100vh - 110px);
