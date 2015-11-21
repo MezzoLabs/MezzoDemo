@@ -33,4 +33,15 @@ export default class Api {
         return this.get('/api/files');
     }
 
+    contentBlockTemplate(hash) {
+        return this.$http.get(`/mezzo/content-block-types/${ hash }.html`)
+            .then(response => {
+                return response.data;
+            })
+            .catch(err => {
+                console.error(err);
+                throw err;
+            });
+    }
+
 }

@@ -1,14 +1,5 @@
-import ContentBuilderController from './ContentBuilderController';
+import CreatePageController from './CreatePageController';
 
-var module = angular.module('MezzoContentBuilder', [ 'ui.router' ]);
+var module = angular.module('MezzoContentBuilder', []);
 
-module.config($stateProvider => {
-    $stateProvider.state('ContentBuilder', {
-        url: '/mezzo/content-builder',
-        templateUrl: 'mezzo/file-manager/file/create.html',
-        controller: 'ContentBuilderController',
-        controllerAs: 'vm'
-    });
-});
-
-module.controller('ContentBuilderController', ContentBuilderController);
+module.controller('CreatePageController', CreatePageController);

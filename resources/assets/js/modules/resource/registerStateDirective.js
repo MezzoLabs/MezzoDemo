@@ -1,5 +1,5 @@
 /*@ngInject*/
-export default function registerStateDirective($stateProvider) {
+export default function registerStateDirective($stateProvider, $controller) {
     return {
         restrict: 'A',
         link
@@ -9,7 +9,11 @@ export default function registerStateDirective($stateProvider) {
         var uri = attributes.uri;
         var page = attributes.page;
         var action = attributes.action;
-        var controller = mapActionToController(action);
+        var controller = controllerForPage(page);
+
+        if (!controller) {
+            controller = controllerForAction(action);
+        }
 
         $stateProvider.state(page, {
             url: '/mezzo/' + uri,
@@ -18,24 +22,36 @@ export default function registerStateDirective($stateProvider) {
             controllerAs: 'vm'
         });
     }
-}
 
-function mapActionToController(action){
-    if(action === 'index'){
-        return 'ResourceIndexController';
+    function controllerForPage(page) {
+        try {
+            var controllerName = page + 'Controller';
+
+            $controller(controllerName);
+
+            return controllerName;
+        } catch (err) {
+            return null;
+        }
     }
 
-    if(action === 'create'){
-        return 'ResourceCreateController';
-    }
+    function controllerForAction(action) {
+        if (action === 'index') {
+            return 'ResourceIndexController';
+        }
 
-    if(action === 'edit'){
-        return 'ResourceEditController';
-    }
+        if (action === 'create') {
+            return 'ResourceCreateController';
+        }
 
-    if(action === 'show'){
-        return 'ResourceShowController';
-    }
+        if (action === 'edit') {
+            return 'ResourceEditController';
+        }
 
-    throw new Error(`No suitable Controller found for action "${action}"!`);
+        if (action === 'show') {
+            return 'ResourceShowController';
+        }
+
+        throw new Error(`No suitable Controller found for action "${action}"!`);
+    }
 }
