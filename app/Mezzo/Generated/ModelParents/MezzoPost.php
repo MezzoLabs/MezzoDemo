@@ -27,13 +27,13 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  * @property string $teaser
  * @property string $slug
  * @property string $state
- * @property string $published_at
+ * @property \Carbon\Carbon $published_at
  * @property integer $user_id
  * @property integer $content_id
  * @property integer $main_image_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
+ * @property \Carbon\Carbon $deleted_at
  * @property \App\User $user
  * @property \App\Content $content
  * @property \App\ImageFile $main_image
@@ -69,7 +69,7 @@ abstract class MezzoPost extends BaseModel
         'title' => "required|between:2,200",
         'teaser' => "between:2,1500",
         'slug' => "",
-        'state' => "required|between:2,20|alpha_num",
+        'state' => "required|between:2,20|alpha_num", 
         'published_at' => ""
     ];
 
@@ -88,7 +88,12 @@ abstract class MezzoPost extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'title', 'teaser', 'slug', 'state'
+        "title",
+        "teaser",
+        "published_at",
+        "slug",
+        "state",
+        "main_image_id"
     ];
 
     /**
@@ -97,7 +102,7 @@ abstract class MezzoPost extends BaseModel
      * * @var array
      */
     protected $casts = [
-        'published_at' => 'date'
+        'published_at' => "date"
     ];
 
     /**
@@ -121,7 +126,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for id
      *
-     * @Mezzo\Attribute(type="PrimaryKeyInput", hidden="create,edit")
+     * @Mezzo\Attribute(type="PrimaryKeyInput", hidden="")
      * @var integer
      */
     protected $_id;
@@ -145,7 +150,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for slug
      *
-     * @Mezzo\Attribute(type="TextInput", hidden="create,edit")
+     * @Mezzo\Attribute(type="TextInput", hidden="")
      * @var string
      */
     protected $_slug;
@@ -153,7 +158,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for state
      *
-     * @Mezzo\Attribute(type="TextInput", hidden="create,edit")
+     * @Mezzo\Attribute(type="TextInput", hidden="")
      * @var string
      */
     protected $_state;
@@ -161,15 +166,15 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for published_at
      *
-     * @Mezzo\Attribute(type="TextInput", hidden="")
-     * @var string
+     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
+     * @var \Carbon\Carbon
      */
     protected $_published_at;
 
     /**
      * Attribute annotation property for user_id
      *
-     * @Mezzo\Attribute(type="RelationInputSingle", hidden="create")
+     * @Mezzo\Attribute(type="RelationInputSingle", hidden="")
      * @var integer
      */
     protected $_user_id;
@@ -177,7 +182,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for content_id
      *
-     * @Mezzo\Attribute(type="RelationInputSingle", hidden="create,edit")
+     * @Mezzo\Attribute(type="RelationInputSingle", hidden="")
      * @var integer
      */
     protected $_content_id;
@@ -193,7 +198,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for created_at
      *
-     * @Mezzo\Attribute(type="DateTimeInput", hidden="create,edit")
+     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
      * @var \Carbon\Carbon
      */
     protected $_created_at;
@@ -201,7 +206,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for updated_at
      *
-     * @Mezzo\Attribute(type="DateTimeInput", hidden="create,edit")
+     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
      * @var \Carbon\Carbon
      */
     protected $_updated_at;
@@ -209,8 +214,8 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for deleted_at
      *
-     * @Mezzo\Attribute(type="TextInput", hidden="create,edit")
-     * @var string
+     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
+     * @var \Carbon\Carbon
      */
     protected $_deleted_at;
 
@@ -247,7 +252,7 @@ abstract class MezzoPost extends BaseModel
      * Relation annotation property for main_image
      * @Mezzo\Relations\OneToMany
      * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="main_image")
-     * @Mezzo\Relations\To(table="image_files", primaryKey="id", naming="post")
+     * @Mezzo\Relations\To(table="image_files", primaryKey="id", naming="posts")
      * @Mezzo\Relations\JoinColumn(table="posts", column="main_image_id")
      */
     protected $_main_image;

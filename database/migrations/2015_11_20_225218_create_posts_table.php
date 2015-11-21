@@ -20,7 +20,6 @@ class CreatePostsTable extends Migration
             $table->string('slug')->unique();
 
             $table->string('state');
-            $table->date('published_at')->nullable();
 
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users');
@@ -30,6 +29,9 @@ class CreatePostsTable extends Migration
 
             $table->integer('main_image_id')->unsigned()->index()->nullable();
             $table->foreign('main_image_id')->references('id')->on('image_files');
+
+            $table->timestamp('published_at')->nullable();
+
 
             $table->timestamps();
             $table->softDeletes();

@@ -40,7 +40,7 @@ class ImageFile extends MezzoImageFile implements TypedFileAddon
        return new ImageFileType();
     }
 
-    public function post()
+    public function posts()
     {
         return $this->hasMany(Post::class, 'main_image_id', 'id');
     }

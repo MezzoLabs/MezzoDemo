@@ -6,12 +6,13 @@ return [
     "moduleProviders" => [
         \MezzoLabs\Mezzo\Modules\Pages\PagesModule::class,
         \MezzoLabs\Mezzo\Modules\FileManager\FileManagerModule::class,
-        \MezzoLabs\Mezzo\Modules\Sample\SampleModule::class,
+        //\MezzoLabs\Mezzo\Modules\Sample\SampleModule::class,
         \MezzoLabs\Mezzo\Modules\User\UserModule::class,
         \MezzoLabs\Mezzo\Modules\Generator\GeneratorModule::class,
         \MezzoLabs\Mezzo\Modules\DeveloperDashboard\DeveloperDashboardModule::class,
         \MezzoLabs\Mezzo\Modules\Categories\CategoriesModule::class,
         \MezzoLabs\Mezzo\Modules\Contents\ContentsModule::class,
+        \MezzoLabs\Mezzo\Modules\Posts\PostsModule::class
     ],
 
     "api" => [

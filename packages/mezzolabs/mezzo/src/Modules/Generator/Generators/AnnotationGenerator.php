@@ -124,7 +124,9 @@ class AnnotationGenerator
         $this->addLine('*');
 
         $modelSchema->attributes()->each(function(Attribute $attribute){
-            $this->addLine('* @property '. $attribute->type()->variableType() . ' $' . $attribute->name());
+            $variableType = trim($attribute->type()->variableType());
+            $name = $attribute->name();
+            $this->addLine("* @property " . $variableType . " $" . $name . "");
         });
 
         $modelSchema->relationSides()->each(function(RelationSide $relationSide){
