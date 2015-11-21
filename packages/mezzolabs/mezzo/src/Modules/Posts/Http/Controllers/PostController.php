@@ -11,6 +11,7 @@ use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
 use MezzoLabs\Mezzo\Modules\Posts\Http\Posts\CreatePostPage;
 use MezzoLabs\Mezzo\Modules\Posts\Http\Posts\EditPostPage;
 use MezzoLabs\Mezzo\Modules\Posts\Http\Posts\IndexPostPage;
+use packages\mezzolabs\mezzo\src\Modules\Posts\Http\Requests\StorePostRequest;
 
 class PostController extends CockpitResourceController
 {
@@ -57,6 +58,14 @@ class PostController extends CockpitResourceController
     public function edit(EditResourceRequest $request, $id = null)
     {
         return $this->page(EditPostPage::class);
+    }
+
+    public function store(StorePostRequest $request)
+    {
+        $data = $request->all();
+        $post = $this->repository()->create($data);
+
+        return $this->redirectToPage(EditPostPage::class, ['id' => $post->getAttribute('id')]);
     }
 
 

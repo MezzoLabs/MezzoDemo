@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateImageFilesTable extends Migration
 {
@@ -15,6 +15,7 @@ class CreateImageFilesTable extends Migration
         Schema::create('image_files', function (Blueprint $table) {
             $table->increments('id');
             $table->text('cropping')->nullable();
+            $table->text('caption')->nullable();
             $table->integer('file_id')->unsigned()->index();
             $table->timestamps();
 

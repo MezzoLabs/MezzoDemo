@@ -83,9 +83,11 @@ trait HasMezzoAnnotations
     }
 
     /**
+     * Try to find the user it that owns this model.
+     *
      * @return null|int
      */
-    public function getOwnerId()
+    public function tryToFindOwnerId()
     {
         $ownerColumns = ['user_id', 'owner_id', 'creator_id'];
 
@@ -96,19 +98,25 @@ trait HasMezzoAnnotations
         return null;
     }
 
+    /**
+     * Check if the a column with a certain name is known to mezzo.
+     *
+     * @param $name
+     * @return bool
+     */
     public function hasAttribute($name)
     {
-        return $this - $this->schema()->attributes()->has($name);
+        return $this->schema()->attributes()->has($name);
     }
 
     /**
-     * Check if the user owns this model.
+     * Check if a user owns this model.
      *
      * @return boolean
      */
     public function isOwnedByUser(\App\User $user)
     {
-        $ownerId = $this->getOwnerId();
+        $ownerId = $this->tryToFindOwnerId();
 
         if(!$ownerId)
             return false;

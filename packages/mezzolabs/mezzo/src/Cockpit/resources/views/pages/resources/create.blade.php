@@ -12,13 +12,7 @@
             </div>
             <div class="panel-body">
                 {!! cockpit_form()->open() !!}
-                @foreach($model->attributes()->visibleInForm('create') as $attribute)
-                    <div class="form-group">
-                        <label>{{ $attribute->title() }}</label>
-                        {!! $attribute->render() !!}
-                    </div>
-                @endforeach
-                {!! cockpit_form()->submit('Save as new ' . $model->name()) !!}
+                @include(cockpit_html()->viewKey('form-content-create'))
                 {!! cockpit_form()->close() !!}
 
             </div>

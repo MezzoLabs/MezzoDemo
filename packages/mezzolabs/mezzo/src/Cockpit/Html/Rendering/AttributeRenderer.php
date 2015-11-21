@@ -11,6 +11,7 @@ use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\SimpleInput;
+use MezzoLabs\Mezzo\Core\Schema\InputTypes\TextArea;
 use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderer as AttributeSchemaRenderer;
 
 class AttributeRenderer extends AttributeSchemaRenderer
@@ -43,8 +44,12 @@ class AttributeRenderer extends AttributeSchemaRenderer
      */
     protected function renderSimpleInput(AtomicAttribute $attribute)
     {
-        $inputType = $attribute->type()->htmlType();
-        return $this->formBuilder()->input($inputType, $attribute->name(), old($attribute->name()), $this->htmlAttributes());
+        $htmlType = $attribute->type()->htmlType();
+
+        if ($attribute->type() instanceof TextArea)
+            return $this->renderTextArea($attribute);
+
+        return $this->formBuilder()->input($htmlType, $attribute->name(), old($attribute->name()), $this->htmlAttributes());
     }
 
     /**
@@ -130,6 +135,18 @@ class AttributeRenderer extends AttributeSchemaRenderer
             $attributes = $attributes->merge($this->relationAttributes($this->attribute()));
 
         return $attributes->toArray();
+    }
+
+    /**
+     * @param AtomicAttribute $attribute
+     * @return string
+     */
+    protected function renderTextArea(AtomicAttribute $attribute)
+    {
+        $htmlAttributes = $this->htmlAttributes();
+        $htmlAttributes['rows'] = 4;
+
+        return $this->formBuilder()->textarea($attribute->name(), old($attribute->name()), $htmlAttributes);
     }
 
 

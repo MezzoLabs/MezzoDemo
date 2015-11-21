@@ -20,4 +20,9 @@ class Post extends ModulePostModel
     {
         return $this->belongsTo(ImageFile::class, 'main_image_id', 'id');
     }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
 }
