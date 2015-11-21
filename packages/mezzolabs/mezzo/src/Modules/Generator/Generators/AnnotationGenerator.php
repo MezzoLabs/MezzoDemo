@@ -128,7 +128,13 @@ class AnnotationGenerator
         });
 
         $modelSchema->relationSides()->each(function(RelationSide $relationSide){
-            $this->addLine('* @property EloquentCollection $' . $relationSide->naming());
+            $otherSide = $relationSide->otherSide();
+            $relatedClass = $otherSide->modelReflection()->className();
+
+            if ($relationSide->hasMultipleChildren())
+                $this->addLine('* @property EloquentCollection $' . $relationSide->naming());
+            else
+                $this->addLine('* @property \\' . $relatedClass . ' $' . $relationSide->naming());
         });
 
 
