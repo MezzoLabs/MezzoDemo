@@ -17,4 +17,9 @@ class Category extends CategoriesModuleCategory
         return $this->belongsToMany(Tutorial::class);
     }
 
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class);
+    }
+
 }

@@ -9,7 +9,12 @@ use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
 class PostsModule extends ModuleProvider
 {
+    protected $options = [
+        'icon' => 'ion-ios-paper'
+    ];
+
     protected $models = [
+        \App\Post::class
     ];
 
     /**

@@ -124,11 +124,19 @@ class AnnotationGenerator
         $this->addLine('*');
 
         $modelSchema->attributes()->each(function(Attribute $attribute){
-            $this->addLine('* @property '. $attribute->type()->variableType() . ' $' . $attribute->name());
+            $variableType = trim($attribute->type()->variableType());
+            $name = $attribute->name();
+            $this->addLine("* @property " . $variableType . " $" . $name . "");
         });
 
         $modelSchema->relationSides()->each(function(RelationSide $relationSide){
-            $this->addLine('* @property EloquentCollection $' . $relationSide->naming());
+            $otherSide = $relationSide->otherSide();
+            $relatedClass = $otherSide->modelReflection()->className();
+
+            if ($relationSide->hasMultipleChildren())
+                $this->addLine('* @property EloquentCollection $' . $relationSide->naming());
+            else
+                $this->addLine('* @property \\' . $relatedClass . ' $' . $relationSide->naming());
         });
 
 

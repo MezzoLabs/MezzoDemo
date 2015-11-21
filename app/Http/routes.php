@@ -41,8 +41,8 @@ Route::post('/test/file', 'TestController@uploadFile');
 
 Route::get('/test/reflection', function () {
     $reflectionManager = mezzo()->makeReflectionManager();
-    $reflection = $reflectionManager->mezzoReflection('Content');
-    mezzo_dd($reflection->schema()->attributes());
+    $reflection = $reflectionManager->eloquentReflection('Post');
+    mezzo_dd($reflection->schema()->relationSides());
 });
 
 Route::get('/test/category', function () {

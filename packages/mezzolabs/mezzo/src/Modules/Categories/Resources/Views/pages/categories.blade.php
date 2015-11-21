@@ -2,7 +2,15 @@
 
 @section('content')
     <div class="wrapper">
-        <div class="panel panel-bordered">
+        <div class="panel panel-bordered col-md-8">
+            <div class="panel-heading">
+                <h3>Add Category</h3>
+            </div>
+            <div class="panel-body">
+
+            </div>
+        </div>
+        <div class="panel panel-bordered col-md-8">
             <div class="panel-heading">
                 <h3>Manage Categories</h3>
 
@@ -19,9 +27,9 @@
 
                     <h4>Categories</h4>
                     <ul>
-                    @foreach($group->tree() as $category)
-                        @include('modules.categories::partials.nested_list', ['element' => $category])
-                    @endforeach
+                        @foreach($group->tree() as $category)
+                            @include('modules.categories::partials.nested_list', ['element' => $category])
+                        @endforeach
                     </ul>
                 @endforeach
             </div>

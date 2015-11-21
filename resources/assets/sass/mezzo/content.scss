@@ -1,4 +1,4 @@
-#content-container{
+#content-container {
   position: relative;
   padding-top: $topbar-height;
   min-height: 100%;
@@ -12,11 +12,11 @@
   padding-top: $topbar-height;
 }
 
-#content-main{
+#content-main {
 
 }
 
-#content-main > .content{
+#content-main > .content {
   min-height: calc(100vh - #{$topbar-height + $footer-height});
   padding-bottom: $content-padding;
   background-color: $mezzo-white-paper;
@@ -37,12 +37,23 @@
   box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.05);
 
   .panel-body {
-    padding: 30px 30px;
+    padding: 25px 30px;
 
     h4 {
       font-weight: 400;
       font-size: 16px;
     }
+
+    h4:first-child, h3:first-child, h5:first-child {
+      margin-top: 0px;
+    }
+  }
+
+  .panel-section {
+    margin: 5px;
+    padding: 20px 25px;
+    background: #f5f5f5;
+
   }
 
   .panel-heading {
@@ -62,22 +73,22 @@
     }
   }
 
-  .panel-actions{
+  .panel-actions {
     @extend .pull-right;
     padding: 20px 30px;
 
-    a{
+    a {
       @extend .light-icon;
       padding: 8px 10px;
     }
-    
-    a:last-child{
+
+    a:last-child {
       padding-right: 0px;
     }
 
   }
 
-  .alert{
+  .alert {
     border-radius: 0px;
     margin-top: -1px;
     padding-right: 50px;
@@ -86,7 +97,7 @@
 
 }
 
-#content-main > .content > :last-child{
+#content-main > .content > :last-child {
   margin-bottom: 0px !important;
 }
 
@@ -94,7 +105,7 @@
   border-bottom: 1px solid #E4EAEC;
 }
 
-#content-aside{
+#content-aside {
   position: absolute;
   top: $topbar-height;
   bottom: 0;
@@ -104,16 +115,16 @@
   background: $content-aside-background;
   color: $content-aside-color;
 
-  .wrapper{
+  .wrapper {
     padding: 0px 15px;
   }
 
-  .list-group{
+  .list-group {
     margin-left: -15px;
     margin-right: -15px;
   }
 
-  .list-group-item, button.list-group-item{
+  .list-group-item, button.list-group-item {
     color: $content-aside-color;
     border: none;
     padding-left: 15px;
@@ -123,11 +134,11 @@
       border-top-left-radius: 0px;
     }
 
-    &.active{
+    &.active {
       color: $mezzo-white;
     }
 
-    i{
+    i {
       margin-right: 5px;
       width: 19px;
       text-align: center;
@@ -136,11 +147,11 @@
   }
 }
 
-#content-aside+#content-main {
+#content-aside + #content-main {
   margin-left: $content-aside-width;
 }
 
-#view-overlay{
+#view-overlay {
   @include overlay;
 
   position: fixed;

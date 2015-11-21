@@ -8603,10 +8603,21 @@ a {
   border-width: 0;
   box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.05); }
   .panel .panel-body {
-    padding: 30px 30px; }
+    padding: 25px 30px;
+  }
     .panel .panel-body h4 {
       font-weight: 400;
       font-size: 16px; }
+
+.panel .panel-body h4:first-child, .panel .panel-body h3:first-child, .panel .panel-body h5:first-child {
+  margin-top: 0px;
+}
+
+.panel .panel-section {
+  margin: 5px;
+  padding: 20px 25px;
+  background: #f5f5f5;
+}
   .panel .panel-heading {
     padding: 0; }
     .panel .panel-heading h3 {

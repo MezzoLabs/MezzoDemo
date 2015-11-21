@@ -22,21 +22,22 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  *
  * App\Mezzo\Generated\ModelParents\MezzoPost
  *
- * @property  integer $id
- * @property  string $title
+ * @property integer $id
+ * @property string $title
  * @property string $teaser
- * @property  string $slug
- * @property  string $state
- * @property  string $published_at
- * @property  integer $user_id
- * @property  integer $content_id
- * @property  integer $main_image_id
+ * @property string $slug
+ * @property string $state
+ * @property \Carbon\Carbon $published_at
+ * @property integer $user_id
+ * @property integer $content_id
+ * @property integer $main_image_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property  string $deleted_at
- * @property EloquentCollection $user
- * @property EloquentCollection $content
- * @property EloquentCollection $main_image
+ * @property \Carbon\Carbon $deleted_at
+ * @property \App\User $user
+ * @property \App\Content $content
+ * @property \App\ImageFile $main_image
+ * @property EloquentCollection $categories
  */
 abstract class MezzoPost extends BaseModel
 {
@@ -65,10 +66,10 @@ abstract class MezzoPost extends BaseModel
      * @var array
      */
     protected $rules = [
-        'title' => "",
-        'teaser' => "",
+        'title' => "required|between:2,200",
+        'teaser' => "between:2,1500",
         'slug' => "",
-        'state' => "",
+        'state' => "required|between:2,20|alpha_num", 
         'published_at' => ""
     ];
 
@@ -87,7 +88,12 @@ abstract class MezzoPost extends BaseModel
      * @var array
      */
     protected $fillable = [
-
+        "title",
+        "teaser",
+        "published_at",
+        "slug",
+        "state",
+        "main_image_id"
     ];
 
     /**
@@ -96,7 +102,7 @@ abstract class MezzoPost extends BaseModel
      * * @var array
      */
     protected $casts = [
-
+        'published_at' => "date"
     ];
 
     /**
@@ -160,8 +166,8 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for published_at
      *
-     * @Mezzo\Attribute(type="TextInput", hidden="")
-     * @var string
+     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
+     * @var \Carbon\Carbon
      */
     protected $_published_at;
 
@@ -208,8 +214,8 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for deleted_at
      *
-     * @Mezzo\Attribute(type="TextInput", hidden="")
-     * @var string
+     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
+     * @var \Carbon\Carbon
      */
     protected $_deleted_at;
 
@@ -246,10 +252,19 @@ abstract class MezzoPost extends BaseModel
      * Relation annotation property for main_image
      * @Mezzo\Relations\OneToMany
      * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="main_image")
-     * @Mezzo\Relations\To(table="image_files", primaryKey="id", naming="post")
+     * @Mezzo\Relations\To(table="image_files", primaryKey="id", naming="posts")
      * @Mezzo\Relations\JoinColumn(table="posts", column="main_image_id")
      */
     protected $_main_image;
+
+    /**
+     * Relation annotation property for categories
+     * @Mezzo\Relations\ManyToMany
+     * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="categories")
+     * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="posts")
+     * @Mezzo\Relations\PivotTable(name="category_post", fromColumn="post_id", toColumn="category_id")
+     */
+    protected $_categories;
 
 
 }

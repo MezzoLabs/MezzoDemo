@@ -126,6 +126,11 @@ class ModelSchema
         return $this->mainTable()->attributes()->get($name);
     }
 
+    public function getAttribute($name)
+    {
+        return $this->mainTable()->attributes()->get($name);
+    }
+
     /**
      * @return TableSchema
      */
@@ -189,7 +194,7 @@ class ModelSchema
      * Get attributes from all tables.
      * Not only the main table that is connected to the model but also the tables that are connected via relations.
      *
-     * @return Attributes\Attributes
+     * @return Attributes
      */
     public function allAttributes()
     {
@@ -233,10 +238,14 @@ class ModelSchema
         $relationAttributes = $allAttributes->relationAttributes();
 
         $relationSides = new Collection();
-        $table = $this->tableName();
 
-        $relationAttributes->each(function (RelationAttribute $relationAttribute) use ($relationSides, $table) {
-            $relationSide = new RelationSide($relationAttribute->relation(), $table);
+        $relationAttributes->each(function (RelationAttribute $relationAttribute) use ($relationSides) {
+            $relation = $relationAttribute->relation();
+
+            if ($relation->isManyToMany() && $relationAttribute->name() != str_singular($this->tableName()) . '_id')
+                return true;
+
+            $relationSide = new RelationSide($relationAttribute->relation(), $this->tableName());
             $relationSides->put($relationAttribute->qualifiedName(), $relationSide);
         });
 

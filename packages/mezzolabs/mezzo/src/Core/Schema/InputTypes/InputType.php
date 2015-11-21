@@ -12,7 +12,6 @@ namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 use Doctrine\DBAL\Types\Type;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
-use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 
 abstract class InputType
@@ -57,20 +56,22 @@ abstract class InputType
         switch ($columnName) {
             case 'id':
                 return PrimaryKeyInput::class;
-            case 'updated_at':
-            case 'created_at':
-                return DateTimeInput::class;
         }
 
 
         switch ($type) {
+            case 'string':
+                return TextInput::class;
             case 'text':
                 return TextArea::class;
+            case 'date':
+            case 'datetime':
+                return DateTimeInput::class;
             case 'integer':
                 return NumberInput::class;
         }
 
-        return TextInput::class;
+        throw new \Exception('There is no input type for the column type: ' . $type);
     }
 
     /**

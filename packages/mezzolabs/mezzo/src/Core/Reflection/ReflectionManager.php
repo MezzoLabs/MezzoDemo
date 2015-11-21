@@ -4,12 +4,12 @@
 namespace MezzoLabs\Mezzo\Core\Reflection;
 
 
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSets;
 use MezzoLabs\Mezzo\Core\Reflection\Reflectors\EloquentModelsReflector;
 use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
-use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 
 class ReflectionManager
@@ -123,7 +123,7 @@ class ReflectionManager
 
     /**
      * @param string $model Short or long class name or even the name of the table.
-     * @return ModelReflection
+     * @return MezzoModelReflection
      * @throws ReflectionException
      */
     public function mezzoReflection($model)

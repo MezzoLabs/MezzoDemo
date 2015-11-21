@@ -55,7 +55,7 @@ class HtmlHelper
     {
         $this->startNewCssClass();
 
-        if($key == 'sidebar')
+        if ($key == 'sidebar')
             return $this->sidebar()->cssClass($parameters);
     }
 
@@ -78,7 +78,7 @@ class HtmlHelper
 
     protected function cssClassString()
     {
-        $string =  implode(' ', $this->cssClasses);
+        $string = implode(' ', $this->cssClasses);
         $this->startNewCssClass();
         return $string;
     }
@@ -94,7 +94,8 @@ class HtmlHelper
     /**
      * @param $class
      */
-    protected function addCssClass($class){
+    protected function addCssClass($class)
+    {
         $this->cssClasses[] = $class;
     }
 
@@ -109,5 +110,19 @@ class HtmlHelper
 
         $this->content = "";
         return $content;
+    }
+
+    public function viewKey($shortName)
+    {
+        $shortName = str_replace(['.', '-', '_'], '', $shortName);
+        //TODO-SCHS: Replace this with something nicer
+        switch ($shortName) {
+            case 'formcontentedit':
+                return 'cockpit::partials.form-content-edit';
+            case 'formcontentcreate':
+                return 'cockpit::partials.form-content-create';
+            default:
+                return 'UNKOWN VIEW KEY ' . $shortName;
+        }
     }
 }
