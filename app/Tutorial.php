@@ -27,13 +27,6 @@ class Tutorial extends MezzoTutorial
 {
     use HasCategories;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function mainImage()
-    {
-        return $this->hasOne('App\Image');
-    }
 
     public function parent()
     {

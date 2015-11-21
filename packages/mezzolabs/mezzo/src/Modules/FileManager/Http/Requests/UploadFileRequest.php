@@ -11,14 +11,5 @@ class UploadFileRequest extends UpdateResourceRequest
 {
     public $model = File::class;
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
 
 }
