@@ -31,22 +31,13 @@
                 @include('modules.contents::block_type_select')
             </div>
 
-        @foreach($blocks as $block)
-                <div class="panel-heading">
-                    <h3>{{ $block->title() }}</h3>
-
-                    <div class="panel-actions">
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <input type="hidden" name="{{ $block->propertyInputName('class') }}" value="{{ $block->key() }}">
-
-                    <div class="block-{{ $block->key() }}">
-                        {!! $block->inputsView() !!}
-                    </div>
-                </div>
-            @endforeach
-        </div>
+            <div class="panel-heading" ng-repeat-start="block in vm.contentBlocks">
+                <h3 ng-bind="block.title"></h3>
+            </div>
+            <div class="panel-body" ng-repeat-end>
+                <input type="hidden" name="[[ block.propertyInputName ]]" value="[[ block.key ]]">
+                <div class="block-[[ block.key ]]" ng-bind-html="block.template"></div>
+            </div>
 
         <div class="panel panel-bordered">
 

@@ -93,6 +93,16 @@ var Api = (function () {
         value: function files() {
             return this.get('/api/files');
         }
+    }, {
+        key: 'contentBlockTemplate',
+        value: function contentBlockTemplate(hash) {
+            return this.$http.get('/mezzo/content-block-types/' + hash + '.html').then(function (response) {
+                return response.data;
+            })['catch'](function (err) {
+                console.error(err);
+                throw err;
+            });
+        }
     }]);
 
     return Api;
@@ -240,44 +250,67 @@ function nextUid() {
 module.exports = exports["default"];
 
 },{}],8:[function(require,module,exports){
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var CreatePageController = (function () {
 
     /*@ngInject*/
 
-    function CreatePageController() {
+    function CreatePageController(api, $sce) {
         _classCallCheck(this, CreatePageController);
 
-        this.contentBlockButtons = [{ label: 'Text only', icon: 'ion-document-text', contentBlock: 'text-only' }, { label: 'Text and Image', icon: 'ion-images', contentBlock: 'text-and-image' }];
+        this.api = api;
+        this.$sce = $sce;
         this.contentBlocks = [];
+        this.templates = {};
     }
 
     _createClass(CreatePageController, [{
-        key: 'addContentBlock',
-        value: function addContentBlock(name) {
+        key: "addContentBlock",
+        value: function addContentBlock(key, title, hash, propertyInputName) {
             var contentBlock = {
-                name: name,
-                directive: 'mezzo-' + name
+                key: key,
+                title: title,
+                hash: hash,
+                propertyInputName: propertyInputName,
+                template: null
             };
 
+            this.fillTemplate(contentBlock);
             this.contentBlocks.push(contentBlock);
+        }
+    }, {
+        key: "fillTemplate",
+        value: function fillTemplate(contentBlock) {
+            var _this = this;
+
+            var cachedTemplate = this.templates[contentBlock.hash];
+
+            if (cachedTemplate) {
+                return contentBlock.template = cachedTemplate;
+            }
+
+            this.api.contentBlockTemplate(contentBlock.hash).then(function (template) {
+                var trustedTemplate = _this.$sce.trustAsHtml(template);
+                contentBlock.template = trustedTemplate;
+                _this.templates[contentBlock.hash] = trustedTemplate;
+            });
         }
     }]);
 
     return CreatePageController;
 })();
 
-exports['default'] = CreatePageController;
-module.exports = exports['default'];
+exports["default"] = CreatePageController;
+module.exports = exports["default"];
 
 },{}],9:[function(require,module,exports){
 'use strict';
