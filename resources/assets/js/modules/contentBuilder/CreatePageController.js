@@ -1,14 +1,14 @@
 export default class CreatePageController {
 
     /*@ngInject*/
-    constructor(api, $sce) {
+    constructor(api, $sce){
         this.api = api;
         this.$sce = $sce;
         this.contentBlocks = [];
         this.templates = {};
     }
 
-    addContentBlock(key, title, hash, propertyInputName) {
+    addContentBlock(key, title, hash, propertyInputName){
         const contentBlock = {
             key: key,
             title: title,
@@ -21,10 +21,10 @@ export default class CreatePageController {
         this.contentBlocks.push(contentBlock);
     }
 
-    fillTemplate(contentBlock) {
+    fillTemplate(contentBlock){
         const cachedTemplate = this.templates[contentBlock.hash];
 
-        if (cachedTemplate) {
+        if(cachedTemplate){
             return contentBlock.template = cachedTemplate;
         }
 

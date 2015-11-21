@@ -4,5 +4,5 @@
             <i class="{{ $block->icon() }}"></i>
             {{ $block->title() }}
         </button>
-@endforeach
+    @endforeach
 </div>
