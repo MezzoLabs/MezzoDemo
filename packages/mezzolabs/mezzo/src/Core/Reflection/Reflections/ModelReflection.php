@@ -137,7 +137,7 @@ abstract class ModelReflection
     /**
      * @return array
      */
-    public function rules($attribute = null, $forUpdate = false)
+    public function rules($attribute = null)
     {
         if (!$this->rules) {
             $this->rules = $this->getRulesFromInstance();

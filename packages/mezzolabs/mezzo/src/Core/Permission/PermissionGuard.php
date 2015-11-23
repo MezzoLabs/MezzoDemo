@@ -3,6 +3,7 @@
 
 namespace MezzoLabs\Mezzo\Core\Permission;
 
+use Illuminate\Auth\Access\UnauthorizedException;
 use Illuminate\Auth\Guard as AuthGuard;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 
@@ -69,7 +70,7 @@ class PermissionGuard
 
     protected function allowsModelAccess(MezzoModel $model, $level = 'show', \App\User $user = null)
     {
-        if(!$this->enabled())
+        if (!$this->enabled())
             return true;
 
         if (!$user) $user = $this->user();
@@ -110,6 +111,20 @@ class PermissionGuard
 
     public function enabled()
     {
-        return (env('APP_DEBUG') && \Request::header('no-permission-check')) ;
+        $noPermissionCheck = (env('APP_DEBUG') && \Request::header('no-permission-check'));
+        return !$noPermissionCheck;
+    }
+
+    public static function fail()
+    {
+        throw new UnauthorizedException('No Permissions.');
+    }
+
+    /**
+     * @return static
+     */
+    public static function make()
+    {
+        return app()->make(static::class);
     }
 }
