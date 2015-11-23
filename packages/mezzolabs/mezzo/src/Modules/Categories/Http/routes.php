@@ -10,7 +10,10 @@ module_route('Categories', [], function (Router $router, ApiRouter $api, Cockpit
     $api->resource('Category');
     $api->resource('CategoryGroup');
 
-    //$api->relation('Category', 'roles');
+    $cockpit->post('categories/category', [
+        'uses' => 'Controllers\CategoryController@store',
+        'as' => 'category.store'
+    ]);
 });
 
 

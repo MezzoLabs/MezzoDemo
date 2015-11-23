@@ -84,7 +84,7 @@ abstract class MezzoCategory extends MezzoNestedSetNode
      * @var array
      */
     protected $fillable = [
-        'label', 'slug', 'category_group_id', 'parent_id'
+        'label', 'slug', 'parent_id', 'category_group_id'
     ];
 
     /*
@@ -148,7 +148,7 @@ abstract class MezzoCategory extends MezzoNestedSetNode
      * Attribute annotation property for _lft
      *
      * @Mezzo\Attribute(type="NumberInput")
-     * @var float
+     * @var integer
      */
     protected $__lft;
 
@@ -156,15 +156,15 @@ abstract class MezzoCategory extends MezzoNestedSetNode
      * Attribute annotation property for _rgt
      *
      * @Mezzo\Attribute(type="NumberInput")
-     * @var float
+     * @var integer
      */
     protected $__rgt;
 
     /**
      * Attribute annotation property for parent_id
      *
-     * @Mezzo\Attribute(type="NumberInput")
-     * @var float
+     * @Mezzo\Attribute(type="RelationInputSingle")
+     * @var integer
      */
     protected $_parent_id;
 
@@ -187,6 +187,15 @@ abstract class MezzoCategory extends MezzoNestedSetNode
      * @Mezzo\Relations\JoinColumn(table="categories", column="category_group_id")
      */
     protected $_group;
+
+    /**
+     * Relation annotation property for parent_id
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="categories", primaryKey="id", naming="parent")
+     * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="parent")
+     * @Mezzo\Relations\JoinColumn(table="categories", column="parent_id")
+     */
+    protected $_parent;
 
 
 }

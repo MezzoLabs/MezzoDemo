@@ -133,8 +133,8 @@
             ng-click="vm.selectFile(file)"
             ng-class="{ danger: file === vm.selected }"
             mezzo-draggable
-            mezzo-droppable="[[file.isFolder]]"
-            data-index="[[$index]]">
+            mezzo-droppable="@{{ file.isFolder }}"
+            data-index="@{{ $index }}">
             <td style="width: 20px">
                 <span class="ion-ios-folder" ng-show="file.isFolder"></span>
                 <span ng-class="file.icon()" ng-hide="file.isFolder"></span>

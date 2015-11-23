@@ -1335,13 +1335,11 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports['default'] = config;
 
-function config($locationProvider, $urlRouterProvider, $httpProvider, $interpolateProvider) {
+        function config($locationProvider, $urlRouterProvider, $httpProvider) {
     $httpProvider.defaults.headers.common.Accept = 'application/vnd.MezzoLabs.v1+json';
 
     $locationProvider.html5Mode(true);
     $urlRouterProvider.otherwise('/mezzo');
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
 }
 
 module.exports = exports['default'];

@@ -59,6 +59,9 @@ class AttributeRenderer extends AttributeSchemaRenderer
     protected function renderRelationInputSingle(RelationAttribute $attribute)
     {
         $list = $this->makeEloquentList($attribute, true);
+
+        //mezzo_dd($list);
+
         return $this->formBuilder()->select($attribute->name(),  $list, null, $this->htmlAttributes());
     }
 

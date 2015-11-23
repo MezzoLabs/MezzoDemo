@@ -2,6 +2,7 @@
 
 namespace MezzoLabs\Mezzo\Modules\Pages\Http\Controllers;
 
+use App\User;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\CreateResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\EditResourceRequest;

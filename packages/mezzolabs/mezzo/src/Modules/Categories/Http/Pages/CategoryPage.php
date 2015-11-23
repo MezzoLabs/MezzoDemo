@@ -3,7 +3,7 @@
 
 namespace MezzoLabs\Mezzo\Modules\Categories\Http\Pages;
 
-use App\Permission;
+use App\Category;
 use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ResourcePage;
 use MezzoLabs\Mezzo\Modules\Categories\Http\Controllers\CategoryController;
 
@@ -13,7 +13,7 @@ class CategoryPage extends ResourcePage
 
     protected $controller = CategoryController::class;
 
-    protected $model = Permission::class;
+    protected $model = Category::class;
 
     protected $title = 'List Categories';
 

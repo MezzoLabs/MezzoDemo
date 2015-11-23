@@ -42,7 +42,8 @@ class MezzoEloquentCollection
         return $this->collection->isEmpty();
     }
 
-    protected function detectTitleAttribute(MezzoEloquentModel $model){
+    protected function detectTitleAttribute(MezzoModel $model)
+    {
         if($model->getAttribute('title'))
             return 'title';
 

@@ -120,6 +120,7 @@ abstract class EloquentModelTransformer extends ModelTransformer
         });
 
         $returnCollection->put('id', $model->id);
+        $returnCollection->put('label', $model->label);
 
 
         return $returnCollection->toArray();

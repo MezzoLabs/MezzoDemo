@@ -49,4 +49,5 @@ interface ContentFieldTypeContract
      * @return boolean
      */
     public function isRequired();
+
 }

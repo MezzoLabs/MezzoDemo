@@ -38,7 +38,7 @@ class CategoryGroupRepository extends ModelRepository
         if($group instanceof CategoryGroup)
             return $group;
 
-        if(is_integer($group))
+        if (is_numeric($group))
             return $this->find($group);
 
         if(is_string($group)) {

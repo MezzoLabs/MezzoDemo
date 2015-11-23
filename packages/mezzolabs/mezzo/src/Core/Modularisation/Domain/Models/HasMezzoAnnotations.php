@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Domain\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany as EloquentBelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany as EloquentHasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValues;
 use MezzoLabs\Mezzo\Core\Validation\HasValidationRules;
 use MezzoLabs\Mezzo\Exceptions\ReflectionException;
@@ -43,7 +44,7 @@ trait HasMezzoAnnotations
     }
 
     /**
-     * @return \MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection
+     * @return \MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection|MezzoModelReflection
      * @throws \MezzoLabs\Mezzo\Exceptions\ReflectionException
      */
     public function reflection()

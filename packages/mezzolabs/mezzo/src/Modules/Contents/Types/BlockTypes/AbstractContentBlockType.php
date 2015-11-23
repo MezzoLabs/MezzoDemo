@@ -132,7 +132,7 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
     private function formName()
     {
         if (empty($this->formName))
-            $this->formName = str_random(5);
+            $this->formName = '{{ block.nameInForm }}';
 
         return $this->formName;
     }

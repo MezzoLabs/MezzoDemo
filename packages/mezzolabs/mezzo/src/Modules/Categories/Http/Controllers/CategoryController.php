@@ -13,6 +13,7 @@ use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
 use MezzoLabs\Mezzo\Modules\Categories\Domain\Repositories\CategoryGroupRepository;
 use MezzoLabs\Mezzo\Modules\Categories\Domain\Repositories\CategoryRepository;
 use MezzoLabs\Mezzo\Modules\Categories\Http\Pages\CategoryPage;
+use packages\mezzolabs\mezzo\src\Modules\Posts\Http\Requests\StoreCategoryRequest;
 
 
 class CategoryController extends CockpitResourceController
@@ -86,5 +87,12 @@ class CategoryController extends CockpitResourceController
     public function edit(EditResourceRequest $request, $id)
     {
         return $this->page(CategoryPage::class);
+    }
+
+    public function store(StoreCategoryRequest $request)
+    {
+        $this->repository()->create($request->all());
+
+        return $this->redirectToPage(CategoryPage::class);
     }
 }

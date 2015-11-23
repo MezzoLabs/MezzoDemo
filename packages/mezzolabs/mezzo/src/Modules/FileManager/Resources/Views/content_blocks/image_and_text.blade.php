@@ -1,3 +1,6 @@
+<input type="hidden" name="{{ $block->propertyInputName('class') }}" value="{{ $block->key() }}">
+<input type="hidden" name="{{ $block->propertyInputName('id') }}">
+
 <div class="row">
     <div class="col-md-6">
         <div class="form-group">

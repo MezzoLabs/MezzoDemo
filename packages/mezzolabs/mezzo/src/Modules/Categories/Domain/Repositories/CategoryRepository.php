@@ -4,8 +4,8 @@
 namespace MezzoLabs\Mezzo\Modules\Categories\Domain\Repositories;
 
 
-use App\Category;
 use App\Category as AppCategory;
+use App\Category;
 use App\CategoryGroup as AppCategoryGroup;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
@@ -72,7 +72,7 @@ class CategoryRepository extends ModelRepository
         if ($category instanceof Category)
             return $category;
 
-        if (is_integer($category))
+        if (is_numeric($category))
             return $this->find($category);
 
         if (is_string($category) && $group) {
