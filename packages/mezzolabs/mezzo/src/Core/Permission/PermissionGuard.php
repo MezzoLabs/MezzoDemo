@@ -69,8 +69,9 @@ class PermissionGuard
 
     protected function allowsModelAccess(MezzoModel $model, $level = 'show', \App\User $user = null)
     {
-        //TODO: Change this as soon as marc accepts my JWT
-        return true;
+        if(!$this->enabled())
+            return true;
+
         if (!$user) $user = $this->user();
 
         $accessAll = $this->permissionKey($level, $model);
@@ -102,6 +103,13 @@ class PermissionGuard
     {
         if (!$user) $user = $this->user();
 
+        if (!$user) return false;
+
         return $user->hasPermission($permission);
+    }
+
+    public function enabled()
+    {
+        return (env('APP_DEBUG') && \Request::header('no-permission-check')) ;
     }
 }

@@ -1,13 +1,20 @@
-<div class="panel-body row">
+<div class="row">
     <div class="col-md-8">
-        <h3>Content Blocks</h3>
+        <div class="content-blocks">
+            <div class="content-block" ng-repeat="block in vm.contentBlocks">
+                <div class="content-block-heading">
+                    <b>@{{ block.title }}</b>
+                    <small>@{{ block.hash }}</small>
+                    <div class="content-block-actions">
+                        <a class="" href="#"><i class="ion-ios-gear"></i></a>
+                        <a href="#"><i class="ion-arrow-move"></i></a>
+                        <a href="#"><i class="ion-ios-close-empty"></i></a>
+                    </div>
+                </div>
+                <div class="content-block-body block-@{{ block.key }}" ng-bind-html="block.template"></div>
+            </div>
+        </div>
 
-        <div class="panel-heading" ng-repeat-start="block in vm.contentBlocks">
-            <h3 ng-bind="block.title"></h3>
-        </div>
-        <div class="panel-body" ng-repeat-end>
-            <div class="block-@{{ block.key }}" ng-bind-html="block.template"></div>
-        </div>
     </div>
     <div class="col-md-4">
         <h3>Block Types</h3>
