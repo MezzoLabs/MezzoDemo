@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-9">
         <div class="content-blocks">
             <div class="content-block" ng-repeat="block in vm.contentBlocks">
                 <div class="content-block-heading">
@@ -16,7 +16,7 @@
         </div>
 
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <h3>Block Types</h3>
 
         <div class="list-group">
