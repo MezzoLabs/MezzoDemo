@@ -34,7 +34,8 @@
                         <h4>Categories</h4>
                         <dib class="list-group">
                             @foreach($group->tree() as $category)
-                                @include('modules.categories::partials.nested_list', ['element' => $category, 'level' => 0])
+                                <?php $category->level = 0; ?>
+                                @include('modules.categories::partials.nested_list', ['element' => $category])
                             @endforeach
                         </dib>
                     @endforeach

@@ -3,84 +3,53 @@
 
 namespace MezzoLabs\Mezzo\Core\Modularisation\Domain\Models;
 
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Collection\StrictCollection;
 
-class MezzoEloquentCollection
+class MezzoEloquentCollection extends StrictCollection
 {
     /**
-     * @var EloquentCollection
+     * @var Collection
      */
     protected $collection;
 
-    public function __construct(EloquentCollection $collection)
-    {
-        $this->collection = $collection;
-    }
-
     public function asList()
     {
-        if($this->isEmpty())
+        if ($this->isEmpty())
             return [];
 
-        $first = $this->collection->first();
-        $titleAttribute = $this->detectTitleAttribute($first);
-
         $list = new Collection();
-        $this->each(function(MezzoModel $model) use ($list, $titleAttribute){
-            $list->put($model->id, $model->id . ' - ' . $model->getAttribute($titleAttribute));
+        $this->each(function (MezzoModel $model) use ($list) {
+            $list->put($model->id, $model->id . ' - ' . $model->getLabelAttribute());
         });
 
         return $list;
     }
 
     /**
-     * @return bool
+     * @return MezzoModel
      */
-    public function isEmpty()
+    public function first()
     {
-        return $this->collection->isEmpty();
-    }
-
-    protected function detectTitleAttribute(MezzoModel $model)
-    {
-        if($model->getAttribute('title'))
-            return 'title';
-
-        if($model->getAttribute('label'))
-            return 'label';
-
-        if($model->getAttribute('name'))
-            return 'name';
-
-        if($model->getAttribute('key'))
-            return 'key';
-
-        if($model->getAttribute('slug'))
-            return 'slug';
-
-        foreach($model->getAttributes() as $key => $value){
-            if(!in_array($key, $model->getHidden()) && in_array($key, $model->getFillable()))
-                return $key;
-        }
-
-        return 'id';
+        return $this->collection->first();
     }
 
     /**
-     * @param callable $callback
-     * @return $this
-     */
-    public function each(callable $callback)
-    {
-        return $this->collection->each($callback);
-    }
-
-    /**
-     * @return EloquentCollection
+     * @return Collection
      */
     public function eloquentCollection()
     {
         return $this->collection;
+    }
+
+    /**
+     * Check if a item can be part of this collection.
+     *
+     * @param $value
+     * @return boolean
+     */
+    protected function checkItem($value)
+    {
+        return $value instanceof MezzoModel;
     }
 }

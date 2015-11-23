@@ -19,6 +19,11 @@ class CategoryPage extends ResourcePage
 
     protected $view = 'modules.categories::pages.categories';
 
+    protected $options = [
+        'renderedByFrontend' => false,
+        'visibleInNaviation' => true
+    ];
+
 
 
 }

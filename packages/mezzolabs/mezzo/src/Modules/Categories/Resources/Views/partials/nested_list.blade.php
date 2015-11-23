@@ -1,7 +1,9 @@
 <div class="list-group-item">
-    <?php for ($x = 0; $x != $level; $x++) echo ' - '; ?> {{ $element->label }}
+    <?php for ($x = 0; $x != $element->level; $x++) echo "&nbsp;&nbsp;&nbsp" ?>@if($element->level > 0)
+        - @endif {{ $element->label }}
 </div>
 @foreach($element->children as $child)
-    @include('modules.categories::partials.nested_list', ['element' => $child, 'level' => $level++])
+    <?php $child->level = $element->level + 1; ?>
+    @include('modules.categories::partials.nested_list', ['element' => $child])
 @endforeach
 

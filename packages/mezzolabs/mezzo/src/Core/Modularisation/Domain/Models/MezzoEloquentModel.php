@@ -11,4 +11,6 @@ abstract class MezzoEloquentModel extends EloquentModel implements MezzoModel
     use HasMezzoAnnotations;
 
     protected $rules = [];
+
+
 }

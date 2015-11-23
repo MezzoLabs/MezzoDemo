@@ -68,4 +68,11 @@ interface MezzoModel extends EloquentInterface
      * @return boolean
      */
     public function isOwnedByUser(\App\User $user);
+
+    /**
+     * Get the label model or a computed value that represents this model in a list or a select input.
+     *
+     * @return string
+     */
+    public function getLabelAttribute();
 }

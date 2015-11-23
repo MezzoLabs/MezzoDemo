@@ -5,7 +5,6 @@ namespace MezzoLabs\Mezzo\Cockpit\Html\Rendering;
 
 
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoEloquentCollection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AtomicAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple;
@@ -59,32 +58,34 @@ class AttributeRenderer extends AttributeSchemaRenderer
     protected function renderRelationInputSingle(RelationAttribute $attribute)
     {
         $list = $this->makeEloquentList($attribute, true);
-
-        //mezzo_dd($list);
-
-        return $this->formBuilder()->select($attribute->name(),  $list, null, $this->htmlAttributes());
+        return $this->formBuilder()->select($attribute->name(),  $list, old($attribute->name()), $this->htmlAttributes());
     }
 
 
     protected function renderRelationInputMultiple(RelationAttribute $attribute)
     {
         $list = $this->makeEloquentList($attribute, false);
-        return $this->formBuilder()->select($attribute->name(),  $list, null, $this->htmlAttributes());
+        return $this->formBuilder()->select($attribute->name(),  $list, old($attribute->name()), $this->htmlAttributes());
     }
 
     /**
      * Create a list for a select box.
      *
      * @param RelationAttribute $attribute
+     * @param bool $addPleaseSelect
      * @return static
      */
     protected function makeEloquentList(RelationAttribute $attribute, $addPleaseSelect = true){
-        $collection = new MezzoEloquentCollection($attribute->otherModelReflection()->all());
+        $collection = $attribute->otherModelReflection()->all();
+
+        $array = $collection->pluck('label', 'id')->toArray();
+
         if(!$addPleaseSelect)
-            return $collection->asList();
+            return $array;
 
-        return (new Collection($collection->asList()))->merge([null => 'Please Select']);
+        $array[null] = 'Please Select';
 
+        return $array;
     }
 
     /**

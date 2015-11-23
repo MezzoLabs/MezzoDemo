@@ -247,4 +247,14 @@ abstract class DecoratedCollection implements ArrayAccess, Arrayable, Countable,
     {
         return $this->collection()->count();
     }
+
+    /**
+     * Determine if the collection is empty or not.
+     *
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return $this->collection->isEmpty();
+    }
 }

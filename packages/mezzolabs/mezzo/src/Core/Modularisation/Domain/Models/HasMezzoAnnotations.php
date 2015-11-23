@@ -119,9 +119,30 @@ trait HasMezzoAnnotations
     {
         $ownerId = $this->tryToFindOwnerId();
 
-        if(!$ownerId)
+        if (!$ownerId)
             return false;
 
         return intval($ownerId) === intval($user->id);
+    }
+
+    /**
+     * Get the label model or a computed value that represents this model in a list or a select input.
+     *
+     * @return string
+     */
+    public function getLabelAttribute()
+    {
+        if (isset($this->attributes['label']))
+            return $this->attributes['label'];
+
+        $labelAlternatives = ['title', 'name', 'firstname', 'lastname', 'key', 'slug'];
+
+        foreach ($labelAlternatives as $labelAlternative) {
+            if (isset($this->attributes[$labelAlternative]))
+                return $this->getAttribute($labelAlternative);
+        }
+
+        return $this->id;
+
     }
 }
