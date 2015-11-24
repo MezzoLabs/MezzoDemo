@@ -1,9 +1,10 @@
 export default class CreatePageController {
 
     /*@ngInject*/
-    constructor(api, $sce) {
+    constructor(api, $sce, random) {
         this.api = api;
         this.$sce = $sce;
+        this.random = random;
         this.contentBlocks = [];
         this.templates = {};
     }
@@ -14,6 +15,7 @@ export default class CreatePageController {
             title: title,
             hash: hash,
             propertyInputName: propertyInputName,
+            nameInForm: this.random.string(),
             template: null
         };
 
