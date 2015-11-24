@@ -23,9 +23,7 @@
                 <div class="panel-actions">
                 </div>
             </div>
-            <div class="panel-body">
-                @include('modules.contents::block_type_select')
-            </div>
+            @include('modules.contents::block_type_select')
 
 
             <div class="panel panel-bordered">

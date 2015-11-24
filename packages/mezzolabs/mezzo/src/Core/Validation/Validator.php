@@ -27,11 +27,35 @@ class Validator
      * @param $rulesArray
      * @return array
      */
-    public static function removeRequiredRules($rulesArray)
+    public static function removeRequiredRules($rulesArray, array $forColumns = [])
+    {
+        return static::removeRulesType('required', $rulesArray, $forColumns);
+    }
+
+    public static function removeUniqueRules($rulesArray, array $forColumns = [])
+    {
+        return static::removeRulesType('unique', $rulesArray, $forColumns);
+    }
+
+    /**
+     * @param $ruleType
+     * @param array $rulesArray
+     * @param array $forColumns
+     * @return array
+     */
+    protected static function removeRulesType($ruleType, array $rulesArray, array $forColumns = [])
     {
         $updateRules = [];
-        foreach($rulesArray as &$rule){
-            $updateRules[] = str_replace(['required|', 'required'], '', $rule);
+        foreach ($rulesArray as $column => &$rule) {
+            if (!in_array($column, $forColumns)) {
+                $updateRules[$column] = $rule;
+                continue;
+            }
+
+            $changedRule = preg_replace("/(" . $ruleType . "[^|]*)/", "", $rule);
+            $changedRule = trim(str_replace('||', '', $changedRule), '|');
+
+            $updateRules[$column] = $changedRule;
         }
 
         return $updateRules;
@@ -39,11 +63,14 @@ class Validator
 
     public function onSaving(MezzoModel $model)
     {
-        $model->validateOrFail($model->getAttributes(), 'create');
+        if (!$model->exists) {
+            $model->validateOrFail($model->getAttributes(), 'create');
+            return;
+        }
+
+        $model->validateOrFail($model->getDirty(), 'update');
+        return;
+
     }
 
-    public function onUpdating(MezzoModel $model)
-    {
-        $model->validateOrFail($model->getAttributes(), 'update');
-    }
 }

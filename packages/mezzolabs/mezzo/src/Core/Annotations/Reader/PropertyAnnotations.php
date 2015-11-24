@@ -68,7 +68,7 @@ abstract class PropertyAnnotations
         if ($annotations->count() === 0) return null;
 
         // Remove one "_" from the property name. If we would use the correct attribute names
-        // for the annotations eloquent would freak out.
+        // for the annotations, eloquent would freak out.
         $name = $property->getName();
 
         if(Str::startsWith($name, '_'))

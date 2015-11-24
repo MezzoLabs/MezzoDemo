@@ -3,6 +3,7 @@
 
 namespace MezzoLabs\Mezzo\Core\Permission;
 
+use Illuminate\Auth\Access\UnauthorizedException;
 use Illuminate\Auth\Guard as AuthGuard;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 
@@ -69,8 +70,9 @@ class PermissionGuard
 
     protected function allowsModelAccess(MezzoModel $model, $level = 'show', \App\User $user = null)
     {
-        //TODO: Change this as soon as marc accepts my JWT
-        return true;
+        if (!$this->enabled())
+            return true;
+
         if (!$user) $user = $this->user();
 
         $accessAll = $this->permissionKey($level, $model);
@@ -102,6 +104,27 @@ class PermissionGuard
     {
         if (!$user) $user = $this->user();
 
+        if (!$user) return false;
+
         return $user->hasPermission($permission);
+    }
+
+    public function enabled()
+    {
+        $noPermissionCheck = (env('APP_DEBUG') && \Request::header('no-permission-check'));
+        return !$noPermissionCheck;
+    }
+
+    public static function fail()
+    {
+        throw new UnauthorizedException('No Permissions.');
+    }
+
+    /**
+     * @return static
+     */
+    public static function make()
+    {
+        return app()->make(static::class);
     }
 }

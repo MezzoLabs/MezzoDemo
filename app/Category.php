@@ -22,4 +22,11 @@ class Category extends CategoriesModuleCategory
         return $this->belongsToMany(Post::class);
     }
 
+    public function scopeInGroup($query, $groupName)
+    {
+        $group = CategoryGroup::findByIdentifierOrFail($groupName);
+
+        return $query->where('category_group_id', '=', $group->id);
+    }
+
 }

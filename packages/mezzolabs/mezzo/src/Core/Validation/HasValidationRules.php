@@ -16,9 +16,7 @@ trait HasValidationRules
     public static function bootHasValidationRules()
     {
         static::saving(\MezzoLabs\Mezzo\Core\Validation\Validator::class . '@onSaving');
-        static::updating(\MezzoLabs\Mezzo\Core\Validation\Validator::class . '@onUpdating');
     }
-
 
 
     public function validateOrFail($data = [], $mode = "create")
@@ -83,17 +81,24 @@ trait HasValidationRules
 
     public function validateUpdate($data = [], $orFail = true)
     {
-        return $this->validateWithRules($data, $this->getUpdateRules(), $orFail);
+        return $this->validateWithRules($data, $this->getUpdateRules($data), $orFail);
     }
 
     /**
      * Remove "required" rules for partially updates.
      *
+     * @param array $data
      * @return array
      */
-    public function getUpdateRules()
+    public function getUpdateRules(array $data)
     {
-        return Validator::removeRequiredRules($this->getRules());
+        $changingColumns = array_keys($data);
+        $unchangingColumns = array_diff(array_keys($this->getRules()), $changingColumns);
+
+        $rules = Validator::removeRequiredRules($this->getRules(), $unchangingColumns);
+        $rules = Validator::removeUniqueRules($rules, $unchangingColumns);
+
+        return $rules;
     }
 
 }

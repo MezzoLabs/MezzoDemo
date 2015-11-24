@@ -1421,7 +1421,8 @@ blockquote {
 blockquote.pull-right,
 #topbar blockquote.toolbox-right,
 .panel blockquote.panel-actions,
-#quickview .quickview-heading blockquote.btn {
+#quickview .quickview-heading blockquote.btn,
+.content-blocks blockquote.content-block-actions {
   padding-right: 15px;
   padding-left: 0;
   border-right: 5px solid #eeeeee;
@@ -1430,16 +1431,16 @@ blockquote.pull-right,
   .blockquote-reverse footer:before,
   .blockquote-reverse small:before,
   .blockquote-reverse .small:before,
-  blockquote.pull-right footer:before, #topbar blockquote.toolbox-right footer:before, .panel blockquote.panel-actions footer:before, #quickview .quickview-heading blockquote.btn footer:before,
-  blockquote.pull-right small:before, #topbar blockquote.toolbox-right small:before, .panel blockquote.panel-actions small:before, #quickview .quickview-heading blockquote.btn small:before,
-  blockquote.pull-right .small:before, #topbar blockquote.toolbox-right .small:before, .panel blockquote.panel-actions .small:before, #quickview .quickview-heading blockquote.btn .small:before {
+  blockquote.pull-right footer:before, #topbar blockquote.toolbox-right footer:before, .panel blockquote.panel-actions footer:before, #quickview .quickview-heading blockquote.btn footer:before, .content-blocks blockquote.content-block-actions footer:before,
+  blockquote.pull-right small:before, #topbar blockquote.toolbox-right small:before, .panel blockquote.panel-actions small:before, #quickview .quickview-heading blockquote.btn small:before, .content-blocks blockquote.content-block-actions small:before,
+  blockquote.pull-right .small:before, #topbar blockquote.toolbox-right .small:before, .panel blockquote.panel-actions .small:before, #quickview .quickview-heading blockquote.btn .small:before, .content-blocks blockquote.content-block-actions .small:before {
     content: ''; }
   .blockquote-reverse footer:after,
   .blockquote-reverse small:after,
   .blockquote-reverse .small:after,
-  blockquote.pull-right footer:after, #topbar blockquote.toolbox-right footer:after, .panel blockquote.panel-actions footer:after, #quickview .quickview-heading blockquote.btn footer:after,
-  blockquote.pull-right small:after, #topbar blockquote.toolbox-right small:after, .panel blockquote.panel-actions small:after, #quickview .quickview-heading blockquote.btn small:after,
-  blockquote.pull-right .small:after, #topbar blockquote.toolbox-right .small:after, .panel blockquote.panel-actions .small:after, #quickview .quickview-heading blockquote.btn .small:after {
+  blockquote.pull-right footer:after, #topbar blockquote.toolbox-right footer:after, .panel blockquote.panel-actions footer:after, #quickview .quickview-heading blockquote.btn footer:after, .content-blocks blockquote.content-block-actions footer:after,
+  blockquote.pull-right small:after, #topbar blockquote.toolbox-right small:after, .panel blockquote.panel-actions small:after, #quickview .quickview-heading blockquote.btn small:after, .content-blocks blockquote.content-block-actions small:after,
+  blockquote.pull-right .small:after, #topbar blockquote.toolbox-right .small:after, .panel blockquote.panel-actions .small:after, #quickview .quickview-heading blockquote.btn .small:after, .content-blocks blockquote.content-block-actions .small:after {
     content: '\00A0 \2014'; }
 
 address {
@@ -3163,7 +3164,8 @@ tbody.collapse.in {
   border-radius: 2px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box; }
-  .dropdown-menu.pull-right, #topbar .dropdown-menu.toolbox-right, .panel .dropdown-menu.panel-actions, #quickview .quickview-heading .dropdown-menu.btn {
+
+.dropdown-menu.pull-right, #topbar .dropdown-menu.toolbox-right, .panel .dropdown-menu.panel-actions, #quickview .quickview-heading .dropdown-menu.btn, .content-blocks .dropdown-menu.content-block-actions {
     right: 0;
     left: auto; }
   .dropdown-menu .divider {
@@ -3231,7 +3233,7 @@ tbody.collapse.in {
   top: 0;
   z-index: 990; }
 
-.pull-right > .dropdown-menu, #topbar .toolbox-right > .dropdown-menu, .panel .panel-actions > .dropdown-menu, #quickview .quickview-heading .btn > .dropdown-menu {
+.pull-right > .dropdown-menu, #topbar .toolbox-right > .dropdown-menu, .panel .panel-actions > .dropdown-menu, #quickview .quickview-heading .btn > .dropdown-menu, .content-blocks .content-block-actions > .dropdown-menu {
   right: 0;
   left: auto; }
 
@@ -4471,7 +4473,8 @@ a.thumbnail.active {
 .media > .pull-right, #topbar
 .media > .toolbox-right, .panel
 .media > .panel-actions, #quickview .quickview-heading
-.media > .btn {
+.media > .btn, .content-blocks
+.media > .content-block-actions {
   padding-left: 10px; }
 
 .media-left,
@@ -5564,7 +5567,7 @@ button.close {
   margin-left: auto;
   margin-right: auto; }
 
-.pull-right, #topbar .toolbox-right, .panel .panel-actions, #quickview .quickview-heading .btn {
+.pull-right, #topbar .toolbox-right, .panel .panel-actions, #quickview .quickview-heading .btn, .content-blocks .content-block-actions {
   float: right !important; }
 
 .pull-left, .nav-main > li > a > span, .nav-main > li > a > i, #topbar .toolbox-left, .panel .panel-heading h3, #quickview .quickview-heading h3 {
@@ -5842,7 +5845,7 @@ button.close {
   margin-left: .3em; }
 
 /* Deprecated as of 4.4.0 */
-.pull-right, #topbar .toolbox-right, .panel .panel-actions, #quickview .quickview-heading .btn {
+.pull-right, #topbar .toolbox-right, .panel .panel-actions, #quickview .quickview-heading .btn, .content-blocks .content-block-actions {
   float: right; }
 
 .pull-left, .nav-main > li > a > span, .nav-main > li > a > i, #topbar .toolbox-left, .panel .panel-heading h3, #quickview .quickview-heading h3 {
@@ -5851,7 +5854,7 @@ button.close {
 .fa.pull-left, .nav-main > li > a > span.fa, .nav-main > li > a > i.fa, #topbar .fa.toolbox-left, .panel .panel-heading h3.fa, #quickview .quickview-heading h3.fa {
   margin-right: .3em; }
 
-.fa.pull-right, #topbar .fa.toolbox-right, .panel .fa.panel-actions, #quickview .quickview-heading .fa.btn {
+.fa.pull-right, #topbar .fa.toolbox-right, .panel .fa.panel-actions, #quickview .quickview-heading .fa.btn, .content-blocks .fa.content-block-actions {
   margin-left: .3em; }
 
 .fa-spin {
@@ -8404,23 +8407,23 @@ i {
 a {
   transition: ease all 0.2s; }
 
-.light-icon, .panel .panel-actions a {
+.light-icon, .panel .panel-actions a, .content-blocks .content-block-actions a {
   color: #aaaaaa;
   transition: ease color 0.15s;
   cursor: pointer;
   text-decoration: none; }
 
-.light-icon.highlight, .panel .panel-actions a.highlight {
+.light-icon.highlight, .panel .panel-actions a.highlight, .content-blocks .content-block-actions a.highlight {
   transition: ease box-shadow 0.3s;
   background-color: #EEE;
   border-radius: 50px;
   color: #555555; }
 
-.light-icon.highlight:hover, .panel .panel-actions a.highlight:hover {
+.light-icon.highlight:hover, .panel .panel-actions a.highlight:hover, .content-blocks .content-block-actions a.highlight:hover {
   color: #333333;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25); }
 
-.light-icon:hover, .panel .panel-actions a:hover {
+.light-icon:hover, .panel .panel-actions a:hover, .content-blocks .content-block-actions a:hover {
   color: #555555; }
 
 .hide-text {
@@ -8830,6 +8833,39 @@ a {
 
 .validation-rule:hover .validation-rule-times {
   visibility: visible; }
+
+.content-blocks {
+  background-color: #f5f5f5;
+  min-height: 150px;
+  padding: 10px;
+}
+
+.content-blocks .content-block {
+  margin-bottom: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);
+}
+
+.content-blocks .content-block .content-block-body {
+  padding: 15px;
+}
+
+.content-blocks .content-block .content-block-heading {
+  padding: 10px 15px;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.content-blocks .content-block .content-block-heading small {
+  color: #999999;
+}
+
+.content-blocks .content-block-actions a {
+  padding: 8px 10px;
+}
+
+.content-blocks .content-block-actions a:last-child {
+  padding-right: 0px;
+}
 
 .jstree-proton .jstree-clicked, .jstree-proton .jstree-hovered {
   box-shadow: none;

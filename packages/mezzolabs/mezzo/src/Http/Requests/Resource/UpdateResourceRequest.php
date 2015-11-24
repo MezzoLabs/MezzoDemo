@@ -4,8 +4,6 @@
 namespace MezzoLabs\Mezzo\Http\Requests\Resource;
 
 
-use MezzoLabs\Mezzo\Core\Validation\Validator;
-
 class UpdateResourceRequest extends UpdateOrStoreResourceRequest
 {
     /**
@@ -15,8 +13,7 @@ class UpdateResourceRequest extends UpdateOrStoreResourceRequest
      */
     public function rules()
     {
-        $rules = parent::rules();
-        return Validator::removeRequiredRules($rules);
+        return $this->modelReflection()->instance()->getUpdateRules($this->all());
     }
 
 
@@ -33,7 +30,8 @@ class UpdateResourceRequest extends UpdateOrStoreResourceRequest
     /**
      * @return int
      */
-    protected function id(){
+    protected function id()
+    {
         return intval($this->route('id'));
     }
 }
