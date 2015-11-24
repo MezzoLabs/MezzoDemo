@@ -6,7 +6,8 @@
             <h3 ng-bind="block.title"></h3>
         </div>
         <div class="panel-body" ng-repeat-end>
-            <div class="block-@{{ block.key }}" ng-bind-html="block.template"></div>
+            @{{ block.nameInForm }}
+            <div class="block-@{{ block.key }}" mezzo-compile-html="block.template"></div>
         </div>
     </div>
     <div class="col-md-4">
@@ -15,7 +16,7 @@
         <div class="list-group">
             @foreach(\MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar::make()->all() as $block)
                 <button type="button" class="list-group-item"
-                        ng-click="vm.addContentBlock('{{ addslashes($block->key()) }}', '{{ $block->title() }}', '{{ $block->hash() }}', '{{ $block->propertyInputName('class') }}')">
+                        ng-click="vm.addContentBlock('{{ addslashes($block->key()) }}', '{{ $block->hash() }}', '{{ $block->title() }}')">
                     <i class="{{ $block->icon() }}"></i>
                     {{ $block->title() }}
                 </button>

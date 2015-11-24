@@ -6,5 +6,7 @@ export default function randomService(){
 }
 
 function string(length = 5){
-    return (new Date() * Math.random()).toString(36).slice(2, length);
+    const startIndex = 2;
+
+    return (new Date() * Math.random()).toString(36).slice(startIndex, startIndex + length);
 }
