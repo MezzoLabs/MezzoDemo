@@ -13,6 +13,6 @@ class EventVenue extends MezzoEventVenue
 
     public function address()
     {
-        return $this->hasOne(Address::class);
+        return $this->belongsTo(Address::class);
     }
 }

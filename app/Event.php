@@ -16,6 +16,11 @@ class Event extends MezzoEvent
         return $this->belongsTo(EventVenue::class, 'event_venue_id', 'id');
     }
 
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
+
 
     public function user()
     {

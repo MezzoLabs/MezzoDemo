@@ -18,6 +18,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\FileCacheReader;
 use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
+use MezzoLabs\Mezzo\Modules\Generator\Generators\AnnotationGenerator;
 
 Route::get('/', function () {
     return view('welcome');
@@ -66,11 +67,11 @@ Route::get('/test/reflection', function () {
     $mezzoReflection = $reflectionManager->mezzoReflection('Post');
     $eloquentReflection = $reflectionManager->eloquentReflection('Post');
 
-    mezzo_dd(mezzo()->model($eloquentReflection->schema()->attributes('content_id')->getModel())->attributes()->get('content_id'));
+    mezzo_dd($mezzoReflection->schema()->relations()->get('category_post')->getScopes()->toArray());
 
 });
 
-Route::get('/test/cgenerategory', function () {
+Route::get('/test/generator', function () {
 
 });
 
@@ -120,8 +121,11 @@ Route::any('debug/controller', 'TestController@foo');
 
 Route::get('debug/generator', function () {
 
+    $annotationGenerator = app()->make(AnnotationGenerator::class);
+
+
     $reflectionManager = mezzo()->makeReflectionManager();
-    $reflection = $reflectionManager->eloquentReflection('Address');
+    $reflection = $reflectionManager->eloquentReflection('Event');
     $schema = $reflection->schema();
 
     $schemas = new \MezzoLabs\Mezzo\Core\Schema\ModelSchemas();
@@ -129,6 +133,9 @@ Route::get('debug/generator', function () {
 
     $generatorFactory = GeneratorModule::make()->generatorFactory();
     $modelParentGenerator = $generatorFactory->modelParentGenerator($schemas);
+
+    $modelParentSchema = $modelParentGenerator->modelParentSchemas()->first();
+
     $modelParentGenerator->run();
 
     //return view('debugmodels', ['generator' => $generator]);

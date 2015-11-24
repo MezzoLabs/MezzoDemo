@@ -2,14 +2,18 @@
 namespace App;
 
 
-use Illuminate\Database\Eloquent\Model;
+use App\Mezzo\Generated\ModelParents\MezzoAddress;
 
-class Address extends Model
+class Address extends MezzoAddress
 {
-    /**
-     * public function event()
-     * {
-     * return $this->hasOne(Event::class);
-     * }
-     * */
+    public function event()
+    {
+        return $this->hasOne(Event::class);
+    }
+
+    public function eventVenue()
+    {
+        return $this->hasOne(EventVenue::class);
+    }
+
 }

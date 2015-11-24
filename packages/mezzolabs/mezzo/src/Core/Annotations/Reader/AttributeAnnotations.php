@@ -39,6 +39,7 @@ class AttributeAnnotations extends PropertyAnnotations
             'rules' => $this->modelReflection()->rules($this->name()),
             'visible' => !in_array($this->name(), $this->modelReflection()->instance()->getHidden()),
             'fillable' => in_array($this->name(), $this->modelReflection()->instance()->getFillable()),
+            'type' => $this->inputType(),
             'hiddenInForms' => $this->hiddenInFormsArray()
         ];
     }

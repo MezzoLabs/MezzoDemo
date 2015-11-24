@@ -8,6 +8,7 @@ use MezzoLabs\Mezzo\Core\Annotations\Relations\From;
 use MezzoLabs\Mezzo\Core\Annotations\Relations\JoinColumn as JoinColumnAnnotation;
 use MezzoLabs\Mezzo\Core\Annotations\Relations\PivotTable;
 use MezzoLabs\Mezzo\Core\Annotations\Relations\RelationAnnotation;
+use MezzoLabs\Mezzo\Core\Annotations\Relations\Scopes as ScopesAnnotation;
 use MezzoLabs\Mezzo\Core\Annotations\Relations\To;
 use MezzoLabs\Mezzo\Core\Schema\Converters\Annotations\RelationAnnotationsConverter;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToMany;
@@ -44,6 +45,14 @@ class RelationAnnotations extends PropertyAnnotations
     public function to()
     {
         return $this->get('To');
+    }
+
+    /**
+     * @return ScopesAnnotation
+     */
+    public function scopesAnnotation()
+    {
+        return $this->get('Scopes');
     }
 
     /**
@@ -130,9 +139,16 @@ class RelationAnnotations extends PropertyAnnotations
 
     public function scopes()
     {
-        $type = $this->mainAnnotation();
+        return Scopes::buildFromString($this->scopesString());
+    }
 
-        return Scopes::buildFromString($type->scopes);
+    public function scopesString()
+    {
+        if ($this->has('scopes')) {
+            return $this->scopesAnnotation()->value;
+        }
+
+        return "";
     }
 
     /**

@@ -38,10 +38,16 @@ class RelationAttribute extends Attribute
      */
     protected function findType()
     {
-        if ($this->hasOneChild()) {
-            $this->type = new RelationInputSingle();
-        } else {
-            $this->type = new RelationInputMultiple();
+        $annotationsType = $this->options()->get('type');
+
+        if (!empty($annotationsType))
+            $this->type = $annotationsType;
+        else {
+            if ($this->hasOneChild()) {
+                $this->type = new RelationInputSingle();
+            } else {
+                $this->type = new RelationInputMultiple();
+            }
         }
 
 
@@ -117,7 +123,6 @@ class RelationAttribute extends Attribute
 
         return $query;
     }
-
 
 
 }

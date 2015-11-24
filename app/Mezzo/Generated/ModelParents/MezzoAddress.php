@@ -3,7 +3,6 @@
 namespace App\Mezzo\Generated\ModelParents;
 
 use App\Mezzo\BaseModel;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
@@ -14,32 +13,30 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  *
  *-------------------------------------------------------------------------------------------------------------------
  *
- * Please do not edit, use "App\Post" instead. Thank you.
+ * Please do not edit, use "App\Address" instead. Thank you.
  *
  *-------------------------------------------------------------------------------------------------------------------
  * Welcome to the model parent. This file is auto generated and tells Mezzo something about
  * your model. If you feel the need to overwrite something use the child class.
  *
- * App\Mezzo\Generated\ModelParents\MezzoPost
+ * App\Mezzo\Generated\ModelParents\MezzoAddress
  *
  * @property integer $id
- * @property string $title
- * @property string $teaser
- * @property string $slug
- * @property string $state
- * @property \Carbon\Carbon $published_at
- * @property integer $user_id
- * @property integer $content_id
- * @property integer $main_image_id
+ * @property string $addressee
+ * @property string $organization
+ * @property string $street
+ * @property string $street_extra
+ * @property string $zip
+ * @property string $city
+ * @property string $phone
+ * @property string $fax
+ * @property float $latitude
+ * @property float $longtitude
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property \Carbon\Carbon $deleted_at
- * @property \App\User $user
- * @property \App\Content $content
- * @property \App\ImageFile $main_image
- * @property EloquentCollection $categories
+ * @property \App\EventVenue $eventVenue
  */
-abstract class MezzoPost extends BaseModel
+abstract class MezzoAddress extends BaseModel
 {
     use IsMezzoModel;
 
@@ -58,7 +55,7 @@ abstract class MezzoPost extends BaseModel
      *
      * @var string
      */
-    protected $table = 'posts';
+    protected $table = 'addresses';
 
     /**
      * Set of rules that will be validated in resource requests.
@@ -66,11 +63,16 @@ abstract class MezzoPost extends BaseModel
      * @var array
      */
     protected $rules = [
-        'title' => "required|between:2,200",
-        'teaser' => "between:2,1500",
-        'slug' => "",
-        'state' => "required|between:2,20|alpha_num", 
-        'published_at' => ""
+        'addressee' => "",
+        'organization' => "",
+        'street' => "",
+        'street_extra' => "",
+        'zip' => "",
+        'city' => "",
+        'phone' => "",
+        'fax' => "",
+        'latitude' => "",
+        'longtitude' => ""
     ];
 
     /**
@@ -88,13 +90,7 @@ abstract class MezzoPost extends BaseModel
      * @var array
      */
     protected $fillable = [
-        "title",
-        "teaser",
-        "published_at",
-        "slug",
-        "state",
-        "main_image_id",
-        "categories"
+
     ];
 
     /**
@@ -103,7 +99,7 @@ abstract class MezzoPost extends BaseModel
      * * @var array
      */
     protected $casts = [
-        'published_at' => "date"
+
     ];
 
     /**
@@ -127,79 +123,95 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for id
      *
-     * @Mezzo\Attribute(type="PrimaryKeyInput", hidden="")
+     * @Mezzo\Attribute(type="PrimaryKeyInput", hidden="create,edit")
      * @var integer
      */
     protected $_id;
 
     /**
-     * Attribute annotation property for title
+     * Attribute annotation property for addressee
      *
      * @Mezzo\Attribute(type="TextInput", hidden="")
      * @var string
      */
-    protected $_title;
+    protected $_addressee;
 
     /**
-     * Attribute annotation property for teaser
-     *
-     * @Mezzo\Attribute(type="TextArea", hidden="")
-     * @var string
-     */
-    protected $_teaser;
-
-    /**
-     * Attribute annotation property for slug
+     * Attribute annotation property for organization
      *
      * @Mezzo\Attribute(type="TextInput", hidden="")
      * @var string
      */
-    protected $_slug;
+    protected $_organization;
 
     /**
-     * Attribute annotation property for state
+     * Attribute annotation property for street
      *
      * @Mezzo\Attribute(type="TextInput", hidden="")
      * @var string
      */
-    protected $_state;
+    protected $_street;
 
     /**
-     * Attribute annotation property for published_at
+     * Attribute annotation property for street_extra
      *
-     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
-     * @var \Carbon\Carbon
+     * @Mezzo\Attribute(type="TextInput", hidden="")
+     * @var string
      */
-    protected $_published_at;
+    protected $_street_extra;
 
     /**
-     * Attribute annotation property for user_id
+     * Attribute annotation property for zip
      *
-     * @Mezzo\Attribute(type="RelationInputSingle", hidden="")
-     * @var integer
+     * @Mezzo\Attribute(type="TextInput", hidden="")
+     * @var string
      */
-    protected $_user_id;
+    protected $_zip;
 
     /**
-     * Attribute annotation property for content_id
+     * Attribute annotation property for city
      *
-     * @Mezzo\Attribute(type="RelationInputSingle", hidden="create")
-     * @var integer
+     * @Mezzo\Attribute(type="TextInput", hidden="")
+     * @var string
      */
-    protected $_content_id;
+    protected $_city;
 
     /**
-     * Attribute annotation property for main_image_id
+     * Attribute annotation property for phone
      *
-     * @Mezzo\Attribute(type="\MezzoLabs\Mezzo\Modules\FileManager\Schema\InputTypes\ImageInput", hidden="")
-     * @var integer
+     * @Mezzo\Attribute(type="TextInput", hidden="")
+     * @var string
      */
-    protected $_main_image_id;
+    protected $_phone;
+
+    /**
+     * Attribute annotation property for fax
+     *
+     * @Mezzo\Attribute(type="TextInput", hidden="")
+     * @var string
+     */
+    protected $_fax;
+
+    /**
+     * Attribute annotation property for latitude
+     *
+     * @Mezzo\Attribute(type="FloatInput", hidden="")
+     * @var float
+     */
+    protected $_latitude;
+
+    /**
+     * Attribute annotation property for longtitude
+     *
+     * @Mezzo\Attribute(type="FloatInput", hidden="")
+     * @var float
+     */
+    protected $_longtitude;
 
     /**
      * Attribute annotation property for created_at
      *
-     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
+     * @Mezzo\Attribute(type="DateTimeInput", hidden="create")
      * @var \Carbon\Carbon
      */
     protected $_created_at;
@@ -207,18 +219,10 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for updated_at
      *
-     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
+     * @Mezzo\Attribute(type="DateTimeInput", hidden="create,update")
      * @var \Carbon\Carbon
      */
     protected $_updated_at;
-
-    /**
-     * Attribute annotation property for deleted_at
-     *
-     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
-     * @var \Carbon\Carbon
-     */
-    protected $_deleted_at;
 
 
     /*
@@ -232,42 +236,13 @@ abstract class MezzoPost extends BaseModel
     */
 
     /**
-     * Relation annotation property for user
-     * @Mezzo\Relations\OneToMany
-     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="posts")
-     * @Mezzo\Relations\To(table="posts", primaryKey="id", naming="user")
-     * @Mezzo\Relations\JoinColumn(table="posts", column="user_id")
-     */
-    protected $_user;
-
-    /**
-     * Relation annotation property for content
+     * Relation annotation property for eventVenue
      * @Mezzo\Relations\OneToOne
-     * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="content")
-     * @Mezzo\Relations\To(table="contents", primaryKey="id", naming="post")
-     * @Mezzo\Relations\JoinColumn(table="posts", column="content_id")
+     * @Mezzo\Relations\From(table="event_venues", primaryKey="id", naming="address")
+     * @Mezzo\Relations\To(table="addresses", primaryKey="id", naming="eventVenue")
+     * @Mezzo\Relations\JoinColumn(table="event_venues", column="address_id")
      */
-    protected $_content;
-
-    /**
-     * Relation annotation property for main_image
-     * @Mezzo\Relations\OneToMany()
-     * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="main_image")
-     * @Mezzo\Relations\To(table="image_files", primaryKey="id", naming="posts")
-     * @Mezzo\Relations\JoinColumn(table="posts", column="main_image_id")
-     */
-    protected $_main_image;
-
-    /**
-     * Relation annotation property for categories
-     * @Mezzo\Attribute(type="\MezzoLabs\Mezzo\Modules\Categories\Schema\InputTypes\CategoriesInput", hidden="")
-     * @Mezzo\Relations\ManyToMany()
-     * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="categories")
-     * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="posts")
-     * @Mezzo\Relations\PivotTable(name="category_post", fromColumn="post_id", toColumn="category_id")
-     * @Mezzo\Relations\Scopes("inGroup:shop")
-     */
-    protected $_categories;
+    protected $_eventVenue;
 
 
 }
