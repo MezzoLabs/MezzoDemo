@@ -1071,10 +1071,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var ResourceEditController =
 
 /*@ngInject*/
-function ResourceEditController() {
+function ResourceEditController($stateParams) {
     _classCallCheck(this, ResourceEditController);
 
+    this.$stateParams = $stateParams;
     console.log('ResourceEditController');
+    console.log($stateParams.modelId);
 };
 
 exports['default'] = ResourceEditController;
