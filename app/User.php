@@ -45,7 +45,8 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function tutorials(){
+    public function tutorials()
+    {
         return $this->hasMany(Tutorial::class, 'user_id');
     }
 
@@ -71,6 +72,10 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return $this->hasMany(Post::class);
     }
 
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
 
 
 }

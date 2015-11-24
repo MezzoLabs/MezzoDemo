@@ -2,7 +2,14 @@
 namespace App;
 
 
-class Address extends \Illuminate\Database\Eloquent\Model
-{
+use Illuminate\Database\Eloquent\Model;
 
+class Address extends Model
+{
+    /**
+     * public function event()
+     * {
+     * return $this->hasOne(Event::class);
+     * }
+     * */
 }

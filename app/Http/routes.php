@@ -66,11 +66,11 @@ Route::get('/test/reflection', function () {
     $mezzoReflection = $reflectionManager->mezzoReflection('Post');
     $eloquentReflection = $reflectionManager->eloquentReflection('Post');
 
-    mezzo_dd($eloquentReflection);
+    mezzo_dd(mezzo()->model($eloquentReflection->schema()->attributes('content_id')->getModel())->attributes()->get('content_id'));
 
 });
 
-Route::get('/test/category', function () {
+Route::get('/test/cgenerategory', function () {
 
 });
 
@@ -121,7 +121,7 @@ Route::any('debug/controller', 'TestController@foo');
 Route::get('debug/generator', function () {
 
     $reflectionManager = mezzo()->makeReflectionManager();
-    $reflection = $reflectionManager->eloquentReflection('File');
+    $reflection = $reflectionManager->eloquentReflection('Address');
     $schema = $reflection->schema();
 
     $schemas = new \MezzoLabs\Mezzo\Core\Schema\ModelSchemas();

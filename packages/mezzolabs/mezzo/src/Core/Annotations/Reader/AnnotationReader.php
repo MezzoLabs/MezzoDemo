@@ -33,6 +33,7 @@ class AnnotationReader
      */
     protected $doctrineReader;
 
+
     public function __construct()
     {
         $this->modelAnnotationsCache = new Collection();

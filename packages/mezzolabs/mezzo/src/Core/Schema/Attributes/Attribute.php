@@ -295,11 +295,12 @@ class Attribute
     }
 
     /**
+     * @param array $default
      * @return array
      */
-    public function hiddenInForms()
+    public function hiddenInForms($default = [])
     {
-        return $this->options()->get('hiddenInForms', []);
+        return $this->options()->get('hiddenInForms', $default);
     }
 
 } 

@@ -2,9 +2,12 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Mezzo\Generated\ModelParents\MezzoEventDay;
 
-class EventDay extends Model
+class EventDay extends MezzoEventDay
 {
-    //
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
 }

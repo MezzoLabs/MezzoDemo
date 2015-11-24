@@ -183,7 +183,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for content_id
      *
-     * @Mezzo\Attribute(type="RelationInputSingle", hidden="")
+     * @Mezzo\Attribute(type="RelationInputSingle", hidden="create")
      * @var integer
      */
     protected $_content_id;

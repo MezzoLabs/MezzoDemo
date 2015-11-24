@@ -69,6 +69,8 @@ abstract class InputType
                 return DateTimeInput::class;
             case 'integer':
                 return NumberInput::class;
+            case 'float':
+                return FloatInput::class;
         }
 
         throw new \Exception('There is no input type for the column type: ' . $type);
