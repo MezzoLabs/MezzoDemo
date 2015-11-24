@@ -93,7 +93,8 @@ abstract class MezzoPost extends BaseModel
         "published_at",
         "slug",
         "state",
-        "main_image_id"
+        "main_image_id",
+        "categories"
     ];
 
     /**
@@ -250,7 +251,7 @@ abstract class MezzoPost extends BaseModel
 
     /**
      * Relation annotation property for main_image
-     * @Mezzo\Relations\OneToMany(scopes="inGroup:content")
+     * @Mezzo\Relations\OneToMany()
      * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="main_image")
      * @Mezzo\Relations\To(table="image_files", primaryKey="id", naming="posts")
      * @Mezzo\Relations\JoinColumn(table="posts", column="main_image_id")

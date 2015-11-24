@@ -108,6 +108,15 @@ class RelationAttribute extends Attribute
         return $this->relationSide()->otherModelReflection();
     }
 
+    public function query()
+    {
+        $query = $this->relationSide()->otherModelReflection()->instance()->query();
+        $relation = $this->relation();
+
+        $relation->getScopes()->addToQuery($query);
+
+        return $query;
+    }
 
 
 

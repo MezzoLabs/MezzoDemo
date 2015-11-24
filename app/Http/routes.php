@@ -50,7 +50,12 @@ Route::get('/test/categories', function () {
 Route::get('/test/posts', function () {
     $reflection = mezzo()->model('Post');
 
-    mezzo_dd($reflection->schema());
+    $categories = $reflection->attributes()->get('categories');
+
+    $somePost = \App\Post::all()->first();
+
+
+    mezzo_dd($categories->query()->get());
 });
 
 Route::post('/test/file', 'TestController@uploadFile');
@@ -58,20 +63,17 @@ Route::post('/test/file', 'TestController@uploadFile');
 
 Route::get('/test/reflection', function () {
     $reflectionManager = mezzo()->makeReflectionManager();
-    $reflection = $reflectionManager->eloquentReflection('Post');
-    mezzo_dd($reflection->schema()->relationSides());
+    $mezzoReflection = $reflectionManager->mezzoReflection('Post');
+    $eloquentReflection = $reflectionManager->eloquentReflection('Post');
+
+    mezzo_dd($eloquentReflection);
+
 });
 
 Route::get('/test/category', function () {
 
 });
 
-
-Route::get('/test/models', function () {
-    $allModels = mezzo()->reflector()->modelReflections();
-
-    mezzo_dd($allModels);
-});
 
 
 Route::post('test/file/{id}', 'TestController@updateFile');

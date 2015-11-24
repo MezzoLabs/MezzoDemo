@@ -69,6 +69,7 @@ class AnnotationGenerator
      */
     public function attribute(Attribute $attribute)
     {
+
         $this->addLine($this->doctrine('Mezzo\Attribute', [
             'type' => $attribute->type()->name(),
             'hidden' => implode(',', $attribute->hiddenInForms())

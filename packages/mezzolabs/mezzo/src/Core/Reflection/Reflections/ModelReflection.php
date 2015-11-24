@@ -246,4 +246,5 @@ abstract class ModelReflection
         return $property->getValue($this->instance());
     }
 
+
 }

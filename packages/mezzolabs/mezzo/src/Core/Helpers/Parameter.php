@@ -39,4 +39,20 @@ class Parameter
 
         return $instance;
     }
+
+    public static function validateType($parameter, $allowedTypes)
+    {
+        if (!is_object($parameter))
+            throw new InvalidArgumentException($parameter);
+
+        if (!is_array($allowedTypes))
+            $allowedTypes = [$allowedTypes];
+
+        foreach ($allowedTypes as $allowedType) {
+            if (get_class($parameter) === $allowedType) return true;
+            if (get_parent_class($parameter) === $allowedType) return true;
+        }
+
+        throw new \InvalidArgumentException('Expected: ' . implode(' or ', $allowedTypes) . ' got ' . get_class($parameter));
+    }
 }

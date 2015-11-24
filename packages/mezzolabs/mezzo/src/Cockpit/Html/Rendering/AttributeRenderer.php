@@ -76,7 +76,7 @@ class AttributeRenderer extends AttributeSchemaRenderer
      * @return static
      */
     protected function makeEloquentList(RelationAttribute $attribute, $addPleaseSelect = true){
-        $collection = $attribute->otherModelReflection()->all();
+        $collection = $attribute->query()->get();
 
         $array = $collection->pluck('label', 'id')->toArray();
 

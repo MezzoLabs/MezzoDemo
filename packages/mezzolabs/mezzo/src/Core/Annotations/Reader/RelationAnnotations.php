@@ -132,8 +132,6 @@ class RelationAnnotations extends PropertyAnnotations
     {
         $type = $this->mainAnnotation();
 
-        mezzo_dump($this->name());
-
         return Scopes::buildFromString($type->scopes);
     }
 

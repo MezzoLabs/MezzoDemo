@@ -139,10 +139,12 @@ trait HasMezzoAnnotations
 
         foreach ($labelAlternatives as $labelAlternative) {
             if (isset($this->attributes[$labelAlternative]))
-                return $this->getAttribute($labelAlternative);
+                return $this->id . ': ' . $this->getAttribute($labelAlternative);
         }
 
         return $this->id;
 
     }
+
+
 }

@@ -4,11 +4,24 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
 use MezzoLabs\Mezzo\Core\Collection\StrictCollection;
+use MezzoLabs\Mezzo\Core\Helpers\Parameter;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
 class Scopes extends StrictCollection
 {
+    public function addToQuery($query)
+    {
+        Parameter::validateType($query, [EloquentRelation::class, EloquentBuilder::class]);
+
+        $this->each(function (Scope $scope) use ($query) {
+            $scope->addToQuery($query);
+        });
+
+        return $query;
+    }
 
     /**
      * Check if a item can be part of this collection.
@@ -28,6 +41,8 @@ class Scopes extends StrictCollection
         $scopeStrings = explode('|', $scopesString);
 
         foreach ($scopeStrings as $scopeString) {
+            if (empty($scopesString)) continue;
+
             $scope = Scope::buildFromString($scopeString);
             $scopes->add($scope);
         }
