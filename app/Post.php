@@ -6,6 +6,10 @@ use MezzoLabs\Mezzo\Modules\Posts\Domain\Models\Post as ModulePostModel;
 
 class Post extends ModulePostModel
 {
+    public $category_groups = [
+        'categories' => 'content'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

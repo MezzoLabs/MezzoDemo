@@ -36,5 +36,6 @@ class GeneralModule extends AbstractGeneralModule
      */
     public function ready()
     {
+        $this->loadViews();
     }
 }

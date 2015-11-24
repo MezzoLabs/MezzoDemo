@@ -68,6 +68,11 @@ abstract class Relation
     protected $tables;
 
     /**
+     * @var Scopes
+     */
+    protected $scopes;
+
+    /**
      * Prevent the creation via the constructor. Use the factory method instead.
      */
     final public function __construct()
@@ -278,6 +283,22 @@ abstract class Relation
     {
         $parts = explode('\\', $this->type());
         return $parts[count($parts) - 1];
+    }
+
+    /**
+     * @return Scopes
+     */
+    public function getScopes()
+    {
+        return $this->scopes;
+    }
+
+    /**
+     * @param Scopes $scopes
+     */
+    public function setScopes(Scopes $scopes)
+    {
+        $this->scopes = $scopes;
     }
 
 

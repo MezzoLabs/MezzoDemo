@@ -30,10 +30,27 @@ Route::get('random', function () {
     return str_random(16);
 });
 
-Route::get('/test/permissions', function () {
-    $user = Auth::user();
+Route::get('/test/options', function () {
+    \Auth::user()->touch();
 
-    mezzo_dd($user->permissions());
+    $optionsService = app(\MezzoLabs\Mezzo\Modules\General\Domain\Services\OptionsService::class);
+
+    $optionsService->get('test.test.test', 'something new 2');
+    $optionsService->set('test.test.test2', 'something new 2 ' . str_random());
+
+    return "hello";
+});
+
+Route::get('/test/categories', function () {
+    $categories = \App\Category::inGroup('content')->get();
+
+    mezzo_dd($categories);
+});
+
+Route::get('/test/posts', function () {
+    $reflection = mezzo()->model('Post');
+
+    mezzo_dd($reflection->schema());
 });
 
 Route::post('/test/file', 'TestController@uploadFile');
@@ -46,8 +63,7 @@ Route::get('/test/reflection', function () {
 });
 
 Route::get('/test/category', function () {
-    $seeder = app(CategoryTableSeeder::class);
-    $seeder->run();
+
 });
 
 

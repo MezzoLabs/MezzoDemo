@@ -64,6 +64,8 @@ class RelationAnnotationsConverter extends Converter
         $relation->from($from->table, $from->naming);
         $relation->to($to->table, $to->naming);
 
+        $relation->setScopes($relationAnnotations->scopes());
+
         return $relation;
     }
 

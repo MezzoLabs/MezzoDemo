@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories;
 
 
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -143,6 +144,53 @@ class ModelRepository extends EloquentRepository
     }
 
     /**
+     * Update or create a database record.
+     *
+     * @param array $data
+     * @param array $identifyingColumns Columns that are used to check if there is already a similar row in the database.
+     * @return Model
+     * @throws RepositoryException
+     */
+    public function updateOrCreate(array $data, array $identifyingColumns = ['*'])
+    {
+        if (empty($identifyingColumns) || $identifyingColumns[0] === '*')
+            $identifyingColumns = array_keys($data);
+
+        $identifyingValues = [];
+        foreach ($data as $key => $value)
+            if (in_array($key, $identifyingColumns)) $identifyingValues[$key] = $value;
+
+        if (empty($identifyingValues))
+            throw new RepositoryException('Cannot use update or create if there are no ' .
+                'columns that we can use for identifying the column.');
+
+
+        $found = $this->where($identifyingValues)->first(['id']);
+
+
+        if ($found) {
+            return $this->update($data, $found->id);
+        }
+
+
+        return $this->create($data);
+    }
+
+    /**
+     * Add a basic where clause to the query.
+     *
+     * @param  string $column
+     * @param  string $operator
+     * @param  mixed $value
+     * @param  string $boolean
+     * @return EloquentBuilder
+     */
+    public function where($column, $operator = null, $value = null, $boolean = 'and')
+    {
+        return $this->query()->where($column, $operator, $value, $boolean);
+    }
+
+    /**
      * @param array $data
      * @return AttributeValues
      */
@@ -179,7 +227,8 @@ class ModelRepository extends EloquentRepository
      * @param array $data
      * @param $id
      * @param string $attribute
-     * @return int
+     * @return MezzoModel
+     * @throws RepositoryException
      */
     public function update(array $data, $id, $attribute = "id")
     {
@@ -189,10 +238,13 @@ class ModelRepository extends EloquentRepository
 
         $result = $this->updateRow($values->inMainTableOnly(), $model);
 
+        if (!$result)
+            throw new RepositoryException("Updating the model \"" . get_class($model) . ':' . $id . "\" failed.");
+
         $relationResult = $this->updateRelations($model, $values->inForeignTablesOnly());
 
         if (!$relationResult)
-            $result = -1;
+            throw new RepositoryException('Relation update failed.');
 
         return $result;
     }

@@ -3,7 +3,6 @@
 namespace App\Mezzo\Generated\ModelParents;
 
 use App\Mezzo\BaseModel;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
@@ -14,32 +13,21 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  *
  *-------------------------------------------------------------------------------------------------------------------
  *
- * Please do not edit, use "App\Post" instead. Thank you.
+ * Please do not edit, use "App\Option" instead. Thank you.
  *
  *-------------------------------------------------------------------------------------------------------------------
  * Welcome to the model parent. This file is auto generated and tells Mezzo something about
  * your model. If you feel the need to overwrite something use the child class.
  *
- * App\Mezzo\Generated\ModelParents\MezzoPost
+ * App\Mezzo\Generated\ModelParents\MezzoOption
  *
  * @property integer $id
- * @property string $title
- * @property string $teaser
- * @property string $slug
- * @property string $state
- * @property \Carbon\Carbon $published_at
- * @property integer $user_id
- * @property integer $content_id
- * @property integer $main_image_id
+ * @property string $name
+ * @property string $value
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property \Carbon\Carbon $deleted_at
- * @property \App\User $user
- * @property \App\Content $content
- * @property \App\ImageFile $main_image
- * @property EloquentCollection $categories
  */
-abstract class MezzoPost extends BaseModel
+abstract class MezzoOption extends BaseModel
 {
     use IsMezzoModel;
 
@@ -58,7 +46,7 @@ abstract class MezzoPost extends BaseModel
      *
      * @var string
      */
-    protected $table = 'posts';
+    protected $table = 'options';
 
     /**
      * Set of rules that will be validated in resource requests.
@@ -66,11 +54,8 @@ abstract class MezzoPost extends BaseModel
      * @var array
      */
     protected $rules = [
-        'title' => "required|between:2,200",
-        'teaser' => "between:2,1500",
-        'slug' => "",
-        'state' => "required|between:2,20|alpha_num", 
-        'published_at' => ""
+        'name' => "required|between:3,128",
+        'value' => "max:2500"
     ];
 
     /**
@@ -88,12 +73,7 @@ abstract class MezzoPost extends BaseModel
      * @var array
      */
     protected $fillable = [
-        "title",
-        "teaser",
-        "published_at",
-        "slug",
-        "state",
-        "main_image_id"
+        'name', 'value'
     ];
 
     /**
@@ -102,7 +82,7 @@ abstract class MezzoPost extends BaseModel
      * * @var array
      */
     protected $casts = [
-        'published_at' => "date"
+
     ];
 
     /**
@@ -132,68 +112,20 @@ abstract class MezzoPost extends BaseModel
     protected $_id;
 
     /**
-     * Attribute annotation property for title
+     * Attribute annotation property for name
      *
      * @Mezzo\Attribute(type="TextInput", hidden="")
      * @var string
      */
-    protected $_title;
+    protected $_name;
 
     /**
-     * Attribute annotation property for teaser
+     * Attribute annotation property for value
      *
      * @Mezzo\Attribute(type="TextArea", hidden="")
      * @var string
      */
-    protected $_teaser;
-
-    /**
-     * Attribute annotation property for slug
-     *
-     * @Mezzo\Attribute(type="TextInput", hidden="")
-     * @var string
-     */
-    protected $_slug;
-
-    /**
-     * Attribute annotation property for state
-     *
-     * @Mezzo\Attribute(type="TextInput", hidden="")
-     * @var string
-     */
-    protected $_state;
-
-    /**
-     * Attribute annotation property for published_at
-     *
-     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
-     * @var \Carbon\Carbon
-     */
-    protected $_published_at;
-
-    /**
-     * Attribute annotation property for user_id
-     *
-     * @Mezzo\Attribute(type="RelationInputSingle", hidden="")
-     * @var integer
-     */
-    protected $_user_id;
-
-    /**
-     * Attribute annotation property for content_id
-     *
-     * @Mezzo\Attribute(type="RelationInputSingle", hidden="")
-     * @var integer
-     */
-    protected $_content_id;
-
-    /**
-     * Attribute annotation property for main_image_id
-     *
-     * @Mezzo\Attribute(type="RelationInputSingle", hidden="")
-     * @var integer
-     */
-    protected $_main_image_id;
+    protected $_value;
 
     /**
      * Attribute annotation property for created_at
@@ -211,14 +143,6 @@ abstract class MezzoPost extends BaseModel
      */
     protected $_updated_at;
 
-    /**
-     * Attribute annotation property for deleted_at
-     *
-     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
-     * @var \Carbon\Carbon
-     */
-    protected $_deleted_at;
-
 
     /*
     |-------------------------------------------------------------------------------------------------------------------
@@ -229,43 +153,6 @@ abstract class MezzoPost extends BaseModel
     | the relations of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
-
-    /**
-     * Relation annotation property for user
-     * @Mezzo\Relations\OneToMany
-     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="posts")
-     * @Mezzo\Relations\To(table="posts", primaryKey="id", naming="user")
-     * @Mezzo\Relations\JoinColumn(table="posts", column="user_id")
-     */
-    protected $_user;
-
-    /**
-     * Relation annotation property for content
-     * @Mezzo\Relations\OneToOne
-     * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="content")
-     * @Mezzo\Relations\To(table="contents", primaryKey="id", naming="post")
-     * @Mezzo\Relations\JoinColumn(table="posts", column="content_id")
-     */
-    protected $_content;
-
-    /**
-     * Relation annotation property for main_image
-     * @Mezzo\Relations\OneToMany(scopes="inGroup:content")
-     * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="main_image")
-     * @Mezzo\Relations\To(table="image_files", primaryKey="id", naming="posts")
-     * @Mezzo\Relations\JoinColumn(table="posts", column="main_image_id")
-     */
-    protected $_main_image;
-
-    /**
-     * Relation annotation property for categories
-     * @Mezzo\Attribute(type="RelationInputMultiple", hidden="")
-     * @Mezzo\Relations\ManyToMany(scopes="inGroup:content")
-     * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="categories")
-     * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="posts")
-     * @Mezzo\Relations\PivotTable(name="category_post", fromColumn="post_id", toColumn="category_id")
-     */
-    protected $_categories;
 
 
 }

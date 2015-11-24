@@ -22,7 +22,7 @@ class ResourceRequest extends Request
     /**
      * @var null
      */
-    protected $modelObject = null;
+    protected $modelReflection = null;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -50,11 +50,11 @@ class ResourceRequest extends Request
      */
     public function modelReflection()
     {
-        if (!$this->modelObject) {
-            $this->modelObject = $this->findModel();
+        if (!$this->modelReflection) {
+            $this->modelReflection = $this->findModelReflection();
         }
 
-        return $this->modelObject;
+        return $this->modelReflection;
     }
 
     public function newModelInstance()
@@ -80,7 +80,7 @@ class ResourceRequest extends Request
      * @return \MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection
      * @throws ModuleControllerException
      */
-    protected function findModel()
+    protected function findModelReflection()
     {
         if (!empty($this->model))
             return mezzo()->model($this->model, 'mezzo');

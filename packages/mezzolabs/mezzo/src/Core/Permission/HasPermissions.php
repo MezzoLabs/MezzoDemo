@@ -64,6 +64,14 @@ trait HasPermissions
         return $hasPermission;
     }
 
+    public function hasPermissionOrFail($key)
+    {
+        if (!$this->hasPermission($key))
+            PermissionGuard::make()->fail();
+
+        return true;
+    }
+
     protected function roleRepository()
     {
         return app()->make(RoleRepository::class);
