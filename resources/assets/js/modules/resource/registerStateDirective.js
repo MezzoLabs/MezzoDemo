@@ -1,5 +1,5 @@
 /*@ngInject*/
-export default function registerStateDirective($stateProvider, $controller) {
+export default function registerStateDirective($stateProvider, hasController) {
     return {
         restrict: 'A',
         link
@@ -24,15 +24,15 @@ export default function registerStateDirective($stateProvider, $controller) {
     }
 
     function controllerForPage(page) {
-        try {
-            var controllerName = page + 'Controller';
+        const controllerName = page + 'Controller';
 
-            $controller(controllerName);
+        if(hasController(controllerName)){
+            console.info('Found custom ' + controllerName);
 
             return controllerName;
-        } catch (err) {
-            return null;
         }
+
+        return null;
     }
 
     function controllerForAction(action) {

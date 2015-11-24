@@ -13,8 +13,8 @@ var app = angular.module('Mezzo', [
     'ngMessages',
     'angular-sortable-view',
     'ngFileUpload',
-    'MezzoFileManager',
     'MezzoResources',
+    'MezzoFileManager',
     'MezzoContentBuilder'
 ]);
 
