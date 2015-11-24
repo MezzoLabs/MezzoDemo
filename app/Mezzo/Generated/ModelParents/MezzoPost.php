@@ -250,7 +250,7 @@ abstract class MezzoPost extends BaseModel
 
     /**
      * Relation annotation property for main_image
-     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\OneToMany(scopes="inGroup:content")
      * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="main_image")
      * @Mezzo\Relations\To(table="image_files", primaryKey="id", naming="posts")
      * @Mezzo\Relations\JoinColumn(table="posts", column="main_image_id")
@@ -259,7 +259,8 @@ abstract class MezzoPost extends BaseModel
 
     /**
      * Relation annotation property for categories
-     * @Mezzo\Relations\ManyToMany
+     * @Mezzo\Attribute(type="RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\ManyToMany(scopes="inGroup:content")
      * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="categories")
      * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="posts")
      * @Mezzo\Relations\PivotTable(name="category_post", fromColumn="post_id", toColumn="category_id")

@@ -7,12 +7,14 @@ namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 use MezzoLabs\Mezzo\Core\Annotations\Relations\From;
 use MezzoLabs\Mezzo\Core\Annotations\Relations\JoinColumn as JoinColumnAnnotation;
 use MezzoLabs\Mezzo\Core\Annotations\Relations\PivotTable;
+use MezzoLabs\Mezzo\Core\Annotations\Relations\RelationAnnotation;
 use MezzoLabs\Mezzo\Core\Annotations\Relations\To;
 use MezzoLabs\Mezzo\Core\Schema\Converters\Annotations\RelationAnnotationsConverter;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOne;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Relation;
+use MezzoLabs\Mezzo\Core\Schema\Relations\Scopes;
 use MezzoLabs\Mezzo\Exceptions\AnnotationException;
 
 class RelationAnnotations extends PropertyAnnotations
@@ -94,12 +96,26 @@ class RelationAnnotations extends PropertyAnnotations
     }
 
     /**
+     * @return RelationAnnotation
+     * @throws AnnotationException
+     */
+    public function mainAnnotation()
+    {
+        foreach (['OneToOne', 'OneToMany', 'ManyToMany'] as $possibleType) {
+            if ($this->has($possibleType))
+                return $this->get($possibleType);
+        }
+
+        throw new AnnotationException('Relation annotation does not have a valid type.');
+    }
+
+    /**
      * @return \MezzoLabs\Mezzo\Core\Schema\Relations\Relation
      */
     public function relation()
     {
-        if(!$this->relation)
-            $this->relation =  $this->schemaConverter()->run($this);
+        if (!$this->relation)
+            $this->relation = $this->schemaConverter()->run($this);
 
         return $this->relation;
     }
@@ -110,6 +126,15 @@ class RelationAnnotations extends PropertyAnnotations
     protected function schemaConverter()
     {
         return new RelationAnnotationsConverter();
+    }
+
+    public function scopes()
+    {
+        $type = $this->mainAnnotation();
+
+        mezzo_dump($this->name());
+
+        return Scopes::buildFromString($type->scopes);
     }
 
     /**
@@ -167,7 +192,6 @@ class RelationAnnotations extends PropertyAnnotations
      */
     protected function validateManyToMany()
     {
-
         if (!$this->has('PivotTable'))
             throw new AnnotationException('A many to many relation needs to have ' .
                 'a "PivotTable" annotation: ' . $this->name);

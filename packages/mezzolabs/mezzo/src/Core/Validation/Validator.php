@@ -64,10 +64,12 @@ class Validator
     public function onSaving(MezzoModel $model)
     {
         if (!$model->exists) {
-            return $model->validateOrFail($model->getAttributes(), 'create');
+            $model->validateOrFail($model->getAttributes(), 'create');
+            return;
         }
 
-        return $model->validateOrFail($model->getDirty(), 'update');
+        $model->validateOrFail($model->getDirty(), 'update');
+        return;
 
     }
 

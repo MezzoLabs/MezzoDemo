@@ -9,5 +9,5 @@ use MezzoLabs\Mezzo\Core\Annotations\Annotation;
 
 abstract class RelationAnnotation extends Annotation
 {
-
+    public $scopes = "";
 }

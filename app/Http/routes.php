@@ -41,6 +41,18 @@ Route::get('/test/options', function () {
     return "hello";
 });
 
+Route::get('/test/categories', function () {
+    $categories = \App\Category::inGroup('content')->get();
+
+    mezzo_dd($categories);
+});
+
+Route::get('/test/posts', function () {
+    $reflection = mezzo()->model('Post');
+
+    mezzo_dd($reflection->schema());
+});
+
 Route::post('/test/file', 'TestController@uploadFile');
 
 
@@ -51,8 +63,7 @@ Route::get('/test/reflection', function () {
 });
 
 Route::get('/test/category', function () {
-    $seeder = app(CategoryTableSeeder::class);
-    $seeder->run();
+
 });
 
 
