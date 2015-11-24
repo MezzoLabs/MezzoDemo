@@ -12,6 +12,7 @@ use MezzoLabs\Mezzo\Core\Traits\CanFireEvents;
 use MezzoLabs\Mezzo\Core\Traits\CanMakeInstances;
 use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
 use MezzoLabs\Mezzo\MezzoServiceProvider;
+use MezzoLabs\Mezzo\Modules\General\Domain\Services\OptionsService;
 
 class Mezzo
 {
@@ -148,6 +149,26 @@ class Mezzo
     public function config($key, $default = null)
     {
         return $this->makeConfiguration()->get($key, $default);
+    }
+
+    /**
+     * @param null $name
+     * @param null $value
+     * @return \Illuminate\Database\Eloquent\Model|null|static
+     * @throws \MezzoLabs\Mezzo\Modules\General\Exceptions\OptionNotFoundException
+     */
+    public function option($name = null, $value = null)
+    {
+        $optionsService = app()->make(OptionsService::class);
+
+        if ($name === null)
+            return $optionsService->collection()->pluck('value', 'name');
+
+        if ($value === null)
+            return $optionsService->get($name);
+
+        return $optionsService->set($name, $value);
+
     }
 
 
