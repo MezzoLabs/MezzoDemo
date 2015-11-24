@@ -12,6 +12,7 @@ var app = angular.module('Mezzo', [
     'ui.router',
     'ngMessages',
     'angular-sortable-view',
+    'angular-loading-bar',
     'ngFileUpload',
     'MezzoResources',
     'MezzoFileManager',

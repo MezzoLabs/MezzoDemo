@@ -31,7 +31,7 @@ var _commonApiApiService = require('./common/api/apiService');
 
 var _commonApiApiService2 = _interopRequireDefault(_commonApiApiService);
 
-var app = angular.module('Mezzo', ['ui.router', 'ngMessages', 'angular-sortable-view', 'ngFileUpload', 'MezzoResources', 'MezzoFileManager', 'MezzoContentBuilder']);
+var app = angular.module('Mezzo', ['ui.router', 'ngMessages', 'angular-sortable-view', 'angular-loading-bar', 'ngFileUpload', 'MezzoResources', 'MezzoFileManager', 'MezzoContentBuilder']);
 
 app.config(_setupConfig2['default']);
 app.directive('mezzoCompile', _commonCompileDirective2['default']);
