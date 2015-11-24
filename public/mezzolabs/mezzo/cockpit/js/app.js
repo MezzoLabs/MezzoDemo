@@ -54,7 +54,7 @@ app.factory('api', _commonApiApiService2['default']);
 app.factory('random', _commonRandomService2['default']);
 app.factory('hasController', _commonHasControllerService2['default']);
 
-},{"./common/api/apiService":4,"./common/compileDirective":5,"./common/compileHtmlDirective":6,"./common/enterDirective.js":7,"./common/hasControllerService":8,"./common/randomService":9,"./common/uidService.js":10,"./modules/contentBuilder":12,"./modules/fileManager":20,"./modules/resource":24,"./setup/config":27,"./setup/jquery":28}],2:[function(require,module,exports){
+},{"./common/api/apiService":4,"./common/compileDirective":5,"./common/compileHtmlDirective":6,"./common/enterDirective.js":7,"./common/hasControllerService":8,"./common/randomService":9,"./common/uidService.js":10,"./modules/contentBuilder":12,"./modules/fileManager":20,"./modules/resource":25,"./setup/config":28,"./setup/jquery":29}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1006,6 +1006,20 @@ _module.controller('CreateFileController', _CreateFileControllerJs2['default']);
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
+exports['default'] = {
+    INDEX: 'index',
+    CREATE: 'create',
+    EDIT: 'edit',
+    SHOW: 'show'
+};
+module.exports = exports['default'];
+
+},{}],22:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -1045,7 +1059,7 @@ var ResourceCreateController = (function () {
 exports['default'] = ResourceCreateController;
 module.exports = exports['default'];
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1066,7 +1080,7 @@ function ResourceEditController() {
 exports['default'] = ResourceEditController;
 module.exports = exports['default'];
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1276,7 +1290,7 @@ var ResourceIndexController = (function () {
 exports['default'] = ResourceIndexController;
 module.exports = exports['default'];
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1309,14 +1323,21 @@ _module.controller('ResourceIndexController', _ResourceIndexController2['default
 _module.controller('ResourceCreateController', _ResourceCreateController2['default']);
 _module.controller('ResourceEditController', _ResourceEditController2['default']);
 
-},{"./ResourceCreateController":21,"./ResourceEditController":22,"./ResourceIndexController":23,"./registerStateDirective":25,"./stateProvider":26}],25:[function(require,module,exports){
-/*@ngInject*/
+},{"./ResourceCreateController":22,"./ResourceEditController":23,"./ResourceIndexController":24,"./registerStateDirective":26,"./stateProvider":27}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 exports['default'] = registerStateDirective;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _Action = require('./Action');
+
+var _Action2 = _interopRequireDefault(_Action);
+
+/*@ngInject*/
 
 function registerStateDirective($stateProvider, hasController) {
     return {
@@ -1328,6 +1349,7 @@ function registerStateDirective($stateProvider, hasController) {
         var uri = attributes.uri;
         var page = attributes.page;
         var action = attributes.action;
+        var url = urlForAction(uri, action);
         var controller = controllerForPage(page);
 
         if (!controller) {
@@ -1335,7 +1357,7 @@ function registerStateDirective($stateProvider, hasController) {
         }
 
         $stateProvider.state(page, {
-            url: '/mezzo/' + uri,
+            url: url,
             templateUrl: '/mezzo/' + uri + '.html',
             controller: controller,
             controllerAs: 'vm'
@@ -1355,29 +1377,39 @@ function registerStateDirective($stateProvider, hasController) {
     }
 
     function controllerForAction(action) {
-        if (action === 'index') {
+        if (action === _Action2['default'].INDEX) {
             return 'ResourceIndexController';
         }
 
-        if (action === 'create') {
+        if (action === _Action2['default'].CREATE) {
             return 'ResourceCreateController';
         }
 
-        if (action === 'edit') {
+        if (action === _Action2['default'].EDIT) {
             return 'ResourceEditController';
         }
 
-        if (action === 'show') {
+        if (action === _Action2['default'].SHOW) {
             return 'ResourceShowController';
         }
 
         throw new Error('No suitable Controller found for action "' + action + '"!');
     }
+
+    function urlForAction(uri, action) {
+        var url = '/mezzo/' + uri;
+
+        if (action === _Action2['default'].EDIT) {
+            return url + '/:modelId';
+        }
+
+        return url;
+    }
 }
 
 module.exports = exports['default'];
 
-},{}],26:[function(require,module,exports){
+},{"./Action":21}],27:[function(require,module,exports){
 /*@ngInject*/
 "use strict";
 
@@ -1396,7 +1428,7 @@ function stateProvider($stateProvider) {
 
 module.exports = exports["default"];
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -1414,7 +1446,7 @@ function config($locationProvider, $urlRouterProvider, $httpProvider) {
 
 module.exports = exports['default'];
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 $(function () {

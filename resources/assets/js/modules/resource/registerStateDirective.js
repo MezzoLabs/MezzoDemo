@@ -1,3 +1,5 @@
+import Action from './Action';
+
 /*@ngInject*/
 export default function registerStateDirective($stateProvider, hasController) {
     return {
@@ -9,6 +11,7 @@ export default function registerStateDirective($stateProvider, hasController) {
         var uri = attributes.uri;
         var page = attributes.page;
         var action = attributes.action;
+        var url = urlForAction(uri, action);
         var controller = controllerForPage(page);
 
         if (!controller) {
@@ -16,7 +19,7 @@ export default function registerStateDirective($stateProvider, hasController) {
         }
 
         $stateProvider.state(page, {
-            url: '/mezzo/' + uri,
+            url: url,
             templateUrl: '/mezzo/' + uri + '.html',
             controller: controller,
             controllerAs: 'vm'
@@ -36,22 +39,32 @@ export default function registerStateDirective($stateProvider, hasController) {
     }
 
     function controllerForAction(action) {
-        if (action === 'index') {
+        if (action === Action.INDEX) {
             return 'ResourceIndexController';
         }
 
-        if (action === 'create') {
+        if (action === Action.CREATE) {
             return 'ResourceCreateController';
         }
 
-        if (action === 'edit') {
+        if (action === Action.EDIT) {
             return 'ResourceEditController';
         }
 
-        if (action === 'show') {
+        if (action === Action.SHOW) {
             return 'ResourceShowController';
         }
 
         throw new Error(`No suitable Controller found for action "${action}"!`);
+    }
+
+    function urlForAction(uri, action){
+        const url = '/mezzo/' + uri;
+
+        if(action === Action.EDIT){
+            return url + '/:modelId';
+        }
+
+        return url;
     }
 }
