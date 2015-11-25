@@ -3,7 +3,7 @@
 
 @section('content')
 
-    <mezzo-file-picker-modal file-types="image" field-name="hiddenField" multiple></mezzo-file-picker-modal>
+    <mezzo-file-picker-modal file-type="image" field-name="hiddenField" multiple></mezzo-file-picker-modal>
     <input type="hidden" name="hiddenField">
     <button type="button" class="btn btn-primary" mezzo-file-picker>Select file(s)</button>
 

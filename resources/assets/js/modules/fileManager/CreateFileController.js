@@ -26,7 +26,7 @@ export default class CreateFileController {
 
         this.api.files().then(apiFiles => {
             apiFiles.forEach(apiFile => {
-                var file = new File(apiFile.filename, apiFile.filename, apiFile.extension);
+                const file = new File(apiFile);
 
                 this.library.files.push(file);
             });

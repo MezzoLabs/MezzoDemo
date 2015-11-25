@@ -6,7 +6,7 @@ export default function filePickerModalDirective() {
         restrict: 'E',
         templateUrl: '/mezzolabs/mezzo/cockpit/templates/filePickerModalDirective.html',
         scope: {
-            fileTypes: '@',
+            fileType: '@',
             fieldName: '@',
             multiple: '@'
         },

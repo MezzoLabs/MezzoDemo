@@ -501,7 +501,7 @@ var CreateFileController = (function () {
 
             this.api.files().then(function (apiFiles) {
                 apiFiles.forEach(function (apiFile) {
-                    var file = new _File2['default'](apiFile.filename, apiFile.filename, apiFile.extension);
+                    var file = new _File2['default'](apiFile);
 
                     _this.library.files.push(file);
                 });
@@ -769,13 +769,15 @@ var _createClass = (function () { function defineProperties(target, props) { for
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 var File = (function () {
-    function File(title, name, extension) {
+    function File(apiFile) {
         _classCallCheck(this, File);
 
-        this.title = title;
-        this.name = name;
-        this.extension = extension;
-        this.type = 'file';
+        this.id = apiFile.id;
+        this.title = apiFile.filename;
+        this.name = apiFile.filename;
+        this.extension = apiFile.extension;
+        this.url = apiFile.url;
+        this.type = apiFile.type;
         this.isFolder = false;
     }
 
@@ -850,24 +852,169 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var FilePickerController =
+var _File = require('./File');
 
-/*@ngInject*/
-function FilePickerController() {
-    _classCallCheck(this, FilePickerController);
+var _File2 = _interopRequireDefault(_File);
 
-    console.log('hello there');
-    console.log(this);
+var FilePickerController = (function () {
 
-    $('input[name="' + this.fieldName + '"]').val('1');
-};
+    /*@ngInject*/
+
+    function FilePickerController(api) {
+        _classCallCheck(this, FilePickerController);
+
+        this.api = api;
+        this.files = [];
+        this.preview = null;
+        this.searchText = '';
+
+        this.loadFiles();
+    }
+
+    _createClass(FilePickerController, [{
+        key: 'loadFiles',
+        value: function loadFiles() {
+            var _this = this;
+
+            this.api.files().then(function (apiFiles) {
+                apiFiles.forEach(function (apiFile) {
+                    var file = new _File2['default'](apiFile);
+
+                    if (_this.fileType && file.type !== _this.fileType) {
+                        return;
+                    }
+
+                    _this.files.push(file);
+                });
+            });
+        }
+    }, {
+        key: 'filteredFiles',
+        value: function filteredFiles() {
+            var _this2 = this;
+
+            if (this.searchText.length > 0) {
+                return this.files.filter(function (file) {
+                    return file.name.indexOf(_this2.searchText) !== -1;
+                });
+            }
+
+            return this.files;
+        }
+    }, {
+        key: 'setPreview',
+        value: function setPreview(file) {
+            if (file.isImage()) {
+                this.preview = file;
+            }
+        }
+    }, {
+        key: 'previewSource',
+        value: function previewSource() {
+            if (this.preview) {
+                return this.preview.url;
+            }
+
+            return '';
+        }
+    }, {
+        key: 'hidePreview',
+        value: function hidePreview() {
+            this.preview = null;
+        }
+    }, {
+        key: 'leftColumnClass',
+        value: function leftColumnClass() {
+            if (this.previewSource()) {
+                return 'col-xs-6';
+            }
+
+            return 'col-xs-12';
+        }
+    }, {
+        key: 'isMultiple',
+        value: function isMultiple() {
+            return this.multiple !== undefined;
+        }
+    }, {
+        key: 'title',
+        value: function title() {
+            var title = 'Select file';
+
+            if (this.isMultiple()) {
+                return title + 's';
+            }
+
+            return title;
+        }
+    }, {
+        key: 'onSelect',
+        value: function onSelect(selectedFile) {
+            if (!this.isMultiple()) {
+                this.files.forEach(function (file) {
+                    return file.selected = false;
+                });
+
+                selectedFile.selected = true;
+            }
+        }
+    }, {
+        key: 'selectedFiles',
+        value: function selectedFiles() {
+            return this.files.filter(function (file) {
+                return file.selected;
+            });
+        }
+    }, {
+        key: 'disableSelectButton',
+        value: function disableSelectButton() {
+            return this.selectedFiles().length === 0;
+        }
+    }, {
+        key: 'selectButtonLabel',
+        value: function selectButtonLabel() {
+            var selected = this.selectedFiles().length;
+
+            if (selected === 0) {
+                return 'Please choose a file first';
+            }
+
+            return 'Select ' + selected + ' file' + (selected !== 1 ? 's' : '');
+        }
+    }, {
+        key: 'confirmSelected',
+        value: function confirmSelected() {
+            var selected = this.selectedFiles();
+            var $field = $('input[name="' + this.fieldName + '"]');
+
+            if (selected.length === 1) {
+                $field.val(selected[0].id);
+
+                return;
+            }
+
+            var fileIds = [];
+
+            selected.forEach(function (file) {
+                return fileIds.push(file.id);
+            });
+            $field.val(fileIds);
+        }
+    }]);
+
+    return FilePickerController;
+})();
 
 exports['default'] = FilePickerController;
 module.exports = exports['default'];
 
-},{}],17:[function(require,module,exports){
+},{"./File":15}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1048,7 +1195,7 @@ function filePickerModalDirective() {
         restrict: 'E',
         templateUrl: '/mezzolabs/mezzo/cockpit/templates/filePickerModalDirective.html',
         scope: {
-            fileTypes: '@',
+            fileType: '@',
             fieldName: '@',
             multiple: '@'
         },
