@@ -1,17 +1,23 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Modules\Events;
+namespace App\Magazine\Events;
 
 
-use App\Tutorial;
+use App\Event;
+use App\EventDay;
+use App\EventVenue;
+use App\Magazine\Events\Schema\Rendering\EventDaysRenderer;
 use App\User;
+use MezzoLabs\Mezzo\Cockpit\Html\Rendering\AttributeRenderEngine;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
 class EventsModule extends ModuleProvider
 {
     protected $models = [
-
+        Event::class,
+        EventDay::class,
+        EventVenue::class
     ];
 
     /**
@@ -21,7 +27,7 @@ class EventsModule extends ModuleProvider
      */
     public function register()
     {
-
+        AttributeRenderEngine::registerHandler(EventDaysRenderer::class);
     }
 
     /**
@@ -31,5 +37,6 @@ class EventsModule extends ModuleProvider
      */
     public function ready()
     {
+        $this->loadViews();
     }
 }

@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Modules\Addresses;
 use App\Address;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Modules\Addresses\Schema\Rendering\AddressAttributeRenderer;
 
 class AddressesModule extends ModuleProvider
 {
@@ -36,7 +37,10 @@ class AddressesModule extends ModuleProvider
      */
     public function ready()
     {
+        $this->loadViews();
         $addressReflection = $this->modelReflectionSets->get(Address::class);
+
+        $this->registerAttributeRenderer(AddressAttributeRenderer::class);
 
         //dd($addressReflection->relationships());
     }

@@ -22,9 +22,10 @@ class CategoriesInputRenderer extends RelationInputMultipleRenderer
     /**
      * Render the attribute to HTML.
      *
+     * @param array $options
      * @return string
      */
-    public function render()
+    public function render(array $options = [])
     {
         return parent::render();
     }

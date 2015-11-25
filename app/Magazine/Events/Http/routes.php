@@ -7,7 +7,7 @@ use MezzoLabs\Mezzo\Core\Routing\Router;
 mezzo()->module('Events')->generateRoutes();
 
 module_route('Events', [], function (Router $router, ApiRouter $api, CockpitRouter $cockpit) {
-    $api->resource('Tutorial');
+    $api->resource('Event');
 });
 
 

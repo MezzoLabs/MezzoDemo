@@ -11,6 +11,7 @@ use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Traits\CanFireEvents;
 use MezzoLabs\Mezzo\Core\Traits\CanMakeInstances;
 use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
+use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 use MezzoLabs\Mezzo\MezzoServiceProvider;
 use MezzoLabs\Mezzo\Modules\General\Domain\Services\OptionsService;
 
@@ -107,6 +108,16 @@ class Mezzo
         return $this->makeReflectionManager()->modelIsReflected($modelName);
     }
 
+    public function attribute($modelName, $attributeName)
+    {
+        $model = $this->model($modelName);
+
+        if (!$model->attributes()->has($attributeName)) {
+            throw new ReflectionException('Cannot find attribute "' . $attributeName . '" in "' . $modelName . '".');
+        }
+
+        return $model->attributes()->get($attributeName);
+    }
 
     /**
      * Run the boot services that we need at the time the Mezzo provider is registered

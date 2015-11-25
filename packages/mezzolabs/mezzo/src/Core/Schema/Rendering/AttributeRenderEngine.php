@@ -7,34 +7,35 @@ namespace MezzoLabs\Mezzo\Core\Schema\Rendering;
 use Collective\Html\FormBuilder;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
-use packages\mezzolabs\mezzo\src\Core\Schema\Rendering\AttributeRenderingException;
 
-abstract class AttributeRenderer
+abstract class AttributeRenderEngine
 {
     public static $handlers = [];
 
     /**
-     * @return AttributeRenderer
+     * @return AttributeRenderEngine
      */
     public static function make()
     {
-        return app(AttributeRenderer::class);
+        return app(AttributeRenderEngine::class);
     }
 
     /**
      * Generate the HTML for the attribute schema.
      *
      * @param Attribute $attribute
+     * @param array $options
      * @return string
      * @throws AttributeRenderingException
      */
-    public function render(Attribute $attribute)
+    public function render(Attribute $attribute, array $options = [])
     {
         foreach ($this->handlers() as $handlerClass) {
             $handler = $this->makeHandler($handlerClass, $attribute);
 
             if (!$handler->handles($attribute->type())) continue;
 
+            $handler->setOptions($options);
             return $handler->render();
         }
 

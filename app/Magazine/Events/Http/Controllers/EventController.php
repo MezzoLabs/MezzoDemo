@@ -1,15 +1,15 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Modules\Events\Http\Controllers;
+namespace App\Magazine\Events\Http\Controllers;
 
+use App\Magazine\Events\Http\Pages\Events\CreateEventPage;
+use App\Magazine\Events\Http\Pages\Events\IndexEventPage;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\CreateResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\EditResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\IndexResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\ShowResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
-use MezzoLabs\Mezzo\Modules\Events\Http\Pages\CreateEventPage;
-use MezzoLabs\Mezzo\Modules\Events\Http\Pages\IndexEventPage;
 
 class EventController extends CockpitResourceController
 {

@@ -64,14 +64,14 @@ Route::post('/test/file', 'TestController@uploadFile');
 
 Route::get('/test/reflection', function () {
     $reflectionManager = mezzo()->makeReflectionManager();
-    $mezzoReflection = $reflectionManager->mezzoReflection('Post');
+    $mezzoReflection = $reflectionManager->mezzoReflection('Event');
     $eloquentReflection = $reflectionManager->eloquentReflection('Post');
 
-    mezzo_dd($mezzoReflection->schema()->relations()->get('category_post')->getScopes()->toArray());
+    mezzo_dd($mezzoReflection->schema()->attributes());
 
 });
 
-Route::get('/test/generator', function () {
+Route::get('/test/events', function () {
 
 });
 

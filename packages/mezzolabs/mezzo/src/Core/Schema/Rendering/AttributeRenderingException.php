@@ -1,8 +1,7 @@
 <?php
 
 
-namespace packages\mezzolabs\mezzo\src\Core\Schema\Rendering;
-
+namespace MezzoLabs\Mezzo\Core\Schema\Rendering;
 
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 

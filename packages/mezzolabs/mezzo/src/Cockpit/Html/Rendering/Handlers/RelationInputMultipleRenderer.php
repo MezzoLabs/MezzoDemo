@@ -24,9 +24,11 @@ class RelationInputMultipleRenderer extends AttributeRenderingHandler
     /**
      * Render the attribute to HTML.
      *
+     * @param array $options
      * @return string
+     * @throws \MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderingException
      */
-    public function render()
+    public function render(array $options = [])
     {
         $list = $this->makeEloquentList(false);
 

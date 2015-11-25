@@ -265,7 +265,7 @@ abstract class MezzoPost extends BaseModel
      * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="categories")
      * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="posts")
      * @Mezzo\Relations\PivotTable(name="category_post", fromColumn="post_id", toColumn="category_id")
-     * @Mezzo\Relations\Scopes("inGroup:shop")
+     * @Mezzo\Relations\Scopes("inGroup:content")
      */
     protected $_categories;
 

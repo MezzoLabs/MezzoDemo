@@ -6,10 +6,10 @@ namespace MezzoLabs\Mezzo\Cockpit;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
-use MezzoLabs\Mezzo\Cockpit\Html\Rendering\AttributeRenderer as CockpitAttributeRenderer;
+use MezzoLabs\Mezzo\Cockpit\Html\Rendering\AttributeRenderEngine as CockpitAttributeRenderer;
 use MezzoLabs\Mezzo\Cockpit\Html\Rendering\FormBuilder;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderer as AttributeSchemaRenderer;
+use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderEngine as AttributeSchemaRenderer;
 
 class CockpitProvider extends ServiceProvider
 {

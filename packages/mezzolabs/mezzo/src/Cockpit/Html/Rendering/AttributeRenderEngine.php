@@ -10,10 +10,9 @@ use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationInputSingleRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\SimpleInputRenderer;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
-use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderer as AbstractAttributeRenderer;
-use packages\mezzolabs\mezzo\src\Core\Schema\Rendering\AttributeRenderingException;
+use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderEngine as AbstractAttributeRenderEngine;
 
-class AttributeRenderer extends AbstractAttributeRenderer
+class AttributeRenderEngine extends AbstractAttributeRenderEngine
 {
     public static $handlers = [
         CategoriesInputRenderer::class,
@@ -23,18 +22,6 @@ class AttributeRenderer extends AbstractAttributeRenderer
     ];
 
     protected $cssClass = 'form-control';
-
-    /**
-     * Generate the HTML for the attribute schema.
-     *
-     * @param Attribute $attribute
-     * @return string
-     * @throws AttributeRenderingException
-     */
-    public function render(Attribute $attribute)
-    {
-        return parent::render($attribute);
-    }
 
     /**
      * @return FormBuilder

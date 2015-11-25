@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Rendering;
 
 
+use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
@@ -11,7 +12,7 @@ use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 abstract class AttributeRenderingHandler
 {
     /**
-     * @var AttributeRenderer
+     * @var AttributeRenderEngine
      */
     protected $attributeRenderer;
 
@@ -21,10 +22,15 @@ abstract class AttributeRenderingHandler
     protected $attribute;
 
     /**
-     * @param Attribute $attribute
-     * @param AttributeRenderer $attributeRenderer
+     * @var AttributeRenderingOptions
      */
-    public function __construct(Attribute $attribute, AttributeRenderer $attributeRenderer)
+    protected $options;
+
+    /**
+     * @param Attribute $attribute
+     * @param AttributeRenderEngine $attributeRenderer
+     */
+    public function __construct(Attribute $attribute, AttributeRenderEngine $attributeRenderer)
     {
         $this->attributeRenderer = $attributeRenderer;
         $this->attribute = $attribute;
@@ -78,11 +84,27 @@ abstract class AttributeRenderingHandler
     }
 
     /**
-     * @return Attribute
+     * @return Attribute|RelationAttribute
      */
     public function attribute()
     {
         return $this->attribute;
+    }
+
+    public function relationSide()
+    {
+        if (!$this->attribute()->isRelationAttribute())
+            throw new AttributeRenderingException('Cannot get the relation side of an atomic attribute: "' . $this->name() . '""');
+
+        return $this->attribute()->relationSide();
+    }
+
+    /**
+     * @return \MezzoLabs\Mezzo\Core\Schema\ModelSchema
+     */
+    public function model()
+    {
+        return $this->attribute()->getModel();
     }
 
     /**
@@ -90,8 +112,15 @@ abstract class AttributeRenderingHandler
      */
     public function name()
     {
-        return $this->attribute()->name();
+        if (!$this->getOptions()->isNested())
+            return $this->attribute()->name();
+
+        if (!$this->getOptions()->parent()->relationSide()->hasMultipleChildren())
+            return $this->getOptions()->parentName() . '[' . $this->attribute()->name() . ']';
+
+        return $this->getOptions()->parentName() . '[@{{ attribute.formName }}][' . $this->attribute()->name() . ']';
     }
+
 
     public function old()
     {
@@ -106,5 +135,42 @@ abstract class AttributeRenderingHandler
         return $this->attributeRenderer->htmlAttributes($this->attribute());
     }
 
+    /**
+     * @return AttributeRenderingOptions
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param array $options
+     */
+    public function setOptions($options)
+    {
+        $this->options = new AttributeRenderingOptions(new Collection($options));
+    }
+
+    /**
+     * Get the string of a element that is nested in this form
+     *
+     * @param string $nestedAttributeName
+     * @param array $attributes
+     * @return mixed
+     * @throws AttributeRenderingException
+     * @throws \MezzoLabs\Mezzo\Exceptions\ReflectionException
+     */
+    public function renderNested($nestedAttributeName, array $attributes = [])
+    {
+        $options = [
+            'parent' => $this,
+            'attributes' => $attributes
+        ];
+
+        $nestedModel = $this->relationSide()->otherModelReflection()->schema();
+        $nestedAttribute = $nestedModel->attributes($nestedAttributeName);
+
+        return mezzo()->attribute($nestedModel->className(), $nestedAttribute->name())->render($options);
+    }
 
 }

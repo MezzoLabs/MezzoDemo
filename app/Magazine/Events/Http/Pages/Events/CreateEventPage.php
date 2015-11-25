@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Modules\Events\Http\Pages;
+namespace App\Magazine\Events\Http\Pages\Events;
 
 use MezzoLabs\Mezzo\Cockpit\Pages\Resources\CreateResourcePage;
 

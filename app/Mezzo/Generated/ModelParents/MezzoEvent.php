@@ -84,7 +84,7 @@ abstract class MezzoEvent extends BaseModel
      * @var array
      */
     protected $fillable = [
-
+        'title', 'description', 'days', 'event_venue_id', 'address_id'
     ];
 
     /**
@@ -149,7 +149,7 @@ abstract class MezzoEvent extends BaseModel
     /**
      * Attribute annotation property for address_id
      *
-     * @Mezzo\Attribute(type="NumberInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Addresses\Schema\InputTypes\AddressInput", hidden="")
      * @var integer
      */
     protected $_address_id;
@@ -234,7 +234,7 @@ abstract class MezzoEvent extends BaseModel
 
     /**
      * Relation annotation property for days
-     * @Mezzo\Attribute(type="RelationInputMultiple", hidden="")
+     * @Mezzo\Attribute(type="App\Magazine\Events\Schema\InputTypes\EventDaysInput", hidden="")
      * @Mezzo\Relations\OneToMany
      * @Mezzo\Relations\From(table="event_days", primaryKey="id", naming="event")
      * @Mezzo\Relations\To(table="events", primaryKey="id", naming="days")
