@@ -9,6 +9,7 @@ use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Relations\RelationSide;
+use MezzoLabs\Mezzo\Core\Schema\Relations\RelationSides;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
 class ModelSchema
@@ -229,7 +230,7 @@ class ModelSchema
      * Return all relation sides of this model.
      * They represent the relations and the position of the current model in the relation.
      *
-     * @return Collection
+     * @return RelationSides
      */
     public function relationSides()
     {
@@ -237,7 +238,7 @@ class ModelSchema
 
         $relationAttributes = $allAttributes->relationAttributes();
 
-        $relationSides = new Collection();
+        $relationSides = new RelationSides();
 
         $relationAttributes->each(function (RelationAttribute $relationAttribute) use ($relationSides) {
             $relation = $relationAttribute->relation();

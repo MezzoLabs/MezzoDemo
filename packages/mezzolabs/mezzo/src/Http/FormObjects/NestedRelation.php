@@ -5,7 +5,7 @@ namespace Mezzolabs\Mezzo\Cockpit\Http\FormObjects;
 
 
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
+use MezzoLabs\Mezzo\Core\Schema\Relations\RelationSide;
 use MezzoLabs\Mezzo\Http\Exceptions\InvalidNestedRelation;
 
 class NestedRelation
@@ -21,30 +21,23 @@ class NestedRelation
     protected $data;
 
     /**
-     * @var RelationAttribute
+     * @var RelationSide
      */
-    private $relationAttribute;
+    protected $relationSide;
 
-    public function __construct(RelationAttribute $relationAttribute, $data)
+    public function __construct(RelationSide $relationSide, $data)
     {
-        $this->name = $relationAttribute->relationSide()->naming();
+        $this->name = $relationSide->naming();
         $this->data = new Collection($data);
-        $this->relationAttribute = $relationAttribute;
+        $this->relationSide = $relationSide;
 
         $this->assertThatDataFitsRelationType();
     }
 
-    /**
-     * @return RelationAttribute
-     */
-    public function relationAttribute()
-    {
-        return $this->relationAttribute;
-    }
 
     public function relationSide()
     {
-        return $this->relationAttribute()->relationSide();
+        return $this->relationSide;
     }
 
     /**

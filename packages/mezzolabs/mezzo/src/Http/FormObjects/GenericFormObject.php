@@ -7,7 +7,6 @@ namespace Mezzolabs\Mezzo\Cockpit\Http\FormObjects;
 use Illuminate\Contracts\Validation\Validator as IlluminateValidator;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class GenericFormObject implements FormObject
 {
@@ -72,6 +71,16 @@ class GenericFormObject implements FormObject
     }
 
     /**
+     * Returns the table name of the models main table.
+     *
+     * @return string
+     */
+    public function table()
+    {
+        return $this->model()->tableName();
+    }
+
+    /**
      * Returns a collection with the data of the received attributes that are not inside a nested relation.
      *
      * @return Collection
@@ -90,20 +99,26 @@ class GenericFormObject implements FormObject
     {
         $nested = new NestedRelations();
 
+
         $this->data->each(function ($value, $name) use ($nested) {
             if (!is_array($value)) {
                 return true;
             }
 
-            $attribute = $this->model()->schema()->attributes($name);
+            $relationSide = $this->allRelationSides()->findOrFailByNaming($name);
 
-            if (!$attribute->isRelationAttribute())
-                throw new BadRequestHttpException($name . ' is an array of values but no nested relation.');
-
-            $nested->add(new NestedRelation($attribute, $value));
+            $nested->add(new NestedRelation($relationSide, $value));
         });
 
         return $nested;
+    }
+
+    /**
+     * @return \MezzoLabs\Mezzo\Core\Schema\Relations\RelationSides
+     */
+    public function allRelationSides()
+    {
+        return $this->model()->schema()->relationSides();
     }
 
 

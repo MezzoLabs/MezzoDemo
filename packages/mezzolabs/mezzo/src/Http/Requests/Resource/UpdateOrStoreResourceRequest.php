@@ -33,7 +33,7 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
     public function formObject()
     {
         if (!$this->formObject) {
-            $this->formObject = new GenericFormObject($this->model, $this->all());
+            $this->formObject = new GenericFormObject($this->modelReflection(), $this->all());
         }
 
         return $this->formObject;

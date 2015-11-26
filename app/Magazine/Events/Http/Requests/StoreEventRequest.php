@@ -18,6 +18,8 @@ class StoreEventRequest extends StoreResourceRequest
      */
     public function validate()
     {
+        mezzo_dd($this->formObject()->nestedRelations());
+
         parent::validate();
     }
 
@@ -34,6 +36,7 @@ class StoreEventRequest extends StoreResourceRequest
 
         return $eventRules;
     }
+
 
 
 }
