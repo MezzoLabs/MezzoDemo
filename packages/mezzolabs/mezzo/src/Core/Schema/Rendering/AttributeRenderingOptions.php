@@ -37,6 +37,9 @@ class AttributeRenderingOptions extends DecoratedCollection
 
     }
 
+    /**
+     * @return array
+     */
     public function attributes()
     {
         return $this->get('attributes', []);

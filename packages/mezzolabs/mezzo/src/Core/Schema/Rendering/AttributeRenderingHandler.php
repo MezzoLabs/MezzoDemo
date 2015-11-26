@@ -5,6 +5,8 @@ namespace MezzoLabs\Mezzo\Core\Schema\Rendering;
 
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Session;
+use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
@@ -118,13 +120,13 @@ abstract class AttributeRenderingHandler
         if (!$this->getOptions()->parent()->relationSide()->hasMultipleChildren())
             return $this->getOptions()->parentName() . '[' . $this->attribute()->name() . ']';
 
-        return $this->getOptions()->parentName() . '[@{{ attribute.formName }}][' . $this->attribute()->name() . ']';
+        return $this->getOptions()->parentName() . '[{{ attribute.formName }}][' . $this->attribute()->name() . ']';
     }
 
 
     public function old()
     {
-        return old($this->name());
+        return old(StringHelper::fromArrayToDotNotation($this->name()));
     }
 
     /**
@@ -132,7 +134,8 @@ abstract class AttributeRenderingHandler
      */
     public function htmlAttributes()
     {
-        return $this->attributeRenderer->htmlAttributes($this->attribute());
+        $htmlAttributes = $this->attributeRenderer->htmlAttributes($this->attribute());
+        return array_merge($htmlAttributes, $this->getOptions()->attributes());
     }
 
     /**
@@ -168,9 +171,43 @@ abstract class AttributeRenderingHandler
         ];
 
         $nestedModel = $this->relationSide()->otherModelReflection()->schema();
+
+        if (!$nestedModel->hasAttribute($nestedAttributeName))
+            return "!! NESTED ATTRIBUTE NOT FOUND";
+
         $nestedAttribute = $nestedModel->attributes($nestedAttributeName);
 
         return mezzo()->attribute($nestedModel->className(), $nestedAttribute->name())->render($options);
+    }
+
+    public function before()
+    {
+        return '<div class="' . $this->formGroupClass() . '"><label>' . $this->attribute()->title() . '</label>';
+    }
+
+    protected function formGroupClass()
+    {
+        $class = 'form-group';
+
+        if ($this->hasError())
+            $class .= ' has-error';
+
+        return $class;
+    }
+
+    public function after()
+    {
+        return '</div>';
+    }
+
+    protected function hasError()
+    {
+        $name = StringHelper::fromArrayToDotNotation($this->name());
+
+        if (!Session::has('errors'))
+            return false;
+
+        return Session::get('errors')->has($name);
     }
 
 }

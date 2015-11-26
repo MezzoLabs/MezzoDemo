@@ -36,7 +36,8 @@ abstract class AttributeRenderEngine
             if (!$handler->handles($attribute->type())) continue;
 
             $handler->setOptions($options);
-            return $handler->render();
+
+            return $handler->before() . $handler->render() . $handler->after();
         }
 
         throw new AttributeRenderingException('There is no attribute rendering ' .

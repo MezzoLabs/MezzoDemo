@@ -1,6 +1,5 @@
 @extends(cockpit_content_container())
 
-
 @section('content')
     <div class="wrapper">
         <div class="panel panel-bordered">
@@ -18,5 +17,4 @@
             </div>
         </div>
     </div>
-
 @endsection

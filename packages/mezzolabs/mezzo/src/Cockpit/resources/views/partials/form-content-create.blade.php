@@ -1,8 +1,5 @@
 @foreach($model->attributes()->visibleInForm('create')->forget((isset($without))? $without : []) as $attribute)
-    <div class="form-group">
-        <label>{{ $attribute->title() }}</label>
-        {!! $attribute->render() !!}
-    </div>
+    {!! $attribute->render() !!}
 @endforeach
 
 @if(!isset($hide_submit) || !$hide_submit)

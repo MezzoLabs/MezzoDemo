@@ -66,13 +66,13 @@ abstract class MezzoAddress extends BaseModel
         'addressee' => "",
         'organization' => "",
         'street' => "",
-        'street_extra' => "",
-        'zip' => "",
-        'city' => "",
+        'street_extra' => "alpha_num",
+        'zip' => "required|between:2,12",
+        'city' => "required|between:2,150",
         'phone' => "",
         'fax' => "",
-        'latitude' => "",
-        'longtitude' => ""
+        'latitude' => "required|numeric",
+        'longtitude' => "required|numeric"
     ];
 
     /**

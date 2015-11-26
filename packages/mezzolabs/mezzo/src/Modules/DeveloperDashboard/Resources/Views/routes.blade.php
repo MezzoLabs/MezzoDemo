@@ -14,11 +14,16 @@
             <div class="panel-body">
 
                 <h4>Application routes</h4>
-                {!! cockpit_html()->table($applicationRoutes) !!}
+
+                <div class="table-responsive">
+                    {!! cockpit_html()->table($applicationRoutes) !!}
+                </div>
 
                 <h4>API Routes</h4>
-                {!! cockpit_html()->table($apiRoutes) !!}
 
+                <div class="table-responsive">
+                    {!! cockpit_html()->table($apiRoutes) !!}
+                </div>
             </div>
         </div>
     </div>

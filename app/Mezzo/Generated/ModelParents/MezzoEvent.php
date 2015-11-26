@@ -64,9 +64,9 @@ abstract class MezzoEvent extends BaseModel
      * @var array
      */
     protected $rules = [
-        'title' => "",
+        'title' => "required|between:3,200",
         'slug' => "",
-        'description' => ""
+        'description' => "required|between:3,500"
     ];
 
     /**

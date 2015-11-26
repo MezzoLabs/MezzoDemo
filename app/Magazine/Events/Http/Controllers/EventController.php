@@ -4,6 +4,7 @@ namespace App\Magazine\Events\Http\Controllers;
 
 use App\Magazine\Events\Http\Pages\Events\CreateEventPage;
 use App\Magazine\Events\Http\Pages\Events\IndexEventPage;
+use App\Magazine\Events\Http\Requests\StoreEventRequest;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\CreateResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\EditResourceRequest;
@@ -56,5 +57,10 @@ class EventController extends CockpitResourceController
     public function edit(EditResourceRequest $request, $id)
     {
         // TODO: Implement edit() method.
+    }
+
+    public function store(StoreEventRequest $request)
+    {
+        mezzo_dd($request->all());
     }
 }

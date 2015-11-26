@@ -35,7 +35,7 @@ class SimpleInputRenderer extends AttributeRenderingHandler
         if ($attribute->type() instanceof TextArea)
             return $this->renderTextArea();
 
-        return $this->formBuilder()->input($htmlType, $this->name(), old($this->name()), $this->htmlAttributes());
+        return $this->formBuilder()->input($htmlType, $this->name(), $this->old(), $this->htmlAttributes());
     }
 
     /**

@@ -1,76 +1,50 @@
 <div class="row">
     <div class="col-md-6">
-        <div class="form-group">
-            <label>Google Search</label>
-            {!! $renderer->formBuilder()->text('address[name]') !!}
-        </div>
+        {!! $renderer->formBuilder()->text('google_search') !!}
     </div>
     <div class="col-md-3">
         <div class="form-group">
-            <label>Latitude</label>
             {!! $renderer->renderNested('latitude', ['disabled' => 'disabled']) !!}
         </div>
     </div>
     <div class="col-md-3">
-        <div class="form-group">
-            <label>Longitude</label>
-            {!! $renderer->renderNested('latitude', ['disabled' => 'disabled']) !!}
-        </div>
+
+        {!! $renderer->renderNested('latitude', ['disabled' => 'disabled']) !!}
     </div>
     <div class="col-md-12">
         <hr/>
     </div>
     <div class="col-md-6">
-        <div class="form-group">
-            <label>Addressee</label>
-            {!! $renderer->formBuilder()->text('address[addressee]') !!}
-        </div>
+        {!! $renderer->renderNested('addressee') !!}
     </div>
     <div class="col-md-6">
-        <div class="form-group">
-            <label>Organization</label>
-            {!! $renderer->formBuilder()->text('address[organization]') !!}
-        </div>
+
+        {!! $renderer->renderNested('organization') !!}
     </div>
     <div class="col-md-9">
-        <div class="form-group">
-            <label>Street</label>
-            {!! $renderer->formBuilder()->text('address[street]') !!}
-        </div>
+        {!! $renderer->renderNested('street') !!}
     </div>
     <div class="col-md-3">
-        <div class="form-group">
-            <label>Street Extra</label>
-            {!! $renderer->formBuilder()->text('address[street_extra]') !!}
-        </div>
+
+        {!! $renderer->renderNested('street_extra') !!}
     </div>
     <div class="clearfix"></div>
 
     <div class="col-md-3">
-        <div class="form-group">
-            <label>Zipcode</label>
-            {!! $renderer->formBuilder()->text('address[zip]') !!}
-        </div>
+
+        {!! $renderer->renderNested('zip') !!}
     </div>
     <div class="col-md-9">
-        <div class="form-group">
-            <label>City</label>
-            {!! $renderer->formBuilder()->text('address[city]') !!}
-        </div>
+        {!! $renderer->renderNested('city') !!}
     </div>
 
     <div class="clearfix"></div>
     <div class="col-md-3">
-        <div class="form-group">
-            <label>Phone</label>
-            {!! $renderer->formBuilder()->input('phone', 'address[phone]') !!}
-        </div>
+
+        {!! $renderer->renderNested('phone') !!}
     </div>
     <div class="col-md-3">
-        <div class="form-group">
-            <label>Fax</label>
-            {!! $renderer->formBuilder()->input('phone', 'address[fax]') !!}
-        </div>
+        {!! $renderer->renderNested('fax') !!}
     </div>
     <div class="clearfix"></div>
 
