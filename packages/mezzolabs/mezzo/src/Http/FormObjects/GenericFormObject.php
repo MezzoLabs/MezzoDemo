@@ -4,7 +4,6 @@
 namespace Mezzolabs\Mezzo\Cockpit\Http\FormObjects;
 
 
-use Illuminate\Contracts\Validation\Validator as IlluminateValidator;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 
@@ -30,15 +29,6 @@ class GenericFormObject implements FormObject
         $this->data = new Collection($data);
     }
 
-    /**
-     * Validate the given data.
-     *
-     * @return IlluminateValidator
-     */
-    public function validate()
-    {
-        throw new \Exception('TODO');
-    }
 
     /**
      * The reflection of the eloquent model.
@@ -122,4 +112,16 @@ class GenericFormObject implements FormObject
     }
 
 
+    /**
+     * Return all the rules of atomic attributes and nested relations in a dot notation.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        $modelRules = $this->model()->rules();
+        $relationRules = $this->nestedRelations()->rules();
+
+        return array_merge($modelRules, $relationRules);
+    }
 }

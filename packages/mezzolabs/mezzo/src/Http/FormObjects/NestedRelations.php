@@ -19,4 +19,18 @@ class NestedRelations extends StrictCollection
     {
         return $value instanceof NestedRelation;
     }
+
+    /**
+     * @return array
+     */
+    public function rules()
+    {
+        $rules = [];
+
+        $this->each(function (NestedRelation $relation) use (&$rules) {
+            $rules = array_merge($rules, $relation->rules());
+        });
+
+        return $rules;
+    }
 }

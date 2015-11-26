@@ -3,18 +3,17 @@
 namespace Mezzolabs\Mezzo\Cockpit\Http\FormObjects;
 
 
-use Illuminate\Contracts\Validation\Validator as IlluminateValidator;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 
 interface FormObject
 {
     /**
-     * Validate the given data.
+     * Return all the rules of atomic attributes and nested relations in a dot notation.
      *
-     * @return IlluminateValidator
+     * @return array
      */
-    public function validate();
+    public function rules();
 
     /**
      * The reflection of the eloquent model.
