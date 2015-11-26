@@ -6,6 +6,7 @@ namespace Mezzolabs\Mezzo\Cockpit\Http\FormObjects;
 
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
+use MezzoLabs\Mezzo\Core\Validation\Validator;
 
 class GenericFormObject implements FormObject
 {
@@ -122,6 +123,20 @@ class GenericFormObject implements FormObject
         $modelRules = $this->model()->rules();
         $relationRules = $this->nestedRelations()->rules();
 
-        return array_merge($modelRules, $relationRules);
+        $rules = array_merge($modelRules, $relationRules);
+
+        return $this->removeRedundantRequireRules($rules);
+    }
+
+    protected function removeRedundantRequireRules($rules)
+    {
+        $filteredRules = $rules;
+        $this->nestedRelations()->each(function (NestedRelation $nestedRelation) use (&$filteredRules) {
+            if (!$nestedRelation->isEmpty()) {
+                $filteredRules = Validator::removeRequiredRules($filteredRules, [$nestedRelation->parentAttributeName()]);
+            }
+        });
+
+        return $filteredRules;
     }
 }

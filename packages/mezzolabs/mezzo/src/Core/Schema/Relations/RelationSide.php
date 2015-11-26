@@ -146,6 +146,17 @@ class RelationSide
     }
 
     /**
+     * @return string
+     */
+    public function attributeName()
+    {
+        if ($this->isManyToMany() || $this->hasMultipleChildren())
+            return $this->naming();
+
+        return $this->relation()->joinColumn();
+    }
+
+    /**
      * Get the model reflection for the model in this side of the relation.
      *
      * @return ModelReflection

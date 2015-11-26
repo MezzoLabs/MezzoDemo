@@ -8,6 +8,30 @@ use MezzoLabs\Mezzo\Core\Collection\StrictCollection;
 
 class NestedRelations extends StrictCollection
 {
+    public function names()
+    {
+        $names = [];
+
+        $this->each(function (NestedRelation $nestedRelation) use (&$names) {
+            $names[$nestedRelation->name()] = $nestedRelation->name();
+        });
+
+        return $names;
+    }
+
+    public function savesBeforeParentIsCreated()
+    {
+        return $this->filter(function (NestedRelation $nestedRelation) {
+            return $nestedRelation->savesBeforeParentIsCreated();
+        });
+    }
+
+    public function savesAfterParentIsCreated()
+    {
+        return $this->filter(function (NestedRelation $nestedRelation) {
+            return !$nestedRelation->savesBeforeParentIsCreated();
+        });
+    }
 
     /**
      * Check if a item can be part of this collection.

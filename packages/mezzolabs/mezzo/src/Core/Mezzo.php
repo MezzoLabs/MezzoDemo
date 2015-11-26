@@ -8,6 +8,7 @@ use Illuminate\Foundation\Application;
 use MezzoLabs\Mezzo\Core\Booting\BootManager;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Traits\CanFireEvents;
 use MezzoLabs\Mezzo\Core\Traits\CanMakeInstances;
 use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
@@ -108,6 +109,12 @@ class Mezzo
         return $this->makeReflectionManager()->modelIsReflected($modelName);
     }
 
+    /**
+     * @param $modelName
+     * @param $attributeName
+     * @return Attribute
+     * @throws ReflectionException
+     */
     public function attribute($modelName, $attributeName)
     {
         $model = $this->model($modelName);

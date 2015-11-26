@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Rendering;
 
 
+use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Collection\DecoratedCollection;
 
 class AttributeRenderingOptions extends DecoratedCollection
@@ -43,5 +44,19 @@ class AttributeRenderingOptions extends DecoratedCollection
     public function attributes()
     {
         return $this->get('attributes', []);
+    }
+
+    public function getAttribute($key, $default = null)
+    {
+        $attributes = new Collection($this->attributes());
+
+        return $attributes->get($key, $default);
+    }
+
+    public function hasAttribute($key)
+    {
+        $attributes = new Collection($this->attributes());
+
+        return $attributes->has($key);
     }
 }

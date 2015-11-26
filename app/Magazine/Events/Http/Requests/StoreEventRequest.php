@@ -4,6 +4,7 @@
 namespace App\Magazine\Events\Http\Requests;
 
 
+use Illuminate\Support\Facades\Auth;
 use MezzoLabs\Mezzo\Http\Requests\Resource\StoreResourceRequest;
 use MezzoLabs\Mezzo\Modules\Addresses\Http\Requests\HasNestedAddress;
 
@@ -18,24 +19,12 @@ class StoreEventRequest extends StoreResourceRequest
      */
     public function validate()
     {
-        mezzo_dd($this->formObject()->rules());
+        if (!$this->has('user_id'))
+            $this->offsetSet('user_id', Auth::user()->id);
 
         parent::validate();
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        $eventRules = $this->modelReflection()->rules();
-
-        $eventRules = array_merge($eventRules, $this->addressRules('address'));
-
-        return $eventRules;
-    }
 
 
 

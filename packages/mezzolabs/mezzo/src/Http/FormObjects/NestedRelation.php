@@ -31,14 +31,25 @@ class NestedRelation
      */
     protected $hasManyChildren;
 
+    /**
+     * @var boolean
+     */
+    protected $isEmpty;
+
     public function __construct(RelationSide $relationSide, $data)
     {
         $this->name = $relationSide->naming();
         $this->data = new Collection($data);
         $this->relationSide = $relationSide;
         $this->hasManyChildren = $this->dataHasManyChildren();
+        $this->isEmpty = $this->isEmpty();
 
         $this->assertThatDataFitsRelationType();
+    }
+
+    public function parentAttributeName()
+    {
+        return $this->relationSide()->attributeName();
     }
 
     /**
@@ -56,11 +67,22 @@ class NestedRelation
      */
     public function rules()
     {
+        if ($this->isEmpty() && !$this->isRequired())
+            return [];
+
         if ($this->hasManyChildren())
             return $this->rulesForManyChildren();
 
         return $this->rulesForOneChild();
 
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRequired()
+    {
+        return str_contains($this->parent()->rules($this->parentAttributeName()), 'required');
     }
 
     /**
@@ -70,7 +92,6 @@ class NestedRelation
     {
         if (empty($prefix))
             $prefix = $this->name . '.';
-
 
         $rules = [];
         foreach ($this->related()->rules() as $shortInputName => $ruleString) {
@@ -185,5 +206,82 @@ class NestedRelation
         return !$this->hasManyChildren();
     }
 
+    /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        foreach ($this->data as $value) {
+            if (!is_array($value) && !empty($value)) return false;
+            if (is_array($value)) {
+                foreach ($value as $subvalue) {
+                    if (!empty($subvalue)) return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @return \MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository
+     */
+    public function repository()
+    {
+        return $this->related()->repository();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function data()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @return string
+     */
+    public function name()
+    {
+        return $this->name;
+    }
+
+    public function savesBeforeParentIsCreated()
+    {
+        if ($this->relationSide()->isManyToMany())
+            return true;
+
+        if ($this->relationSide()->isOneToOne() and $this->relationSide()->containsTheJoinColumn())
+            return true;
+
+        return false;
+    }
+
+    public function setParentId($id)
+    {
+        $relatedSide = $this->relationSide()->otherSide();
+
+        if (!$relatedSide->containsTheJoinColumn())
+            throw new InvalidNestedRelation('Cannot set the parent of ' . $this->name . ' ' .
+                "because it doesn't contain the join column");
+
+        $joinColumn = $relatedSide->relation()->joinColumn();
+
+
+        if ($this->hasOneChild()) {
+            $this->data()->put($joinColumn, $id);
+            return;
+        }
+
+        $dataArray = $this->data()->toArray();
+
+        foreach ($dataArray as $key => $valuesArray) {
+            $dataArray[$key][$joinColumn] = $id;
+        }
+
+        $this->data = new Collection($dataArray);
+
+    }
 
 }

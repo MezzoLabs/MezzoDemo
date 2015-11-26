@@ -25,7 +25,7 @@ class CreateAddressesTable extends Migration
             $table->string('fax')->nullable();
 
             $table->float('latitude')->nullable();
-            $table->float('longtitude')->nullable();
+            $table->float('longitude')->nullable();
             $table->timestamps();
         });
     }

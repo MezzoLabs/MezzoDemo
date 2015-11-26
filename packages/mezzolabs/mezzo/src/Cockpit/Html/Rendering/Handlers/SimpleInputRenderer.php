@@ -35,7 +35,7 @@ class SimpleInputRenderer extends AttributeRenderingHandler
         if ($attribute->type() instanceof TextArea)
             return $this->renderTextArea();
 
-        return $this->formBuilder()->input($htmlType, $this->name(), $this->old(), $this->htmlAttributes());
+        return $this->formBuilder()->input($htmlType, $this->name(), $this->value(), $this->htmlAttributes());
     }
 
     /**
@@ -46,7 +46,7 @@ class SimpleInputRenderer extends AttributeRenderingHandler
         $htmlAttributes = $this->htmlAttributes();
         $htmlAttributes['rows'] = 4;
 
-        return $this->formBuilder()->textarea($this->name(), $this->old(), $htmlAttributes);
+        return $this->formBuilder()->textarea($this->name(), $this->value(), $htmlAttributes);
     }
 
 

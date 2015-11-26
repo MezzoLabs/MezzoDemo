@@ -66,7 +66,8 @@ abstract class MezzoEvent extends BaseModel
     protected $rules = [
         'title' => "required|between:3,200",
         'slug' => "",
-        'description' => "required|between:3,500"
+        'description' => "required|between:3,500",
+        //"days" => "required"
     ];
 
     /**
@@ -84,7 +85,7 @@ abstract class MezzoEvent extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'title', 'description', 'days', 'event_venue_id', 'address_id'
+        'title', 'description', 'days', 'event_venue_id', 'address_id', 'user_id'
     ];
 
     /**

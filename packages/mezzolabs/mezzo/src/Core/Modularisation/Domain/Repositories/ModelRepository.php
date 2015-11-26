@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Mezzolabs\Mezzo\Cockpit\Http\FormObjects\NestedRelations;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
@@ -141,6 +142,21 @@ class ModelRepository extends EloquentRepository
 
         $modelInstance = $this->modelInstance();
         return $modelInstance->create($values->toArray());
+    }
+
+    public function createWithNestedRelations(array $data, NestedRelations $relations)
+    {
+        $nestedRelationsProcessor = new NestedRelationsProcessor($relations);
+        $nestedRelationsProcessor->updateOrCreateBefore();
+
+        $data = array_merge($data, $nestedRelationsProcessor->ids());
+        $data = array_diff_key($data, $relations->names());
+
+        $model = $this->create($data);
+
+        $nestedRelationsProcessor->updateOrCreateAfter($model->id);
+
+        return $model;
     }
 
     /**

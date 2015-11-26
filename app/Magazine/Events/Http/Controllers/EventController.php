@@ -3,6 +3,7 @@
 namespace App\Magazine\Events\Http\Controllers;
 
 use App\Magazine\Events\Http\Pages\Events\CreateEventPage;
+use App\Magazine\Events\Http\Pages\Events\EditEventPage;
 use App\Magazine\Events\Http\Pages\Events\IndexEventPage;
 use App\Magazine\Events\Http\Requests\StoreEventRequest;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
@@ -61,6 +62,11 @@ class EventController extends CockpitResourceController
 
     public function store(StoreEventRequest $request)
     {
-        mezzo_dd($request->all());
+        $event = $this->repository()->createWithNestedRelations(
+            $request->all(),
+            $request->nestedRelations()
+        );
+
+        return $this->redirectToPage(EditEventPage::class, $event->id)->with('message', 'Event created successfully.');
     }
 }

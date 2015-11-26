@@ -1,15 +1,15 @@
 <div class="row">
     <div class="col-md-6">
-        {!! $renderer->formBuilder()->text('google_search') !!}
-    </div>
-    <div class="col-md-3">
         <div class="form-group">
-            {!! $renderer->renderNested('latitude', ['disabled' => 'disabled']) !!}
+            <label>Google Search</label>
+            <input type="text" class="google_search form-control"/>
         </div>
     </div>
     <div class="col-md-3">
-
-        {!! $renderer->renderNested('latitude', ['disabled' => 'disabled']) !!}
+        {!! $renderer->renderNested('latitude', ['readonly' => 'readonly', 'value' => "0.1"]) !!}
+    </div>
+    <div class="col-md-3">
+        {!! $renderer->renderNested('longitude', ['readonly' => 'readonly', 'value' => "0.1"]) !!}
     </div>
     <div class="col-md-12">
         <hr/>

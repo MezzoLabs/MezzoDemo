@@ -26,7 +26,7 @@ abstract class Role extends MezzoRole
         return $this->repository()->givePermissionsTo($this, $permissions);
     }
 
-    public function repository()
+    public static function repository()
     {
         return app()->make(RoleRepository::class);
     }

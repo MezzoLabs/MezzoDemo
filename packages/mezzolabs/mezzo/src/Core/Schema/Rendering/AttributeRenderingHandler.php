@@ -117,12 +117,19 @@ abstract class AttributeRenderingHandler
         if (!$this->getOptions()->isNested())
             return $this->attribute()->name();
 
-        if (!$this->getOptions()->parent()->relationSide()->hasMultipleChildren())
+        if ($this->getOptions()->parent()->relationSide()->hasOneChild())
             return $this->getOptions()->parentName() . '[' . $this->attribute()->name() . ']';
 
-        return $this->getOptions()->parentName() . '[{{ attribute.formName }}][' . $this->attribute()->name() . ']';
+        return $this->getOptions()->parentName() . '[0][' . $this->attribute()->name() . ']';
     }
 
+    public function value()
+    {
+        if ($this->getOptions()->hasAttribute('value'))
+            return $this->getOptions()->getAttribute('value');
+
+        return $this->old();
+    }
 
     public function old()
     {

@@ -56,8 +56,8 @@ abstract class MezzoEventDay extends BaseModel
      * @var array
      */
     protected $rules = [
-        'start' => "",
-        'end' => ""
+        'start' => "required|date",
+        'end' => "required|date"
     ];
 
     /**
@@ -75,7 +75,9 @@ abstract class MezzoEventDay extends BaseModel
      * @var array
      */
     protected $fillable = [
-
+        'start',
+        'end',
+        'event_id'
     ];
 
     /**

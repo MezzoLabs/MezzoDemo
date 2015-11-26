@@ -40,7 +40,8 @@ class CategoryGroup extends MezzoCategoryGroup implements SluggableInterface
     /**
      * @return CategoryGroupRepository
      */
-    protected static function repository(){
+    public static function repository()
+    {
         return new CategoryGroupRepository();
     }
 

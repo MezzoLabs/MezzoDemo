@@ -22,7 +22,7 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
      */
     public function rules()
     {
-        return $this->modelReflection()->rules();
+        return $this->formObject()->rules();
     }
 
     /**
@@ -37,5 +37,13 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
         }
 
         return $this->formObject;
+    }
+
+    /**
+     * @return \Mezzolabs\Mezzo\Cockpit\Http\FormObjects\NestedRelations
+     */
+    public function nestedRelations()
+    {
+        return $this->formObject()->nestedRelations();
     }
 }

@@ -92,6 +92,8 @@ class NamingConvention
      */
     public static function repositoryClass($modelName, $namespaces = ['App'])
     {
+        $modelName = str_replace(['App', '\\'], '', $modelName);
+
         foreach ($namespaces as $namespace) {
             $possibleRepository = $namespace . '\Domain\Repositories\\' . $modelName . 'Repository';
 

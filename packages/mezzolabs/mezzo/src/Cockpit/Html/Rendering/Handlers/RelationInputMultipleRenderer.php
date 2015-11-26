@@ -35,7 +35,7 @@ class RelationInputMultipleRenderer extends AttributeRenderingHandler
         return $this->formBuilder()->select(
             $this->name(),
             $list,
-            $this->old(),
+            $this->value(),
             $this->htmlAttributes()
         );
     }

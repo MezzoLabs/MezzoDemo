@@ -63,16 +63,16 @@ abstract class MezzoAddress extends BaseModel
      * @var array
      */
     protected $rules = [
-        'addressee' => "",
-        'organization' => "",
-        'street' => "",
-        'street_extra' => "alpha_num",
+        'addressee' => "between:2,100",
+        'organization' => "between:2,100",
+        'street' => "between:2,200",
+        'street_extra' => "alpha_num|between:1,10",
         'zip' => "required|between:2,12",
         'city' => "required|between:2,150",
-        'phone' => "",
-        'fax' => "",
+        'phone' => array("between:5,50", 'regex:@^[0-9 / +]+$@'),
+        'fax' => array("between:5,50", 'regex:@^[0-9 / +]+$@'),
         'latitude' => "required|numeric",
-        'longtitude' => "required|numeric"
+        'longitude' => "required|numeric"
     ];
 
     /**
@@ -90,7 +90,16 @@ abstract class MezzoAddress extends BaseModel
      * @var array
      */
     protected $fillable = [
-
+        'addressee',
+        'organization',
+        'street',
+        'street_extra',
+        'zip',
+        'city',
+        'phone',
+        'fax',
+        'latitude',
+        'longitude'
     ];
 
     /**
@@ -201,12 +210,12 @@ abstract class MezzoAddress extends BaseModel
     protected $_latitude;
 
     /**
-     * Attribute annotation property for longtitude
+     * Attribute annotation property for longitude
      *
      * @Mezzo\Attribute(type="FloatInput", hidden="")
      * @var float
      */
-    protected $_longtitude;
+    protected $_longitude;
 
     /**
      * Attribute annotation property for created_at

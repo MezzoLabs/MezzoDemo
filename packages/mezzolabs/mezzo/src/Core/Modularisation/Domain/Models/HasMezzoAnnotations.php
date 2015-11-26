@@ -5,10 +5,13 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Domain\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany as EloquentBelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany as EloquentHasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
+use MezzoLabs\Mezzo\Core\Modularisation\NamingConvention;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValues;
 use MezzoLabs\Mezzo\Core\Validation\HasValidationRules;
 use MezzoLabs\Mezzo\Exceptions\ReflectionException;
+use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 
 /**
  * Class HasMezzoAnnotations
@@ -143,7 +146,23 @@ trait HasMezzoAnnotations
         }
 
         return $this->id;
+    }
 
+    /**
+     * @return ModelRepository
+     * @throws RepositoryException
+     */
+    public static function repository()
+    {
+        $repositoryClass = NamingConvention::repositoryClass(static::class, [
+            'App',
+            mezzo()->model(static::class)->module()->getNamespaceName()
+        ]);
+
+        if (!$repositoryClass)
+            throw new RepositoryException('Cannot find a repository for ' . static::class);
+
+        return app()->make($repositoryClass);
     }
 
 

@@ -29,7 +29,7 @@ class RelationInputSingleRenderer extends AttributeRenderingHandler
     public function render()
     {
         $list = $this->makeEloquentList(true);
-        return $this->formBuilder()->select($this->name(), $list, $this->old(), $this->htmlAttributes());
+        return $this->formBuilder()->select($this->name(), $list, $this->value(), $this->htmlAttributes());
     }
 
 
