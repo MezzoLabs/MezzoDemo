@@ -55,9 +55,13 @@ class EventController extends CockpitResourceController
      * @param  int $id
      * @return ModuleResponse
      */
-    public function edit(EditResourceRequest $request, $id)
+    public function edit(EditResourceRequest $request, $id = 0)
     {
-        // TODO: Implement edit() method.
+        $event = $this->repository()->findOrFail($id, ['*'], ['address', 'days']);
+
+        return $this->page(EditEventPage::class, [
+                'model' => $event
+            ]);
     }
 
     public function store(StoreEventRequest $request)

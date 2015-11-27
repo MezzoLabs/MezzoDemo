@@ -57,7 +57,7 @@ abstract class AttributeRenderEngine
      */
     public function formBuilder()
     {
-        return app(FormBuilder::class);
+        return app(\MezzoLabs\Mezzo\Cockpit\Html\Rendering\FormBuilder::class);
     }
 
     /**

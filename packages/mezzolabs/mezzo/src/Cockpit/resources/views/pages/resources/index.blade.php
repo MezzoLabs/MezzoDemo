@@ -3,7 +3,8 @@
 
 @section('content')
 
-    <div class="wrapper" ng-init="vm.init('{{ $model->name() }}', {!! str_replace('"', "'", $model->defaultIncludes()->toJson()) !!})">
+    <div class="wrapper"
+         ng-init="vm.init('{{ $model_reflection->name() }}', {!! str_replace('"', "'", $model_reflection->defaultIncludes()->toJson()) !!})">
 
         <!-- Top Container -->
         <div class="panel panel-bordered">
@@ -52,7 +53,7 @@
         <!-- Bottom Container -->
         <div class="panel panel-bordered">
             <div class="panel-heading">
-                <h3>{{ str_plural($model->name()) }}</h3>
+                <h3>{{ str_plural($model_reflection->name()) }}</h3>
             </div>
             <div class="panel-body">
 
@@ -69,7 +70,7 @@
                         <th>
                             <input type="checkbox" ng-model="vm.selectAll" ng-change="vm.updateSelectAll()">
                         </th>
-                        @foreach($model->attributes()->visibleOnly() as $attribute)
+                        @foreach($model_reflection->attributes()->visibleOnly() as $attribute)
                             <th>{{ $attribute->title() }}</th>
                         @endforeach
                     </tr>

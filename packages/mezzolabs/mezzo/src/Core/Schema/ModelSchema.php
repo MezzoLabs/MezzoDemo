@@ -103,7 +103,6 @@ class ModelSchema
      * @param $attribute
      * @return bool
      * @throws InvalidArgumentException
-     * @internal param $name
      */
     public function hasAttribute($attribute)
     {

@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Rendering;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
+use MezzoLabs\Mezzo\Cockpit\Html\Rendering\FormBuilder;
 use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
@@ -54,7 +55,7 @@ abstract class AttributeRenderingHandler
     abstract public function render();
 
     /**
-     * @return \Collective\Html\FormBuilder
+     * @return \Collective\Html\FormBuilder|FormBuilder
      */
     public function formBuilder()
     {
@@ -123,17 +124,32 @@ abstract class AttributeRenderingHandler
         return $this->getOptions()->parentName() . '[0][' . $this->attribute()->name() . ']';
     }
 
+    public function dotNotationName()
+    {
+        return StringHelper::fromArrayToDotNotation($this->name());
+    }
+
     public function value()
     {
         if ($this->getOptions()->hasAttribute('value'))
             return $this->getOptions()->getAttribute('value');
 
-        return $this->old();
+        if ($this->old() !== false)
+            return $this->old();
+
+        if ($this->getOptions()->hasAttribute('default'))
+            return $this->getOptions()->getAttribute('default');
+
+        if ($this->formBuilder()->hasModel()) {
+            return data_get($this->formBuilder()->getModel(), $this->dotNotationName());
+        }
+
+        return null;
     }
 
     public function old()
     {
-        return old(StringHelper::fromArrayToDotNotation($this->name()));
+        return old($this->dotNotationName(), false);
     }
 
     /**
@@ -186,6 +202,7 @@ abstract class AttributeRenderingHandler
 
         return mezzo()->attribute($nestedModel->className(), $nestedAttribute->name())->render($options);
     }
+
 
     public function before()
     {

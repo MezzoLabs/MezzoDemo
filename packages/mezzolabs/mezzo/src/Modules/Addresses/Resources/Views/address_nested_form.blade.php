@@ -1,3 +1,5 @@
+{!! cockpit_form()->openNestedRelation($renderer->attribute()) !!}
+
 <div class="row">
     <div class="col-md-6">
         <div class="form-group">
@@ -6,10 +8,10 @@
         </div>
     </div>
     <div class="col-md-3">
-        {!! $renderer->renderNested('latitude', ['readonly' => 'readonly', 'value' => "0.1"]) !!}
+        {!! $renderer->renderNested('latitude', ['readonly' => 'readonly', 'default' => "0.1"]) !!}
     </div>
     <div class="col-md-3">
-        {!! $renderer->renderNested('longitude', ['readonly' => 'readonly', 'value' => "0.1"]) !!}
+        {!! $renderer->renderNested('longitude', ['readonly' => 'readonly', 'default' => "0.1"]) !!}
     </div>
     <div class="col-md-12">
         <hr/>
@@ -49,3 +51,5 @@
     <div class="clearfix"></div>
 
 </div>
+
+{!! cockpit_form()->closeNestedRelation() !!}

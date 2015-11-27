@@ -8,6 +8,6 @@ class StringHelper
 {
     public static function fromArrayToDotNotation($arrayNotation)
     {
-        return str_replace(['[', ']'], ['.', ''], $arrayNotation);
+        return str_replace(['.', '[]', '[', ']'], ['_', '', '.', ''], $arrayNotation);
     }
 }

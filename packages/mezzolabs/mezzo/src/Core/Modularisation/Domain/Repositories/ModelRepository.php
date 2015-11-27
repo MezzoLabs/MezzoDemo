@@ -355,22 +355,29 @@ class ModelRepository extends EloquentRepository
     /**
      * @param $id
      * @param array $columns
+     * @param array $with
      * @return MezzoModel
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = array('*'), $with = [])
     {
-        return $this->query()->find($id, $columns);
+        return $this->query()->where('id', '=', $id)->with($with)->first($columns);
     }
 
 
     /**
      * @param $id
      * @param array $columns
+     * @param array $with
      * @return Collection|MezzoModel
      */
-    public function findOrFail($id, $columns = array('*'))
+    public function findOrFail($id, $columns = array('*'), $with = [])
     {
-        return $this->query()->findOrFail($id, $columns);
+        $found = $this->find($id, $columns, $with);
+
+        if (!$found)
+            throw (new ModelNotFoundException)->setModel(get_class($this->modelInstance()));
+
+        return $found;
     }
 
     public function exists($id, $table = null)

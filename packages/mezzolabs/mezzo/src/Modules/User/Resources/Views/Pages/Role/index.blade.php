@@ -7,7 +7,7 @@
         <!-- Bottom Container -->
         <div class="panel panel-bordered">
             <div class="panel-heading">
-                <h3>{{ str_plural($model->name()) }}</h3>
+                <h3>{{ str_plural($model_reflection->name()) }}</h3>
             </div>
             <div class="panel-body">
                 {!! cockpit_form()->open(['method' => 'GET', 'route' => 'cockpit::role.index']) !!}

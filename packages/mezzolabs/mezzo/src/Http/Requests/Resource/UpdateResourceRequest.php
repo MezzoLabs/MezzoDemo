@@ -24,6 +24,9 @@ class UpdateResourceRequest extends UpdateOrStoreResourceRequest
      */
     public function authorize()
     {
+        if ($this->isTemplateRequest())
+            return $this->permissionGuard()->allowsEdit($this->newModelInstance());
+
         return $this->permissionGuard()->allowsEdit($this->currentModelInstance());
     }
 

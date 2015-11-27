@@ -205,7 +205,7 @@ abstract class ModulePage implements ModulePageContract
         $additionalData = new Collection();
 
         if ($this instanceof ResourcePage)
-            $additionalData->put('model', $this->model());
+            $additionalData->put('model_reflection', $this->model());
 
         $additionalData->put('module_page', $this);
         $additionalData->put('page_options', $this->options);

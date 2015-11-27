@@ -4,7 +4,9 @@
 namespace MezzoLabs\Mezzo\Cockpit\Html\Rendering;
 
 use Collective\Html\FormBuilder as CollectiveFormBuilder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 
 class FormBuilder extends CollectiveFormBuilder
 {
@@ -152,10 +154,71 @@ class FormBuilder extends CollectiveFormBuilder
      */
     public function input($type, $name, $value = null, $options = [])
     {
-        if (!isset($options['class']))
+        if (!isset($options['class']) && $type !== "hidden")
             $options['class'] = 'form-control';
 
         return parent::input($type, $name, $value, $options);
+    }
+
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    public function hasModel()
+    {
+        return !empty($this->model);
+    }
+
+    public function openNestedRelation(RelationAttribute $attribute)
+    {
+        $ids = $this->nestedRelationIds($attribute->relationSide()->naming());
+
+        $openingTag = "<div class=\"nested-relation\">Nested relation";
+
+        if (!is_array($ids))
+            $openingTag .= $this->hidden($attribute->relationSide()->naming() . '[id]', $ids);
+        else {
+            $index = 0;
+            foreach ($ids as $id) {
+                $openingTag .= $this->hidden($attribute->relationSide()->naming() . '[' . $index . '][id]', $id);
+                $index++;
+            }
+        }
+
+        return $openingTag;
+    }
+
+    protected function nestedRelationIds($naming)
+    {
+        if (!$this->hasModel())
+            return null;
+
+        $attributeValue = $this->getModel()->getAttribute($naming);
+
+
+        if (!$attributeValue instanceof EloquentCollection)
+            return $attributeValue->id;
+
+
+        return $attributeValue->pluck('id')->toArray();
+    }
+
+    public function closeNestedRelation()
+    {
+        return "</div>";
+    }
+
+    /**
+     * Get the model value that should be assigned to the field.
+     *
+     * @param  string $name
+     *
+     * @return mixed
+     */
+    protected function getModelValueAttribute($name)
+    {
+        return parent::getModelValueAttribute($name);
     }
 
 
