@@ -16,4 +16,14 @@ class Address extends MezzoAddress
         return $this->hasOne(EventVenue::class);
     }
 
+    public function getLabelAttribute()
+    {
+        $array = [
+            $this->addressee,
+            $this->street,
+            $this->street_extra,
+            $this->city
+        ];
+    }
+
 }

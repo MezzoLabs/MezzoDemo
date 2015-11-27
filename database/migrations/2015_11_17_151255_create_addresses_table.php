@@ -20,6 +20,7 @@ class CreateAddressesTable extends Migration
             $table->string('street_extra');
             $table->string('zip', 11);
             $table->string('city', 75);
+            $table->string('country', 4);
 
             $table->string('phone')->nullable();
             $table->string('fax')->nullable();

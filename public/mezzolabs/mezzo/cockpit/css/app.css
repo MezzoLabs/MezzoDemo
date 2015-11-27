@@ -8689,6 +8689,22 @@ a {
     opacity: 1.0;
     visibility: visible; }
 
+.categories {
+  max-height: 235px;
+  border: 1px solid #EEEEEE;
+  overflow-y: scroll;
+  padding: 0px 10px;
+}
+
+.categories li.checkbox {
+  margin-top: 1px;
+  margin-bottom: 4px;
+}
+
+.categories ul ul {
+  margin-left: 15px;
+}
+
 #content-footer {
   height: 50px;
   padding: 10px 30px;

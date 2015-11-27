@@ -174,19 +174,29 @@ class FormBuilder extends CollectiveFormBuilder
     {
         $ids = $this->nestedRelationIds($attribute->relationSide()->naming());
 
-        $openingTag = "<div class=\"nested-relation\">Nested relation";
-
-        if (!is_array($ids))
-            $openingTag .= $this->hidden($attribute->relationSide()->naming() . '[id]', $ids);
-        else {
-            $index = 0;
-            foreach ($ids as $id) {
-                $openingTag .= $this->hidden($attribute->relationSide()->naming() . '[' . $index . '][id]', $id);
-                $index++;
-            }
-        }
+        $openingTag = "<div class=\"nested-relation\">";
+        $openingTag .= $this->hiddenIdFields($attribute->relationSide()->naming(), $ids);
 
         return $openingTag;
+    }
+
+    protected function hiddenIdFields($naming, $ids)
+    {
+        if (empty($ids))
+            return "";
+
+        if (!is_array($ids))
+            return $this->hidden($naming . '[id]', $ids);
+
+        $html = "";
+
+        $index = 0;
+        foreach ($ids as $id) {
+            $html .= $this->hidden($naming . '[' . $index . '][id]', $id);
+            $index++;
+        }
+
+        return $html;
     }
 
     protected function nestedRelationIds($naming)

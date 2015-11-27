@@ -1,25 +1,30 @@
 <div class="list-group">
     <div class="list-element"></div>
 </div>
+{!! cockpit_form()->openNestedRelation($renderer->attribute()) !!}
+
+@if($renderer->value())
+    @foreach($renderer->value() as $index => $day)
+        <div class="row">
+            <?php if ($index === "new") continue; ?>
+            <div class="col-md-5">
+                {!! $renderer->renderNested('start', ['value' => $renderer->dateTimeLocal($day['start']), 'index' => $index]) !!}
+
+            </div>
+            <div class="col-md-5">
+                {!! $renderer->renderNested('end', ['value' => $renderer->dateTimeLocal($day['end']), 'index' => $index]) !!}
+            </div>
+        </div>
+    @endforeach
+@endif
 <div class="row">
-    {!! cockpit_form()->openNestedRelation($renderer->attribute()) !!}}
 
-    @if($renderer->value())
-        @foreach($renderer->value() as $index => $day)
-            <div class="col-md-5">
-                {!! $renderer->renderNested('start', ['value' => $day['start'], 'index' => $index]) !!}
+    <div class="col-md-5">
+        {!! $renderer->renderNested('start', ['index' => 'new']) !!}
 
-            </div>
-            <div class="col-md-5">
-                {!! $renderer->renderNested('end', ['value' => $day['end'], 'index' => $index]) !!}
-            </div>
-            <div class="col-md-2">
-                <button class="btn btn-small btn-secondary btn-block">Add day</button>
-            </div>
-        @endforeach
-    @endif
-    <div class="col-md-2">
-        <button class="btn btn-small btn-secondary btn-block">Add day</button>
     </div>
-    {!! cockpit_form()->closeNestedRelation() !!}
+    <div class="col-md-5">
+        {!! $renderer->renderNested('end', ['index' => 'new']) !!}
+    </div>
 </div>
+{!! cockpit_form()->closeNestedRelation() !!}

@@ -5,6 +5,7 @@ namespace App\Magazine\Events\Schema\Rendering;
 
 
 use App\Magazine\Events\Schema\InputTypes\EventDaysInput;
+use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderingHandler;
 
@@ -30,5 +31,10 @@ class EventDaysRenderer extends AttributeRenderingHandler
     public function render()
     {
         return view('modules.events::event_days_input', ['renderer' => $this]);
+    }
+
+    public function dateTimeLocal($date)
+    {
+        return StringHelper::datetimeLocal($date);
     }
 }

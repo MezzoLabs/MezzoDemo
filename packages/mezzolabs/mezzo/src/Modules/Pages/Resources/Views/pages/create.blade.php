@@ -28,7 +28,7 @@
 
             <div class="panel panel-bordered">
 
-                {!! cockpit_form()->submit('Save as new ' . $model->name()) !!}
+                {!! cockpit_form()->submit('Save as new ' . $model_reflection->name()) !!}
             </div>
 
 

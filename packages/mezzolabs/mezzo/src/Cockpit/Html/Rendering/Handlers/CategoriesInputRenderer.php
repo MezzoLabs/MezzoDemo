@@ -27,7 +27,12 @@ class CategoriesInputRenderer extends RelationInputMultipleRenderer
      */
     public function render(array $options = [])
     {
-        return parent::render();
+        $collection = $this->attribute()->query()->get();
+
+        return view('cockpit::partials.categories_input', [
+            'categories' => $collection->toTree(),
+            'renderer' => $this
+        ]);
     }
 
 

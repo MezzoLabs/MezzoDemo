@@ -121,7 +121,7 @@ abstract class AttributeRenderingHandler
         if ($this->getOptions()->parent()->relationSide()->hasOneChild())
             return $this->getOptions()->parentName() . '[' . $this->attribute()->name() . ']';
 
-        return $this->getOptions()->parentName() . '[0][' . $this->attribute()->name() . ']';
+        return $this->getOptions()->parentName() . '[' . $this->getOptions()->getAttribute('index', 0) . '][' . $this->attribute()->name() . ']';
     }
 
     public function dotNotationName()
@@ -139,6 +139,7 @@ abstract class AttributeRenderingHandler
 
         if ($this->getOptions()->hasAttribute('default'))
             return $this->getOptions()->getAttribute('default');
+
 
         if ($this->formBuilder()->hasModel()) {
             return data_get($this->formBuilder()->getModel(), $this->dotNotationName());

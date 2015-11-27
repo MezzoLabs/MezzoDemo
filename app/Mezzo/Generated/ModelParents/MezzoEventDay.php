@@ -86,7 +86,6 @@ abstract class MezzoEventDay extends BaseModel
      * * @var array
      */
     protected $casts = [
-
     ];
 
     /**

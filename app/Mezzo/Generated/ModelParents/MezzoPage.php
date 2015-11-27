@@ -118,7 +118,7 @@ abstract class MezzoPage extends MezzoNestedSetNode
     /**
      * Attribute annotation property for teaser
      *
-     * @Mezzo\Attribute(type="TextInput")
+     * @Mezzo\Attribute(type="TextArea")
      * @var string
      */
     protected $_teaser;

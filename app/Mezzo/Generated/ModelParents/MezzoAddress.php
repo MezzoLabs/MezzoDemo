@@ -31,7 +31,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  * @property string $phone
  * @property string $fax
  * @property float $latitude
- * @property float $longtitude
+ * @property float $longitude
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \App\EventVenue $eventVenue
@@ -69,9 +69,9 @@ abstract class MezzoAddress extends BaseModel
         'street_extra' => "alpha_num|between:1,10",
         'zip' => "required|between:2,12",
         'city' => "required|between:2,150",
-        'phone' => array("between:5,50", 'regex:@^[0-9 / +]+$@'),
-        'fax' => array("between:5,50", 'regex:@^[0-9 / +]+$@'),
-        'latitude' => "required|numeric",
+        'phone' => "between:5,50|regex:@^[0-9 / +]+$@",
+        'fax' => "between:5,50|regex:@^[0-9 / +]+$@",
+        'latitude' => "required|numeric", 
         'longitude' => "required|numeric"
     ];
 
@@ -90,16 +90,16 @@ abstract class MezzoAddress extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'addressee',
-        'organization',
-        'street',
-        'street_extra',
-        'zip',
-        'city',
-        'phone',
-        'fax',
-        'latitude',
-        'longitude'
+        "addressee",
+        "organization",
+        "street",
+        "street_extra",
+        "zip",
+        "city",
+        "phone",
+        "fax",
+        "latitude",
+        "longitude"
     ];
 
     /**
@@ -108,7 +108,7 @@ abstract class MezzoAddress extends BaseModel
      * * @var array
      */
     protected $casts = [
-
+        
     ];
 
     /**
