@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Modules\Generator\Schema;
 
 
+use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 
 class ModelParentSchema extends FileSchema
@@ -97,5 +98,25 @@ class ModelParentSchema extends FileSchema
     public function table()
     {
         return $this->modelSchema()->tableName();
+    }
+
+    public function extendsClass()
+    {
+        if (!class_exists($this->modelSchema()->className()))
+            return '\App\Mezzo\BaseModel';
+
+
+        // Go down the parents and search for a class that is named "Mezzo..."
+        // If we find one we will return the parent of this class.
+        $hitNext = false;
+        foreach (class_parents($this->modelSchema()->className()) as $classParent){
+            if($hitNext)
+                return '\\' . $classParent;
+
+            if(Str::startsWith(class_basename($classParent), 'Mezzo')) $hitNext = true;
+        }
+
+        return '\App\Mezzo\BaseModel';
+
     }
 }

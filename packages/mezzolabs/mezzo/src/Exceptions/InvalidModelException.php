@@ -4,7 +4,7 @@
 namespace MezzoLabs\Mezzo\Exceptions;
 
 
-class InvalidModel extends \InvalidArgumentException
+class InvalidModelException extends \InvalidArgumentException
 {
 
     /**
@@ -16,6 +16,9 @@ class InvalidModel extends \InvalidArgumentException
      */
     public function  __construct($notAModel)
     {
-        $this->message = get_class($notAModel) . ' is not a model.';
+        if(!is_string($notAModel))
+            $notAModel = get_class($notAModel);
+
+        $this->message = $notAModel . ' is not a model.';
     }
 } 

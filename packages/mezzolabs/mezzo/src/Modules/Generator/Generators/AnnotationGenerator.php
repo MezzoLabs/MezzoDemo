@@ -7,10 +7,12 @@ namespace MezzoLabs\Mezzo\Modules\Generator\Generators;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Annotations\Reader\AttributeAnnotations;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\RelationSide;
+use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 use MezzoLabs\Mezzo\Modules\Generator\Schema\ModelParentSchema;
 
 class AnnotationGenerator
@@ -38,12 +40,17 @@ class AnnotationGenerator
     {
         $parameters = array();
 
-        foreach ($array as $key => $variable) {
-            $value = PhpCodeGenerator::parameterize($variable);
-            $parameters[] = $key . '=' . $value;
+        if (is_array($array)) {
+            foreach ($array as $key => $variable) {
+                $value = PhpCodeGenerator::parameterize($variable);
+                $parameters[] = $key . '=' . $value;
+            }
+
+            $parameterString = implode(', ', $parameters);
+        } else {
+            $parameterString = '"' . $array . '"';
         }
 
-        $parameterString = implode(', ', $parameters);
 
         if (!empty($parameterString))
             $string = $annotationClass . '(' . $parameterString . ')';
@@ -70,14 +77,19 @@ class AnnotationGenerator
      */
     public function attribute(Attribute $attribute)
     {
-        $attribute = $this->findBestAttribute($attribute);
-
-        $this->addLine($this->doctrine('Mezzo\Attribute', [
-            'type' => $attribute->type()->name(),
-            'hidden' => implode(',', $this->hiddenInForms($attribute))
-        ]));
+        $this->addLine($this->attributeAnnotationLine($attribute));
 
         return $this->pullLines();
+    }
+
+    protected function attributeAnnotationLine(Attribute $attribute)
+    {
+        $attribute = $this->findBestAttribute($attribute);
+
+        return $this->doctrine('Mezzo\Attribute', [
+            'type' => get_class($attribute->type()),
+            'hidden' => implode(',', $this->hiddenInForms($attribute))
+        ]);
     }
 
     /**
@@ -111,7 +123,12 @@ class AnnotationGenerator
     {
         $bestReflection = mezzo()->model($attribute->getModel());
 
-        return $bestReflection->attributes()->get($attribute->name());
+        $bestAttribute = $bestReflection->attributes()->get($attribute->name());
+
+        if (!$bestAttribute)
+            return $attribute;
+
+        return $bestAttribute;
     }
 
     /**
@@ -180,18 +197,26 @@ class AnnotationGenerator
         return $this->pullLines('');
     }
 
+
     public function relation(RelationSide $relationSide)
     {
         $relation = $relationSide->relation();
         $relationType = $relation->shortType();
 
-        if ($relationSide->hasMultipleChildren()) {
-            $this->addLine($this->doctrine('Mezzo\Attribute', [
-                'type' => 'RelationInputMultiple',
-                'hidden' => ""
-            ]));
+        //There is no attribute for m:n relations from the start.
+        try {
+            $bestAttribute = mezzo()->attribute($relationSide->table(), $relationSide->attributeName());
+        } catch(\Exception $e) {
+            $bestAttribute = new RelationAttribute($relationSide->attributeName(), $relationSide);
+            $bestAttribute->setModel($relationSide->modelReflection()->schema());
         }
 
+        if (!$bestAttribute instanceof RelationAttribute)
+            throw new ReflectionException($bestAttribute->qualifiedName() . ' has to be a relation attribute.');
+
+        if ($relationSide->hasMultipleChildren()) {
+            $this->addLine($this->attributeAnnotationLine($bestAttribute));
+        }
 
         $this->addLine($this->doctrine('Mezzo\\Relations\\' . $relationType));
 
@@ -218,6 +243,9 @@ class AnnotationGenerator
                 'table' => $relation->joinTable(),
                 'column' => $relation->joinColumn()
             ]));
+
+
+        $this->addLine($this->doctrine('Mezzo\\Relations\\Scopes', $bestAttribute->relation()->getScopes()->toString()));
 
 
         return $this->pullLines();

@@ -29,6 +29,8 @@ class CategoriesInputRenderer extends RelationInputMultipleRenderer
     {
         $collection = $this->attribute()->query()->get();
 
+        mezzo_dd($this->attribute()->query()->get()->toTree());
+
         return view('cockpit::partials.categories_input', [
             'categories' => $collection->toTree(),
             'renderer' => $this

@@ -290,6 +290,9 @@ abstract class Relation
      */
     public function getScopes()
     {
+        if(!$this->scopes)
+            $this->setScopes(new Scopes());
+
         return $this->scopes;
     }
 

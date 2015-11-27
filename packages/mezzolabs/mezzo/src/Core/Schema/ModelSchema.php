@@ -242,8 +242,10 @@ class ModelSchema
         $relationAttributes->each(function (RelationAttribute $relationAttribute) use ($relationSides) {
             $relation = $relationAttribute->relation();
 
+            //Do not add the foreign side of a many to many relation to the collection
             if ($relation->isManyToMany() && $relationAttribute->name() != str_singular($this->tableName()) . '_id')
                 return true;
+
 
             $relationSide = new RelationSide($relationAttribute->relation(), $this->tableName());
             $relationSides->put($relationAttribute->qualifiedName(), $relationSide);

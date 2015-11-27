@@ -4,7 +4,6 @@ namespace App\Mezzo\Generated\ModelParents;
 
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
-use App\Mezzo\BaseModel;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 /**
@@ -22,7 +21,7 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 *
 {!! $annotation->classAnnotations($parent) !!}
 */
-abstract class {{ $parent->name() }} extends BaseModel
+abstract class {{ $parent->name() }} extends {{ $parent->extendsClass() }}
 {
     use IsMezzoModel;
 
@@ -65,13 +64,13 @@ abstract class {{ $parent->name() }} extends BaseModel
     protected $fillable = {!! $php->fillableArray($parent->modelSchema()) !!}
 
     /**
-* The attributes that should be casted to native types.
-*
-* @annotation('var', 'array')
-*/
-protected $casts = {!! $php->castsArray($parent->modelSchema()) !!}
+    * The attributes that should be casted to native types.
+    *
+    * @annotation('var', 'array')
+    */
+    protected $casts = {!! $php->castsArray($parent->modelSchema()) !!}
 
-/**
+    /**
     * Indicates if the model should be timestamped.
     *
     @annotation('var', 'bool')
@@ -79,7 +78,7 @@ protected $casts = {!! $php->castsArray($parent->modelSchema()) !!}
     public $timestamps = {!! $php->timestampsBoolean($parent->modelSchema()) !!}
 
 
-/*
+    /*
     |-------------------------------------------------------------------------------------------------------------------
     | Attribute annotation properties
     |-------------------------------------------------------------------------------------------------------------------    |

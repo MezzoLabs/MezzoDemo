@@ -9,6 +9,7 @@ use MezzoLabs\Mezzo\Core\Booting\BootManager;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Traits\CanFireEvents;
 use MezzoLabs\Mezzo\Core\Traits\CanMakeInstances;
 use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
@@ -112,18 +113,21 @@ class Mezzo
     /**
      * @param $modelName
      * @param $attributeName
-     * @return Attribute
+     * @return Attribute|RelationAttribute
      * @throws ReflectionException
      */
     public function attribute($modelName, $attributeName)
     {
-        $model = $this->model($modelName);
+        $mezzoModel = $this->model($modelName, 'mezzo');
 
-        if (!$model->attributes()->has($attributeName)) {
-            throw new ReflectionException('Cannot find attribute "' . $attributeName . '" in "' . $modelName . '".');
-        }
+        if ($mezzoModel && $mezzoModel->attributes()->has($attributeName))
+            return $mezzoModel->attributes()->get($attributeName);
 
-        return $model->attributes()->get($attributeName);
+        $eloquentModel = $this->model($modelName, 'eloquent');
+        if ($eloquentModel && $eloquentModel->attributes()->has($attributeName))
+            return $eloquentModel->attributes()->get($attributeName);
+
+        throw new ReflectionException('Cannot find attribute "' . $attributeName . '" in "' . $modelName . '".');
     }
 
     /**

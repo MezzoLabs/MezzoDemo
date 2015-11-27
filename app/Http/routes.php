@@ -65,9 +65,9 @@ Route::post('/test/file', 'TestController@uploadFile');
 Route::get('/test/reflection', function () {
     $reflectionManager = mezzo()->makeReflectionManager();
     $mezzoReflection = $reflectionManager->mezzoReflection('Event');
-    $eloquentReflection = $reflectionManager->eloquentReflection('Post');
+    $eloquentReflection = $reflectionManager->eloquentReflection('Event');
 
-    mezzo_dd($mezzoReflection->schema()->attributes());
+    mezzo_dd($eloquentReflection->schema()->relationSides());
 
 });
 
@@ -123,9 +123,9 @@ Route::get('debug/generator', function () {
 
     $annotationGenerator = app()->make(AnnotationGenerator::class);
 
-
     $reflectionManager = mezzo()->makeReflectionManager();
-    $reflection = $reflectionManager->eloquentReflection('Event');
+    $reflection = $reflectionManager->eloquentReflection('Category');
+    $reflectionMezzo = $reflectionManager->mezzoReflection('Category');
     $schema = $reflection->schema();
 
     $schemas = new \MezzoLabs\Mezzo\Core\Schema\ModelSchemas();

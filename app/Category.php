@@ -12,6 +12,41 @@ use MezzoLabs\Mezzo\Modules\Categories\Models\Category as CategoriesModuleCatego
  */
 class Category extends CategoriesModuleCategory
 {
+
+    /**
+     * Set of rules that will be validated in resource requests.
+     *
+     * @var array
+     */
+    protected $rules = [
+        'slug' => "unique",
+        'label' => "required|unique_with:categories, category_group_id",
+        '_lft' => "",
+        '_rgt' => "",
+        'parent_id' => ""
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        "label",
+        "slug",
+        "parent_id",
+        "category_group_id"
+    ];
+
     public function tutorials()
     {
         return $this->belongsToMany(Tutorial::class);
@@ -20,6 +55,11 @@ class Category extends CategoriesModuleCategory
     public function posts()
     {
         return $this->belongsToMany(Post::class);
+    }
+
+    public function events()
+    {
+        return $this->belongsToMany(Event::class);
     }
 
     public function scopeInGroup($query, $groupName)

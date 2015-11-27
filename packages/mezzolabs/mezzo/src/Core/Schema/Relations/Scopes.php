@@ -64,4 +64,14 @@ class Scopes extends StrictCollection
 
         $this->put($value->name(), $value);
     }
+
+    public function toString()
+    {
+        $scopes = [];
+        $this->each(function(Scope $scope ) use (&$scopes){
+            $scopes[] = $scope->toString();
+        });
+
+        return implode('|', $scopes);
+    }
 }

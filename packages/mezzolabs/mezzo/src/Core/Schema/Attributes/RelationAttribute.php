@@ -20,7 +20,6 @@ class RelationAttribute extends Attribute
      * @param $name
      * @param RelationSide $relationSide
      * @param array $options
-     * @internal param InputType $inputType
      */
     public function __construct($name, RelationSide $relationSide, $options = [])
     {
