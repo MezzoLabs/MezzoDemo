@@ -10,6 +10,8 @@ use MezzoLabs\Mezzo\Core\Validation\Validator;
 
 class GenericFormObject implements FormObject
 {
+    const META_FIELDS = ['_token', '_method'];
+
     /**
      * @var string
      */
@@ -21,6 +23,11 @@ class GenericFormObject implements FormObject
     protected $data;
 
     /**
+     * @var Collection
+     */
+    protected $metaInfo;
+
+    /**
      * @param string $model
      * @param $data
      */
@@ -29,6 +36,12 @@ class GenericFormObject implements FormObject
         $this->model = mezzo()->model($model);
         $this->data = new Collection($data);
 
+        $this->processData();
+    }
+
+    protected function processData()
+    {
+        $this->removeMetaInfo();
         $this->convertCheckboxArrays();
     }
 
@@ -46,7 +59,7 @@ class GenericFormObject implements FormObject
     /**
      * Returns the data that was sent by the form request.
      *
-     * @return array
+     * @return Collection
      */
     public function data()
     {
@@ -149,23 +162,37 @@ class GenericFormObject implements FormObject
             if (!$this->isIdsArray($value)) continue;
 
             $isAssoc = array_values($value) === $value;
-            if($isAssoc) continue;
+            if ($isAssoc) continue;
 
             $this->data->offsetSet($key, array_keys($value));
 
         }
     }
 
+    protected function removeMetaInfo()
+    {
+        $this->metaInfo = new Collection();
+
+        foreach (static::META_FIELDS as $metaKey) {
+            $this->metaInfo->put($metaKey, $this->data->get($metaKey, ""));
+
+            if ($this->data()->has($metaKey))
+                $this->data()->offsetUnset($metaKey);
+        }
+    }
+
     protected function isIdsArray($array)
     {
-        if(!is_array($array))
+        if (!is_array($array))
             return false;
 
         foreach ($array as $key => $value) {
-            if(!is_numeric($key) || (!is_numeric($value) && $value != "on"))
+            if (!is_numeric($key) || (!is_numeric($value) && $value != "on"))
                 return false;
         }
 
         return true;
     }
+
+
 }

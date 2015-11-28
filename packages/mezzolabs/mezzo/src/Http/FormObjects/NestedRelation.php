@@ -108,6 +108,7 @@ class NestedRelation
     {
         $rules = [];
         foreach ($this->data as $arrayName => $values) {
+            mezzo_dd($values);
             $rules = array_merge(
                 $rules,
                 $this->rulesForOneChild($this->name . '.' . $arrayName . '.')

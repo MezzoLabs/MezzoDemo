@@ -43,6 +43,8 @@ class NestedRelationsProcessor
     {
         /** @var NestedRelation $nestedRelation */
         foreach ($this->nestedRelations->savesAfterParentIsCreated() as $nestedRelation) {
+            if($nestedRelation->isEmpty()) continue;
+
             $nestedRelation->setParentId($parentId);
             $this->updateOrCreateRelation($nestedRelation);
         }

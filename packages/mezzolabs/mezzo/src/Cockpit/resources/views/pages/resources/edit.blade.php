@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="panel-body">
-                {!! cockpit_form()->model($model) !!}
+                {!! cockpit_form()->model($model, ['method' => 'PUT']) !!}
                 @include(cockpit_html()->viewKey('form-content-edit'))
                 {!! cockpit_form()->close() !!}
             </div>

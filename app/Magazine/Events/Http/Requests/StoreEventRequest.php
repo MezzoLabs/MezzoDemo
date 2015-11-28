@@ -20,6 +20,20 @@ class StoreEventRequest extends StoreResourceRequest
         parent::boot();
     }
 
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        $rules =  parent::rules();
+
+        unset($rules['user_id']);
+
+        return $rules;
+    }
+
 
     /**
      * Validate the class instance.

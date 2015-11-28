@@ -3,5 +3,5 @@
 @endforeach
 
 @if(!isset($hide_submit) || !$hide_submit)
-    {!! cockpit_form()->submit('Save as new ' . $model_reflection->name()) !!}
+    {!! cockpit_form()->submit('Update ' . $model_reflection->name()) !!}
 @endif

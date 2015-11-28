@@ -13,6 +13,11 @@ module_route('Events', [], function (Router $router, ApiRouter $api, CockpitRout
         'uses' => 'Controllers\EventController@store',
         'as' => 'event.store'
     ]);
+
+    $cockpit->put('events/event/edit/{id}', [
+        'uses' => 'Controllers\EventController@update',
+        'as' => 'event.update'
+    ]);
 });
 
 

@@ -139,10 +139,6 @@ class ModelRepository extends EloquentRepository
 
         $modelInstance = $this->modelInstance();
 
-        mezzo_dump($data);
-        mezzo_dump($values->inForeignTablesOnly());
-        mezzo_dump($values->inForeignTablesOnly());
-
         $model =  $modelInstance->create($values->inMainTableOnly()->toArray());
 
         if(!$model)
@@ -158,7 +154,9 @@ class ModelRepository extends EloquentRepository
         $nestedRelationsProcessor = new NestedRelationsProcessor($relations);
         $nestedRelationsProcessor->updateOrCreateBefore();
 
+        // Bring the saved ids from the nested relations into the data array
         $data = array_merge($data, $nestedRelationsProcessor->ids());
+        // Remove the relations data from main data array
         $data = array_diff_key($data, $relations->names());
 
         $model = $this->create($data);
@@ -166,6 +164,24 @@ class ModelRepository extends EloquentRepository
         $nestedRelationsProcessor->updateOrCreateAfter($model->id);
 
         return $model;
+    }
+
+    public function updateWithNestedRelations(array $data, $id, NestedRelations $relations)
+    {
+        $nestedRelationsProcessor = new NestedRelationsProcessor($relations);
+        $nestedRelationIds = $nestedRelationsProcessor->updateOrCreateBefore();
+
+        // Bring the saved ids from the nested relations into the data array
+        $data = array_merge($data, $nestedRelationIds);
+        // Remove the relations data from main data array
+        $data = array_diff_key($data, $relations->names());
+
+        $model = $this->update($data, $id);
+
+        $nestedRelationsProcessor->updateOrCreateAfter($model->id);
+
+        return $model;
+
     }
 
     /**

@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Rendering;
 
 
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
 use MezzoLabs\Mezzo\Cockpit\Html\Rendering\FormBuilder;
@@ -208,12 +209,16 @@ abstract class AttributeRenderingHandler
     {
         $checkedBoxes = $this->value([]);
 
+        if($checkedBoxes instanceof EloquentCollection)
+            $checkedBoxes = $checkedBoxes->pluck('id')->toArray();
+
         //The old value can be in the id => "1"
         $checked = isset($checkedBoxes[$id]) && $this->value([])[$id] == "1";
 
         //...or in the 0 => id, 1 => id [..] form
         if(!$checked)
             $checked = in_array($id, $checkedBoxes);
+
 
 
         return $this->formBuilder()->checkbox($this->name() . '[' . $id . ']', 1, $checked);

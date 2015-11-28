@@ -6,6 +6,7 @@ use App\Magazine\Events\Http\Pages\Events\CreateEventPage;
 use App\Magazine\Events\Http\Pages\Events\EditEventPage;
 use App\Magazine\Events\Http\Pages\Events\IndexEventPage;
 use App\Magazine\Events\Http\Requests\StoreEventRequest;
+use App\Magazine\Events\Http\Requests\UpdateEventRequest;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\CreateResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\EditResourceRequest;
@@ -57,7 +58,7 @@ class EventController extends CockpitResourceController
      */
     public function edit(EditResourceRequest $request, $id = 0)
     {
-        $event = $this->repository()->findOrFail($id, ['*'], ['address', 'days']);
+        $event = $this->repository()->findOrFail($id, ['*'], ['address', 'days', 'categories']);
 
         return $this->page(EditEventPage::class, [
             'model' => $event
@@ -72,5 +73,17 @@ class EventController extends CockpitResourceController
         );
 
         return $this->redirectToPage(EditEventPage::class, $event->id)->with('message', 'Event created successfully.');
+    }
+
+    public function update(UpdateEventRequest $request, $id)
+    {
+        $event = $this->repository()->updateWithNestedRelations(
+            $request->formObject()->data()->toArray(),
+            $id,
+            $request->nestedRelations()
+        );
+
+        return $this->redirectToPage(EditEventPage::class, $event->id)->with('message', 'Event updated successfully.');
+
     }
 }

@@ -57,7 +57,7 @@ abstract class MezzoEventDay extends BaseModel
      */
     protected $rules = [
         'start' => "required|date",
-        'end' => "required|date"
+        'end' => "required|date|after:start"
     ];
 
     /**
