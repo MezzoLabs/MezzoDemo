@@ -33,7 +33,6 @@ abstract class ResourcePage extends ModulePage
     /**
      * @param ModuleProvider $module
      * @throws ModulePageException
-     * @internal param array $options
      */
     public function __construct(ModuleProvider $module)
     {

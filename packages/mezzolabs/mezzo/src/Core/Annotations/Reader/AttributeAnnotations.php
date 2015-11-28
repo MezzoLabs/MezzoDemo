@@ -149,6 +149,7 @@ class AttributeAnnotations extends PropertyAnnotations
      */
     private function belongsToRelationAnnotations(RelationAnnotations $relationAnnotations)
     {
+
         /**
          * Check if the column of this attribute is part of the relation.
          */

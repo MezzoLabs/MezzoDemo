@@ -44,6 +44,8 @@ class NestedRelation
         $this->hasManyChildren = $this->dataHasManyChildren();
         $this->isEmpty = $this->isEmpty();
 
+        $this->processData();
+
         $this->assertThatDataFitsRelationType();
     }
 
@@ -108,7 +110,8 @@ class NestedRelation
     {
         $rules = [];
         foreach ($this->data as $arrayName => $values) {
-            mezzo_dd($values);
+            if (!isset($values['id']) && count($this->data()) > 0) continue;
+
             $rules = array_merge(
                 $rules,
                 $this->rulesForOneChild($this->name . '.' . $arrayName . '.')
@@ -283,6 +286,22 @@ class NestedRelation
 
         $this->data = new Collection($dataArray);
 
+    }
+
+    protected function processData()
+    {
+        $this->unsetEmptyChildren();
+    }
+
+    private function unsetEmptyChildren()
+    {
+        if ($this->hasManyChildren()) {
+            foreach ($this->data as $key => $values) {
+                if (empty(array_filter($values))) {
+                    $this->data->offsetUnset($key);
+                }
+            }
+        }
     }
 
 }

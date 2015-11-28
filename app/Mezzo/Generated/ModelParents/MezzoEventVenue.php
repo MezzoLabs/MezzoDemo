@@ -57,10 +57,10 @@ abstract class MezzoEventVenue extends BaseModel
      * @var array
      */
     protected $rules = [
-        'title' => "",
+        'title' => "required|between:3,150",
         'slug' => "",
-        'description' => "",
-        'address_id' => ""
+        'description' => "between:5,1500",
+        'address_id' => "required"
     ];
 
     /**
@@ -78,7 +78,7 @@ abstract class MezzoEventVenue extends BaseModel
      * @var array
      */
     protected $fillable = [
-
+        'title', 'description', 'address_id'
     ];
 
     /**
@@ -143,7 +143,7 @@ abstract class MezzoEventVenue extends BaseModel
     /**
      * Attribute annotation property for address_id
      *
-     * @Mezzo\Attribute(type="NumberInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Addresses\Schema\InputTypes\AddressInput", hidden="")
      * @var float
      */
     protected $_address_id;
@@ -179,8 +179,8 @@ abstract class MezzoEventVenue extends BaseModel
      * Relation annotation property for address
      * @Mezzo\Relations\OneToOne
      * @Mezzo\Relations\From(table="event_venues", primaryKey="id", naming="address")
-     * @Mezzo\Relations\To(table="addresses", primaryKey="id", naming="")
-     * @Mezzo\Relations\JoinColumn(table="addresses", column="event_venue_id")
+     * @Mezzo\Relations\To(table="addresses", primaryKey="id", naming="event_venues")
+     * @Mezzo\Relations\JoinColumn(table="event_venues", column="address_id")
      */
     protected $_address;
 

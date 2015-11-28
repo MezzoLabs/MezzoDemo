@@ -130,7 +130,7 @@ class AttributeValue
             return str_replace('T', ' ', $value) . ':00';
 
         //YYYY-MM-DDTHH:MM:SS -> YYYY-MM-DD HH:MM:SS
-        if(preg_match('/^\d{3,4}-\d{1,2}-\d{1,2}T\d{1,2}:\d{1,2}$:\d{1,2}/', $value))
+        if(preg_match('/^\d{3,4}-\d{1,2}-\d{1,2}T\d{1,2}:\d{1,2}:\d{1,2}$/', $value))
             return str_replace('T', ' ', $value);
 
         return $value;

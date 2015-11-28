@@ -22,8 +22,13 @@ class Address extends MezzoAddress
             $this->addressee,
             $this->street,
             $this->street_extra,
-            $this->city
+            $this->zip,
+            $this->city,
+            $this->country
         ];
+
+
+        return implode(' ', array_filter($array));
     }
 
 }

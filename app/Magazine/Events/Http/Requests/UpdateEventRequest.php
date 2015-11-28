@@ -15,7 +15,16 @@ class UpdateEventRequest extends UpdateResourceRequest
      */
     public function rules()
     {
-        mezzo_dd(parent::rules());
+        $rules = parent::rules();
+
+        foreach ($rules as $key => $string) {
+            $isEndDate = preg_match('@^(days\.\d+\.)end$@', $key, $matches);
+
+            if($isEndDate)
+                $rules[$key] = str_replace('after:start', 'after:' .$matches[1] . 'start', $string);
+        }
+
+        return $rules;
     }
 
     public function validate()
