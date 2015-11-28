@@ -62,6 +62,11 @@ class Category extends CategoriesModuleCategory
         return $this->belongsToMany(Event::class);
     }
 
+    public function group()
+    {
+        return $this->belongsTo(CategoryGroup::class, 'category_group_id', 'id');
+    }
+
     public function scopeInGroup($query, $groupName)
     {
         $group = CategoryGroup::findByIdentifierOrFail($groupName);

@@ -13,19 +13,36 @@ class StoreEventRequest extends StoreResourceRequest
     use HasNestedAddress;
 
     /**
+     * Called right after a request is constructed
+     */
+    protected function boot()
+    {
+        parent::boot();
+    }
+
+
+    /**
      * Validate the class instance.
      *
      * @return void
      */
     public function validate()
     {
-        if (!$this->has('user_id'))
-            $this->offsetSet('user_id', Auth::user()->id);
-
         parent::validate();
     }
 
+    /**
+     * Creates a form object for the current resource request.
+     *
+     * @return FormObject|GenericFormObject
+     */
+    public function formObject()
+    {
+        $formObject = parent::formObject();
 
+        if (empty($formObject->data()->get('user_id', '')))
+            $formObject->data()->put('user_id', Auth::user()->id);
 
-
+        return $formObject;
+    }
 }

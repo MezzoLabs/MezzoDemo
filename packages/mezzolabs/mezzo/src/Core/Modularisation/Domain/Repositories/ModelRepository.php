@@ -81,9 +81,7 @@ class ModelRepository extends EloquentRepository
     public static function makeRepository($model = null)
     {
         if ($model) {
-            /**
-             * Find the model reflection, normalize the $model variable.
-             */
+             // Find the model reflection, normalize the $model variable.
             $model = mezzo()->model($model);
 
             return new ModelRepository($model);
@@ -137,11 +135,22 @@ class ModelRepository extends EloquentRepository
      */
     public function create(array $data)
     {
-        //TODO Check for Relations
-        $values = $this->values($data)->inMainTableOnly();
+        $values = $this->values($data);
 
         $modelInstance = $this->modelInstance();
-        return $modelInstance->create($values->toArray());
+
+        mezzo_dump($data);
+        mezzo_dump($values->inForeignTablesOnly());
+        mezzo_dump($values->inForeignTablesOnly());
+
+        $model =  $modelInstance->create($values->inMainTableOnly()->toArray());
+
+        if(!$model)
+            throw new RepositoryException('Cannot create new model of type ' . $this->modelReflection()->className());
+
+        $this->updateRelations($model, $values->inForeignTablesOnly());
+
+        return $model;
     }
 
     public function createWithNestedRelations(array $data, NestedRelations $relations)

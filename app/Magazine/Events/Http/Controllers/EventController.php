@@ -60,14 +60,14 @@ class EventController extends CockpitResourceController
         $event = $this->repository()->findOrFail($id, ['*'], ['address', 'days']);
 
         return $this->page(EditEventPage::class, [
-                'model' => $event
-            ]);
+            'model' => $event
+        ]);
     }
 
     public function store(StoreEventRequest $request)
     {
         $event = $this->repository()->createWithNestedRelations(
-            $request->all(),
+            $request->formObject()->data()->toArray(),
             $request->nestedRelations()
         );
 

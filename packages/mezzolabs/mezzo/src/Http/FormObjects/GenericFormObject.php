@@ -28,6 +28,8 @@ class GenericFormObject implements FormObject
     {
         $this->model = mezzo()->model($model);
         $this->data = new Collection($data);
+
+        $this->convertCheckboxArrays();
     }
 
 
@@ -92,7 +94,7 @@ class GenericFormObject implements FormObject
 
 
         $this->data->each(function ($value, $name) use ($nested) {
-            if (!is_array($value)) {
+            if (!is_array($value) || $this->isIdsArray($value)) {
                 return true;
             }
 
@@ -103,6 +105,7 @@ class GenericFormObject implements FormObject
 
         return $nested;
     }
+
 
     /**
      * @return \MezzoLabs\Mezzo\Core\Schema\Relations\RelationSides
@@ -138,5 +141,31 @@ class GenericFormObject implements FormObject
         });
 
         return $filteredRules;
+    }
+
+    protected function convertCheckboxArrays()
+    {
+        foreach ($this->data as $key => $value) {
+            if (!$this->isIdsArray($value)) continue;
+
+            $isAssoc = array_values($value) === $value;
+            if($isAssoc) continue;
+
+            $this->data->offsetSet($key, array_keys($value));
+
+        }
+    }
+
+    protected function isIdsArray($array)
+    {
+        if(!is_array($array))
+            return false;
+
+        foreach ($array as $key => $value) {
+            if(!is_numeric($key) || (!is_numeric($value) && $value != "on"))
+                return false;
+        }
+
+        return true;
     }
 }

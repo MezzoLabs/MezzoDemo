@@ -2,7 +2,7 @@
     @foreach($categories as $category)
         <li class="checkbox">
             <label>
-                <input type="checkbox" name="{{ $renderer->name() }}[{{ $category->id }}]" value="">
+                {!! $renderer->renderCheckbox($category->id) !!}
                 {{ $category->label }}
             </label>
             @include('cockpit::partials.categories_input_items', ['categories' => $category->children()->get()])

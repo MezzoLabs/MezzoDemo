@@ -154,7 +154,7 @@ class FormBuilder extends CollectiveFormBuilder
      */
     public function input($type, $name, $value = null, $options = [])
     {
-        if (!isset($options['class']) && $type !== "hidden")
+        if (!isset($options['class']) && !in_array($type, ["hidden", "checkbox"]))
             $options['class'] = 'form-control';
 
         return parent::input($type, $name, $value, $options);

@@ -8,10 +8,10 @@
         </div>
     </div>
     <div class="col-md-3">
-        {!! $renderer->renderNested('latitude', ['readonly' => 'readonly', 'default' => "0.1"]) !!}
+        {!! $renderer->renderNested('latitude', ['readonly' => 'readonly', 'default' => "0.0"]) !!}
     </div>
     <div class="col-md-3">
-        {!! $renderer->renderNested('longitude', ['readonly' => 'readonly', 'default' => "0.1"]) !!}
+        {!! $renderer->renderNested('longitude', ['readonly' => 'readonly', 'default' => "0.0"]) !!}
     </div>
     <div class="col-md-12">
         <hr/>

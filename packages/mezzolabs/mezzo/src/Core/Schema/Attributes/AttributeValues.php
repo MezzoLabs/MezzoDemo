@@ -81,7 +81,7 @@ class AttributeValues extends StrictCollection
     public function inMainTableOnly()
     {
         return $this->filter(function (AttributeValue $value) {
-            return $value->attribute()->isAtomic() || $value->isInteger();
+            return $value->attribute()->isAtomic() || $value->isOneChildRelationInMainTable();
         });
     }
 

@@ -129,7 +129,7 @@ abstract class AttributeRenderingHandler
         return StringHelper::fromArrayToDotNotation($this->name());
     }
 
-    public function value()
+    public function value($default = null)
     {
         if ($this->getOptions()->hasAttribute('value'))
             return $this->getOptions()->getAttribute('value');
@@ -145,7 +145,7 @@ abstract class AttributeRenderingHandler
             return data_get($this->formBuilder()->getModel(), $this->dotNotationName());
         }
 
-        return null;
+        return $default;
     }
 
     public function old()
@@ -202,6 +202,21 @@ abstract class AttributeRenderingHandler
         $nestedAttribute = $nestedModel->attributes($nestedAttributeName);
 
         return mezzo()->attribute($nestedModel->className(), $nestedAttribute->name())->render($options);
+    }
+
+    public function renderCheckbox($id)
+    {
+        $checkedBoxes = $this->value([]);
+
+        //The old value can be in the id => "1"
+        $checked = isset($checkedBoxes[$id]) && $this->value([])[$id] == "1";
+
+        //...or in the 0 => id, 1 => id [..] form
+        if(!$checked)
+            $checked = in_array($id, $checkedBoxes);
+
+
+        return $this->formBuilder()->checkbox($this->name() . '[' . $id . ']', 1, $checked);
     }
 
 

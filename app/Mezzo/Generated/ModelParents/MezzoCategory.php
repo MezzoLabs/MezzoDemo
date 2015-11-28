@@ -30,7 +30,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 * @property float $_lft
 * @property float $_rgt
 * @property float $parent_id
-* @property \App\CategoryGroup $
+* @property \App\CategoryGroup $group
 * @property EloquentCollection $tutorials
 * @property EloquentCollection $posts
 * @property EloquentCollection $events
@@ -91,15 +91,15 @@ abstract class MezzoCategory extends \MezzoLabs\Mezzo\Core\ThirdParties\NestedSe
     ];
 
     /**
-* The attributes that should be casted to native types.
-*
-* * @var array            
-*/
-protected $casts = [
+    * The attributes that should be casted to native types.
+    *
+    * * @var array            
+    */
+    protected $casts = [
         
     ];
 
-/**
+    /**
     * Indicates if the model should be timestamped.
     *
     * @var bool            
@@ -107,7 +107,7 @@ protected $casts = [
     public $timestamps = true;
 
 
-/*
+    /*
     |-------------------------------------------------------------------------------------------------------------------
     | Attribute annotation properties
     |-------------------------------------------------------------------------------------------------------------------    |
@@ -201,14 +201,14 @@ protected $casts = [
     */
 
     /**
-    * Relation annotation property for 
+    * Relation annotation property for group
     * @Mezzo\Relations\OneToMany
     * @Mezzo\Relations\From(table="category_groups", primaryKey="id", naming="categories")
-    * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="")
+    * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="group")
     * @Mezzo\Relations\JoinColumn(table="categories", column="category_group_id")
     * @Mezzo\Relations\Scopes("")
     */
-    protected $_;
+    protected $_group;
 
     /**
     * Relation annotation property for tutorials

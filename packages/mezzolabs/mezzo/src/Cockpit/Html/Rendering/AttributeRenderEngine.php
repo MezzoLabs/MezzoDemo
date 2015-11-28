@@ -49,7 +49,7 @@ class AttributeRenderEngine extends AbstractAttributeRenderEngine
         $attributes->put('data-model', $attribute->otherRelationSide()->modelReflection()->name());
         $attributes->put('data-relation', $attribute->relation()->shortType());
 
-        $attributes->put('data-multiple', $attribute->hasMultipleChildren());
+        $attributes->put('data-multiple', ($attribute->hasMultipleChildren()) ? 1 : 0);
 
         if ($attribute->hasMultipleChildren())
             $attributes->put('multiple', 'multiple');
