@@ -1,14 +1,14 @@
 <div class="row">
     <div class="col-md-9">
-        <div class="content-blocks">
-            <div class="content-block" ng-repeat="block in vm.contentBlocks">
+        <div class="content-blocks" sv-root sv-part="vm.contentBlocks" >
+            <div class="content-block" ng-repeat="block in vm.contentBlocks" sv-element>
                 <div class="content-block-heading">
                     <b>@{{ block.title }}</b>
                     <small>@{{ block.hash }}</small>
                     <div class="content-block-actions">
                         <a class="" href="#"><i class="ion-ios-gear"></i></a>
-                        <a href="#"><i class="ion-arrow-move"></i></a>
-                        <a href=""><i class="ion-ios-close-empty" ng-click="vm.removeContentBlock($index)"></i></a>
+                        <a href="#"><i class="ion-arrow-move" sv-handle></i></a>
+                        <a href="#"><i class="ion-ios-close-empty" ng-click="vm.removeContentBlock($index)"></i></a>
                     </div>
                 </div>
                 <div class="content-block-body block-@{{ block.key }}" mezzo-compile-html="block.template"></div>
