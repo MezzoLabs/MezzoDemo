@@ -45,11 +45,12 @@
 {!! cockpit_script('/components/angular-messages/angular-messages.min.js') !!}
 {!! cockpit_script('/components/angular-sortable-view/src/angular-sortable-view.min.js') !!}
 {!! cockpit_script('/components/ng-file-upload/ng-file-upload.min.js') !!}
+{!! cockpit_script('/components/angular-loading-bar/build/loading-bar.min.js') !!}
 {!! cockpit_script('/components/chosen/chosen.jquery.min.js') !!}
 {!! cockpit_script('/components/pluralize/pluralize.js') !!}
 {!! cockpit_script('/components/sweetalert2/dist/sweetalert2.min.js') !!}
 {!! cockpit_script('/components/moment/min/moment.min.js') !!}
 {!! cockpit_script('/js/app.js') !!}
-        <!-- JavaScript -->
+<!-- JavaScript -->
 </body>
 </html>

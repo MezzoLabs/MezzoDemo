@@ -2,7 +2,7 @@ import File from './File';
 import Folder from './Folder';
 import categories from './categories';
 
-export default class FileManagerController {
+export default class CreateFileController {
 
     /*@ngInject*/
     constructor($scope, api, Upload){
@@ -26,7 +26,7 @@ export default class FileManagerController {
 
         this.api.files().then(apiFiles => {
             apiFiles.forEach(apiFile => {
-                var file = new File(apiFile.filename, apiFile.filename, apiFile.extension);
+                const file = new File(apiFile);
 
                 this.library.files.push(file);
             });

@@ -1,10 +1,12 @@
 export default class File {
 
-    constructor(title, name, extension){
-        this.title = title;
-        this.name = name;
-        this.extension = extension;
-        this.type = 'file';
+    constructor(apiFile){
+        this.id = apiFile.id;
+        this.title = apiFile.filename;
+        this.name = apiFile.filename;
+        this.extension = apiFile.extension;
+        this.url = apiFile.url;
+        this.type = apiFile.type;
         this.isFolder = false;
     }
 
