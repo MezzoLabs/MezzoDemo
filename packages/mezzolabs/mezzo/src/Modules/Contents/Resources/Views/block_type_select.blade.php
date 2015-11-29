@@ -8,7 +8,7 @@
                     <div class="content-block-actions">
                         <a class="" href="#"><i class="ion-ios-gear"></i></a>
                         <a href="#"><i class="ion-arrow-move"></i></a>
-                        <a href="#"><i class="ion-ios-close-empty"></i></a>
+                        <a href=""><i class="ion-ios-close-empty" ng-click="vm.removeContentBlock($index)"></i></a>
                     </div>
                 </div>
                 <div class="content-block-body block-@{{ block.key }}" mezzo-compile-html="block.template"></div>

@@ -385,6 +385,11 @@ var CreatePageController = (function () {
             this.contentBlocks.push(contentBlock);
         }
     }, {
+        key: 'removeContentBlock',
+        value: function removeContentBlock(index) {
+            this.contentBlocks.splice(index, 1);
+        }
+    }, {
         key: 'fillTemplate',
         value: function fillTemplate(contentBlock) {
             var _this = this;

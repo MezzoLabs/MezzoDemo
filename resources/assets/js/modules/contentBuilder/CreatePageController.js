@@ -22,6 +22,10 @@ export default class CreatePageController {
         this.contentBlocks.push(contentBlock);
     }
 
+    removeContentBlock(index) {
+        this.contentBlocks.splice(index, 1);
+    }
+
     fillTemplate(contentBlock) {
         const cachedTemplate = this.templates[contentBlock.hash];
 
