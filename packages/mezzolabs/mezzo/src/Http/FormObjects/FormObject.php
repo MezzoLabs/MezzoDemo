@@ -9,11 +9,18 @@ use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 interface FormObject
 {
     /**
-     * Return all the rules of atomic attributes and nested relations in a dot notation.
+     * Return all the rules of atomic attributes and nested relations for a store request in a dot notation.
      *
      * @return array
      */
-    public function rules();
+    public function rulesForStoring();
+
+    /**
+     * Return all the rules of atomic attributes and nested relations for a update request in a dot notation.
+     *
+     * @return array
+     */
+    public function rulesForUpdating();
 
     /**
      * The reflection of the eloquent model.

@@ -7,5 +7,4 @@ use MezzoLabs\Mezzo\Http\Controllers\ApiResourceController;
 
 class CategoryApiController extends ApiResourceController
 {
-
 }

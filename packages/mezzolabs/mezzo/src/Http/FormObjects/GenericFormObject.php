@@ -4,9 +4,11 @@
 namespace Mezzolabs\Mezzo\Cockpit\Http\FormObjects;
 
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Validation\Validator;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class GenericFormObject implements FormObject
 {
@@ -42,6 +44,7 @@ class GenericFormObject implements FormObject
     protected function processData()
     {
         $this->removeMetaInfo();
+        $this->convertCommaSeparatedIds();
         $this->convertCheckboxArrays();
     }
 
@@ -105,7 +108,6 @@ class GenericFormObject implements FormObject
     {
         $nested = new NestedRelations();
 
-
         $this->data->each(function ($value, $name) use ($nested) {
             if (!is_array($value) || $this->isIdsArray($value)) {
                 return true;
@@ -134,7 +136,7 @@ class GenericFormObject implements FormObject
      *
      * @return array
      */
-    public function rules()
+    protected function rules()
     {
         $modelRules = $this->model()->rules();
         $relationRules = $this->nestedRelations()->rules();
@@ -156,6 +158,21 @@ class GenericFormObject implements FormObject
         return $filteredRules;
     }
 
+    protected function convertCommaSeparatedIds()
+    {
+        foreach ($this->data as $key => $value) {
+            if(! $this->model->schema()->hasAttribute($key))
+                throw new BadRequestHttpException("The models doesn't know the attribute \"". $key .'"');
+
+            if(! $this->model->schema()->attributes($key)->isRelationAttribute() || is_array($value))
+                continue;
+
+            if(str_contains($value, ','))
+                $this->data[$key] = explode(',', $value);
+        }
+    }
+
+
     protected function convertCheckboxArrays()
     {
         foreach ($this->data as $key => $value) {
@@ -167,6 +184,25 @@ class GenericFormObject implements FormObject
             $this->data->offsetSet($key, array_keys($value));
 
         }
+    }
+
+    /**
+     * Check if an array is a list of ids
+     *
+     * @param $array
+     * @return bool
+     */
+    protected function isIdsArray($array)
+    {
+        if (!is_array($array))
+            return false;
+
+        foreach ($array as $key => $value) {
+            if (!is_numeric($key) || (!is_numeric($value) && $value != "on"))
+                return false;
+        }
+
+        return true;
     }
 
     protected function removeMetaInfo()
@@ -181,18 +217,24 @@ class GenericFormObject implements FormObject
         }
     }
 
-    protected function isIdsArray($array)
+
+    /**
+     * Return all the rules of atomic attributes and nested relations for a store request in a dot notation.
+     *
+     * @return array
+     */
+    public function rulesForStoring()
     {
-        if (!is_array($array))
-            return false;
-
-        foreach ($array as $key => $value) {
-            if (!is_numeric($key) || (!is_numeric($value) && $value != "on"))
-                return false;
-        }
-
-        return true;
+        return Arr::dot($this->rules());
     }
 
-
+    /**
+     * Return all the rules of atomic attributes and nested relations for a update request in a dot notation.
+     *
+     * @return array
+     */
+    public function rulesForUpdating()
+    {
+        return Arr::dot($this->rules());
+    }
 }

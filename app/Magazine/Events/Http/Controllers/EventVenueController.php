@@ -4,6 +4,7 @@
 namespace App\Magazine\Events\Http\Controllers;
 
 
+use App\Magazine\Events\Http\Pages\Events\EditEventPage;
 use App\Magazine\Events\Http\Pages\EventVenues\CreateEventVenuePage;
 use App\Magazine\Events\Http\Pages\EventVenues\IndexEventVenuePage;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
@@ -72,5 +73,5 @@ class EventVenueController extends CockpitResourceController
 
         return $this->redirectToPage(EditEventPage::class, $event->id)->with('message', 'Event created successfully.');
     }
-}
+
 }

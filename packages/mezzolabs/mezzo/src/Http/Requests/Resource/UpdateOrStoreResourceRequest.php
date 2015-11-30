@@ -15,15 +15,7 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
      */
     private $formObject = null;
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return $this->formObject()->rules();
-    }
+
 
     /**
      * Creates a form object for the current resource request.
@@ -33,10 +25,15 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
     public function formObject()
     {
         if (!$this->formObject) {
-            $this->formObject = new GenericFormObject($this->modelReflection(), $this->all());
+            $this->formObject = $this->makeFormObject();
         }
 
         return $this->formObject;
+    }
+
+    protected function makeFormObject()
+    {
+        return new GenericFormObject($this->modelReflection(), $this->all());
     }
 
     /**

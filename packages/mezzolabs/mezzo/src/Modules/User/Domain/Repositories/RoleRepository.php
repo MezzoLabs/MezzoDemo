@@ -52,15 +52,6 @@ class RoleRepository extends ModelRepository
         return $role->permissions()->sync($permissions);
     }
 
-    /**
-     * @param $id
-     * @param array $columns
-     * @return \App\Role
-     */
-    public function findOrFail($id, $columns = array('*'))
-    {
-        return parent::findOrFail($id, $columns);
-    }
 
     /**
      * @param $roleId

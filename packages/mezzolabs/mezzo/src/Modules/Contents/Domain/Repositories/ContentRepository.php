@@ -37,16 +37,6 @@ class ContentRepository extends ModelRepository
         return $content;
     }
 
-    /**
-     * @param $id
-     * @param array $columns
-     * @return \App\Content
-     */
-    public function findOrFail($id, $columns = array('*'))
-    {
-        return parent::findOrFail($id, $columns);
-    }
-
 
     /**
      * Get an instance of the repository that handles the content blocks.

@@ -3,9 +3,12 @@
 
 namespace MezzoLabs\Mezzo\Modules\FileManager\Http\Pages;
 
-use MezzoLabs\Mezzo\Cockpit\Pages\Resources\EditResourcePage;
+use MezzoLabs\Mezzo\Cockpit\Pages\Resources\CreateResourcePage;
 
-class EditFilePage extends EditResourcePage
+class CreateFilePage extends CreateResourcePage
 {
+    protected $view = 'modules.file-manager::pages.filemanager';
+
+    protected $title = "Manage Files";
 
 }

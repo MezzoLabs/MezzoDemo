@@ -5,7 +5,7 @@
     <div class="col-md-6">
         <div class="form-group">
             <label>{{ $fields['text']->title() }}</label>
-    <textarea name="{{ $block->inputName('text') }}"
+            <textarea name="{{ $block->inputName('text') }}"
               class="form-control">{{ old($block->inputName('text')) }}</textarea>
         </div>
     </div>
@@ -13,7 +13,12 @@
         <div class="form-group">
             <label>{{ $fields['image']->title() }}</label>
 
+            <mezzo-file-picker-modal file-type="image" field-name="{{ $block->inputName('image') }}" multiple></mezzo-file-picker-modal>
+
+
+            <button type="button" class="btn btn-primary" mezzo-file-picker>Select file(s)</button>
             <p><a type="button" href="{{ route('cockpit::file.index') }}" class="btn btn-default">Select image</a></p>
+
             <input type="text" class="form-control" value="{{ old($block->inputName('image')) }}"
                    name="{{ $block->inputName('image') }}">
         </div>

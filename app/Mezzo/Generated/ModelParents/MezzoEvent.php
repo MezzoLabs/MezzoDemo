@@ -173,7 +173,7 @@ abstract class MezzoEvent extends BaseModel
     /**
      * Attribute annotation property for user_id
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="create")
      * @var integer
      */
     protected $_user_id;

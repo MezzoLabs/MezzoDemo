@@ -12,9 +12,6 @@
         <div class="panel panel-bordered">
             <div class="panel-heading">
                 <h3>New {{ $model_reflection->name() }}</h3>
-
-                <div class="panel-actions">
-                </div>
             </div>
             <div class="panel-body">
                 @include(cockpit_html()->viewKey('form-content-create'), [

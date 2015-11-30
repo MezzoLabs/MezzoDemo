@@ -27,4 +27,14 @@ class UpdateResourceRequest extends UpdateOrStoreResourceRequest
     {
         return intval($this->route('id'));
     }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return $this->formObject()->rulesForUpdating();
+    }
 }
