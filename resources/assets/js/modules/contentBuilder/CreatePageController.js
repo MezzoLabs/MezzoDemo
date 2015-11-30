@@ -1,24 +1,29 @@
 export default class CreatePageController {
 
     /*@ngInject*/
-    constructor(api, $sce) {
+    constructor(api, random) {
         this.api = api;
-        this.$sce = $sce;
+        this.random = random;
         this.contentBlocks = [];
         this.templates = {};
     }
 
-    addContentBlock(key, title, hash, propertyInputName) {
+    addContentBlock(key, hash, title) {
         const contentBlock = {
+            id: '',
             key: key,
-            title: title,
             hash: hash,
-            propertyInputName: propertyInputName,
+            title: title,
+            nameInForm: this.random.string(),
             template: null
         };
 
         this.fillTemplate(contentBlock);
         this.contentBlocks.push(contentBlock);
+    }
+
+    removeContentBlock(index) {
+        this.contentBlocks.splice(index, 1);
     }
 
     fillTemplate(contentBlock) {
@@ -30,9 +35,8 @@ export default class CreatePageController {
 
         this.api.contentBlockTemplate(contentBlock.hash)
             .then(template => {
-                const trustedTemplate = this.$sce.trustAsHtml(template);
-                contentBlock.template = trustedTemplate;
-                this.templates[contentBlock.hash] = trustedTemplate;
+                contentBlock.template = template;
+                this.templates[contentBlock.hash] = template;
             });
     }
 

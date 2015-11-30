@@ -1,0 +1,50 @@
+<div id="mezzoFilePickerModal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"></button>
+                <h4 class="modal-title" ng-bind="vm.title()"></h4>
+            </div>
+            <div class="modal-body">
+                <input type="search" class="form-control input-sm" placeholder="Search" ng-model="vm.searchText">
+                <hr>
+                <div class="row">
+                    <div ng-class="vm.leftColumnClass()">
+                        <table class="table table-condensed" ng-show="vm.filteredFiles().length > 0">
+                            <tr ng-repeat="file in vm.filteredFiles() track by file.id">
+                                <td style="width: 20px">
+                                    <input type="checkbox" ng-model="file.selected" ng-change="vm.onSelect(file)">
+                                </td>
+                                <td style="width: 20px">
+                                    <span ng-class="file.icon()"></span>
+                                </td>
+                                <td>
+                                    <span ng-bind="file.name" ng-hide="file.isImage()"></span>
+                                    <a href="" ng-bind="file.name" ng-click="vm.setPreview(file)" ng-show="file.isImage()"></a>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="alert alert-danger" ng-show="vm.filteredFiles().length === 0">
+                            Nothing here to see...
+                        </div>
+                    </div>
+                    <div class="col-xs-6" ng-if="vm.previewSource()">
+                        <a href="" class="thumbnail" ng-click="vm.hidePreview()">
+                            <img class="img-responsive" ng-src="{{vm.previewSource()}}">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                <button type="button"
+                        class="btn btn-primary pull-right"
+                        data-dismiss="modal"
+                        ng-disabled="vm.disableSelectButton()"
+                        ng-bind="vm.selectButtonLabel()"
+                        ng-click="vm.confirmSelected()">
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
