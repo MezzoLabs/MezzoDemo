@@ -121,7 +121,7 @@ abstract class EloquentModelTransformer extends ModelTransformer
 
         $returnCollection->put('id', $model->id);
         $returnCollection->put('_label', $model->label);
-        $returnCollection->put('_urls', $this->urlsArray($model));
+        //$returnCollection->put('_urls', $this->urlsArray($model));
 
         return $returnCollection->toArray();
     }
