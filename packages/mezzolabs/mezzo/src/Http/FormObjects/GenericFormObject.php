@@ -8,7 +8,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Validation\Validator;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class GenericFormObject implements FormObject
 {
@@ -162,7 +161,7 @@ class GenericFormObject implements FormObject
     {
         foreach ($this->data as $key => $value) {
             if(! $this->model->schema()->hasAttribute($key))
-                throw new BadRequestHttpException("The models doesn't know the attribute \"". $key .'"');
+                continue;
 
             if(! $this->model->schema()->attributes($key)->isRelationAttribute() || is_array($value))
                 continue;

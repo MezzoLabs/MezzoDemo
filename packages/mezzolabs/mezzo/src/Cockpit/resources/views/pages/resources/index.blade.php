@@ -2,9 +2,8 @@
 
 
 @section('content')
-
     <div class="wrapper"
-         ng-init="vm.init('{{ $model_reflection->name() }}', {!! str_replace('"', "'", $model_reflection->defaultIncludes()->toJson()) !!})">
+         ng-init="vm.init('{{ $model_reflection->slug() }}', {!! str_replace('"', "'", $model_reflection->defaultIncludes()->toJson()) !!})">
 
         <!-- Top Container -->
         <div class="panel panel-bordered">

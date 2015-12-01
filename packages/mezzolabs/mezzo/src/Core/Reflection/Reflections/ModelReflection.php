@@ -98,6 +98,11 @@ abstract class ModelReflection
         return $this->modelReflectionSet->shortName();
     }
 
+    public function slug()
+    {
+        return str_slug(space_case($this->name()));
+    }
+
     /**
      * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
      */

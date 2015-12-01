@@ -203,13 +203,10 @@ class AnnotationGenerator
         $relation = $relationSide->relation();
         $relationType = $relation->shortType();
 
-        //There is no attribute for m:n relations from the start.
-        try {
-            $bestAttribute = mezzo()->attribute($relationSide->table(), $relationSide->attributeName());
-        } catch(\Exception $e) {
-            $bestAttribute = new RelationAttribute($relationSide->attributeName(), $relationSide);
-            $bestAttribute->setModel($relationSide->modelReflection()->schema());
-        }
+        $bestAttribute = mezzo()->attribute($relationSide->table(), $relationSide->attributeName());
+
+        if (!$bestAttribute instanceof RelationAttribute)
+            $bestAttribute = mezzo()->attribute($relationSide->table(), $relationSide->attributeName(), true);
 
         if (!$bestAttribute instanceof RelationAttribute)
             throw new ReflectionException($bestAttribute->qualifiedName() . ' has to be a relation attribute.');

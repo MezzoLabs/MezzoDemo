@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core;
 
 use Illuminate\Foundation\Application;
 use MezzoLabs\Mezzo\Core\Booting\BootManager;
+use MezzoLabs\Mezzo\Core\Logging\Logger as MezzoLogger;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
@@ -113,15 +114,20 @@ class Mezzo
     /**
      * @param $modelName
      * @param $attributeName
+     * @param bool $forceEloquent
      * @return Attribute|RelationAttribute
      * @throws ReflectionException
      */
-    public function attribute($modelName, $attributeName)
+    public function attribute($modelName, $attributeName, $forceEloquent = false)
     {
-        $mezzoModel = $this->model($modelName, 'mezzo');
 
-        if ($mezzoModel && $mezzoModel->attributes()->has($attributeName))
-            return $mezzoModel->attributes()->get($attributeName);
+        if (!$forceEloquent) {
+            $mezzoModel = $this->model($modelName, 'mezzo');
+
+            if ($mezzoModel && $mezzoModel->attributes()->has($attributeName))
+                return $mezzoModel->attributes()->get($attributeName);
+        }
+
 
         $eloquentModel = $this->model($modelName, 'eloquent');
         if ($eloquentModel && $eloquentModel->attributes()->has($attributeName))
@@ -191,6 +197,14 @@ class Mezzo
 
         return $optionsService->set($name, $value);
 
+    }
+
+    /**
+     * @return Logging\Logger
+     */
+    public function logger()
+    {
+        return MezzoLogger::make();
     }
 
 

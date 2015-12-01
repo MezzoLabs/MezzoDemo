@@ -14,6 +14,8 @@ export default class ResourceIndexController {
     init(modelName){
         this.modelApi = this.api.model(modelName);
 
+        console.log(modelName);
+
         this.loadModels();
     }
 

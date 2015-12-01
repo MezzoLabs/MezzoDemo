@@ -292,7 +292,7 @@ class EloquentRelationshipReflection
         if ($this->is('BelongsToMany'))
             return $correctTables && $correctColumns && $check->pivotTable() == $this->pivotTable();
 
-        if(!$correctTables) return false;
+        if (!$correctTables) return false;
 
         return $correctTables && $correctColumns;
     }
@@ -335,19 +335,27 @@ class EloquentRelationshipReflection
     }
 
     /**
-     * Get the counterpart if this relationship reflection
+     * Get the counterpart of this relationship reflection
      *
      * @return EloquentRelationshipReflection
      */
     public function counterpart()
     {
         if (!$this->counterpart) {
-            $counterpartModel = $this->relatedModelReflection();
-
-            $this->counterpart = $counterpartModel->relationshipReflections()->findCounterpartTo($this);
+            $this->counterpart = $this->findCounterpart();
         }
 
         return $this->counterpart;
+    }
+
+    public function findCounterpart()
+    {
+        $counterpartModel = $this->relatedModelReflection();
+
+        if ($this->isSelfReferencing())
+            return $this;
+
+        return $counterpartModel->relationshipReflections()->findCounterpartTo($this);
     }
 
     /**
@@ -393,6 +401,13 @@ class EloquentRelationshipReflection
         $schema = $this->schemaConverter->run($this);
 
         return $schema;
+    }
+
+    public function isSelfReferencing()
+    {
+        $counterpartModel = $this->relatedModelReflection();
+
+        return $counterpartModel->className() == $this->modelReflection->className();
     }
 
 }

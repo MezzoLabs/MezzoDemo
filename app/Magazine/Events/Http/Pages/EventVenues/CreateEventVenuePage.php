@@ -9,7 +9,7 @@ use MezzoLabs\Mezzo\Cockpit\Pages\Resources\CreateResourcePage;
 class CreateEventVenuePage extends CreateResourcePage
 {
     protected $options = [
-        'visibleInNavigation' => false,
+        'visibleInNavigation' => true,
         'renderedByFrontend' => false
     ];
 }

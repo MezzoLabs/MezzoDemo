@@ -74,4 +74,9 @@ class Category extends CategoriesModuleCategory
         return $query->where('category_group_id', '=', $group->id);
     }
 
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id', 'id');
+    }
+
 }

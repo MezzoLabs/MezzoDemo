@@ -4,8 +4,8 @@
 namespace App\Magazine\Events\Http\Controllers;
 
 
-use App\Magazine\Events\Http\Pages\Events\EditEventPage;
 use App\Magazine\Events\Http\Pages\EventVenues\CreateEventVenuePage;
+use App\Magazine\Events\Http\Pages\EventVenues\EditEventVenuePage;
 use App\Magazine\Events\Http\Pages\EventVenues\IndexEventVenuePage;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\CreateResourceRequest;
@@ -13,6 +13,7 @@ use MezzoLabs\Mezzo\Http\Requests\Resource\EditResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\IndexResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\ShowResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\StoreResourceRequest;
+use MezzoLabs\Mezzo\Http\Requests\Resource\UpdateResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
 
 class EventVenueController extends CockpitResourceController
@@ -61,7 +62,9 @@ class EventVenueController extends CockpitResourceController
      */
     public function edit(EditResourceRequest $request, $id)
     {
-        // TODO: Implement edit() method.
+        return $this->page(EditEventVenuePage::class,[
+            'model' => $this->repository()->findOrFail($id, ['*'], ['address'])
+        ]);
     }
 
     public function store(StoreResourceRequest $request)
@@ -71,7 +74,21 @@ class EventVenueController extends CockpitResourceController
             $request->nestedRelations()
         );
 
-        return $this->redirectToPage(EditEventPage::class, $event->id)->with('message', 'Event created successfully.');
+        return $this->redirectToPage(EditEventVenuePage::class, $event->id)->with('message', 'Event venue created successfully.');
+    }
+
+    public function update(UpdateResourceRequest $request, $id)
+    {
+        $event = $this->repository()->updateWithNestedRelations(
+            $request->formObject()->data()->toArray(),
+            $id,
+            $request->nestedRelations()
+        );
+
+        mezzo_dd('updated');
+
+        return $this->redirectToPage(EditEventVenuePage::class, $event->id)->with('message', 'Event venue updated successfully.');
+
     }
 
 }

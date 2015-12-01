@@ -19,6 +19,7 @@ class EditEventVenuePage extends EditResourcePage
         parent::__construct($module);
 
         $this->options('renderedByFrontend', false);
+
     }
 
 

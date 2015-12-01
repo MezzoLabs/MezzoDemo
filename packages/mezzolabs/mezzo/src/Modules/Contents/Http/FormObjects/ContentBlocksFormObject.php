@@ -13,6 +13,7 @@ use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 
 class ContentBlocksFormObject implements FormObject
 {
+    const CONTENT_FORM_NAME = "content";
     const BLOCKS_FORM_NAME = "blocks";
     const FIELDS_FORM_NAME = "fields";
 
@@ -29,6 +30,11 @@ class ContentBlocksFormObject implements FormObject
     /**
      * @var Collection
      */
+    protected $contentData;
+
+    /**
+     * @var Collection
+     */
     protected $allData;
 
     /**
@@ -39,8 +45,10 @@ class ContentBlocksFormObject implements FormObject
     {
         $this->allData = new Collection($data);
 
-        $this->blocksData = new Collection($this->allData->get(static::BLOCKS_FORM_NAME));
-        $this->genericFormObject = new GenericFormObject($model, $this->allData->except(static::BLOCKS_FORM_NAME));
+        $this->contentsData = new Collection($this->allData->get(static::CONTENT_FORM_NAME, []));
+        $this->blocksData = new Collection($this->contentsData->get(static::BLOCKS_FORM_NAME, []));
+
+        $this->genericFormObject = new GenericFormObject($model, $this->allData->except(static::CONTENT_FORM_NAME));
     }
 
 
@@ -116,10 +124,23 @@ class ContentBlocksFormObject implements FormObject
         return $this->blocksData;
     }
 
+    /**
+     * @return Collection
+     */
+    public function contentData()
+    {
+        return $this->contentsData;
+    }
+
+    public function hasContentBlocks()
+    {
+        return !$this->blocksData()->isEmpty();
+    }
+
     protected function contentBlockRules()
     {
-        if (!$this->allData->has('blocks') || !is_array($this->allData->get('blocks'))) {
-            return [static::BLOCKS_FORM_NAME => 'required'];
+        if (!$this->hasContentBlocks()) {
+            return [static::CONTENT_FORM_NAME . '.' . static::BLOCKS_FORM_NAME => 'required'];
         }
 
         $rules = [];
@@ -127,21 +148,21 @@ class ContentBlocksFormObject implements FormObject
             $rules = array_merge(
                 $rules,
                 [
-                    $blockIndex => $this->rulesForBlock($blockIndex, new Collection($blockData))
+                    $blockIndex => $this->rulesForBlock(new Collection($blockData))
                 ]
             );
         }
 
         $blocksRules = Arr::dot([
-            static::BLOCKS_FORM_NAME => $rules
+            static::CONTENT_FORM_NAME . '.' . static::BLOCKS_FORM_NAME => $rules
         ]);
 
         return array_merge([
-            static::BLOCKS_FORM_NAME => 'required'
+            static::CONTENT_FORM_NAME . '.' . static::BLOCKS_FORM_NAME => 'required'
         ], $blocksRules);
     }
 
-    protected function rulesForBlock($blockIndex, Collection $blockData)
+    protected function rulesForBlock(Collection $blockData)
     {
         $block = new \App\ContentBlock($blockData->except(static::FIELDS_FORM_NAME)->toArray());
         $blockPropertyRules = $block->getRules();

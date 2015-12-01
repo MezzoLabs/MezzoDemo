@@ -266,7 +266,7 @@ abstract class ModulePage implements ModulePageContract
         if (!$key)
             return $this->options;
 
-        if (!$value)
+        if ($value === null)
             return $this->options()->get($key);
 
         return $this->options()->put($key, $value);

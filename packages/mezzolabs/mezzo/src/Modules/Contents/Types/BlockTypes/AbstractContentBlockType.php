@@ -104,7 +104,7 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
      */
     public function propertyInputName($propertyName)
     {
-        return "blocks[" . $this->formName() . "][" . $propertyName . "]";
+        return "content[blocks][" . $this->formName() . "][" . $propertyName . "]";
     }
 
     /**
@@ -115,7 +115,7 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
      */
     public function inputName($fieldName)
     {
-        return "blocks[" . $this->formName() . "][fields][" . $fieldName . "]";
+        return "content[blocks][" . $this->formName() . "][fields][" . $fieldName . "]";
     }
 
     /**
@@ -126,7 +126,7 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
      */
     public function optionInputName($optionName)
     {
-        return "blocks[" . $this->formName() . "][options][" . $optionName . "]";
+        return "content[blocks][" . $this->formName() . "][options][" . $optionName . "]";
     }
 
     private function formName()

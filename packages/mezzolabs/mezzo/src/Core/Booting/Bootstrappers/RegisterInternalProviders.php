@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Providers\EventServiceProvider;
+use MezzoLabs\Mezzo\Providers\LoggingServiceProvider;
 
 class RegisterInternalProviders implements Bootstrapper
 {

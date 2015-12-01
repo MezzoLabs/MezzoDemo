@@ -29,8 +29,9 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 * @property \Carbon\Carbon $updated_at
 * @property float $_lft
 * @property float $_rgt
-* @property float $parent_id
+* @property integer $parent_id
 * @property \App\CategoryGroup $group
+* @property \App\Category $parent
 * @property EloquentCollection $tutorials
 * @property EloquentCollection $posts
 * @property EloquentCollection $events
@@ -65,8 +66,7 @@ abstract class MezzoCategory extends \MezzoLabs\Mezzo\Core\ThirdParties\NestedSe
         'slug' => "unique", 
         'label' => "required|unique_with:categories, category_group_id", 
         '_lft' => "", 
-        '_rgt' => "", 
-        'parent_id' => ""
+        '_rgt' => ""
     ];
 
     /**
@@ -184,8 +184,8 @@ abstract class MezzoCategory extends \MezzoLabs\Mezzo\Core\ThirdParties\NestedSe
     /**
     * Attribute annotation property for parent_id
     *
-    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\NumberInput", hidden="")
-    * @var float            
+    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="")
+    * @var integer            
     */
     protected $_parent_id;
 
@@ -209,6 +209,16 @@ abstract class MezzoCategory extends \MezzoLabs\Mezzo\Core\ThirdParties\NestedSe
     * @Mezzo\Relations\Scopes("")
     */
     protected $_group;
+
+    /**
+    * Relation annotation property for parent
+    * @Mezzo\Relations\OneToMany
+    * @Mezzo\Relations\From(table="categories", primaryKey="id", naming="parent")
+    * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="parent")
+    * @Mezzo\Relations\JoinColumn(table="categories", column="parent_id")
+    * @Mezzo\Relations\Scopes("")
+    */
+    protected $_parent;
 
     /**
     * Relation annotation property for tutorials

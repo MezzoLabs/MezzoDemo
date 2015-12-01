@@ -14,6 +14,7 @@ use MezzoLabs\Mezzo\Modules\Contents\DefaultTypes\BlockTypes\TextOnly;
 use MezzoLabs\Mezzo\Modules\Contents\Http\Transformers\ContentBlockTransformer;
 use MezzoLabs\Mezzo\Modules\Contents\Http\Transformers\ContentFieldTransformer;
 use MezzoLabs\Mezzo\Modules\Contents\Http\Transformers\ContentTransformer;
+use MezzoLabs\Mezzo\Modules\Contents\Schema\Rendering\ContentInputRenderer;
 use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar;
 
 class ContentsModule extends ModuleProvider
@@ -40,6 +41,9 @@ class ContentsModule extends ModuleProvider
         $this->registerTransformers([
 
         ]);
+
+
+
     }
 
     /**
@@ -61,6 +65,7 @@ class ContentsModule extends ModuleProvider
             ContentField::class => ContentFieldTransformer::class
         ]);
 
+        $this->registerAttributeRenderer(ContentInputRenderer::class);
     }
 
     /**

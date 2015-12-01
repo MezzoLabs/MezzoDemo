@@ -44,7 +44,6 @@ class EloquentRelationshipReflections extends Collection
      */
     public function findCounterpartTo(EloquentRelationshipReflection $check)
     {
-
         $counterparts = $this->filter(function (EloquentRelationshipReflection $reflection) use ($check) {
             return $reflection->isCounterpart($check);
         });

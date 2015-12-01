@@ -59,7 +59,7 @@ abstract class MezzoPage extends MezzoNestedSetNode
      * @var array
      */
     protected $rules = [
-        'title' => "required|between:3,255",
+        'title' => "required|between:3,255|unique:pages",
         'teaser' => "between:5,2500",
         'slug' => ""
     ];
@@ -126,7 +126,7 @@ abstract class MezzoPage extends MezzoNestedSetNode
     /**
      * Attribute annotation property for slug
      *
-     * @Mezzo\Attribute(type="TextInput")
+     * @Mezzo\Attribute(type="TextInput", hidden="create,edit")
      * @var string
      */
     protected $_slug;
@@ -134,7 +134,7 @@ abstract class MezzoPage extends MezzoNestedSetNode
     /**
      * Attribute annotation property for content_id
      *
-     * @Mezzo\Attribute(type="RelationInputSingle")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Contents\Schema\InputTypes\ContentInput")
      * @var integer
      */
     protected $_content_id;

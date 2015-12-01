@@ -132,6 +132,7 @@ class ModelRepository extends EloquentRepository
     /**
      * @param array $data
      * @return Model
+     * @throws RepositoryException
      */
     public function create(array $data)
     {
@@ -145,6 +146,7 @@ class ModelRepository extends EloquentRepository
             throw new RepositoryException('Cannot create new model of type ' . $this->modelReflection()->className());
 
         $this->updateRelations($model, $values->inForeignTablesOnly());
+
 
         return $model;
     }
@@ -165,6 +167,7 @@ class ModelRepository extends EloquentRepository
 
         return $model;
     }
+
 
     public function updateWithNestedRelations(array $data, $id, NestedRelations $relations)
     {

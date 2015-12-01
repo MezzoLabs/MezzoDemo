@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
 use MezzoLabs\Mezzo\Cockpit\Html\Rendering\FormBuilder;
 use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
@@ -130,6 +131,10 @@ abstract class AttributeRenderingHandler
         return StringHelper::fromArrayToDotNotation($this->name());
     }
 
+    /**
+     * @param null $default
+     * @return mixed|null
+     */
     public function value($default = null)
     {
         if ($this->getOptions()->hasAttribute('value'))
@@ -141,7 +146,6 @@ abstract class AttributeRenderingHandler
         if ($this->getOptions()->hasAttribute('default'))
             return $this->getOptions()->getAttribute('default');
 
-
         if ($this->formBuilder()->hasModel()) {
             return data_get($this->formBuilder()->getModel(), $this->dotNotationName());
         }
@@ -149,9 +153,29 @@ abstract class AttributeRenderingHandler
         return $default;
     }
 
-    public function old()
+    public function valueOfAttribute($name, $default = null)
     {
-        return old($this->dotNotationName(), false);
+        if ($this->old($name) !== false)
+            return $this->old($name);
+
+        if ($this->formBuilder()->hasModel()) {
+            return data_get($this->formBuilder()->getModel(), $name, $default);
+        }
+
+        return $default;
+
+    }
+
+    /**
+     * @param string $attributeName
+     * @return mixed
+     */
+    public function old($attributeName = "")
+    {
+        if(empty($attributeName))
+            $attributeName = $this->dotNotationName();
+
+        return old($attributeName, false);
     }
 
     /**
@@ -209,16 +233,15 @@ abstract class AttributeRenderingHandler
     {
         $checkedBoxes = $this->value([]);
 
-        if($checkedBoxes instanceof EloquentCollection)
+        if ($checkedBoxes instanceof EloquentCollection)
             $checkedBoxes = $checkedBoxes->pluck('id')->toArray();
 
         //The old value can be in the id => "1"
         $checked = isset($checkedBoxes[$id]) && $this->value([])[$id] == "1";
 
         //...or in the 0 => id, 1 => id [..] form
-        if(!$checked)
+        if (!$checked)
             $checked = in_array($id, $checkedBoxes);
-
 
 
         return $this->formBuilder()->checkbox($this->name() . '[' . $id . ']', 1, $checked);
@@ -254,5 +277,34 @@ abstract class AttributeRenderingHandler
 
         return Session::get('errors')->has($name);
     }
+
+    /**
+     * Get the evaluated view contents for the given view.
+     *
+     * @param  string $view
+     * @param  array $data
+     * @param  array $mergeData
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    protected function view($view = null, $data = [], $mergeData = [])
+    {
+        if (!isset($data['renderer'])) $data['renderer'] = $this;
+
+        return view($view, $data, $mergeData);
+    }
+
+    /**
+     * Returns the model instance that was set in Form::model
+     *
+     * @return MezzoModel|null
+     */
+    protected function modelInstance()
+    {
+        if (!$this->formBuilder()->hasModel())
+            return null;
+
+        return $this->formBuilder()->getModel();
+    }
+
 
 }
