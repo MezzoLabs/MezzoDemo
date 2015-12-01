@@ -149,10 +149,15 @@ class GenericFormObject implements FormObject
     {
         $filteredRules = $rules;
         $this->nestedRelations()->each(function (NestedRelation $nestedRelation) use (&$filteredRules) {
-            if (!$nestedRelation->isEmpty()) {
-                $filteredRules = RulesTransformer::removeRequiredRules($filteredRules, [$nestedRelation->parentAttributeName()]);
+            $parentRuleName = $nestedRelation->parentAttributeName();
+
+            // Remove parent required rules if the nested relation is not empty e.g. remove address_id => required if
+            // There is an address array in the request.
+            if (!$nestedRelation->isEmpty() && isset($filteredRules[$parentRuleName])) {
+                $filteredRules[$parentRuleName] = RulesTransformer::removeRequired($filteredRules[$parentRuleName]);
             }
         });
+
 
         return $filteredRules;
     }

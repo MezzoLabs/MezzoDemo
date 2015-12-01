@@ -68,7 +68,8 @@ abstract class MezzoEvent extends BaseModel
         'title' => "required|between:3,200",
         'slug' => "",
         'description' => "required|between:3,500",
-        'user_id' => "required"
+        'user_id' => "required",
+        'address_id' => "required"
     ];
 
     /**

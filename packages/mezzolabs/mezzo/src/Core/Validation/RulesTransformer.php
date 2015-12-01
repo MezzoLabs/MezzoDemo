@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Validation;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Exceptions\MezzoException;
 
 class RulesTransformer
 {
@@ -23,22 +24,25 @@ class RulesTransformer
     }
 
     /**
-     * @param array $dirty
+     * @param array $dirtyKeys
      * @return array
      */
-    public function rulesForUpdating(array $dirty)
+    public function rulesForUpdating(array $dirtyKeys)
     {
-        return $this->ruleStrings->map(function ($rule, $key) use ($dirty) {
-            return $this->transformRuleForUpdate($key, $rule, in_array($key, $dirty));
+        return $this->ruleStrings->map(function ($rule, $key) use ($dirtyKeys) {
+            return $this->transformRuleForUpdate($key, $rule, in_array($key, $dirtyKeys));
         })->toArray();
     }
 
     protected function transformRuleForUpdate($key, $rule, $isDirty = true)
     {
-        if(!$isDirty)
-            return "";
+        //Do not touch rules if the according model attribute is dirty or if the rule is nested.
+        if ($isDirty || str_contains($key, '.')) {
+            return $rule;
+        }
 
-        //TODO: remove required and unique rules if needed
+        $rule = static::removeRequired($rule);
+        $rule = static::removeUnique($rule);
 
         return $rule;
     }
@@ -52,40 +56,42 @@ class RulesTransformer
     }
 
     /**
-     * @param $rulesArray
+     * @param $rule
      * @return array
+     * @throws MezzoException
+     * @internal param $rulesArray
      */
-    public static function removeRequiredRules($rulesArray, array $forColumns = [])
+    public static function removeRequired($rule)
     {
-        return static::removeRulesType('required', $rulesArray, $forColumns);
+        return static::removeRulesType('required', $rule);
     }
 
-    public static function removeUniqueRules($rulesArray, array $forColumns = [])
+    public static function removeUnique($rule)
     {
-        return static::removeRulesType('unique', $rulesArray, $forColumns);
+        $rule = static::removeRulesType('unique', $rule);
+        $rule = static::removeRulesType('unique_with', $rule);
+
+        return $rule;
     }
 
     /**
-     * @param $ruleType
-     * @param array $rulesArray
-     * @param array $forColumns
+     * Removes a rule from a rule string
+     *
+     * @param string $typeToRemove
+     * @param string $rule
      * @return array
+     * @throws MezzoException
      */
-    protected static function removeRulesType($ruleType, array $rulesArray, array $forColumns = [])
+    protected static function removeRulesType($typeToRemove, $rule)
     {
-        $updateRules = [];
-        foreach ($rulesArray as $column => &$rule) {
-            if (!in_array($column, $forColumns)) {
-                $updateRules[$column] = $rule;
-                continue;
-            }
-
-            $changedRule = preg_replace("/(" . $ruleType . "[^|]*)/", "", $rule);
-            $changedRule = trim(str_replace('||', '', $changedRule), '|');
-
-            $updateRules[$column] = $changedRule;
+        if(is_array($rule)) {
+            throw new MezzoException('Cannot transform a rule array.');
         }
 
-        return $updateRules;
+        $changedRule = preg_replace("/(" . $typeToRemove . "[^|]*)/", "", $rule);
+        $changedRule = trim(str_replace('||', '', $changedRule), '|');
+
+        return $changedRule;
     }
+
 }

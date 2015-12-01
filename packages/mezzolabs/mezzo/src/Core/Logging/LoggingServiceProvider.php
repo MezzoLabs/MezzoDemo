@@ -13,7 +13,7 @@ use Monolog\Handler\StreamHandler;
 class LoggingServiceProvider extends ServiceProvider
 {
     protected $eloquentEventTypesToLog = [
-        'saving', 'saved',
+        'creating', 'created',
         'updating', 'updated',
         'deleting', 'deleted'
     ];
@@ -92,6 +92,7 @@ class LoggingServiceProvider extends ServiceProvider
     {
         $this->app->singleton(Logger::class, function () {
             $logger = new Logger('Mezzo Logger');
+            $logger->pushHandler(new StreamHandler(storage_path('logs/mezzo/'. date("Y-m-d") .'_mezzo.log'), Logger::INFO));
             $logger->pushHandler(new StreamHandler(storage_path('logs/mezzo.log'), Logger::INFO));
 
             if(env('SLACK_TOKEN')){
