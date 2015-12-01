@@ -36,7 +36,7 @@ abstract class Category extends MezzoCategory implements SluggableInterface
     /**
      * @return CategoryRepository
      */
-    protected static function repository()
+    public static function repository()
     {
         return new CategoryRepository();
     }
@@ -67,7 +67,7 @@ abstract class Category extends MezzoCategory implements SluggableInterface
     /**
      * @return CategoryGroupRepository
      */
-    protected static function groupRepository()
+    public static function groupRepository()
     {
         return new CategoryGroupRepository();
     }

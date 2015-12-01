@@ -69,6 +69,8 @@ abstract class InputType
                 return DateTimeInput::class;
             case 'integer':
                 return NumberInput::class;
+            case 'float':
+                return FloatInput::class;
         }
 
         throw new \Exception('There is no input type for the column type: ' . $type);
@@ -78,25 +80,40 @@ abstract class InputType
      * @param $type
      * @return InputType
      * @throws InvalidArgumentException
+     * @throws ReflectionException
      */
     public static function make($type)
     {
         if ($type instanceof InputType)
             return $type;
 
-        if(!is_string($type))
+        if (!is_string($type))
             throw new InvalidArgumentException($type);
 
-        if (class_exists($type))
-            return new $type();
+        $className = static::findClassName($type);
 
-        $longClassName = static::namespaceName() . '\\' . $type;
+        if (!$className)
+            throw new ReflectionException("\"" . $type . "\" isn't a valid InputType.");
 
-        if (class_exists($longClassName)){
-            return new $longClassName;
+        return app()->make($className);
+    }
+
+    protected static function findClassName($inputType)
+    {
+
+        if (class_exists($inputType))
+            return $inputType;
+
+        if (class_exists('\\' . $inputType))
+            return '\\' . $inputType;
+
+        $longClassName = static::namespaceName() . '\\' . $inputType;
+
+        if (class_exists($longClassName)) {
+            return $longClassName;
         }
 
-        throw new ReflectionException("\"". $type . "\" isn't a valid InputType.");
+        return false;
     }
 
     protected static function namespaceName()

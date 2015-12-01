@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 
 class RelationSide
 {
@@ -145,14 +146,25 @@ class RelationSide
     }
 
     /**
+     * @return string
+     */
+    public function attributeName()
+    {
+        if ($this->isManyToMany() || $this->hasMultipleChildren())
+            return $this->naming();
+
+        return $this->relation()->joinColumn();
+    }
+
+    /**
      * Get the model reflection for the model in this side of the relation.
      *
-     * @return MezzoModelReflection
+     * @return ModelReflection
      */
     public function modelReflection()
     {
         $table = $this->table();
-        return mezzo()->makeReflectionManager()->mezzoReflection($table);
+        return mezzo()->makeReflectionManager()->modelReflection($table);
     }
 
     /**

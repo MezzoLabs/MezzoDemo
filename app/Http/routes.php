@@ -18,6 +18,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\FileCacheReader;
 use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
+use MezzoLabs\Mezzo\Modules\Generator\Generators\AnnotationGenerator;
 
 Route::get('/', function () {
     return view('welcome');
@@ -50,7 +51,12 @@ Route::get('/test/categories', function () {
 Route::get('/test/posts', function () {
     $reflection = mezzo()->model('Post');
 
-    mezzo_dd($reflection->schema());
+    $categories = $reflection->attributes()->get('categories');
+
+    $somePost = \App\Post::all()->first();
+
+
+    mezzo_dd($categories->query()->get());
 });
 
 Route::post('/test/file', 'TestController@uploadFile');
@@ -58,20 +64,17 @@ Route::post('/test/file', 'TestController@uploadFile');
 
 Route::get('/test/reflection', function () {
     $reflectionManager = mezzo()->makeReflectionManager();
-    $reflection = $reflectionManager->eloquentReflection('Post');
-    mezzo_dd($reflection->schema()->relationSides());
+    $mezzoReflection = $reflectionManager->mezzoReflection('Event');
+    $eloquentReflection = $reflectionManager->eloquentReflection('Event');
+
+    mezzo_dd($eloquentReflection->schema()->relationSides());
+
 });
 
-Route::get('/test/category', function () {
+Route::get('/test/events', function () {
 
 });
 
-
-Route::get('/test/models', function () {
-    $allModels = mezzo()->reflector()->modelReflections();
-
-    mezzo_dd($allModels);
-});
 
 
 Route::post('test/file/{id}', 'TestController@updateFile');
@@ -118,8 +121,11 @@ Route::any('debug/controller', 'TestController@foo');
 
 Route::get('debug/generator', function () {
 
+    $annotationGenerator = app()->make(AnnotationGenerator::class);
+
     $reflectionManager = mezzo()->makeReflectionManager();
-    $reflection = $reflectionManager->eloquentReflection('File');
+    $reflection = $reflectionManager->eloquentReflection('Category');
+    $reflectionMezzo = $reflectionManager->mezzoReflection('Category');
     $schema = $reflection->schema();
 
     $schemas = new \MezzoLabs\Mezzo\Core\Schema\ModelSchemas();
@@ -127,6 +133,9 @@ Route::get('debug/generator', function () {
 
     $generatorFactory = GeneratorModule::make()->generatorFactory();
     $modelParentGenerator = $generatorFactory->modelParentGenerator($schemas);
+
+    $modelParentSchema = $modelParentGenerator->modelParentSchemas()->first();
+
     $modelParentGenerator->run();
 
     //return view('debugmodels', ['generator' => $generator]);

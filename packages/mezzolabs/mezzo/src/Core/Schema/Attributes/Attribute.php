@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOneOrMany;
-use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderer;
+use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderEngine;
 use MezzoLabs\Mezzo\Core\Schema\ValidationRules\Rules;
 
 class Attribute
@@ -243,12 +243,14 @@ class Attribute
     /**
      * Render this attribute schema as a HTML string.
      *
+     * @param array $options
      * @return string
+     * @throws \MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderingException
      */
-    public function render()
+    public function render($options = [])
     {
-        $renderer = AttributeRenderer::make($this);
-        return $renderer->render();
+        $renderer = AttributeRenderEngine::make();
+        return $renderer->render($this, $options);
     }
 
     /**
@@ -295,11 +297,12 @@ class Attribute
     }
 
     /**
+     * @param array $default
      * @return array
      */
-    public function hiddenInForms()
+    public function hiddenInForms($default = [])
     {
-        return $this->options()->get('hiddenInForms', []);
+        return $this->options()->get('hiddenInForms', $default);
     }
 
 } 

@@ -7,7 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 use Illuminate\Database\Eloquent\Collection;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
-use MezzoLabs\Mezzo\Exceptions\InvalidModel;
+use MezzoLabs\Mezzo\Exceptions\InvalidModelException;
 use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 
 class ModelReflectionSets extends Collection
@@ -99,18 +99,21 @@ class ModelReflectionSets extends Collection
      * Really create a new model reflection set.
      *
      * @param $className
-     * @throws InvalidModel
      * @return ModelReflectionSet
+     * @throws InvalidArgumentException
      */
     protected function makeReflectionSet($className)
     {
+        if(!$className)
+            throw new InvalidArgumentException($className);
+
         if ($className instanceof ModelReflectionSet)
             return $className;
 
         if (is_string($className))
             return new ModelReflectionSet($className);
 
-        throw new InvalidModel($className);
+        throw new InvalidModelException($className);
 
     }
 

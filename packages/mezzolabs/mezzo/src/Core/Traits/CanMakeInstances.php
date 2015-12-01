@@ -24,6 +24,7 @@ use MezzoLabs\Mezzo\Core\Reflection\Reflectors\MezzoModelsReflector;
 use MezzoLabs\Mezzo\Core\Routing\Router;
 use MezzoLabs\Mezzo\Core\Routing\Uri;
 use MezzoLabs\Mezzo\Core\ThirdParties\ThirdParties;
+use MezzoLabs\Mezzo\Exceptions\MezzoException;
 use MezzoLabs\Mezzo\Exceptions\UnexpectedException;
 use MezzoLabs\Mezzo\Http\Requests\Request;
 
@@ -172,7 +173,8 @@ trait CanMakeInstances
         $cockpitProvider = app()->getProvider(CockpitProvider::class);
 
         if(!$cockpitProvider instanceof CockpitProvider)
-            throw new UnexpectedException();
+            throw new MezzoException("The cockpit provider is not ready yet. " .
+                "Please set your call in the \"ready\" block of your service provider.");
 
         return $cockpitProvider->cockpit();
     }

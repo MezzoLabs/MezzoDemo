@@ -6,12 +6,17 @@ namespace MezzoLabs\Mezzo\Core;
 
 use Illuminate\Foundation\Application;
 use MezzoLabs\Mezzo\Core\Booting\BootManager;
+use MezzoLabs\Mezzo\Core\Logging\Logger as MezzoLogger;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Traits\CanFireEvents;
 use MezzoLabs\Mezzo\Core\Traits\CanMakeInstances;
 use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
+use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 use MezzoLabs\Mezzo\MezzoServiceProvider;
+use MezzoLabs\Mezzo\Modules\General\Domain\Services\OptionsService;
 
 class Mezzo
 {
@@ -106,6 +111,30 @@ class Mezzo
         return $this->makeReflectionManager()->modelIsReflected($modelName);
     }
 
+    /**
+     * @param $modelName
+     * @param $attributeName
+     * @param bool $forceEloquent
+     * @return Attribute|RelationAttribute
+     * @throws ReflectionException
+     */
+    public function attribute($modelName, $attributeName, $forceEloquent = false)
+    {
+
+        if (!$forceEloquent) {
+            $mezzoModel = $this->model($modelName, 'mezzo');
+
+            if ($mezzoModel && $mezzoModel->attributes()->has($attributeName))
+                return $mezzoModel->attributes()->get($attributeName);
+        }
+
+
+        $eloquentModel = $this->model($modelName, 'eloquent');
+        if ($eloquentModel && $eloquentModel->attributes()->has($attributeName))
+            return $eloquentModel->attributes()->get($attributeName);
+
+        throw new ReflectionException('Cannot find attribute "' . $attributeName . '" in "' . $modelName . '".');
+    }
 
     /**
      * Run the boot services that we need at the time the Mezzo provider is registered
@@ -148,6 +177,34 @@ class Mezzo
     public function config($key, $default = null)
     {
         return $this->makeConfiguration()->get($key, $default);
+    }
+
+    /**
+     * @param null $name
+     * @param null $value
+     * @return \Illuminate\Database\Eloquent\Model|null|static
+     * @throws \MezzoLabs\Mezzo\Modules\General\Exceptions\OptionNotFoundException
+     */
+    public function option($name = null, $value = null)
+    {
+        $optionsService = app()->make(OptionsService::class);
+
+        if ($name === null)
+            return $optionsService->collection()->pluck('value', 'name');
+
+        if ($value === null)
+            return $optionsService->get($name);
+
+        return $optionsService->set($name, $value);
+
+    }
+
+    /**
+     * @return Logging\Logger
+     */
+    public function logger()
+    {
+        return MezzoLogger::make();
     }
 
 

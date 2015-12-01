@@ -116,7 +116,10 @@ class ModelTables extends Collection
         $attributes = new Attributes();
 
         $this->each(function (TableSchema $table) use (&$attributes) {
-            $attributes = $attributes->merge(($table->attributes()));
+            /** @var Attribute $attribute */
+            foreach($table->attributes() as $attribute){
+                $attributes->put($attribute->qualifiedName(), $attribute);
+            }
         });
 
         return $attributes;

@@ -9,4 +9,6 @@ class CreateFilePage extends CreateResourcePage
 {
     protected $view = 'modules.file-manager::pages.filemanager';
 
+    protected $title = "Manage Files";
+
 }

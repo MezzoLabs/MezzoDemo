@@ -16,6 +16,7 @@ trait HasValidationRules
     public static function bootHasValidationRules()
     {
         static::saving(\MezzoLabs\Mezzo\Core\Validation\Validator::class . '@onSaving');
+        static::deleting(\MezzoLabs\Mezzo\Core\Validation\Validator::class . '@onDeleting');
     }
 
 
@@ -92,13 +93,8 @@ trait HasValidationRules
      */
     public function getUpdateRules(array $data)
     {
-        $changingColumns = array_keys($data);
-        $unchangingColumns = array_diff(array_keys($this->getRules()), $changingColumns);
-
-        $rules = Validator::removeRequiredRules($this->getRules(), $unchangingColumns);
-        $rules = Validator::removeUniqueRules($rules, $unchangingColumns);
-
-        return $rules;
+        $rulesTransformer = new RulesTransformer($this->getRules());
+        return $rulesTransformer->rulesForUpdating(array_keys($data));
     }
 
 }

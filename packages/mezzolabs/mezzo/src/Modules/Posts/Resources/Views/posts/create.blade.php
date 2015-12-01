@@ -8,7 +8,7 @@
                 {!! cockpit_form()->open(['route' => 'cockpit::post.store', 'method' => 'POST']) !!}
                 <div class="panel panel-bordered">
                     <div class="panel-heading">
-                        <h3>New {{ $model->name() }}</h3>
+                        <h3>New {{ $model_reflection->name() }}</h3>
 
                         <div class="panel-actions">
                         </div>
@@ -32,23 +32,19 @@
                     </div>
                     <div class="panel-body">
                         <div class="form-group">
-                            <label>Creator</label>
-                            {!! $model->schema()->attributes('user_id')->render() !!}
+                            {!! $model_reflection->schema()->attributes('user_id')->render() !!}
                         </div>
                         <div class="form-group">
-                            <label>Main Image</label>
-                            {!! $model->schema()->attributes('main_image_id')->render() !!}
+                            {!! $model_reflection->schema()->attributes('main_image_id')->render() !!}
                         </div>
                         <div class="form-group">
-                            <label>Publish At</label>
-                            {!! $model->schema()->attributes('published_at')->render() !!}
+                            {!! $model_reflection->schema()->attributes('published_at')->render() !!}
                         </div>
                         <div class="form-group">
-                            <label>State</label>
-                            {!! $model->schema()->attributes('state')->render() !!}
+                            {!! $model_reflection->schema()->attributes('state')->render() !!}
                         </div>
 
-                        {!! cockpit_form()->submit('Save as new ' . $model->name()) !!}
+                        {!! cockpit_form()->submit('Save as new ' . $model_reflection->name()) !!}
                     </div>
                 </div>
             </div>

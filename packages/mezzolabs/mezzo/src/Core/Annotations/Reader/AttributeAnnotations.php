@@ -22,7 +22,7 @@ class AttributeAnnotations extends PropertyAnnotations
      */
     protected $relation;
 
-    protected $defaultHiddenInForms = [
+    public static $defaultHiddenInForms = [
         'id' => ['create', 'edit'],
         'slug' => ['create', 'edit'],
         'created_at' => ['create'],
@@ -39,6 +39,7 @@ class AttributeAnnotations extends PropertyAnnotations
             'rules' => $this->modelReflection()->rules($this->name()),
             'visible' => !in_array($this->name(), $this->modelReflection()->instance()->getHidden()),
             'fillable' => in_array($this->name(), $this->modelReflection()->instance()->getFillable()),
+            'type' => $this->inputType(),
             'hiddenInForms' => $this->hiddenInFormsArray()
         ];
     }
@@ -49,10 +50,6 @@ class AttributeAnnotations extends PropertyAnnotations
     public function hiddenInFormsArray()
     {
         $hiddenString = $this->attributeAnnotation()->hidden;
-
-        if ($hiddenString === null && in_array($this->name(), $this->defaultHiddenInForms)) {
-            return $this->defaultHiddenInForms[$this->name()];
-        }
 
         if (empty($hiddenString)) {
             return [];
@@ -152,6 +149,7 @@ class AttributeAnnotations extends PropertyAnnotations
      */
     private function belongsToRelationAnnotations(RelationAnnotations $relationAnnotations)
     {
+
         /**
          * Check if the column of this attribute is part of the relation.
          */

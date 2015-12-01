@@ -4,17 +4,21 @@
 namespace MezzoLabs\Mezzo\Modules\Contents\Domain\Repositories;
 
 
+use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
 
 class ContentRepository extends ModelRepository
 {
     /**
-     * @param array $blocksData
+     * @param array $contentData
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function createWithBlocks(array $blocksData)
+    public function createWithBlocks(array $contentData)
     {
-        $content = parent::create([]);
+        $contentData = new Collection($contentData);
+        $blocksData = $contentData->get('blocks', []);
+
+        $content = parent::create($contentData->except('blocks')->toArray());
 
         foreach ($blocksData as &$blockData) {
             $blockData['content_id'] = $content->id;
@@ -35,16 +39,6 @@ class ContentRepository extends ModelRepository
         $content->save();
 
         return $content;
-    }
-
-    /**
-     * @param $id
-     * @param array $columns
-     * @return \App\Content
-     */
-    public function findOrFail($id, $columns = array('*'))
-    {
-        return parent::findOrFail($id, $columns);
     }
 
 

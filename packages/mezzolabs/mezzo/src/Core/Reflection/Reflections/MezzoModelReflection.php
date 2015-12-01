@@ -90,5 +90,13 @@ class MezzoModelReflection extends ModelReflection
         return $attributes->keys();
     }
 
+    /**
+     * @return \MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository
+     */
+    public function repository()
+    {
+        return $this->instance()->repository();
+    }
+
 
 }

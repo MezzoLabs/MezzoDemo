@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Schema\Converters\Eloquent\ModelReflectionConverter;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
-use MezzoLabs\Mezzo\Exceptions\InvalidModel;
+use MezzoLabs\Mezzo\Exceptions\InvalidModelException;
 
 abstract class ModelReflection
 {
@@ -44,14 +44,14 @@ abstract class ModelReflection
     /**
      * @param $model
      * @return mixed
-     * @throws InvalidModel
+     * @throws InvalidModelException
      */
     public static function modelStringOrFail($model)
     {
         $modelString = static::modelString($model);
 
         if (!$modelString)
-            throw new InvalidModel($model);
+            throw new InvalidModelException($model);
 
         return $modelString;
     }
@@ -96,6 +96,11 @@ abstract class ModelReflection
     public function name()
     {
         return $this->modelReflectionSet->shortName();
+    }
+
+    public function slug()
+    {
+        return str_slug(space_case($this->name()));
     }
 
     /**
@@ -245,5 +250,6 @@ abstract class ModelReflection
 
         return $property->getValue($this->instance());
     }
+
 
 }

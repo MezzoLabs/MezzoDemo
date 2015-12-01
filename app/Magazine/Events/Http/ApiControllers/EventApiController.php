@@ -1,6 +1,6 @@
 <?php
 
-namespace MezzoLabs\Mezzo\Modules\Events\Http\ApiControllers;
+namespace App\Magazine\Events\Http\ApiControllers;
 
 
 use MezzoLabs\Mezzo\Http\Controllers\ApiResourceController;

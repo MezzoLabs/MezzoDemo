@@ -5,22 +5,15 @@
     <div class="wrapper">
         <div class="panel panel-bordered">
             <div class="panel-heading">
-                <h3>Edit {{ $model->name() }}</h3>
+                <h3>Edit {{ $model_reflection->name() }}</h3>
 
                 <div class="panel-actions">
                 </div>
             </div>
             <div class="panel-body">
-                {!! cockpit_form()->open() !!}
-                @foreach($model->attributes()->fillableOnly() as $attribute)
-                    <div class="form-group">
-                        <label>{{ $attribute->title() }}</label>
-                        {!! $attribute->render() !!}
-                    </div>
-                @endforeach
-                {!! cockpit_form()->submit('Update ' . $model->name()) !!}
+                {!! cockpit_form()->model($model, ['method' => 'PUT']) !!}
+                @include(cockpit_html()->viewKey('form-content-edit'))
                 {!! cockpit_form()->close() !!}
-
             </div>
         </div>
     </div>

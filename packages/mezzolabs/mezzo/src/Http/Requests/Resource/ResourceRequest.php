@@ -6,6 +6,8 @@ namespace MezzoLabs\Mezzo\Http\Requests\Resource;
 use Illuminate\Contracts\Validation\UnauthorizedException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Support\Str;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 use MezzoLabs\Mezzo\Http\Controllers\Controller;
 use MezzoLabs\Mezzo\Http\Controllers\ResourceControllerContract;
@@ -20,9 +22,10 @@ class ResourceRequest extends Request
     public $model = "";
 
     /**
-     * @var null
+     * @var MezzoModelReflection
      */
     protected $modelReflection = null;
+
 
     /**
      * Determine if the user is authorized to make this request.
@@ -131,6 +134,16 @@ class ResourceRequest extends Request
             throw new UnauthorizedException;
 
         return $this->failedApiAuthorization();
+    }
+
+    protected function isTemplateRequest()
+    {
+        $action = $this->route()->getAction();
+
+        if (!isset($action['as']))
+            return false;
+
+        return Str::endsWith($action['as'], '_html');
     }
 
 

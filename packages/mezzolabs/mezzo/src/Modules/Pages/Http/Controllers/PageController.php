@@ -69,7 +69,9 @@ class PageController extends CockpitResourceController
      */
     public function edit(EditResourceRequest $request, $id = null)
     {
-        return $this->page(EditPagePage::class);
+        $model = $this->repository()->findOrFail($id, ['*'], ['content']);
+
+        return $this->page(EditPagePage::class,['model' => $model]);
     }
 
     /**
@@ -79,7 +81,7 @@ class PageController extends CockpitResourceController
     public function store(StorePageRequest $request)
     {
         $data = $request->all();
-        $page = $this->repository()->create($data);
+        $page = $this->repository()->createWithNestedRelations($data, $request->formObject()->nestedRelations());
 
         return $this->redirectToPage(EditPagePage::class, ['id' => $page->getAttribute('id')]);
     }

@@ -156,3 +156,19 @@
 
   position: fixed;
 }
+
+.categories {
+  max-height: 235px;
+  border: 1px solid $mezzo-lightgray-lighter;
+  overflow-y: scroll;
+  padding: 0px 10px;
+
+  li.checkbox {
+    margin-top: 1px;
+    margin-bottom: 4px;
+  }
+
+  ul ul {
+    margin-left: 15px;
+  }
+}

@@ -20,7 +20,6 @@ class RelationAttribute extends Attribute
      * @param $name
      * @param RelationSide $relationSide
      * @param array $options
-     * @internal param InputType $inputType
      */
     public function __construct($name, RelationSide $relationSide, $options = [])
     {
@@ -38,10 +37,16 @@ class RelationAttribute extends Attribute
      */
     protected function findType()
     {
-        if ($this->hasOneChild()) {
-            $this->type = new RelationInputSingle();
-        } else {
-            $this->type = new RelationInputMultiple();
+        $annotationsType = $this->options()->get('type');
+
+        if (!empty($annotationsType))
+            $this->type = $annotationsType;
+        else {
+            if ($this->hasOneChild()) {
+                $this->type = new RelationInputSingle();
+            } else {
+                $this->type = new RelationInputMultiple();
+            }
         }
 
 
@@ -108,7 +113,15 @@ class RelationAttribute extends Attribute
         return $this->relationSide()->otherModelReflection();
     }
 
+    public function query()
+    {
+        $query = $this->relationSide()->otherModelReflection()->instance()->query();
+        $relation = $this->relation();
 
+        $relation->getScopes()->addToQuery($query);
+
+        return $query;
+    }
 
 
 }

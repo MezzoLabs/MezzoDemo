@@ -7,7 +7,7 @@
         <!-- Bottom Container -->
         <div class="panel panel-bordered">
             <div class="panel-heading">
-                <h3>{{ str_plural($model->name()) }}</h3>
+                <h3>{{ str_plural($model_reflection->name()) }}</h3>
             </div>
             <div class="panel-body">
                 {!! cockpit_form()->open(['method' => 'GET', 'route' => 'cockpit::role.index']) !!}
@@ -39,7 +39,7 @@
                                     <label><input type="checkbox"
                                                   @if($role->hasPermission($permission)) checked="checked"
                                                   @endif class="" name="permissions[{{ $permission->id }}]"
-                                                  value="{{ $permission->key() }}"/> {{ $permission->label }}</label>
+                                                  /> {{ $permission->label }}</label>
                                 </div>
                             @endforeach
                         </div>

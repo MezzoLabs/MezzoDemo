@@ -6,16 +6,6 @@ namespace MezzoLabs\Mezzo\Http\Requests\Resource;
 
 class UpdateResourceRequest extends UpdateOrStoreResourceRequest
 {
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return $this->modelReflection()->instance()->getUpdateRules($this->all());
-    }
-
 
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +14,9 @@ class UpdateResourceRequest extends UpdateOrStoreResourceRequest
      */
     public function authorize()
     {
+        if ($this->isTemplateRequest())
+            return $this->permissionGuard()->allowsEdit($this->newModelInstance());
+
         return $this->permissionGuard()->allowsEdit($this->currentModelInstance());
     }
 
@@ -33,5 +26,15 @@ class UpdateResourceRequest extends UpdateOrStoreResourceRequest
     protected function id()
     {
         return intval($this->route('id'));
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return $this->formObject()->rulesForUpdating(array_keys($this->all()));
     }
 }

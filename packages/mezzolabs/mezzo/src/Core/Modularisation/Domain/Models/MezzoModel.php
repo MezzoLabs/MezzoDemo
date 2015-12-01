@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Domain\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany as EloquentBelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany as EloquentHasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValues;
 
 /**
@@ -75,4 +76,9 @@ interface MezzoModel extends EloquentInterface
      * @return string
      */
     public function getLabelAttribute();
+
+    /**
+     * @return ModelRepository
+     */
+    public static function repository();
 }

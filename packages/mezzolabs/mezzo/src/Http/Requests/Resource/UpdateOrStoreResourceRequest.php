@@ -4,15 +4,43 @@
 namespace MezzoLabs\Mezzo\Http\Requests\Resource;
 
 
+use Mezzolabs\Mezzo\Cockpit\Http\FormObjects\FormObject;
+use Mezzolabs\Mezzo\Cockpit\Http\FormObjects\GenericFormObject;
+
 abstract class UpdateOrStoreResourceRequest extends ResourceRequest
 {
+
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
+     * @var FormObject
      */
-    public function rules()
+    private $formObject = null;
+
+
+
+    /**
+     * Creates a form object for the current resource request.
+     *
+     * @return FormObject|GenericFormObject
+     */
+    public function formObject()
     {
-        return $this->modelReflection()->rules();
+        if (!$this->formObject) {
+            $this->formObject = $this->makeFormObject();
+        }
+
+        return $this->formObject;
+    }
+
+    protected function makeFormObject()
+    {
+        return new GenericFormObject($this->modelReflection(), $this->all());
+    }
+
+    /**
+     * @return \Mezzolabs\Mezzo\Cockpit\Http\FormObjects\NestedRelations
+     */
+    public function nestedRelations()
+    {
+        return $this->formObject()->nestedRelations();
     }
 }

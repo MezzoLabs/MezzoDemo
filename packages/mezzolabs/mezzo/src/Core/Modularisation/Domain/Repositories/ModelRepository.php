@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Mezzolabs\Mezzo\Cockpit\Http\FormObjects\NestedRelations;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
@@ -80,9 +81,7 @@ class ModelRepository extends EloquentRepository
     public static function makeRepository($model = null)
     {
         if ($model) {
-            /**
-             * Find the model reflection, normalize the $model variable.
-             */
+             // Find the model reflection, normalize the $model variable.
             $model = mezzo()->model($model);
 
             return new ModelRepository($model);
@@ -133,14 +132,59 @@ class ModelRepository extends EloquentRepository
     /**
      * @param array $data
      * @return Model
+     * @throws RepositoryException
      */
     public function create(array $data)
     {
-        //TODO Check for Relations
-        $values = $this->values($data)->inMainTableOnly();
+        $values = $this->values($data);
 
         $modelInstance = $this->modelInstance();
-        return $modelInstance->create($values->toArray());
+
+        $model =  $modelInstance->create($values->inMainTableOnly()->toArray());
+
+        if(!$model)
+            throw new RepositoryException('Cannot create new model of type ' . $this->modelReflection()->className());
+
+        $this->updateRelations($model, $values->inForeignTablesOnly());
+
+
+        return $model;
+    }
+
+    public function createWithNestedRelations(array $data, NestedRelations $relations)
+    {
+        $nestedRelationsProcessor = new NestedRelationsProcessor($relations);
+        $nestedRelationsProcessor->updateOrCreateBefore();
+
+        // Bring the saved ids from the nested relations into the data array
+        $data = array_merge($data, $nestedRelationsProcessor->ids());
+        // Remove the relations data from main data array
+        $data = array_diff_key($data, $relations->names());
+
+        $model = $this->create($data);
+
+        $nestedRelationsProcessor->updateOrCreateAfter($model->id);
+
+        return $model;
+    }
+
+
+    public function updateWithNestedRelations(array $data, $id, NestedRelations $relations)
+    {
+        $nestedRelationsProcessor = new NestedRelationsProcessor($relations);
+        $nestedRelationIds = $nestedRelationsProcessor->updateOrCreateBefore();
+
+        // Bring the saved ids from the nested relations into the data array
+        $data = array_merge($data, $nestedRelationIds);
+        // Remove the relations data from main data array
+        $data = array_diff_key($data, $relations->names());
+
+        $model = $this->update($data, $id);
+
+        $nestedRelationsProcessor->updateOrCreateAfter($model->id);
+
+        return $model;
+
     }
 
     /**
@@ -339,22 +383,29 @@ class ModelRepository extends EloquentRepository
     /**
      * @param $id
      * @param array $columns
+     * @param array $with
      * @return MezzoModel
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = array('*'), $with = [])
     {
-        return $this->query()->find($id, $columns);
+        return $this->query()->where('id', '=', $id)->with($with)->first($columns);
     }
 
 
     /**
      * @param $id
      * @param array $columns
+     * @param array $with
      * @return Collection|MezzoModel
      */
-    public function findOrFail($id, $columns = array('*'))
+    public function findOrFail($id, $columns = array('*'), $with = [])
     {
-        return $this->query()->findOrFail($id, $columns);
+        $found = $this->find($id, $columns, $with);
+
+        if (!$found)
+            throw (new ModelNotFoundException)->setModel(get_class($this->modelInstance()));
+
+        return $found;
     }
 
     public function exists($id, $table = null)

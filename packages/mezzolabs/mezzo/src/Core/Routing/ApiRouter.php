@@ -56,7 +56,7 @@ class ApiRouter
      */
     public function dingoRouter()
     {
-        if($this->hasGroupedRouter())
+        if ($this->hasGroupedRouter())
             return $this->groupedRouter;
 
         return $this->dingoRouter;
@@ -74,7 +74,7 @@ class ApiRouter
         $this->dingoRouter()->group($attributes, function (DingoRouter $router) use ($callback) {
             $this->setGroupedRouter($router);
 
-            if($callback !== null)
+            if ($callback !== null)
                 call_user_func($callback, $this);
         });
     }
@@ -123,12 +123,37 @@ class ApiRouter
 
         $uri = $this->modelUri($controller->model());
 
-        $this->get($uri, $controller->qualifiedActionName('index'));
-        $this->get($uri . '/info', $controller->qualifiedActionName('info'));
-        $this->get($uri . '/{id}', $controller->qualifiedActionName('show'));
-        $this->post($uri, $controller->qualifiedActionName('store'));
-        $this->put($uri . '/{id}', $controller->qualifiedActionName('update'));
-        $this->delete($uri . '/{id}', $controller->qualifiedActionName('destroy'));
+        $modelSlug = snake_case($modelName);
+
+        $this->get($uri, [
+            'uses' => $controller->qualifiedActionName('index'),
+            'as' => 'api::' . snake_case($modelName) . '.index'
+        ]);
+
+        $this->get($uri . '/info', [
+            'uses' => $controller->qualifiedActionName('info'),
+            'as' => 'api::' . snake_case($modelName) . '.info'
+        ]);
+
+        $this->get($uri . '/{id}', [
+            'uses' => $controller->qualifiedActionName('show'),
+            'as' => 'api::' . snake_case($modelName) . '.show'
+        ]);
+
+        $this->post($uri, [
+            'uses' => $controller->qualifiedActionName('store'),
+            'as' => 'api::' . snake_case($modelName) . '.store'
+        ]);
+
+        $this->put($uri . '/{id}', [
+            'uses' => $controller->qualifiedActionName('update'),
+            'as' => 'api::' . snake_case($modelName) . '.update'
+        ]);
+
+        $this->delete($uri . '/{id}', [
+            'uses' => $controller->qualifiedActionName('destroy'),
+            'as' => 'api::' . snake_case($modelName) . '.destroy'
+        ]);
     }
 
     public function modelUri(ModelReflection $model)

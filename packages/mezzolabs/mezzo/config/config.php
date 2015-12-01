@@ -12,7 +12,8 @@ return [
         \MezzoLabs\Mezzo\Modules\DeveloperDashboard\DeveloperDashboardModule::class,
         \MezzoLabs\Mezzo\Modules\Categories\CategoriesModule::class,
         \MezzoLabs\Mezzo\Modules\Contents\ContentsModule::class,
-        \MezzoLabs\Mezzo\Modules\Posts\PostsModule::class
+        \MezzoLabs\Mezzo\Modules\Posts\PostsModule::class,
+        \MezzoLabs\Mezzo\Modules\Addresses\AddressesModule::class
     ],
 
     "api" => [

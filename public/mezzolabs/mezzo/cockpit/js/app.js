@@ -1359,6 +1359,8 @@ var ResourceIndexController = (function () {
         value: function init(modelName) {
             this.modelApi = this.api.model(modelName);
 
+            console.log(modelName);
+
             this.loadModels();
         }
     }, {

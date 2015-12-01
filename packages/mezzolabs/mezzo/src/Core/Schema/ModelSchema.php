@@ -9,6 +9,7 @@ use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Relations\RelationSide;
+use MezzoLabs\Mezzo\Core\Schema\Relations\RelationSides;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
 class ModelSchema
@@ -102,7 +103,6 @@ class ModelSchema
      * @param $attribute
      * @return bool
      * @throws InvalidArgumentException
-     * @internal param $name
      */
     public function hasAttribute($attribute)
     {
@@ -229,7 +229,7 @@ class ModelSchema
      * Return all relation sides of this model.
      * They represent the relations and the position of the current model in the relation.
      *
-     * @return Collection
+     * @return RelationSides
      */
     public function relationSides()
     {
@@ -237,13 +237,15 @@ class ModelSchema
 
         $relationAttributes = $allAttributes->relationAttributes();
 
-        $relationSides = new Collection();
+        $relationSides = new RelationSides();
 
         $relationAttributes->each(function (RelationAttribute $relationAttribute) use ($relationSides) {
             $relation = $relationAttribute->relation();
 
+            //Do not add the foreign side of a many to many relation to the collection
             if ($relation->isManyToMany() && $relationAttribute->name() != str_singular($this->tableName()) . '_id')
                 return true;
+
 
             $relationSide = new RelationSide($relationAttribute->relation(), $this->tableName());
             $relationSides->put($relationAttribute->qualifiedName(), $relationSide);

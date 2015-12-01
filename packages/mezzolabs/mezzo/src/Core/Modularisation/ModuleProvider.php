@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
+use MezzoLabs\Mezzo\Cockpit\Html\Rendering\AttributeRenderEngine;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
@@ -503,6 +504,16 @@ abstract class ModuleProvider extends ServiceProvider
     public function isVisible()
     {
         return $this->options()->get('visible', true);
+    }
+
+    public function registerAttributeRenderer($rendererClasses = [])
+    {
+        if (!is_array($rendererClasses))
+            $rendererClasses = [$rendererClasses];
+
+        foreach ($rendererClasses as $rendererClass) {
+            AttributeRenderEngine::registerHandler($rendererClass);
+        }
     }
 
 }

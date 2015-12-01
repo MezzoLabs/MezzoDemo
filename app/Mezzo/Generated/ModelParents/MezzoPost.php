@@ -93,7 +93,8 @@ abstract class MezzoPost extends BaseModel
         "published_at",
         "slug",
         "state",
-        "main_image_id"
+        "main_image_id",
+        "categories"
     ];
 
     /**
@@ -182,7 +183,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for content_id
      *
-     * @Mezzo\Attribute(type="RelationInputSingle", hidden="")
+     * @Mezzo\Attribute(type="RelationInputSingle", hidden="create")
      * @var integer
      */
     protected $_content_id;
@@ -190,7 +191,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for main_image_id
      *
-     * @Mezzo\Attribute(type="RelationInputSingle", hidden="")
+     * @Mezzo\Attribute(type="\MezzoLabs\Mezzo\Modules\FileManager\Schema\InputTypes\ImageInput", hidden="")
      * @var integer
      */
     protected $_main_image_id;
@@ -250,7 +251,7 @@ abstract class MezzoPost extends BaseModel
 
     /**
      * Relation annotation property for main_image
-     * @Mezzo\Relations\OneToMany(scopes="inGroup:content")
+     * @Mezzo\Relations\OneToMany()
      * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="main_image")
      * @Mezzo\Relations\To(table="image_files", primaryKey="id", naming="posts")
      * @Mezzo\Relations\JoinColumn(table="posts", column="main_image_id")
@@ -259,11 +260,12 @@ abstract class MezzoPost extends BaseModel
 
     /**
      * Relation annotation property for categories
-     * @Mezzo\Attribute(type="RelationInputMultiple", hidden="")
-     * @Mezzo\Relations\ManyToMany(scopes="inGroup:content")
+     * @Mezzo\Attribute(type="\MezzoLabs\Mezzo\Modules\Categories\Schema\InputTypes\CategoriesInput", hidden="")
+     * @Mezzo\Relations\ManyToMany()
      * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="categories")
      * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="posts")
      * @Mezzo\Relations\PivotTable(name="category_post", fromColumn="post_id", toColumn="category_id")
+     * @Mezzo\Relations\Scopes("inGroup:content")
      */
     protected $_categories;
 

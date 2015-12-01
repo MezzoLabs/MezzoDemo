@@ -24,6 +24,31 @@ class Request extends FormRequest
      */
     protected $controller;
 
+    /**
+     * Constructor.
+     *
+     * @param array $query The GET parameters
+     * @param array $request The POST parameters
+     * @param array $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
+     * @param array $cookies The COOKIE parameters
+     * @param array $files The FILES parameters
+     * @param array $server The SERVER parameters
+     * @param string|resource $content The raw body data
+     */
+    public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
+    {
+        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+        $this->boot();
+    }
+
+    /**
+     * Called right after a request is constructed
+     */
+    protected function boot()
+    {
+        //Nothing to do here, but you can override this function in child classes.
+    }
+
 
     /**
      * @return Request

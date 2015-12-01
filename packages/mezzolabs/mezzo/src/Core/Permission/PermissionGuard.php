@@ -3,9 +3,9 @@
 
 namespace MezzoLabs\Mezzo\Core\Permission;
 
-use Illuminate\Auth\Access\UnauthorizedException;
 use Illuminate\Auth\Guard as AuthGuard;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
+use MezzoLabs\Mezzo\Http\Exceptions\NoPermissionsException;
 
 class PermissionGuard
 {
@@ -13,6 +13,8 @@ class PermissionGuard
      * @var AuthGuard
      */
     protected $authGuard;
+
+    protected static $lastMissingPermission;
 
     /**
      * @param AuthGuard $authGuard
@@ -68,6 +70,14 @@ class PermissionGuard
         return $this->hasPermission('cockpit', $user);
     }
 
+    public function allowsCreateOrEdit(MezzoModel $model)
+    {
+        if ($model->exists)
+            return $this->allowsEdit($model);
+
+        return $this->allowsCreate($model);
+    }
+
     protected function allowsModelAccess(MezzoModel $model, $level = 'show', \App\User $user = null)
     {
         if (!$this->enabled())
@@ -83,6 +93,10 @@ class PermissionGuard
 
         if ($this->hasPermission($accessOwn) && $model->isOwnedByUser($user))
             return true;
+
+        static::$lastMissingPermission = $accessOwn;
+
+        mezzo()->logger()->logMissingPermission($accessAll);
 
         return false;
     }
@@ -115,9 +129,10 @@ class PermissionGuard
         return !$noPermissionCheck;
     }
 
-    public static function fail()
+    public static function fail($hint)
     {
-        throw new UnauthorizedException('No Permissions.');
+        throw new NoPermissionsException("Unauthorized. You need the \"" . static::$lastMissingPermission . '\"' .
+            " permission to perform this action. " . $hint);
     }
 
     /**
