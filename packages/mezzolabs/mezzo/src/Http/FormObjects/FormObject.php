@@ -18,9 +18,10 @@ interface FormObject
     /**
      * Return all the rules of atomic attributes and nested relations for a update request in a dot notation.
      *
+     * @param array $dirty
      * @return array
      */
-    public function rulesForUpdating();
+    public function rulesForUpdating(array $dirty);
 
     /**
      * The reflection of the eloquent model.

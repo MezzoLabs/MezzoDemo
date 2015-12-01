@@ -39,7 +39,7 @@
                                     <label><input type="checkbox"
                                                   @if($role->hasPermission($permission)) checked="checked"
                                                   @endif class="" name="permissions[{{ $permission->id }}]"
-                                                  value="{{ $permission->key() }}"/> {{ $permission->label }}</label>
+                                                  /> {{ $permission->label }}</label>
                                 </div>
                             @endforeach
                         </div>

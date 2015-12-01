@@ -107,14 +107,16 @@ class ContentBlocksFormObject implements FormObject
     /**
      * Return all the rules of atomic attributes and nested relations for a update request in a dot notation.
      *
+     * @param array $dirty
      * @return array
      */
-    public function rulesForUpdating()
+    public function rulesForUpdating(array $dirty)
     {
-        $rules = $this->genericFormObject->rulesForUpdating();
+        $rules = $this->genericFormObject->rulesForUpdating($dirty);
 
         return array_merge($rules, $this->contentBlockRules());
     }
+
 
     /**
      * @return Collection

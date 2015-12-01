@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Logging;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
+use Monolog\Handler\SlackHandler;
 use Monolog\Handler\StreamHandler;
 
 class LoggingServiceProvider extends ServiceProvider
@@ -92,6 +93,11 @@ class LoggingServiceProvider extends ServiceProvider
         $this->app->singleton(Logger::class, function () {
             $logger = new Logger('Mezzo Logger');
             $logger->pushHandler(new StreamHandler(storage_path('logs/mezzo.log'), Logger::INFO));
+
+            if(env('SLACK_TOKEN')){
+                $logger->pushHandler(new SlackHandler(env('SLACK_TOKEN'), 'mezzo'));
+            }
+
             return $logger;
         });
 

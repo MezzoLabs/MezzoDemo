@@ -13,7 +13,6 @@ class Logger extends \Monolog\Logger
     public function logEloquentEvent($eventType = "saving", Model $model)
     {
         $message = ucfirst($eventType) . ' ' . get_class($model) . ':' . $model->id;
-        $message .= ' | by ' . $this->userIdentifier();
 
         if ($eventType == 'updating')
             $message .= ' | dirty: [' . implode(',', array_keys($model->getDirty())) . '] ';
@@ -45,8 +44,23 @@ class Logger extends \Monolog\Logger
         return Request::getClientIp();
     }
 
+    protected function currentUrl()
+    {
+        return Request::url();
+    }
+
     public function currentRequestInfo()
     {
-        return $this->info('--- New request by: ' . $this->userIdentifier() . ' ['.  $this->userIp() . ']');
+        return $this->info('--- New request by: ' . $this->userIdentifier() . ' [' . $this->userIp() . '] -> ' . $this->currentUrl());
+    }
+
+    public function logMissingPermission($missingPermission)
+    {
+        $info = [
+            $this->userIdentifier(),
+            $this->userIp(),
+            $this->currentUrl()
+        ];
+        return $this->critical('Missing permissions: ' . $missingPermission . ' | ' . implode(', ', $info) );
     }
 }

@@ -96,6 +96,8 @@ class PermissionGuard
 
         static::$lastMissingPermission = $accessOwn;
 
+        mezzo()->logger()->logMissingPermission($accessAll);
+
         return false;
     }
 

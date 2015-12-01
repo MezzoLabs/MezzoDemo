@@ -35,6 +35,6 @@ class UpdateResourceRequest extends UpdateOrStoreResourceRequest
      */
     public function rules()
     {
-        return $this->formObject()->rulesForUpdating();
+        return $this->formObject()->rulesForUpdating(array_keys($this->all()));
     }
 }

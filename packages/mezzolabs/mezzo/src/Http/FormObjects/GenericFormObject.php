@@ -7,7 +7,7 @@ namespace Mezzolabs\Mezzo\Cockpit\Http\FormObjects;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
-use MezzoLabs\Mezzo\Core\Validation\Validator;
+use MezzoLabs\Mezzo\Core\Validation\RulesTransformer;
 
 class GenericFormObject implements FormObject
 {
@@ -150,7 +150,7 @@ class GenericFormObject implements FormObject
         $filteredRules = $rules;
         $this->nestedRelations()->each(function (NestedRelation $nestedRelation) use (&$filteredRules) {
             if (!$nestedRelation->isEmpty()) {
-                $filteredRules = Validator::removeRequiredRules($filteredRules, [$nestedRelation->parentAttributeName()]);
+                $filteredRules = RulesTransformer::removeRequiredRules($filteredRules, [$nestedRelation->parentAttributeName()]);
             }
         });
 
@@ -170,7 +170,6 @@ class GenericFormObject implements FormObject
                 $this->data[$key] = explode(',', $value);
         }
     }
-
 
     protected function convertCheckboxArrays()
     {
@@ -230,10 +229,13 @@ class GenericFormObject implements FormObject
     /**
      * Return all the rules of atomic attributes and nested relations for a update request in a dot notation.
      *
+     * @param array $dirty
      * @return array
      */
-    public function rulesForUpdating()
+    public function rulesForUpdating(array $dirty)
     {
-        return Arr::dot($this->rules());
+        $rulesTransformer = new RulesTransformer($this->rules());
+
+        return $rulesTransformer->rulesForUpdating($dirty);
     }
 }
