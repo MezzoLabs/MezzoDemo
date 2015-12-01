@@ -4,9 +4,9 @@
 namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
 
+use MezzoLabs\Mezzo\Core\Logging\LoggingServiceProvider;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Providers\EventServiceProvider;
-use MezzoLabs\Mezzo\Providers\LoggingServiceProvider;
 
 class RegisterInternalProviders implements Bootstrapper
 {
@@ -19,6 +19,7 @@ class RegisterInternalProviders implements Bootstrapper
      */
     public function bootstrap(Mezzo $mezzo)
     {
+        $mezzo->app()->register(LoggingServiceProvider::class);
         $mezzo->app()->register(EventServiceProvider::class);
     }
 }

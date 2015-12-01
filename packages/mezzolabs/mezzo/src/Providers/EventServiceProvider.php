@@ -3,10 +3,9 @@
 
 namespace MezzoLabs\Mezzo\Providers;
 
-use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Foundation\Bootstrap\BootProviders;
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Listeners\Early\DispatchAfterProvidersBooted;
 use MezzoLabs\Mezzo\Listeners\Early\DispatchBeforeProvidersBoot;
 use MezzoLabs\Mezzo\Listeners\GenericMezzoListener;
@@ -22,16 +21,7 @@ class EventServiceProvider extends ServiceProvider
         "*" => [GenericMezzoListener::class]
     ];
 
-    /**
-     * Register any other events for mezzo
-     *
-     * @param  \Illuminate\Contracts\Events\Dispatcher $events
-     * @return void
-     */
-    public function boot(DispatcherContract $events)
-    {
-        parent::boot($events);
-    }
+
 
 
     /**
@@ -62,7 +52,7 @@ class EventServiceProvider extends ServiceProvider
         );
 
         $dispatcher->listen('*', function ($param = null, $param2 = null) use ($dispatcher) {
-
+            //mezzo_dump($dispatcher->firing());
         });
 
         $dispatcher->listen('eloquent.*', function ($param = null, $param2 = null) use ($dispatcher) {
