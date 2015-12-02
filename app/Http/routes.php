@@ -72,7 +72,10 @@ Route::get('/test/reflection', function () {
 });
 
 Route::get('/test/events', function () {
+    $event = \App\Event::findOrFail(26);
 
+    mezzo_dd($event->start());
+    mezzo_dd($event->end());
 });
 
 

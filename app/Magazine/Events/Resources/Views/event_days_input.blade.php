@@ -3,10 +3,15 @@
 </div>
 {!! cockpit_form()->openNestedRelation($renderer->attribute()) !!}
 
+<p>
+    <span class="badge">{{ $renderer->eventStart() }}</span> to
+    <span class="badge">{{ $renderer->eventEnd() }}</span>
+</p>
+
 @if($renderer->value())
     @foreach($renderer->value() as $index => $day)
+        <?php if ($index === "new") continue; ?>
         <div class="row">
-            <?php if ($index === "new") continue; ?>
             <div class="col-md-5">
                 {!! $renderer->renderNested('start', ['value' => $renderer->dateTimeLocal($day['start']), 'index' => $index]) !!}
 

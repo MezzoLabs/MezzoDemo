@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Mezzo\Generated\ModelParents\MezzoEvent;
+use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 
@@ -39,5 +40,22 @@ class Event extends MezzoEvent implements SluggableInterface
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    /**
+     * @return Carbon
+     */
+    public function start()
+    {
+        return $this->days->sortBy('start')->first()->start;
+    }
+
+    /**
+     * @return Carbon
+     */
+    public function end()
+    {
+        return $this->days->sortBy('end')->last()->end;
+
     }
 }

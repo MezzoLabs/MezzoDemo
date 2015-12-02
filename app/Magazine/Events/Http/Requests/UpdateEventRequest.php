@@ -8,6 +8,8 @@ use MezzoLabs\Mezzo\Http\Requests\Resource\UpdateResourceRequest;
 
 class UpdateEventRequest extends UpdateResourceRequest
 {
+    use HandlesEventDays;
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -29,6 +31,8 @@ class UpdateEventRequest extends UpdateResourceRequest
 
     public function validate()
     {
+        $this->validateDaysNotOverlapping($this->get('days'), []);
+
         parent::validate();
     }
 }
