@@ -34,7 +34,7 @@ Route::get('random', function () {
 Route::get('/test/options', function () {
     \Auth::user()->touch();
 
-    $optionsService = app(\MezzoLabs\Mezzo\Modules\General\Domain\Services\OptionsService::class);
+    $optionsService = app(\MezzoLabs\Mezzo\Modules\General\Options\OptionsService::class);
 
     $optionsService->get('test.test.test', 'something new 2');
     $optionsService->set('test.test.test2', 'something new 2 ' . str_random());

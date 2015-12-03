@@ -5,9 +5,9 @@ namespace MezzoLabs\Mezzo\Modules\General\Http\Pages;
 
 
 use App\Option;
-use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ResourcePage;
+use MezzoLabs\Mezzo\Cockpit\Pages\Resources\IndexResourcePage;
 
-class OptionsPage extends ResourcePage
+class IndexOptionsPage extends IndexResourcePage
 {
     protected $model = Option::class;
 

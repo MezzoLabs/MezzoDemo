@@ -94,6 +94,9 @@ abstract class ModulePage implements ModulePageContract
         $this->options = $this->defaultOptions->merge($this->options);
 
         $this->validate();
+
+        if(method_exists($this, 'boot'))
+            $this->boot();
     }
 
     /**

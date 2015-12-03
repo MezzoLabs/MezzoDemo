@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Modules\General\Domain\Services;
+namespace MezzoLabs\Mezzo\Modules\General\Options;
 
 
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;

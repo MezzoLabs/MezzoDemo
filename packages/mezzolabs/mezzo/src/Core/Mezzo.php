@@ -16,7 +16,7 @@ use MezzoLabs\Mezzo\Core\Traits\CanMakeInstances;
 use MezzoLabs\Mezzo\Events\Core\MezzoBooted;
 use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 use MezzoLabs\Mezzo\MezzoServiceProvider;
-use MezzoLabs\Mezzo\Modules\General\Domain\Services\OptionsService;
+use MezzoLabs\Mezzo\Modules\General\Options\OptionsService;
 
 class Mezzo
 {
