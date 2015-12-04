@@ -4,10 +4,10 @@
 namespace MezzoLabs\Mezzo\Cockpit\Html\Rendering;
 
 use Illuminate\Support\Collection;
-use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CategoriesInputRenderer;
-use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationInputMultipleRenderer;
-use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationInputSingleRenderer;
-use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\SimpleInputRenderer;
+use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CategoriesAttributeRenderer;
+use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeMultipleRenderer;
+use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeSingleRenderer;
+use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\SimpleAttributeRenderer;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderEngine as AbstractAttributeRenderEngine;
@@ -15,10 +15,10 @@ use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderEngine as AbstractAttri
 class AttributeRenderEngine extends AbstractAttributeRenderEngine
 {
     public static $handlers = [
-        CategoriesInputRenderer::class,
-        RelationInputSingleRenderer::class,
-        RelationInputMultipleRenderer::class,
-        SimpleInputRenderer::class
+        CategoriesAttributeRenderer::class,
+        RelationAttributeSingleRenderer::class,
+        RelationAttributeMultipleRenderer::class,
+        SimpleAttributeRenderer::class
     ];
 
     protected $cssClass = 'form-control';
@@ -39,7 +39,7 @@ class AttributeRenderEngine extends AbstractAttributeRenderEngine
      */
     protected function validationAttributes(Attribute $attribute)
     {
-        return (new AttributeHtmlValidation($attribute))->htmlAttributes();
+        return (new HtmlRules($attribute->rules()))->attributes();
     }
 
     protected function relationAttributes(RelationAttribute $attribute)

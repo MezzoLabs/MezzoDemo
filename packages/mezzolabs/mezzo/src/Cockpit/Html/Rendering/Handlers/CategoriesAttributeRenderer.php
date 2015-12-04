@@ -6,7 +6,7 @@ namespace Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Modules\Categories\Schema\InputTypes\CategoriesInput;
 
-class CategoriesInputRenderer extends RelationInputMultipleRenderer
+class CategoriesAttributeRenderer extends RelationAttributeMultipleRenderer
 {
     /**
      * Checks if this handler is responsible for rendering this kind of input.

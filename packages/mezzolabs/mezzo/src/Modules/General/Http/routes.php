@@ -6,6 +6,8 @@ use MezzoLabs\Mezzo\Core\Routing\Router;
 use MezzoLabs\Mezzo\Modules\General\Http\Pages\IndexOptionsPage;
 
 module_route('General', [], function (Router $router, ApiRouter $api, CockpitRouter $cockpit) {
+    $router->getModule()->generateRoutes();
+
     $api->resource('Option');
 
     $cockpit->page(IndexOptionsPage::class);

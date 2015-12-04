@@ -5,29 +5,27 @@ namespace MezzoLabs\Mezzo\Cockpit\Html\Rendering;
 
 
 use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
+use MezzoLabs\Mezzo\Core\Schema\ValidationRules\Rules;
 
-class AttributeHtmlValidation
+class HtmlRules
 {
+
     /**
-     * @var Attribute
+     * @var Rules
      */
-    protected $attribute;
+    protected $rules;
 
-    public function __construct(Attribute $attribute)
+    public function __construct(Rules $rules)
     {
-
-        $this->attribute = $attribute;
+        $this->rules = $rules;
     }
 
     /**
      * @return Collection
      */
-    public function htmlAttributes()
+    public function attributes()
     {
         $attributes = new Collection();
-
-        $rules = $this->attribute->rules();
 
         if ($this->maxLength() > 0)
             $attributes->put('maxlength', $this->maxLength());
@@ -35,10 +33,10 @@ class AttributeHtmlValidation
         if ($this->minLength() > 0)
             $attributes->put('minLength', $this->minLength());
 
-        if ($rules->isRequired())
+        if ($this->rules()->isRequired())
             $attributes->put('required', 'required');
 
-        $attributes->put('data-validation-rules', $rules->toString());
+        $attributes->put('data-validation-rules', $this->rules()->toString());
 
         return $attributes;
     }
@@ -61,9 +59,12 @@ class AttributeHtmlValidation
         return 0;
     }
 
+    /**
+     * @return Rules
+     */
     protected function rules()
     {
-        return $this->attribute->rules();
+        return $this->rules;
     }
 
     /**
@@ -79,7 +80,6 @@ class AttributeHtmlValidation
 
         if ($this->rules()->has('between'))
             return $this->rules()->get('between')->parameters(0);
-
 
         return 0;
     }

@@ -18,7 +18,22 @@ class OptionFieldRegistry
         $this->collection = $collection;
     }
 
-    public function register(OptionField $optionField)
+    public function register($optionFields)
+    {
+        if (!is_array($optionFields))
+            $optionFields = array($optionFields);
+
+        foreach ($optionFields as $key => $optionField) {
+
+            if(is_string($key) && is_array($optionField)){
+                $optionField = OptionField::makeFromArray($key, $optionField);
+            }
+
+            $this->registerOptionField($optionField);
+        }
+    }
+
+    protected function registerOptionField(OptionField $optionField)
     {
         $this->collection()->put($optionField->name(), $optionField);
     }
@@ -26,11 +41,20 @@ class OptionFieldRegistry
     /**
      * @param $name
      * @param $default
-     * @return mixed
+     * @return OptionField
      */
     public function get($name, $default = null)
     {
         return $this->collection()->get($name, $default);
+    }
+
+    /**
+     * @param $name
+     * @return OptionField
+     */
+    public function getOrDefault($name)
+    {
+        return $this->get($name, $this->defaultOptionField($name));
     }
 
     /**

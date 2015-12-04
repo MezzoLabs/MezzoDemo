@@ -104,6 +104,7 @@ class CockpitRouter
      */
     public function page($pageName, $needsId = false)
     {
+
         $page = $this->module->makePage($pageName);
 
         $pageUri = mezzo()->uri()->toModulePage($page);
@@ -131,7 +132,12 @@ class CockpitRouter
     {
         $namespace = $this->controllerNamespace();
 
-        return str_replace($namespace . '\\', '', $action);
+        $shortAction = str_replace($namespace . '\\', '', $action);
+
+        if($action == $shortAction)
+            return $action;
+
+        return ltrim($shortAction, '\\');
     }
 
     /**

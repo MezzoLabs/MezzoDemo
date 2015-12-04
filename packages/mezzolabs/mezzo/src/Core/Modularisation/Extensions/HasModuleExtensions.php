@@ -24,22 +24,20 @@ trait HasModuleExtensions
     /**
      * Register a new extension
      *
-     * @param ModuleExtensionContract|string|array $moduleExtension
+     * @param ModuleExtensionContract|string|array $moduleExtensionClass
      */
-    public function registerExtension($moduleExtension)
+    public function registerExtension($moduleExtensionClass)
     {
         // Check if the given variable is an array. Register them one by one.
-        if (is_array($moduleExtension)) {
-            foreach ($moduleExtension as $current)
+        if (is_array($moduleExtensionClass)) {
+            foreach ($moduleExtensionClass as $current)
                 $this->registerExtension($current);
             return;
         }
 
-        // If this module extension is only a class name we will create an instance first.
-        if (is_string($moduleExtension))
-            $moduleExtension = app()->make($moduleExtension, ['module' => $this]);
+        $moduleExtension = app()->register($moduleExtensionClass);
 
-        $this->extensions()->put(get_class($moduleExtension), $moduleExtension);
+        $this->extensions()->put($moduleExtensionClass, $moduleExtension);
     }
 
     /**

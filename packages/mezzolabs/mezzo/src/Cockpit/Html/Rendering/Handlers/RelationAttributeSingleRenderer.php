@@ -7,7 +7,7 @@ use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle;
 use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderingHandler;
 
-class RelationInputSingleRenderer extends AttributeRenderingHandler
+class RelationAttributeSingleRenderer extends AttributeRenderingHandler
 {
 
     /**

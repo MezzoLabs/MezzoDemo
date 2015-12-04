@@ -4,11 +4,11 @@
 namespace MezzoLabs\Mezzo\Modules\Contents\Schema\Rendering;
 
 
-use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationInputSingleRenderer;
+use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeSingleRenderer;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Modules\Contents\Schema\InputTypes\ContentInput;
 
-class ContentInputRenderer extends RelationInputSingleRenderer
+class ContentAttributeRenderer extends RelationAttributeSingleRenderer
 {
 
     /**

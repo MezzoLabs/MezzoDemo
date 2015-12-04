@@ -19,7 +19,6 @@ class Rules extends Collection
      */
     public static function makeCollection($rulesToAdd)
     {
-
         if (is_array($rulesToAdd) || is_string($rulesToAdd)) {
             $rules = new static();
             $rules->addRulesFromString($rulesToAdd);

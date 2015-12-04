@@ -312,4 +312,15 @@ class ModuleCenter
         return $groups;
     }
 
+    /**
+     * @param array $modulesExtensions
+     */
+    public function registerExtensions(array $modulesExtensions)
+    {
+        foreach ($modulesExtensions as $moduleSlug => $extensions) {
+            $module = $this->getModule($moduleSlug);
+            $module->registerExtension($extensions);
+        }
+    }
+
 }

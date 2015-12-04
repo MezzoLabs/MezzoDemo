@@ -8,7 +8,7 @@ use MezzoLabs\Mezzo\Core\Schema\InputTypes\SimpleInput;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\TextArea;
 use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderingHandler;
 
-class SimpleInputRenderer extends AttributeRenderingHandler
+class SimpleAttributeRenderer extends AttributeRenderingHandler
 {
 
     /**

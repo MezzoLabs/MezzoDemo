@@ -51,6 +51,14 @@ class OptionField
         return $this->name;
     }
 
+    public function title()
+    {
+        if(!$this->settings()->has('title'))
+            return ucfirst(str_replace('.', ' ', $this->name));
+
+        return $this->settings()->get('title');
+    }
+
     /**
      * Returns the rules string
      *
@@ -68,7 +76,25 @@ class OptionField
      */
     public function inputType()
     {
-        return app()->make($this->settings->inputType());
+        return app()->make($this->settings->get('inputType'));
     }
 
+    public function value()
+    {
+        return $this->options()->get($this->name());
+    }
+
+    /**
+     * @return OptionsService
+     */
+    protected function options()
+    {
+        return app()->make(OptionsService::class);
+    }
+
+
+    public static function makeFromArray($name, array $settingsArray)
+    {
+        return new static($name, $settingsArray);
+    }
 }

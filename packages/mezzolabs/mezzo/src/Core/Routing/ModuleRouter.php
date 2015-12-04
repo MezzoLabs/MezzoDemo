@@ -83,6 +83,7 @@ class ModuleRouter
 
     public function generateRoutes()
     {
+
         $this->module->pages()->registerRoutes();
     }
 
