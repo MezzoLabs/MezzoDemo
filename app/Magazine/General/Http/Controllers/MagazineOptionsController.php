@@ -4,10 +4,16 @@ namespace App\Magazine\General\Http\Controllers;
 
 
 use App\Magazine\General\Http\Pages\MagazineOptionsPage;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitController;
+use MezzoLabs\Mezzo\Http\Controllers\ResourceControllerContract;
+use MezzoLabs\Mezzo\Modules\General\Domain\Repositories\OptionRepository;
+use MezzoLabs\Mezzo\Modules\General\Options\OptionsPage\StoreOptionsPageRequest;
 
-class MagazineOptionsController extends CockpitController
+class MagazineOptionsController extends CockpitController implements ResourceControllerContract
 {
+
     public function __construct()
     {
         $this->module = mezzo()->module('general');
@@ -18,5 +24,26 @@ class MagazineOptionsController extends CockpitController
     public function show()
     {
         return $this->page(MagazineOptionsPage::class);
+    }
+
+    public function store(StoreOptionsPageRequest $request)
+    {
+        mezzo_dd($request->all());
+    }
+
+    /**
+     * @return MezzoModelReflection
+     */
+    function model()
+    {
+        return mezzo()->model(\App\Option::class);
+    }
+
+    /**
+     * @return ModelRepository
+     */
+    function repository()
+    {
+        return OptionRepository::instance();
     }
 }

@@ -6,7 +6,9 @@ namespace MezzoLabs\Mezzo\Cockpit\Html\Rendering;
 use Collective\Html\FormBuilder as CollectiveFormBuilder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Session;
 use MezzoLabs\Mezzo\Cockpit\Html\Rendering\Inputs\InputRenderer;
+use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Modules\General\Options\OptionField;
@@ -246,6 +248,21 @@ class FormBuilder extends CollectiveFormBuilder
     {
         return (new InputRenderer($name, $inputType, $settings))->render();
     }
+
+    public function formGroup($name)
+    {
+        $sessionName = StringHelper::fromArrayToDotNotation($name);
+
+        $hasError = (Session::has('errors') && Session::get('errors')->has($sessionName));
+
+        $class = 'form-group';
+        if($hasError) $class .= ' has-error';
+
+        return '<div class="'. $class .'">';
+
+
+    }
+
 
 
 }

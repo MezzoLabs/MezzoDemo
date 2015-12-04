@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MezzoLabs\Mezzo\Modules\General\Http\AbstractPages;
+namespace MezzoLabs\Mezzo\Modules\General\Options\OptionsPage;
 
 use MezzoLabs\Mezzo\Exceptions\ModulePageException;
 use MezzoLabs\Mezzo\Http\Pages\ModulePage;

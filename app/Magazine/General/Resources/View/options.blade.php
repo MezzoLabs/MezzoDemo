@@ -7,9 +7,9 @@
                 <h3>Options</h3>
             </div>
             <div class="panel-body">
-                {!! cockpit_form()->open(['route' => 'modules']) !!}
+                {!! cockpit_form()->open(['route' => 'cockpit::magazine.options.store']) !!}
                 @foreach($options as $option)
-                    <div class="form-group">
+                    {!! cockpit_form()->formGroup('options[' . $option->name() . ']') !!}
                         <label>{{ $option->title() }}</label>
                         {!! cockpit_form()->optionField($option) !!}
                     </div>

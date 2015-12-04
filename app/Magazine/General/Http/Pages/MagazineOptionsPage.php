@@ -7,7 +7,7 @@ namespace App\Magazine\General\Http\Pages;
 use App\Magazine\General\Http\Controllers\MagazineOptionsController;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
-use MezzoLabs\Mezzo\Modules\General\Http\AbstractPages\OptionsPage;
+use MezzoLabs\Mezzo\Modules\General\Options\OptionsPage\OptionsPage;
 
 class MagazineOptionsPage extends OptionsPage
 {

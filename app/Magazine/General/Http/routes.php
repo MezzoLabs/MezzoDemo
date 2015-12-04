@@ -1,6 +1,5 @@
 <?php
 
-return;
 
 use App\Magazine\General\Http\Controllers\MagazineOptionsController;
 use MezzoLabs\Mezzo\Core\Routing\ApiRouter;

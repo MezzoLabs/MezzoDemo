@@ -17,7 +17,8 @@
       "league/glide": "0.*",
       "spatie/laravel-glide": "dev-master",
       "felixkiss/uniquewith-validator": "2.*",
-        "cviebrock/eloquent-sluggable": "dev-master"
+        "cviebrock/eloquent-sluggable": "dev-master",
+      "caouecs/laravel4-lang": "~2.0"
 
     },
     "require-dev": {

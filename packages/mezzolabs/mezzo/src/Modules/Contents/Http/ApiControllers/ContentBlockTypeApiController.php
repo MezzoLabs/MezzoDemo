@@ -8,6 +8,7 @@ use MezzoLabs\Mezzo\Http\Controllers\ApiController;
 use MezzoLabs\Mezzo\Modules\Contents\Http\Transformers\ContentBlockTypeTransformer;
 use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar;
 
+
 class ContentBlockTypeApiController extends ApiController
 {
     public function index()
