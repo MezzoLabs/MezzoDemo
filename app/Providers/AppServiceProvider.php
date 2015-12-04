@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Magazine\Events\EventsModule;
+use App\Magazine\General\GeneralModuleExtension;
 use Illuminate\Support\ServiceProvider;
+use MezzoLabs\Mezzo\Modules\General\GeneralModule;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         mezzo()->moduleCenter()->register(EventsModule::class);
+
+        mezzo()->module(GeneralModule::class)->registerExtension([
+            GeneralModuleExtension::class
+        ]);
 
     }
 
@@ -28,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment() == 'local') {
             $this->app->register('Laracasts\Generators\GeneratorsServiceProvider');
         }
+
 
     }
 }

@@ -3,15 +3,13 @@
 
 namespace MezzoLabs\Mezzo\Core\Collection;
 
-use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
-
 abstract class StrictCollection extends DecoratedCollection
 {
     /**
      * Put an item in the collection by key.
      *
-     * @param  mixed  $key
-     * @param  mixed  $value
+     * @param  mixed $key
+     * @param  mixed $value
      * @return $this
      */
     public function put($key, $value)
@@ -33,11 +31,24 @@ abstract class StrictCollection extends DecoratedCollection
     }
 
 
-    protected function assertThatItemIsValue($value){
-        if(!$this->checkItem($value))
-            throw new InvalidArgumentException($value);
+    protected function assertThatItemIsValue($value)
+    {
+        if (!$this->checkItem($value)) {
+            $this->fail($value);
+        }
 
         return true;
+    }
+
+    protected function fail($value)
+    {
+        $type = gettype($value);
+
+        if($type == "object")
+            $type = get_class($value);
+
+        throw new StrictCollectionException('"'. $type . '" is an invalid argument for this ' .
+            'strict collection: "' . get_class($this) . '"');
     }
 
     /**

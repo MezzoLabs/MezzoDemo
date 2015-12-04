@@ -112,6 +112,8 @@ class ModuleCenter
 
         $this->put($moduleProvider);
 
+        event('mezzo.modules.registered: ' . $slug);
+
         return $moduleProvider;
     }
 
@@ -250,7 +252,7 @@ class ModuleCenter
             throw new ModelCannotBeAssociated($model, $module);
 
         if (!$modelReflectionSet->isMezzoModel())
-            throw new ModelDoesntUseMezzoTrait($model . ' doesnt use the mezzo trait but is associated with a module.');
+            throw new ModelDoesntUseMezzoTrait($model . " doesn't use the mezzo trait but is associated with a module.");
 
         $modelReflectionSet->mezzoReflection()->setModule($module);
     }
