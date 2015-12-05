@@ -43,7 +43,7 @@ var _commonHasControllerService = require('./common/hasControllerService');
 
 var _commonHasControllerService2 = _interopRequireDefault(_commonHasControllerService);
 
-var app = angular.module('Mezzo', ['ui.router', 'ngMessages', 'angular-sortable-view', 'angular-loading-bar', 'ngFileUpload', 'MezzoResources', 'MezzoFileManager', 'MezzoContentBuilder']);
+var app = angular.module('Mezzo', ['ui.router', 'ui.sortable', 'ngMessages', 'angular-sortable-view', 'angular-loading-bar', 'ngFileUpload', 'MezzoResources', 'MezzoFileManager', 'MezzoContentBuilder']);
 
 app.config(_setupConfig2['default']);
 app.directive('mezzoCompile', _commonCompileDirective2['default']);
@@ -367,6 +367,9 @@ var CreatePageController = (function () {
         this.random = random;
         this.contentBlocks = [];
         this.templates = {};
+        this.sortableOptions = {
+            handle: 'a .ion-arrow-move'
+        };
     }
 
     _createClass(CreatePageController, [{

@@ -13,9 +13,9 @@ import hasControllerService from './common/hasControllerService';
 
 var app = angular.module('Mezzo', [
     'ui.router',
+    'ui.sortable',
     'ngMessages',
     'angular-sortable-view',
-    'angular-ui-sortable',
     'angular-loading-bar',
     'ngFileUpload',
     'MezzoResources',

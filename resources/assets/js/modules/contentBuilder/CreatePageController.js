@@ -6,6 +6,9 @@ export default class CreatePageController {
         this.random = random;
         this.contentBlocks = [];
         this.templates = {};
+        this.sortableOptions = {
+            handle: 'a .ion-arrow-move'
+        };
     }
 
     addContentBlock(key, hash, title) {
