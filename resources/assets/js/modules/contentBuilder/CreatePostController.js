@@ -1,4 +1,4 @@
-export default class CreatePageController {
+export default class CreatePostController {
 
     /*@ngInject*/
     constructor(contentBlockService) {
