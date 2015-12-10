@@ -22,6 +22,7 @@ class CreateOrdersTable extends Migration
             $table->foreign('merchant_id')->references('id')->on('merchants');
 
             $table->text('info');
+            $table->string('status')->required()->default('open');
             $table->timestamps();
 
             $table->softDeletes();

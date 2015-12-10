@@ -71,6 +71,8 @@ abstract class InputType
                 return NumberInput::class;
             case 'float':
                 return FloatInput::class;
+            case 'boolean':
+                return CheckboxInput::class;
         }
 
         throw new \Exception('There is no input type for the column type: ' . $type);
