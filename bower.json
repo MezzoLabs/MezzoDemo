@@ -29,7 +29,8 @@
     "roboto-fontface": "~0.4.3",
     "angular-messages": "~1.4.7",
     "moment": "~2.10.6",
-    "angular-loading-bar": "~0.8.0"
+    "angular-loading-bar": "~0.8.0",
+    "angular-ui-sortable": "~0.13.4"
   },
   "ignore": [
     "**/.*",
