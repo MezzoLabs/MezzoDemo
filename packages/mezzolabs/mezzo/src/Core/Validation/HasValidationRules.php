@@ -13,6 +13,8 @@ use MezzoLabs\Mezzo\Http\Requests\Request;
 trait HasValidationRules
 {
 
+    protected static $permissionsPaused = false;
+
     public static function bootHasValidationRules()
     {
         static::saving(\MezzoLabs\Mezzo\Core\Validation\Validator::class . '@onSaving');
@@ -96,5 +98,22 @@ trait HasValidationRules
         $rulesTransformer = new RulesTransformer($this->getRules());
         return $rulesTransformer->rulesForUpdating(array_keys($data));
     }
+
+
+    public static function pausePermissions()
+    {
+        static::$permissionsPaused = true;
+    }
+
+    public static function unpausePermissions()
+    {
+        static::$permissionsPaused = false;
+    }
+
+    public static function permissionsPaused() : bool
+    {
+        return static::$permissionsPaused;
+    }
+
 
 }

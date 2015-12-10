@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Modules\General\Options;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput;
+use MezzoLabs\Mezzo\Exceptions\MezzoException;
 
 class OptionField
 {
@@ -29,10 +30,14 @@ class OptionField
      * @param string $name
      * @param array|Collection $settings
      */
-    public function __construct($name, $settings = [])
+    public function __construct(string $name, $settings = [])
     {
         $this->name = $name;
         $this->settings = (new Collection($this->default))->merge($settings);
+
+        if(str_contains($name, '.'))
+            throw new MezzoException('A option cannot have a dot in its name: "'. $name .'' .
+                '", please use "'. str_replace('.', '_', $name) .'" instead.');
     }
 
     /**
@@ -54,7 +59,7 @@ class OptionField
     public function title()
     {
         if(!$this->settings()->has('title'))
-            return ucfirst(str_replace('.', ' ', $this->name));
+            return ucfirst(str_replace(['.', '::'], ' ', $this->name));
 
         return $this->settings()->get('title');
     }

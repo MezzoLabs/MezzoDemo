@@ -20,14 +20,14 @@ class MagazineOptionsPage extends OptionsPage
     protected $view = 'modules.general.magazine::options';
 
     protected $optionFields = [
-        'magazine.ad1',
-        'magazine.ad2',
-        'magazine.name',
-        'magazine.public',
-        'magazine.social-media.facebook',
-        'magazine.social-media.youtube',
-        'magazine.social-media.twitter',
-        'magazine.social-media.gplus',
+        'magazine::ads_1',
+        'magazine::ads_2',
+        'magazine::name',
+        'magazine::public',
+        'magazine::social-media_facebook',
+        'magazine::social-media_youtube',
+        'magazine::social-media_twitter',
+        'magazine::social-media_gplus',
     ];
 
     /**

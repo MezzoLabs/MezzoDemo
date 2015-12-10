@@ -16,6 +16,8 @@ class PermissionGuard
 
     protected static $lastMissingPermission;
 
+    protected static $active = true;
+
     /**
      * @param AuthGuard $authGuard
      */
@@ -53,7 +55,6 @@ class PermissionGuard
     {
         return $this->allowsModelAccess($model, 'show', $user);
     }
-
 
     public function allowsEdit(MezzoModel $model, \App\User $user = null)
     {
@@ -126,12 +127,13 @@ class PermissionGuard
     public function enabled()
     {
         $noPermissionCheck = (env('APP_DEBUG') && \Request::header('no-permission-check'));
-        return !$noPermissionCheck;
+
+        return !$noPermissionCheck && $this->isActive();
     }
 
     public static function fail($hint)
     {
-        throw new NoPermissionsException("Unauthorized. You need the \"" . static::$lastMissingPermission . '\"' .
+        throw new NoPermissionsException("Unauthorized. You need the \"" . static::$lastMissingPermission . "\"" .
             " permission to perform this action. " . $hint);
     }
 
@@ -141,5 +143,15 @@ class PermissionGuard
     public static function make()
     {
         return app()->make(static::class);
+    }
+
+    public static function setActive(bool $active)
+    {
+        static::$active = $active;
+    }
+
+    public static function isActive() : \bool
+    {
+        return static::$active;
     }
 }

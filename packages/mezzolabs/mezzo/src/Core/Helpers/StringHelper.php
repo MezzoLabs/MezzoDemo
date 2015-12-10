@@ -10,7 +10,10 @@ class StringHelper
 
     public static function fromArrayToDotNotation($arrayNotation)
     {
-        return str_replace(['.', '[]', '[', ']'], ['_', '', '.', ''], $arrayNotation);
+        $old = ['.', '[]', '[', ']'];
+        $new = ['_', '', '.', ''];
+
+        return str_replace($old, $new, $arrayNotation);
     }
 
     public static function datetimeLocal($date)

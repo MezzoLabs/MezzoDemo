@@ -28,7 +28,11 @@ class MagazineOptionsController extends CockpitController implements ResourceCon
 
     public function store(StoreOptionsPageRequest $request)
     {
-        mezzo_dd($request->all());
+        foreach ($request->get('options') as $name => $value) {
+            mezzo()->option($name, $value);
+        }
+
+        return $this->redirectToPage(MagazineOptionsPage::class)->with('message', 'Options saved.');
     }
 
     /**

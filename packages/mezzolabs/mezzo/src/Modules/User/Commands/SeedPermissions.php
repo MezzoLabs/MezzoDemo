@@ -3,6 +3,7 @@
 namespace MezzoLabs\Mezzo\Modules\User\Commands;
 
 use MezzoLabs\Mezzo\Console\Commands\MezzoCommand;
+use MezzoLabs\Mezzo\Core\Permission\PermissionGuard;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Modules\User\Domain\Repositories\PermissionRepository;
 use MezzoLabs\Mezzo\Modules\User\Domain\Repositories\RoleRepository;
@@ -40,6 +41,7 @@ class SeedPermissions extends MezzoCommand
      */
     public function handle()
     {
+        PermissionGuard::setActive(false);
 
         $defaultPermissions = $this->allPermissionArray();
 

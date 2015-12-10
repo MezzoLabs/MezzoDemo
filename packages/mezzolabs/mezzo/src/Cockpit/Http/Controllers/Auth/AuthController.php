@@ -5,10 +5,10 @@ namespace MezzoLabs\Mezzo\Cockpit\Http\Controllers\Auth;
 
 
 use App\User;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use MezzoLabs\Mezzo\Cockpit\Http\Controllers\NonModuleController;
 
@@ -22,6 +22,7 @@ class AuthController extends NonModuleController
 
     use AuthenticatesUsers, RegistersUsers, ThrottlesLogins {
         AuthenticatesUsers::redirectPath insteadof RegistersUsers;
+        RegistersUsers::postRegister as traitPostRegister;
     }
 
     /**
@@ -76,4 +77,16 @@ class AuthController extends NonModuleController
     }
 
 
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function postRegister(Request $request)
+    {
+        User::pausePermissions();
+
+        $this->traitPostRegister($request);
+    }
 }

@@ -15,6 +15,8 @@ use MezzoLabs\Mezzo\Modules\General\Options\OptionField;
 
 class FormBuilder extends CollectiveFormBuilder
 {
+    protected $formGroupName = null;
+
     /**
      * Create a submit button element.
      *
@@ -239,7 +241,9 @@ class FormBuilder extends CollectiveFormBuilder
     public function optionField(OptionField $field)
     {
         $settings = $field->settings();
-        $settings->put('value', $field->value());
+
+        if(!empty($field->value()))
+            $settings->put('value', $field->value());
 
         return $this->inputField('options[' . $field->name() . ']', $field->inputType(), $field->settings());
     }
@@ -249,18 +253,41 @@ class FormBuilder extends CollectiveFormBuilder
         return (new InputRenderer($name, $inputType, $settings))->render();
     }
 
-    public function formGroup($name)
+    public function formGroupOpen($name)
     {
-        $sessionName = StringHelper::fromArrayToDotNotation($name);
-
-        $hasError = (Session::has('errors') && Session::get('errors')->has($sessionName));
+        $this->formGroupName = $name;
 
         $class = 'form-group';
-        if($hasError) $class .= ' has-error';
+        if($this->hasError($name)) $class .= ' has-error';
 
-        return '<div class="'. $class .'">';
+        $html =  '<div class="'. $class .'">';
+
+        return $html;
+    }
+
+    public function formGroupClose()
+    {
+        $html = '</div>';
+
+        if($this->hasError($this->formGroupName)){
+            $html = '<span class="help-block">'. $this->getError($this->formGroupName)[0] .'</span>' . $html;
+        }
 
 
+        $this->formGroupName = null;
+
+        return $html;
+
+    }
+
+    protected function hasError($name){
+        $sessionName = StringHelper::fromArrayToDotNotation($name);
+        return (Session::has('errors') && Session::get('errors')->has($sessionName));
+    }
+
+    protected function getError($name){
+        $sessionName = StringHelper::fromArrayToDotNotation($name);
+        return Session::get('errors')->get($sessionName);
     }
 
 

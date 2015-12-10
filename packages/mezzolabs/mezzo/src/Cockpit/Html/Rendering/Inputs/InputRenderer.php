@@ -62,16 +62,32 @@ class InputRenderer
 
     protected function value()
     {
-        $sessionName = StringHelper::fromArrayToDotNotation($this->name);
+        if ($this->hasOld())
+            return $this->old();
 
-        if(\Session::hasOldInput($sessionName))
-           return \Session::getOldInput($sessionName);
-
-        if($this->settings->has('value'))
+        if ($this->settings->has('value'))
             return $this->settings->get('value');
 
-        if($this->settings->has('default'))
+        if ($this->settings->has('default'))
             return $this->settings->get('default');
+
+        return false;
+    }
+
+
+    protected function old()
+    {
+        $sessionName = StringHelper::fromArrayToDotNotation($this->name);
+
+        return \Session::getOldInput($sessionName);
+    }
+
+    protected function hasOld()
+    {
+        $sessionName = StringHelper::fromArrayToDotNotation($this->name);
+
+        if (\Session::hasOldInput($sessionName))
+            return true;
 
         return false;
     }

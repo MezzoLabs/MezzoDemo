@@ -24,8 +24,17 @@ class Validator
         return \Illuminate\Support\Facades\Validator::make($data, $rules, $messages, $customAttributes);
     }
 
+    /**
+     * Called whenever a model with validation rules is updated or created.
+     *
+     * @param MezzoModel|HasValidationRules $model
+     */
     public function onSaving(MezzoModel $model)
     {
+
+        if ($model->permissionsPaused()) {
+            return;
+        }
 
         if (!$this->permissionGuard()->allowsCreateOrEdit($model))
             $this->permissionGuard()->fail('Failed on the second level.');
@@ -40,8 +49,18 @@ class Validator
 
     }
 
+    /**
+     * Called whenever a model with validation rules is deleted.
+     *
+     * @param MezzoModel|HasValidationRules $model
+     * @return bool|void
+     */
     public function onDeleting(MezzoModel $model)
     {
+        if ($model->permissionsPaused()) {
+            return true;
+        }
+
         if (!$this->permissionGuard()->allowsDelete($model))
             $this->permissionGuard()->fail('Failed on the second level.');
 

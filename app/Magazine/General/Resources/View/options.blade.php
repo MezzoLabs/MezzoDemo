@@ -9,10 +9,10 @@
             <div class="panel-body">
                 {!! cockpit_form()->open(['route' => 'cockpit::magazine.options.store']) !!}
                 @foreach($options as $option)
-                    {!! cockpit_form()->formGroup('options[' . $option->name() . ']') !!}
+                    {!! cockpit_form()->formGroupOpen('options[' . $option->name() . ']') !!}
                         <label>{{ $option->title() }}</label>
                         {!! cockpit_form()->optionField($option) !!}
-                    </div>
+                    {!! cockpit_form()->formGroupClose() !!}
                 @endforeach
                 {!! cockpit_form()->submit() !!}
                 {!! cockpit_form()->close() !!}
