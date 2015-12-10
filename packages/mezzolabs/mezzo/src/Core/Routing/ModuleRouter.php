@@ -47,8 +47,8 @@ class ModuleRouter
         $routesPath = $this->module->path() . '/Http/routes.php';
 
         if (!file_exists($routesPath))
-            throw new ModuleControllerException('Cannot find routes file for module ' .
-                $this->module->qualifiedName() . ' - ' . $routesPath);
+            throw new ModuleControllerException('Cannot find routes file for module "' .
+                $this->module->qualifiedName() . '". Tried "' . $routesPath . '"');
 
         $module = $this->module();
 

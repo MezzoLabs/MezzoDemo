@@ -59,6 +59,21 @@ class GeneralModuleExtension extends ModuleExtension
                 'title' => 'Social media: Youtube',
                 'rules' => 'required|url',
                 'inputType' => UrlInput::class
+            ],
+            'magazine::social-media_facebook' => [
+                'title' => 'Social media: Facebook',
+                'rules' => 'required|url',
+                'inputType' => UrlInput::class
+            ],
+            'magazine::social-media_twitter' => [
+                'title' => 'Social media: Twitter',
+                'rules' => 'required|url',
+                'inputType' => UrlInput::class
+            ],
+            'magazine::social-media_gplus' => [
+                'title' => 'Social media: Google plus',
+                'rules' => 'required|url',
+                'inputType' => UrlInput::class
             ]
         ]);
 

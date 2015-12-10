@@ -9,6 +9,10 @@ use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 class ShopModule extends ModuleProvider
 {
 
+    protected $options = [
+        'icon' => 'ion-ios-cart'
+    ];
+
     /**
      * Called when module is ready, model reflections are loaded.
      *

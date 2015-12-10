@@ -59,7 +59,7 @@ class OptionField
     public function title()
     {
         if(!$this->settings()->has('title'))
-            return ucfirst(str_replace(['.', '::'], ' ', $this->name));
+            return ucfirst(str_replace(['.', '::', '_'], ' ', $this->name));
 
         return $this->settings()->get('title');
     }
