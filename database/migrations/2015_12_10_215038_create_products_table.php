@@ -18,7 +18,11 @@ class CreateProductsTable extends Migration
             $table->text('description')->requried();
             $table->float('price')->required();
             $table->float('premium_price');
-            $table->boolean('permium_only');
+            $table->boolean('premium_only');
+
+            $table->integer('merchant_id')->unsigned()->index();
+            $table->foreign('merchant_id')->references('id')->on('merchants')->onDelete('restrict');
+
             $table->timestamps();
         });
     }
