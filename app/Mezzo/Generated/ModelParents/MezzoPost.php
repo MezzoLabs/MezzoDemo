@@ -69,8 +69,9 @@ abstract class MezzoPost extends BaseModel
         'title' => "required|between:2,200",
         'teaser' => "between:2,1500",
         'slug' => "",
-        'state' => "required|between:2,20|alpha_num", 
-        'published_at' => ""
+        'state' => "required|between:2,20|alpha_num",
+        'published_at' => "",
+        'user_id' => 'required'
     ];
 
     /**

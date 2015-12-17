@@ -17,9 +17,13 @@ trait HasAngularDirectives
     public function relationship(RelationAttribute $attribute)
     {
         $htmlAttributes = [
-            'multiple' => $attribute->hasMultipleChildren() ? 1 : 0,
-            'related' => $attribute->getModel()->className()
+            'data-multiple' => $attribute->hasMultipleChildren() ? 1 : 0,
+            'data-related' => $attribute->getModel()->shortName()
         ];
+
+        $validationRules = (new HtmlRules($attribute->rules()))->attributes()->toArray();
+
+        $htmlAttributes = array_merge($htmlAttributes, $validationRules);
 
         return '<mezzo-input-relation ' . $this->html->attributes($htmlAttributes) . '></mezzo-input-relation>';
     }
