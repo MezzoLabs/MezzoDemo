@@ -7,7 +7,7 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Schema\Rendering;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderingHandler;
 
-abstract class FileAttributeRenderer extends AttributeRenderingHandler
+class FileAttributeRenderer extends AttributeRenderingHandler
 {
     /**
      * Checks if this handler is responsible for rendering this kind of input.
@@ -27,7 +27,7 @@ abstract class FileAttributeRenderer extends AttributeRenderingHandler
      */
     public function render()
     {
-        return parent::render();
+        return $this->formBuilder()->filePicker($this->attribute());
     }
 
 }

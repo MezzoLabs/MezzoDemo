@@ -15,6 +15,10 @@ use MezzoLabs\Mezzo\Modules\FileManager\Disk\FileUploader;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\Observers\FileObserver;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\FileTypesMapper;
 use MezzoLabs\Mezzo\Modules\FileManager\Http\Transformers\FileTransFormer;
+use MezzoLabs\Mezzo\Modules\FileManager\Schema\Rendering\FileAttributeRenderer;
+use MezzoLabs\Mezzo\Modules\FileManager\Schema\Rendering\FilesAttributeRenderer;
+use MezzoLabs\Mezzo\Modules\FileManager\Schema\Rendering\FileTypes\ImageAttributeRenderer;
+use MezzoLabs\Mezzo\Modules\FileManager\Schema\Rendering\FileTypes\ImageGalleryAttributeRenderer;
 
 #
 class FileManagerModule extends ModuleProvider
@@ -58,6 +62,12 @@ class FileManagerModule extends ModuleProvider
         $this->registerContentBlocks([
             ImageAndText::class
         ]);
+
+        $this->registerAttributeRenderer([
+            FileAttributeRenderer::class,
+            FilesAttributeRenderer::class
+        ]);
+
     }
 
     /**
