@@ -1,15 +1,18 @@
+import FilePickerController from './FilePickerController';
+
 /*@ngInject*/
 export default function filePickerDirective() {
     return {
-        restrict: 'A',
-        link
+        restrict: 'E',
+        templateUrl: '/mezzolabs/mezzo/cockpit/templates/filePickerDirective.html',
+        scope: {
+            fileType: '@',
+            fieldName: '@',
+            multiple: '@',
+            name: '@'
+        },
+        controller: FilePickerController,
+        controllerAs: 'vm',
+        bindToController: true
     };
-
-    function link(scope, element, attributes) {
-        $(element).click(showFilePickerModal);
-    }
-
-    function showFilePickerModal(){
-        $('#mezzoFilePickerModal').modal();
-    }
 }

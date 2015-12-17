@@ -3,9 +3,9 @@
 
 @section('content')
     <div class="wrapper">
+        {!! cockpit_form()->open(['route' => 'cockpit::post.store', 'method' => 'POST']) !!}
         <div class="row">
             <div class="col-md-9">
-                {!! cockpit_form()->open(['route' => 'cockpit::post.store', 'method' => 'POST']) !!}
                 <div class="panel panel-bordered">
                     <div class="panel-heading">
                         <h3>New {{ $model_reflection->name() }}</h3>
@@ -40,8 +40,6 @@
                 </div>
             </div>
         </div>
-
-
         {!! cockpit_form()->close() !!}
     </div>
 
