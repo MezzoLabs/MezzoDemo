@@ -8,4 +8,5 @@ use MezzoLabs\Mezzo\Http\Controllers\ApiResourceController;
 class PostApiController extends ApiResourceController
 {
 
+
 }

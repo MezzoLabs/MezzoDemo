@@ -24,7 +24,7 @@ trait HasAngularDirectives
     {
         $htmlAttributes = [
             'data-related' => $attribute->relationSide()->otherModelReflection()->name(),
-            'name'=> $attribute->name()
+            'name' => $attribute->name()
         ];
 
         if ($attribute->hasMultipleChildren()) $htmlAttributes[] = 'multiple';

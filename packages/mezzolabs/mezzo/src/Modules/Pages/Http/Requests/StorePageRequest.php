@@ -25,7 +25,9 @@ class StorePageRequest extends StoreResourceRequest
      */
     public function validate()
     {
-        return parent::validate();
+        parent::validate();
+
+        $this->validateContentBlocks();
     }
 
     /**
