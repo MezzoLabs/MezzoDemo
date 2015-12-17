@@ -25,6 +25,7 @@ use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 use MezzoLabs\Mezzo\Http\Controllers\ApiResourceController;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Controllers\Controller;
+use MezzoLabs\Mezzo\Http\Controllers\GenericApiResourceController;
 use MezzoLabs\Mezzo\Http\Pages\ModulePage;
 use MezzoLabs\Mezzo\Http\Pages\ModulePages;
 use MezzoLabs\Mezzo\Http\Transformers\TransformerRegistrar;
@@ -338,7 +339,7 @@ abstract class ModuleProvider extends ServiceProvider implements ExtensibleModul
      * Get the api resource controller with the ControllerName
      *
      * @param $controllerName
-     * @return ApiResourceController|CockpitResourceController
+     * @return GenericApiResourceController|CockpitResourceController
      * @throws ModuleControllerException
      */
     public function apiResourceController($controllerName)
@@ -361,8 +362,10 @@ abstract class ModuleProvider extends ServiceProvider implements ExtensibleModul
     {
         $controller = $this->makeController($controllerName);
 
-        if (!$controller->isResourceController())
+        if (!$controller->isResourceController()) {
             throw new ModuleControllerException($controller->qualifiedName() . ' is not a valid resource controller.');
+
+        }
 
         return $controller;
     }

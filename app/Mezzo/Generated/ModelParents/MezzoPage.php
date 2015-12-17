@@ -79,7 +79,10 @@ abstract class MezzoPage extends MezzoNestedSetNode
      * @var array
      */
     protected $fillable = [
-        "title", "teaser", "slug", "content_id"
+        "title",
+        "teaser",
+        "slug",
+        "content_id"
     ];
 
     /**

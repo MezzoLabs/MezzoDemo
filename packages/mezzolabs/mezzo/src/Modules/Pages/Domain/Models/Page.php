@@ -10,6 +10,7 @@ use Cviebrock\EloquentSluggable\SluggableTrait;
 
 abstract class Page extends MezzoPage implements SluggableInterface
 {
+
     use SluggableTrait;
 
     protected $sluggable = [

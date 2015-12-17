@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 abstract class ApiResourceController extends ApiController implements ResourceControllerContract
 {
-    use \MezzoLabs\Mezzo\Http\Controllers\HasModelResource, HasApiResourceFunctions;
+    use \MezzoLabs\Mezzo\Http\Controllers\HasModelResource;
 
     protected $allowStaticRepositories = false;
 

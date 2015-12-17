@@ -10,8 +10,9 @@ use MezzoLabs\Mezzo\Modules\Contents\Http\Requests\IsRequestWithContentBlocks;
 
 class StorePostRequest extends StoreResourceRequest
 {
-    use IsRequestWithContentBlocks;
+    public $model = \App\Post::class;
 
+    use IsRequestWithContentBlocks;
 
     protected function makeFormObject()
     {

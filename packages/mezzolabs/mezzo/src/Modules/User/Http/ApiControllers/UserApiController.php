@@ -4,14 +4,14 @@ namespace MezzoLabs\Mezzo\Modules\User\Http\ApiControllers;
 
 
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
-use MezzoLabs\Mezzo\Http\Controllers\ApiResourceController;
+use MezzoLabs\Mezzo\Http\Controllers\GenericApiResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\IndexResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\ShowResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\StoreResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\UpdateResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ApiResponseFactory;
 
-class UserApiController extends ApiResourceController
+class UserApiController extends GenericApiResourceController
 {
     /**
      * Display a listing of the resource.

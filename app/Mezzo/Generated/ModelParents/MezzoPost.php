@@ -96,7 +96,8 @@ abstract class MezzoPost extends BaseModel
         "state",
         "main_image_id",
         "categories",
-        'content_id'
+        'content_id',
+        'user_id'
     ];
 
     /**
@@ -189,6 +190,7 @@ abstract class MezzoPost extends BaseModel
      * @var integer
      */
     protected $_content_id;
+
     /**
      * Attribute annotation property for main_image_id
      *
@@ -243,12 +245,14 @@ abstract class MezzoPost extends BaseModel
 
     /**
      * Relation annotation property for content
+     *
      * @Mezzo\Relations\OneToOne
      * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="content")
      * @Mezzo\Relations\To(table="contents", primaryKey="id", naming="post")
      * @Mezzo\Relations\JoinColumn(table="posts", column="content_id")
      */
     protected $_content;
+
 
     /**
      * Relation annotation property for main_image

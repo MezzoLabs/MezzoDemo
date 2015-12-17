@@ -23,7 +23,7 @@ use MezzoLabs\Mezzo\Http\Responses\ApiResponseFactory;
  * @method ModelRepository repository()
  * @method MezzoModelReflection model()
  */
-trait HasApiResourceFunctions
+trait HasDefaultApiResourceFunctions
 {
     /**
      * Display a listing of the resource.
