@@ -63,7 +63,7 @@ abstract class MezzoCategory extends \MezzoLabs\Mezzo\Core\ThirdParties\NestedSe
     * @var array            
     */
     protected $rules = [
-        'slug' => "unique", 
+        'slug' => "",
         'label' => "required|unique_with:categories, category_group_id", 
         '_lft' => "", 
         '_rgt' => ""

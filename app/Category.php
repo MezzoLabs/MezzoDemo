@@ -14,19 +14,6 @@ class Category extends CategoriesModuleCategory
 {
 
     /**
-     * Set of rules that will be validated in resource requests.
-     *
-     * @var array
-     */
-    protected $rules = [
-        'slug' => "unique",
-        'label' => "required|unique_with:categories, category_group_id",
-        '_lft' => "",
-        '_rgt' => "",
-        'parent_id' => ""
-    ];
-
-    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array

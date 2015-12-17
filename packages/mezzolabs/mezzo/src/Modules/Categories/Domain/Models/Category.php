@@ -22,6 +22,13 @@ abstract class Category extends MezzoCategory implements SluggableInterface
         'save_to' => 'slug',
     ];
 
+    protected $rules = [
+        'slug' => "",
+        'label' => "required|unique_with:categories, category_group_id",
+        '_lft' => "",
+        '_rgt' => ""
+    ];
+
     /**
      * @param $category
      * @param null $group

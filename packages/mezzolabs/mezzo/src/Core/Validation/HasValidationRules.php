@@ -17,8 +17,8 @@ trait HasValidationRules
 
     public static function bootHasValidationRules()
     {
-        static::saving(\MezzoLabs\Mezzo\Core\Validation\Validator::class . '@onSaving');
-        static::deleting(\MezzoLabs\Mezzo\Core\Validation\Validator::class . '@onDeleting');
+        app('events')->listen('eloquent.saving*', \MezzoLabs\Mezzo\Core\Validation\Validator::class . '@onSaving');
+        app('events')->listen('eloquent.deleting*', \MezzoLabs\Mezzo\Core\Validation\Validator::class . '@onDeleting');
     }
 
 

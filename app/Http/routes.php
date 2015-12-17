@@ -48,6 +48,13 @@ Route::get('/test/categories', function () {
     mezzo_dd($categories);
 });
 
+
+Route::get('/test/seed', function () {
+    $databaseSeeder = new DatabaseSeeder();
+
+    $databaseSeeder->run();
+});
+
 Route::get('/test/posts', function () {
     $reflection = mezzo()->model('Post');
 

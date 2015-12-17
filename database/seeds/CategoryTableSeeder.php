@@ -26,7 +26,7 @@ class CategoryTableSeeder extends Seeder
         $contentGroup->syncModels([
             \App\File::class, \App\Tutorial::class
         ]);
-
+        
         $events = $contentGroup->createCategory('Events');
         $events->createAndAppend('Local');
         $events->createAndAppend('International');

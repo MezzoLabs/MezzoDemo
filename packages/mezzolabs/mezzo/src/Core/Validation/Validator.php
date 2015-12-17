@@ -31,7 +31,6 @@ class Validator
      */
     public function onSaving(MezzoModel $model)
     {
-
         if ($model->permissionsPaused()) {
             return;
         }
