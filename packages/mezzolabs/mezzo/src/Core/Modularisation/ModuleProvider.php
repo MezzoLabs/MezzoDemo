@@ -10,6 +10,8 @@ use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Cockpit\Html\Rendering\AttributeRenderEngine;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Mezzo;
+use MezzoLabs\Mezzo\Core\Modularisation\Extensions\ExtensibleModule;
+use MezzoLabs\Mezzo\Core\Modularisation\Extensions\HasModuleExtensions;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflections;
@@ -28,8 +30,9 @@ use MezzoLabs\Mezzo\Http\Pages\ModulePages;
 use MezzoLabs\Mezzo\Http\Transformers\TransformerRegistrar;
 use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar;
 
-abstract class ModuleProvider extends ServiceProvider
+abstract class ModuleProvider extends ServiceProvider implements ExtensibleModule
 {
+    use HasModuleExtensions;
 
     /**
      * @var String[]

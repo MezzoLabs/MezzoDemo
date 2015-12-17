@@ -11,8 +11,8 @@ use MezzoLabs\Mezzo\Http\Requests\Resource\IndexResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\ShowResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\StoreResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
-use MezzoLabs\Mezzo\Modules\General\Domain\Services\OptionsService;
-use MezzoLabs\Mezzo\Modules\General\Http\Pages\OptionsPage;
+use MezzoLabs\Mezzo\Modules\General\Http\Pages\IndexOptionsPage;
+use MezzoLabs\Mezzo\Modules\General\Options\OptionsService;
 
 class OptionController extends CockpitResourceController
 {
@@ -25,7 +25,7 @@ class OptionController extends CockpitResourceController
      */
     public function index(IndexResourceRequest $request)
     {
-        return $this->page(OptionsPage::class, ['options' => $this->repository()->all()]);
+        return $this->page(IndexOptionsPage::class, ['options' => $this->repository()->all()]);
     }
 
     /**
@@ -63,7 +63,7 @@ class OptionController extends CockpitResourceController
     public function store(StoreResourceRequest $request)
     {
         $this->options()->set($request->get('name'), $request->get('value'));
-        return $this->redirectToPage(OptionsPage::class)->with('message', 'Option created.');
+        return $this->redirectToPage(IndexOptionsPage::class)->with('message', 'Option created.');
     }
 
     public function options()

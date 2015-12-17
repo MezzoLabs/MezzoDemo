@@ -6,10 +6,17 @@ namespace MezzoLabs\Mezzo\Cockpit\Html\Rendering;
 use Collective\Html\FormBuilder as CollectiveFormBuilder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Session;
+use MezzoLabs\Mezzo\Cockpit\Html\Rendering\Inputs\InputRenderer;
+use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
+use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
+use MezzoLabs\Mezzo\Modules\General\Options\OptionField;
 
 class FormBuilder extends CollectiveFormBuilder
 {
+    protected $formGroupName = null;
+
     /**
      * Create a submit button element.
      *
@@ -230,6 +237,59 @@ class FormBuilder extends CollectiveFormBuilder
     {
         return parent::getModelValueAttribute($name);
     }
+
+    public function optionField(OptionField $field)
+    {
+        $settings = $field->settings();
+
+        if(!empty($field->value()))
+            $settings->put('value', $field->value());
+
+        return $this->inputField('options[' . $field->name() . ']', $field->inputType(), $field->settings());
+    }
+
+    public function inputField($name, InputType $inputType = null, $settings = [])
+    {
+        return (new InputRenderer($name, $inputType, $settings))->render();
+    }
+
+    public function formGroupOpen($name)
+    {
+        $this->formGroupName = $name;
+
+        $class = 'form-group';
+        if($this->hasError($name)) $class .= ' has-error';
+
+        $html =  '<div class="'. $class .'">';
+
+        return $html;
+    }
+
+    public function formGroupClose()
+    {
+        $html = '</div>';
+
+        if($this->hasError($this->formGroupName)){
+            $html = '<span class="help-block">'. $this->getError($this->formGroupName)[0] .'</span>' . $html;
+        }
+
+
+        $this->formGroupName = null;
+
+        return $html;
+
+    }
+
+    protected function hasError($name){
+        $sessionName = StringHelper::fromArrayToDotNotation($name);
+        return (Session::has('errors') && Session::get('errors')->has($sessionName));
+    }
+
+    protected function getError($name){
+        $sessionName = StringHelper::fromArrayToDotNotation($name);
+        return Session::get('errors')->get($sessionName);
+    }
+
 
 
 }

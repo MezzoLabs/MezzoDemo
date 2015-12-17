@@ -115,10 +115,12 @@ class ResourceRequest extends Request
      */
     protected function failedValidation(Validator $validator)
     {
-        if (!$this->isApi())
+        if (!$this->isApi()){
             throw new HttpResponseException($this->response(
                 $this->formatErrors($validator)
             ));
+        }
+
 
         return $this->failedApiValidation($validator);
     }

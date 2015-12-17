@@ -159,7 +159,9 @@ return [
         /*
          * Mezzo Provider - Mezzo is love
          */
-        MezzoLabs\Mezzo\MezzoServiceProvider::class
+        MezzoLabs\Mezzo\MezzoServiceProvider::class,
+
+        \App\Providers\MezzoAppServiceProvider::class
 
     ],
 

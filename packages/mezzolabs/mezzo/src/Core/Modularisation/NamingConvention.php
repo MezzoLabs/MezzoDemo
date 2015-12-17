@@ -139,6 +139,7 @@ class NamingConvention
      */
     public static function controllerClass(ModuleProvider $module, $controllerName)
     {
+
         if (is_object($controllerName))
             $controllerName = get_class($controllerName);
 

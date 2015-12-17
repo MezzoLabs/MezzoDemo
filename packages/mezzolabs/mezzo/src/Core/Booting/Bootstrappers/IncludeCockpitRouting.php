@@ -19,5 +19,7 @@ class IncludeCockpitRouting implements Bootstrapper
     public function bootstrap(Mezzo $mezzo)
     {
         $mezzo->makeCockpit()->serviceProvider()->includeRoutes();
+
+        event('mezzo.cockpit.routes_included');
     }
 }

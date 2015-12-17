@@ -94,6 +94,9 @@ abstract class ModulePage implements ModulePageContract
         $this->options = $this->defaultOptions->merge($this->options);
 
         $this->validate();
+
+        if(method_exists($this, 'boot'))
+            $this->boot();
     }
 
     /**
@@ -102,8 +105,8 @@ abstract class ModulePage implements ModulePageContract
      */
     protected function validate()
     {
-        if (!$this->controller())
-            throw new ModulePageException('There is no controller for ' . $this->qualifiedName());
+        if (empty($this->controller))
+            throw new ModulePageException('There is no controller for the page: "' .get_class($this) . '"');
 
         if (empty($this->action()))
             throw new ModulePageException('A module page needs a controller action: ' . get_class($this));
@@ -120,8 +123,9 @@ abstract class ModulePage implements ModulePageContract
      */
     public function controller()
     {
-        if (!$this->controllerObject)
+        if (!$this->controllerObject){
             $this->controllerObject = $this->module()->makeController($this->controller);
+        }
 
         return $this->controllerObject;
     }
@@ -182,7 +186,7 @@ abstract class ModulePage implements ModulePageContract
     public function template($data = [])
     {
         if (!$this->view)
-            throw new ModulePageException('No view for page.');
+            throw new ModulePageException('No view for page: "'. get_class($this) .'"');
 
         /**
          * Add some additional data to the view data.

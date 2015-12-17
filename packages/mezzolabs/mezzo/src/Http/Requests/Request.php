@@ -106,7 +106,7 @@ class Request extends FormRequest
      */
     public function controller()
     {
-        if (!$this->controller)
+        if (! $this->controller)
             $this->controller = $this->detectControllerFromRoute();
 
         return $this->controller;

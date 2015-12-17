@@ -37,7 +37,6 @@ if (!function_exists('mezzo_dump')) {
      *
      * @param $toDump
      * @param string $title
-     * @internal param $mixed
      * @return void
      */
     function mezzo_dump($toDump, $title = "", $stepsBack = 0)
@@ -59,7 +58,6 @@ if (!function_exists('mezzo_dd')) {
      *
      * @param $toDump
      * @param string $title
-     * @internal param $mixed
      * @return void
      */
     function mezzo_dd($toDump)

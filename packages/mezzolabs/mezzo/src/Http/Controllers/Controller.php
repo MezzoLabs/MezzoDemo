@@ -33,7 +33,7 @@ abstract class Controller extends IlluminateController
     {
         $this->hasActionOrFail($method);
 
-        return get_class($this) . '@' . $method;
+        return '\\' . get_class($this) . '@' . $method;
     }
 
     /**
@@ -44,8 +44,8 @@ abstract class Controller extends IlluminateController
     public function hasActionOrFail($method)
     {
         if (!$this->hasAction($method))
-            throw new ModuleControllerException("The controller " . $this->qualifiedName() .
-                " doesn't support the action " . $method);
+            throw new ModuleControllerException("The controller \"" . $this->qualifiedName() . "\"" .
+                " doesn't support the action \"" . $method . "\".");
 
         return true;
     }
