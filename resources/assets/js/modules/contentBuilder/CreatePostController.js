@@ -5,4 +5,8 @@ export default class CreatePostController {
         this.contentBlockService = contentBlockService;
     }
 
+    init(modelName) {
+        console.log(modelName);
+    }
+
 }

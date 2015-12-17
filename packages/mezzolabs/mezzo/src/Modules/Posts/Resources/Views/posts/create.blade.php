@@ -2,8 +2,8 @@
 
 
 @section('content')
-    <div class="wrapper" ng-init="vm.model = '{{ $model_reflection->name() }}'">
-        {!! cockpit_form()->open(['route' => 'cockpit::post.store', 'method' => 'POST']) !!}
+    <div class="wrapper" ng-init="vm.init('{{ $model_reflection->name() }}')">
+        {!! cockpit_form()->open(['angular' => true]) !!}
         <div class="row">
             <div class="col-md-9">
                 <div class="panel panel-bordered">
