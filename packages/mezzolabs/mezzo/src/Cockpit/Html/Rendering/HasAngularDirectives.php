@@ -25,6 +25,6 @@ trait HasAngularDirectives
 
         $htmlAttributes = array_merge($htmlAttributes, $validationRules);
 
-        return '<mezzo-input-relation ' . $this->html->attributes($htmlAttributes) . '></mezzo-input-relation>';
+        return '<mezzo-relation-input ' . $this->html->attributes($htmlAttributes) . '></mezzo-relation-input>';
     }
 }
