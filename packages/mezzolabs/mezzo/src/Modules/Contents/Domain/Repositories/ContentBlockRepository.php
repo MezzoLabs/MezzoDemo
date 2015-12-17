@@ -26,8 +26,11 @@ class ContentBlockRepository extends ModelRepository
         if (empty($attributesData->get('name')))
             $attributesData->put('name', str_random());
 
-
-        $block = parent::create($attributesData->toArray());
+        if (!$attributesData->has('id')) {
+            $block = parent::create($attributesData->toArray());
+        } else {
+            $block = $this->findOrFail($attributesData->get('id'));
+        }
 
         foreach ($fieldValues as $name => $value) {
             $this->createField($block, $name, $value);

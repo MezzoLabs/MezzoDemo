@@ -18,7 +18,12 @@ class ContentRepository extends ModelRepository
         $contentData = new Collection($contentData);
         $blocksData = $contentData->get('blocks', []);
 
-        $content = parent::create($contentData->except('blocks')->toArray());
+
+        if (!$contentData->get('id', null))
+            $content = parent::create($contentData->except('blocks')->toArray());
+        else {
+            $content = $this->findOrFail($contentData['id']);
+        }
 
         foreach ($blocksData as &$blockData) {
             $blockData['content_id'] = $content->id;
