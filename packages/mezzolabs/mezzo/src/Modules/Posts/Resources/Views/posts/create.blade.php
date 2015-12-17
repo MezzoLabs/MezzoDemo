@@ -31,19 +31,10 @@
                         <h3>Publish</h3>
                     </div>
                     <div class="panel-body">
-                        <div class="form-group">
-                            {!! $model_reflection->schema()->attributes('user_id')->render() !!}
-                        </div>
-                        <div class="form-group">
-                            {!! $model_reflection->schema()->attributes('main_image_id')->render() !!}
-                        </div>
-                        <div class="form-group">
-                            {!! $model_reflection->schema()->attributes('published_at')->render() !!}
-                        </div>
-                        <div class="form-group">
-                            {!! $model_reflection->schema()->attributes('state')->render() !!}
-                        </div>
-
+                        {!! $model_reflection->schema()->attributes('user_id')->render() !!}
+                        {!! $model_reflection->schema()->attributes('main_image_id')->render() !!}
+                        {!! $model_reflection->schema()->attributes('published_at')->render() !!}
+                        {!! $model_reflection->schema()->attributes('state')->render() !!}
                         {!! cockpit_form()->submit('Save as new ' . $model_reflection->name()) !!}
                     </div>
                 </div>
