@@ -23,7 +23,7 @@ trait HasAngularDirectives
     public function relationship(RelationAttribute $attribute) : string
     {
         $htmlAttributes = [
-            'data-related' => $attribute->getModel()->shortName()
+            'data-related' => $attribute->relationSide()->otherModelReflection()->name()
         ];
 
         if ($attribute->hasMultipleChildren()) $htmlAttributes[] = 'multiple';

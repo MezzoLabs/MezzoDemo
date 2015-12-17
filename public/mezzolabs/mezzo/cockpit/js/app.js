@@ -31,10 +31,6 @@ var _commonRelationInputDirective = require('./common/relationInputDirective');
 
 var _commonRelationInputDirective2 = _interopRequireDefault(_commonRelationInputDirective);
 
-var _commonMultipleDirective = require('./common/multipleDirective');
-
-var _commonMultipleDirective2 = _interopRequireDefault(_commonMultipleDirective);
-
 var _commonUidServiceJs = require('./common/uidService.js');
 
 var _commonUidServiceJs2 = _interopRequireDefault(_commonUidServiceJs);
@@ -58,35 +54,39 @@ app.directive('mezzoCompile', _commonCompileDirective2['default']);
 app.directive('mezzoCompileHtml', _commonCompileHtmlDirective2['default']);
 app.directive('mezzoEnter', _commonEnterDirectiveJs2['default']);
 app.directive('mezzoRelationInput', _commonRelationInputDirective2['default']);
-app.directive('mezzoMultiple', _commonMultipleDirective2['default']);
 app.factory('uid', _commonUidServiceJs2['default']);
 app.factory('api', _commonApiApiService2['default']);
 app.factory('random', _commonRandomService2['default']);
 app.factory('hasController', _commonHasControllerService2['default']);
 
-},{"./common/api/apiService":5,"./common/compileDirective":6,"./common/compileHtmlDirective":7,"./common/enterDirective.js":8,"./common/hasControllerService":9,"./common/multipleDirective":10,"./common/randomService":11,"./common/relationInputDirective":12,"./common/uidService.js":13,"./modules/contentBuilder":17,"./modules/fileManager":28,"./modules/resource":33,"./setup/config":36,"./setup/jquery":37}],2:[function(require,module,exports){
-'use strict';
+},{"./common/api/apiService":5,"./common/compileDirective":6,"./common/compileHtmlDirective":7,"./common/enterDirective.js":8,"./common/hasControllerService":9,"./common/randomService":10,"./common/relationInputDirective":11,"./common/uidService.js":12,"./modules/contentBuilder":16,"./modules/fileManager":27,"./modules/resource":32,"./setup/config":35,"./setup/jquery":36}],2:[function(require,module,exports){
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var RelationInputController =
 
 /*@ngInject*/
 function RelationInputController(api) {
+    var _this = this;
+
     _classCallCheck(this, RelationInputController);
 
     this.api = api;
-    console.log(!!this.multiple);
-    console.log('RelationInputController');
-    console.log(this);
+    this.modelApi = this.api.model(this.related);
+    this.models = [];
+
+    this.modelApi.index().then(function (models) {
+        _this.models = models;
+    });
 };
 
-exports['default'] = RelationInputController;
-module.exports = exports['default'];
+exports["default"] = RelationInputController;
+module.exports = exports["default"];
 
 },{}],3:[function(require,module,exports){
 'use strict';
@@ -337,35 +337,6 @@ module.exports = exports["default"];
 
 },{}],10:[function(require,module,exports){
 /*@ngInject*/
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-exports['default'] = multipleDirective;
-
-function multipleDirective() {
-    return {
-        restrict: 'A',
-        link: link
-    };
-}
-
-function link(scope, element, attributes) {
-    scope.$watch(function () {
-        return attributes.mezzoMultiple;
-    }, function (isMultiple) {
-        if (isMultiple) {
-            element.attr('multiple', 'multiple');
-        } else {
-            element.removeAttr('multiple');
-        }
-    });
-}
-module.exports = exports['default'];
-
-},{}],11:[function(require,module,exports){
-/*@ngInject*/
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -388,7 +359,7 @@ function string() {
 }
 module.exports = exports["default"];
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -410,8 +381,7 @@ function relationInputDirective() {
         templateUrl: '/mezzolabs/mezzo/cockpit/templates/relationInputDirective.html',
         replace: true,
         scope: {
-            related: '@',
-            multiple: '@'
+            related: '@'
         },
         controller: _RelationInputController2['default'],
         controllerAs: 'vm',
@@ -421,7 +391,7 @@ function relationInputDirective() {
 
 module.exports = exports['default'];
 
-},{"./RelationInputController":2}],13:[function(require,module,exports){
+},{"./RelationInputController":2}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -441,7 +411,7 @@ function nextUid() {
 }
 module.exports = exports["default"];
 
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -462,7 +432,7 @@ function CreatePageController(contentBlockService) {
 exports["default"] = CreatePageController;
 module.exports = exports["default"];
 
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -483,7 +453,7 @@ function CreatePostController(contentBlockService) {
 exports["default"] = CreatePostController;
 module.exports = exports["default"];
 
-},{}],16:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -557,7 +527,7 @@ var ContentBlockService = (function () {
 
 module.exports = exports['default'];
 
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -580,7 +550,7 @@ _module.factory('contentBlockService', _contentBlockService2['default']);
 _module.controller('CreatePageController', _CreatePageController2['default']);
 _module.controller('CreatePostController', _CreatePostController2['default']);
 
-},{"./CreatePageController":14,"./CreatePostController":15,"./contentBlockService":16}],18:[function(require,module,exports){
+},{"./CreatePageController":13,"./CreatePostController":14,"./contentBlockService":15}],17:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -604,7 +574,7 @@ var Category = function Category(label, icon) {
 exports["default"] = Category;
 module.exports = exports["default"];
 
-},{}],19:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -916,7 +886,7 @@ var CreateFileController = (function () {
 exports['default'] = CreateFileController;
 module.exports = exports['default'];
 
-},{"./File":20,"./Folder":22,"./categories":23}],20:[function(require,module,exports){
+},{"./File":19,"./Folder":21,"./categories":22}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1004,7 +974,7 @@ var File = (function () {
 exports['default'] = File;
 module.exports = exports['default'];
 
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1173,7 +1143,7 @@ var FilePickerController = (function () {
 exports['default'] = FilePickerController;
 module.exports = exports['default'];
 
-},{"./File":20}],22:[function(require,module,exports){
+},{"./File":19}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1214,7 +1184,7 @@ var Folder = (function (_File) {
 exports['default'] = Folder;
 module.exports = exports['default'];
 
-},{"./File":20}],23:[function(require,module,exports){
+},{"./File":19}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1246,7 +1216,7 @@ function documentFilter(file) {
 }
 module.exports = exports['default'];
 
-},{"./Category":18}],24:[function(require,module,exports){
+},{"./Category":17}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1272,7 +1242,7 @@ function draggableDirective() {
 
 module.exports = exports['default'];
 
-},{}],25:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1307,7 +1277,7 @@ function droppableDirective() {
 
 module.exports = exports['default'];
 
-},{}],26:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -1333,7 +1303,7 @@ function filePickerDirective() {
 
 module.exports = exports['default'];
 
-},{}],27:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1366,7 +1336,7 @@ function filePickerModalDirective() {
 
 module.exports = exports['default'];
 
-},{"./FilePickerController":21}],28:[function(require,module,exports){
+},{"./FilePickerController":20}],27:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1399,7 +1369,7 @@ _module.directive('mezzoFilePicker', _filePickerDirective2['default']);
 _module.directive('mezzoFilePickerModal', _filePickerModalDirective2['default']);
 _module.controller('CreateFileController', _CreateFileController2['default']);
 
-},{"./CreateFileController":19,"./draggableDirective.js":24,"./droppableDirective.js":25,"./filePickerDirective":26,"./filePickerModalDirective":27}],29:[function(require,module,exports){
+},{"./CreateFileController":18,"./draggableDirective.js":23,"./droppableDirective.js":24,"./filePickerDirective":25,"./filePickerModalDirective":26}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1413,7 +1383,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{}],30:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1458,7 +1428,7 @@ var ResourceCreateController = (function () {
 exports['default'] = ResourceCreateController;
 module.exports = exports['default'];
 
-},{}],31:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1481,7 +1451,7 @@ function ResourceEditController($stateParams) {
 exports['default'] = ResourceEditController;
 module.exports = exports['default'];
 
-},{}],32:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1693,7 +1663,7 @@ var ResourceIndexController = (function () {
 exports['default'] = ResourceIndexController;
 module.exports = exports['default'];
 
-},{}],33:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1726,7 +1696,7 @@ _module.controller('ResourceIndexController', _ResourceIndexController2['default
 _module.controller('ResourceCreateController', _ResourceCreateController2['default']);
 _module.controller('ResourceEditController', _ResourceEditController2['default']);
 
-},{"./ResourceCreateController":30,"./ResourceEditController":31,"./ResourceIndexController":32,"./registerStateDirective":34,"./stateProvider":35}],34:[function(require,module,exports){
+},{"./ResourceCreateController":29,"./ResourceEditController":30,"./ResourceIndexController":31,"./registerStateDirective":33,"./stateProvider":34}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1812,7 +1782,7 @@ function registerStateDirective($stateProvider, hasController) {
 
 module.exports = exports['default'];
 
-},{"./Action":29}],35:[function(require,module,exports){
+},{"./Action":28}],34:[function(require,module,exports){
 /*@ngInject*/
 "use strict";
 
@@ -1831,7 +1801,7 @@ function stateProvider($stateProvider) {
 
 module.exports = exports["default"];
 
-},{}],36:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -1849,7 +1819,7 @@ function config($locationProvider, $urlRouterProvider, $httpProvider) {
 
 module.exports = exports['default'];
 
-},{}],37:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 $(function () {
