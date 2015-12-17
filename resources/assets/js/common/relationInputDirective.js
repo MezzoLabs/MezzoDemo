@@ -7,8 +7,7 @@ export default function relationInputDirective() {
         templateUrl: '/mezzolabs/mezzo/cockpit/templates/relationInputDirective.html',
         replace: true,
         scope: {
-            related: '@',
-            required: '@'
+            related: '@'
         },
         controller: RelationInputController,
         controllerAs: 'vm',

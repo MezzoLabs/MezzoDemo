@@ -59,7 +59,7 @@ app.factory('api', _commonApiApiService2['default']);
 app.factory('random', _commonRandomService2['default']);
 app.factory('hasController', _commonHasControllerService2['default']);
 
-},{"./common/api/apiService":5,"./common/compileDirective":6,"./common/compileHtmlDirective":7,"./common/enterDirective.js":8,"./common/hasControllerService":9,"./common/randomService":10,"./common/relationInputDirective":11,"./common/uidService.js":12,"./modules/contentBuilder":16,"./modules/fileManager":27,"./modules/resource":32,"./setup/config":35,"./setup/jquery":36}],2:[function(require,module,exports){
+},{"./common/api/apiService":5,"./common/compileDirective":6,"./common/compileHtmlDirective":7,"./common/enterDirective.js":8,"./common/hasControllerService":9,"./common/randomService":10,"./common/relationInputDirective":11,"./common/uidService.js":12,"./modules/contentBuilder":16,"./modules/fileManager":26,"./modules/resource":31,"./setup/config":34,"./setup/jquery":35}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -382,8 +382,7 @@ function relationInputDirective() {
         templateUrl: '/mezzolabs/mezzo/cockpit/templates/relationInputDirective.html',
         replace: true,
         scope: {
-            related: '@',
-            required: '@'
+            related: '@'
         },
         controller: _RelationInputController2['default'],
         controllerAs: 'vm',
@@ -1009,6 +1008,24 @@ var FilePickerController = (function () {
     }
 
     _createClass(FilePickerController, [{
+        key: 'buttonLabel',
+        value: function buttonLabel() {
+            var label = 'Select file';
+
+            if (this.isMultiple()) {
+                label + 's';
+            }
+
+            return label;
+        }
+    }, {
+        key: 'showModal',
+        value: function showModal($event) {
+            var target = $event.target;
+
+            $(target).prev().modal();
+        }
+    }, {
         key: 'loadFiles',
         value: function loadFiles() {
             var _this = this;
@@ -1122,7 +1139,7 @@ var FilePickerController = (function () {
         key: 'confirmSelected',
         value: function confirmSelected() {
             var selected = this.selectedFiles();
-            var $field = $('input[name="' + this.fieldName + '"]');
+            var $field = $('input[name="' + this.name + '"]');
 
             if (selected.length === 1) {
                 $field.val(selected[0].id);
@@ -1280,38 +1297,12 @@ function droppableDirective() {
 module.exports = exports['default'];
 
 },{}],25:[function(require,module,exports){
-/*@ngInject*/
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 exports['default'] = filePickerDirective;
-
-function filePickerDirective() {
-    return {
-        restrict: 'A',
-        link: link
-    };
-
-    function link(scope, element, attributes) {
-        $(element).click(showFilePickerModal);
-    }
-
-    function showFilePickerModal() {
-        $('#mezzoFilePickerModal').modal();
-    }
-}
-
-module.exports = exports['default'];
-
-},{}],26:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-exports['default'] = filePickerModalDirective;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -1321,14 +1312,15 @@ var _FilePickerController2 = _interopRequireDefault(_FilePickerController);
 
 /*@ngInject*/
 
-function filePickerModalDirective() {
+function filePickerDirective() {
     return {
         restrict: 'E',
-        templateUrl: '/mezzolabs/mezzo/cockpit/templates/filePickerModalDirective.html',
+        templateUrl: '/mezzolabs/mezzo/cockpit/templates/filePickerDirective.html',
         scope: {
             fileType: '@',
             fieldName: '@',
-            multiple: '@'
+            multiple: '@',
+            name: '@'
         },
         controller: _FilePickerController2['default'],
         controllerAs: 'vm',
@@ -1338,7 +1330,7 @@ function filePickerModalDirective() {
 
 module.exports = exports['default'];
 
-},{"./FilePickerController":20}],27:[function(require,module,exports){
+},{"./FilePickerController":20}],26:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1355,10 +1347,6 @@ var _filePickerDirective = require('./filePickerDirective');
 
 var _filePickerDirective2 = _interopRequireDefault(_filePickerDirective);
 
-var _filePickerModalDirective = require('./filePickerModalDirective');
-
-var _filePickerModalDirective2 = _interopRequireDefault(_filePickerModalDirective);
-
 var _CreateFileController = require('./CreateFileController');
 
 var _CreateFileController2 = _interopRequireDefault(_CreateFileController);
@@ -1368,10 +1356,9 @@ var _module = angular.module('MezzoFileManager', []);
 _module.directive('mezzoDraggable', _draggableDirectiveJs2['default']);
 _module.directive('mezzoDroppable', _droppableDirectiveJs2['default']);
 _module.directive('mezzoFilePicker', _filePickerDirective2['default']);
-_module.directive('mezzoFilePickerModal', _filePickerModalDirective2['default']);
 _module.controller('CreateFileController', _CreateFileController2['default']);
 
-},{"./CreateFileController":18,"./draggableDirective.js":23,"./droppableDirective.js":24,"./filePickerDirective":25,"./filePickerModalDirective":26}],28:[function(require,module,exports){
+},{"./CreateFileController":18,"./draggableDirective.js":23,"./droppableDirective.js":24,"./filePickerDirective":25}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1385,7 +1372,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{}],29:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1430,7 +1417,7 @@ var ResourceCreateController = (function () {
 exports['default'] = ResourceCreateController;
 module.exports = exports['default'];
 
-},{}],30:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1453,7 +1440,7 @@ function ResourceEditController($stateParams) {
 exports['default'] = ResourceEditController;
 module.exports = exports['default'];
 
-},{}],31:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1665,7 +1652,7 @@ var ResourceIndexController = (function () {
 exports['default'] = ResourceIndexController;
 module.exports = exports['default'];
 
-},{}],32:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1698,7 +1685,7 @@ _module.controller('ResourceIndexController', _ResourceIndexController2['default
 _module.controller('ResourceCreateController', _ResourceCreateController2['default']);
 _module.controller('ResourceEditController', _ResourceEditController2['default']);
 
-},{"./ResourceCreateController":29,"./ResourceEditController":30,"./ResourceIndexController":31,"./registerStateDirective":33,"./stateProvider":34}],33:[function(require,module,exports){
+},{"./ResourceCreateController":28,"./ResourceEditController":29,"./ResourceIndexController":30,"./registerStateDirective":32,"./stateProvider":33}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1784,7 +1771,7 @@ function registerStateDirective($stateProvider, hasController) {
 
 module.exports = exports['default'];
 
-},{"./Action":28}],34:[function(require,module,exports){
+},{"./Action":27}],33:[function(require,module,exports){
 /*@ngInject*/
 "use strict";
 
@@ -1803,7 +1790,7 @@ function stateProvider($stateProvider) {
 
 module.exports = exports["default"];
 
-},{}],35:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 /*@ngInject*/
 'use strict';
 
@@ -1821,7 +1808,7 @@ function config($locationProvider, $urlRouterProvider, $httpProvider) {
 
 module.exports = exports['default'];
 
-},{}],36:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 $(function () {

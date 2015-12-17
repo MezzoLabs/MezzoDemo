@@ -12,6 +12,22 @@ export default class FilePickerController {
         this.loadFiles();
     }
 
+    buttonLabel() {
+        const label = 'Select file';
+
+        if(this.isMultiple()) {
+            label + 's';
+        }
+
+        return label;
+    }
+
+    showModal($event) {
+        const target = $event.target;
+
+        $(target).prev().modal();
+    }
+
     loadFiles(){
         this.api.files().then(apiFiles => {
             apiFiles.forEach(apiFile => {
@@ -102,7 +118,7 @@ export default class FilePickerController {
 
     confirmSelected(){
         const selected = this.selectedFiles();
-        const $field = $(`input[name="${ this.fieldName }"]`);
+        const $field = $(`input[name="${ this.name }"]`);
 
         if(selected.length === 1){
             $field.val(selected[0].id);
