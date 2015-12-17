@@ -78,6 +78,7 @@ function RelationInputController(api) {
 
     this.api = api;
     this.modelApi = this.api.model(this.related);
+    this.model = null;
     this.models = [];
 
     this.modelApi.index().then(function (models) {
@@ -381,7 +382,8 @@ function relationInputDirective() {
         templateUrl: '/mezzolabs/mezzo/cockpit/templates/relationInputDirective.html',
         replace: true,
         scope: {
-            related: '@'
+            related: '@',
+            required: '@'
         },
         controller: _RelationInputController2['default'],
         controllerAs: 'vm',

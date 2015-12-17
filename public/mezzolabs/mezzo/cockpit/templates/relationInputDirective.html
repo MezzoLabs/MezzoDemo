@@ -1,1 +1,3 @@
-<select class="form-control" ng-options="model._label for model in vm.models track by model.id" ng-model="vm.model"></select>
+<select class="form-control" ng-options="model._label for model in vm.models track by model.id" ng-model="vm.model">
+    <option value="" ng-if="!vm.required">Please select</option>
+</select>
