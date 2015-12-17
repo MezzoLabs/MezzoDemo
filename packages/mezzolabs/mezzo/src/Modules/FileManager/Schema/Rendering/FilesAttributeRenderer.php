@@ -17,7 +17,7 @@ class FilesAttributeRenderer extends AttributeRenderingHandler
      */
     public function handles(InputType $inputType)
     {
-        return false;
+        return $inputType instanceof FileInput;
     }
 
     /**
@@ -27,7 +27,7 @@ class FilesAttributeRenderer extends AttributeRenderingHandler
      */
     public function render()
     {
-        return parent::render();
+        return $this->formBuilder()->filePicker($this->attribute());
     }
 
 }

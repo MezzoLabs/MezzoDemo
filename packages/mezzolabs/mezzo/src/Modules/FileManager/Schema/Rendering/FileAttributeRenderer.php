@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Schema\Rendering;
 
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderingHandler;
+use MezzoLabs\Mezzo\Modules\FileManager\Schema\InputTypes\FileInput;
 
 class FileAttributeRenderer extends AttributeRenderingHandler
 {
@@ -17,7 +18,7 @@ class FileAttributeRenderer extends AttributeRenderingHandler
      */
     public function handles(InputType $inputType)
     {
-        return false;
+        return $inputType instanceof FileInput;
     }
 
     /**
