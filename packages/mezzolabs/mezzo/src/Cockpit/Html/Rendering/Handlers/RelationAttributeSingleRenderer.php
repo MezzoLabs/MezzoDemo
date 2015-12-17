@@ -28,8 +28,7 @@ class RelationAttributeSingleRenderer extends AttributeRenderingHandler
      */
     public function render()
     {
-        $list = $this->makeEloquentList(true);
-        return $this->formBuilder()->select($this->name(), $list, $this->value(), $this->htmlAttributes());
+        return $this->formBuilder()->relationship($this->attribute);
     }
 
 

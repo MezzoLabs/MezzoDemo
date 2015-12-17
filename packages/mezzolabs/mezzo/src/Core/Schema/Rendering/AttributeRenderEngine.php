@@ -41,7 +41,7 @@ abstract class AttributeRenderEngine
         }
 
         throw new AttributeRenderingException('There is no attribute rendering ' .
-            'handler for "' . get_class($attribute->type()) . '"');
+            'handler for "' . get_class($attribute->type()) . '".');
     }
 
     /**

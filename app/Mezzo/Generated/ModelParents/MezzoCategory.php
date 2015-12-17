@@ -75,7 +75,6 @@ abstract class MezzoCategory extends \MezzoLabs\Mezzo\Core\ThirdParties\NestedSe
     * @var array            
     */
     protected $hidden = [
-        
     ];
 
     /**

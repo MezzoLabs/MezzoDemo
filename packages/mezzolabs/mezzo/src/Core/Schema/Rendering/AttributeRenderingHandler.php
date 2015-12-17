@@ -22,7 +22,7 @@ abstract class AttributeRenderingHandler
     protected $attributeRenderer;
 
     /**
-     * @var Attribute
+     * @var Attribute|RelationAttribute
      */
     protected $attribute;
 

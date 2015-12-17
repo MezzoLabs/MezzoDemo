@@ -15,6 +15,8 @@ use MezzoLabs\Mezzo\Modules\General\Options\OptionField;
 
 class FormBuilder extends CollectiveFormBuilder
 {
+    use HasAngularDirectives;
+
     protected $formGroupName = null;
 
     /**
@@ -289,7 +291,5 @@ class FormBuilder extends CollectiveFormBuilder
         $sessionName = StringHelper::fromArrayToDotNotation($name);
         return Session::get('errors')->get($sessionName);
     }
-
-
 
 }
