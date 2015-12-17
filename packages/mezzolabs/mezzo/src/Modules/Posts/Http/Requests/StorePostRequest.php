@@ -11,6 +11,11 @@ class StorePostRequest extends StoreResourceRequest
 {
     use IsRequestWithContentBlocks;
 
+
+    protected function makeFormObject()
+    {
+        return $this->makeContentBlocksFormObject();
+    }
     /**
      * Validate the class instance.
      *

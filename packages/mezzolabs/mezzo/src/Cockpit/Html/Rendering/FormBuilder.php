@@ -59,11 +59,9 @@ class FormBuilder extends CollectiveFormBuilder
      */
     public function open(array $options = [])
     {
-        $options = $this->mergeDefault([
-            'name' => "vm.form",
-            'novalidate' => 'novalidate',
-            'ng-submit' => 'vm.submit()'
-        ], $options);
+        if ($options['angular'] ?? false) {
+            return '<form name="vm.form" novalidate="novalidate" ng-submit="vm.submit()">';
+        }
 
         return parent::open($options);
     }
@@ -244,7 +242,7 @@ class FormBuilder extends CollectiveFormBuilder
     {
         $settings = $field->settings();
 
-        if(!empty($field->value()))
+        if (!empty($field->value()))
             $settings->put('value', $field->value());
 
         return $this->inputField('options[' . $field->name() . ']', $field->inputType(), $field->settings());
@@ -260,9 +258,9 @@ class FormBuilder extends CollectiveFormBuilder
         $this->formGroupName = $name;
 
         $class = 'form-group';
-        if($this->hasError($name)) $class .= ' has-error';
+        if ($this->hasError($name)) $class .= ' has-error';
 
-        $html =  '<div class="'. $class .'">';
+        $html = '<div class="' . $class . '">';
 
         return $html;
     }
@@ -271,8 +269,8 @@ class FormBuilder extends CollectiveFormBuilder
     {
         $html = '</div>';
 
-        if($this->hasError($this->formGroupName)){
-            $html = '<span class="help-block">'. $this->getError($this->formGroupName)[0] .'</span>' . $html;
+        if ($this->hasError($this->formGroupName)) {
+            $html = '<span class="help-block">' . $this->getError($this->formGroupName)[0] . '</span>' . $html;
         }
 
 
@@ -282,12 +280,14 @@ class FormBuilder extends CollectiveFormBuilder
 
     }
 
-    protected function hasError($name){
+    protected function hasError($name)
+    {
         $sessionName = StringHelper::fromArrayToDotNotation($name);
         return (Session::has('errors') && Session::get('errors')->has($sessionName));
     }
 
-    protected function getError($name){
+    protected function getError($name)
+    {
         $sessionName = StringHelper::fromArrayToDotNotation($name);
         return Session::get('errors')->get($sessionName);
     }
