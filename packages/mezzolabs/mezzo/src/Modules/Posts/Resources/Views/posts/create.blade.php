@@ -2,7 +2,7 @@
 
 
 @section('content')
-    <div class="wrapper">
+    <div class="wrapper" ng-init="vm.model = '{{ $model_reflection->name() }}'">
         {!! cockpit_form()->open(['route' => 'cockpit::post.store', 'method' => 'POST']) !!}
         <div class="row">
             <div class="col-md-9">

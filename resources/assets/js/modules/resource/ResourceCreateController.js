@@ -3,6 +3,8 @@ export default class ResourceCreateController {
     /*@ngInject*/
     constructor(api) {
         this.api = api;
+
+        console.log(this.model);
     }
 
     submit(){

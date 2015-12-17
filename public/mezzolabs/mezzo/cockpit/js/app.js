@@ -1391,6 +1391,8 @@ var ResourceCreateController = (function () {
         _classCallCheck(this, ResourceCreateController);
 
         this.api = api;
+
+        console.log(this.model);
     }
 
     _createClass(ResourceCreateController, [{
