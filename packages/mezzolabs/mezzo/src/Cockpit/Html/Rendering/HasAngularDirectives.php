@@ -49,7 +49,8 @@ trait HasAngularDirectives
             throw new AttributeRenderingException('Invalid image model');
 
         $htmlAttributes = [
-            'data-file-type' => $fileTypeModel->fileType()->name()
+            'data-file-type' => $fileTypeModel->fileType()->name(),
+            'name' => $attribute->name()
         ];
 
         if ($attribute->hasMultipleChildren()) $htmlAttributes[] = 'multiple';
