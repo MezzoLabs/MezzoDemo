@@ -63,7 +63,7 @@ class PostController extends CockpitResourceController
     public function store(StorePostRequest $request)
     {
         $data = $request->all();
-        $page = $this->repository()->createWithNestedRelations($data, $request->formObject()->nestedRelations());
+        $post = $this->repository()->createWithNestedRelations($data, $request->formObject()->nestedRelations());
 
         return $this->redirectToPage(EditPostPage::class, ['id' => $post->getAttribute('id')]);
     }

@@ -19,18 +19,6 @@ class StorePageRequest extends StoreResourceRequest
 
 
     /**
-     * Validate the class instance.
-     *
-     * @return void
-     */
-    public function validate()
-    {
-        parent::validate();
-
-        $this->validateContentBlocks();
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array

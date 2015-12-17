@@ -12,7 +12,7 @@ class EditPagePage extends EditResourcePage
 
     protected $options = [
         'visibleInNavigation' => false,
-        'renderedByFrontend' => false,
+        'renderedByFrontend' => true,
         'appendToUri' => '/{id}'
     ];
 

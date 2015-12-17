@@ -69,9 +69,9 @@ class PageController extends CockpitResourceController
      */
     public function edit(EditResourceRequest $request, $id = null)
     {
-        $model = $this->repository()->findOrFail($id, ['*'], ['content']);
+        //$model = $this->repository()->findOrFail($id, ['*'], ['content']);
 
-        return $this->page(EditPagePage::class,['model' => $model]);
+        return $this->page(EditPagePage::class);
     }
 
     /**

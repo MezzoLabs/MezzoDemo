@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div class="panel-body">
-                {!! cockpit_form()->open(['angular' => true]) !!}
+                {!! cockpit_form()->open() !!}
                 @include(cockpit_html()->viewKey('form-content-create'))
                 {!! cockpit_form()->close() !!}
 

@@ -95,7 +95,8 @@ abstract class MezzoPost extends BaseModel
         "slug",
         "state",
         "main_image_id",
-        "categories"
+        "categories",
+        'content_id'
     ];
 
     /**
@@ -184,11 +185,10 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for content_id
      *
-     * @Mezzo\Attribute(type="RelationInputSingle", hidden="create")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Contents\Schema\InputTypes\ContentInput")
      * @var integer
      */
     protected $_content_id;
-
     /**
      * Attribute annotation property for main_image_id
      *
