@@ -162,7 +162,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for state
      *
-     * @Mezzo\Attribute(type="TextInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Posts\Schema\InputTypes\PostStateInput", hidden="")
      * @var string
      */
     protected $_state;
