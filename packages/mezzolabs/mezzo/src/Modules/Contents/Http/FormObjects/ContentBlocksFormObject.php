@@ -10,6 +10,8 @@ use Mezzolabs\Mezzo\Cockpit\Http\FormObjects\FormObject;
 use Mezzolabs\Mezzo\Cockpit\Http\FormObjects\GenericFormObject;
 use Mezzolabs\Mezzo\Cockpit\Http\FormObjects\NestedRelations;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
+use MezzoLabs\Mezzo\Modules\Contents\Contracts\ContentBlockTypeContract;
+use MezzoLabs\Mezzo\Modules\Contents\Exceptions\ContentBlockException;
 
 class ContentBlocksFormObject implements FormObject
 {
@@ -49,6 +51,8 @@ class ContentBlocksFormObject implements FormObject
         $this->blocksData = new Collection($this->contentsData->get(static::BLOCKS_FORM_NAME, []));
 
         $this->genericFormObject = new GenericFormObject($model, $this->allData->except(static::CONTENT_FORM_NAME));
+
+        $this->assertThatFieldsAreRegistered();
     }
 
 
@@ -101,7 +105,7 @@ class ContentBlocksFormObject implements FormObject
     {
         $rules = $this->genericFormObject->rulesForStoring();
 
-        return array_merge($rules, $this->contentBlockRules());
+        return array_merge($rules, $this->contentBlockRules("create"));
     }
 
     /**
@@ -114,7 +118,7 @@ class ContentBlocksFormObject implements FormObject
     {
         $rules = $this->genericFormObject->rulesForUpdating($dirty);
 
-        return array_merge($rules, $this->contentBlockRules());
+        return array_merge($rules, $this->contentBlockRules("update", $dirty));
     }
 
 
@@ -139,8 +143,11 @@ class ContentBlocksFormObject implements FormObject
         return !$this->blocksData()->isEmpty();
     }
 
-    protected function contentBlockRules()
+    protected function contentBlockRules($mode = "create", $dirty = [])
     {
+        if (!isset($dirty[static::CONTENT_FORM_NAME]))
+            return [];
+
         if (!$this->hasContentBlocks()) {
             return [static::CONTENT_FORM_NAME . '.' . static::BLOCKS_FORM_NAME => 'required'];
         }
@@ -173,6 +180,33 @@ class ContentBlocksFormObject implements FormObject
         ];
 
         return array_merge($blockPropertyRules, $blockFieldsRules);
+    }
+
+    private function assertThatFieldsAreRegistered()
+    {
+        foreach ($this->blocksData as $blockData) {
+            $blockType = $this->makeBlockType($blockData);
+
+            foreach ($blockData['fields'] as $name => $value) {
+                if (!$blockType->fields()->has($name))
+                    throw new ContentBlockException("The content block \"" . get_class($blockType) . "\" doesn't " .
+                        "have a field called \"" . $name . "\".");
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $blockData
+     * @return ContentBlockTypeContract
+     */
+    protected function makeBlockType($blockData) : ContentBlockTypeContract
+    {
+        if (!isset($blockData['class']) || !class_exists($blockData['class']))
+            throw new ContentBlockException('A content block needs a valid class.');
+
+        return app($blockData['class']);
     }
 
 }

@@ -69,9 +69,9 @@ abstract class MezzoPost extends BaseModel
         'title' => "required|between:2,200",
         'teaser' => "between:2,1500",
         'slug' => "",
-        'state' => "required|between:2,20|alpha_num",
+        'state' => "required|between:2,20|alpha_num|in:published,draft,deleted",
         'published_at' => "",
-        'user_id' => 'required'
+        'user_id' => 'required|exists:users,id'
     ];
 
     /**
@@ -162,7 +162,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for state
      *
-     * @Mezzo\Attribute(type="TextInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Posts\Schema\InputTypes\PostStateInput", hidden="")
      * @var string
      */
     protected $_state;

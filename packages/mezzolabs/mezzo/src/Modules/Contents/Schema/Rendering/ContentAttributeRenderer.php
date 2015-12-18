@@ -32,6 +32,16 @@ class ContentAttributeRenderer extends RelationAttributeSingleRenderer
         return $this->view('modules.contents::block_type_select', ['content' => $this->content()]);
     }
 
+    public function before()
+    {
+        return '<div class="form-object">';
+    }
+
+    public function after()
+    {
+        return '</div>';
+    }
+
     public function content()
     {
         return $this->valueOfAttribute('content');

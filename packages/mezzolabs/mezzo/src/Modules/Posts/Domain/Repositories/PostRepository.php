@@ -21,21 +21,24 @@ class PostRepository extends ModelRepository
     {
         $data = $this->replaceBlocksWithContentId($data);
 
-        $values = $this->values($data->toArray());
-
-
-        $modelInstance = $this->modelInstance();
-
-        $model = $modelInstance->create($values->inMainTableOnly()->toArray());
-
-
-        if (!$model)
-            throw new RepositoryException('Cannot create new model of type ' . $this->modelReflection()->className());
-
-        $this->updateRelations($model, $values->inForeignTablesOnly());
-
-
-        return $model;
+        return parent::create($data->toArray());
     }
+
+    /**
+     * @param array $data
+     * @param $id
+     * @param string $attribute
+     * @return MezzoModel
+     * @throws RepositoryException
+     */
+    public function update(array $data, $id, $attribute = "id")
+    {
+        if (isset($data['content'])) {
+            $data = $this->replaceBlocksWithContentId($data)->toArray();
+        }
+
+        return parent::update($data, $id, $attribute);
+    }
+
 
 }

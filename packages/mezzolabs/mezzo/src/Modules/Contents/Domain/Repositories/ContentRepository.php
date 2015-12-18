@@ -13,16 +13,23 @@ class ContentRepository extends ModelRepository
      * @param array $contentData
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function createWithBlocks(array $contentData)
+    public function updateOrCreateWithBlocks(array $contentData)
     {
         $contentData = new Collection($contentData);
         $blocksData = $contentData->get('blocks', []);
 
-        $content = parent::create($contentData->except('blocks')->toArray());
+        $exists = $contentData->get('id', null);
+
+
+        if (!$exists)
+            $content = parent::create($contentData->except('blocks')->toArray());
+        else {
+            $content = $this->findOrFail($contentData['id']);
+        }
 
         foreach ($blocksData as &$blockData) {
             $blockData['content_id'] = $content->id;
-            $this->blockRepository()->create($blockData);
+            $this->blockRepository()->updateOrCreateWithArray($blockData);
         }
 
         $this->updateRecentText($content->id);

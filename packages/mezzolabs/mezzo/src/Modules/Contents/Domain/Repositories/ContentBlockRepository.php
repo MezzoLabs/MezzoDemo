@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Modules\Contents\Domain\Repositories;
 
 
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
 
 class ContentBlockRepository extends ModelRepository
@@ -13,7 +14,7 @@ class ContentBlockRepository extends ModelRepository
      * @param array $data
      * @return Model
      */
-    public function create(array $data)
+    public function updateOrCreateWithArray(array $data)
     {
         $data = new Collection($data);
         $fieldValues = $data->get('fields', []);
@@ -26,23 +27,31 @@ class ContentBlockRepository extends ModelRepository
         if (empty($attributesData->get('name')))
             $attributesData->put('name', str_random());
 
+        $exists = !empty($attributesData->get('id'));
 
-        $block = parent::create($attributesData->toArray());
+        if (!$exists)
+            $block = parent::create($attributesData->toArray());
+        else
+            $block = parent::update($attributesData->except('id')->toArray(), $attributesData->get('id'));
 
         foreach ($fieldValues as $name => $value) {
-            $this->createField($block, $name, $value);
+            $id = null;
+
+            if($exists){
+                $id = $block->fields->where('name', $name)->first()->id;
+            }
+
+            $this->updateOrCreateField($block, $name, $value, $id);
         }
-
-
     }
 
     /**
-     * @param \App\ContentBlock $block
+     * @param \App\ContentBlock|MezzoModel $block
      * @param $name
      * @param $value
      * @return \Illuminate\Database\Eloquent\Model
      */
-    protected function createField(\App\ContentBlock $block, $name, $value)
+    protected function updateOrCreateField(\App\ContentBlock $block, $name, $value, $id = null)
     {
         $data = [
             'content_block_id' => $block->id,
@@ -50,7 +59,11 @@ class ContentBlockRepository extends ModelRepository
             'value' => $value
         ];
 
-        return $this->fieldRepository()->create($data);
+        if(!$id)
+            return $this->fieldRepository()->create($data);
+
+        return $this->fieldRepository()->update($data, $id);
+
     }
 
     protected function fieldRepository()

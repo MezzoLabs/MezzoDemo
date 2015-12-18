@@ -73,7 +73,8 @@ trait HasDefaultApiResourceFunctions
     public function update(UpdateResourceRequest $request, $id)
     {
         $this->assertResourceExists($id);
-        return $this->response()->result($this->repository()->update($request->all(), $id));
+
+        return $this->response()->item($this->repository()->update($request->all(), $id), $this->bestModelTransformer());
     }
 
     /**
