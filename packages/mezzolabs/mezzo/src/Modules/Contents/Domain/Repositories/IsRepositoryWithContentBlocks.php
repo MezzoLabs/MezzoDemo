@@ -17,7 +17,7 @@ trait IsRepositoryWithContentBlocks
         $data = new Collection($data);
         $attributesData = new Collection($data);
 
-        $content = $this->contentRepository()->createWithBlocks($data->get('content'));
+        $content = $this->contentRepository()->updateOrCreateWithBlocks($data->get('content'));
 
         $attributesData->forget(['content']);
         $attributesData->put('content_id', $content->id);
