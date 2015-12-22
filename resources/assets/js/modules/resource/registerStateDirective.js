@@ -20,6 +20,7 @@ export default function registerStateDirective($stateProvider, hasController) {
     }
 
     function registerState(uri, page, action) {
+        const stateName = page.toLowerCase();
         const url = urlForAction(uri, action);
         let controller = controllerForPage(page);
 
@@ -27,7 +28,7 @@ export default function registerStateDirective($stateProvider, hasController) {
             controller = controllerForAction(action);
         }
 
-        $stateProvider.state(page, {
+        $stateProvider.state(stateName, {
             url: url,
             templateUrl: '/mezzo/' + uri + '.html',
             controller: controller,

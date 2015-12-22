@@ -1429,10 +1429,11 @@ var ResourceIndexController = (function () {
 
     /*@ngInject*/
 
-    function ResourceIndexController($scope, api) {
+    function ResourceIndexController($scope, $state, api) {
         _classCallCheck(this, ResourceIndexController);
 
         this.$scope = $scope;
+        this.$state = $state;
         this.api = api;
         this.models = [];
         this.searchText = '';
@@ -1444,6 +1445,7 @@ var ResourceIndexController = (function () {
     _createClass(ResourceIndexController, [{
         key: 'init',
         value: function init(modelName) {
+            this.modelName = modelName;
             this.modelApi = this.api.model(modelName);
 
             console.log(modelName);
@@ -1557,7 +1559,10 @@ var ResourceIndexController = (function () {
     }, {
         key: 'edit',
         value: function edit() {
-            //TODO
+            var models = this.selected();
+            var state = 'edit' + this.modelName;
+
+            this.$state.go(state, { modelId: models[0].id });
         }
     }, {
         key: 'remove',
@@ -1692,6 +1697,7 @@ function registerStateDirective($stateProvider, hasController) {
     }
 
     function registerState(uri, page, action) {
+        var stateName = page.toLowerCase();
         var url = urlForAction(uri, action);
         var controller = controllerForPage(page);
 
@@ -1699,7 +1705,7 @@ function registerStateDirective($stateProvider, hasController) {
             controller = controllerForAction(action);
         }
 
-        $stateProvider.state(page, {
+        $stateProvider.state(stateName, {
             url: url,
             templateUrl: '/mezzo/' + uri + '.html',
             controller: controller,
