@@ -69,9 +69,9 @@ abstract class MezzoPost extends BaseModel
         'title' => "required|between:2,200",
         'teaser' => "between:2,1500",
         'slug' => "",
-        'state' => "required|between:2,20|alpha_num",
+        'state' => "required|between:2,20|alpha_num|in:published,draft,deleted",
         'published_at' => "",
-        'user_id' => 'required'
+        'user_id' => 'required|exists:users,id'
     ];
 
     /**
@@ -95,7 +95,9 @@ abstract class MezzoPost extends BaseModel
         "slug",
         "state",
         "main_image_id",
-        "categories"
+        "categories",
+        'content_id',
+        'user_id'
     ];
 
     /**
@@ -160,7 +162,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for state
      *
-     * @Mezzo\Attribute(type="TextInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Posts\Schema\InputTypes\PostStateInput", hidden="")
      * @var string
      */
     protected $_state;
@@ -184,7 +186,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for content_id
      *
-     * @Mezzo\Attribute(type="RelationInputSingle", hidden="create")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Contents\Schema\InputTypes\ContentInput")
      * @var integer
      */
     protected $_content_id;
@@ -243,12 +245,14 @@ abstract class MezzoPost extends BaseModel
 
     /**
      * Relation annotation property for content
+     *
      * @Mezzo\Relations\OneToOne
      * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="content")
      * @Mezzo\Relations\To(table="contents", primaryKey="id", naming="post")
      * @Mezzo\Relations\JoinColumn(table="posts", column="content_id")
      */
     protected $_content;
+
 
     /**
      * Relation annotation property for main_image

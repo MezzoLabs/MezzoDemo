@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CategoriesAttributeRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeMultipleRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeSingleRenderer;
+use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\SelectableAttributeRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\SimpleAttributeRenderer;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
@@ -18,6 +19,7 @@ class AttributeRenderEngine extends AbstractAttributeRenderEngine
         CategoriesAttributeRenderer::class,
         RelationAttributeSingleRenderer::class,
         RelationAttributeMultipleRenderer::class,
+        SelectableAttributeRenderer::class,
         SimpleAttributeRenderer::class
     ];
 

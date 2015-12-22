@@ -56,14 +56,8 @@ Route::get('/test/seed', function () {
 });
 
 Route::get('/test/posts', function () {
-    $reflection = mezzo()->model('Post');
 
-    $categories = $reflection->attributes()->get('categories');
-
-    $somePost = \App\Post::all()->first();
-
-
-    mezzo_dd($categories->query()->get());
+    mezzo_dd(\MezzoLabs\Mezzo\Http\Transformers\GenericEloquentModelTransformer::makeBest(\App\Post::first()));
 });
 
 Route::post('/test/file', 'TestController@uploadFile');
@@ -84,7 +78,6 @@ Route::get('/test/events', function () {
     mezzo_dd($event->start());
     mezzo_dd($event->end());
 });
-
 
 
 Route::post('test/file/{id}', 'TestController@updateFile');

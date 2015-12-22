@@ -3,9 +3,9 @@
 namespace MezzoLabs\Mezzo\Modules\User\Http\ApiControllers;
 
 
-use MezzoLabs\Mezzo\Http\Controllers\ApiResourceController;
+use MezzoLabs\Mezzo\Http\Controllers\GenericApiResourceController;
 
-class PermissionApiController extends ApiResourceController
+class PermissionApiController extends GenericApiResourceController
 {
 
 }
