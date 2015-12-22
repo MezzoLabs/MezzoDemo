@@ -1,16 +1,21 @@
 export default class CreatePostController {
 
     /*@ngInject*/
-    constructor(contentBlockService) {
+    constructor(api, contentBlockService) {
+        this.api = api;
         this.contentBlockService = contentBlockService;
     }
 
     init(modelName) {
         this.modelName = modelName;
+        this.modelApi = this.api.model(this.modelName);
     }
 
     submit() {
-        console.log(this.form);
+        const formData = $(document['vm.form']).serializeArray();
+
+        console.log(formData);
+        this.modelApi.create(formData);
     }
 
 }

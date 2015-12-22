@@ -10,6 +10,10 @@ export default class Api {
         return this.apiPromise(this.$http.get(url));
     }
 
+    post(url, data) {
+        return this.apiPromise(this.$http.post(url, data));
+    }
+
     delete(url){
         return this.apiPromise(this.$http.delete(url));
     }

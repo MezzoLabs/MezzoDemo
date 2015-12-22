@@ -118,6 +118,11 @@ var Api = (function () {
             return this.apiPromise(this.$http.get(url));
         }
     }, {
+        key: 'post',
+        value: function post(url, data) {
+            return this.apiPromise(this.$http.post(url, data));
+        }
+    }, {
         key: 'delete',
         value: function _delete(url) {
             return this.apiPromise(this.$http.delete(url));
@@ -176,7 +181,7 @@ var ModelApi = (function () {
 
         this.api = api;
         this.modelName = modelName;
-        this.modelPlural = this.modelName.toLowerCase() + 's';
+        this.modelPlural = pluralize(this.modelName).toLowerCase();
         this.apiUrl = '/api/' + this.modelPlural;
     }
 
@@ -184,6 +189,11 @@ var ModelApi = (function () {
         key: 'index',
         value: function index() {
             return this.api.get(this.apiUrl);
+        }
+    }, {
+        key: 'create',
+        value: function create(formData) {
+            return this.api.post(this.apiUrl, formData);
         }
     }, {
         key: 'delete',
@@ -407,7 +417,7 @@ function CreatePageController(contentBlockService) {
 exports.default = CreatePageController;
 
 },{}],14:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -421,21 +431,26 @@ var CreatePostController = (function () {
 
     /*@ngInject*/
 
-    function CreatePostController(contentBlockService) {
+    function CreatePostController(api, contentBlockService) {
         _classCallCheck(this, CreatePostController);
 
+        this.api = api;
         this.contentBlockService = contentBlockService;
     }
 
     _createClass(CreatePostController, [{
-        key: "init",
+        key: 'init',
         value: function init(modelName) {
             this.modelName = modelName;
+            this.modelApi = this.api.model(this.modelName);
         }
     }, {
-        key: "submit",
+        key: 'submit',
         value: function submit() {
-            console.log(this.form);
+            var formData = $(document['vm.form']).serializeArray();
+
+            console.log(formData);
+            this.modelApi.create(formData);
         }
     }]);
 
@@ -1668,6 +1683,15 @@ function registerStateDirective($stateProvider, hasController) {
         var uri = attributes.uri;
         var page = attributes.page;
         var action = attributes.action;
+
+        registerState(uri, page, action);
+
+        if (action === _Action2.default.CREATE) {
+            registerState(uri.replace('create', 'edit'), page.replace('Create', 'Edit'), _Action2.default.EDIT);
+        }
+    }
+
+    function registerState(uri, page, action) {
         var url = urlForAction(uri, action);
         var controller = controllerForPage(page);
 

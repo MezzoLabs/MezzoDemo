@@ -11,8 +11,17 @@ export default function registerStateDirective($stateProvider, hasController) {
         var uri = attributes.uri;
         var page = attributes.page;
         var action = attributes.action;
-        var url = urlForAction(uri, action);
-        var controller = controllerForPage(page);
+
+        registerState(uri, page, action);
+
+        if(action === Action.CREATE) {
+            registerState(uri.replace('create', 'edit'), page.replace('Create', 'Edit'), Action.EDIT);
+        }
+    }
+
+    function registerState(uri, page, action) {
+        const url = urlForAction(uri, action);
+        let controller = controllerForPage(page);
 
         if (!controller) {
             controller = controllerForAction(action);
