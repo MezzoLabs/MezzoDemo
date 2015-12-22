@@ -1704,7 +1704,7 @@ function registerStateDirective($stateProvider, hasController) {
         if (!controller) {
             controller = controllerForAction(action);
         }
-
+        console.log(stateName, url, controller);
         $stateProvider.state(stateName, {
             url: url,
             templateUrl: '/mezzo/' + uri + '.html',
