@@ -6,7 +6,11 @@ export default class CreatePostController {
     }
 
     init(modelName) {
-        console.log(modelName);
+        this.modelName = modelName;
+    }
+
+    submit() {
+        console.log(this.form);
     }
 
 }

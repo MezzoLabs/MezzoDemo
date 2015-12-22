@@ -430,7 +430,12 @@ var CreatePostController = (function () {
     _createClass(CreatePostController, [{
         key: "init",
         value: function init(modelName) {
-            console.log(modelName);
+            this.modelName = modelName;
+        }
+    }, {
+        key: "submit",
+        value: function submit() {
+            console.log(this.form);
         }
     }]);
 
@@ -1749,7 +1754,6 @@ function config($locationProvider, $urlRouterProvider, $httpProvider) {
     $httpProvider.defaults.headers.common.Accept = 'application/vnd.MezzoLabs.v1+json';
 
     $locationProvider.html5Mode(true);
-    $urlRouterProvider.otherwise('/mezzo');
 }
 
 },{}],35:[function(require,module,exports){
