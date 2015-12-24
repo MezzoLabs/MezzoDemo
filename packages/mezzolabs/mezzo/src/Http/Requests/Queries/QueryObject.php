@@ -23,18 +23,29 @@ class QueryObject
      */
     protected $sortings;
 
-    public function __construct(SearchQuery $searchQuery = null, Filters $filters = null, Sortings $sortings = null)
+    public function __construct()
     {
-        $this->searchQuery = ($searchQuery) ? $searchQuery : new SearchQuery('');
-        $this->filters = ($filters) ? $filters : new Filters();
-        $this->sortings = ($sortings) ? $sortings : new Sortings();
+        $this->searchQuery = new SearchQuery('');
+        $this->filters = new Filters();
+        $this->sortings = new Sortings();
     }
 
-    public static function makeFromResourceRequest(ResourceRequest $request)
+    /**
+     * Method for creating a query object out of the current resource request.
+     *
+     * @param ResourceRequest $request
+     * @return QueryObject
+     */
+    public static function makeFromResourceRequest(ResourceRequest $request) : QueryObject
     {
         $searchQuery = new SearchQuery($request->get('q', ''));
-
         $sortings = Sortings::makeByString($request->get('sort', ''));
+        $filters = Filters::makeByArray($request->all(), $request->modelReflection());
+
+        return (new static())
+            ->withSearch($searchQuery)
+            ->withSortings($sortings)
+            ->withFilters($filters);
     }
 
     /**
@@ -74,5 +85,35 @@ class QueryObject
     public function hasSearchQuery()
     {
         return !$this->searchQuery()->isEmpty();
+    }
+
+    /**
+     * @param SearchQuery $searchQuery
+     * @return QueryObject
+     */
+    public function withSearch(SearchQuery $searchQuery) : QueryObject
+    {
+        $this->searchQuery = $searchQuery;
+        return $this;
+    }
+
+    /**
+     * @param Filters $filters
+     * @return QueryObject
+     */
+    public function withFilters(Filters $filters) : QueryObject
+    {
+        $this->filters = $filters;
+        return $this;
+    }
+
+    /**
+     * @param Sortings $sortings
+     * @return QueryObject
+     */
+    public function withSortings(Sortings $sortings) : QueryObject
+    {
+        $this->sortings = $sortings;
+        return $this;
     }
 }

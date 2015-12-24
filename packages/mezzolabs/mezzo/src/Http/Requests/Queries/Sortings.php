@@ -46,6 +46,8 @@ class Sortings extends StrictCollection
         $sortings = new static();
 
         foreach (explode(',', $sortingsString) as $sortingString) {
+            if (empty($sortingString)) continue;
+
             $order = Sorting::ASCENDING;
 
             if (Str::startsWith($sortingString, '-')) {

@@ -16,7 +16,7 @@ class Filter
      */
     private $value;
 
-    public function __construct(string $column, mixed $value)
+    public function __construct(string $column, $value)
     {
         $this->column = $column;
         $this->value = $value;

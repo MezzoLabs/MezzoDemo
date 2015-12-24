@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
 
         \MezzoLabs\Mezzo\Core\Permission\PermissionGuard::setActive(false);
 
-        // $this->call(UserTableSeeder::class);
+        $this->call(UserTableSeeder::class);
 
         /**
         $this->call(UserTableSeeder::class);
@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleTableSeeder::class);
          * **/
 
-        $this->call(CategoryTableSeeder::class);
+        //$this->call(CategoryTableSeeder::class);
 
 
         Model::reguard();

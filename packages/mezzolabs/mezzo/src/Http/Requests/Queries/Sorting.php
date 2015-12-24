@@ -31,6 +31,16 @@ class Sorting
     }
 
     /**
+     * The string for the sorting order that can be used in a mysql query.
+     *
+     * @return string
+     */
+    public function mysqlDirection() : string
+    {
+        return ($this->isAscending()) ? 'asc' : 'desc';
+    }
+
+    /**
      * @return bool
      */
     public function isAscending() : bool
