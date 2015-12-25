@@ -12,5 +12,7 @@ abstract class MezzoEloquentModel extends EloquentModel implements MezzoModel
 
     protected $rules = [];
 
+    public $searchable = [];
+
 
 }

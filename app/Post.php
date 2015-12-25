@@ -7,6 +7,8 @@ use MezzoLabs\Mezzo\Modules\Posts\Domain\Models\Post as ModulePostModel;
 class Post extends ModulePostModel
 {
 
+    public $searchable = ['title', 'teaser'];
+
     public function user()
     {
         return $this->belongsTo(User::class);

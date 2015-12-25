@@ -12,12 +12,19 @@ class SearchQuery
     private $value;
 
     /**
-     * SearchQuery constructor.
-     * @param string $value
+     * @var array
      */
-    public function __construct(string $value)
+    private $columns;
+
+    /**
+     * SearchQuery constructor.
+     * @param string|string $value
+     * @param array $columns
+     */
+    public function __construct(string $value, array $columns)
     {
         $this->value = $value;
+        $this->columns = $columns;
     }
 
     /**
@@ -30,6 +37,14 @@ class SearchQuery
 
     public function isEmpty()
     {
-        return empty($this->value);
+        return empty($this->value) || empty($this->columns);
+    }
+
+    /**
+     * @return array
+     */
+    public function columns()
+    {
+        return $this->columns;
     }
 }

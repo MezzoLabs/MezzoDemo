@@ -156,6 +156,19 @@ abstract class ModelReflection
     }
 
     /**
+     * Returns the columns that should be used for the fulltext search.
+     *
+     * @return array
+     */
+    public function searchable() : array
+    {
+        if (!property_exists($this->className(), 'searchable'))
+            return [];
+
+        return $this->instance()->searchable;
+    }
+
+    /**
      * Gets the rules from the Eloquent instance.
      *
      * @return array|mixed

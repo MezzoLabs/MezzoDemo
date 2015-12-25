@@ -25,7 +25,7 @@ class QueryObject
 
     public function __construct()
     {
-        $this->searchQuery = new SearchQuery('');
+        $this->searchQuery = new SearchQuery('', []);
         $this->filters = new Filters();
         $this->sortings = new Sortings();
     }
@@ -38,7 +38,7 @@ class QueryObject
      */
     public static function makeFromResourceRequest(ResourceRequest $request) : QueryObject
     {
-        $searchQuery = new SearchQuery($request->get('q', ''));
+        $searchQuery = new SearchQuery($request->get('q', ''), $request->modelReflection()->searchable());
         $sortings = Sortings::makeByString($request->get('sort', ''));
         $filters = Filters::makeByArray($request->all(), $request->modelReflection());
 
