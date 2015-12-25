@@ -41,6 +41,10 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
      */
     protected $table = 'users';
 
+    public $searchable = [
+        'name', 'email'
+    ];
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

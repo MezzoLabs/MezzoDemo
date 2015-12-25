@@ -46,8 +46,15 @@ class EloquentSearcher implements SearcherContract
 
     protected function applySearchQuery(SearchQuery $searchQuery)
     {
+        if ($searchQuery->isEmpty())
+            return;
+
         //TODO: Improve this please
-        $this->eloquentBuilder->where('name', 'LIKE', '%' . $searchQuery->value() . '%');
+
+        foreach ($searchQuery->columns() as $column) {
+            $this->eloquentBuilder->orWhere($column, 'LIKE', '%' . $searchQuery->value() . '%');
+        }
+
     }
 
     protected function applyFilters(Filters $filters)

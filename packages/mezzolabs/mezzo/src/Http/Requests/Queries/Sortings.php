@@ -39,6 +39,7 @@ class Sortings extends StrictCollection
      * e.g: sort=-priority,created_at
      *
      * @param $sortingsString
+     * @param array $searchableColumns
      * @return Sortings
      */
     public static function makeByString($sortingsString) : Sortings
