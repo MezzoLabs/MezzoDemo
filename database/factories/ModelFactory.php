@@ -19,10 +19,12 @@ $factory->define(User::class, function ($faker) {
 
     $date = $faker->dateTimeThisMonth;
 
+    $password  = str_random(10);
+
     return [
         'name' => $faker->name,
         'email' => $faker->email,
-        'password' => str_random(10),
+        'password' => $password,
         'remember_token' => str_random(10),
         'updated_at' => $date,
         'created_at' => $date

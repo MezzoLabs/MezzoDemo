@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Http\Controllers;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
+use MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject;
 use MezzoLabs\Mezzo\Http\Requests\Resource\DestroyResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\IndexResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\InfoResourceRequest;
@@ -33,7 +34,8 @@ trait HasDefaultApiResourceFunctions
      */
     public function index(IndexResourceRequest $request)
     {
-        $response = $this->response()->collection($this->repository()->all(), $this->bestModelTransformer());
+        $query = QueryObject::makeFromResourceRequest($request);
+        $response = $this->response()->collection($this->repository()->all(['*'], $query), $this->bestModelTransformer());
 
         return $response;
     }

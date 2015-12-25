@@ -19,6 +19,7 @@ use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValue;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValues;
 use MezzoLabs\Mezzo\Exceptions\RepositoryException;
+use MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject;
 
 class ModelRepository extends EloquentRepository
 {
@@ -104,11 +105,20 @@ class ModelRepository extends EloquentRepository
 
     /**
      * @param array $columns
+     * @param QueryObject $query
      * @return Collection
      */
-    public function all($columns = array('*'))
+    public function all($columns = array('*'), QueryObject $query = null)
     {
+        if ($query)
+            return $this->search($query, $columns);
+
         return $this->query()->get($columns);
+    }
+
+    public function search(QueryObject $query, $columns = array('*'))
+    {
+        return (new EloquentSearcher($query, $this->query()))->run()->get($columns);
     }
 
     /**
