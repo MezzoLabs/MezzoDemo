@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"></button>
-                <h4 class="modal-title" ng-bind="vm.title()"></h4>
+                <h4 class="modal-title" ng-bind="vm.selectLabel()"></h4>
             </div>
             <div class="modal-body">
                 <input type="search" class="form-control input-sm" placeholder="Search" ng-model="vm.searchText">
@@ -50,5 +50,5 @@
     </div>
 </div>
 <!-- Modal -->
-<button type="button" class="btn btn-primary btn-block" ng-click="vm.showModal($event)" ng-bind="vm.buttonLabel()"></button>
+<button type="button" class="btn btn-primary btn-block" ng-click="vm.showModal($event)" ng-bind="vm.selectLabel()"></button>
 <input type="hidden" name="{{ vm.name }}">

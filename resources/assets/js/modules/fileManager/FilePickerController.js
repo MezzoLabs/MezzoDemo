@@ -12,7 +12,7 @@ export default class FilePickerController {
         this.loadFiles();
     }
 
-    buttonLabel() {
+    selectLabel() {
         const label = 'Select file';
 
         if(this.isMultiple()) {
@@ -78,16 +78,6 @@ export default class FilePickerController {
 
     isMultiple(){
         return this.multiple !== undefined;
-    }
-
-    title(){
-        const title = 'Select file';
-
-        if(this.isMultiple()){
-            return title + 's';
-        }
-
-        return title;
     }
 
     onSelect(selectedFile){

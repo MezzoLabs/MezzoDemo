@@ -1,8 +1,9 @@
 export default class ResourceIndexController {
 
     /*@ngInject*/
-    constructor($scope, api){
+    constructor($scope, $state, api){
         this.$scope = $scope;
+        this.$state = $state;
         this.api = api;
         this.models = [];
         this.searchText = '';
@@ -12,6 +13,7 @@ export default class ResourceIndexController {
     }
 
     init(modelName){
+        this.modelName = modelName;
         this.modelApi = this.api.model(modelName);
 
         console.log(modelName);
@@ -99,7 +101,10 @@ export default class ResourceIndexController {
     }
 
     edit(){
-        //TODO
+        const models = this.selected();
+        const state = 'edit' + this.modelName;
+
+        this.$state.go(state, { modelId: models[0].id });
     }
 
     remove(){
