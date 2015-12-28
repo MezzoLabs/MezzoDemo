@@ -15,9 +15,9 @@ class ContentBlockService {
         };
     }
 
-    addContentBlock(key, hash, title) {
+    addContentBlock(key, hash, title, id = '') {
         const contentBlock = {
-            id: '',
+            id: id,
             key: key,
             hash: hash,
             title: title,

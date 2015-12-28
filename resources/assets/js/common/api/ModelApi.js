@@ -19,4 +19,8 @@ export default class ModelApi {
         return this.api.delete(this.apiUrl + '/' + modelId);
     }
 
+    content(modelId) {
+        return this.api.get(this.apiUrl + '/' + modelId + '?include=content');
+    }
+
 }

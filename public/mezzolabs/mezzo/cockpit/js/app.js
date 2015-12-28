@@ -200,6 +200,11 @@ var ModelApi = (function () {
         value: function _delete(modelId) {
             return this.api.delete(this.apiUrl + '/' + modelId);
         }
+    }, {
+        key: 'content',
+        value: function content(modelId) {
+            return this.api.get(this.apiUrl + '/' + modelId + '?include=content');
+        }
     }]);
 
     return ModelApi;
@@ -492,8 +497,10 @@ var ContentBlockService = (function () {
     _createClass(ContentBlockService, [{
         key: 'addContentBlock',
         value: function addContentBlock(key, hash, title) {
+            var id = arguments.length <= 3 || arguments[3] === undefined ? '' : arguments[3];
+
             var contentBlock = {
-                id: '',
+                id: id,
                 key: key,
                 hash: hash,
                 title: title,
@@ -1395,22 +1402,52 @@ exports.default = ResourceCreateController;
 },{}],29:[function(require,module,exports){
 'use strict';
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var ResourceEditController =
+var ResourceEditController = (function () {
 
-/*@ngInject*/
-function ResourceEditController($stateParams) {
-    _classCallCheck(this, ResourceEditController);
+    /*@ngInject*/
 
-    this.$stateParams = $stateParams;
-    console.log('ResourceEditController');
-    console.log($stateParams.modelId);
-};
+    function ResourceEditController($stateParams, api, contentBlockService) {
+        _classCallCheck(this, ResourceEditController);
+
+        this.$stateParams = $stateParams;
+        this.api = api;
+        this.contentBlockService = contentBlockService;
+        this.modelId = this.$stateParams.modelId;
+    }
+
+    _createClass(ResourceEditController, [{
+        key: 'init',
+        value: function init(modelName) {
+            this.modelName = modelName;
+            this.modelApi = this.api.model(modelName);
+
+            this.loadContentBlocks();
+        }
+    }, {
+        key: 'loadContentBlocks',
+        value: function loadContentBlocks() {
+            var _this = this;
+
+            this.modelApi.content(this.modelId).then(function (model) {
+                var blocks = model.content.data.blocks.data;
+
+                blocks.forEach(function (block) {
+                    _this.contentBlockService.addContentBlock(block.class, block.name, 'title', block.id);
+                });
+            });
+        }
+    }]);
+
+    return ResourceEditController;
+})();
 
 exports.default = ResourceEditController;
 
@@ -1704,7 +1741,7 @@ function registerStateDirective($stateProvider, hasController) {
         if (!controller) {
             controller = controllerForAction(action);
         }
-        console.log(stateName, url, controller);
+
         $stateProvider.state(stateName, {
             url: url,
             templateUrl: '/mezzo/' + uri + '.html',
