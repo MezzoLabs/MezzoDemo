@@ -14,6 +14,15 @@
                         'hide_submit' => true, 'without' => ['content_id', 'slug']])
             </div>
         </div>
+
+        <div class="panel panel-bordered">
+            <div class="panel-body">
+                <div style="width: 400px; height: 300px">
+                    <div mezzo-map style="height: 100%"></div>
+                </div>
+            </div>
+        </div>
+
         <div class="panel panel-bordered">
             <div class="panel-heading">
                 <h3>Content</h3>
@@ -23,9 +32,7 @@
             </div>
             @include('modules.contents::block_type_select')
 
-
             <div class="panel panel-bordered">
-
                 {!! cockpit_form()->submit('Save as new ' . $model_reflection->name()) !!}
             </div>
 

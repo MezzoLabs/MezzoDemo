@@ -2,6 +2,7 @@ import './setup/jquery';
 import './modules/resource';
 import './modules/fileManager';
 import './modules/contentBuilder';
+import './modules/geocoding';
 import config from './setup/config';
 import compileDirective from './common/compileDirective';
 import compileHtmlDirective from './common/compileHtmlDirective';
@@ -21,7 +22,8 @@ var app = angular.module('Mezzo', [
     'ngFileUpload',
     'MezzoResources',
     'MezzoFileManager',
-    'MezzoContentBuilder'
+    'MezzoContentBuilder',
+    'MezzoGeocoding'
 ]);
 
 app.config(config);

@@ -34,6 +34,7 @@
 </div>
 <!-- Content -->
 <!-- JavaScript -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBm2n4bQfABTkiGxQp7e-QvWRPQhvAhjGM&libraries=places"></script>
 {!! cockpit_script('/components/jquery/dist/jquery.min.js') !!}
 {!! cockpit_script('/components/jquery-ui/jquery-ui.min.js') !!}
 {!! cockpit_script('/components/bootstrap-sass/assets/javascripts/bootstrap.js') !!}
