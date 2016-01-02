@@ -1488,7 +1488,9 @@ var ResourceEditController = (function () {
                 var blocks = model.content.data.blocks.data;
 
                 blocks.forEach(function (block) {
-                    _this.contentBlockService.addContentBlock(block.class, block.name, 'title', block.id);
+                    var hash = md5(block.class);
+
+                    _this.contentBlockService.addContentBlock(block.class, hash, 'title', block.id);
                 });
             });
         }

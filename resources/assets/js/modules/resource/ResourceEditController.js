@@ -21,7 +21,9 @@ export default class ResourceEditController {
                 const blocks = model.content.data.blocks.data;
 
                 blocks.forEach(block => {
-                    this.contentBlockService.addContentBlock(block.class, block.name, 'title', block.id);
+                    const hash = md5(block.class);
+
+                    this.contentBlockService.addContentBlock(block.class, hash, 'title', block.id);
                 });
             });
     }
