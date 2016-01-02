@@ -18,7 +18,7 @@
         <div class="panel panel-bordered">
             <div class="panel-body">
                 <div style="width: 400px; height: 300px">
-                    <div mezzo-map style="height: 100%"></div>
+                    <div mezzo-google-map style="height: 100%"></div>
                 </div>
             </div>
         </div>

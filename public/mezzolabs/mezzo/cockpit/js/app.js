@@ -9,7 +9,7 @@ require('./modules/fileManager');
 
 require('./modules/contentBuilder');
 
-require('./modules/geocoding');
+require('./modules/googleMaps');
 
 var _config = require('./setup/config');
 
@@ -49,7 +49,7 @@ var _hasControllerService2 = _interopRequireDefault(_hasControllerService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var app = angular.module('Mezzo', ['ui.router', 'ui.sortable', 'ngMessages', 'angular-sortable-view', 'angular-loading-bar', 'ngFileUpload', 'MezzoResources', 'MezzoFileManager', 'MezzoContentBuilder', 'MezzoGeocoding']);
+var app = angular.module('Mezzo', ['ui.router', 'ui.sortable', 'ngMessages', 'angular-sortable-view', 'angular-loading-bar', 'ngFileUpload', 'MezzoResources', 'MezzoFileManager', 'MezzoContentBuilder', 'MezzoGoogleMaps']);
 
 app.config(_config2.default);
 app.directive('mezzoCompile', _compileDirective2.default);
@@ -61,7 +61,7 @@ app.factory('api', _apiService2.default);
 app.factory('random', _randomService2.default);
 app.factory('hasController', _hasControllerService2.default);
 
-},{"./common/api/apiService":5,"./common/compileDirective":6,"./common/compileHtmlDirective":7,"./common/enterDirective.js":8,"./common/hasControllerService":9,"./common/randomService":10,"./common/relationInputDirective":11,"./common/uidService.js":12,"./modules/contentBuilder":16,"./modules/fileManager":26,"./modules/geocoding":27,"./modules/resource":33,"./setup/config":36,"./setup/jquery":37}],2:[function(require,module,exports){
+},{"./common/api/apiService":5,"./common/compileDirective":6,"./common/compileHtmlDirective":7,"./common/enterDirective.js":8,"./common/hasControllerService":9,"./common/randomService":10,"./common/relationInputDirective":11,"./common/uidService.js":12,"./modules/contentBuilder":16,"./modules/fileManager":26,"./modules/googleMaps":27,"./modules/resource":34,"./setup/config":37,"./setup/jquery":38}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1351,13 +1351,18 @@ var _mapDirective = require('./mapDirective');
 
 var _mapDirective2 = _interopRequireDefault(_mapDirective);
 
+var _searchDirective = require('./searchDirective');
+
+var _searchDirective2 = _interopRequireDefault(_searchDirective);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _module = angular.module('MezzoGeocoding', []);
+var _module = angular.module('MezzoGoogleMaps', []);
 
-_module.directive('mezzoMap', _mapDirective2.default);
+_module.directive('mezzoGoogleMap', _mapDirective2.default);
+_module.directive('mezzoGoogleMapsSearch', _searchDirective2.default);
 
-},{"./mapDirective":28}],28:[function(require,module,exports){
+},{"./mapDirective":28,"./searchDirective":29}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1396,6 +1401,37 @@ function link(scope, element, attributes) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.default = searchDirective;
+/*@ngInject*/
+function searchDirective() {
+    return {
+        restrict: 'A',
+        link: link
+    };
+}
+
+function link(scope, element, attributes) {
+    var map = new google.maps.Map(element[0], {
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        zoom: 13,
+        center: { lat: -33.8688, lng: 151.2195 }
+    });
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var currentLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+            map.setCenter(currentLatLng);
+        });
+    }
+}
+
+},{}],30:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.default = {
     INDEX: 'index',
     CREATE: 'create',
@@ -1403,7 +1439,7 @@ exports.default = {
     SHOW: 'show'
 };
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -1447,7 +1483,7 @@ var ResourceCreateController = (function () {
 
 exports.default = ResourceCreateController;
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -1492,7 +1528,14 @@ var ResourceEditController = (function () {
 
                     _this.contentBlockService.addContentBlock(block.class, hash, 'title', block.id);
                 });
+
+                _this.fillBlockFields(blocks);
             });
+        }
+    }, {
+        key: 'fillBlockFields',
+        value: function fillBlockFields(blocks) {
+            blocks.forEach(function (block) {});
         }
     }]);
 
@@ -1501,7 +1544,7 @@ var ResourceEditController = (function () {
 
 exports.default = ResourceEditController;
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -1717,7 +1760,7 @@ var ResourceIndexController = (function () {
 
 exports.default = ResourceIndexController;
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 var _stateProvider = require('./stateProvider');
@@ -1750,7 +1793,7 @@ _module.controller('ResourceIndexController', _ResourceIndexController2.default)
 _module.controller('ResourceCreateController', _ResourceCreateController2.default);
 _module.controller('ResourceEditController', _ResourceEditController2.default);
 
-},{"./ResourceCreateController":30,"./ResourceEditController":31,"./ResourceIndexController":32,"./registerStateDirective":34,"./stateProvider":35}],34:[function(require,module,exports){
+},{"./ResourceCreateController":31,"./ResourceEditController":32,"./ResourceIndexController":33,"./registerStateDirective":35,"./stateProvider":36}],35:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1843,7 +1886,7 @@ function registerStateDirective($stateProvider, hasController) {
     }
 }
 
-},{"./Action":29}],35:[function(require,module,exports){
+},{"./Action":30}],36:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1859,7 +1902,7 @@ function stateProvider($stateProvider) {
     }
 }
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1873,7 +1916,7 @@ function config($locationProvider, $urlRouterProvider, $httpProvider) {
     $locationProvider.html5Mode(true);
 }
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 $(function () {
