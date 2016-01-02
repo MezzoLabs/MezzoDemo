@@ -25,7 +25,15 @@ export default class ResourceEditController {
 
                     this.contentBlockService.addContentBlock(block.class, hash, 'title', block.id);
                 });
+
+                this.fillBlockFields(blocks);
             });
+    }
+
+    fillBlockFields(blocks) {
+        blocks.forEach(block => {
+
+        });
     }
 
 }
