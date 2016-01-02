@@ -17,9 +17,14 @@
 
         <div class="panel panel-bordered">
             <div class="panel-body">
-                <div style="width: 400px; height: 300px">
-                    <div mezzo-google-map style="height: 100%"></div>
-                </div>
+                <input type="text" class="form-control" mezzo-google-maps-search
+                       street-number="streetNumber" street="street" city="city" state="state" country="country" postal-code="postalCode">
+                <input name="streetNumber" class="form-control">
+                <input name="street" class="form-control">
+                <input name="city" class="form-control">
+                <input name="state" class="form-control">
+                <input name="country" class="form-control">
+                <input name="postalCode" class="form-control">
             </div>
         </div>
 
