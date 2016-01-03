@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="form-group">
-        <textarea name="{{ $block->inputName('text') }}" class="form-control"></textarea>
+        <input type="text" name="{{ $block->inputName('title') }}" class="form-control"/>
     </div>
 @endsection
 
