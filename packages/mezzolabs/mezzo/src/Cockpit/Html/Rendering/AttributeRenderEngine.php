@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Cockpit\Html\Rendering;
 
 use Illuminate\Support\Collection;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CategoriesAttributeRenderer;
+use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CheckboxAttributeRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeMultipleRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeSingleRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\SelectableAttributeRenderer;
@@ -20,6 +21,7 @@ class AttributeRenderEngine extends AbstractAttributeRenderEngine
         RelationAttributeSingleRenderer::class,
         RelationAttributeMultipleRenderer::class,
         SelectableAttributeRenderer::class,
+        CheckboxAttributeRenderer::class,
         SimpleAttributeRenderer::class
     ];
 
@@ -73,7 +75,7 @@ class AttributeRenderEngine extends AbstractAttributeRenderEngine
 
         $attributes = $attributes->merge($this->validationAttributes($attribute));
 
-        if ($attribute->isRelationAttribute())
+        if ($Addedattribute->isRelationAttribute())
             $attributes = $attributes->merge($this->relationAttributes($attribute));
 
         return $attributes->toArray();

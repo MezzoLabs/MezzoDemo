@@ -65,8 +65,9 @@ abstract class MezzoProduct extends \App\Mezzo\BaseModel
         'title' => "",
         'description' => "",
         'price' => "",
-        'premium_price' => "", 
-        'premium_only' => ""
+        'premium_price' => "",
+        'premium_only' => "",
+        'merchant_id' => ""
     ];
 
     /**
@@ -89,7 +90,8 @@ abstract class MezzoProduct extends \App\Mezzo\BaseModel
         "price",
         "premium_price",
         "premium_only",
-        "categories"
+        "categories",
+        "merchant_id"
     ];
 
     /**
