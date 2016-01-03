@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes;
 
 
+use MezzoLabs\Mezzo\Cockpit\Html\Rendering\FormBuilder;
 use MezzoLabs\Mezzo\Modules\Contents\Contracts\ContentBlockTypeContract;
 use MezzoLabs\Mezzo\Modules\Contents\Contracts\ContentFieldTypeContract;
 use MezzoLabs\Mezzo\Modules\Contents\Exceptions\ContentBlockException;
@@ -95,7 +96,8 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
     {
         return view()->make($viewKey, [
             'block' => $this,
-            'fields' => $this->fields()
+            'fields' => $this->fields(),
+            'formBuilder' => app(FormBuilder::class)
         ], $mergeData);
     }
 
