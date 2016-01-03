@@ -91,5 +91,15 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return $this->hasOne(ShoppingBasket::class);
     }
 
+    public function scopeBackendUser($query)
+    {
+        return $query->where('backend', '=', 1);
+    }
+
+    public function scopeFrontendUser($query)
+    {
+        return $query->where('backend', '=', 0);
+    }
+
 
 }
