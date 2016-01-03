@@ -88,12 +88,12 @@ abstract class MezzoProduct extends \App\Mezzo\BaseModel
     protected $fillable = [
         "title",
         "description",
+        "images",
         "price",
         "premium_price",
         "premium_only",
         "categories",
-        "merchant_id",
-        "images"
+        "merchant_id"
     ];
 
     /**
