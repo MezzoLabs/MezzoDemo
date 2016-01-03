@@ -137,29 +137,56 @@ class RelationUpdater extends EloquentRepository
     /**
      * The id that we have to update.
      *
-     * @return integer|array
+     * @return int
      */
-    public function newId() : integer
+    protected function newId() : int
     {
-        return $this->attributeValue()->value();
+        return $this->processId($this->attributeValue()->value());
     }
 
     /**
      *  Ids that we have to update.
      *
-     * @return mixed
+     * @return array
      */
-    public function newIds() : array
+    protected function newIds() : array
     {
         $value = $this->attributeValue()->value();
 
-        if (is_string($value) && str_contains($value, ','))
-            return explode(',', $this->attributeValue()->value());
+        if (is_string($value) && str_contains($value, ',')) {
+            return $this->processIds(explode(',', $value));
+        }
 
         if (is_string($value) && is_numeric($value))
-            return [intval($value)];
+            return $this->processIds([$value]);
 
-        return $value;
+        return $this->processIds($value);
+    }
+
+    /**
+     * @param array $ids
+     * @return mixed
+     */
+    protected function processIds(array $ids) : array
+    {
+        for ($i = 0; $i != count($ids); $i++) {
+            $ids[$i] = $this->processId($ids[$i]);
+        }
+
+        return $ids;
+    }
+
+    /**
+     * @param $id
+     * @return int
+     */
+    protected function processId($id) : int
+    {
+        if (!is_numeric($id)) {
+            throw new RepositoryException('Cannot update a relation with a non numeric id: "' . $id . '".');
+        }
+
+        return intval($id);
     }
 
     /**
