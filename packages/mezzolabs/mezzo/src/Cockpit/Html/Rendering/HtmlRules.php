@@ -5,6 +5,8 @@ namespace MezzoLabs\Mezzo\Cockpit\Html\Rendering;
 
 
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
+use MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput;
 use MezzoLabs\Mezzo\Core\Schema\ValidationRules\Rules;
 
 class HtmlRules
@@ -15,9 +17,12 @@ class HtmlRules
      */
     protected $rules;
 
-    public function __construct(Rules $rules)
+    protected $inputType;
+
+    public function __construct(Rules $rules, InputType $inputType = null)
     {
         $this->rules = $rules;
+        $this->inputType = ($inputType) ? $inputType : new TextInput();
     }
 
     /**
@@ -27,11 +32,13 @@ class HtmlRules
     {
         $attributes = new Collection();
 
-        if ($this->maxLength() > 0)
-            $attributes->put('maxlength', $this->maxLength());
+        if ($this->maxLength() !== null) {
+            $attributes->put($this->maxLengthAttributeName(), $this->maxLength());
+        }
 
-        if ($this->minLength() > 0)
-            $attributes->put('minLength', $this->minLength());
+        if ($this->minLength() !== null) {
+            $attributes->put($this->minLengthAttributeName(), $this->minLength());
+        }
 
         if ($this->rules()->isRequired())
             $attributes->put('required', 'required');
@@ -41,10 +48,20 @@ class HtmlRules
         return $attributes;
     }
 
+    private function maxLengthAttributeName()
+    {
+        return ($this->inputType()->isNumeric()) ? 'max' : 'data-max';
+    }
+
+    private function minLengthAttributeName()
+    {
+        return ($this->inputType()->isNumeric()) ? 'min' : 'data-min';
+    }
+
     /**
      * How many characters are allowed for this attribute.
      *
-     * @return int
+     * @return int|null
      * @throws \MezzoLabs\Mezzo\Exceptions\MezzoException
      */
     protected function maxLength()
@@ -55,8 +72,7 @@ class HtmlRules
         if ($this->rules()->has('between'))
             return $this->rules()->get('between')->parameters(1);
 
-
-        return 0;
+        return null;
     }
 
     /**
@@ -70,7 +86,7 @@ class HtmlRules
     /**
      * How many characters this attribute should have.
      *
-     * @return int
+     * @return int|null
      * @throws \MezzoLabs\Mezzo\Exceptions\MezzoException
      */
     protected function minLength()
@@ -81,6 +97,14 @@ class HtmlRules
         if ($this->rules()->has('between'))
             return $this->rules()->get('between')->parameters(0);
 
-        return 0;
+        return null;
+    }
+
+    /**
+     * @return InputType
+     */
+    public function inputType()
+    {
+        return $this->inputType;
     }
 }

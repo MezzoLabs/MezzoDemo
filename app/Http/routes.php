@@ -24,6 +24,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/test/redis', function () {
+    Cache::tags(['pages'])->put('10', 'a lot of html', 10);
+    Cache::tags(['some', 'artists'])->put('John 2', 'i am john 2', 10);
+    Cache::tags(['artists'])->put('John 3', 'i am john 3', 10);
+    mezzo_dump(Redis::keys('*'));
+    mezzo_dd(Cache::tags(['artists'])->get('John 3'));
+});
 
 Route::get('random', function () {
     mezzo_dump((new \MezzoLabs\Mezzo\Modules\Sample\Http\Controllers\TutorialController())->module());

@@ -22,13 +22,21 @@
     <div class="form-group">
         <label>Image position</label>
 
-        <div class="radio">
+        <div class="radio-inline">
             <label><input type="radio" checked="checked" class="" name="{{ $block->optionInputName('image_position') }}"
                           value="left">Left</label>
         </div>
-        <div class="radio">
+        <div class="radio-inline">
             <label><input type="radio" class="" name="{{ $block->optionInputName('image_position') }}"
                           value="right">Right</label>
+        </div>
+        <div class="radio-inline">
+            <label><input type="radio" class="" name="{{ $block->optionInputName('image_position') }}"
+                          value="above">Above</label>
+        </div>
+        <div class="radio-inline">
+            <label><input type="radio" class="" name="{{ $block->optionInputName('image_position') }}"
+                          value="below">Below</label>
         </div>
     </div>
 @endsection

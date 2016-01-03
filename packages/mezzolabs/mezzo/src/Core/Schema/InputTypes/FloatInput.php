@@ -10,7 +10,11 @@ class FloatInput extends NumberInput
      */
     protected $doctrineType = Type::FLOAT;
 
-    protected $htmlTag = "input:float";
+    protected $htmlTag = "input:number";
+
+    protected $htmlAttributes = [
+        'step' => '0.000000001'
+    ];
 
 
 }

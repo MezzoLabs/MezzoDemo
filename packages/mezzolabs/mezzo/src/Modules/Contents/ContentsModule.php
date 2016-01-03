@@ -11,6 +11,7 @@ use App\Tutorial;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Modules\Contents\DefaultTypes\BlockTypes\TextOnly;
+use MezzoLabs\Mezzo\Modules\Contents\DefaultTypes\BlockTypes\Title;
 use MezzoLabs\Mezzo\Modules\Contents\DefaultTypes\BlockTypes\WebVideo;
 use MezzoLabs\Mezzo\Modules\Contents\Http\Transformers\ContentBlockTransformer;
 use MezzoLabs\Mezzo\Modules\Contents\Http\Transformers\ContentFieldTransformer;
@@ -57,6 +58,7 @@ class ContentsModule extends ModuleProvider
         $this->loadViews();
 
         $this->registerBlock([
+            Title::class,
             TextOnly::class,
             WebVideo::class
         ]);

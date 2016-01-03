@@ -82,6 +82,14 @@ trait HasPermissions
         return app()->make(PermissionRepository::class);
     }
 
+    public function isBackendUser() : bool
+    {
+        if (!$this->hasAttribute('backend'))
+            return false;
+
+        return (bool)$this->getAttribute('backend');
+    }
+
 
 
 }

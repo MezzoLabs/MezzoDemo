@@ -45,5 +45,10 @@ class ImageFile extends MezzoImageFile implements TypedFileAddon
         return $this->hasMany(Post::class, 'main_image_id', 'id');
     }
 
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'image_file_product', 'image_file_id', 'product_id');
+    }
+
 
 }

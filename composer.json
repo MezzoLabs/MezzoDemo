@@ -1,72 +1,75 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
-    "type": "project",
-    "require": {
-        "php": ">=5.5.9",
-        "laravel/framework": "5.1.*",
-        "jeroen-g/laravel-packager": "^0.2.1",
-        "barryvdh/laravel-ide-helper": "^2.0@dev",
-        "barryvdh/laravel-debugbar": "^2.0@dev",
-        "doctrine/dbal": "~2.5",
-      "tymon/jwt-auth": "0.5.*",
-      "codesleeve/laravel-stapler": "1.0.*",
-      "kalnoy/nestedset": "3.*",
-      "league/glide": "0.*",
-      "spatie/laravel-glide": "dev-master",
-      "felixkiss/uniquewith-validator": "2.*",
-        "cviebrock/eloquent-sluggable": "dev-master",
-      "caouecs/laravel4-lang": "~2.0"
-
-    },
-    "require-dev": {
-        "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~4.0",
-        "phpspec/phpspec": "~2.1",
-        "dingo/api": "0.9.*",
-        "laravelcollective/html": "5.1.*",
-        "laracasts/generators": "dev-master"
-    },
-    "autoload": {
-        "classmap": [
-            "database",
-            "packages"
-        ],
-        "psr-4": {
-            "MezzoLabs\\Mezzo\\": "packages/MezzoLabs/Mezzo/src",
-            "App\\": "app/"
-        }
-    },
-    "autoload-dev": {
-        "classmap": [
-            "tests/TestCase.php"
-        ]
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "php artisan clear-compiled",
-            "php artisan ide-helper:generate",
-            "php artisan optimize"
-        ],
-        "pre-update-cmd": [
-            "php artisan clear-compiled"
-        ],
-        "post-update-cmd": [
-            "php artisan optimize"
-        ],
-        "post-root-package-install": [
-            "php -r \"copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "php artisan key:generate"
-        ]
-    },
-    "config": {
-        "preferred-install": "dist"
-    },
-    "prefer-stable": true,
-    "minimum-stability": "dev"
+  "name": "laravel/laravel",
+  "description": "The Laravel Framework.",
+  "keywords": [
+    "framework",
+    "laravel"
+  ],
+  "license": "MIT",
+  "type": "project",
+  "require": {
+    "php": ">=5.5.9",
+    "laravel/framework": "5.1.*",
+    "jeroen-g/laravel-packager": "^0.2.1",
+    "barryvdh/laravel-ide-helper": "^2.0@dev",
+    "barryvdh/laravel-debugbar": "^2.0@dev",
+    "doctrine/dbal": "~2.5",
+    "tymon/jwt-auth": "0.5.*",
+    "codesleeve/laravel-stapler": "1.0.*",
+    "kalnoy/nestedset": "3.*",
+    "league/glide": "^1.0",
+    "spatie/laravel-glide": "3.*",
+    "felixkiss/uniquewith-validator": "2.*",
+    "cviebrock/eloquent-sluggable": "dev-master",
+    "caouecs/laravel4-lang": "~2.0"
+  },
+  "require-dev": {
+    "fzaninotto/faker": "~1.4",
+    "mockery/mockery": "0.9.*",
+    "phpunit/phpunit": "~4.0",
+    "phpspec/phpspec": "~2.1",
+    "dingo/api": "0.9.*",
+    "laravelcollective/html": "5.1.*",
+    "laracasts/generators": "dev-master",
+    "predis/predis": "~1.0"
+  },
+  "autoload": {
+    "classmap": [
+      "database",
+      "packages"
+    ],
+    "psr-4": {
+      "MezzoLabs\\Mezzo\\": "packages/MezzoLabs/Mezzo/src",
+      "App\\": "app/"
+    }
+  },
+  "autoload-dev": {
+    "classmap": [
+      "tests/TestCase.php"
+    ]
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "php artisan clear-compiled",
+      "php artisan ide-helper:generate",
+      "php artisan optimize"
+    ],
+    "pre-update-cmd": [
+      "php artisan clear-compiled"
+    ],
+    "post-update-cmd": [
+      "php artisan optimize"
+    ],
+    "post-root-package-install": [
+      "php -r \"copy('.env.example', '.env');\""
+    ],
+    "post-create-project-cmd": [
+      "php artisan key:generate"
+    ]
+  },
+  "config": {
+    "preferred-install": "dist"
+  },
+  "prefer-stable": true,
+  "minimum-stability": "dev"
 }

@@ -2,9 +2,9 @@
 
 namespace App\Magazine\Shop\Domain\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Mezzo\Generated\ModelParents\MezzoProduct;
 
-class Product extends Model
+class Product extends MezzoProduct
 {
 
 }

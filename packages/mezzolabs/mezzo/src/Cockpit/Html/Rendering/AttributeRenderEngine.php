@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Cockpit\Html\Rendering;
 
 use Illuminate\Support\Collection;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CategoriesAttributeRenderer;
+use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CheckboxAttributeRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeMultipleRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeSingleRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\SelectableAttributeRenderer;
@@ -20,6 +21,7 @@ class AttributeRenderEngine extends AbstractAttributeRenderEngine
         RelationAttributeSingleRenderer::class,
         RelationAttributeMultipleRenderer::class,
         SelectableAttributeRenderer::class,
+        CheckboxAttributeRenderer::class,
         SimpleAttributeRenderer::class
     ];
 
@@ -41,7 +43,7 @@ class AttributeRenderEngine extends AbstractAttributeRenderEngine
      */
     protected function validationAttributes(Attribute $attribute)
     {
-        return (new HtmlRules($attribute->rules()))->attributes();
+        return (new HtmlRules($attribute->rules(), $attribute->type()))->attributes();
     }
 
     protected function relationAttributes(RelationAttribute $attribute)
@@ -67,16 +69,17 @@ class AttributeRenderEngine extends AbstractAttributeRenderEngine
      */
     public function htmlAttributes(Attribute $attribute)
     {
-        $attributes = new Collection();
+        $htmlAttributes = new Collection();
 
-        $attributes->put('class', $this->cssClass);
+        $htmlAttributes->put('class', $this->cssClass);
 
-        $attributes = $attributes->merge($this->validationAttributes($attribute));
+        $htmlAttributes = $htmlAttributes->merge($attribute->type()->htmlAttributes());
+        $htmlAttributes = $htmlAttributes->merge($this->validationAttributes($attribute));
 
         if ($attribute->isRelationAttribute())
-            $attributes = $attributes->merge($this->relationAttributes($attribute));
+            $htmlAttributes = $htmlAttributes->merge($this->relationAttributes($attribute));
 
-        return $attributes->toArray();
+        return $htmlAttributes->toArray();
     }
 
 
