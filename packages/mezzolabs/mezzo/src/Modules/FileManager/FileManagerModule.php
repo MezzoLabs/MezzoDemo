@@ -10,6 +10,7 @@ use App\Tutorial;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Modules\FileManager\Content\Blocks\ImageAndText;
+use MezzoLabs\Mezzo\Modules\FileManager\Content\Blocks\Images;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\DiskSynchronization;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\FileUploader;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\Observers\FileObserver;
@@ -60,7 +61,8 @@ class FileManagerModule extends ModuleProvider
         ]);
 
         $this->registerContentBlocks([
-            ImageAndText::class
+            ImageAndText::class,
+            Images::class
         ]);
 
         $this->registerAttributeRenderer([
