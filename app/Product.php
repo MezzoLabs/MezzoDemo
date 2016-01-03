@@ -27,5 +27,10 @@ class Product extends ShopModuleProduct
         return $this->belongsToMany(Category::class);
     }
 
+    public function images()
+    {
+        return $this->belongsToMany(ImageFile::class, 'image_file_product', 'product_id', 'image_file_id');
+    }
+
 
 }

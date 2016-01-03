@@ -27,6 +27,11 @@ abstract class InputType
      */
     protected $htmlTag = "input";
 
+    /**
+     * @var array
+     */
+    protected $htmlAttributes = [];
+
 
     /**
      * The SQL column type of this input.
@@ -180,6 +185,11 @@ abstract class InputType
         return $tag[1];
     }
 
+    public function htmlAttributes() : array
+    {
+        return $this->htmlAttributes;
+    }
+
     public function sqlColumnType()
     {
         return $this->doctrineTypeInstance()->getSQLDeclaration(array());
@@ -224,5 +234,9 @@ abstract class InputType
         return $this instanceof RelationInput;
     }
 
+    public function isNumeric()
+    {
+        return $this instanceof NumberInput;
+    }
 
 }

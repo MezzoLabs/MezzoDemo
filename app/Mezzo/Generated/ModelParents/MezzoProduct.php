@@ -32,6 +32,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  * @property \Carbon\Carbon $updated_at
  * @property \App\Merchant $merchant
  * @property EloquentCollection $categories
+ * @property EloquentCollection $images
  * @property EloquentCollection $orders
  * @property EloquentCollection $shoppingBaskets
  */
@@ -62,12 +63,12 @@ abstract class MezzoProduct extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $rules = [
-        'title' => "",
-        'description' => "",
-        'price' => "",
-        'premium_price' => "",
+        'title' => "required|between:2,100",
+        'description' => "required|between:2,1500",
+        'price' => "required|min:0|numeric",
+        'premium_price' => "required|min:0|numeric",
         'premium_only' => "",
-        'merchant_id' => ""
+        'merchant_id' => "required|exists:merchants,id"
     ];
 
     /**
@@ -91,7 +92,8 @@ abstract class MezzoProduct extends \App\Mezzo\BaseModel
         "premium_price",
         "premium_only",
         "categories",
-        "merchant_id"
+        "merchant_id",
+        "images"
     ];
 
     /**
@@ -148,7 +150,7 @@ abstract class MezzoProduct extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for price
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\FloatInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\MoneyInput", hidden="")
      * @var float
      */
     protected $_price;
@@ -156,7 +158,7 @@ abstract class MezzoProduct extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for premium_price
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\FloatInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\MoneyInput", hidden="")
      * @var float
      */
     protected $_premium_price;
@@ -216,7 +218,7 @@ abstract class MezzoProduct extends \App\Mezzo\BaseModel
 
     /**
      * Relation annotation property for categories
-     * @Mezzo\Attribute(type="\MezzoLabs\Mezzo\Modules\Categories\Schema\InputTypes\CategoriesInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Categories\Schema\InputTypes\CategoriesInput", hidden="")
      * @Mezzo\Relations\ManyToMany
      * @Mezzo\Relations\From(table="products", primaryKey="id", naming="categories")
      * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="products")
@@ -224,6 +226,17 @@ abstract class MezzoProduct extends \App\Mezzo\BaseModel
      * @Mezzo\Relations\Scopes("inGroup:shop")
      */
     protected $_categories;
+
+    /**
+     * Relation annotation property for images
+     * @Mezzo\Attribute(type="\MezzoLabs\Mezzo\Modules\FileManager\Schema\InputTypes\ImagesInput", hidden="")
+     * @Mezzo\Relations\ManyToMany
+     * @Mezzo\Relations\From(table="products", primaryKey="id", naming="images")
+     * @Mezzo\Relations\To(table="image_files", primaryKey="id", naming="products")
+     * @Mezzo\Relations\PivotTable(name="image_file_product", fromColumn="product_id", toColumn="image_file_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_images;
 
     /**
      * Relation annotation property for orders

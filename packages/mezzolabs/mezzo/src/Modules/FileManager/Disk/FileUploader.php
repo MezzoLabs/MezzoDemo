@@ -135,7 +135,7 @@ class FileUploader
     public function mimeTypeAllowed($mimeType)
     {
         return in_array($mimeType, [
-            'image/gif', 'image/jpeg', 'image/png', 'text/markdown', 'audio/mpeg',
+            'image/gif', 'image/jpeg', 'image/png', 'text/markdown', 'text/plain', 'audio/mpeg',
             'video/mpeg', 'audio/x-wav'
         ]);
     }

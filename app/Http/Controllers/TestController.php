@@ -21,6 +21,12 @@ class TestController extends Controller
         throw new ConflictHttpException('User was updated prior to your request.');
     }
 
+
+    public function welcome($id)
+    {
+        return view('welcome');
+    }
+
     public function foo(TestRequest $request)
     {
         return "bar";

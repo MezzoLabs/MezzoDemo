@@ -24,6 +24,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/test/product', function () {
+    $product = mezzo()->model('Product', 'mezzo');
+    mezzo_dd($product->attributes());
+});
 
 Route::get('random', function () {
     mezzo_dump((new \MezzoLabs\Mezzo\Modules\Sample\Http\Controllers\TutorialController())->module());

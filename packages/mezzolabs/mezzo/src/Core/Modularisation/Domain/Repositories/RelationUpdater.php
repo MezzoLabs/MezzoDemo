@@ -89,13 +89,13 @@ class RelationUpdater extends EloquentRepository
          * m:n Relation -> sync the Pivot
          */
         if ($this->relationSide()->isManyToMany())
-            return $this->updateBelongsToManyRelation($this->eloquentRelation(), $this->newId());
+            return $this->updateBelongsToManyRelation($this->eloquentRelation(), $this->newIds());
 
         /**
          * 1:n Relation (Left side) -> update the child rows in the foreign table
          */
         if ($this->relationSide()->isOneToMany() && $this->relationSide()->hasMultipleChildren())
-            return $this->updateHasManyRelation($this->eloquentRelation(), $this->newId());
+            return $this->updateHasManyRelation($this->eloquentRelation(), $this->newIds());
 
         /**
          * 1:1 Relation (Side without the joining column) -> update the foreign joining column
@@ -135,13 +135,31 @@ class RelationUpdater extends EloquentRepository
     }
 
     /**
-     * Id(s) that we have to update.
+     * The id that we have to update.
      *
      * @return integer|array
      */
-    public function newId()
+    public function newId() : integer
     {
         return $this->attributeValue()->value();
+    }
+
+    /**
+     *  Ids that we have to update.
+     *
+     * @return mixed
+     */
+    public function newIds() : array
+    {
+        $value = $this->attributeValue()->value();
+
+        if (is_string($value) && str_contains($value, ','))
+            return explode(',', $this->attributeValue()->value());
+
+        if (is_string($value) && is_numeric($value))
+            return [intval($value)];
+
+        return $value;
     }
 
     /**
@@ -192,12 +210,8 @@ class RelationUpdater extends EloquentRepository
      * @return bool
      * @throws RepositoryException
      */
-    protected function updateHasOneRelation(HasOne $relation, $id)
+    protected function updateHasOneRelation(HasOne $relation, integer $id)
     {
-        if (!is_integer($id))
-            throw new RepositoryException('You need a simple integer to update the 1:1 relation '
-                . '"' . $this->qualifiedName() . '"');
-
         $foreignModel = $relation->getRelated();
         $foreignChild = $foreignModel->newQuery()->where($foreignModel->getQualifiedKeyName(), '=', $id);
         $foreignKey = $relation->getPlainForeignKey();

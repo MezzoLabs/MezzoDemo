@@ -7,29 +7,29 @@ use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
 /**
- *-------------------------------------------------------------------------------------------------------------------
- *
- * AUTO GENERATED - MEZZO - MODEL PARENT
- *
- *-------------------------------------------------------------------------------------------------------------------
- *
- * Please do not edit, use "App\Merchant" instead. Thank you.
- *
- *-------------------------------------------------------------------------------------------------------------------
- * Welcome to the model parent. This file is auto generated and tells Mezzo something about
- * your model. If you feel the need to overwrite something use the child class.
- *
- * App\Mezzo\Generated\ModelParents\MezzoMerchant
- *
- * @property integer $id
- * @property string $name
- * @property string $email
- * @property float $user_id
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property EloquentCollection $products
- * @property EloquentCollection $orders
- */
+*-------------------------------------------------------------------------------------------------------------------
+*
+* AUTO GENERATED - MEZZO - MODEL PARENT
+*
+*-------------------------------------------------------------------------------------------------------------------
+*
+* Please do not edit, use "App\Merchant" instead. Thank you.
+*
+*-------------------------------------------------------------------------------------------------------------------
+* Welcome to the model parent. This file is auto generated and tells Mezzo something about
+* your model. If you feel the need to overwrite something use the child class.
+*
+* App\Mezzo\Generated\ModelParents\MezzoMerchant
+*
+* @property integer $id
+* @property string $name
+* @property string $email
+* @property float $user_id
+* @property \Carbon\Carbon $created_at
+* @property \Carbon\Carbon $updated_at
+* @property EloquentCollection $products
+* @property EloquentCollection $orders
+*/
 abstract class MezzoMerchant extends \App\Mezzo\BaseModel
 {
     use IsMezzoModel;
@@ -45,55 +45,57 @@ abstract class MezzoMerchant extends \App\Mezzo\BaseModel
     */
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
+    * The table associated with the model.
+    *
+    * @var string            
+    */
     protected $table = 'merchants';
 
     /**
-     * Set of rules that will be validated in resource requests.
-     *
-     * @var array
-     */
+    * Set of rules that will be validated in resource requests.
+    *
+    * @var array            
+    */
     protected $rules = [
-        'name' => "required|between:3,255",
-        'email' => "required|email",
+        'name' => "required|between:3,255", 
+        'email' => "required|email", 
         'user_id' => "required"
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
+    * The attributes that should be hidden for arrays.
+    *
+    * @var array            
+    */
     protected $hidden = [
-
+        
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    * The attributes that are mass assignable.
+    *
+    * @var array            
+    */
     protected $fillable = [
-        'name', 'email', 'user_id'
+        "name", 
+        "email", 
+        "user_id"
     ];
 
     /**
-     * The attributes that should be casted to native types.
-     *
-     * * @var array
-     */
+    * The attributes that should be casted to native types.
+    *
+    * * @var array            
+    */
     protected $casts = [
-
+        
     ];
 
     /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
+    * Indicates if the model should be timestamped.
+    *
+    * @var bool            
+    */
     public $timestamps = true;
 
 
@@ -108,51 +110,51 @@ abstract class MezzoMerchant extends \App\Mezzo\BaseModel
     */
 
     /**
-     * Attribute annotation property for id
-     *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\PrimaryKeyInput", hidden="create,edit")
-     * @var integer
-     */
+    * Attribute annotation property for id
+    *
+    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\PrimaryKeyInput", hidden="create,edit")
+    * @var integer            
+    */
     protected $_id;
 
     /**
-     * Attribute annotation property for name
-     *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
-     * @var string
-     */
+    * Attribute annotation property for name
+    *
+    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
+    * @var string            
+    */
     protected $_name;
 
     /**
-     * Attribute annotation property for email
-     *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
-     * @var string
-     */
+    * Attribute annotation property for email
+    *
+    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
+    * @var string            
+    */
     protected $_email;
 
     /**
-     * Attribute annotation property for user_id
-     *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\NumberInput", hidden="")
-     * @var float
-     */
+    * Attribute annotation property for user_id
+    *
+    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\NumberInput", hidden="")
+    * @var float            
+    */
     protected $_user_id;
 
     /**
-     * Attribute annotation property for created_at
-     *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="create")
-     * @var \Carbon\Carbon
-     */
+    * Attribute annotation property for created_at
+    *
+    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="create")
+    * @var \Carbon\Carbon            
+    */
     protected $_created_at;
 
     /**
-     * Attribute annotation property for updated_at
-     *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="create,update")
-     * @var \Carbon\Carbon
-     */
+    * Attribute annotation property for updated_at
+    *
+    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="create,update")
+    * @var \Carbon\Carbon            
+    */
     protected $_updated_at;
 
 
@@ -167,25 +169,25 @@ abstract class MezzoMerchant extends \App\Mezzo\BaseModel
     */
 
     /**
-     * Relation annotation property for products
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
-     * @Mezzo\Relations\OneToMany
-     * @Mezzo\Relations\From(table="products", primaryKey="id", naming="merchant")
-     * @Mezzo\Relations\To(table="merchants", primaryKey="id", naming="products")
-     * @Mezzo\Relations\JoinColumn(table="products", column="merchant_id")
-     * @Mezzo\Relations\Scopes("")
-     */
+    * Relation annotation property for products
+    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+    * @Mezzo\Relations\OneToMany
+    * @Mezzo\Relations\From(table="products", primaryKey="id", naming="merchant")
+    * @Mezzo\Relations\To(table="merchants", primaryKey="id", naming="products")
+    * @Mezzo\Relations\JoinColumn(table="products", column="merchant_id")
+    * @Mezzo\Relations\Scopes("")
+    */
     protected $_products;
 
     /**
-     * Relation annotation property for orders
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
-     * @Mezzo\Relations\OneToMany
-     * @Mezzo\Relations\From(table="orders", primaryKey="id", naming="merchant")
-     * @Mezzo\Relations\To(table="merchants", primaryKey="id", naming="orders")
-     * @Mezzo\Relations\JoinColumn(table="orders", column="merchant_id")
-     * @Mezzo\Relations\Scopes("")
-     */
+    * Relation annotation property for orders
+    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+    * @Mezzo\Relations\OneToMany
+    * @Mezzo\Relations\From(table="orders", primaryKey="id", naming="merchant")
+    * @Mezzo\Relations\To(table="merchants", primaryKey="id", naming="orders")
+    * @Mezzo\Relations\JoinColumn(table="orders", column="merchant_id")
+    * @Mezzo\Relations\Scopes("")
+    */
     protected $_orders;
 
 

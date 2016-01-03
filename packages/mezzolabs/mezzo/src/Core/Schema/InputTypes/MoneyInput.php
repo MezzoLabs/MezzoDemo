@@ -3,7 +3,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
 use Doctrine\DBAL\Types\Type;
 
-class FloatInput extends NumberInput
+class MoneyInput extends NumberInput
 {
     /**
      * @var string
@@ -13,7 +13,7 @@ class FloatInput extends NumberInput
     protected $htmlTag = "input:number";
 
     protected $htmlAttributes = [
-        'step' => '0.000000001'
+        'step' => '0.01'
     ];
 
 
