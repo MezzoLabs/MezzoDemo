@@ -31,6 +31,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \App\Merchant $merchant
+ * @property EloquentCollection $categories
  * @property EloquentCollection $orders
  * @property EloquentCollection $shoppingBaskets
  */
@@ -64,7 +65,7 @@ abstract class MezzoProduct extends \App\Mezzo\BaseModel
         'title' => "",
         'description' => "",
         'price' => "",
-        'premium_price' => "",
+        'premium_price' => "", 
         'premium_only' => ""
     ];
 
@@ -83,7 +84,12 @@ abstract class MezzoProduct extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $fillable = [
-
+        "title",
+        "description",
+        "price",
+        "premium_price",
+        "premium_only",
+        "categories"
     ];
 
     /**
@@ -205,6 +211,17 @@ abstract class MezzoProduct extends \App\Mezzo\BaseModel
      * @Mezzo\Relations\Scopes("")
      */
     protected $_merchant;
+
+    /**
+     * Relation annotation property for categories
+     * @Mezzo\Attribute(type="\MezzoLabs\Mezzo\Modules\Categories\Schema\InputTypes\CategoriesInput", hidden="")
+     * @Mezzo\Relations\ManyToMany
+     * @Mezzo\Relations\From(table="products", primaryKey="id", naming="categories")
+     * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="products")
+     * @Mezzo\Relations\PivotTable(name="category_product", fromColumn="product_id", toColumn="category_id")
+     * @Mezzo\Relations\Scopes("inGroup:shop")
+     */
+    protected $_categories;
 
     /**
      * Relation annotation property for orders

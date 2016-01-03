@@ -2,9 +2,9 @@
 
 namespace App\Magazine\Shop\Domain\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Mezzo\Generated\ModelParents\MezzoShoppingBasket;
 
-class ShoppingBasket extends Model
+class ShoppingBasket extends MezzoShoppingBasket
 {
 
 }

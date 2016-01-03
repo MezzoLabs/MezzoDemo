@@ -57,9 +57,9 @@ abstract class MezzoMerchant extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $rules = [
-        'name' => "",
-        'email' => "",
-        'user_id' => ""
+        'name' => "required|between:3,255",
+        'email' => "required|email",
+        'user_id' => "required"
     ];
 
     /**
@@ -77,7 +77,7 @@ abstract class MezzoMerchant extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $fillable = [
-
+        'name', 'email', 'user_id'
     ];
 
     /**

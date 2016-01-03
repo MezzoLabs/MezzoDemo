@@ -58,6 +58,11 @@
     padding-top: 1px;
     cursor: pointer;
   }
+
+  .sidebar-content {
+    overflow: auto;
+    max-height: calc(100vh - #{$topbar-height});
+  }
 }
 
 
