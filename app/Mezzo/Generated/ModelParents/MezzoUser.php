@@ -28,6 +28,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  * @property string $remember_token
 * @property \Carbon\Carbon $created_at
 * @property \Carbon\Carbon $updated_at
+ * @property float $backend
  * @property EloquentCollection $comments
  * @property EloquentCollection $events
  * @property EloquentCollection $orders
@@ -64,9 +65,10 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     */
     protected $rules = [
         'name' => "required|max:255",
-        'email' => "required|email|max:255|unique:users",
-        'password' => "required|confirmed|min:6", 
-        'remember_token' => ""
+        'email' => "required|email|max:255|unique:users", 
+        'password' => "required|confirmed|min:6",
+        'remember_token' => "",
+        'backend' => ""
     ];
 
     /**
@@ -86,7 +88,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     */
     protected $fillable = [
         "name",
-        "email",
+        "email", 
         "password", 
         "roles"
     ];
@@ -173,6 +175,14 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     * @var \Carbon\Carbon            
     */
     protected $_updated_at;
+
+    /**
+     * Attribute annotation property for backend
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\NumberInput", hidden="")
+     * @var float
+     */
+    protected $_backend;
 
 
     /*
