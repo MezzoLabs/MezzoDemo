@@ -18,6 +18,6 @@ class Order extends ShopModuleOrder
 
     public function merchant()
     {
-
+        return $this->belongsTo(Merchant::class);
     }
 }
