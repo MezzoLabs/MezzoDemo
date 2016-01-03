@@ -120,14 +120,12 @@ class Mezzo
      */
     public function attribute($modelName, $attributeName, $forceEloquent = false)
     {
-
         if (!$forceEloquent) {
-            $mezzoModel = $this->model($modelName, 'mezzo');
+            $bestModel = $this->model($modelName, 'best');
 
-            if ($mezzoModel && $mezzoModel->attributes()->has($attributeName))
-                return $mezzoModel->attributes()->get($attributeName);
+            if ($bestModel && $bestModel->isMezzoModel() && $bestModel->attributes()->has($attributeName))
+                return $bestModel->attributes()->get($attributeName);
         }
-
 
         $eloquentModel = $this->model($modelName, 'eloquent');
         if ($eloquentModel && $eloquentModel->attributes()->has($attributeName))

@@ -2,7 +2,6 @@
 
 namespace App\Mezzo\Generated\ModelParents;
 
-use App\Mezzo\BaseModel;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
@@ -14,7 +13,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 *
 *-------------------------------------------------------------------------------------------------------------------
 *
-* Please not edit, use "App\User" instead. Thank you.
+ * Please do not edit, use "App\User" instead. Thank you.
 *
 *-------------------------------------------------------------------------------------------------------------------
 * Welcome to the model parent. This file is auto generated and tells Mezzo something about
@@ -22,15 +21,23 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 *
 * App\Mezzo\Generated\ModelParents\MezzoUser
 *
-* @property  integer $id
-* @property  string $name
-* @property  string $email
-* @property  string $password
-* @property  string $remember_token
+ * @property integer $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property string $remember_token
 * @property \Carbon\Carbon $created_at
 * @property \Carbon\Carbon $updated_at
+ * @property boolean $backend
+ * @property EloquentCollection $comments
+ * @property EloquentCollection $events
+ * @property EloquentCollection $orders
+ * @property EloquentCollection $posts
+ * @property \App\ShoppingBasket $shoppingBasket
+ * @property EloquentCollection $tutorials
+ * @property EloquentCollection $roles
 */
-abstract class MezzoUser extends BaseModel
+abstract class MezzoUser extends \App\Mezzo\BaseModel
 {
     use IsMezzoModel;
 
@@ -45,62 +52,78 @@ abstract class MezzoUser extends BaseModel
     */
 
     /**
-    * Indicates if the model should be timestamped.
-    *
-    * @var bool
-    */
-    public $timestamps = true;
-    /**
     * The table associated with the model.
     *
-    * @var string
+     * @var string
     */
     protected $table = 'users';
+
     /**
     * Set of rules that will be validated in resource requests.
     *
-    * @var array
+     * @var array
     */
     protected $rules = [
-        'name' => "required|max:255",
+        'name' => "required|max:255", 
         'email' => "required|email|max:255|unique:users",
         'password' => "required|confirmed|min:6",
-        'remember_token' => ""
+        'remember_token' => "", 
+        'backend' => ""
     ];
+
     /**
     * The attributes that should be hidden for arrays.
     *
-    * @var array
+     * @var array
     */
     protected $hidden = [
-        "remember_token",
+        "remember_token", 
         "password"
     ];
+
     /**
     * The attributes that are mass assignable.
     *
-    * @var array
+     * @var array
     */
     protected $fillable = [
-        "name",
-        "email",
-        "password",
+        "name", 
+        "email", 
+        "password", 
         "roles"
     ];
+
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * * @var array
+     */
+    protected $casts = [
+
+    ];
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = true;
+
 
     /*
     |-------------------------------------------------------------------------------------------------------------------
     | Attribute annotation properties
     |-------------------------------------------------------------------------------------------------------------------    |
     | In this section you will find some annotated properties.
-    | They are not really important, but they will tell Mezzo something about
+    | They are not really important for you, but they will tell Mezzo something about
     | the attributes of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
+
     /**
     * Attribute annotation property for id
     *
-    * @Mezzo\Attribute(type="PrimaryKeyInput")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\PrimaryKeyInput", hidden="")
     * @var integer            
     */
     protected $_id;
@@ -108,7 +131,7 @@ abstract class MezzoUser extends BaseModel
     /**
     * Attribute annotation property for name
     *
-    * @Mezzo\Attribute(type="TextInput")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
     * @var string            
     */
     protected $_name;
@@ -116,7 +139,7 @@ abstract class MezzoUser extends BaseModel
     /**
     * Attribute annotation property for email
     *
-    * @Mezzo\Attribute(type="TextInput")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\EmailInput", hidden="")
     * @var string            
     */
     protected $_email;
@@ -124,7 +147,7 @@ abstract class MezzoUser extends BaseModel
     /**
     * Attribute annotation property for password
     *
-    * @Mezzo\Attribute(type="TextInput")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\PasswordInput", hidden="")
     * @var string            
     */
     protected $_password;
@@ -132,7 +155,7 @@ abstract class MezzoUser extends BaseModel
     /**
     * Attribute annotation property for remember_token
     *
-    * @Mezzo\Attribute(type="TextInput")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
     * @var string            
     */
     protected $_remember_token;
@@ -140,7 +163,7 @@ abstract class MezzoUser extends BaseModel
     /**
     * Attribute annotation property for created_at
     *
-    * @Mezzo\Attribute(type="DateTimeInput")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
     * @var \Carbon\Carbon            
     */
     protected $_created_at;
@@ -148,10 +171,18 @@ abstract class MezzoUser extends BaseModel
     /**
     * Attribute annotation property for updated_at
     *
-    * @Mezzo\Attribute(type="DateTimeInput")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
     * @var \Carbon\Carbon            
     */
     protected $_updated_at;
+
+    /**
+     * Attribute annotation property for backend
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\CheckboxInput", hidden="")
+     * @var boolean
+     */
+    protected $_backend;
 
 
     /*
@@ -159,33 +190,86 @@ abstract class MezzoUser extends BaseModel
     | Relation annotation properties
     |-------------------------------------------------------------------------------------------------------------------
     | In this section you will find some annotated properties.
-    | They are not really important, but they will tell Mezzo something about
+    | They are not really important for you, but they will tell Mezzo something about
     | the relations of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
 
-
     /**
-     * @Mezzo\Attribute(type="RelationInputMultiple")
-     * @Mezzo\Relations\ManyToMany
-     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="roles")
-     * @Mezzo\Relations\To(table="roles", primaryKey="id", naming="users")
-     * @Mezzo\Relations\PivotTable(name="role_user", fromColumn="user_id", toColumn="role_id")
-     *
-     * @var EloquentCollection
+     * Relation annotation property for comments
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="comments")
+     * @Mezzo\Relations\To(table="comments", primaryKey="id", naming="user")
+     * @Mezzo\Relations\JoinColumn(table="comments", column="user_id")
+     * @Mezzo\Relations\Scopes("")
      */
-    protected $roles;
+    protected $_comments;
 
     /**
-     * @Mezzo\Attribute(type="RelationInputMultiple")
+     * Relation annotation property for events
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="events")
+     * @Mezzo\Relations\To(table="events", primaryKey="id", naming="user")
+     * @Mezzo\Relations\JoinColumn(table="events", column="user_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_events;
+
+    /**
+     * Relation annotation property for orders
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="orders")
+     * @Mezzo\Relations\To(table="orders", primaryKey="id", naming="user")
+     * @Mezzo\Relations\JoinColumn(table="orders", column="user_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_orders;
+
+    /**
+     * Relation annotation property for posts
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="posts")
+     * @Mezzo\Relations\To(table="posts", primaryKey="id", naming="user")
+     * @Mezzo\Relations\JoinColumn(table="posts", column="user_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_posts;
+
+    /**
+     * Relation annotation property for shoppingBasket
+     * @Mezzo\Relations\OneToOne
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="shoppingBasket")
+     * @Mezzo\Relations\To(table="shopping_baskets", primaryKey="id", naming="user")
+     * @Mezzo\Relations\JoinColumn(table="shopping_baskets", column="user_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_shoppingBasket;
+
+    /**
+     * Relation annotation property for tutorials
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
      * @Mezzo\Relations\OneToMany
      * @Mezzo\Relations\From(table="users", primaryKey="id", naming="tutorials")
-     * @Mezzo\Relations\To(table="tutorials", primaryKey="id", naming="parent")
+     * @Mezzo\Relations\To(table="tutorials", primaryKey="id", naming="owner")
      * @Mezzo\Relations\JoinColumn(table="tutorials", column="user_id")
-     *
-     * @var EloquentCollection
+     * @Mezzo\Relations\Scopes("")
      */
-    protected $tutorials;
+    protected $_tutorials;
+
+    /**
+     * Relation annotation property for roles
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\ManyToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="roles")
+     * @Mezzo\Relations\To(table="roles", primaryKey="id", naming="")
+     * @Mezzo\Relations\PivotTable(name="role_user", fromColumn="user_id", toColumn="role_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_roles;
 
 
 }

@@ -135,7 +135,7 @@ class Attribute
      */
     public function hasModel()
     {
-        return !$this->model;
+        return !empty($this->model);
     }
 
     /**

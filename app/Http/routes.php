@@ -127,8 +127,8 @@ Route::get('debug/generator', function () {
     $annotationGenerator = app()->make(AnnotationGenerator::class);
 
     $reflectionManager = mezzo()->makeReflectionManager();
-    $reflection = $reflectionManager->eloquentReflection('Category');
-    $reflectionMezzo = $reflectionManager->mezzoReflection('Category');
+    $reflection = $reflectionManager->eloquentReflection('Order');
+    //$reflectionMezzo = $reflectionManager->mezzoReflection('Order');
     $schema = $reflection->schema();
 
     $schemas = new \MezzoLabs\Mezzo\Core\Schema\ModelSchemas();

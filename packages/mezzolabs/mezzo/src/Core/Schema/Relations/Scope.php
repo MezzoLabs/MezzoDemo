@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
 use MezzoLabs\Mezzo\Core\Helpers\Parameter;
+use MezzoLabs\Mezzo\Exceptions\EloquentScopeException;
 use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 
 class Scope
@@ -42,12 +43,25 @@ class Scope
         return $this->name;
     }
 
+    public function methodName()
+    {
+        return 'scope' . ucfirst($this->name());
+    }
+
     /**
      * @return array
      */
     public function parameters()
     {
         return $this->parameters;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasParameters() : bool
+    {
+        return $this->parameterCount() > 0;
     }
 
     public static function buildFromString($scopeString)
@@ -75,6 +89,11 @@ class Scope
     {
         Parameter::validateType($query, [EloquentRelation::class, EloquentBuilder::class]);
 
+        $model = $query->getModel();
+        if (!method_exists($model, $this->methodName())) {
+            throw new EloquentScopeException("Unkown eloquent scope \"" . $this->name() . "\" in \"" . get_class($model) . "\"");
+        }
+
         $scopeName = $this->name();
 
         switch ($this->parameterCount()) {
@@ -95,6 +114,9 @@ class Scope
 
     public function toString()
     {
+        if (!$this->hasParameters())
+            return $this->name();
+
         return $this->name() . ':' . implode(',', $this->parameters());
     }
 }

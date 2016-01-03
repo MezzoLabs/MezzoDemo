@@ -34,7 +34,7 @@ class Scopes extends StrictCollection
         return $value instanceof Scope;
     }
 
-    public static function buildFromString($scopesString)
+    public static function makeFromString($scopesString)
     {
         $scopes = new static();
 

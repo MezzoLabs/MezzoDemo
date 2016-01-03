@@ -8,7 +8,7 @@ class Order extends ShopModuleOrder
 {
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(Product::class);
     }
 
     public function user()
@@ -18,6 +18,6 @@ class Order extends ShopModuleOrder
 
     public function merchant()
     {
-
+        return $this->belongsTo(Merchant::class);
     }
 }
