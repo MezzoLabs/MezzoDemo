@@ -5,7 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories;
 
 use MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject;
 
-interface SearcherContract
+interface QueryExecutorContract
 {
     public function run();
 

@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories;
 
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use MezzoLabs\Mezzo\Core\Schema\Relations\Scopes;
 use MezzoLabs\Mezzo\Http\Requests\Queries\Filter;
 use MezzoLabs\Mezzo\Http\Requests\Queries\Filters;
 use MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject;
@@ -12,7 +13,7 @@ use MezzoLabs\Mezzo\Http\Requests\Queries\SearchQuery;
 use MezzoLabs\Mezzo\Http\Requests\Queries\Sorting;
 use MezzoLabs\Mezzo\Http\Requests\Queries\Sortings;
 
-class EloquentSearcher implements SearcherContract
+class EloquentQueryExecutor implements QueryExecutorContract
 {
     /**
      * @var EloquentBuilder
@@ -37,6 +38,7 @@ class EloquentSearcher implements SearcherContract
 
     public function run() : EloquentBuilder
     {
+        $this->applyScopes($this->queryObject->scopes());
         $this->applySearchQuery($this->queryObject->searchQuery());
         $this->applyFilters($this->queryObject->filters());
         $this->applySortings($this->queryObject->sortings());
@@ -54,6 +56,15 @@ class EloquentSearcher implements SearcherContract
         foreach ($searchQuery->columns() as $column) {
             $this->eloquentBuilder->orWhere($column, 'LIKE', '%' . $searchQuery->value() . '%');
         }
+
+    }
+
+    protected function applyScopes(Scopes $scopes)
+    {
+        if ($scopes->isEmpty())
+            return;
+
+        $scopes->addToQuery($this->eloquentBuilder);
 
     }
 

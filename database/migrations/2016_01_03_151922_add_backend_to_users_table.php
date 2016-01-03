@@ -13,7 +13,7 @@ class AddBackendToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('backend')->unsigned();
+            $table->boolean('backend');
         });
     }
 

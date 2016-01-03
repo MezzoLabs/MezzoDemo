@@ -24,6 +24,7 @@ trait HasAngularDirectives
     {
         $htmlAttributes = [
             'data-related' => $attribute->relationSide()->otherModelReflection()->name(),
+            'data-scopes' => $attribute->relation()->getScopes()->toString(),
             'name' => $attribute->name()
         ];
 

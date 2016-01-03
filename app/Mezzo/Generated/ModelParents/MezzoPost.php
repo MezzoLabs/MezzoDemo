@@ -240,6 +240,7 @@ abstract class MezzoPost extends BaseModel
      * @Mezzo\Relations\From(table="users", primaryKey="id", naming="posts")
      * @Mezzo\Relations\To(table="posts", primaryKey="id", naming="user")
      * @Mezzo\Relations\JoinColumn(table="posts", column="user_id")
+     * @Mezzo\Relations\Scopes("backend")
      */
     protected $_user;
 

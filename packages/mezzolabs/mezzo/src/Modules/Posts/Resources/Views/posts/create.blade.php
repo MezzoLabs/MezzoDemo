@@ -14,7 +14,7 @@
                     </div>
                     <div class="panel-body">
                         @include(cockpit_html()->viewKey('form-content-create'), [
-                        'hide_submit' => true, 'without' => ['content_id', 'main_image_id', 'published_at', 'slug', 'state']])
+                        'hide_submit' => true, 'without' => ['user_id', 'content_id', 'main_image_id', 'published_at', 'slug', 'state']])
                     </div>
                 </div>
                 <div class="panel panel-bordered">
