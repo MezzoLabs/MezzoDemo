@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Validator;
+use App\Exceptions\InvalidConfirmationCodeException;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Illuminate\Http\Request;
+use Validator;
 
 class AuthController extends Controller
 {
 
+    protected $redirectPath = '/profile';
+
+    protected $loginPath = '/auth/login';
 
     /*
     |--------------------------------------------------------------------------
@@ -33,13 +36,16 @@ class AuthController extends Controller
      */
     public function __construct()
     {
+        $this->middleware('mezzo.no_permissions_check');
+
         $this->middleware('mezzo.guest', ['except' => 'getLogout']);
+
     }
 
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -54,7 +60,7 @@ class AuthController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return User
      */
     protected function create(array $data)
@@ -63,6 +69,62 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'confirmation_code' => $data['confirmation_code'],
+            'confirmed' => false
         ]);
+    }
+
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function postRegister(Request $request)
+    {
+        $validator = $this->validator($request->all());
+
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
+
+        $data = $request->all();
+        $data['confirmation_code'] = str_random(30);
+
+        $this->create($data);
+
+        \Mail::send('emails.verify', $data, function ($message) use ($request) {
+            $message
+                ->to($request->get('email'), $request->get('name'))
+                ->subject('Verify your email address');
+        });
+
+        \Session::flash('message', 'Please check your mail.');
+
+        return redirect('/');
+    }
+
+    public function confirm($confirmation_code)
+    {
+        if (!$confirmation_code) {
+            throw new InvalidConfirmationCodeException;
+        }
+
+        $user = User::whereConfirmationCode($confirmation_code)->first();
+
+        if (!$user) {
+            throw new InvalidConfirmationCodeException;
+        }
+
+        $user->confirmed = 1;
+        $user->confirmation_code = null;
+        $user->save();
+
+        \Session::flash('message', 'You have successfully verified your account.');
+
+        return redirect('auth/login');
     }
 }

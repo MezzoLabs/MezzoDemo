@@ -20,9 +20,39 @@ use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 use MezzoLabs\Mezzo\Modules\Generator\Generators\AnnotationGenerator;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', 'StartController@start');
+
+Route::group(['middleware' => ['mezzo.no_permissions_check', 'mezzo.no_model_validation']], function () {
+    // Authentication routes...
+    Route::get('auth/login', 'Auth\AuthController@getLogin');
+    Route::post('auth/login', 'Auth\AuthController@postLogin');
+    Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+    // Registration routes...
+    Route::get('auth/register', 'Auth\AuthController@getRegister');
+    Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+    Route::get('register/verify/{confirmationCode}', [
+        'as' => 'confirmation_path',
+        'uses' => 'Auth\AuthController@confirm'
+    ]);
+
+    Route::controllers([
+        'register' => 'Auth\AuthController',
+        'password' => 'Auth\PasswordController',
+    ]);
+
+
 });
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('profile', 'ProfileController@profile');
+});
+
+
+/**
+ * --------------- Mezzo test area
+ */
 
 Route::get('/test/redis', function () {
     Cache::tags(['pages'])->put('10', 'a lot of html', 10);
@@ -188,8 +218,4 @@ Route::get('debug/annotations', function () {
 });
 
 
-Route::controllers([
-    'register' => 'Auth\AuthController',
-    'password' => 'Auth\PasswordController',
-]);
 

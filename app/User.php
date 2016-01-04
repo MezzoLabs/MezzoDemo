@@ -101,5 +101,9 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return $query->where('backend', '=', 0);
     }
 
+    public function isConfirmed()
+    {
+        return $this->confirmed;
+    }
 
 }

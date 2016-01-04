@@ -89,8 +89,10 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     protected $fillable = [
         "name", 
         "email", 
-        "password", 
-        "roles"
+        "password",
+        "roles",
+        "confirmation_code",
+        "confirmed"
     ];
 
     /**
