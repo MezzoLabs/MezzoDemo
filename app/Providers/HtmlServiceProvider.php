@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class FormBuilderServiceProvider extends ServiceProvider
+class HtmlServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
@@ -18,6 +18,8 @@ class FormBuilderServiceProvider extends ServiceProvider
 
             return $form->setSessionStore($app['session.store']);
         });
+
+        $this->app->singleton('magazine_htmlhelper', HtmlHelper::class);
 
     }
 

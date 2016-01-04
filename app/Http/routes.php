@@ -49,8 +49,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('profile', 'ProfileController@profile');
 
     Route::get('profile/address', 'ProfileController@getAddress');
-    Route::post('profile/address', 'ProfileController@postAddress');
+    Route::post('profile/address', 'ProfileController@storeAddress');
+    Route::put('profile/address', 'ProfileController@updateAddress');
 
+    Route::get('profile/liked-categories', 'ProfileController@getLikedCategories');
+    Route::post('profile/liked-categories', 'ProfileController@storeLikedCategories');
+
+    Route::get('profile/destroy', 'ProfileController@destroy');
 });
 
 

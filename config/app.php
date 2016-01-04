@@ -144,7 +144,7 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\FormBuilderServiceProvider::class,
+        App\Providers\HtmlServiceProvider::class,
 
         Barryvdh\Debugbar\ServiceProvider::class,
 
@@ -217,6 +217,7 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Form' => App\Html\FormFacade::class,
         'Countries' => Webpatser\Countries\CountriesFacade::class,
+        'Html' => App\Html\HtmlHelper::class
     ],
 
 ];

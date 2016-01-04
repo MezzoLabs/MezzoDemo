@@ -31,4 +31,9 @@ class Address extends MezzoAddress
         return implode(' ', array_filter($array));
     }
 
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
+
 }

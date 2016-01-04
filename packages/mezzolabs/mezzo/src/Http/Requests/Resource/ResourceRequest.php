@@ -85,8 +85,9 @@ class ResourceRequest extends Request
      */
     protected function findModelReflection()
     {
-        if (!empty($this->model))
+        if (!empty($this->model)) {
             return mezzo()->model($this->model, 'mezzo');
+        }
 
         return $this->controller()->model();
     }
@@ -99,7 +100,7 @@ class ResourceRequest extends Request
     {
         $controller = parent::controller();
 
-        if (!($controller instanceof ResourceControllerContract))
+        if (empty($this->model) && !($controller instanceof ResourceControllerContract))
             throw new ModuleControllerException('The controller ' . $controller->qualifiedName() . ' uses a ' .
                 'Resource Request. For this we need to detect the resource that the controller manages. ' .
                 'Please use a correctly named ResourceController.');

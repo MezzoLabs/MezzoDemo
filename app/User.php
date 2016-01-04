@@ -106,5 +106,10 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return $this->confirmed;
     }
 
+    public function address()
+    {
+        return $this->belongsTo(\App\Address::class);
+    }
+
 
 }

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\UserWasRegistered;
 use App\Events\UserWasVerified;
+use App\Listeners\AddDefaultRole;
 use App\Listeners\EmailRegisterNotification;
 use App\Listeners\EmailSuccessfullyVerifiedInfo;
 use App\Listeners\EmailUserVerification;
@@ -25,7 +26,8 @@ class EventServiceProvider extends ServiceProvider
         ],
         UserWasVerified::class => [
             UnlockUser::class,
-            EmailSuccessfullyVerifiedInfo::class
+            EmailSuccessfullyVerifiedInfo::class,
+            AddDefaultRole::class
         ]
     ];
 
