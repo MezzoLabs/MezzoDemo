@@ -126,5 +126,19 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return false;
     }
 
+    /**
+     * @param Category $category
+     * @return int
+     */
+    public function relevanceOfCategory(Category $category) : float
+    {
+        foreach ($this->likedCategories as $likedCategory) {
+            if ($likedCategory->category_name == str_slug($category->label))
+                return $likedCategory->relevance();
+        }
+
+        return 0;
+    }
+
 
 }
