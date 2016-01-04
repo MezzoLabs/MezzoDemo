@@ -106,4 +106,5 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return $this->confirmed;
     }
 
+
 }

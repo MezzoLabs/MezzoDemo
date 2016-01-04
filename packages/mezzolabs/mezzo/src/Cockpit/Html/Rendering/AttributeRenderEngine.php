@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Cockpit\Html\Rendering;
 use Illuminate\Support\Collection;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CategoriesAttributeRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CheckboxAttributeRenderer;
+use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CountryAttributeRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeMultipleRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeSingleRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\SelectableAttributeRenderer;
@@ -17,6 +18,7 @@ use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderEngine as AbstractAttri
 class AttributeRenderEngine extends AbstractAttributeRenderEngine
 {
     public static $handlers = [
+        CountryAttributeRenderer::class,
         CategoriesAttributeRenderer::class,
         RelationAttributeSingleRenderer::class,
         RelationAttributeMultipleRenderer::class,

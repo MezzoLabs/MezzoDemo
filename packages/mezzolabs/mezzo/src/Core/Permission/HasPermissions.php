@@ -90,6 +90,11 @@ trait HasPermissions
         return (bool)$this->getAttribute('backend');
     }
 
+    public function canSeeCockpit() : bool
+    {
+        return PermissionGuard::make()->allowsCockpit($this);
+    }
+
 
 
 }

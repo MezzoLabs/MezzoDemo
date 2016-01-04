@@ -144,6 +144,7 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\FormBuilderServiceProvider::class,
 
         Barryvdh\Debugbar\ServiceProvider::class,
 
@@ -155,6 +156,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         Codesleeve\LaravelStapler\Providers\L5ServiceProvider::class,
+        Webpatser\Countries\CountriesServiceProvider::class,
 
         /*
          * Mezzo Provider - Mezzo is love
@@ -211,7 +213,10 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
-        'Debugbar'  => Barryvdh\Debugbar\Facade::class
+
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Form' => App\Html\FormFacade::class,
+        'Countries' => Webpatser\Countries\CountriesFacade::class,
     ],
 
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Html\ViewDataObject;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->singleton('view_data', ViewDataObject::class);
 
+        view()->share('view_data', $this->app->make('view_data'));
 
     }
 

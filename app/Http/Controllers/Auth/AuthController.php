@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\UserWasRegistered;
+use App\Events\UserWasVerified;
 use App\Exceptions\InvalidConfirmationCodeException;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -36,9 +38,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('mezzo.no_permissions_check');
-
-        $this->middleware('mezzo.guest', ['except' => 'getLogout']);
+        $this->middleware('guest', ['except' => 'getLogout']);
 
     }
 
@@ -94,16 +94,11 @@ class AuthController extends Controller
         $data = $request->all();
         $data['confirmation_code'] = str_random(30);
 
-        $this->create($data);
+        $user = $this->create($data);
 
-        \Mail::send('emails.verify', $data, function ($message) use ($request) {
-            $message
-                ->to($request->get('email'), $request->get('name'))
-                ->subject('Verify your email address');
-        });
+        event(new UserWasRegistered($user));
 
         \Session::flash('message', 'Please check your mail.');
-
         return redirect('/');
     }
 
@@ -119,9 +114,7 @@ class AuthController extends Controller
             throw new InvalidConfirmationCodeException;
         }
 
-        $user->confirmed = 1;
-        $user->confirmation_code = null;
-        $user->save();
+        event(new UserWasVerified($user));
 
         \Session::flash('message', 'You have successfully verified your account.');
 

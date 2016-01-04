@@ -49,27 +49,27 @@ class PermissionGuard
         return $this->user() != null;
     }
 
-    public function allowsCreate(MezzoModel $model, \App\User $user = null)
+    public function allowsCreate(MezzoModel $model, \App\User $user = null) : bool
     {
         return $this->allowsModelAccess($model, 'create', $user);
     }
 
-    public function allowsShow(MezzoModel $model, \App\User $user = null)
+    public function allowsShow(MezzoModel $model, \App\User $user = null) : bool
     {
         return $this->allowsModelAccess($model, 'show', $user);
     }
 
-    public function allowsEdit(MezzoModel $model, \App\User $user = null)
+    public function allowsEdit(MezzoModel $model, \App\User $user = null) : bool
     {
         return $this->allowsModelAccess($model, 'edit', $user);
     }
 
-    public function allowsDelete(MezzoModel $model, \App\User $user = null)
+    public function allowsDelete(MezzoModel $model, \App\User $user = null) : bool
     {
         return $this->allowsModelAccess($model, 'delete', $user);
     }
 
-    public function allowsCockpit(\App\User $user = null)
+    public function allowsCockpit(\App\User $user = null) : bool
     {
         return $this->hasPermission('cockpit', $user) && $this->user($user)->isBackendUser();
     }

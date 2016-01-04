@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 
 use ArrayAccess;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Lang;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOneOrMany;
@@ -227,17 +228,27 @@ class Attribute
     public function title()
     {
         if (!$this->title) {
-            $nameParts = explode('_', $this->name());
+            $this->title = $this->makeTitle();
 
-            foreach ($nameParts as $i => $namePart) {
-                if ($namePart == "id" && $i != 0) $namePart = "";
-                $nameParts[$i] = ucfirst($namePart);
-            }
-
-            $this->title = implode(' ', $nameParts);
         }
 
         return $this->title;
+    }
+
+    protected function makeTitle() : string
+    {
+        if (Lang::has('attributes.' . $this->name))
+            return Lang::get('attributes.' . $this->name);
+
+        $nameParts = explode('_', $this->name());
+
+        foreach ($nameParts as $i => $namePart) {
+            if ($namePart == "id" && $i != 0) $namePart = "";
+            $nameParts[$i] = ucfirst($namePart);
+        }
+
+        return implode(' ', $nameParts);
+
     }
 
     /**

@@ -47,6 +47,10 @@ Route::group(['middleware' => ['mezzo.no_permissions_check', 'mezzo.no_model_val
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('profile', 'ProfileController@profile');
+
+    Route::get('profile/address', 'ProfileController@getAddress');
+    Route::post('profile/address', 'ProfileController@postAddress');
+
 });
 
 

@@ -6,6 +6,9 @@
         <li>
             <i class="fa fa-search"></i>
         </li>
+        <li>
+            <a href="/"><i class="fa fa-globe"></i></a>
+        </li>
     </ul>
     <ul class="toolbox toolbox-right">
         <li>

@@ -184,6 +184,7 @@ abstract class AttributeRenderingHandler
     public function htmlAttributes()
     {
         $htmlAttributes = $this->attributeRenderer->htmlAttributes($this->attribute());
+
         return array_merge($htmlAttributes, $this->getOptions()->attributes());
     }
 
@@ -248,8 +249,10 @@ abstract class AttributeRenderingHandler
     }
 
 
-    public function before()
+    public function before() : string
     {
+        if (!$this->options->renderBefore()) return "";
+
         return '<div class="' . $this->formGroupClass() . '"><label>' . $this->attribute()->title() . '</label>';
     }
 
@@ -263,8 +266,10 @@ abstract class AttributeRenderingHandler
         return $class;
     }
 
-    public function after()
+    public function after() : string
     {
+        if (!$this->options->renderAfter()) return "";
+
         return '</div>';
     }
 
