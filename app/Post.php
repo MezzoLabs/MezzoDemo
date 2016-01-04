@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\Magazine\Relevance\CanBeSortedByRelevance;
 use MezzoLabs\Mezzo\Modules\Posts\Domain\Models\Post as ModulePostModel;
 
 class Post extends ModulePostModel
 {
+
+    use CanBeSortedByRelevance;
 
     public $searchable = ['title', 'teaser'];
 

@@ -9,6 +9,7 @@ use App\Http\Requests\CreateAddressRequest;
 use App\Http\Requests\StoreAddressRequest;
 use App\Http\Requests\StoreLikedCategoriesRequest;
 use App\Http\Requests\UpdateAddressRequest;
+use App\Repositories\LikedCategoriesRepository;
 use Auth;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Permission\PermissionGuard;
@@ -28,17 +29,23 @@ class ProfileController extends Controller
     protected $users;
 
     /**
+     * @var LikedCategoriesRepository
+     */
+    protected $likedCategoriesRepository;
+
+    /**
      * @var AddressRepository
      */
     protected $addresses;
 
-    public function __construct(UserRepository $users, AddressRepository $addresses)
+    public function __construct(UserRepository $users, AddressRepository $addresses, LikedCategoriesRepository $likedCategoriesRepository)
     {
         $this->user = Auth::user();
 
         view()->share('user', $this->user);
         $this->users = $users;
         $this->addresses = $addresses;
+        $this->likedCategoriesRepository = $likedCategoriesRepository;
     }
 
     public function profile()
@@ -76,8 +83,7 @@ class ProfileController extends Controller
         return view(
             'magazine.profile.liked_categories', [
             'categories' => [
-                'all' => $all,
-                'liked' => []
+                'all' => $all
             ]
         ]);
     }
@@ -86,6 +92,14 @@ class ProfileController extends Controller
     {
         $liked = (new Collection($request->get('categories')))->keys();
 
+        $this->likedCategoriesRepository->unsetBaseValues($this->user);
+
+        foreach ($liked as $categoryId) {
+            $category = Category::findOrFail($categoryId);
+            $this->likedCategoriesRepository->like($category);
+        }
+
+        return redirect()->back()->with('message', 'Liked categories updated.');
 
     }
 

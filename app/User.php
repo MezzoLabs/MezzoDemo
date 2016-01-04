@@ -111,5 +111,20 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return $this->belongsTo(\App\Address::class);
     }
 
+    public function likedCategories()
+    {
+        return $this->hasMany(LikedCategory::class);
+    }
+
+    public function likesCategory(Category $category)
+    {
+        foreach ($this->likedCategories as $likedCategory) {
+            if ($likedCategory->category_name == str_slug($category->label) && $likedCategory->base_value > 0)
+                return true;
+        }
+
+        return false;
+    }
+
 
 }

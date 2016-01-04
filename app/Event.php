@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Magazine\Relevance\CanBeSortedByRelevance;
 use App\Mezzo\Generated\ModelParents\MezzoEvent;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\SluggableInterface;
@@ -9,6 +10,8 @@ use Cviebrock\EloquentSluggable\SluggableTrait;
 
 class Event extends MezzoEvent implements SluggableInterface
 {
+    use CanBeSortedByRelevance;
+
     use SluggableTrait;
 
     protected $sluggable = [

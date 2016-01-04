@@ -31,8 +31,11 @@ class Validator
      *
      * @param MezzoModel|HasValidationRules $model
      */
-    public function onSaving(MezzoModel $model)
+    public function onSaving($model)
     {
+        if (!$model instanceof MezzoModel)
+            return;
+
         if (!$this->isActive()) return true;
 
         if ($model->permissionsPaused()) {
@@ -60,6 +63,9 @@ class Validator
      */
     public function onDeleting(MezzoModel $model)
     {
+        if (!$model instanceof MezzoModel)
+            return true;
+
         if (!$this->isActive()) return true;
 
         if ($model->permissionsPaused()) {
