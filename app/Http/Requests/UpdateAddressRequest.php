@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
-class UpdateAddressRequest extends \Request
+use MezzoLabs\Mezzo\Http\Requests\Resource\UpdateResourceRequest;
+
+class UpdateAddressRequest extends UpdateResourceRequest
 {
+    public $model = \App\Address::class;
 
 }

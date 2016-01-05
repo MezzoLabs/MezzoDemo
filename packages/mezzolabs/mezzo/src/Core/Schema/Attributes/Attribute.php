@@ -237,8 +237,8 @@ class Attribute
 
     protected function makeTitle() : string
     {
-        if (Lang::has('attributes.' . $this->name))
-            return Lang::get('attributes.' . $this->name);
+        if (Lang::has('validation.attributes.' . $this->name))
+            return Lang::get('validation.attributes.' . $this->name);
 
         $nameParts = explode('_', $this->name());
 

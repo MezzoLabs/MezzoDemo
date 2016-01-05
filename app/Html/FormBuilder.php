@@ -4,13 +4,18 @@
 namespace App\Html;
 
 use App\Exceptions\FormBuilderException;
+use App\Html\Rendering\AttributeRenderEngine as FrontendRenderEngine;
 use Collective\Html\FormBuilder as CollectiveFormBuilder;
 use Collective\Html\HtmlBuilder;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use MezzoLabs\Mezzo\Cockpit\Html\Rendering\FormBuilder as CockpitFormBuilder;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
+use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderEngine as AbstractRenderEngine;
 
 class FormBuilder extends CollectiveFormBuilder
 {
+
+
     /**
      * @var CockpitFormBuilder
      */
@@ -35,6 +40,24 @@ class FormBuilder extends CollectiveFormBuilder
 
     public function attribute(string $name, array $options = [])
     {
+        return $this->attributeRenderEngine()->render($this->getAttribute($name), $options);
+    }
+
+    public function validationAttributes(string $name)
+    {
+        $collection = $this->attributeRenderEngine()->validationAttributes($this->getAttribute($name));
+
+        return $this->html->attributes($collection->toArray());
+    }
+
+    public function value($name)
+    {
+        return $this->getValueAttribute($name, null);
+    }
+
+
+    private function getAttribute(string $name) : Attribute
+    {
         if (!$this->model) {
             throw new FormBuilderException('No model is set.');
         }
@@ -45,9 +68,15 @@ class FormBuilder extends CollectiveFormBuilder
             throw new FormBuilderException("The model doesn't have an attribute called \"" . $name . "\".");
         }
 
-        $attribute = $modelReflection->attributes($name);
+        return $modelReflection->attributes($name);
+    }
 
-        return $attribute->render($options);
+    /**
+     * @return FrontendRenderEngine
+     */
+    private function attributeRenderEngine() : AbstractRenderEngine
+    {
+        return app(FrontendRenderEngine::class);
     }
 
     /**
@@ -75,6 +104,16 @@ class FormBuilder extends CollectiveFormBuilder
     {
         $this->setModel($model);
         return parent::model($model, $options);
+    }
+
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    public function hasModel()
+    {
+        return !empty($this->model);
     }
 
     /**

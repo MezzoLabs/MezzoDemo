@@ -9,6 +9,7 @@ use App\Http\Requests\CreateAddressRequest;
 use App\Http\Requests\StoreAddressRequest;
 use App\Http\Requests\StoreLikedCategoriesRequest;
 use App\Http\Requests\UpdateAddressRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Repositories\LikedCategoriesRepository;
 use Auth;
 use Illuminate\Support\Collection;
@@ -58,9 +59,20 @@ class ProfileController extends Controller
         return view('magazine.profile.address');
     }
 
+    public function updateUser(UpdateUserRequest $request)
+    {
+        mezzo_dd($request);
+    }
+
+    public function updatePassword(UpdateUserRequest $request)
+    {
+        $this->users->update(['password' => bcrypt($request->get('password'))], $this->user->id);
+
+        return redirect()->back()->with('message', 'Password changed.');
+    }
+
     public function storeAddress(StoreAddressRequest $request)
     {
-
         $address = $this->addresses->create($request->all());
 
         $this->user->address_id = $address->id;

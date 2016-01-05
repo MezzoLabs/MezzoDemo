@@ -28,7 +28,13 @@ abstract class AttributeRenderEngine
      * @return string
      * @throws AttributeRenderingException
      */
-    public function render(Attribute $attribute, array $options = [])
+    public function render(Attribute $attribute, array $options = []) : string
+    {
+        $handler = $this->findHandler($attribute, $options);
+        return $handler->before() . $handler->render() . $handler->after();
+    }
+
+    public function findHandler(Attribute $attribute, array $options) : AttributeRenderingHandler
     {
         foreach ($this->handlers() as $handlerClass) {
             $handler = $this->makeHandler($handlerClass, $attribute);
@@ -37,7 +43,8 @@ abstract class AttributeRenderEngine
 
             $handler->setOptions($options);
 
-            return $handler->before() . $handler->render() . $handler->after();
+            return $handler;
+
         }
 
         throw new AttributeRenderingException('There is no attribute rendering ' .
@@ -75,12 +82,22 @@ abstract class AttributeRenderEngine
      */
     public function makeHandler($handlerClass, Attribute $attribute)
     {
-        return app()->make($handlerClass, ['attribute' => $attribute]);
+        return app()->make($handlerClass, ['attribute' => $attribute, 'attributeRenderer' => $this]);
     }
 
     public static function registerHandler($handlerClass)
     {
         array_unshift(static::$handlers, $handlerClass);
+    }
+
+    public function defaultBefore(AttributeRenderingHandler $handler)
+    {
+        return "";
+    }
+
+    public function defaultAfter(AttributeRenderingHandler $handler)
+    {
+        return "";
     }
 
 

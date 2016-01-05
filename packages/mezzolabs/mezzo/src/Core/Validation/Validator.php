@@ -45,12 +45,15 @@ class Validator
         if (!$this->permissionGuard()->allowsCreateOrEdit($model))
             $this->permissionGuard()->fail('Failed on the second level.');
 
-        if (!$model->exists) {
-            $model->validateOrFail($model->getAttributes(), 'create');
-            return;
+        $data = (!$model->exists) ? $model->getAttributes() : $model->getDirty();
+        $rules = (!$model->exists) ? $model->getRules() : $model->getUpdateRules($model->getDirty());
+
+        foreach ($rules as &$rule) {
+            $rule = str_replace(['|confirmed', 'confirmed'], '', $rule);
         }
 
-        $model->validateOrFail($model->getDirty(), 'update');
+        $model->validateWithRules($data, $rules, true);
+
         return;
 
     }

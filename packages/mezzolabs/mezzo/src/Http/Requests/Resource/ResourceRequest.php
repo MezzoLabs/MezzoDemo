@@ -70,13 +70,20 @@ class ResourceRequest extends Request
      */
     public function currentModelInstance()
     {
-        $id = $this->route('id');
-        if (!$id) $id = $this->get('id');
+        $id = $this->getId();
 
         if (!$id || !is_numeric($id))
             throw new BadRequestHttpException('This request needs an id.');
 
         return $this->modelReflection()->instance()->query()->findOrFail(intval($id));
+    }
+
+    public function getId()
+    {
+        $id = $this->route('id');
+        if (!$id) $id = $this->get('id');
+
+        return $id;
     }
 
     /**

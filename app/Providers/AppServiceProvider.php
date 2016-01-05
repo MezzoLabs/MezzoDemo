@@ -18,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
 
         view()->share('view_data', $this->app->make('view_data'));
 
+
     }
 
     /**

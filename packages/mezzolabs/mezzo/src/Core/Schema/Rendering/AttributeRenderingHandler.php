@@ -253,34 +253,37 @@ abstract class AttributeRenderingHandler
     {
         if (!$this->options->renderBefore()) return "";
 
-        return '<div class="' . $this->formGroupClass() . '"><label>' . $this->attribute()->title() . '</label>';
+        return $this->attributeRenderer->defaultBefore($this);
+
     }
 
-    protected function formGroupClass()
-    {
-        $class = 'form-group';
-
-        if ($this->hasError())
-            $class .= ' has-error';
-
-        return $class;
-    }
 
     public function after() : string
     {
         if (!$this->options->renderAfter()) return "";
 
-        return '</div>';
+        return $this->attributeRenderer->defaultAfter($this);
     }
 
-    protected function hasError()
+    public function hasError() : bool
     {
-        $name = StringHelper::fromArrayToDotNotation($this->name());
+        $sessionName = StringHelper::fromArrayToDotNotation($this->name());
+        return (Session::has('errors') && Session::get('errors')->has($sessionName));
+    }
 
-        if (!Session::has('errors'))
-            return false;
+    public function getError() : array
+    {
+        $sessionName = StringHelper::fromArrayToDotNotation($this->name());
 
-        return Session::get('errors')->has($name);
+        if (!$this->hasError())
+            return [];
+
+        return Session::get('errors')->get($sessionName);
+    }
+
+    public function getErrorString() : string
+    {
+        return implode(' ', $this->getError());
     }
 
     /**

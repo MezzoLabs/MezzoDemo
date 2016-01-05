@@ -11,6 +11,10 @@
 
     {!! csrf_field() !!}
 
+    @foreach($address->attributes as $attribute)
+        {!! $attribute->render() !!}
+    @endforeach
+
     {!! Form::attribute('addressee') !!}
     {!! Form::attribute('organization') !!}
     {!! Form::attribute('street') !!}

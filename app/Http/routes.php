@@ -46,13 +46,21 @@ Route::group(['middleware' => ['mezzo.no_permissions_check', 'mezzo.no_model_val
 });
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('profile', 'ProfileController@profile');
+    Route::get('profile',
+        ['uses' => 'ProfileController@profile', 'as' => 'profile']);
+    Route::put('profile',
+        ['uses' => 'ProfileController@updateUser', 'as' => 'profile.update-user']);
 
-    Route::get('profile/address', 'ProfileController@getAddress');
+    Route::put('profile',
+        ['uses' => 'ProfileController@updatePassword', 'as' => 'profile.update-password']);
+
+    Route::get('profile/address',
+        ['uses' => 'ProfileController@getAddress', 'as' => 'profile.address']);
     Route::post('profile/address', 'ProfileController@storeAddress');
     Route::put('profile/address', 'ProfileController@updateAddress');
 
-    Route::get('profile/liked-categories', 'ProfileController@getLikedCategories');
+    Route::get('profile/liked-categories',
+        ['uses' => 'ProfileController@getLikedCategories', 'as' => 'profile.liked-categories']);
     Route::post('profile/liked-categories', 'ProfileController@storeLikedCategories');
 
     Route::get('profile/destroy', 'ProfileController@destroy');
