@@ -209,4 +209,18 @@ class ContentBlocksFormObject implements FormObject
         return app($blockData['class']);
     }
 
+    /**
+     * Set the id of the resource that is changed by this form.
+     *
+     * @param $id
+     */
+    public function setId($id)
+    {
+        $this->genericFormObject->setId($id);
+    }
+
+    public function getId()
+    {
+        return $this->genericFormObject->getId();
+    }
 }

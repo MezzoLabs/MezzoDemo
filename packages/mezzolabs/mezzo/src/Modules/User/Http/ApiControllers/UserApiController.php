@@ -4,24 +4,18 @@ namespace MezzoLabs\Mezzo\Modules\User\Http\ApiControllers;
 
 
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
-use MezzoLabs\Mezzo\Http\Controllers\GenericApiResourceController;
-use MezzoLabs\Mezzo\Http\Requests\Resource\IndexResourceRequest;
-use MezzoLabs\Mezzo\Http\Requests\Resource\ShowResourceRequest;
+use MezzoLabs\Mezzo\Http\Controllers\ApiResourceController;
+use MezzoLabs\Mezzo\Http\Controllers\HasDefaultApiResourceFunctions;
 use MezzoLabs\Mezzo\Http\Requests\Resource\StoreResourceRequest;
-use MezzoLabs\Mezzo\Http\Requests\Resource\UpdateResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ApiResponseFactory;
+use MezzoLabs\Mezzo\Modules\User\Http\Requests\StoreUserRequest;
+use MezzoLabs\Mezzo\Modules\User\Http\Requests\UpdateUserRequest;
 
-class UserApiController extends GenericApiResourceController
+class UserApiController extends ApiResourceController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @param IndexResourceRequest $request
-     * @return ApiResponseFactory
-     */
-    public function index(IndexResourceRequest $request)
-    {
-        return parent::index($request);
+    use HasDefaultApiResourceFunctions {
+        store as defaultStore;
+        update as defaultUpdate;
     }
 
     /**
@@ -31,33 +25,28 @@ class UserApiController extends GenericApiResourceController
      * @return ApiResponseFactory
      * @throws ModuleControllerException
      */
-    public function store(StoreResourceRequest $request)
+    public function store(StoreUserRequest $request)
     {
-        return parent::store($request);
-    }
+        if ($request->has('password'))
+            $request->offsetSet('password', bcrypt($request->get('password')));
 
-    /**
-     * Display the specified resource.
-     *
-     * @param ShowResourceRequest $request
-     * @param int $id
-     * @return ApiResponseFactory
-     */
-    public function show(ShowResourceRequest $request, $id)
-    {
-        return parent::show($request, $id);
+        return $this->defaultStore($request);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateResourceRequest $request
+     * @param UpdateUserRequest $request
      * @param  int $id
      * @return ApiResponseFactory
      */
-    public function update(UpdateResourceRequest $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        return parent::update($request, $id);
+        if ($request->has('password'))
+            $request->offsetSet('password', bcrypt($request->get('password')));
+
+        return $this->defaultUpdate($request, $id);
     }
+
 
 }
