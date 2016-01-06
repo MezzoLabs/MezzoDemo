@@ -65,6 +65,14 @@ trait CanBeLocked
         if (!$this->isLocked())
             return false;
 
+        if (!$user) {
+            $user = Auth::user();
+        }
+
+        if (!$user) {
+            return true;
+        }
+
         return $user->id != $this->lockedById();
     }
 

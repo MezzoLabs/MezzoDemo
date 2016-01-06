@@ -5,7 +5,6 @@ namespace MezzoLabs\Mezzo\Core\Routing;
 
 use Closure;
 use Dingo\Api\Routing\Router as DingoRouter;
-use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\ThirdParties\Wrappers\DingoApi;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
@@ -117,13 +116,11 @@ class ApiRouter
     public function resource($modelName, $controllerName = "")
     {
         if (empty($controllerName))
-            $controllerName = $modelName . 'ApiController';
+            $controllerName = $this->controllerName($modelName);
 
         $controller = $this->module->apiResourceController($controllerName);
 
         $uri = $this->modelUri($controller->model());
-
-        $modelSlug = snake_case($modelName);
 
         $this->get($uri, [
             'uses' => $controller->qualifiedActionName('index'),
@@ -156,8 +153,9 @@ class ApiRouter
         ]);
     }
 
-    public function modelUri(ModelReflection $model)
+    public function modelUri($model)
     {
+        $model = mezzo()->model($model);
         return camel_to_slug(str_plural($model->name()));
     }
 
@@ -194,7 +192,7 @@ class ApiRouter
     public function relation($modelName, $relationName, $controllerName = "")
     {
         if (empty($controllerName))
-            $controllerName = $modelName . 'ApiController';
+            $controllerName = $this->controllerName($modelName);
 
         $controller = $this->module->apiResourceController($controllerName);
 
@@ -203,5 +201,38 @@ class ApiRouter
         $this->get($uri, $controller->qualifiedActionName($relationName . 'Index'));
     }
 
+    protected function controllerName($modelName)
+    {
+        return $modelName . 'ApiController';
+    }
+
+    /**
+     * Add a GET action to the routes.
+     *
+     * @param string $name
+     * @param string $modelName
+     * @param array $options
+     * @throws ModuleControllerException
+     */
+    public function action(string $name, string $modelName, array $options)
+    {
+        $controllerName = $options['controller'] ?? $this->controllerName($modelName);
+        $mode = $options['mode'] ?? 'single';
+
+        $controller = $this->module->apiResourceController($controllerName);
+
+        $uri = $this->modelUri($modelName);
+
+        if ($mode == "single") {
+            $uri .= '/{id}';
+        }
+
+        $uri .= '/' . $name;
+
+        $this->get($uri, [
+            'uses' => $controller->qualifiedActionName($name),
+            'as' => 'api::' . snake_case($modelName) . '.show'
+        ]);
+    }
 
 }

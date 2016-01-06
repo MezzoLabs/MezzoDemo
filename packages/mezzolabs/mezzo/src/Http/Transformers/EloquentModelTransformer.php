@@ -121,27 +121,10 @@ abstract class EloquentModelTransformer extends ModelTransformer
 
         $returnCollection->put('id', $model->id);
         $returnCollection->put('_label', $model->label);
-        //$returnCollection->put('_urls', $this->urlsArray($model));
 
         return $returnCollection->toArray();
     }
 
-    protected function urlsArray(MezzoModel $model)
-    {
-        return [
-            'cockpit' => [
-                'index' => route('cockpit::' . snake_case(class_basename($model)) . '.index'),
-                'show' => route('cockpit::' . snake_case(class_basename($model)) . '.show', ['id' => $model->id]),
-                'edit' => route('cockpit::' . snake_case(class_basename($model)) . '.edit', ['id' => $model->id])
-            ],
-            'api' => [
-                'index' => route('api::' . snake_case(class_basename($model)) . '.index'),
-                'show' => route('api::' . snake_case(class_basename($model)) . '.show', ['id' => $model->id]),
-                'store' => route('api::' . snake_case(class_basename($model)) . '.store'),
-                'destroy' => route('api::' . snake_case(class_basename($model)) . '.destroy', ['id' => $model->id])
-            ]
-        ];
-    }
 
     /**
      * @param AttributeValue $attributeValue

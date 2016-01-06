@@ -39,6 +39,6 @@ class Post extends ModulePostModel implements LockableResource
      */
     public function lockedBy()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'locked_by_id', 'id');
     }
 }

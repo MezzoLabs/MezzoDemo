@@ -74,7 +74,7 @@ Route::group(['middleware' => ['auth']], function () {
 Route::get('/test/lock', function () {
     $post = \App\Post::first();
 
-    mezzo_dump($post->lockedUntil());
+    mezzo_dump($post->lock());
 
     mezzo_dump($post->isLockedForUser());
 
