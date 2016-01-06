@@ -2,17 +2,21 @@
 
 namespace App;
 
+use App\LockableResources\CanBeLocked;
+use App\LockableResources\LockableResource;
 use App\Magazine\Relevance\CanBeSortedByRelevance;
 use App\Mezzo\Generated\ModelParents\MezzoEvent;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 
-class Event extends MezzoEvent implements SluggableInterface
+class Event extends MezzoEvent implements SluggableInterface, LockableResource
 {
     use CanBeSortedByRelevance;
 
     use SluggableTrait;
+
+    use CanBeLocked;
 
     protected $sluggable = [
         'build_from' => 'title',
@@ -59,6 +63,13 @@ class Event extends MezzoEvent implements SluggableInterface
     public function end()
     {
         return $this->days->sortBy('end')->last()->end;
-
     }
+
+
+    public function lockedBy()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
 }

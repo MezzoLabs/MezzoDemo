@@ -16,7 +16,8 @@ class DeveloperDashboardModule extends ModuleProvider
     ];
 
     protected $options = [
-        'icon' => 'ion-hammer'
+        'icon' => 'ion-hammer',
+        'permissions' => 'developer'
     ];
 
     /**
@@ -45,4 +46,5 @@ class DeveloperDashboardModule extends ModuleProvider
     {
         $this->loadViews();
     }
+
 }

@@ -106,7 +106,8 @@ abstract class MezzoPost extends BaseModel
      * * @var array
      */
     protected $casts = [
-        'published_at' => "date"
+        'published_at' => "date",
+        "locked_until" => "datetime"
     ];
 
     /**

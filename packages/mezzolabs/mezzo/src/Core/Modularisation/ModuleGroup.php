@@ -76,6 +76,11 @@ class ModuleGroup
         });
     }
 
+    public function isVisible()
+    {
+        return $this->visibleModules()->count() > 0;
+    }
+
     /**
      * Add a module to this group.
      *

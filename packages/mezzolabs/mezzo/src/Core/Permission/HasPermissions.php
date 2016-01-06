@@ -64,6 +64,17 @@ trait HasPermissions
         return $hasPermission;
     }
 
+    public function hasPermissions(array $permissions)
+    {
+        foreach ($permissions as $permission) {
+            if (!$this->hasPermission($permission)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function hasPermissionOrFail($key)
     {
         if (!$this->hasPermission($key))
@@ -94,7 +105,6 @@ trait HasPermissions
     {
         return PermissionGuard::make()->allowsCockpit($this);
     }
-
 
 
 }

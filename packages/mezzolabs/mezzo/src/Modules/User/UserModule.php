@@ -13,6 +13,10 @@ class UserModule extends ModuleProvider
 {
     protected $group = "admin";
 
+    protected $options = [
+        'permissions' => 'administrate'
+    ];
+
     protected $commands = [
         SeedPermissions::class
     ];

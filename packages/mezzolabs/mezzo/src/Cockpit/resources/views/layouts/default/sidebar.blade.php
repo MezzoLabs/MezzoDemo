@@ -7,7 +7,7 @@
             <div class="sidebar-pin-wrap"><i class="sidebar-pin fa fa-dot-circle-o"></i></div>
         </div>
         <div class="sidebar-content sidebar-padding">
-            @foreach(mezzo()->moduleCenter()->groups() as $group )
+            @foreach(mezzo()->moduleCenter()->visibleGroups() as $group )
                 <h3>{{ $group->label() }}</h3>
                 <ul class="nav-main">
 

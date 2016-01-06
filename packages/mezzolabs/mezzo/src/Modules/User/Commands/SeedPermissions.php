@@ -168,6 +168,12 @@ class SeedPermissions extends MezzoCommand
             'label' => 'Can see the Cockpit'
         ];
 
+        $allPermissions[] = [
+            'model' => NULL,
+            'name' => 'developer',
+            'label' => 'Developer'
+        ];
+
         return $allPermissions;
     }
 

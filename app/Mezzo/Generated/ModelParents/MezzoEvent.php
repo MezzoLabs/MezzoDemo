@@ -102,7 +102,7 @@ abstract class MezzoEvent extends BaseModel
      * * @var array
      */
     protected $casts = [
-
+        "locked_until" => "datetime"
     ];
 
     /**
