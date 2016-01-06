@@ -142,12 +142,12 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
 
     public function lockedEvents()
     {
-        return $this->hasMany(Event::class);
+        return $this->hasMany(Event::class, 'locked_by_id');
     }
 
     public function lockedPosts()
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class, 'locked_by_id');
     }
 
 }
