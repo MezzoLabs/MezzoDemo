@@ -1619,9 +1619,13 @@ var ResourceIndexController = function () {
         key: 'edit',
         value: function edit() {
             var models = this.selected();
-            var state = 'edit' + this.modelName;
 
-            this.$state.go(state, { modelId: models[0].id });
+            this.editId(models[0].id);
+        }
+    }, {
+        key: 'editId',
+        value: function editId(id) {
+            this.$state.go('edit' + this.modelName, {modelId: id});
         }
     }, {
         key: 'remove',
@@ -1681,6 +1685,17 @@ var ResourceIndexController = function () {
         key: 'countSelected',
         value: function countSelected() {
             return this.selected().length;
+        }
+    }, {
+        key: 'isLocked',
+        value: function isLocked(model) {
+
+            return model._locked_for_user;
+        }
+    }, {
+        key: 'lockedBy',
+        value: function lockedBy(model) {
+            return model._locked_by;
         }
     }]);
 

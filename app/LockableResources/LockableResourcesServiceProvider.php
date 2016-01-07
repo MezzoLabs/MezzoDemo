@@ -4,7 +4,9 @@
 namespace App\LockableResources;
 
 
+use App\LockableResources\Http\LockedForUserTransformerPlugin;
 use Illuminate\Support\ServiceProvider;
+use MezzoLabs\Mezzo\Http\Transformers\TransformerRegistrar;
 
 class LockableResourcesServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,7 @@ class LockableResourcesServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerLockedSavingEvent();
+        $this->registerTransformerPlugin();
 
     }
 
@@ -37,5 +40,12 @@ class LockableResourcesServiceProvider extends ServiceProvider
                 throw new ResourceLockException('Cannot save a resource that is locked by ' . $model->lockedBy->email);
             }
         });
+    }
+
+    private function registerTransformerPlugin()
+    {
+        $transformers = TransformerRegistrar::make();
+
+        $transformers->registerPlugin(new LockedForUserTransformerPlugin());
     }
 }

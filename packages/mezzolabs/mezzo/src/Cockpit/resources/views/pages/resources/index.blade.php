@@ -25,6 +25,9 @@
                     <span class="ion-edit"></span> {{ Lang::get('mezzo.general.edit') }}</button>
                 <!-- Edit -->
 
+                <button type="button" class="btn btn-default" ng-disabled="!vm.canEdit()" ng-click="vm.duplicate()">
+                    <span class="ion-ios-copy"></span> {{ Lang::get('mezzo.general.duplicate') }}</button>
+
                 <!-- Delete -->
                 <button type="button" class="btn btn-default" ng-disabled="!vm.canRemove()" ng-click="vm.remove()">
                     <span class="ion-trash-b"></span> {{ Lang::get('mezzo.general.delete') }}
@@ -62,9 +65,11 @@
                 <table class="table table-responsive">
                     <thead>
                     <tr>
+                        <th></th>
                         <th>
                             <input type="checkbox" ng-model="vm.selectAll" ng-change="vm.updateSelectAll()">
                         </th>
+
                         @foreach($model_reflection->attributes()->visibleInForm('index') as $attribute)
                             <th ng-init="vm.addAttribute('{{ $attribute->naming() }}', '{{ $attribute->type()->doctrineTypeName() }}')">{{ $attribute->title() }}</th>
                         @endforeach
@@ -72,6 +77,13 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="model in vm.getModels() track by $index" ng-class="{ danger: model._meta.removed }">
+                        <td>
+                            <a href="#" ng-click="vm.editId(model.id)"><i class="ion-ios-arrow-right"></i></a>
+                        </td>
+                        <td>
+                            <span class="locked-for-user" title="Locked by @{{ vm.lockedBy(model) }}"
+                                  ng-show="vm.isLocked(model)"><i class="ion-ios-locked"></i></span>
+                        </td>
                         <td>
                             <input type="checkbox" ng-model="model._meta.selected" ng-disabled="model._meta.removed">
                         </td>

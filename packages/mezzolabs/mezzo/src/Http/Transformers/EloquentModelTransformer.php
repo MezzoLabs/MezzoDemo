@@ -120,7 +120,8 @@ abstract class EloquentModelTransformer extends ModelTransformer
         });
 
         $returnCollection->put('id', $model->id);
-        $returnCollection->put('_label', $model->label);
+
+        $returnCollection = $returnCollection->merge($this->pluginsData($model));
 
         return $returnCollection->toArray();
     }
@@ -152,6 +153,15 @@ abstract class EloquentModelTransformer extends ModelTransformer
     protected static function registrar()
     {
         return TransformerRegistrar::make();
+    }
+
+    /**
+     * @param MezzoModel $model
+     * @return Collection
+     */
+    protected function pluginsData(MezzoModel $model)
+    {
+        return $this->registrar()->callPlugins($model);
     }
 
     /**

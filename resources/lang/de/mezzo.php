@@ -3,7 +3,8 @@ return [
     'general' => [
         'add_new' => 'Erstellen',
         'edit' => 'Bearbeiten',
-        'delete' => 'Löschen'
+        'delete' => 'Löschen',
+        'duplicate' => 'Duplizieren'
     ],
     'pages' => [
         'permission_index' => 'Rechte',

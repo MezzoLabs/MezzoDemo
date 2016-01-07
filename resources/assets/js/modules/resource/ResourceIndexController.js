@@ -150,9 +150,12 @@ export default class ResourceIndexController {
 
     edit() {
         const models = this.selected();
-        const state = 'edit' + this.modelName;
 
-        this.$state.go(state, {modelId: models[0].id});
+        this.editId(models[0].id);
+    }
+
+    editId(id) {
+        this.$state.go('edit' + this.modelName, {modelId: id});
     }
 
     remove() {
@@ -199,6 +202,16 @@ export default class ResourceIndexController {
 
     countSelected() {
         return this.selected().length;
+    }
+
+    isLocked(model) {
+
+        return model._locked_for_user;
+
+    }
+
+    lockedBy(model) {
+        return model._locked_by;
     }
 
 }

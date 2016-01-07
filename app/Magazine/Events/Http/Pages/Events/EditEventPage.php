@@ -9,8 +9,7 @@ class EditEventPage extends EditResourcePage
 {
     protected $options = [
         'visibleInNavigation' => false,
-        'appendToUri' => '/{id}',
-        'renderedByFrontend' => false
+        'appendToUri' => '/{id}'
     ];
 
 }
