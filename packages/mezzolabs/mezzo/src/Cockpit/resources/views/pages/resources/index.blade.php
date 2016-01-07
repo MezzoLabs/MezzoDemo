@@ -16,22 +16,18 @@
 
                 <!-- Add new -->
                 <a href="{{ $module_page->sibling('create')->url() }}" class="btn btn-primary">
-                    <span class="ion-plus"></span>
-                    Add new
+                    <span class="ion-plus"></span> {{ Lang::get('mezzo.general.add_new') }}
                 </a>
                 <!-- Add new -->
 
                 <!-- Edit -->
                 <button type="button" class="btn btn-default" ng-disabled="!vm.canEdit()" ng-click="vm.edit()">
-                    <span class="ion-edit"></span>
-                    Edit
-                </button>
+                    <span class="ion-edit"></span> {{ Lang::get('mezzo.general.edit') }}</button>
                 <!-- Edit -->
 
                 <!-- Delete -->
                 <button type="button" class="btn btn-default" ng-disabled="!vm.canRemove()" ng-click="vm.remove()">
-                    <span class="ion-trash-b"></span>
-                    Delete
+                    <span class="ion-trash-b"></span> {{ Lang::get('mezzo.general.delete') }}
                     <span class="badge" ng-bind="vm.countSelected()"></span>
                 </button>
                 <!-- Delete -->

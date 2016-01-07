@@ -1013,8 +1013,10 @@ var FilePickerController = function () {
             var label = 'Select file';
 
             if (this.isMultiple()) {
-                label + 's';
+                label += 's';
             }
+
+            label += " ( " + this.selectedFiles().length + " )";
 
             return label;
         }
@@ -1142,6 +1144,11 @@ var FilePickerController = function () {
                 return fileIds.push(file.id);
             });
             $field.val(fileIds);
+        }
+    }, {
+        key: 'countSelected',
+        value: function countSelected() {
+            return this.selectedFiles().length;
         }
     }]);
 

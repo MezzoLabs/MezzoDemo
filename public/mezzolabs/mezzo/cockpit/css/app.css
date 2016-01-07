@@ -11281,6 +11281,10 @@ a {
   background-color: #EEE;
   border-radius: 50px;
   color: #555555;
+  display: inline-block;
+  width: 37px;
+  height: 37px;
+  text-align: center;
 }
 
 .light-icon.highlight:hover, .panel .panel-actions a.highlight:hover, .content-blocks .content-block-actions a.highlight:hover {

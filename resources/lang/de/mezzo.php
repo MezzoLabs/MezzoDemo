@@ -1,5 +1,10 @@
 <?php
 return [
+    'general' => [
+        'add_new' => 'Erstellen',
+        'edit' => 'Bearbeiten',
+        'delete' => 'Löschen'
+    ],
     'pages' => [
         'permission_index' => 'Rechte',
         'role_index' => 'Rollen',
