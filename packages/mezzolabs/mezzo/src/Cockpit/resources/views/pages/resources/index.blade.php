@@ -70,7 +70,7 @@
                             <input type="checkbox" ng-model="vm.selectAll" ng-change="vm.updateSelectAll()">
                         </th>
                         @foreach($model_reflection->attributes()->visibleInForm('index') as $attribute)
-                            <th ng-init="vm.addAttribute('{{ $attribute->name() }}')">{{ $attribute->title() }}</th>
+                            <th ng-init="vm.addAttribute('{{ $attribute->naming() }}', '{{ $attribute->type()->doctrineTypeName() }}')">{{ $attribute->title() }}</th>
                         @endforeach
                     </tr>
                     </thead>

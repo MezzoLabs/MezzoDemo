@@ -11,7 +11,7 @@ export default class ResourceIndexController {
         this.selectAll = false;
         this.loading = false;
         this.removing = 0;
-        this.keys = [];
+        this.attributes = [];
     }
 
     init(modelName, defaultIncludes) {
@@ -22,8 +22,8 @@ export default class ResourceIndexController {
         this.loadModels();
     }
 
-    addAttribute(name) {
-        this.keys.push(name);
+    addAttribute(name, type) {
+        this.attributes.push({name: name, type: type});
     }
 
     loadModels() {
@@ -65,18 +65,35 @@ export default class ResourceIndexController {
     }
 
     getModelValues(model) {
-        var keys = this.keys;
         var values = [];
 
-        keys.forEach(key => values.push(this.transformModelValue(key, model[key])));
+        for (var i in this.attributes) {
+            var attribute = this.attributes[i];
+            values.push(this.transformModelValue(attribute, model[attribute.name]));
+        }
 
         return values;
     }
 
-    transformModelValue(name, value) {
+    transformModelValue(attribute, value) {
 
-        if (typeof value === "object") {
-            return this.transformArrayValueToString(name, value.data);
+        if (value && typeof value === "object") {
+
+            if (Object.prototype.toString.call(value.data) === "[object Array]") {
+                return this.transformArrayValueToString(name, value.data);
+            }
+
+            if (Object.prototype.toString.call(value.data) === "[object Object]") {
+                return this.transformObjectValueToString(name, value.data);
+            }
+        }
+
+        if (value && attribute.type == "datetime") {
+            return moment(value).format('DD.MM.YYYY hh:mm');
+        }
+
+        if (attribute.type == "boolean") {
+            return (value == "1") ? "y" : "n";
         }
 
         return value;
@@ -86,10 +103,14 @@ export default class ResourceIndexController {
         var labels = [];
 
         for (var i in array) {
-            labels.push(array[i]._label);
+            labels.push(this.transformObjectValueToString(name, array[i]));
         }
 
         return labels.join(', ');
+    }
+
+    transformObjectValueToString(name, object) {
+        return object._label;
     }
 
     canEdit() {

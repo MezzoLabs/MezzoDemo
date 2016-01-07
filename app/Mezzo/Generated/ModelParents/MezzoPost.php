@@ -183,7 +183,7 @@ abstract class MezzoPost extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for content_id
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Contents\Schema\InputTypes\ContentInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Contents\Schema\InputTypes\ContentInput", hidden="index")
      * @var integer
      */
     protected $_content_id;
@@ -191,7 +191,7 @@ abstract class MezzoPost extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for main_image_id
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\FileManager\Schema\InputTypes\ImageInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\FileManager\Schema\InputTypes\ImageInput", hidden="index")
      * @var integer
      */
     protected $_main_image_id;

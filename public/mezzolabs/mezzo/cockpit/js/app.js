@@ -81,7 +81,7 @@ function RelationInputController(api) {
     this.model = null;
     this.models = [];
 
-    this.modelApi.index().then(function (models) {
+    this.modelApi.index({scopes: this.scopes}).then(function (models) {
         _this.models = models;
     });
 };
@@ -370,7 +370,8 @@ function relationInputDirective() {
         templateUrl: '/mezzolabs/mezzo/cockpit/templates/relationInputDirective.html',
         replace: true,
         scope: {
-            related: '@'
+            related: '@',
+            scopes: '@'
         },
         controller: _RelationInputController2.default,
         controllerAs: 'vm',
@@ -1443,7 +1444,7 @@ var ResourceIndexController = function () {
         this.selectAll = false;
         this.loading = false;
         this.removing = 0;
-        this.keys = [];
+        this.attributes = [];
     }
 
     _createClass(ResourceIndexController, [{
@@ -1457,8 +1458,8 @@ var ResourceIndexController = function () {
         }
     }, {
         key: 'addAttribute',
-        value: function addAttribute(name) {
-            this.keys.push(name);
+        value: function addAttribute(name, type) {
+            this.attributes.push({name: name, type: type});
         }
     }, {
         key: 'loadModels',
@@ -1509,23 +1510,36 @@ var ResourceIndexController = function () {
     }, {
         key: 'getModelValues',
         value: function getModelValues(model) {
-            var _this2 = this;
-
-            var keys = this.keys;
             var values = [];
 
-            keys.forEach(function (key) {
-                return values.push(_this2.transformModelValue(key, model[key]));
-            });
+            for (var i in this.attributes) {
+                var attribute = this.attributes[i];
+                values.push(this.transformModelValue(attribute, model[attribute.name]));
+            }
 
             return values;
         }
     }, {
         key: 'transformModelValue',
-        value: function transformModelValue(name, value) {
+        value: function transformModelValue(attribute, value) {
 
-            if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === "object") {
-                return this.transformArrayValueToString(name, value.data);
+            if (value && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === "object") {
+
+                if (Object.prototype.toString.call(value.data) === "[object Array]") {
+                    return this.transformArrayValueToString(name, value.data);
+                }
+
+                if (Object.prototype.toString.call(value.data) === "[object Object]") {
+                    return this.transformObjectValueToString(name, value.data);
+                }
+            }
+
+            if (value && attribute.type == "datetime") {
+                return moment(value).format('DD.MM.YYYY hh:mm');
+            }
+
+            if (attribute.type == "boolean") {
+                return value == "1" ? "y" : "n";
             }
 
             return value;
@@ -1536,10 +1550,15 @@ var ResourceIndexController = function () {
             var labels = [];
 
             for (var i in array) {
-                labels.push(array[i]._label);
+                labels.push(this.transformObjectValueToString(name, array[i]));
             }
 
             return labels.join(', ');
+        }
+    }, {
+        key: 'transformObjectValueToString',
+        value: function transformObjectValueToString(name, object) {
+            return object._label;
         }
     }, {
         key: 'canEdit',
@@ -1554,14 +1573,14 @@ var ResourceIndexController = function () {
     }, {
         key: 'search',
         value: function search() {
-            var _this3 = this;
+            var _this2 = this;
 
             return this.models.filter(function (model) {
                 for (var key in model) {
                     if (model.hasOwnProperty(key)) {
                         var value = model[key];
 
-                        if (String(value).indexOf(_this3.searchText) !== -1) {
+                        if (String(value).indexOf(_this2.searchText) !== -1) {
                             return true;
                         }
                     }
@@ -1571,12 +1590,12 @@ var ResourceIndexController = function () {
     }, {
         key: 'updateSelectAll',
         value: function updateSelectAll() {
-            var _this4 = this;
+            var _this3 = this;
 
             var models = this.getModels();
 
             models.forEach(function (model) {
-                return model._meta.selected = _this4.selectAll;
+                return model._meta.selected = _this3.selectAll;
             });
         }
     }, {
@@ -1600,7 +1619,7 @@ var ResourceIndexController = function () {
     }, {
         key: 'remove',
         value: function remove() {
-            var _this5 = this;
+            var _this4 = this;
 
             var selected = this.selected();
 
@@ -1617,14 +1636,14 @@ var ResourceIndexController = function () {
                 }
 
                 selected.forEach(function (model) {
-                    return _this5.removeModel(model);
+                    return _this4.removeModel(model);
                 });
             });
         }
     }, {
         key: 'removeModel',
         value: function removeModel(model) {
-            var _this6 = this;
+            var _this5 = this;
 
             this.removing++;
             this.selectAll = false;
@@ -1632,9 +1651,9 @@ var ResourceIndexController = function () {
             model._meta.removed = true;
 
             this.removeRemoteModel(model).then(function () {
-                return _this6.removeLocalModel(model);
+                return _this5.removeLocalModel(model);
             }).catch(function () {
-                return _this6.removing--;
+                return _this5.removing--;
             });
         }
     }, {

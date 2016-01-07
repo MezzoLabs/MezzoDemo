@@ -116,7 +116,13 @@ return [
         'fax' => 'Fax',
         'latitude' => 'Breitengrad',
         'longitude' => 'Längengrad',
-        'Country' => 'Land'
+        'country' => 'Land',
+        'user' => 'Nutzer',
+        'published_at' => 'Veröffentlichungs Datum',
+        'created_at' => 'Erstellungsdatum',
+        'updated_at' => 'Änderungsdatum',
+        'categories' => 'Kategorien'
+
     ],
 
 ];

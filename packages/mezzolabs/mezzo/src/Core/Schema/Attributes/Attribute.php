@@ -222,6 +222,14 @@ class Attribute
         return $this instanceof RelationAttribute;
     }
 
+    public function naming()
+    {
+        if (!$this->isRelationAttribute())
+            return $this->name();
+
+        return $this->relationSide()->naming();
+    }
+
     /**
      * @return string
      */
@@ -229,7 +237,6 @@ class Attribute
     {
         if (!$this->title) {
             $this->title = $this->makeTitle();
-
         }
 
         return $this->title;
@@ -237,8 +244,8 @@ class Attribute
 
     protected function makeTitle() : string
     {
-        if (Lang::has('validation.attributes.' . $this->name))
-            return Lang::get('validation.attributes.' . $this->name);
+        if (Lang::has('validation.attributes.' . $this->naming()))
+            return Lang::get('validation.attributes.' . $this->naming());
 
         $nameParts = explode('_', $this->name());
 

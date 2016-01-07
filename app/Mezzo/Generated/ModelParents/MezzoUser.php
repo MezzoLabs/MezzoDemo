@@ -100,7 +100,8 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
         "password",
         "roles",
         "confirmation_code", 
-        "confirmed"
+        "confirmed",
+        "created_at"
     ];
 
     /**
@@ -173,7 +174,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     /**
     * Attribute annotation property for created_at
     *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="create,update")
     * @var \Carbon\Carbon            
     */
     protected $_created_at;
