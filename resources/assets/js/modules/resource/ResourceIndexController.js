@@ -1,30 +1,39 @@
 export default class ResourceIndexController {
 
     /*@ngInject*/
-    constructor($scope, $state, api){
+    constructor($scope, $state, api) {
         this.$scope = $scope;
         this.$state = $state;
         this.api = api;
+        this.includes = [];
         this.models = [];
         this.searchText = '';
         this.selectAll = false;
         this.loading = false;
         this.removing = 0;
+        this.keys = [];
     }
 
-    init(modelName){
+    init(modelName, defaultIncludes) {
         this.modelName = modelName;
         this.modelApi = this.api.model(modelName);
-
-        console.log(modelName);
+        this.includes = defaultIncludes;
 
         this.loadModels();
     }
 
-    loadModels(){
+    addAttribute(name) {
+        this.keys.push(name);
+    }
+
+    loadModels() {
         this.loading = true;
 
-        return this.modelApi.index()
+        var parameters = {
+            'include': this.includes.join(',')
+        };
+
+        return this.modelApi.index(parameters)
             .then(data => {
                 this.loading = false;
                 this.models = data;
@@ -33,20 +42,20 @@ export default class ResourceIndexController {
             });
     }
 
-    getModels(){
-        if(this.searchText.length > 0){
+    getModels() {
+        if (this.searchText.length > 0) {
             return this.search();
         }
 
         return this.models;
     }
 
-    getModelKeys(model){
-        if(this.models.length > 0 && !model){
+    getModelKeys(model) {
+        if (this.models.length > 0 && !model) {
             model = this.models[0];
         }
 
-        if(!model){
+        if (!model) {
             return [];
         }
 
@@ -55,30 +64,49 @@ export default class ResourceIndexController {
         return keys.filter(key => key !== '_meta' && model.hasOwnProperty(key));
     }
 
-    getModelValues(model){
-        var keys = this.getModelKeys(model);
+    getModelValues(model) {
+        var keys = this.keys;
         var values = [];
 
-        keys.forEach(key => values.push(model[key]));
+        keys.forEach(key => values.push(this.transformModelValue(key, model[key])));
 
         return values;
     }
 
-    canEdit(){
+    transformModelValue(name, value) {
+
+        if (typeof value === "object") {
+            return this.transformArrayValueToString(name, value.data);
+        }
+
+        return value;
+    }
+
+    transformArrayValueToString(name, array) {
+        var labels = [];
+
+        for (var i in array) {
+            labels.push(array[i]._label);
+        }
+
+        return labels.join(', ');
+    }
+
+    canEdit() {
         return this.selected().length === 1;
     }
 
-    canRemove(){
+    canRemove() {
         return this.selected().length > 0;
     }
 
-    search(){
+    search() {
         return this.models.filter(model => {
-            for(var key in model){
-                if(model.hasOwnProperty(key)){
+            for (var key in model) {
+                if (model.hasOwnProperty(key)) {
                     var value = model[key];
 
-                    if(String(value).indexOf(this.searchText) !== -1){
+                    if (String(value).indexOf(this.searchText) !== -1) {
                         return true;
                     }
                 }
@@ -86,28 +114,27 @@ export default class ResourceIndexController {
         });
     }
 
-    updateSelectAll(){
+    updateSelectAll() {
         var models = this.getModels();
 
         models.forEach(model => model._meta.selected = this.selectAll);
     }
 
-    selected(){
+    selected() {
         return this.models.filter(model => model._meta.selected);
     }
 
-    create(){
-        //TODO
+    create() {
     }
 
-    edit(){
+    edit() {
         const models = this.selected();
         const state = 'edit' + this.modelName;
 
-        this.$state.go(state, { modelId: models[0].id });
+        this.$state.go(state, {modelId: models[0].id});
     }
 
-    remove(){
+    remove() {
         var selected = this.selected();
 
         swal({
@@ -126,7 +153,7 @@ export default class ResourceIndexController {
         });
     }
 
-    removeModel(model){
+    removeModel(model) {
         this.removing++;
         this.selectAll = false;
         model._meta.selected = false;
@@ -137,19 +164,19 @@ export default class ResourceIndexController {
             .catch(() => this.removing--);
     }
 
-    removeLocalModel(model){
-        for(var i = 0; i < this.models.length; i++){
-            if(this.models[i] === model){
+    removeLocalModel(model) {
+        for (var i = 0; i < this.models.length; i++) {
+            if (this.models[i] === model) {
                 return this.models.splice(i, 1);
             }
         }
     }
 
-    removeRemoteModel(model){
+    removeRemoteModel(model) {
         return this.modelApi.delete(model.id);
     }
 
-    countSelected(){
+    countSelected() {
         return this.selected().length;
     }
 

@@ -28,7 +28,8 @@
                                     <li>
                                         <a href="mezzo/{{ $page->uri() }}" mezzo-register-state
                                            data-action="{{ $page->action()}}" data-uri="{{ $page->uri() }}"
-                                           data-page="{{ $page->name() }}">
+                                           data-page="{{ $page->name() }}"
+                                           data-reload="{{ (!$page->isRenderedByFrontend())? 1 : 0 }}">
                                             <span>{{ $page->title() }}</span>
                                         </a>
                                     </li>

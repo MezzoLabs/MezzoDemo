@@ -157,7 +157,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     /**
     * Attribute annotation property for password
     *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\PasswordInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\PasswordInput", hidden="index")
     * @var string            
     */
     protected $_password;
@@ -181,7 +181,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     /**
     * Attribute annotation property for updated_at
     *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="index")
     * @var \Carbon\Carbon            
     */
     protected $_updated_at;
@@ -205,7 +205,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for confirmation_code
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="create")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="create,index")
      * @var string
      */
     protected $_confirmation_code;

@@ -142,5 +142,18 @@ abstract class ResourcePage extends ModulePage
         return implode('.', $slugParts);
     }
 
+    public function sibling(string $type = "index")
+    {
+        $types = static::$types;
+
+        $types = array_map(function ($c_type) {
+            return ucfirst($c_type);
+        }, $types);
+
+        $name = str_replace($types, ucfirst($type), get_class($this));
+
+        return $this->module->makePage($name);
+    }
+
 
 }

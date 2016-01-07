@@ -45,7 +45,7 @@ trait CanBeSortedByRelevance
 
         $daysDiff = floatval($created_at->diffInHours(Carbon::now())) / 24;
 
-        $factor = max((30 - $daysDiff) * 10, 0);
+        $factor = max((60 - $daysDiff) * 10, 0);
 
         return $factor;
     }

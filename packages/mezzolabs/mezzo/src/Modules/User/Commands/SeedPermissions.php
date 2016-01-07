@@ -63,6 +63,7 @@ class SeedPermissions extends MezzoCommand
         $this->roleRepository()->findOrCreate('premium-user', 'Premium User');
 
         $admin->givePermissions($allPermissions);
+        $this->info('Gave admin ' . $allPermissions->count() . ' permissions.');
 
         $adminUserId = $this->ask('Enter the email of the user which will crowned as the eternal administrator:');
 

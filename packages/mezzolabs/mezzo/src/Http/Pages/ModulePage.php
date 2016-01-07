@@ -365,5 +365,11 @@ abstract class ModulePage implements ModulePageContract
         return 'cockpit::' . $this->slug();
     }
 
+    public function url()
+    {
+        return route($this->routeName());
+    }
+
+
 
 }

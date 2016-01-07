@@ -71,5 +71,10 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
         return $this->belongsTo(User::class, 'locked_by_id', 'id');
     }
 
+    public function eventProvider()
+    {
+        return $this->belongsTo(EventProvider::class);
+    }
+
 
 }

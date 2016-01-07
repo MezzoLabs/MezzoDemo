@@ -29,6 +29,9 @@ module_route('Events', [], function (Router $router, ApiRouter $api, CockpitRout
         'uses' => 'Controllers\EventVenueController@update',
         'as' => 'event_venue.update'
     ]);
+
+    $api->action('locked', 'Event', ['mode' => 'single']);
+    $api->action('lock', 'Event', ['mode' => 'single']);
 });
 
 

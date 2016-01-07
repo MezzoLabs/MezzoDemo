@@ -15,7 +15,7 @@
                 <!-- Search -->
 
                 <!-- Add new -->
-                <a ui-sref="resource-create" class="btn btn-primary" ng-click="vm.create()">
+                <a href="{{ $module_page->sibling('create')->url() }}" class="btn btn-primary">
                     <span class="ion-plus"></span>
                     Add new
                 </a>
@@ -69,8 +69,8 @@
                         <th>
                             <input type="checkbox" ng-model="vm.selectAll" ng-change="vm.updateSelectAll()">
                         </th>
-                        @foreach($model_reflection->attributes()->visibleOnly() as $attribute)
-                            <th>{{ $attribute->title() }}</th>
+                        @foreach($model_reflection->attributes()->visibleInForm('index') as $attribute)
+                            <th ng-init="vm.addAttribute('{{ $attribute->name() }}')">{{ $attribute->title() }}</th>
                         @endforeach
                     </tr>
                     </thead>

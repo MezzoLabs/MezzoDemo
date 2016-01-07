@@ -163,7 +163,9 @@ return [
          */
         MezzoLabs\Mezzo\MezzoServiceProvider::class,
 
-        \App\Providers\MezzoAppServiceProvider::class
+        \App\Providers\MezzoAppServiceProvider::class,
+
+        \App\LockableResources\LockableResourcesServiceProvider::class
 
     ],
 

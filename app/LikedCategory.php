@@ -4,10 +4,10 @@
 namespace App;
 
 
+use App\Mezzo\Generated\ModelParents\MezzoLikedCategory;
 use App\Repositories\LikedCategoriesRepository;
-use Illuminate\Database\Eloquent\Model;
 
-class LikedCategory extends Model
+class LikedCategory extends MezzoLikedCategory
 {
     public function user()
     {
@@ -22,7 +22,7 @@ class LikedCategory extends Model
     /**
      * @return LikedCategoriesRepository
      */
-    public function repository() : LikedCategoriesRepository
+    public static function repository()
     {
         return app(LikedCategoriesRepository::class);
     }

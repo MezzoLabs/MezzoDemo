@@ -34,10 +34,12 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 * @property float $clicks
 * @property integer $locked_by_id
 * @property \Carbon\Carbon $locked_until
+ * @property integer $event_provider_id
 * @property \App\Address $address
 * @property \App\EventVenue $venue
 * @property \App\User $user
 * @property \App\User $lockedBy
+ * @property \App\EventProvider $eventProvider
 * @property EloquentCollection $categories
 * @property EloquentCollection $days
 */
@@ -230,6 +232,14 @@ abstract class MezzoEvent extends \App\Mezzo\BaseModel
     */
     protected $_locked_until;
 
+    /**
+     * Attribute annotation property for event_provider_id
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="")
+     * @var integer
+     */
+    protected $_event_provider_id;
+
 
     /*
     |-------------------------------------------------------------------------------------------------------------------
@@ -280,6 +290,16 @@ abstract class MezzoEvent extends \App\Mezzo\BaseModel
     * @Mezzo\Relations\Scopes("")
     */
     protected $_lockedBy;
+
+    /**
+     * Relation annotation property for eventProvider
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="event_providers", primaryKey="id", naming="events")
+     * @Mezzo\Relations\To(table="events", primaryKey="id", naming="eventProvider")
+     * @Mezzo\Relations\JoinColumn(table="events", column="event_provider_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_eventProvider;
 
     /**
     * Relation annotation property for categories

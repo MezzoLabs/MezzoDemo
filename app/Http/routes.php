@@ -72,7 +72,7 @@ Route::group(['middleware' => ['auth']], function () {
  */
 
 Route::get('/test/lock', function () {
-    $post = \App\Post::first();
+    $post = \App\Event::first();
 
     mezzo_dump($post->lock());
 
@@ -116,7 +116,6 @@ Route::get('/test/posts', function () {
     mezzo_dd(\MezzoLabs\Mezzo\Http\Transformers\GenericEloquentModelTransformer::makeBest(\App\Post::first()));
 });
 
-Route::post('/test/file', 'TestController@uploadFile');
 
 
 Route::get('/test/reflection', function () {
@@ -136,7 +135,6 @@ Route::get('/test/events', function () {
 });
 
 
-Route::post('test/file/{id}', 'TestController@updateFile');
 
 Route::get('debug/tutorial', function () {
     $tutorial = \App\Tutorial::findOrFail(1);
@@ -176,7 +174,6 @@ Route::get('debug/models', function () {
     //return view('debugmodels', ['moduleCenter' => $moduleCenter]);
 });
 
-Route::any('debug/controller', 'TestController@foo');
 
 Route::get('debug/generator', function () {
 
