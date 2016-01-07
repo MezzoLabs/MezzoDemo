@@ -81,7 +81,7 @@ function RelationInputController(api) {
     this.model = null;
     this.models = [];
 
-    this.modelApi.index({scopes: this.scopes}).then(function (models) {
+    this.modelApi.index({ scopes: this.scopes }).then(function (models) {
         _this.models = models;
     });
 };
@@ -1459,7 +1459,7 @@ var ResourceIndexController = function () {
     }, {
         key: 'addAttribute',
         value: function addAttribute(name, type) {
-            this.attributes.push({name: name, type: type});
+            this.attributes.push({ name: name, type: type });
         }
     }, {
         key: 'loadModels',

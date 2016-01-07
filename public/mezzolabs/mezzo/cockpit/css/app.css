@@ -3098,7 +3098,6 @@ input[type="search"] {
   input[type="month"].form-control {
     line-height: 34px;
   }
-
   input[type="date"].input-sm, .input-group-sm > input[type="date"].form-control,
   .input-group-sm > input[type="date"].input-group-addon,
   .input-group-sm > .input-group-btn > input[type="date"].btn,
@@ -3123,7 +3122,6 @@ input[type="search"] {
   input[type="month"] {
     line-height: 30px;
   }
-
   input[type="date"].input-lg, .input-group-lg > input[type="date"].form-control,
   .input-group-lg > input[type="date"].input-group-addon,
   .input-group-lg > .input-group-btn > input[type="date"].btn,
@@ -4701,10 +4699,9 @@ tbody.collapse.in {
 .nav-justified, .nav-tabs.nav-justified {
   width: 100%;
 }
-
-.nav-justified > li, .nav-tabs.nav-justified > li {
-  float: none;
-}
+  .nav-justified > li, .nav-tabs.nav-justified > li {
+    float: none;
+  }
 
 .nav-justified > li > a, .nav-tabs.nav-justified > li > a {
   text-align: center;
@@ -4730,17 +4727,15 @@ tbody.collapse.in {
 .nav-tabs-justified, .nav-tabs.nav-justified {
   border-bottom: 0;
 }
-
-.nav-tabs-justified > li > a, .nav-tabs.nav-justified > li > a {
-  margin-right: 0;
-  border-radius: 2px;
-}
-
-.nav-tabs-justified > .active > a, .nav-tabs.nav-justified > .active > a,
-.nav-tabs-justified > .active > a:hover, .nav-tabs.nav-justified > .active > a:hover,
-.nav-tabs-justified > .active > a:focus, .nav-tabs.nav-justified > .active > a:focus {
-  border: 1px solid #ddd;
-}
+  .nav-tabs-justified > li > a, .nav-tabs.nav-justified > li > a {
+    margin-right: 0;
+    border-radius: 2px;
+  }
+  .nav-tabs-justified > .active > a, .nav-tabs.nav-justified > .active > a,
+  .nav-tabs-justified > .active > a:hover, .nav-tabs.nav-justified > .active > a:hover,
+  .nav-tabs-justified > .active > a:focus, .nav-tabs.nav-justified > .active > a:focus {
+    border: 1px solid #ddd;
+  }
 
 @media (min-width: 768px) {
   .nav-tabs-justified > li > a, .nav-tabs.nav-justified > li > a {
@@ -11594,6 +11589,10 @@ a {
 
 .panel .panel-actions a:last-child {
   padding-right: 0px;
+}
+
+.panel .panel-actions a:first-child {
+  padding-right: 10px;
 }
 
 .panel .alert {

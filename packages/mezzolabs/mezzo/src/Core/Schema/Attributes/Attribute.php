@@ -5,7 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 
 use ArrayAccess;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Lang;
+use MezzoLabs\Mezzo\Core\Helpers\Translator;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOneOrMany;
@@ -244,8 +244,14 @@ class Attribute
 
     protected function makeTitle() : string
     {
-        if (Lang::has('validation.attributes.' . $this->naming()))
-            return Lang::get('validation.attributes.' . $this->naming());
+        $translation = Translator::find([
+            'attributes.' . $this->getModel()->shortName() . '.' . $this->naming(),
+            'attributes.' . $this->naming(),
+            'validation.attributes.' . $this->naming()
+        ]);
+
+        if ($translation)
+            return $translation;
 
         $nameParts = explode('_', $this->name());
 
