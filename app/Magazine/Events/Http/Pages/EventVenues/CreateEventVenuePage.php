@@ -10,6 +10,6 @@ class CreateEventVenuePage extends CreateResourcePage
 {
     protected $options = [
         'visibleInNavigation' => true,
-        'renderedByFrontend' => false
+        'renderedByFrontend' => true
     ];
 }

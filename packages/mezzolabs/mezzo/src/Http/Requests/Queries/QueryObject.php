@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Http\Requests\Queries;
 
 
+use MezzoLabs\Mezzo\Core\Schema\Relations\Scopes;
 use MezzoLabs\Mezzo\Http\Requests\Resource\ResourceRequest;
 
 class QueryObject
@@ -23,11 +24,17 @@ class QueryObject
      */
     protected $sortings;
 
+    /**
+     * @var Scopes
+     */
+    protected $scopes;
+
     public function __construct()
     {
         $this->searchQuery = new SearchQuery('', []);
         $this->filters = new Filters();
         $this->sortings = new Sortings();
+        $this->scopes = new Scopes();
     }
 
     /**
@@ -41,8 +48,10 @@ class QueryObject
         $searchQuery = new SearchQuery($request->get('q', ''), $request->modelReflection()->searchable());
         $sortings = Sortings::makeByString($request->get('sort', ''));
         $filters = Filters::makeByArray($request->all(), $request->modelReflection());
+        $scopes = Scopes::makeFromString($request->get('scopes', ''));
 
         return (new static())
+            ->withScopes($scopes)
             ->withSearch($searchQuery)
             ->withSortings($sortings)
             ->withFilters($filters);
@@ -72,6 +81,14 @@ class QueryObject
         return $this->sortings;
     }
 
+    /**
+     * @return Scopes
+     */
+    public function scopes()
+    {
+        return $this->scopes;
+    }
+
     public function hasSortings()
     {
         return !$this->sortings()->isEmpty();
@@ -85,6 +102,14 @@ class QueryObject
     public function hasSearchQuery()
     {
         return !$this->searchQuery()->isEmpty();
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasScopes()
+    {
+        return !$this->scopes()->isEmpty();
     }
 
     /**
@@ -114,6 +139,16 @@ class QueryObject
     public function withSortings(Sortings $sortings) : QueryObject
     {
         $this->sortings = $sortings;
+        return $this;
+    }
+
+    /**
+     * @param Sortings $sortings
+     * @return QueryObject
+     */
+    public function withScopes(Scopes $scopes) : QueryObject
+    {
+        $this->scopes = $scopes;
         return $this;
     }
 }

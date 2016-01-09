@@ -19,6 +19,11 @@ class GeneratorModule extends ModuleProvider
      */
     protected $generatorFactory;
 
+    protected $options = [
+        'icon' => 'ion-ios-color-wand',
+        'permissions' => 'developer'
+    ];
+
     protected $commands = [
         GenerateForeignFields::class,
         GenerateModelParent::class

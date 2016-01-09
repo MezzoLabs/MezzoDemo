@@ -91,5 +91,63 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return $this->hasOne(ShoppingBasket::class);
     }
 
+    public function scopeBackend($query)
+    {
+        return $query->where('backend', '=', 1);
+    }
+
+    public function scopeFrontend($query)
+    {
+        return $query->where('backend', '=', 0);
+    }
+
+    public function isConfirmed()
+    {
+        return $this->confirmed;
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(\App\Address::class);
+    }
+
+    public function likedCategories()
+    {
+        return $this->hasMany(LikedCategory::class);
+    }
+
+    public function likesCategory(Category $category)
+    {
+        foreach ($this->likedCategories as $likedCategory) {
+            if ($likedCategory->category_name == str_slug($category->label) && $likedCategory->base_value > 0)
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Category $category
+     * @return int
+     */
+    public function relevanceOfCategory(Category $category) : float
+    {
+        foreach ($this->likedCategories as $likedCategory) {
+            if ($likedCategory->category_name == str_slug($category->label))
+                return $likedCategory->relevance();
+        }
+
+        return 0;
+    }
+
+    public function lockedEvents()
+    {
+        return $this->hasMany(Event::class, 'locked_by_id');
+    }
+
+    public function lockedPosts()
+    {
+        return $this->hasMany(Post::class, 'locked_by_id');
+    }
 
 }

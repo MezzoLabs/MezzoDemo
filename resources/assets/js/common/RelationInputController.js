@@ -7,7 +7,7 @@ export default class RelationInputController {
         this.model = null;
         this.models = [];
 
-        this.modelApi.index()
+        this.modelApi.index({scopes: this.scopes})
             .then(models => {
                 this.models = models;
             });

@@ -3,6 +3,7 @@
 namespace MezzoLabs\Mezzo\Modules\Posts\Http\ApiControllers;
 
 
+use App\LockableResources\HandlesLockableApiResources;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 use MezzoLabs\Mezzo\Http\Controllers\ApiResourceController;
 use MezzoLabs\Mezzo\Http\Controllers\HasDefaultApiResourceFunctions;
@@ -18,6 +19,8 @@ class PostApiController extends ApiResourceController
         store as defaultStore;
         update as defaultUpdate;
     }
+
+    use HandlesLockableApiResources;
 
 
     /**
@@ -45,4 +48,6 @@ class PostApiController extends ApiResourceController
     {
         return $this->defaultUpdate($request, $id);
     }
+
+
 }

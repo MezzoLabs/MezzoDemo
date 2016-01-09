@@ -3,27 +3,28 @@ html, body {
   background-color: $mezzo-white-paper;
 }
 
-h1, h2, h3{
+h1, h2, h3 {
   text-transform: uppercase;
   font-weight: 500;
 }
 
-h3{
+h3 {
   font-size: 16px;
 }
-html, body, #page-container, #view-main{
+
+html, body, #page-container, #view-main {
   height: 100%;
 }
 
-a:active{
+a:active {
   text-decoration: none;
 }
 
-i{
+i {
   font-size: 15px;
 }
 
-#page-container{
+#page-container {
   transition: ease padding $mezzo-animation-long;
 
 }
@@ -45,27 +46,31 @@ a {
   transition: ease all 0.2s;
 }
 
-.light-icon{
+.light-icon {
   color: $mezzo-font-color-light;
   transition: ease color $mezzo-animation-short;
   cursor: pointer;
   text-decoration: none;
 }
 
-.light-icon.highlight{
+.light-icon.highlight {
   transition: ease box-shadow $mezzo-animation-long;
   background-color: #EEE;
   border-radius: 50px;
   color: $mezzo-font-color;
+  display: inline-block;
+  width: 37px;
+  height: 37px;
+  text-align: center;
 }
 
-.light-icon.highlight:hover{
+.light-icon.highlight:hover {
   color: $mezzo-font-color-dark;
-  box-shadow: 1px 1px 2px rgba(0,0,0,0.25);
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
 
 }
 
-.light-icon:hover{
+.light-icon:hover {
   color: $mezzo-font-color;
 }
 

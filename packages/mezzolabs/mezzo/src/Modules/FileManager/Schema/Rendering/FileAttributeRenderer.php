@@ -28,7 +28,13 @@ class FileAttributeRenderer extends AttributeRenderingHandler
      */
     public function render()
     {
-        return $this->formBuilder()->filePicker($this->attribute());
+        return $this->formBuilder()->filePicker(
+            $this->attribute()->name(),
+            $this->attribute()->otherModelReflection()->instance(), [
+                'multiple' => $this->attribute()->hasMultipleChildren(),
+                'rules' => $this->attribute()->rules()
+            ]
+        );
     }
 
 }

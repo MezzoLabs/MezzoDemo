@@ -27,7 +27,6 @@ class UserTransformer extends EloquentModelTransformer
     ];
 
     protected $defaultIncludes = [
-
     ];
 
     public function transform($model)
@@ -59,4 +58,5 @@ class UserTransformer extends EloquentModelTransformer
     {
         return $this->automaticCollection($user->tutorials);
     }
+
 }

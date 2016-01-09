@@ -184,6 +184,7 @@ abstract class AttributeRenderingHandler
     public function htmlAttributes()
     {
         $htmlAttributes = $this->attributeRenderer->htmlAttributes($this->attribute());
+
         return array_merge($htmlAttributes, $this->getOptions()->attributes());
     }
 
@@ -248,34 +249,41 @@ abstract class AttributeRenderingHandler
     }
 
 
-    public function before()
+    public function before() : string
     {
-        return '<div class="' . $this->formGroupClass() . '"><label>' . $this->attribute()->title() . '</label>';
+        if (!$this->options->renderBefore()) return "";
+
+        return $this->attributeRenderer->defaultBefore($this);
+
     }
 
-    protected function formGroupClass()
+
+    public function after() : string
     {
-        $class = 'form-group';
+        if (!$this->options->renderAfter()) return "";
 
-        if ($this->hasError())
-            $class .= ' has-error';
-
-        return $class;
+        return $this->attributeRenderer->defaultAfter($this);
     }
 
-    public function after()
+    public function hasError() : bool
     {
-        return '</div>';
+        $sessionName = StringHelper::fromArrayToDotNotation($this->name());
+        return (Session::has('errors') && Session::get('errors')->has($sessionName));
     }
 
-    protected function hasError()
+    public function getError() : array
     {
-        $name = StringHelper::fromArrayToDotNotation($this->name());
+        $sessionName = StringHelper::fromArrayToDotNotation($this->name());
 
-        if (!Session::has('errors'))
-            return false;
+        if (!$this->hasError())
+            return [];
 
-        return Session::get('errors')->has($name);
+        return Session::get('errors')->get($sessionName);
+    }
+
+    public function getErrorString() : string
+    {
+        return implode(' ', $this->getError());
     }
 
     /**

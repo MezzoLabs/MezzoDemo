@@ -50,4 +50,13 @@ interface FormObject
      * @return Collection
      */
     public function atomicAttributesData();
+
+    /**
+     * Set the id of the resource that is changed by this form.
+     *
+     * @param $id
+     */
+    public function setId($id);
+
+    public function getId();
 }

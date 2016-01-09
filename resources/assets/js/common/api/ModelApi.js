@@ -7,8 +7,8 @@ export default class ModelApi {
         this.apiUrl = '/api/' + this.modelPlural;
     }
 
-    index() {
-        return this.api.get(this.apiUrl);
+    index(parameters) {
+        return this.api.get(this.apiUrl, parameters);
     }
 
     create(formData) {

@@ -139,7 +139,7 @@ class RelationAnnotations extends PropertyAnnotations
 
     public function scopes()
     {
-        return Scopes::buildFromString($this->scopesString());
+        return Scopes::makeFromString($this->scopesString());
     }
 
     public function scopesString()

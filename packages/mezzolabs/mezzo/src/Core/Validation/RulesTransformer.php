@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Validation;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Exceptions\MezzoException;
 
 class RulesTransformer
@@ -16,11 +17,18 @@ class RulesTransformer
     protected $ruleStrings;
 
     /**
-     * @param array|Collection $ruleStrings
+     * @var integer|null
      */
-    public function __construct($ruleStrings)
+    protected $id;
+
+    /**
+     * @param array|Collection $ruleStrings
+     * @param integer|null $id
+     */
+    public function __construct($ruleStrings, $id = null)
     {
         $this->ruleStrings = new Collection(Arr::dot($ruleStrings));
+        $this->id = $id;
     }
 
     /**
@@ -34,8 +42,17 @@ class RulesTransformer
         })->toArray();
     }
 
-    protected function transformRuleForUpdate($key, $rule, $isDirty = true)
+    protected function transformRuleForUpdate($key, $rule, $isDirty = true) : string
     {
+        $rulesArray = explode('|', $rule);
+        foreach ($rulesArray as &$subRule) {
+            if (Str::startsWith($subRule, 'unique') && $this->id) {
+                $subRule = $this->addIdToUniqueRule($subRule, $this->id, $key);
+            }
+        }
+
+        $rule = implode('|', $rulesArray);
+
         //Do not touch rules if the according model attribute is dirty or if the rule is nested.
         if ($isDirty || str_contains($key, '.')) {
             return $rule;
@@ -45,6 +62,31 @@ class RulesTransformer
         $rule = static::removeUnique($rule);
 
         return $rule;
+    }
+
+    /**
+     * Add the id to the rule so the current row will be ignored for this rule.
+     * unique:table,column,except,idColumn
+     *
+     * @param $rule
+     * @param $id
+     * @param $column
+     * @return string
+     */
+    protected function addIdToUniqueRule($rule, $id, string $column) : string
+    {
+        //table, column and except are given
+        if (substr_count($rule, ',') >= 2) {
+            return $rule;
+        }
+
+        //table and column are given
+        if (substr_count($rule, ',') == 1) {
+            return $rule . ',' . $id;
+        }
+
+        //only table is given
+        return $rule . ',' . $column . ',' . $id;
     }
 
     /**
@@ -84,7 +126,7 @@ class RulesTransformer
      */
     protected static function removeRulesType($typeToRemove, $rule)
     {
-        if(is_array($rule)) {
+        if (is_array($rule)) {
             throw new MezzoException('Cannot transform a rule array.');
         }
 

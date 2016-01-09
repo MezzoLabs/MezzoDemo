@@ -36,7 +36,7 @@ class RedirectIfAuthenticated extends MezzoMiddleware
     public function handle($request, Closure $next)
     {
         if ($this->auth->check()) {
-            return redirect('/home');
+            return redirect('/mezzo');
         }
 
         return $next($request);

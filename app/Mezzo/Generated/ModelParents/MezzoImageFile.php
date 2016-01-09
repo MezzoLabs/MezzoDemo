@@ -2,7 +2,6 @@
 
 namespace App\Mezzo\Generated\ModelParents;
 
-use App\Mezzo\BaseModel;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
@@ -22,16 +21,17 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  *
  * App\Mezzo\Generated\ModelParents\MezzoImageFile
  *
-* @property  integer $id
+ * @property integer $id
 * @property string $cropping
  * @property string $caption
- * @property  integer $file_id
+ * @property integer $file_id
 * @property \Carbon\Carbon $created_at
 * @property \Carbon\Carbon $updated_at
  * @property \App\File $file
  * @property EloquentCollection $posts
+ * @property EloquentCollection $products
 */
-abstract class MezzoImageFile extends BaseModel
+abstract class MezzoImageFile extends \App\Mezzo\BaseModel
 {
     use IsMezzoModel;
 
@@ -58,7 +58,7 @@ abstract class MezzoImageFile extends BaseModel
      * @var array
     */
     protected $rules = [
-        'cropping' => "",
+        'cropping' => "", 
         'caption' => ""
     ];
 
@@ -68,7 +68,7 @@ abstract class MezzoImageFile extends BaseModel
      * @var array
     */
     protected $hidden = [
-        "file_id",
+        "file_id", 
         "file"
     ];
 
@@ -99,19 +99,19 @@ abstract class MezzoImageFile extends BaseModel
 
 
     /*
-        |-------------------------------------------------------------------------------------------------------------------
-        | Attribute annotation properties
-        |-------------------------------------------------------------------------------------------------------------------    |
-        | In this section you will find some annotated properties.
-        | They are not really important for you, but they will tell Mezzo something about
-        | the attributes of this model.
-        |-------------------------------------------------------------------------------------------------------------------
-        */
+    |-------------------------------------------------------------------------------------------------------------------
+    | Attribute annotation properties
+    |-------------------------------------------------------------------------------------------------------------------    |
+    | In this section you will find some annotated properties.
+    | They are not really important for you, but they will tell Mezzo something about
+    | the attributes of this model.
+    |-------------------------------------------------------------------------------------------------------------------
+    */
 
     /**
      * Attribute annotation property for id
     *
-     * @Mezzo\Attribute(type="PrimaryKeyInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\PrimaryKeyInput", hidden="")
     * @var integer            
     */
     protected $_id;
@@ -119,7 +119,7 @@ abstract class MezzoImageFile extends BaseModel
     /**
      * Attribute annotation property for cropping
     *
-     * @Mezzo\Attribute(type="TextArea", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextArea", hidden="")
     * @var string            
     */
     protected $_cropping;
@@ -127,7 +127,7 @@ abstract class MezzoImageFile extends BaseModel
     /**
      * Attribute annotation property for caption
     *
-     * @Mezzo\Attribute(type="TextArea", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextArea", hidden="")
      * @var string
     */
     protected $_caption;
@@ -135,7 +135,7 @@ abstract class MezzoImageFile extends BaseModel
     /**
      * Attribute annotation property for file_id
      *
-     * @Mezzo\Attribute(type="RelationInputSingle", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="")
      * @var integer
      */
     protected $_file_id;
@@ -143,7 +143,7 @@ abstract class MezzoImageFile extends BaseModel
     /**
      * Attribute annotation property for created_at
     *
-     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
     * @var \Carbon\Carbon            
     */
     protected $_created_at;
@@ -151,7 +151,7 @@ abstract class MezzoImageFile extends BaseModel
     /**
      * Attribute annotation property for updated_at
     *
-     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
     * @var \Carbon\Carbon            
     */
     protected $_updated_at;
@@ -173,17 +173,31 @@ abstract class MezzoImageFile extends BaseModel
      * @Mezzo\Relations\From(table="image_files", primaryKey="id", naming="file")
      * @Mezzo\Relations\To(table="files", primaryKey="id", naming="images")
      * @Mezzo\Relations\JoinColumn(table="image_files", column="file_id")
+     * @Mezzo\Relations\Scopes("")
      */
     protected $_file;
 
     /**
      * Relation annotation property for posts
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
      * @Mezzo\Relations\OneToMany
      * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="main_image")
      * @Mezzo\Relations\To(table="image_files", primaryKey="id", naming="posts")
      * @Mezzo\Relations\JoinColumn(table="posts", column="main_image_id")
+     * @Mezzo\Relations\Scopes("")
      */
     protected $_posts;
+
+    /**
+     * Relation annotation property for products
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\ManyToMany
+     * @Mezzo\Relations\From(table="products", primaryKey="id", naming="images")
+     * @Mezzo\Relations\To(table="image_files", primaryKey="id", naming="products")
+     * @Mezzo\Relations\PivotTable(name="image_file_product", fromColumn="product_id", toColumn="image_file_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_products;
 
 
 }

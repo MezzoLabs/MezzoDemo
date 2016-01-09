@@ -4,7 +4,7 @@ namespace App;
 
 use App\Magazine\Shop\Domain\Models\ShoppingBasket as ShopModuleBasket;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ShoppingBasket extends ShopModuleBasket
 {
@@ -13,8 +13,8 @@ class ShoppingBasket extends ShopModuleBasket
         return $this->belongsTo(User::class);
     }
 
-    public function products() : HasMany
+    public function products() : BelongsToMany
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(Product::class);
     }
 }

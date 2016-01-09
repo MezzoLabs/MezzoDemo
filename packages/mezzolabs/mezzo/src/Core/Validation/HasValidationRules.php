@@ -95,7 +95,7 @@ trait HasValidationRules
      */
     public function getUpdateRules(array $data)
     {
-        $rulesTransformer = new RulesTransformer($this->getRules());
+        $rulesTransformer = new RulesTransformer($this->getRules(), $this->id);
         return $rulesTransformer->rulesForUpdating(array_keys($data));
     }
 

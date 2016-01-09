@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 
 use ArrayAccess;
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Helpers\Translator;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOneOrMany;
@@ -135,7 +136,7 @@ class Attribute
      */
     public function hasModel()
     {
-        return !$this->model;
+        return !empty($this->model);
     }
 
     /**
@@ -221,23 +222,46 @@ class Attribute
         return $this instanceof RelationAttribute;
     }
 
+    public function naming()
+    {
+        if (!$this->isRelationAttribute())
+            return $this->name();
+
+        return $this->relationSide()->naming();
+    }
+
     /**
      * @return string
      */
     public function title()
     {
         if (!$this->title) {
-            $nameParts = explode('_', $this->name());
-
-            foreach ($nameParts as $i => $namePart) {
-                if ($namePart == "id" && $i != 0) $namePart = "";
-                $nameParts[$i] = ucfirst($namePart);
-            }
-
-            $this->title = implode(' ', $nameParts);
+            $this->title = $this->makeTitle();
         }
 
         return $this->title;
+    }
+
+    protected function makeTitle() : string
+    {
+        $translation = Translator::find([
+            'attributes.' . $this->getModel()->shortName() . '.' . $this->naming(),
+            'attributes.' . $this->naming(),
+            'validation.attributes.' . $this->naming()
+        ]);
+
+        if ($translation)
+            return $translation;
+
+        $nameParts = explode('_', $this->name());
+
+        foreach ($nameParts as $i => $namePart) {
+            if ($namePart == "id" && $i != 0) $namePart = "";
+            $nameParts[$i] = ucfirst($namePart);
+        }
+
+        return implode(' ', $nameParts);
+
     }
 
     /**

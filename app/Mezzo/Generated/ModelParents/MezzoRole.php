@@ -60,7 +60,7 @@ abstract class MezzoRole extends BaseModel
     */
     protected $rules = [
         'name' => "required|between:3,255|alpha_dash|unique:roles",
-        'label' => "required|between:3,255|alpha_num|unique:roles"
+        'label' => "required|between:3,255|unique:roles"
     ];
     /**
     * The attributes that should be hidden for arrays.

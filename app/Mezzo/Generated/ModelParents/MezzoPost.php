@@ -2,7 +2,6 @@
 
 namespace App\Mezzo\Generated\ModelParents;
 
-use App\Mezzo\BaseModel;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
@@ -27,19 +26,23 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  * @property string $teaser
  * @property string $slug
  * @property string $state
- * @property \Carbon\Carbon $published_at
  * @property integer $user_id
  * @property integer $content_id
  * @property integer $main_image_id
+ * @property \Carbon\Carbon $published_at
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
+ * @property float $clicks
+ * @property integer $locked_by_id
+ * @property \Carbon\Carbon $locked_until
  * @property \App\User $user
  * @property \App\Content $content
  * @property \App\ImageFile $main_image
+ * @property \App\User $lockedBy
  * @property EloquentCollection $categories
  */
-abstract class MezzoPost extends BaseModel
+abstract class MezzoPost extends \App\Mezzo\BaseModel
 {
     use IsMezzoModel;
 
@@ -71,7 +74,8 @@ abstract class MezzoPost extends BaseModel
         'slug' => "",
         'state' => "required|between:2,20|alpha_num|in:published,draft,deleted",
         'published_at' => "",
-        'user_id' => 'required|exists:users,id'
+        'clicks' => "",
+        'locked_until' => ""
     ];
 
     /**
@@ -96,8 +100,8 @@ abstract class MezzoPost extends BaseModel
         "state",
         "main_image_id",
         "categories",
-        'content_id',
-        'user_id'
+        "content_id",
+        "user_id"
     ];
 
     /**
@@ -106,7 +110,8 @@ abstract class MezzoPost extends BaseModel
      * * @var array
      */
     protected $casts = [
-        'published_at' => "date"
+        'published_at' => "date",
+        'locked_until' => "datetime"
     ];
 
     /**
@@ -118,19 +123,19 @@ abstract class MezzoPost extends BaseModel
 
 
     /*
-        |-------------------------------------------------------------------------------------------------------------------
-        | Attribute annotation properties
-        |-------------------------------------------------------------------------------------------------------------------    |
-        | In this section you will find some annotated properties.
-        | They are not really important for you, but they will tell Mezzo something about
-        | the attributes of this model.
-        |-------------------------------------------------------------------------------------------------------------------
-        */
+    |-------------------------------------------------------------------------------------------------------------------
+    | Attribute annotation properties
+    |-------------------------------------------------------------------------------------------------------------------    |
+    | In this section you will find some annotated properties.
+    | They are not really important for you, but they will tell Mezzo something about
+    | the attributes of this model.
+    |-------------------------------------------------------------------------------------------------------------------
+    */
 
     /**
      * Attribute annotation property for id
      *
-     * @Mezzo\Attribute(type="PrimaryKeyInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\PrimaryKeyInput", hidden="")
      * @var integer
      */
     protected $_id;
@@ -138,7 +143,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for title
      *
-     * @Mezzo\Attribute(type="TextInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
      * @var string
      */
     protected $_title;
@@ -146,7 +151,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for teaser
      *
-     * @Mezzo\Attribute(type="TextArea", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextArea", hidden="")
      * @var string
      */
     protected $_teaser;
@@ -154,7 +159,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for slug
      *
-     * @Mezzo\Attribute(type="TextInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
      * @var string
      */
     protected $_slug;
@@ -168,17 +173,9 @@ abstract class MezzoPost extends BaseModel
     protected $_state;
 
     /**
-     * Attribute annotation property for published_at
-     *
-     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
-     * @var \Carbon\Carbon
-     */
-    protected $_published_at;
-
-    /**
      * Attribute annotation property for user_id
      *
-     * @Mezzo\Attribute(type="RelationInputSingle", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="")
      * @var integer
      */
     protected $_user_id;
@@ -186,7 +183,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for content_id
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Contents\Schema\InputTypes\ContentInput")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Contents\Schema\InputTypes\ContentInput", hidden="index")
      * @var integer
      */
     protected $_content_id;
@@ -194,15 +191,23 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for main_image_id
      *
-     * @Mezzo\Attribute(type="\MezzoLabs\Mezzo\Modules\FileManager\Schema\InputTypes\ImageInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\FileManager\Schema\InputTypes\ImageInput", hidden="index")
      * @var integer
      */
     protected $_main_image_id;
 
     /**
+     * Attribute annotation property for published_at
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
+     * @var \Carbon\Carbon
+     */
+    protected $_published_at;
+
+    /**
      * Attribute annotation property for created_at
      *
-     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
      * @var \Carbon\Carbon
      */
     protected $_created_at;
@@ -210,7 +215,7 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for updated_at
      *
-     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
      * @var \Carbon\Carbon
      */
     protected $_updated_at;
@@ -218,10 +223,34 @@ abstract class MezzoPost extends BaseModel
     /**
      * Attribute annotation property for deleted_at
      *
-     * @Mezzo\Attribute(type="DateTimeInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
      * @var \Carbon\Carbon
      */
     protected $_deleted_at;
+
+    /**
+     * Attribute annotation property for clicks
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\NumberInput", hidden="")
+     * @var float
+     */
+    protected $_clicks;
+
+    /**
+     * Attribute annotation property for locked_by_id
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="")
+     * @var integer
+     */
+    protected $_locked_by_id;
+
+    /**
+     * Attribute annotation property for locked_until
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
+     * @var \Carbon\Carbon
+     */
+    protected $_locked_until;
 
 
     /*
@@ -240,33 +269,44 @@ abstract class MezzoPost extends BaseModel
      * @Mezzo\Relations\From(table="users", primaryKey="id", naming="posts")
      * @Mezzo\Relations\To(table="posts", primaryKey="id", naming="user")
      * @Mezzo\Relations\JoinColumn(table="posts", column="user_id")
+     * @Mezzo\Relations\Scopes("backend")
      */
     protected $_user;
 
     /**
      * Relation annotation property for content
-     *
      * @Mezzo\Relations\OneToOne
      * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="content")
      * @Mezzo\Relations\To(table="contents", primaryKey="id", naming="post")
      * @Mezzo\Relations\JoinColumn(table="posts", column="content_id")
+     * @Mezzo\Relations\Scopes("")
      */
     protected $_content;
 
-
     /**
      * Relation annotation property for main_image
-     * @Mezzo\Relations\OneToMany()
+     * @Mezzo\Relations\OneToMany
      * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="main_image")
      * @Mezzo\Relations\To(table="image_files", primaryKey="id", naming="posts")
      * @Mezzo\Relations\JoinColumn(table="posts", column="main_image_id")
+     * @Mezzo\Relations\Scopes("")
      */
     protected $_main_image;
 
     /**
+     * Relation annotation property for lockedBy
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="lockedPosts")
+     * @Mezzo\Relations\To(table="posts", primaryKey="id", naming="lockedBy")
+     * @Mezzo\Relations\JoinColumn(table="posts", column="locked_by_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_lockedBy;
+
+    /**
      * Relation annotation property for categories
-     * @Mezzo\Attribute(type="\MezzoLabs\Mezzo\Modules\Categories\Schema\InputTypes\CategoriesInput", hidden="")
-     * @Mezzo\Relations\ManyToMany()
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Categories\Schema\InputTypes\CategoriesInput", hidden="")
+     * @Mezzo\Relations\ManyToMany
      * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="categories")
      * @Mezzo\Relations\To(table="categories", primaryKey="id", naming="posts")
      * @Mezzo\Relations\PivotTable(name="category_post", fromColumn="post_id", toColumn="category_id")

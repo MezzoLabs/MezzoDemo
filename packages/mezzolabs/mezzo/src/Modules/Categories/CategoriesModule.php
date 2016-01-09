@@ -16,8 +16,11 @@ class CategoriesModule extends ModuleProvider
 
     protected $options = [
         'title' => 'Categorization',
-        'icon' => 'ion-ios-pricetags'
+        'icon' => 'ion-ios-pricetags',
+        'permissions' => 'administrate'
+
     ];
+
 
     protected $transformers = [
 

@@ -13,6 +13,10 @@ module_route('Posts', [], function (Router $router, ApiRouter $api, CockpitRoute
         'uses' => 'Controllers\PostController@store',
         'as' => 'post.store'
     ]);
+
+    $api->action('locked', 'Post', ['mode' => 'single']);
+    $api->action('lock', 'Post', ['mode' => 'single']);
+
 });
 
 

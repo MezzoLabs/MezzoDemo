@@ -9,6 +9,16 @@ use MezzoLabs\Mezzo\Core\Collection\DecoratedCollection;
 
 class AttributeRenderingOptions extends DecoratedCollection
 {
+    public function renderBefore()
+    {
+        return $this->get('wrap', true);
+    }
+
+    public function renderAfter()
+    {
+        return $this->get('wrap', true);
+    }
+
     /**
      * Check if this attribute renders inside the form of a relation.
      *
@@ -41,7 +51,7 @@ class AttributeRenderingOptions extends DecoratedCollection
     /**
      * @return array
      */
-    public function attributes()
+    public function attributes() : array
     {
         return $this->get('attributes', []);
     }

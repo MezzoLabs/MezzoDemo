@@ -31,8 +31,11 @@ class PermissionGuard
      *
      * @return \App\User|null
      */
-    public function user()
+    public function user(\App\User $user = null) : \App\User
     {
+        if ($user)
+            return $user;
+
         return $this->authGuard->user();
     }
 
@@ -46,29 +49,29 @@ class PermissionGuard
         return $this->user() != null;
     }
 
-    public function allowsCreate(MezzoModel $model, \App\User $user = null)
+    public function allowsCreate(MezzoModel $model, \App\User $user = null) : bool
     {
         return $this->allowsModelAccess($model, 'create', $user);
     }
 
-    public function allowsShow(MezzoModel $model, \App\User $user = null)
+    public function allowsShow(MezzoModel $model, \App\User $user = null) : bool
     {
         return $this->allowsModelAccess($model, 'show', $user);
     }
 
-    public function allowsEdit(MezzoModel $model, \App\User $user = null)
+    public function allowsEdit(MezzoModel $model, \App\User $user = null) : bool
     {
         return $this->allowsModelAccess($model, 'edit', $user);
     }
 
-    public function allowsDelete(MezzoModel $model, \App\User $user = null)
+    public function allowsDelete(MezzoModel $model, \App\User $user = null) : bool
     {
         return $this->allowsModelAccess($model, 'delete', $user);
     }
 
-    public function allowsCockpit(\App\User $user = null)
+    public function allowsCockpit(\App\User $user = null) : bool
     {
-        return $this->hasPermission('cockpit', $user);
+        return $this->hasPermission('cockpit', $user) && $this->user($user)->isBackendUser();
     }
 
     public function allowsCreateOrEdit(MezzoModel $model)
@@ -117,7 +120,7 @@ class PermissionGuard
 
     public function hasPermission($permission, \App\User $user = null)
     {
-        if (!$user) $user = $this->user();
+        $user = $this->user($user);
 
         if (!$user) return false;
 

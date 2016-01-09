@@ -9,6 +9,7 @@ mezzo()->module('Events')->generateRoutes();
 module_route('Events', [], function (Router $router, ApiRouter $api, CockpitRouter $cockpit) {
     $api->resource('Event');
     $api->resource('EventVenue');
+    $api->resource('EventProvider');
 
     $cockpit->post('events/event/create', [
         'uses' => 'Controllers\EventController@store',
@@ -29,6 +30,9 @@ module_route('Events', [], function (Router $router, ApiRouter $api, CockpitRout
         'uses' => 'Controllers\EventVenueController@update',
         'as' => 'event_venue.update'
     ]);
+
+    $api->action('locked', 'Event', ['mode' => 'single']);
+    $api->action('lock', 'Event', ['mode' => 'single']);
 });
 
 

@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Modules\FileManager\Http\Controllers;
 
 
+use Intervention\Image\Image as InterventionImage;
 use Intervention\Image\ImageManager;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitController;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories\FileRepository;
@@ -95,12 +96,36 @@ class PublishFilesController extends CockpitController
 
         $imageSizes = $this->imageSizes();
 
-        return $intervention
-            ->make($file->longPath())
-            ->resize($imageSizes[0], $imageSizes[1], function($constraint){
-                $constraint->aspectRatio();
-            })
-            ->response();
+        $uniqueImageKey = $this->uniqueImageKey($file, $imageSizes[0], $imageSizes[1]);
+
+        if (!file_exists($this->imageCacheFolder() . '/' . $uniqueImageKey)) {
+            $image = $intervention
+                ->make($file->longPath())
+                ->resize($imageSizes[0], $imageSizes[1], function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+
+            $this->cacheImage($uniqueImageKey, $image);
+
+            return $image->response();
+        }
+
+        return $intervention->make($this->imageCacheFolder() . '/' . $uniqueImageKey)->response();
+    }
+
+    protected function cacheImage($uniqueKey, InterventionImage $file)
+    {
+        $file->save($this->imageCacheFolder() . '/' . $uniqueKey);
+    }
+
+    protected function imageCacheFolder()
+    {
+        return storage_path() . '/mezzo/cache/images';
+    }
+
+    protected function uniqueImageKey(\App\File $file, $width, $height)
+    {
+        return 'mezzo_image_' . $file->id . '-' . $width . 'x' . $height;
     }
 
     /**

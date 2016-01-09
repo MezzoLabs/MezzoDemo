@@ -84,6 +84,7 @@ class AnnotationGenerator
 
     protected function attributeAnnotationLine(Attribute $attribute)
     {
+        debug($attribute->hasModel());
         $attribute = $this->findBestAttribute($attribute);
 
         return $this->doctrine('Mezzo\Attribute', [
@@ -121,6 +122,9 @@ class AnnotationGenerator
      */
     protected function findBestAttribute(Attribute $attribute)
     {
+        if (!$attribute->hasModel())
+            return $attribute;
+
         $bestReflection = mezzo()->model($attribute->getModel());
 
         $bestAttribute = $bestReflection->attributes()->get($attribute->name());
@@ -203,10 +207,11 @@ class AnnotationGenerator
         $relation = $relationSide->relation();
         $relationType = $relation->shortType();
 
-        $bestAttribute = mezzo()->attribute($relationSide->table(), $relationSide->attributeName());
-
-        if (!$bestAttribute instanceof RelationAttribute)
-            $bestAttribute = mezzo()->attribute($relationSide->table(), $relationSide->attributeName(), true);
+        try {
+            $bestAttribute = mezzo()->attribute($relationSide->table(), $relationSide->attributeName());
+        } catch (ReflectionException $e) {
+            $bestAttribute = new RelationAttribute($relationSide->attributeName(), $relationSide);
+        }
 
         if (!$bestAttribute instanceof RelationAttribute)
             throw new ReflectionException($bestAttribute->qualifiedName() . ' has to be a relation attribute.');

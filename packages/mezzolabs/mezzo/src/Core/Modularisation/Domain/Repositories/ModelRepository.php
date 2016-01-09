@@ -118,7 +118,7 @@ class ModelRepository extends EloquentRepository
 
     public function search(QueryObject $query, $columns = array('*'))
     {
-        return (new EloquentSearcher($query, $this->query()))->run()->get($columns);
+        return (new EloquentQueryExecutor($query, $this->query()))->run()->get($columns);
     }
 
     /**

@@ -14,10 +14,10 @@ class CreateMerchantsTable extends Migration
     {
         Schema::create('merchants', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->required();
-            $table->string('email')->required();
-            $table->integer('user_id')->unsigned()->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');;
+            $table->string('name')->required()->unique();
+            $table->string('email')->required()->unique();
+            $table->integer('user_id')->unsigned()->index()->unique();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

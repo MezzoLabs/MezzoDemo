@@ -23,6 +23,28 @@ class RoleRepository extends ModelRepository
     }
 
     /**
+     * Find a role by its name or create a new one.
+     *
+     * @param string $name
+     * @param string|null $label
+     * @return \App\Role
+     * @throws \MezzoLabs\Mezzo\Exceptions\RepositoryException
+     */
+    public function findOrCreate(string $name, string $label = null) : \App\Role
+    {
+        $found = $this->findByName($name);
+
+        if ($found) {
+            return $found;
+        }
+
+        if (empty($label))
+            $label = space_case($name);
+
+        return $this->create(['name' => $name, 'label' => $label]);
+    }
+
+    /**
      * @param $name
      * @return \App\Role|null
      */

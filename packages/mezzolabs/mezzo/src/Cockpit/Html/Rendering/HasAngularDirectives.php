@@ -5,7 +5,7 @@ namespace MezzoLabs\Mezzo\Cockpit\Html\Rendering;
 
 use Collective\Html\HtmlBuilder;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
-use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderingException;
+use MezzoLabs\Mezzo\Core\Schema\ValidationRules\Rules;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\TypedFileAddon;
 
 /**
@@ -24,6 +24,7 @@ trait HasAngularDirectives
     {
         $htmlAttributes = [
             'data-related' => $attribute->relationSide()->otherModelReflection()->name(),
+            'data-scopes' => $attribute->relation()->getScopes()->toString(),
             'name' => $attribute->name()
         ];
 
@@ -38,26 +39,24 @@ trait HasAngularDirectives
 
     /**
      * @param string $name
-     * @param bool $multiple
-     * @param string $fileType
+     * @param TypedFileAddon $fileTypeModel
+     * @param array $options
      * @return string
      */
-    public function filePicker(RelationAttribute $attribute) : string
+    public function filePicker(string $name, TypedFileAddon $fileTypeModel, array $options = []) : string
     {
-        $fileTypeModel = $attribute->otherModelReflection()->instance();
-
-        if (!$fileTypeModel instanceof TypedFileAddon)
-            throw new AttributeRenderingException('Invalid image model');
+        $multiple = $options['multiple'] ?? false;
+        $rules = $options['rules'] ?? new Rules();
 
         $htmlAttributes = [
             'data-file-type' => $fileTypeModel->fileType()->name(),
-            'name' => $attribute->name()
+            'name' => $name
         ];
 
-        if ($attribute->hasMultipleChildren()) $htmlAttributes[] = 'multiple';
+        if ($multiple) $htmlAttributes[] = 'multiple';
 
 
-        $validationRules = (new HtmlRules($attribute->rules()))->attributes()->toArray();
+        $validationRules = (new HtmlRules($rules))->attributes()->toArray();
         $htmlAttributes = array_merge($htmlAttributes, $validationRules);
         $htmlAttributesString = $this->html->attributes($htmlAttributes);
 

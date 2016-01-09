@@ -102,7 +102,7 @@ class InputRenderer
 
     protected function htmlAttributes()
     {
-        $htmlRules = (new HtmlRules($this->rules()))->attributes()->toArray();
+        $htmlRules = (new HtmlRules($this->rules(), $this->inputType))->attributes()->toArray();
 
 
         return array_merge($htmlRules);

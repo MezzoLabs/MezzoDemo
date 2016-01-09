@@ -13,11 +13,13 @@ export default class FilePickerController {
     }
 
     selectLabel() {
-        const label = 'Select file';
+        var label = 'Select file';
 
         if(this.isMultiple()) {
-            label + 's';
+            label += 's';
         }
+
+        label += " ( " + this.selectedFiles().length + " )";
 
         return label;
     }
@@ -120,6 +122,10 @@ export default class FilePickerController {
 
         selected.forEach(file => fileIds.push(file.id));
         $field.val(fileIds);
+    }
+
+    countSelected() {
+        return this.selectedFiles().length;
     }
 
 }

@@ -5,10 +5,8 @@
     <div class="wrapper" ng-init="vm.init('{!! $model_reflection->name() !!}')">
         <div class="panel panel-bordered">
             <div class="panel-heading">
-                <h3>Edit {{ $model_reflection->name() }}</h3>
+                @include('cockpit::partials.pages.heading_edit')
 
-                <div class="panel-actions">
-                </div>
             </div>
             <div class="panel-body">
                 {!! cockpit_form()->open(['angular' => true]) !!}

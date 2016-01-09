@@ -29,6 +29,11 @@ class GenericFormObject implements FormObject
     protected $metaInfo;
 
     /**
+     * @var integer
+     */
+    protected $id;
+
+    /**
      * @param string $model
      * @param $data
      */
@@ -239,8 +244,23 @@ class GenericFormObject implements FormObject
      */
     public function rulesForUpdating(array $dirty)
     {
-        $rulesTransformer = new RulesTransformer($this->rules());
+        $rulesTransformer = new RulesTransformer($this->rules(), $this->getId());
 
         return $rulesTransformer->rulesForUpdating($dirty);
+    }
+
+    /**
+     * Set the id of the resource that is changed by this form.
+     *
+     * @param $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 }

@@ -58,7 +58,12 @@ class SeedPermissions extends MezzoCommand
         $allPermissions = $permissionRepository->all();
         $admin = $this->roleRepository()->findOrCreateAdmin();
 
+        $this->roleRepository()->findOrCreate('guest');
+        $this->roleRepository()->findOrCreate('user');
+        $this->roleRepository()->findOrCreate('premium-user', 'Premium User');
+
         $admin->givePermissions($allPermissions);
+        $this->info('Gave admin ' . $allPermissions->count() . ' permissions.');
 
         $adminUserId = $this->ask('Enter the email of the user which will crowned as the eternal administrator:');
 
@@ -162,6 +167,12 @@ class SeedPermissions extends MezzoCommand
             'model' => NULL,
             'name' => 'cockpit',
             'label' => 'Can see the Cockpit'
+        ];
+
+        $allPermissions[] = [
+            'model' => NULL,
+            'name' => 'developer',
+            'label' => 'Developer'
         ];
 
         return $allPermissions;
