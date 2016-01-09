@@ -29,8 +29,13 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 * @property \Carbon\Carbon $created_at
 * @property \Carbon\Carbon $updated_at
  * @property boolean $backend
+ * @property boolean $confirmed
+ * @property string $confirmation_code
+ * @property integer $address_id
+ * @property \App\Address $address
  * @property EloquentCollection $comments
  * @property EloquentCollection $events
+ * @property EloquentCollection $likedCategories
  * @property EloquentCollection $orders
  * @property EloquentCollection $posts
  * @property \App\ShoppingBasket $shoppingBasket
@@ -64,11 +69,13 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
      * @var array
     */
     protected $rules = [
-        'name' => "required|max:255", 
+        'name' => "required|max:255",
         'email' => "required|email|max:255|unique:users",
-        'password' => "required|confirmed|min:6",
-        'remember_token' => "", 
-        'backend' => ""
+        'password' => "required|confirmed|min:6", 
+        'remember_token' => "",
+        'backend' => "",
+        'confirmed' => "",
+        'confirmation_code' => ""
     ];
 
     /**
@@ -77,8 +84,9 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
      * @var array
     */
     protected $hidden = [
-        "remember_token", 
-        "password"
+        "remember_token",
+        "password",
+        "confirmation_code"
     ];
 
     /**
@@ -88,9 +96,12 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     */
     protected $fillable = [
         "name", 
-        "email", 
-        "password", 
-        "roles"
+        "email",
+        "password",
+        "roles",
+        "confirmation_code", 
+        "confirmed",
+        "created_at"
     ];
 
     /**
@@ -147,7 +158,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     /**
     * Attribute annotation property for password
     *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\PasswordInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\PasswordInput", hidden="index")
     * @var string            
     */
     protected $_password;
@@ -163,7 +174,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     /**
     * Attribute annotation property for created_at
     *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="create,update")
     * @var \Carbon\Carbon            
     */
     protected $_created_at;
@@ -171,7 +182,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     /**
     * Attribute annotation property for updated_at
     *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="index")
     * @var \Carbon\Carbon            
     */
     protected $_updated_at;
@@ -184,6 +195,30 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
      */
     protected $_backend;
 
+    /**
+     * Attribute annotation property for confirmed
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\CheckboxInput", hidden="")
+     * @var boolean
+     */
+    protected $_confirmed;
+
+    /**
+     * Attribute annotation property for confirmation_code
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="create,index")
+     * @var string
+     */
+    protected $_confirmation_code;
+
+    /**
+     * Attribute annotation property for address_id
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="")
+     * @var integer
+     */
+    protected $_address_id;
+
 
     /*
     |-------------------------------------------------------------------------------------------------------------------
@@ -194,6 +229,16 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     | the relations of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
+
+    /**
+     * Relation annotation property for address
+     * @Mezzo\Relations\OneToOne
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="address")
+     * @Mezzo\Relations\To(table="addresses", primaryKey="id", naming="user")
+     * @Mezzo\Relations\JoinColumn(table="users", column="address_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_address;
 
     /**
      * Relation annotation property for comments
@@ -216,6 +261,17 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
      * @Mezzo\Relations\Scopes("")
      */
     protected $_events;
+
+    /**
+     * Relation annotation property for likedCategories
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="likedCategories")
+     * @Mezzo\Relations\To(table="liked_categories", primaryKey="id", naming="user")
+     * @Mezzo\Relations\JoinColumn(table="liked_categories", column="user_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_likedCategories;
 
     /**
      * Relation annotation property for orders

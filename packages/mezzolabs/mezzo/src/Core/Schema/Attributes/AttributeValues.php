@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 
 
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Core\Collection\StrictCollection;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
@@ -42,7 +43,7 @@ class AttributeValues extends StrictCollection
         foreach ($array as $key => $value) {
             $attribute = $model->attributes($key);
 
-            if ($key == "_token")
+            if (in_array($key, ["_token", "_method"]) || static::isConfirmation($key, $array))
                 continue;
 
             if (!$attribute) {
@@ -55,7 +56,16 @@ class AttributeValues extends StrictCollection
         }
 
         return $values;
+    }
 
+    private static function isConfirmation($key, $array)
+    {
+        if (!Str::endsWith($key, '_confirmation'))
+            return false;
+
+        $without_confirmation = str_replace('_confirmation', '', $key);
+
+        return in_array($without_confirmation, array_keys($array));
     }
 
 

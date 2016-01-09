@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Cockpit\Html\Rendering\AttributeRenderEngine;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
@@ -89,7 +90,8 @@ abstract class ModuleProvider extends ServiceProvider implements ExtensibleModul
     private $defaultOptions = [
         'icon' => 'ion-ios-copy',
         'visible' => true,
-        'title' => null
+        'title' => null,
+        'permissions' => ''
     ];
 
 
@@ -509,7 +511,27 @@ abstract class ModuleProvider extends ServiceProvider implements ExtensibleModul
      */
     public function isVisible()
     {
+        if (!$this->isAllowed())
+            return false;
+
         return $this->options()->get('visible', true);
+    }
+
+    public function isAllowed()
+    {
+        return Auth::user()->hasPermissions($this->permissions());
+    }
+
+    public function permissions() : array
+    {
+        if (empty($this->options('permissions')))
+            return [];
+
+        if (is_array($this->options('permissions'))) {
+            return $this->options('permissions');
+        }
+
+        return explode('|', $this->options('permissions'));
     }
 
     public function registerAttributeRenderer($rendererClasses = [])

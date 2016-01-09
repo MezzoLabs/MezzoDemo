@@ -20,16 +20,65 @@ use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 use MezzoLabs\Mezzo\Modules\Generator\Generators\AnnotationGenerator;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', 'StartController@start');
+
+Route::group(['middleware' => ['mezzo.no_permissions_check', 'mezzo.no_model_validation']], function () {
+    // Authentication routes...
+    Route::get('auth/login', 'Auth\AuthController@getLogin');
+    Route::post('auth/login', 'Auth\AuthController@postLogin');
+    Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+    // Registration routes...
+    Route::get('auth/register', 'Auth\AuthController@getRegister');
+    Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+    Route::get('register/verify/{confirmationCode}', [
+        'as' => 'confirmation_path',
+        'uses' => 'Auth\AuthController@confirm'
+    ]);
+
+    Route::controllers([
+        'register' => 'Auth\AuthController',
+        'password' => 'Auth\PasswordController',
+    ]);
+
+
 });
 
-Route::get('/test/redis', function () {
-    Cache::tags(['pages'])->put('10', 'a lot of html', 10);
-    Cache::tags(['some', 'artists'])->put('John 2', 'i am john 2', 10);
-    Cache::tags(['artists'])->put('John 3', 'i am john 3', 10);
-    mezzo_dump(Redis::keys('*'));
-    mezzo_dd(Cache::tags(['artists'])->get('John 3'));
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('profile',
+        ['uses' => 'ProfileController@profile', 'as' => 'profile']);
+    Route::put('profile',
+        ['uses' => 'ProfileController@updateUser', 'as' => 'profile.update-user']);
+
+    Route::put('profile',
+        ['uses' => 'ProfileController@updatePassword', 'as' => 'profile.update-password']);
+
+    Route::get('profile/address',
+        ['uses' => 'ProfileController@getAddress', 'as' => 'profile.address']);
+    Route::post('profile/address', 'ProfileController@storeAddress');
+    Route::put('profile/address', 'ProfileController@updateAddress');
+
+    Route::get('profile/liked-categories',
+        ['uses' => 'ProfileController@getLikedCategories', 'as' => 'profile.liked-categories']);
+    Route::post('profile/liked-categories', 'ProfileController@storeLikedCategories');
+
+    Route::get('profile/destroy', 'ProfileController@destroy');
+});
+
+
+/**
+ * --------------- Mezzo test area
+ */
+
+Route::get('/test/lock', function () {
+    $post = \App\Event::first();
+
+    mezzo_dump($post->lock());
+
+    mezzo_dump($post->isLockedForUser());
+
+    //mezzo_dump($post->unlock());
 });
 
 Route::get('random', function () {
@@ -67,7 +116,6 @@ Route::get('/test/posts', function () {
     mezzo_dd(\MezzoLabs\Mezzo\Http\Transformers\GenericEloquentModelTransformer::makeBest(\App\Post::first()));
 });
 
-Route::post('/test/file', 'TestController@uploadFile');
 
 
 Route::get('/test/reflection', function () {
@@ -87,7 +135,6 @@ Route::get('/test/events', function () {
 });
 
 
-Route::post('test/file/{id}', 'TestController@updateFile');
 
 Route::get('debug/tutorial', function () {
     $tutorial = \App\Tutorial::findOrFail(1);
@@ -127,7 +174,6 @@ Route::get('debug/models', function () {
     //return view('debugmodels', ['moduleCenter' => $moduleCenter]);
 });
 
-Route::any('debug/controller', 'TestController@foo');
 
 Route::get('debug/generator', function () {
 
@@ -188,8 +234,4 @@ Route::get('debug/annotations', function () {
 });
 
 
-Route::controllers([
-    'register' => 'Auth\AuthController',
-    'password' => 'Auth\PasswordController',
-]);
 

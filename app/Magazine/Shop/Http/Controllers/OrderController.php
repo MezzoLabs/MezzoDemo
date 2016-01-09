@@ -4,7 +4,7 @@
 namespace App\Magazine\Shop\Http\Controllers;
 
 
-use App\Magazine\Shop\Http\Pages\IndexOrderPage;
+use App\Magazine\Shop\Http\Pages\Order\IndexOrderPage;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\CreateResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\EditResourceRequest;

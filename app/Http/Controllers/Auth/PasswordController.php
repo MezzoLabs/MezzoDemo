@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class PasswordController extends Controller
 {
+    protected $redirectPath = '/profile';
+
     /*
     |--------------------------------------------------------------------------
     | Password Reset Controller
@@ -27,6 +29,7 @@ class PasswordController extends Controller
      */
     public function __construct()
     {
+        $this->middleware('mezzo.no_permissions_check');
         $this->middleware('guest');
     }
 }

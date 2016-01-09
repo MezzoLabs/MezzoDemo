@@ -6,8 +6,8 @@ export default class Api {
         this.$http = $http;
     }
 
-    get(url){
-        return this.apiPromise(this.$http.get(url));
+    get(url, params) {
+        return this.apiPromise(this.$http.get(url, {'params': params}));
     }
 
     post(url, data) {

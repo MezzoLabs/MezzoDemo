@@ -29,5 +29,7 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'mezzo.no_permissions_check' => \App\Http\Middleware\MezzoNoPermissionsCheck::class,
+        'mezzo.no_model_validation' => \App\Http\Middleware\MezzoNoModelValidation::class,
     ];
 }

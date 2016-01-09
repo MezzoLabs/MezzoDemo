@@ -312,6 +312,13 @@ class ModuleCenter
         return $groups;
     }
 
+    public function visibleGroups()
+    {
+        return $this->groups()->filter(function (ModuleGroup $group) {
+            return $group->isVisible();
+        });
+    }
+
     /**
      * @param array $modulesExtensions
      */

@@ -3,6 +3,7 @@
 namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 use Illuminate\Database\Eloquent\Model as EloquentModel;
+use MezzoLabs\Mezzo\Core\Annotations\Attribute;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Schema\Converters\Eloquent\ModelReflectionConverter;
 use MezzoLabs\Mezzo\Core\Schema\ModelSchema;
@@ -104,11 +105,15 @@ abstract class ModelReflection
     }
 
     /**
-     * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes
+     * @param string $name
+     * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes|Attribute
      */
-    public function attributes()
+    public function attributes(string $name = null)
     {
-        return $this->schema()->attributes();
+        if (!$name)
+            return $this->schema()->attributes();
+
+        return $this->schema()->attributes($name);
     }
 
     /**

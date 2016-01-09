@@ -14,7 +14,8 @@ class GeneralModule extends AbstractGeneralModule
     protected $group = "admin";
 
     protected $options = [
-        'icon' => 'ion-speedometer'
+        'icon' => 'ion-speedometer',
+        'permissions' => 'administrate'
     ];
 
     /**

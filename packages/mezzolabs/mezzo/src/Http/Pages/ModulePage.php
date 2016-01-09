@@ -3,6 +3,8 @@
 namespace MezzoLabs\Mezzo\Http\Pages;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Cockpit\Pages\Resources\ResourcePage;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
@@ -72,7 +74,9 @@ abstract class ModulePage implements ModulePageContract
          */
         'renderedByFrontend' => true,
 
-        'appendToUri' => ''
+        'appendToUri' => '',
+
+        'permissions' => ''
     ];
     /**
      * The short name of this page.
@@ -95,7 +99,7 @@ abstract class ModulePage implements ModulePageContract
 
         $this->validate();
 
-        if(method_exists($this, 'boot'))
+        if (method_exists($this, 'boot'))
             $this->boot();
     }
 
@@ -106,7 +110,7 @@ abstract class ModulePage implements ModulePageContract
     protected function validate()
     {
         if (empty($this->controller))
-            throw new ModulePageException('There is no controller for the page: "' .get_class($this) . '"');
+            throw new ModulePageException('There is no controller for the page: "' . get_class($this) . '"');
 
         if (empty($this->action()))
             throw new ModulePageException('A module page needs a controller action: ' . get_class($this));
@@ -123,7 +127,7 @@ abstract class ModulePage implements ModulePageContract
      */
     public function controller()
     {
-        if (!$this->controllerObject){
+        if (!$this->controllerObject) {
             $this->controllerObject = $this->module()->makeController($this->controller);
         }
 
@@ -186,7 +190,7 @@ abstract class ModulePage implements ModulePageContract
     public function template($data = [])
     {
         if (!$this->view)
-            throw new ModulePageException('No view for page: "'. get_class($this) .'"');
+            throw new ModulePageException('No view for page: "' . get_class($this) . '"');
 
         /**
          * Add some additional data to the view data.
@@ -279,10 +283,20 @@ abstract class ModulePage implements ModulePageContract
     public function title()
     {
         if (!$this->title) {
-            $this->title = ucfirst(snake_case($this->name(), ' '));
+            $this->title = $this->makeTitle();
         }
 
         return $this->title;
+    }
+
+    private function makeTitle()
+    {
+        $langKey = 'mezzo.pages.' . str_replace('.', '_', $this->slug());
+
+        if (Lang::has($langKey))
+            return Lang::get($langKey);
+
+        return ucfirst(snake_case($this->name(), ' '));
     }
 
     /**
@@ -308,8 +322,26 @@ abstract class ModulePage implements ModulePageContract
      */
     public function isVisibleInNavigation()
     {
-        return $this->options('visibleInNavigation');
+        return $this->isAllowed() && $this->options('visibleInNavigation');
     }
+
+    public function isAllowed()
+    {
+        return Auth::user()->hasPermissions($this->permissions());
+    }
+
+    public function permissions() : array
+    {
+        if (empty($this->options('permissions')))
+            return [];
+
+        if (is_array($this->options('permissions'))) {
+            return $this->options('permissions');
+        }
+
+        return explode('|', $this->options('permissions'));
+    }
+
 
     /**
      * The URI to this module page.
@@ -332,6 +364,12 @@ abstract class ModulePage implements ModulePageContract
     {
         return 'cockpit::' . $this->slug();
     }
+
+    public function url()
+    {
+        return route($this->routeName());
+    }
+
 
 
 }

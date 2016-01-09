@@ -6,6 +6,7 @@ namespace MezzoLabs\Mezzo\Cockpit\Html\Rendering;
 use Illuminate\Support\Collection;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CategoriesAttributeRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CheckboxAttributeRenderer;
+use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CountryAttributeRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeMultipleRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeSingleRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\SelectableAttributeRenderer;
@@ -13,10 +14,12 @@ use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\SimpleAttributeRenderer;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderEngine as AbstractAttributeRenderEngine;
+use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderingHandler;
 
 class AttributeRenderEngine extends AbstractAttributeRenderEngine
 {
     public static $handlers = [
+        CountryAttributeRenderer::class,
         CategoriesAttributeRenderer::class,
         RelationAttributeSingleRenderer::class,
         RelationAttributeMultipleRenderer::class,
@@ -41,7 +44,7 @@ class AttributeRenderEngine extends AbstractAttributeRenderEngine
      * @param Attribute $attribute
      * @return Collection
      */
-    protected function validationAttributes(Attribute $attribute)
+    public function validationAttributes(Attribute $attribute)
     {
         return (new HtmlRules($attribute->rules(), $attribute->type()))->attributes();
     }
@@ -71,15 +74,34 @@ class AttributeRenderEngine extends AbstractAttributeRenderEngine
     {
         $htmlAttributes = new Collection();
 
+        // Add the default css class
         $htmlAttributes->put('class', $this->cssClass);
-
+        // Add the HTML attributes that are given from the input type
         $htmlAttributes = $htmlAttributes->merge($attribute->type()->htmlAttributes());
+        // Add the HTML attribute that are given from the validation rules
         $htmlAttributes = $htmlAttributes->merge($this->validationAttributes($attribute));
 
-        if ($attribute->isRelationAttribute())
+        // Add the HTML attributes that are given from the relation.
+        if ($attribute->isRelationAttribute()) {
             $htmlAttributes = $htmlAttributes->merge($this->relationAttributes($attribute));
+        }
 
         return $htmlAttributes->toArray();
+    }
+
+    public function defaultBefore(AttributeRenderingHandler $handler)
+    {
+        $groupClass = 'form-group';
+
+        if ($handler->hasError())
+            $groupClass .= ' has-error';
+
+        return '<div class="' . $groupClass . '"><label>' . $handler->attribute()->title() . '</label>';
+    }
+
+    public function defaultAfter(AttributeRenderingHandler $handler)
+    {
+        return "</div>";
     }
 
 

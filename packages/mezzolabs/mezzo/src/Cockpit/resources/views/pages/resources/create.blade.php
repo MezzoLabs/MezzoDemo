@@ -4,10 +4,8 @@
     <div class="wrapper">
         <div class="panel panel-bordered">
             <div class="panel-heading">
-                <h3>New {{ $model_reflection->name() }}</h3>
+                @include('cockpit::partials.pages.heading_create')
 
-                <div class="panel-actions">
-                </div>
             </div>
             <div class="panel-body">
                 {!! cockpit_form()->open(['angular' => true]) !!}

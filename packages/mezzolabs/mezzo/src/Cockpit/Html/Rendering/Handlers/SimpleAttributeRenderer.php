@@ -30,7 +30,9 @@ class SimpleAttributeRenderer extends AttributeRenderingHandler
     public function render()
     {
         $attribute = $this->attribute();
-        $htmlType = $attribute->type()->htmlType();
+
+        $htmlAttributes = $this->htmlAttributes();
+        $htmlType = $htmlAttributes['type'] ?? $attribute->type()->htmlType();
 
         if ($attribute->type() instanceof TextArea)
             return $this->renderTextArea();

@@ -32,12 +32,12 @@ class AddressAttributeRenderer extends AttributeRenderingHandler
         return view('modules.addresses::address_nested_form', ['renderer' => $this]);
     }
 
-    public function before()
+    public function before() : string
     {
         return "";
     }
 
-    public function after()
+    public function after() : string
     {
         return "";
     }

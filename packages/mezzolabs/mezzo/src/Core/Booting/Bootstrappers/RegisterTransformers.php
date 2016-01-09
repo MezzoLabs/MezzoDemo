@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 use Carbon\Carbon;
 use MezzoLabs\Mezzo\Core\Mezzo;
 use MezzoLabs\Mezzo\Http\Transformers\CarbonTransformer;
+use MezzoLabs\Mezzo\Http\Transformers\Plugins\LabelTransformerPlugin;
 use MezzoLabs\Mezzo\Http\Transformers\TransformerRegistrar;
 
 class RegisterTransformers implements Bootstrapper
@@ -23,5 +24,7 @@ class RegisterTransformers implements Bootstrapper
         $registrar = TransformerRegistrar::make();
 
         $registrar->addTransformer(Carbon::class, CarbonTransformer::class);
+
+        $registrar->addPlugin(LabelTransformerPlugin::class);
     }
 }

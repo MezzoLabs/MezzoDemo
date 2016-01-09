@@ -70,13 +70,20 @@ class ResourceRequest extends Request
      */
     public function currentModelInstance()
     {
-        $id = $this->route('id');
-        if (!$id) $id = $this->get('id');
+        $id = $this->getId();
 
         if (!$id || !is_numeric($id))
             throw new BadRequestHttpException('This request needs an id.');
 
         return $this->modelReflection()->instance()->query()->findOrFail(intval($id));
+    }
+
+    public function getId()
+    {
+        $id = $this->route('id');
+        if (!$id) $id = $this->get('id');
+
+        return $id;
     }
 
     /**
@@ -85,8 +92,9 @@ class ResourceRequest extends Request
      */
     protected function findModelReflection()
     {
-        if (!empty($this->model))
+        if (!empty($this->model)) {
             return mezzo()->model($this->model, 'mezzo');
+        }
 
         return $this->controller()->model();
     }
@@ -99,7 +107,7 @@ class ResourceRequest extends Request
     {
         $controller = parent::controller();
 
-        if (!($controller instanceof ResourceControllerContract))
+        if (empty($this->model) && !($controller instanceof ResourceControllerContract))
             throw new ModuleControllerException('The controller ' . $controller->qualifiedName() . ' uses a ' .
                 'Resource Request. For this we need to detect the resource that the controller manages. ' .
                 'Please use a correctly named ResourceController.');

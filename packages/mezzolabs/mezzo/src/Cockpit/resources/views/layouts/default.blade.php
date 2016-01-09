@@ -51,6 +51,7 @@
 {!! cockpit_script('/components/pluralize/pluralize.js') !!}
 {!! cockpit_script('/components/sweetalert2/dist/sweetalert2.min.js') !!}
 {!! cockpit_script('/components/moment/min/moment.min.js') !!}
+{!! cockpit_script('/components/underscore/underscore-min.js') !!}
 {!! cockpit_script('/js/app.js') !!}
 <!-- JavaScript -->
 </body>

@@ -99,7 +99,8 @@ abstract class MezzoAddress extends BaseModel
         "phone",
         "fax",
         "latitude",
-        "longitude"
+        "longitude",
+        "country"
     ];
 
     /**
@@ -216,6 +217,14 @@ abstract class MezzoAddress extends BaseModel
      * @var float
      */
     protected $_longitude;
+
+    /**
+     * Attribute annotation property for longitude
+     *
+     * @Mezzo\Attribute(type="CountryInput", hidden="")
+     * @var string
+     */
+    protected $_country;
 
     /**
      * Attribute annotation property for created_at

@@ -9,6 +9,8 @@ use MezzoLabs\Mezzo\Core\Permission\PermissionGuard;
 
 class Validator
 {
+    public static $active = true;
+
     /**
      * Create a new Validator instance.
      *
@@ -29,8 +31,13 @@ class Validator
      *
      * @param MezzoModel|HasValidationRules $model
      */
-    public function onSaving(MezzoModel $model)
+    public function onSaving($model)
     {
+        if (!$model instanceof MezzoModel)
+            return;
+
+        if (!$this->isActive()) return true;
+
         if ($model->permissionsPaused()) {
             return;
         }
@@ -38,12 +45,15 @@ class Validator
         if (!$this->permissionGuard()->allowsCreateOrEdit($model))
             $this->permissionGuard()->fail('Failed on the second level.');
 
-        if (!$model->exists) {
-            $model->validateOrFail($model->getAttributes(), 'create');
-            return;
+        $data = (!$model->exists) ? $model->getAttributes() : $model->getDirty();
+        $rules = (!$model->exists) ? $model->getRules() : $model->getUpdateRules($model->getDirty());
+
+        foreach ($rules as &$rule) {
+            $rule = str_replace(['|confirmed', 'confirmed'], '', $rule);
         }
 
-        $model->validateOrFail($model->getDirty(), 'update');
+        $model->validateWithRules($data, $rules, true);
+
         return;
 
     }
@@ -56,6 +66,11 @@ class Validator
      */
     public function onDeleting(MezzoModel $model)
     {
+        if (!$model instanceof MezzoModel)
+            return true;
+
+        if (!$this->isActive()) return true;
+
         if ($model->permissionsPaused()) {
             return true;
         }
@@ -69,6 +84,16 @@ class Validator
     public function permissionGuard()
     {
         return PermissionGuard::make();
+    }
+
+    public static function setActive(bool $active)
+    {
+        static::$active = $active;
+    }
+
+    public static function isActive()
+    {
+        return static::$active;
     }
 
 }

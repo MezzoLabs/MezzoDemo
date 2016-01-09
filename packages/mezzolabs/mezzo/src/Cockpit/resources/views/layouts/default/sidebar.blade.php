@@ -7,7 +7,7 @@
             <div class="sidebar-pin-wrap"><i class="sidebar-pin fa fa-dot-circle-o"></i></div>
         </div>
         <div class="sidebar-content sidebar-padding">
-            @foreach(mezzo()->moduleCenter()->groups() as $group )
+            @foreach(mezzo()->moduleCenter()->visibleGroups() as $group )
                 <h3>{{ $group->label() }}</h3>
                 <ul class="nav-main">
 
@@ -26,9 +26,10 @@
                             <ul>
                                 @foreach($module->pages()->filterVisibleInNavigation() as $page)
                                     <li>
-                                        <a href="mezzo/{{ $page->uri() }}" mezzo-register-state
+                                        <a href="mezzo/{{ $page->uri() }}" data-mezzo-register-state
                                            data-action="{{ $page->action()}}" data-uri="{{ $page->uri() }}"
-                                           data-page="{{ $page->name() }}">
+                                           data-page="{{ $page->name() }}"
+                                           data-mezzo-href-reload="{{ (!$page->isRenderedByFrontend())? 1 : 0 }}">
                                             <span>{{ $page->title() }}</span>
                                         </a>
                                     </li>

@@ -92,7 +92,7 @@ class CockpitRouter
     {
         foreach ($pageTypes as $pageType) {
             $pageName = ucfirst($pageType) . ucfirst($modelName) . 'Page';
-            $this->page($pageName, $needsId);
+            $this->page($pageName);
         }
     }
 
@@ -104,7 +104,6 @@ class CockpitRouter
      */
     public function page($pageName, $needsId = false)
     {
-
         $page = $this->module->makePage($pageName);
 
         $pageUri = mezzo()->uri()->toModulePage($page);

@@ -2,10 +2,15 @@
 
 namespace App;
 
+use App\LockableResources\CanBeLocked;
+use App\LockableResources\LockableResource;
+use App\Magazine\Relevance\CanBeSortedByRelevance;
 use MezzoLabs\Mezzo\Modules\Posts\Domain\Models\Post as ModulePostModel;
 
-class Post extends ModulePostModel
+class Post extends ModulePostModel implements LockableResource
 {
+    use CanBeSortedByRelevance;
+    use CanBeLocked;
 
     public $searchable = ['title', 'teaser'];
 
@@ -27,5 +32,13 @@ class Post extends ModulePostModel
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    /**
+     * @return \App\User|null
+     */
+    public function lockedBy()
+    {
+        return $this->belongsTo(User::class, 'locked_by_id', 'id');
     }
 }
