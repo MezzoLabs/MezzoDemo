@@ -6,8 +6,27 @@ export default function hrefReloadDirective(){
     };
 
     function link(scope, element, attributes){
-        $(element).click($event => {
-             $event.preventDefault();
+        const shouldReload = attributes.mezzoHrefReload === '1';
+
+        if(!shouldReload) {
+            return;
+        }
+
+        const $element = $(element);
+
+        $element.click($event => {
+            $event.preventDefault();
+            onHrefClick($element);
         });
+    }
+
+    function onHrefClick($element) {
+        const href = $element.attr('href');
+
+        if(!href) {
+            return;
+        }
+
+        window.location.href = href;
     }
 }

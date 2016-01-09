@@ -311,9 +311,28 @@ function hrefReloadDirective() {
     };
 
     function link(scope, element, attributes) {
-        $(element).click(function ($event) {
+        var shouldReload = attributes.mezzoHrefReload === '1';
+
+        if (!shouldReload) {
+            return;
+        }
+
+        var $element = $(element);
+
+        $element.click(function ($event) {
             $event.preventDefault();
+            onHrefClick($element);
         });
+    }
+
+    function onHrefClick($element) {
+        var href = $element.attr('href');
+
+        if (!href) {
+            return;
+        }
+
+        window.location.href = href;
     }
 }
 
