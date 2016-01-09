@@ -153,7 +153,7 @@ class PermissionGuard
         static::$active = $active;
     }
 
-    public static function isActive() : \bool
+    public static function isActive() : bool
     {
         return static::$active;
     }
