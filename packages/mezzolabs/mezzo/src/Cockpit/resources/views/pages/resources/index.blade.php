@@ -2,22 +2,6 @@
 
 
 @section('content')
-
-    <div class="panel panel-bordered">
-        <div class="panel-body">
-            <input type="text" class="form-control" mezzo-google-maps-search
-                   street-number="streetNumber" street="street" city="city" state="state" country="country" postal-code="postalCode" latitude="latitude" longitude="longitude">
-            <input name="streetNumber" class="form-control">
-            <input name="street" class="form-control">
-            <input name="city" class="form-control">
-            <input name="state" class="form-control">
-            <input name="country" class="form-control">
-            <input name="postalCode" class="form-control">
-            <input name="latitude" class="form-control">
-            <input name="longitude" class="form-control">
-        </div>
-    </div>
-
     <div class="wrapper"
          ng-init="vm.init('{{ $model_reflection->slug() }}', {!! str_replace('"', "'", $model_reflection->defaultIncludes()->toJson()) !!})">
 

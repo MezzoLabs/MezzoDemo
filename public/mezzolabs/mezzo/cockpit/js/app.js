@@ -1445,6 +1445,7 @@ function searchDirective(mapService) {
     };
 
     function link(scope, element, attributes) {
+        console.log(scope);
         var input = element[0];
         var autoCompleteOptions = {
             types: ['geocode']
