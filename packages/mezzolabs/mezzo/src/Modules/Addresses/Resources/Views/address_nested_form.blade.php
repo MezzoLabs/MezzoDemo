@@ -36,8 +36,11 @@
 
         {!! $renderer->renderNested('zip') !!}
     </div>
-    <div class="col-md-9">
+    <div class="col-md-3">
         {!! $renderer->renderNested('city') !!}
+    </div>
+    <div class="col-md-3">
+        {!! $renderer->renderNested('country') !!}
     </div>
 
     <div class="clearfix"></div>

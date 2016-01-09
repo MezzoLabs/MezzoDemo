@@ -1531,7 +1531,6 @@ var ResourceIndexController = function () {
         value: function transformModelValue(attribute, value) {
 
             if (value && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === "object") {
-
                 if (Object.prototype.toString.call(value.data) === "[object Array]") {
                     return this.transformArrayValueToString(name, value.data);
                 }

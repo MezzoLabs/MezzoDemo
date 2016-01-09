@@ -169,6 +169,12 @@ class RelationUpdater extends EloquentRepository
      */
     protected function processIds(array $ids) : array
     {
+        //check if array keys are the ids. this is the case for checkboxes
+        // e.g. {15 : "on"} --> [15]
+        if (!isset($ids[0]) && count($ids) > 0)
+            $ids = array_keys($ids);
+
+        //go through the numeric ids
         for ($i = 0; $i != count($ids); $i++) {
             $ids[$i] = $this->processId($ids[$i]);
         }

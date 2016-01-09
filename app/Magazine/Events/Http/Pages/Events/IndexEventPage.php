@@ -7,4 +7,7 @@ use MezzoLabs\Mezzo\Cockpit\Pages\Resources\IndexResourcePage;
 
 class IndexEventPage extends IndexResourcePage
 {
+    protected $view = 'modules.events::pages.events.index';
+
+
 }

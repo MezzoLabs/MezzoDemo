@@ -171,7 +171,7 @@ abstract class MezzoEvent extends \App\Mezzo\BaseModel
     /**
     * Attribute annotation property for event_venue_id
     *
-    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="index")
     * @var integer            
     */
     protected $_event_venue_id;
@@ -314,7 +314,7 @@ abstract class MezzoEvent extends \App\Mezzo\BaseModel
 
     /**
     * Relation annotation property for days
-    * @Mezzo\Attribute(type="App\Magazine\Events\Schema\InputTypes\EventDaysInput", hidden="")
+     * @Mezzo\Attribute(type="App\Magazine\Events\Schema\InputTypes\EventDaysInput", hidden="index")
     * @Mezzo\Relations\OneToMany
     * @Mezzo\Relations\From(table="event_days", primaryKey="id", naming="event")
     * @Mezzo\Relations\To(table="events", primaryKey="id", naming="days")
