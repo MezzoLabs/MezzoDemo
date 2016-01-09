@@ -1,13 +1,15 @@
 import stateProvider from './stateProvider';
 import registerStateDirective from './registerStateDirective';
-import IndexController from './ResourceIndexController';
-import CreateController from './ResourceCreateController';
-import EditController from './ResourceEditController';
+import IndexResourceController from './IndexResourceController';
+import CreateResourceController from './CreateResourceController';
+import EditResourceController from './EditResourceController';
+import ShowResourceController from './ShowResourceController';
 
-var module = angular.module('MezzoResources', []);
+const module = angular.module('MezzoResources', []);
 
 module.provider('$stateProvider', stateProvider);
 module.directive('mezzoRegisterState', registerStateDirective);
-module.controller('ResourceIndexController', IndexController);
-module.controller('ResourceCreateController', CreateController);
-module.controller('ResourceEditController', EditController);
+module.controller('IndexResourceController', IndexResourceController);
+module.controller('CreateResourceController', CreateResourceController);
+module.controller('EditResourceController', EditResourceController);
+module.controller('ShowResourceController', ShowResourceController);

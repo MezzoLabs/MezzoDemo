@@ -23,7 +23,7 @@ var app = angular.module('Mezzo', ['ui.router', 'ui.sortable', 'ngMessages', 'an
 
 app.config(_config2.default);
 
-},{"./common":11,"./modules/contentBuilder":18,"./modules/fileManager":28,"./modules/googleMaps":29,"./modules/resource":37,"./setup/config":40,"./setup/jquery":41}],2:[function(require,module,exports){
+},{"./common":11,"./modules/contentBuilder":18,"./modules/fileManager":28,"./modules/googleMaps":29,"./modules/resource":38,"./setup/config":41,"./setup/jquery":42}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1971,6 +1971,24 @@ var ResourceIndexController = (function () {
 exports.default = ResourceIndexController;
 
 },{}],37:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ShowResourceController =
+
+/*@ngInject*/
+function ShowResourceController() {
+    _classCallCheck(this, ShowResourceController);
+};
+
+exports.default = ShowResourceController;
+
+},{}],38:[function(require,module,exports){
 'use strict';
 
 var _stateProvider = require('./stateProvider');
@@ -1981,17 +1999,21 @@ var _registerStateDirective = require('./registerStateDirective');
 
 var _registerStateDirective2 = _interopRequireDefault(_registerStateDirective);
 
-var _ResourceIndexController = require('./ResourceIndexController');
+var _IndexResourceController = require('./IndexResourceController');
 
-var _ResourceIndexController2 = _interopRequireDefault(_ResourceIndexController);
+var _IndexResourceController2 = _interopRequireDefault(_IndexResourceController);
 
-var _ResourceCreateController = require('./ResourceCreateController');
+var _CreateResourceController = require('./CreateResourceController');
 
-var _ResourceCreateController2 = _interopRequireDefault(_ResourceCreateController);
+var _CreateResourceController2 = _interopRequireDefault(_CreateResourceController);
 
-var _ResourceEditController = require('./ResourceEditController');
+var _EditResourceController = require('./EditResourceController');
 
-var _ResourceEditController2 = _interopRequireDefault(_ResourceEditController);
+var _EditResourceController2 = _interopRequireDefault(_EditResourceController);
+
+var _ShowResourceController = require('./ShowResourceController');
+
+var _ShowResourceController2 = _interopRequireDefault(_ShowResourceController);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1999,11 +2021,12 @@ var _module = angular.module('MezzoResources', []);
 
 _module.provider('$stateProvider', _stateProvider2.default);
 _module.directive('mezzoRegisterState', _registerStateDirective2.default);
-_module.controller('ResourceIndexController', _ResourceIndexController2.default);
-_module.controller('ResourceCreateController', _ResourceCreateController2.default);
-_module.controller('ResourceEditController', _ResourceEditController2.default);
+_module.controller('IndexResourceController', _IndexResourceController2.default);
+_module.controller('CreateResourceController', _CreateResourceController2.default);
+_module.controller('EditResourceController', _EditResourceController2.default);
+_module.controller('ShowResourceController', _ShowResourceController2.default);
 
-},{"./ResourceCreateController":34,"./ResourceEditController":35,"./ResourceIndexController":36,"./registerStateDirective":38,"./stateProvider":39}],38:[function(require,module,exports){
+},{"./CreateResourceController":34,"./EditResourceController":35,"./IndexResourceController":36,"./ShowResourceController":37,"./registerStateDirective":39,"./stateProvider":40}],39:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2067,19 +2090,19 @@ function registerStateDirective($stateProvider, hasController) {
 
     function controllerForAction(action) {
         if (action === _Action2.default.INDEX) {
-            return 'ResourceIndexController';
+            return 'IndexResourceController';
         }
 
         if (action === _Action2.default.CREATE) {
-            return 'ResourceCreateController';
+            return 'CreateResourceController';
         }
 
         if (action === _Action2.default.EDIT) {
-            return 'ResourceEditController';
+            return 'EditResourceController';
         }
 
         if (action === _Action2.default.SHOW) {
-            return 'ResourceShowController';
+            return 'ShowResourceController';
         }
 
         throw new Error('No suitable Controller found for action "' + action + '"!');
@@ -2096,7 +2119,7 @@ function registerStateDirective($stateProvider, hasController) {
     }
 }
 
-},{"./Action":33}],39:[function(require,module,exports){
+},{"./Action":33}],40:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2112,7 +2135,7 @@ function stateProvider($stateProvider) {
     }
 }
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2126,7 +2149,7 @@ function config($locationProvider, $urlRouterProvider, $httpProvider) {
     $locationProvider.html5Mode(true);
 }
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 $(function () {

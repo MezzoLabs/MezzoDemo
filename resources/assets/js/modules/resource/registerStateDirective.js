@@ -50,19 +50,19 @@ export default function registerStateDirective($stateProvider, hasController) {
 
     function controllerForAction(action) {
         if (action === Action.INDEX) {
-            return 'ResourceIndexController';
+            return 'IndexResourceController';
         }
 
         if (action === Action.CREATE) {
-            return 'ResourceCreateController';
+            return 'CreateResourceController';
         }
 
         if (action === Action.EDIT) {
-            return 'ResourceEditController';
+            return 'EditResourceController';
         }
 
         if (action === Action.SHOW) {
-            return 'ResourceShowController';
+            return 'ShowResourceController';
         }
 
         throw new Error(`No suitable Controller found for action "${action}"!`);
