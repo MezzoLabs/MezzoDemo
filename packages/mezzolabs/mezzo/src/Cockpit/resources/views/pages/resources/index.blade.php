@@ -85,7 +85,7 @@
                             <input type="checkbox" ng-model="model._meta.selected" ng-disabled="model._meta.removed">
                         </td>
                         <td ng-repeat="value in vm.getModelValues(model) track by $index">
-                            <a href="" ng-if="$first" ng-click="vm.editId(model.id)" ng-bind="value"></a>
+                            <a href="" title="ID: @{{ model.id }}" ng-if="$first" ng-click="vm.editId(model.id)" ng-bind="value"></a>
                             <span ng-if="!$first" ng-bind="value"></span>
                         </td>
                     </tr>
