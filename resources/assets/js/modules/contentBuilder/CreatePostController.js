@@ -3,8 +3,8 @@ import CreateResourceController from '../resource/CreateResourceController';
 export default class CreatePostController extends CreateResourceController {
 
     /*@ngInject*/
-    constructor($state, api, contentBlockService) {
-        super($state, api);
+    constructor($state, api, formDataService, contentBlockService) {
+        super($state, api, formDataService);
 
         this.contentBlockService = contentBlockService;
     }

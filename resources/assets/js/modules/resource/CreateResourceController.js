@@ -1,9 +1,10 @@
 export default class CreateResourceController {
 
     /*@ngInject*/
-    constructor($state, api) {
+    constructor($state, api, formDataService) {
         this.$state = $state;
         this.api = api;
+        this.formDataService = formDataService;
     }
 
     init(modelName) {
@@ -16,7 +17,7 @@ export default class CreateResourceController {
             return false;
         }
 
-        const formData = this.getFormData();
+        const formData = this.formDataService.get();
 
         this.modelApi.create(formData)
             .then(model => {
@@ -28,15 +29,6 @@ export default class CreateResourceController {
         if(Object.keys(formControl.$error).length && formControl.$dirty){
             return 'has-error';
         }
-    }
-
-    /* public */
-    /* private */
-
-    getFormData() {
-        const $form = $('form[name="vm.form"]');
-
-        return $form.toObject();
     }
 
     edit(modelId) {

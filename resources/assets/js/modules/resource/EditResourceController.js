@@ -1,9 +1,10 @@
 export default class EditResourceController {
 
     /*@ngInject*/
-    constructor($stateParams, api, contentBlockService) {
+    constructor($stateParams, api, formDataService, contentBlockService) {
         this.$stateParams = $stateParams;
         this.api = api;
+        this.formDataService = formDataService;
         this.contentBlockService = contentBlockService;
         this.modelId = this.$stateParams.modelId;
     }
@@ -20,7 +21,7 @@ export default class EditResourceController {
             return false;
         }
 
-        const formData = this.getFormData();
+        const formData = this.formDataService.get();
 
         this.modelApi.update(this.modelId, formData)
             .then(model => {
@@ -46,14 +47,8 @@ export default class EditResourceController {
                     this.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
                 });
 
-                this.fillForm(model);
+                this.formDataService.set(model);
             });
-    }
-
-    fillForm(model) {
-        const form = $('form[name="vm.form"]')[0];
-
-        js2form(form, model);
     }
 
 }

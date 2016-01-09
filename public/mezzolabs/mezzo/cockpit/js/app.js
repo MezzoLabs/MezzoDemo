@@ -23,7 +23,7 @@ var app = angular.module('Mezzo', ['ui.router', 'ui.sortable', 'ngMessages', 'an
 
 app.config(_config2.default);
 
-},{"./common":11,"./modules/contentBuilder":17,"./modules/fileManager":27,"./modules/googleMaps":28,"./modules/resource":37,"./setup/config":40,"./setup/jquery":41}],2:[function(require,module,exports){
+},{"./common":11,"./modules/contentBuilder":17,"./modules/fileManager":27,"./modules/googleMaps":28,"./modules/resource":38,"./setup/config":41,"./setup/jquery":42}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -466,10 +466,10 @@ var CreatePageController = (function (_CreateResourceContro) {
 
     /*@ngInject*/
 
-    function CreatePageController($state, api, contentBlockService) {
+    function CreatePageController($state, api, formDataService, contentBlockService) {
         _classCallCheck(this, CreatePageController);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CreatePageController).call(this, $state, api));
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CreatePageController).call(this, $state, api, formDataService));
 
         _this.contentBlockService = contentBlockService;
         return _this;
@@ -504,10 +504,10 @@ var CreatePostController = (function (_CreateResourceContro) {
 
     /*@ngInject*/
 
-    function CreatePostController($state, api, contentBlockService) {
+    function CreatePostController($state, api, formDataService, contentBlockService) {
         _classCallCheck(this, CreatePostController);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CreatePostController).call(this, $state, api));
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CreatePostController).call(this, $state, api, formDataService));
 
         _this.contentBlockService = contentBlockService;
         return _this;
@@ -1593,11 +1593,12 @@ var CreateResourceController = (function () {
 
     /*@ngInject*/
 
-    function CreateResourceController($state, api) {
+    function CreateResourceController($state, api, formDataService) {
         _classCallCheck(this, CreateResourceController);
 
         this.$state = $state;
         this.api = api;
+        this.formDataService = formDataService;
     }
 
     _createClass(CreateResourceController, [{
@@ -1615,7 +1616,7 @@ var CreateResourceController = (function () {
                 return false;
             }
 
-            var formData = this.getFormData();
+            var formData = this.formDataService.get();
 
             this.modelApi.create(formData).then(function (model) {
                 _this.edit(model.id);
@@ -1627,17 +1628,6 @@ var CreateResourceController = (function () {
             if (Object.keys(formControl.$error).length && formControl.$dirty) {
                 return 'has-error';
             }
-        }
-
-        /* public */
-        /* private */
-
-    }, {
-        key: 'getFormData',
-        value: function getFormData() {
-            var $form = $('form[name="vm.form"]');
-
-            return $form.toObject();
         }
     }, {
         key: 'edit',
@@ -1666,11 +1656,12 @@ var EditResourceController = (function () {
 
     /*@ngInject*/
 
-    function EditResourceController($stateParams, api, contentBlockService) {
+    function EditResourceController($stateParams, api, formDataService, contentBlockService) {
         _classCallCheck(this, EditResourceController);
 
         this.$stateParams = $stateParams;
         this.api = api;
+        this.formDataService = formDataService;
         this.contentBlockService = contentBlockService;
         this.modelId = this.$stateParams.modelId;
     }
@@ -1690,7 +1681,7 @@ var EditResourceController = (function () {
                 return false;
             }
 
-            var formData = this.getFormData();
+            var formData = this.formDataService.get();
 
             this.modelApi.update(this.modelId, formData).then(function (model) {
                 console.log(model);
@@ -1718,15 +1709,8 @@ var EditResourceController = (function () {
                     _this.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
                 });
 
-                _this.fillForm(model);
+                _this.formDataService.set(model);
             });
-        }
-    }, {
-        key: 'fillForm',
-        value: function fillForm(model) {
-            var form = $('form[name="vm.form"]')[0];
-
-            js2form(form, model);
         }
     }]);
 
@@ -2038,9 +2022,51 @@ exports.default = ShowResourceController;
 },{}],37:[function(require,module,exports){
 'use strict';
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var FormDataService = (function () {
+    function FormDataService() {
+        _classCallCheck(this, FormDataService);
+    }
+
+    _createClass(FormDataService, [{
+        key: 'form',
+        value: function form() {
+            return $('form[name="vm.form"]');
+        }
+    }, {
+        key: 'get',
+        value: function get() {
+            return this.form().toObject();
+        }
+    }, {
+        key: 'set',
+        value: function set(formData) {
+            js2form(this.form()[0], formData);
+        }
+    }]);
+
+    return FormDataService;
+})();
+
+exports.default = FormDataService;
+
+},{}],38:[function(require,module,exports){
+'use strict';
+
 var _stateProvider = require('./stateProvider');
 
 var _stateProvider2 = _interopRequireDefault(_stateProvider);
+
+var _formDataService = require('./formDataService');
+
+var _formDataService2 = _interopRequireDefault(_formDataService);
 
 var _registerStateDirective = require('./registerStateDirective');
 
@@ -2067,13 +2093,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var _module = angular.module('MezzoResources', []);
 
 _module.provider('$stateProvider', _stateProvider2.default);
+_module.service('formDataService', _formDataService2.default);
 _module.directive('mezzoRegisterState', _registerStateDirective2.default);
 _module.controller('IndexResourceController', _IndexResourceController2.default);
 _module.controller('CreateResourceController', _CreateResourceController2.default);
 _module.controller('EditResourceController', _EditResourceController2.default);
 _module.controller('ShowResourceController', _ShowResourceController2.default);
 
-},{"./CreateResourceController":33,"./EditResourceController":34,"./IndexResourceController":35,"./ShowResourceController":36,"./registerStateDirective":38,"./stateProvider":39}],38:[function(require,module,exports){
+},{"./CreateResourceController":33,"./EditResourceController":34,"./IndexResourceController":35,"./ShowResourceController":36,"./formDataService":37,"./registerStateDirective":39,"./stateProvider":40}],39:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2166,7 +2193,7 @@ function registerStateDirective($stateProvider, hasController) {
     }
 }
 
-},{"./Action":32}],39:[function(require,module,exports){
+},{"./Action":32}],40:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2182,7 +2209,7 @@ function stateProvider($stateProvider) {
     }
 }
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2196,7 +2223,7 @@ function config($locationProvider, $urlRouterProvider, $httpProvider) {
     $locationProvider.html5Mode(true);
 }
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 $(function () {
