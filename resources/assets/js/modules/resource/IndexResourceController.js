@@ -1,4 +1,4 @@
-export default class ResourceIndexController {
+export default class IndexResourceController {
 
     /*@ngInject*/
     constructor($scope, $state, api) {

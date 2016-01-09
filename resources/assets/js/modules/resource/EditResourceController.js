@@ -1,4 +1,4 @@
-export default class ResourceEditController {
+export default class EditResourceController {
 
     /*@ngInject*/
     constructor($stateParams, api, contentBlockService) {

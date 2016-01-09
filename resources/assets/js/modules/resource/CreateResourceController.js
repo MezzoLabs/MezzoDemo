@@ -1,7 +1,8 @@
-export default class ResourceCreateController {
+export default class CreateResourceController {
 
     /*@ngInject*/
-    constructor(api) {
+    constructor($state, api) {
+        this.$state = $state;
         this.api = api;
     }
 
@@ -17,7 +18,10 @@ export default class ResourceCreateController {
 
         const formData = this.getFormData();
 
-        this.modelApi.create(formData);
+        this.modelApi.create(formData)
+            .then(model => {
+                this.edit(model.id);
+            });
     }
 
     hasError(formControl) {
@@ -33,6 +37,10 @@ export default class ResourceCreateController {
         const $form = $('form[name="vm.form"]');
 
         return $form.toObject();
+    }
+
+    edit(modelId) {
+        this.$state.go('edit' + this.modelName.toLowerCase(), { modelId: modelId });
     }
 
 }
