@@ -38,7 +38,6 @@ export default class EditResourceController {
     loadContent() {
         this.modelApi.content(this.modelId)
             .then(model => {
-                console.log(model);
                 const blocks = model.content.data.blocks.data;
 
                 blocks.forEach(block => {

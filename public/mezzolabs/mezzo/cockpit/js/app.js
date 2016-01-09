@@ -1644,7 +1644,6 @@ var EditResourceController = (function () {
             var _this = this;
 
             this.modelApi.content(this.modelId).then(function (model) {
-                console.log(model);
                 var blocks = model.content.data.blocks.data;
 
                 blocks.forEach(function (block) {
