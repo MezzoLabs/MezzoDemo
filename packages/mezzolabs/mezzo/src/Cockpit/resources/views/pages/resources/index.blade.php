@@ -20,11 +20,6 @@
                 </a>
                 <!-- Add new -->
 
-                <!-- Edit -->
-                <button type="button" class="btn btn-default" ng-disabled="!vm.canEdit()" ng-click="vm.edit()">
-                    <span class="ion-edit"></span> {{ Lang::get('mezzo.general.edit') }}</button>
-                <!-- Edit -->
-
                 <button type="button" class="btn btn-default" ng-disabled="!vm.canEdit()" ng-click="vm.duplicate()">
                     <span class="ion-ios-copy"></span> {{ Lang::get('mezzo.general.duplicate') }}</button>
 
@@ -85,8 +80,8 @@
                             <input type="checkbox" ng-model="model._meta.selected" ng-disabled="model._meta.removed">
                         </td>
                         <td ng-repeat="value in vm.getModelValues(model) track by $index">
-                            <a href="" title="ID: @{{ model.id }}" ng-if="$first" ng-click="vm.editId(model.id)" ng-bind="value"></a>
-                            <span ng-if="!$first" ng-bind="value"></span>
+                            <a href="" class="disabled" title="ID: @{{ model.id }}" ng-if="vm.displayAsLink($first, model)" ng-click="vm.editId(model.id)" ng-bind="value"></a>
+                            <span ng-if="!vm.displayAsLink($first, model)" ng-bind="value"></span>
                         </td>
                     </tr>
                     </tbody>

@@ -1897,13 +1897,6 @@ var IndexResourceController = (function () {
         key: 'create',
         value: function create() {}
     }, {
-        key: 'edit',
-        value: function edit() {
-            var models = this.selected();
-
-            this.editId(models[0].id);
-        }
-    }, {
         key: 'editId',
         value: function editId(id) {
             this.$state.go('edit' + this.modelName, { modelId: id });
@@ -1970,13 +1963,17 @@ var IndexResourceController = (function () {
     }, {
         key: 'isLocked',
         value: function isLocked(model) {
-
             return model._locked_for_user;
         }
     }, {
         key: 'lockedBy',
         value: function lockedBy(model) {
             return model._locked_by;
+        }
+    }, {
+        key: 'displayAsLink',
+        value: function displayAsLink($first, model) {
+            return $first && !this.isLocked(model);
         }
     }]);
 

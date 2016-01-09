@@ -148,12 +148,6 @@ export default class IndexResourceController {
     create() {
     }
 
-    edit() {
-        const models = this.selected();
-
-        this.editId(models[0].id);
-    }
-
     editId(id) {
         this.$state.go('edit' + this.modelName, {modelId: id});
     }
@@ -205,13 +199,16 @@ export default class IndexResourceController {
     }
 
     isLocked(model) {
-
         return model._locked_for_user;
 
     }
 
     lockedBy(model) {
         return model._locked_by;
+    }
+
+    displayAsLink($first, model) {
+        return $first && !this.isLocked(model);
     }
 
 }
