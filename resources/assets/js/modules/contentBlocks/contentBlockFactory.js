@@ -1,6 +1,12 @@
-export default class ContentBlockService {
+/*@ngInject*/
+export default function registerContentBlockFactory(api) {
+    return function contentBlockFactory() {
+        return new ContentBlockService(api);
+    }
+}
 
-    /*@ngInject*/
+class ContentBlockService {
+
     constructor(api) {
         this.api = api;
         this.contentBlocks = [];
