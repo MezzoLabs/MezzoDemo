@@ -1,27 +1,29 @@
 /*@ngInject*/
-export default function contentBlockService(api, random){
-    return new ContentBlockService(api, random);
+export default function registerContentBlockFactory(api) {
+    return function contentBlockFactory() {
+        return new ContentBlockService(api);
+    }
 }
 
 class ContentBlockService {
 
-    constructor(api, random) {
+    constructor(api) {
         this.api = api;
-        this.random = random;
         this.contentBlocks = [];
         this.templates = {};
         this.sortableOptions = {
             handle: 'a .ion-arrow-move'
         };
+        this.currentId = 0;
     }
 
-    addContentBlock(key, hash, title) {
+    addContentBlock(key, hash, title, id = '') {
         const contentBlock = {
-            id: '',
+            id: id,
             key: key,
             hash: hash,
             title: title,
-            nameInForm: this.random.string(),
+            nameInForm: 'fuck_off_form2js' + this.currentId++,
             template: null
         };
 

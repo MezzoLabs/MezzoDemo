@@ -14,6 +14,10 @@ export default class Api {
         return this.apiPromise(this.$http.post(url, data));
     }
 
+    put(url, data) {
+        return this.apiPromise(this.$http.put(url, data));
+    }
+
     delete(url){
         return this.apiPromise(this.$http.delete(url));
     }

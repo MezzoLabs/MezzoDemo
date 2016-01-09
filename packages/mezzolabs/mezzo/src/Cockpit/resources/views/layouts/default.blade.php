@@ -34,6 +34,7 @@
 </div>
 <!-- Content -->
 <!-- JavaScript -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBm2n4bQfABTkiGxQp7e-QvWRPQhvAhjGM&libraries=places"></script>
 {!! cockpit_script('/components/jquery/dist/jquery.min.js') !!}
 {!! cockpit_script('/components/jquery-ui/jquery-ui.min.js') !!}
 {!! cockpit_script('/components/bootstrap-sass/assets/javascripts/bootstrap.js') !!}
@@ -51,7 +52,11 @@
 {!! cockpit_script('/components/pluralize/pluralize.js') !!}
 {!! cockpit_script('/components/sweetalert2/dist/sweetalert2.min.js') !!}
 {!! cockpit_script('/components/moment/min/moment.min.js') !!}
-{!! cockpit_script('/components/underscore/underscore-min.js') !!}
+{!! cockpit_script('/components/lodash/lodash.min.js') !!}
+{!! cockpit_script('/components/js-md5/build/md5.min.js') !!}
+{!! cockpit_script('/js/lib/form2js.js') !!}
+{!! cockpit_script('/js/lib/js2form.js') !!}
+{!! cockpit_script('/js/lib/jquery.toObject.js') !!}
 {!! cockpit_script('/js/app.js') !!}
 <!-- JavaScript -->
 </body>

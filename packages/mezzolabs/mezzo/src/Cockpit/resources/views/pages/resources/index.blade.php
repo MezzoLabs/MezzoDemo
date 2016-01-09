@@ -20,11 +20,6 @@
                 </a>
                 <!-- Add new -->
 
-                <!-- Edit -->
-                <button type="button" class="btn btn-default" ng-disabled="!vm.canEdit()" ng-click="vm.edit()">
-                    <span class="ion-edit"></span> {{ Lang::get('mezzo.general.edit') }}</button>
-                <!-- Edit -->
-
                 <button type="button" class="btn btn-default" ng-disabled="!vm.canEdit()" ng-click="vm.duplicate()">
                     <span class="ion-ios-copy"></span> {{ Lang::get('mezzo.general.duplicate') }}</button>
 
@@ -78,16 +73,16 @@
                     <tbody>
                     <tr ng-repeat="model in vm.getModels() track by $index" ng-class="{ danger: model._meta.removed }">
                         <td>
-                            <a href="#" ng-click="vm.editId(model.id)"><i class="ion-ios-arrow-right"></i></a>
-                        </td>
-                        <td>
                             <span class="locked-for-user" title="Locked by @{{ vm.lockedBy(model) }}"
                                   ng-show="vm.isLocked(model)"><i class="ion-ios-locked"></i></span>
                         </td>
                         <td>
                             <input type="checkbox" ng-model="model._meta.selected" ng-disabled="model._meta.removed">
                         </td>
-                        <td ng-repeat="value in vm.getModelValues(model) track by $index" ng-bind="value"></td>
+                        <td ng-repeat="value in vm.getModelValues(model) track by $index">
+                            <a href="" class="disabled" title="ID: @{{ model.id }}" ng-if="vm.displayAsLink($first, model)" ng-click="vm.editId(model.id)" ng-bind="value"></a>
+                            <span ng-if="!vm.displayAsLink($first, model)" ng-bind="value"></span>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
