@@ -16,6 +16,7 @@ export default function searchDirective(mapService) {
     };
 
     function link(scope, element, attributes) {
+        console.log(scope);
         const input = element[0];
         const autoCompleteOptions = {
             types: ['geocode']
@@ -24,6 +25,8 @@ export default function searchDirective(mapService) {
 
         autoComplete.addListener('place_changed', () => {
             const place = autoComplete.getPlace();
+            const latitude = place.geometry.location.lat();
+            const longitude = place.geometry.location.lng();
             const addressComponents = place.address_components;
             const componentForm = {
                 street_number: {
@@ -51,6 +54,9 @@ export default function searchDirective(mapService) {
                     selector: scope.postalCode
                 }
             };
+
+            $(`[name="${ scope.latitude }"]`).val(latitude);
+            $(`[name="${ scope.longitude }"]`).val(longitude);
 
             addressComponents.forEach(component => {
                 const componentType = component.types[0];

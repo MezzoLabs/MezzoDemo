@@ -1445,6 +1445,7 @@ function searchDirective(mapService) {
     };
 
     function link(scope, element, attributes) {
+        console.log(scope);
         var input = element[0];
         var autoCompleteOptions = {
             types: ['geocode']
@@ -1453,6 +1454,8 @@ function searchDirective(mapService) {
 
         autoComplete.addListener('place_changed', function () {
             var place = autoComplete.getPlace();
+            var latitude = place.geometry.location.lat();
+            var longitude = place.geometry.location.lng();
             var addressComponents = place.address_components;
             var componentForm = {
                 street_number: {
@@ -1480,6 +1483,9 @@ function searchDirective(mapService) {
                     selector: scope.postalCode
                 }
             };
+
+            $('[name="' + scope.latitude + '"]').val(latitude);
+            $('[name="' + scope.longitude + '"]').val(longitude);
 
             addressComponents.forEach(function (component) {
                 var componentType = component.types[0];
