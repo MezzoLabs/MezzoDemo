@@ -12,28 +12,48 @@ export default class EditResourceController {
         this.modelName = modelName;
         this.modelApi = this.api.model(modelName);
 
-        this.loadContentBlocks();
+        this.loadContent();
     }
 
-    loadContentBlocks() {
+    submit() {
+        if(this.form.$invalid) {
+            return false;
+        }
+
+        const formData = this.getFormData();
+
+        this.modelApi.update(this.modelId, formData)
+            .then(model => {
+                console.log(model);
+            });
+    }
+
+    getFormData() {
+        const $form = $('form[name="vm.form"]');
+
+        return $form.toObject();
+    }
+
+    loadContent() {
         this.modelApi.content(this.modelId)
             .then(model => {
+                console.log(model);
                 const blocks = model.content.data.blocks.data;
 
                 blocks.forEach(block => {
                     const hash = md5(block.class);
 
-                    this.contentBlockService.addContentBlock(block.class, hash, 'title', block.id);
+                    this.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
                 });
 
-                this.fillBlockFields(blocks);
+                this.fillForm(model);
             });
     }
 
-    fillBlockFields(blocks) {
-        blocks.forEach(block => {
+    fillForm(model) {
+        const form = $('form[name="vm.form"]')[0];
 
-        });
+        js2form(form, model);
     }
 
 }

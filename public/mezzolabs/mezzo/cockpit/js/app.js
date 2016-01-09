@@ -87,6 +87,11 @@ var Api = (function () {
             return this.apiPromise(this.$http.post(url, data));
         }
     }, {
+        key: 'put',
+        value: function put(url, data) {
+            return this.apiPromise(this.$http.put(url, data));
+        }
+    }, {
         key: 'delete',
         value: function _delete(url) {
             return this.apiPromise(this.$http.delete(url));
@@ -158,6 +163,11 @@ var ModelApi = (function () {
         key: 'create',
         value: function create(formData) {
             return this.api.post(this.apiUrl, formData);
+        }
+    }, {
+        key: 'update',
+        value: function update(modelId, formData) {
+            return this.api.put(this.apiUrl + '/' + modelId, formData);
         }
     }, {
         key: 'delete',
@@ -433,26 +443,44 @@ function nextUid() {
 }
 
 },{}],14:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _CreateResourceController = require('../resource/CreateResourceController');
+
+var _CreateResourceController2 = _interopRequireDefault(_CreateResourceController);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var CreatePageController =
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-/*@ngInject*/
-function CreatePageController(contentBlockService) {
-    _classCallCheck(this, CreatePageController);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-    this.contentBlockService = contentBlockService;
-};
+var CreatePageController = (function (_CreateResourceContro) {
+    _inherits(CreatePageController, _CreateResourceContro);
+
+    /*@ngInject*/
+
+    function CreatePageController($state, api, contentBlockService) {
+        _classCallCheck(this, CreatePageController);
+
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CreatePageController).call(this, $state, api));
+
+        _this.contentBlockService = contentBlockService;
+        return _this;
+    }
+
+    return CreatePageController;
+})(_CreateResourceController2.default);
 
 exports.default = CreatePageController;
 
-},{}],15:[function(require,module,exports){
+},{"../resource/CreateResourceController":33}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -498,16 +526,13 @@ var _createClass = (function () { function defineProperties(target, props) { for
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.default = contentBlockService;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/*@ngInject*/
-function contentBlockService(api) {
-    return new ContentBlockService(api);
-}
-
 var ContentBlockService = (function () {
+
+    /*@ngInject*/
+
     function ContentBlockService(api) {
         _classCallCheck(this, ContentBlockService);
 
@@ -563,6 +588,8 @@ var ContentBlockService = (function () {
     return ContentBlockService;
 })();
 
+exports.default = ContentBlockService;
+
 },{}],17:[function(require,module,exports){
 'use strict';
 
@@ -582,7 +609,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _module = angular.module('MezzoContentBuilder', []);
 
-_module.factory('contentBlockService', _contentBlockService2.default);
+_module.service('contentBlockService', _contentBlockService2.default);
 _module.controller('CreatePageController', _CreatePageController2.default);
 _module.controller('CreatePostController', _CreatePostController2.default);
 
@@ -1654,29 +1681,52 @@ var EditResourceController = (function () {
             this.modelName = modelName;
             this.modelApi = this.api.model(modelName);
 
-            this.loadContentBlocks();
+            this.loadContent();
         }
     }, {
-        key: 'loadContentBlocks',
-        value: function loadContentBlocks() {
+        key: 'submit',
+        value: function submit() {
+            if (this.form.$invalid) {
+                return false;
+            }
+
+            var formData = this.getFormData();
+
+            this.modelApi.update(this.modelId, formData).then(function (model) {
+                console.log(model);
+            });
+        }
+    }, {
+        key: 'getFormData',
+        value: function getFormData() {
+            var $form = $('form[name="vm.form"]');
+
+            return $form.toObject();
+        }
+    }, {
+        key: 'loadContent',
+        value: function loadContent() {
             var _this = this;
 
             this.modelApi.content(this.modelId).then(function (model) {
+                console.log(model);
                 var blocks = model.content.data.blocks.data;
 
                 blocks.forEach(function (block) {
                     var hash = md5(block.class);
 
-                    _this.contentBlockService.addContentBlock(block.class, hash, 'title', block.id);
+                    _this.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
                 });
 
-                _this.fillBlockFields(blocks);
+                _this.fillForm(model);
             });
         }
     }, {
-        key: 'fillBlockFields',
-        value: function fillBlockFields(blocks) {
-            blocks.forEach(function (block) {});
+        key: 'fillForm',
+        value: function fillForm(model) {
+            var form = $('form[name="vm.form"]')[0];
+
+            js2form(form, model);
         }
     }]);
 

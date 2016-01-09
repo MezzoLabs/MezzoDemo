@@ -15,6 +15,10 @@ export default class ModelApi {
         return this.api.post(this.apiUrl, formData);
     }
 
+    update(modelId, formData) {
+        return this.api.put(this.apiUrl + '/' + modelId, formData);
+    }
+
     delete(modelId) {
         return this.api.delete(this.apiUrl + '/' + modelId);
     }

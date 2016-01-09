@@ -4,6 +4,6 @@ import CreatePostController from './CreatePostController';
 
 var module = angular.module('MezzoContentBuilder', []);
 
-module.factory('contentBlockService', contentBlockService);
+module.service('contentBlockService', contentBlockService);
 module.controller('CreatePageController', CreatePageController);
 module.controller('CreatePostController', CreatePostController);
