@@ -5,18 +5,34 @@ export default class ResourceCreateController {
         this.api = api;
     }
 
-    submit(){
-        if(this.form.$invalid){
+    init(modelName) {
+        this.modelName = modelName;
+        this.modelApi = this.api.model(this.modelName);
+    }
+
+    submit() {
+        if(this.form.$invalid) {
             return false;
         }
 
-        //TODO
+        const formData = this.getFormData();
+
+        this.modelApi.create(formData);
     }
 
-    hasError(formControl){
+    hasError(formControl) {
         if(Object.keys(formControl.$error).length && formControl.$dirty){
             return 'has-error';
         }
+    }
+
+    /* public */
+    /* private */
+
+    getFormData() {
+        const $form = $('form[name="vm.form"]');
+
+        return $form.toObject();
     }
 
 }

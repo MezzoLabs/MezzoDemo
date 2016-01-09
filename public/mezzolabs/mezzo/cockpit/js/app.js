@@ -482,47 +482,42 @@ exports.default = CreatePageController;
 },{}],16:[function(require,module,exports){
 'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _CreateResourceController = require('../resource/CreateResourceController');
+
+var _CreateResourceController2 = _interopRequireDefault(_CreateResourceController);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var CreatePostController = (function () {
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CreatePostController = (function (_CreateResourceContro) {
+    _inherits(CreatePostController, _CreateResourceContro);
 
     /*@ngInject*/
 
     function CreatePostController(api, contentBlockService) {
         _classCallCheck(this, CreatePostController);
 
-        this.api = api;
-        this.contentBlockService = contentBlockService;
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CreatePostController).call(this, api));
+
+        _this.contentBlockService = contentBlockService;
+        return _this;
     }
 
-    _createClass(CreatePostController, [{
-        key: 'init',
-        value: function init(modelName) {
-            this.modelName = modelName;
-            this.modelApi = this.api.model(this.modelName);
-        }
-    }, {
-        key: 'submit',
-        value: function submit() {
-            var formData = $(document['vm.form']).serializeArray();
-
-            console.log(formData);
-            this.modelApi.create(formData);
-        }
-    }]);
-
     return CreatePostController;
-})();
+})(_CreateResourceController2.default);
 
 exports.default = CreatePostController;
 
-},{}],17:[function(require,module,exports){
+},{"../resource/CreateResourceController":34}],17:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -1605,13 +1600,21 @@ var ResourceCreateController = (function () {
     }
 
     _createClass(ResourceCreateController, [{
+        key: 'init',
+        value: function init(modelName) {
+            this.modelName = modelName;
+            this.modelApi = this.api.model(this.modelName);
+        }
+    }, {
         key: 'submit',
         value: function submit() {
             if (this.form.$invalid) {
                 return false;
             }
 
-            //TODO
+            var formData = this.getFormData();
+
+            this.modelApi.create(formData);
         }
     }, {
         key: 'hasError',
@@ -1619,6 +1622,17 @@ var ResourceCreateController = (function () {
             if (Object.keys(formControl.$error).length && formControl.$dirty) {
                 return 'has-error';
             }
+        }
+
+        /* public */
+        /* private */
+
+    }, {
+        key: 'getFormData',
+        value: function getFormData() {
+            var $form = $('form[name="vm.form"]');
+
+            return $form.toObject();
         }
     }]);
 
