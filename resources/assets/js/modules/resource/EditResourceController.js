@@ -1,12 +1,15 @@
 export default class EditResourceController {
 
     /*@ngInject*/
-    constructor($stateParams, api, formDataService, contentBlockFactory) {
+    constructor($scope, $stateParams, api, formDataService, contentBlockFactory) {
+        this.$scope = $scope;
         this.$stateParams = $stateParams;
         this.api = api;
         this.formDataService = formDataService;
         this.contentBlockService = contentBlockFactory();
         this.modelId = this.$stateParams.modelId;
+
+        this.$scope.$on('$destroy', () => this.onDestroy());
     }
 
     init(modelName) {
@@ -14,6 +17,7 @@ export default class EditResourceController {
         this.modelApi = this.api.model(modelName);
 
         this.loadContent();
+        this.startResourceLocking();
     }
 
     submit() {
@@ -48,6 +52,26 @@ export default class EditResourceController {
 
                 this.formDataService.set(model);
             });
+    }
+
+    startResourceLocking() {
+        const thirtySeconds = 30 * 1000;
+        this.lockTask = setInterval(() => this.lock(), thirtySeconds);
+
+        this.lock();
+    }
+
+    stopResourceLocking() {
+        clearInterval(this.lockTask);
+    }
+
+    lock() {
+        this.modelApi.lock(this.modelId);
+    }
+
+    onDestroy() {
+        console.log('Well, looks like I have been murdered.');
+        this.stopResourceLocking();
     }
 
 }

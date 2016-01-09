@@ -27,4 +27,8 @@ export default class ModelApi {
         return this.api.get(this.apiUrl + '/' + modelId + '?include=content');
     }
 
+    lock(modelId) {
+        return this.api.get(this.apiUrl + '/' + modelId + '/lock');
+    }
+
 }

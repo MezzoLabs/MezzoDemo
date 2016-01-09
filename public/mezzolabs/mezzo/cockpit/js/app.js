@@ -179,6 +179,11 @@ var ModelApi = (function () {
         value: function content(modelId) {
             return this.api.get(this.apiUrl + '/' + modelId + '?include=content');
         }
+    }, {
+        key: 'lock',
+        value: function lock(modelId) {
+            return this.api.get(this.apiUrl + '/' + modelId + '/lock');
+        }
     }]);
 
     return ModelApi;
@@ -1600,14 +1605,21 @@ var EditResourceController = (function () {
 
     /*@ngInject*/
 
-    function EditResourceController($stateParams, api, formDataService, contentBlockFactory) {
+    function EditResourceController($scope, $stateParams, api, formDataService, contentBlockFactory) {
+        var _this = this;
+
         _classCallCheck(this, EditResourceController);
 
+        this.$scope = $scope;
         this.$stateParams = $stateParams;
         this.api = api;
         this.formDataService = formDataService;
         this.contentBlockService = contentBlockFactory();
         this.modelId = this.$stateParams.modelId;
+
+        this.$scope.$on('$destroy', function () {
+            return _this.onDestroy();
+        });
     }
 
     _createClass(EditResourceController, [{
@@ -1617,6 +1629,7 @@ var EditResourceController = (function () {
             this.modelApi = this.api.model(modelName);
 
             this.loadContent();
+            this.startResourceLocking();
         }
     }, {
         key: 'submit',
@@ -1641,7 +1654,7 @@ var EditResourceController = (function () {
     }, {
         key: 'loadContent',
         value: function loadContent() {
-            var _this = this;
+            var _this2 = this;
 
             this.modelApi.content(this.modelId).then(function (model) {
                 var blocks = model.content.data.blocks.data;
@@ -1649,11 +1662,39 @@ var EditResourceController = (function () {
                 blocks.forEach(function (block) {
                     var hash = md5(block.class);
 
-                    _this.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
+                    _this2.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
                 });
 
-                _this.formDataService.set(model);
+                _this2.formDataService.set(model);
             });
+        }
+    }, {
+        key: 'startResourceLocking',
+        value: function startResourceLocking() {
+            var _this3 = this;
+
+            var thirtySeconds = 30 * 1000;
+            this.lockTask = setInterval(function () {
+                return _this3.lock();
+            }, thirtySeconds);
+
+            this.lock();
+        }
+    }, {
+        key: 'stopResourceLocking',
+        value: function stopResourceLocking() {
+            clearInterval(this.lockTask);
+        }
+    }, {
+        key: 'lock',
+        value: function lock() {
+            this.modelApi.lock(this.modelId);
+        }
+    }, {
+        key: 'onDestroy',
+        value: function onDestroy() {
+            console.log('Well, looks like I have been murdered.');
+            this.stopResourceLocking();
         }
     }]);
 
