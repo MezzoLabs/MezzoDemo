@@ -50,7 +50,6 @@ export default class EditResourceController {
                 });
 
                 this.stripDataEnvelopes(model.content);
-                console.log(model);
                 this.formDataService.set(model);
             });
     }

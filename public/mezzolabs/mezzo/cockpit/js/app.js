@@ -23,7 +23,7 @@ var app = angular.module('Mezzo', ['ui.router', 'ui.sortable', 'ngMessages', 'an
 
 app.config(_config2.default);
 
-},{"./common":13,"./modules/contentBlocks":18,"./modules/fileManager":28,"./modules/googleMaps":29,"./modules/resource":39,"./setup/config":42,"./setup/jquery":43}],2:[function(require,module,exports){
+},{"./common":13,"./modules/contentBlocks":18,"./modules/fileManager":29,"./modules/googleMaps":30,"./modules/resource":40,"./setup/config":43,"./setup/jquery":44}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1163,13 +1163,15 @@ var FilePickerController = (function () {
     }, {
         key: 'onSelect',
         value: function onSelect(selectedFile) {
-            if (!this.isMultiple()) {
-                this.files.forEach(function (file) {
-                    return file.selected = false;
-                });
-
-                selectedFile.selected = true;
+            if (this.isMultiple() || !selectedFile.selected) {
+                return;
             }
+
+            this.files.forEach(function (file) {
+                return file.selected = false;
+            });
+
+            selectedFile.selected = true;
         }
     }, {
         key: 'selectedFiles',
@@ -1198,7 +1200,7 @@ var FilePickerController = (function () {
         key: 'confirmSelected',
         value: function confirmSelected() {
             var selected = this.selectedFiles();
-            var $field = $('input[name="' + this.name + '"]');
+            var $field = this.inputField();
 
             if (selected.length === 1) {
                 $field.val(selected[0].id);
@@ -1217,6 +1219,30 @@ var FilePickerController = (function () {
         key: 'countSelected',
         value: function countSelected() {
             return this.selectedFiles().length;
+        }
+    }, {
+        key: 'acquireInputValue',
+        value: function acquireInputValue(value) {
+            var values = [value];
+
+            if (value.indexOf(',') !== -1) {
+                values = value.split(',');
+            }
+
+            for (var i = 0; i < values.length; i++) {
+                values[i] = parseInt(values[i], 10);
+            }
+
+            this.files.forEach(function (file) {
+                if (_.contains(values, file.id)) {
+                    file.selected = true;
+                }
+            });
+        }
+    }, {
+        key: 'inputField',
+        value: function inputField() {
+            return $('input[name="' + this.name + '"]');
         }
     }]);
 
@@ -1386,6 +1412,34 @@ function filePickerDirective() {
 },{"./FilePickerController":22}],28:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = filePickerValueDirective;
+/*@ngInject*/
+function filePickerValueDirective() {
+    return {
+        require: '^mezzoFilePicker',
+        restrict: 'A',
+        link: link
+    };
+
+    function link(scope, element, attributes, controller) {
+        scope.$watch(function () {
+            return $(element).val();
+        }, function (newValue, oldValue) {
+            if (newValue === oldValue || newValue === undefined) {
+                return;
+            }
+
+            controller.acquireInputValue(newValue);
+        });
+    }
+}
+
+},{}],29:[function(require,module,exports){
+'use strict';
+
 var _draggableDirective = require('./draggableDirective.js');
 
 var _draggableDirective2 = _interopRequireDefault(_draggableDirective);
@@ -1398,6 +1452,10 @@ var _filePickerDirective = require('./filePickerDirective');
 
 var _filePickerDirective2 = _interopRequireDefault(_filePickerDirective);
 
+var _filePickerValueDirective = require('./filePickerValueDirective');
+
+var _filePickerValueDirective2 = _interopRequireDefault(_filePickerValueDirective);
+
 var _CreateFileController = require('./CreateFileController');
 
 var _CreateFileController2 = _interopRequireDefault(_CreateFileController);
@@ -1409,9 +1467,10 @@ var _module = angular.module('MezzoFileManager', []);
 _module.directive('mezzoDraggable', _draggableDirective2.default);
 _module.directive('mezzoDroppable', _droppableDirective2.default);
 _module.directive('mezzoFilePicker', _filePickerDirective2.default);
+_module.directive('mezzoFilePickerValue', _filePickerValueDirective2.default);
 _module.controller('CreateFileController', _CreateFileController2.default);
 
-},{"./CreateFileController":20,"./draggableDirective.js":25,"./droppableDirective.js":26,"./filePickerDirective":27}],29:[function(require,module,exports){
+},{"./CreateFileController":20,"./draggableDirective.js":25,"./droppableDirective.js":26,"./filePickerDirective":27,"./filePickerValueDirective":28}],30:[function(require,module,exports){
 'use strict';
 
 var _mapService = require('./mapService');
@@ -1434,7 +1493,7 @@ _module.factory('mapService', _mapService2.default);
 _module.directive('mezzoGoogleMap', _mapDirective2.default);
 _module.directive('mezzoGoogleMapsSearch', _searchDirective2.default);
 
-},{"./mapDirective":30,"./mapService":31,"./searchDirective":32}],30:[function(require,module,exports){
+},{"./mapDirective":31,"./mapService":32,"./searchDirective":33}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1467,7 +1526,7 @@ function mapDirective(mapService) {
     }
 }
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1481,7 +1540,7 @@ function mapService() {
     };
 }
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1579,7 +1638,7 @@ function searchDirective(mapService) {
     }
 }
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1592,7 +1651,7 @@ exports.default = {
     SHOW: 'show'
 };
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -1656,7 +1715,7 @@ var CreateResourceController = (function () {
 
 exports.default = CreateResourceController;
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -1732,7 +1791,6 @@ var EditResourceController = (function () {
                 });
 
                 _this2.stripDataEnvelopes(model.content);
-                console.log(model);
                 _this2.formDataService.set(model);
             });
         }
@@ -1831,7 +1889,7 @@ var EditResourceController = (function () {
 
 exports.default = EditResourceController;
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -2109,7 +2167,7 @@ var IndexResourceController = (function () {
 
 exports.default = IndexResourceController;
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2127,7 +2185,7 @@ function ShowResourceController() {
 
 exports.default = ShowResourceController;
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -2165,7 +2223,7 @@ var FormDataService = (function () {
 
 exports.default = FormDataService;
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 var _stateProvider = require('./stateProvider');
@@ -2208,7 +2266,7 @@ _module.controller('CreateResourceController', _CreateResourceController2.defaul
 _module.controller('EditResourceController', _EditResourceController2.default);
 _module.controller('ShowResourceController', _ShowResourceController2.default);
 
-},{"./CreateResourceController":34,"./EditResourceController":35,"./IndexResourceController":36,"./ShowResourceController":37,"./formDataService":38,"./registerStateDirective":40,"./stateProvider":41}],40:[function(require,module,exports){
+},{"./CreateResourceController":35,"./EditResourceController":36,"./IndexResourceController":37,"./ShowResourceController":38,"./formDataService":39,"./registerStateDirective":41,"./stateProvider":42}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2301,7 +2359,7 @@ function registerStateDirective($stateProvider, hasController) {
     }
 }
 
-},{"./Action":33}],41:[function(require,module,exports){
+},{"./Action":34}],42:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2317,7 +2375,7 @@ function stateProvider($stateProvider) {
     }
 }
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2331,7 +2389,7 @@ function config($locationProvider, $httpProvider) {
     $locationProvider.html5Mode(true);
 }
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict';
 
 $(function () {
