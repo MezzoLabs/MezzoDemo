@@ -39,7 +39,7 @@
 {!! cockpit_script('/components/jquery-ui/jquery-ui.min.js') !!}
 {!! cockpit_script('/components/bootstrap-sass/assets/javascripts/bootstrap.js') !!}
 {!! cockpit_script('/components/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js') !!}
-{!! cockpit_script('/components/eonasdan-bootstrap-datetimepicker/build/cs/bootstrap-datetimepicker.min.js') !!}
+{!! cockpit_script('/components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') !!}
 {!! cockpit_script('/components/select2/dist/js/select2.js') !!}
 {!! cockpit_script('/components/gridster/dist/jquery.gridster.min.js') !!}
 {!! cockpit_script('/components/angular/angular.js') !!}
