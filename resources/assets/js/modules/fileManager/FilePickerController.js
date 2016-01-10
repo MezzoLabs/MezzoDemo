@@ -83,11 +83,13 @@ export default class FilePickerController {
     }
 
     onSelect(selectedFile){
-        if(!this.isMultiple()){
-            this.files.forEach(file => file.selected = false);
-
-            selectedFile.selected = true;
+        if(this.isMultiple() || !selectedFile.selected) {
+            return;
         }
+
+        this.files.forEach(file => file.selected = false);
+
+        selectedFile.selected = true;
     }
 
     selectedFiles(){
@@ -110,7 +112,7 @@ export default class FilePickerController {
 
     confirmSelected(){
         const selected = this.selectedFiles();
-        const $field = $(`input[name="${ this.name }"]`);
+        const $field = this.inputField();
 
         if(selected.length === 1){
             $field.val(selected[0].id);
@@ -126,6 +128,28 @@ export default class FilePickerController {
 
     countSelected() {
         return this.selectedFiles().length;
+    }
+
+    acquireInputValue(value) {
+        let values = [ value ];
+
+        if(value.indexOf(',') !== -1) {
+            values = value.split(',');
+        }
+
+        for(let i = 0; i < values.length; i++) {
+            values[i] = parseInt(values[i], 10);
+        }
+
+        this.files.forEach(file => {
+            if(_.contains(values, file.id)) {
+                file.selected = true;
+            }
+        });
+    }
+
+    inputField() {
+        return $(`input[name="${ this.name }"]`);
     }
 
 }

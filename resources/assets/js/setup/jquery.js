@@ -71,7 +71,4 @@ $(() => {
         '</button>';
 
     $('.editable').editable();
-
-
-    //$('select').select2(); uncomment for model builder
 });

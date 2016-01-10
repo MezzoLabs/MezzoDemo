@@ -16,7 +16,6 @@ export default function searchDirective(mapService) {
     };
 
     function link(scope, element, attributes) {
-        console.log(scope);
         const input = element[0];
         const autoCompleteOptions = {
             types: ['geocode']

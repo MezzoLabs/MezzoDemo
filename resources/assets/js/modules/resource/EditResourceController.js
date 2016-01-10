@@ -1,8 +1,9 @@
 export default class EditResourceController {
 
     /*@ngInject*/
-    constructor($scope, $stateParams, api, formDataService, contentBlockFactory) {
+    constructor($scope, $state, $stateParams, api, formDataService, contentBlockFactory) {
         this.$scope = $scope;
+        this.$state = $state;
         this.$stateParams = $stateParams;
         this.api = api;
         this.formDataService = formDataService;
@@ -17,7 +18,6 @@ export default class EditResourceController {
         this.modelApi = this.api.model(modelName);
 
         this.loadContent();
-        this.startResourceLocking();
     }
 
     submit() {
@@ -27,10 +27,7 @@ export default class EditResourceController {
 
         const formData = this.formDataService.get();
 
-        this.modelApi.update(this.modelId, formData)
-            .then(model => {
-                console.log(model);
-            });
+        this.modelApi.update(this.modelId, formData);
     }
 
     getFormData() {
@@ -44,12 +41,15 @@ export default class EditResourceController {
             .then(model => {
                 const blocks = model.content.data.blocks.data;
 
+                this.initLockable(model);
+
                 blocks.forEach(block => {
                     const hash = md5(block.class);
 
                     this.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
                 });
 
+                this.stripDataEnvelopes(model.content);
                 this.formDataService.set(model);
             });
     }
@@ -62,7 +62,9 @@ export default class EditResourceController {
     }
 
     stopResourceLocking() {
-        clearInterval(this.lockTask);
+        if(this.lockTask) {
+            clearInterval(this.lockTask);
+        }
     }
 
     lock() {
@@ -70,8 +72,61 @@ export default class EditResourceController {
     }
 
     onDestroy() {
-        console.log('Well, looks like I have been murdered.');
         this.stopResourceLocking();
+    }
+
+    initLockable(model) {
+        this.isLockable = _.has(model, '_locked_by');
+
+        if(!this.isLockable) {
+            return;
+        }
+
+        if(model._locked_for_user) {
+            return this.redirectToIndex(model._locked_by);
+        }
+
+        this.startResourceLocking();
+    }
+
+    redirectToIndex(lockedBy) {
+        const title = 'Oops...';
+        const message = 'You are not allowed to edit this resource while it is locked by ' + lockedBy + '!';
+
+        this.$state.go('index' + this.modelName.toLowerCase());
+        sweetAlert(title, message, 'error');
+    }
+
+    stripDataEnvelopes(object) {
+        if(!_.isObject(object)) {
+            return;
+        }
+
+        const keys = _.keys(object);
+
+        keys.forEach(key => {
+            const value = object[key];
+
+            this.stripDataEnvelopes(value);
+
+            if(key === 'data') {
+                delete object[key];
+
+                if(_.isArray(value)) {
+                    for(let i = 0; i < value.length; i++) {
+                        object['num' + i] = value[i];
+
+                        this.stripDataEnvelopes(value[i]);
+                    }
+
+                    return;
+                }
+
+                if(_.isObject(value)) {
+                    return _.assign(object, value);
+                }
+            }
+        });
     }
 
 }
