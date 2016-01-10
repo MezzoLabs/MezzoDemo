@@ -145,8 +145,9 @@ class ContentBlocksFormObject implements FormObject
 
     protected function contentBlockRules($mode = "create", $dirty = [])
     {
-        if (!isset($dirty[static::CONTENT_FORM_NAME]))
+        if ($mode == 'update' && !isset($dirty[static::CONTENT_FORM_NAME]))
             return [];
+
 
         if (!$this->hasContentBlocks()) {
             return [static::CONTENT_FORM_NAME . '.' . static::BLOCKS_FORM_NAME => 'required'];
@@ -161,6 +162,7 @@ class ContentBlocksFormObject implements FormObject
                 ]
             );
         }
+
 
         $blocksRules = Arr::dot([
             static::CONTENT_FORM_NAME . '.' . static::BLOCKS_FORM_NAME => $rules
@@ -184,8 +186,11 @@ class ContentBlocksFormObject implements FormObject
 
     private function assertThatFieldsAreRegistered()
     {
+
         foreach ($this->blocksData as $blockData) {
             $blockType = $this->makeBlockType($blockData);
+
+            if (!isset($blockData['fields'])) continue;
 
             foreach ($blockData['fields'] as $name => $value) {
                 if (!$blockType->fields()->has($name))

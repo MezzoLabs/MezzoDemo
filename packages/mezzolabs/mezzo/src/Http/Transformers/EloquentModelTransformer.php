@@ -112,7 +112,7 @@ abstract class EloquentModelTransformer extends ModelTransformer
 
         $returnCollection = new Collection();
 
-        $attributeValues = $model->attributeValues()->atomicOnly()->visibleOnly();
+        $attributeValues = $model->attributeValues()->inMainTableOnly()->visibleOnly();
 
         $attributeValues->each(function (AttributeValue $attributeValue) use ($returnCollection) {
             $value = $this->transformValue($attributeValue);

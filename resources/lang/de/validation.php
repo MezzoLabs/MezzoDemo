@@ -121,7 +121,10 @@ return [
         'published_at' => 'Veröffentlichungs Datum',
         'created_at' => 'Erstellungsdatum',
         'updated_at' => 'Änderungsdatum',
-        'categories' => 'Kategorien'
+        'categories' => 'Kategorien',
+        'content' => [
+            'blocks' => 'Inhaltsblock'
+        ]
 
     ],
 

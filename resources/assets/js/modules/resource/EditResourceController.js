@@ -21,7 +21,7 @@ export default class EditResourceController {
     }
 
     submit() {
-        if(this.form.$invalid) {
+        if (this.form.$invalid) {
             return false;
         }
 

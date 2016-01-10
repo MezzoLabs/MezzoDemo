@@ -1,14 +1,14 @@
 /*@ngInject*/
-export default function hrefReloadDirective(){
+export default function hrefReloadDirective() {
     return {
         restrict: 'A',
         link
     };
 
-    function link(scope, element, attributes){
+    function link(scope, element, attributes) {
         const shouldReload = attributes.mezzoHrefReload === '1';
 
-        if(!shouldReload) {
+        if (!shouldReload) {
             return;
         }
 
@@ -23,7 +23,7 @@ export default function hrefReloadDirective(){
     function onHrefClick($element) {
         const href = $element.attr('href');
 
-        if(!href) {
+        if (!href) {
             return;
         }
 

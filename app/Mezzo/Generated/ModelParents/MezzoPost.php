@@ -159,7 +159,7 @@ abstract class MezzoPost extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for slug
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="create,edit")
      * @var string
      */
     protected $_slug;
