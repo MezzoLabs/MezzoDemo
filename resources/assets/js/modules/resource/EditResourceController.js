@@ -1,8 +1,9 @@
 export default class EditResourceController {
 
     /*@ngInject*/
-    constructor($scope, $stateParams, api, formDataService, contentBlockFactory) {
+    constructor($scope, $state, $stateParams, api, formDataService, contentBlockFactory) {
         this.$scope = $scope;
+        this.$state = $state;
         this.$stateParams = $stateParams;
         this.api = api;
         this.formDataService = formDataService;
@@ -40,7 +41,7 @@ export default class EditResourceController {
             .then(model => {
                 const blocks = model.content.data.blocks.data;
 
-                this.initIsLockable(model);
+                this.initLockable(model);
 
                 blocks.forEach(block => {
                     const hash = md5(block.class);
@@ -73,12 +74,26 @@ export default class EditResourceController {
         this.stopResourceLocking();
     }
 
-    initIsLockable(model) {
+    initLockable(model) {
         this.isLockable = _.has(model, '_locked_by');
 
-        if(this.isLockable) {
-            this.startResourceLocking();
+        if(!this.isLockable) {
+            return;
         }
+
+        if(model._locked_for_user) {
+            return this.redirectToIndex(model._locked_by);
+        }
+
+        this.startResourceLocking();
+    }
+
+    redirectToIndex(lockedBy) {
+        const title = 'Oops...';
+        const message = 'You are not allowed to edit this resource while it is locked by ' + lockedBy + '!';
+
+        this.$state.go('index' + this.modelName.toLowerCase());
+        sweetAlert(title, message, 'error');
     }
 
 }

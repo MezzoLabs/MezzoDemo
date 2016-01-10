@@ -1671,12 +1671,13 @@ var EditResourceController = (function () {
 
     /*@ngInject*/
 
-    function EditResourceController($scope, $stateParams, api, formDataService, contentBlockFactory) {
+    function EditResourceController($scope, $state, $stateParams, api, formDataService, contentBlockFactory) {
         var _this = this;
 
         _classCallCheck(this, EditResourceController);
 
         this.$scope = $scope;
+        this.$state = $state;
         this.$stateParams = $stateParams;
         this.api = api;
         this.formDataService = formDataService;
@@ -1722,7 +1723,7 @@ var EditResourceController = (function () {
             this.modelApi.content(this.modelId).then(function (model) {
                 var blocks = model.content.data.blocks.data;
 
-                _this2.initIsLockable(model);
+                _this2.initLockable(model);
 
                 blocks.forEach(function (block) {
                     var hash = md5(block.class);
@@ -1763,13 +1764,28 @@ var EditResourceController = (function () {
             this.stopResourceLocking();
         }
     }, {
-        key: 'initIsLockable',
-        value: function initIsLockable(model) {
+        key: 'initLockable',
+        value: function initLockable(model) {
             this.isLockable = _.has(model, '_locked_by');
 
-            if (this.isLockable) {
-                this.startResourceLocking();
+            if (!this.isLockable) {
+                return;
             }
+
+            if (model._locked_for_user) {
+                return this.redirectToIndex(model._locked_by);
+            }
+
+            this.startResourceLocking();
+        }
+    }, {
+        key: 'redirectToIndex',
+        value: function redirectToIndex(lockedBy) {
+            var title = 'Oops...';
+            var message = 'You are not allowed to edit this resource while it is locked by ' + lockedBy + '!';
+
+            this.$state.go('index' + this.modelName.toLowerCase());
+            sweetAlert(title, message, 'error');
         }
     }]);
 
