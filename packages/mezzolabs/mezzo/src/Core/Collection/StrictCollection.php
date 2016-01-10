@@ -14,7 +14,7 @@ abstract class StrictCollection extends DecoratedCollection
      */
     public function put($key, $value)
     {
-        $this->assertThatItemIsValue($value);
+        $this->assertThatItemIsValid($value);
         return parent::put($key, $value);
     }
 
@@ -26,12 +26,12 @@ abstract class StrictCollection extends DecoratedCollection
      */
     public function push($value)
     {
-        $this->assertThatItemIsValue($value);
+        $this->assertThatItemIsValid($value);
         return parent::push($value);
     }
 
 
-    protected function assertThatItemIsValue($value)
+    protected function assertThatItemIsValid($value)
     {
         if (!$this->checkItem($value)) {
             $this->fail($value);
