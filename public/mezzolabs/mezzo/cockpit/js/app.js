@@ -1657,7 +1657,6 @@ var EditResourceController = (function () {
             this.modelApi = this.api.model(modelName);
 
             this.loadContent();
-            this.startResourceLocking();
         }
     }, {
         key: 'submit',
@@ -1685,6 +1684,8 @@ var EditResourceController = (function () {
             this.modelApi.content(this.modelId).then(function (model) {
                 var blocks = model.content.data.blocks.data;
 
+                _this2.initIsLockable(model);
+
                 blocks.forEach(function (block) {
                     var hash = md5(block.class);
 
@@ -1709,7 +1710,9 @@ var EditResourceController = (function () {
     }, {
         key: 'stopResourceLocking',
         value: function stopResourceLocking() {
-            clearInterval(this.lockTask);
+            if (this.lockTask) {
+                clearInterval(this.lockTask);
+            }
         }
     }, {
         key: 'lock',
@@ -1720,6 +1723,15 @@ var EditResourceController = (function () {
         key: 'onDestroy',
         value: function onDestroy() {
             this.stopResourceLocking();
+        }
+    }, {
+        key: 'initIsLockable',
+        value: function initIsLockable(model) {
+            this.isLockable = _.has(model, '_locked_by');
+
+            if (this.isLockable) {
+                this.startResourceLocking();
+            }
         }
     }]);
 

@@ -17,7 +17,6 @@ export default class EditResourceController {
         this.modelApi = this.api.model(modelName);
 
         this.loadContent();
-        this.startResourceLocking();
     }
 
     submit() {
@@ -41,6 +40,8 @@ export default class EditResourceController {
             .then(model => {
                 const blocks = model.content.data.blocks.data;
 
+                this.initIsLockable(model);
+
                 blocks.forEach(block => {
                     const hash = md5(block.class);
 
@@ -59,7 +60,9 @@ export default class EditResourceController {
     }
 
     stopResourceLocking() {
-        clearInterval(this.lockTask);
+        if(this.lockTask) {
+            clearInterval(this.lockTask);
+        }
     }
 
     lock() {
@@ -68,6 +71,14 @@ export default class EditResourceController {
 
     onDestroy() {
         this.stopResourceLocking();
+    }
+
+    initIsLockable(model) {
+        this.isLockable = _.has(model, '_locked_by');
+
+        if(this.isLockable) {
+            this.startResourceLocking();
+        }
     }
 
 }
