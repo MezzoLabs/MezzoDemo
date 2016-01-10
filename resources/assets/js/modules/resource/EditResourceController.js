@@ -49,6 +49,8 @@ export default class EditResourceController {
                     this.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
                 });
 
+                this.stripDataEnvelopes(model.content);
+                console.log(model);
                 this.formDataService.set(model);
             });
     }
@@ -94,6 +96,38 @@ export default class EditResourceController {
 
         this.$state.go('index' + this.modelName.toLowerCase());
         sweetAlert(title, message, 'error');
+    }
+
+    stripDataEnvelopes(object) {
+        if(!_.isObject(object)) {
+            return;
+        }
+
+        const keys = _.keys(object);
+
+        keys.forEach(key => {
+            const value = object[key];
+
+            this.stripDataEnvelopes(value);
+
+            if(key === 'data') {
+                delete object[key];
+
+                if(_.isArray(value)) {
+                    for(let i = 0; i < value.length; i++) {
+                        object['num' + i] = value[i];
+
+                        this.stripDataEnvelopes(value[i]);
+                    }
+
+                    return;
+                }
+
+                if(_.isObject(value)) {
+                    return _.assign(object, value);
+                }
+            }
+        });
     }
 
 }

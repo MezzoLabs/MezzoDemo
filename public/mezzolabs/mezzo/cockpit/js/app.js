@@ -577,7 +577,7 @@ var ContentBlockService = (function () {
                 key: key,
                 hash: hash,
                 title: title,
-                nameInForm: 'fuck_off_form2js' + this.currentId++,
+                nameInForm: 'num' + this.currentId++,
                 template: null
             };
 
@@ -1731,6 +1731,8 @@ var EditResourceController = (function () {
                     _this2.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
                 });
 
+                _this2.stripDataEnvelopes(model.content);
+                console.log(model);
                 _this2.formDataService.set(model);
             });
         }
@@ -1786,6 +1788,41 @@ var EditResourceController = (function () {
 
             this.$state.go('index' + this.modelName.toLowerCase());
             sweetAlert(title, message, 'error');
+        }
+    }, {
+        key: 'stripDataEnvelopes',
+        value: function stripDataEnvelopes(object) {
+            var _this4 = this;
+
+            if (!_.isObject(object)) {
+                return;
+            }
+
+            var keys = _.keys(object);
+
+            keys.forEach(function (key) {
+                var value = object[key];
+
+                _this4.stripDataEnvelopes(value);
+
+                if (key === 'data') {
+                    delete object[key];
+
+                    if (_.isArray(value)) {
+                        for (var i = 0; i < value.length; i++) {
+                            object['num' + i] = value[i];
+
+                            _this4.stripDataEnvelopes(value[i]);
+                        }
+
+                        return;
+                    }
+
+                    if (_.isObject(value)) {
+                        return _.assign(object, value);
+                    }
+                }
+            });
         }
     }]);
 
