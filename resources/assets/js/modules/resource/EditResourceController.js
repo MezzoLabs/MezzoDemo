@@ -27,10 +27,7 @@ export default class EditResourceController {
 
         const formData = this.formDataService.get();
 
-        this.modelApi.update(this.modelId, formData)
-            .then(model => {
-                console.log(model);
-            });
+        this.modelApi.update(this.modelId, formData);
     }
 
     getFormData() {
@@ -70,7 +67,6 @@ export default class EditResourceController {
     }
 
     onDestroy() {
-        console.log('Well, looks like I have been murdered.');
         this.stopResourceLocking();
     }
 
