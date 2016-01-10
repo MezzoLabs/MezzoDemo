@@ -5,12 +5,14 @@ namespace App;
 use App\LockableResources\CanBeLocked;
 use App\LockableResources\LockableResource;
 use App\Magazine\Relevance\CanBeSortedByRelevance;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use MezzoLabs\Mezzo\Modules\Posts\Domain\Models\Post as ModulePostModel;
 
 class Post extends ModulePostModel implements LockableResource
 {
     use CanBeSortedByRelevance;
     use CanBeLocked;
+    use SoftDeletes;
 
     public $searchable = ['title', 'teaser'];
 

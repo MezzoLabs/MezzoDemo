@@ -14,7 +14,7 @@ export default class CreateResourceController {
     }
 
     submit() {
-        if(this.form.$invalid) {
+        if (this.form.$invalid) {
             return false;
         }
 
@@ -27,13 +27,13 @@ export default class CreateResourceController {
     }
 
     hasError(formControl) {
-        if(Object.keys(formControl.$error).length && formControl.$dirty){
+        if (Object.keys(formControl.$error).length && formControl.$dirty) {
             return 'has-error';
         }
     }
 
     edit(modelId) {
-        this.$state.go('edit' + this.modelName.toLowerCase(), { modelId: modelId });
+        this.$state.go('edit' + this.modelName.toLowerCase(), {modelId: modelId});
     }
 
 }

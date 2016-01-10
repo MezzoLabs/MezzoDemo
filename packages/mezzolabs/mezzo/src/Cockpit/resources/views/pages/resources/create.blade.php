@@ -1,7 +1,7 @@
 @extends(cockpit_content_container())
 
 @section('content')
-    <div class="wrapper">
+    <div class="wrapper" ng-init="vm.init('{{ $model_reflection->name() }}')">
         <div class="panel panel-bordered">
             <div class="panel-heading">
                 @include('cockpit::partials.pages.heading_create')

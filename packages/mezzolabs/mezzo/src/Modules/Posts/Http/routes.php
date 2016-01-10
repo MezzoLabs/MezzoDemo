@@ -16,6 +16,7 @@ module_route('Posts', [], function (Router $router, ApiRouter $api, CockpitRoute
 
     $api->action('locked', 'Post', ['mode' => 'single']);
     $api->action('lock', 'Post', ['mode' => 'single']);
+    $api->action('unlock', 'Post', ['mode' => 'single']);
 
 });
 

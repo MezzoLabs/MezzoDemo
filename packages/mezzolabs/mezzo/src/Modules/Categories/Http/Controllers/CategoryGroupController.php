@@ -9,6 +9,7 @@ use MezzoLabs\Mezzo\Http\Requests\Resource\EditResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\IndexResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\ShowResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponse;
+use MezzoLabs\Mezzo\Modules\Categories\Http\Pages\CategoryGroupPage;
 use MezzoLabs\Mezzo\Modules\Categories\Http\Pages\CategoryPage;
 
 
@@ -22,7 +23,7 @@ class CategoryGroupController extends CockpitResourceController
      */
     public function index(IndexResourceRequest $request)
     {
-        return $this->page(CategoryPage::class);
+        return $this->page(CategoryGroupPage::class);
     }
 
 

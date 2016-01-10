@@ -3,7 +3,7 @@ export default class ModelApi {
     constructor(api, modelName) {
         this.api = api;
         this.modelName = modelName;
-        this.modelPlural = pluralize(this.modelName).toLowerCase();
+        this.modelPlural = _.kebabCase(pluralize(this.modelName));
         this.apiUrl = '/api/' + this.modelPlural;
     }
 

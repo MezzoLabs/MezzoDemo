@@ -41,6 +41,9 @@ return [
         'general' => 'General',
         'admin' => 'Admin',
         'development' => 'Development'
-    ]
+    ],
+
+    'google_maps_api' => 'AIzaSyBm2n4bQfABTkiGxQp7e-QvWRPQhvAhjGM'
+
 ];
   
