@@ -2204,7 +2204,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = config;
 /*@ngInject*/
-function config($locationProvider, $urlRouterProvider, $httpProvider) {
+function config($locationProvider, $httpProvider) {
     $httpProvider.defaults.headers.common.Accept = 'application/vnd.MezzoLabs.v1+json';
 
     $locationProvider.html5Mode(true);
