@@ -1,11 +1,11 @@
 /*@ngInject*/
-export default function select2Directive() {
+export default function dateTimePickerDirective() {
     return {
         restrict: 'A',
         link
     };
 
     function link(scope, element, attributes) {
-        $(element).select2();
+        $(element).datetimepicker();
     }
 }
