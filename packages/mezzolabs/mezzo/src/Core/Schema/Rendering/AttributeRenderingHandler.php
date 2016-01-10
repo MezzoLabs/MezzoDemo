@@ -245,7 +245,7 @@ abstract class AttributeRenderingHandler
             $checked = in_array($id, $checkedBoxes);
 
 
-        return $this->formBuilder()->checkbox($this->name() . '[' . $id . ']', 1, $checked);
+        return $this->formBuilder()->checkbox($this->name() . '[' . $id . ']', $id, $checked);
     }
 
 

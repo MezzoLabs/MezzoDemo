@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
 
         \MezzoLabs\Mezzo\Core\Permission\PermissionGuard::setActive(false);
 
+        $this->call('CategoryTableSeeder');
+
         $this->call('CountriesSeeder');
         $this->command->info('Seeded the countries!');
 

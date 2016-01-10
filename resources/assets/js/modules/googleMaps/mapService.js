@@ -1,5 +1,5 @@
 /*@ngInject*/
-export default function mapService(){
+export default function mapService() {
     return {
         map: null
     };
