@@ -14,7 +14,7 @@
                     @foreach($group->visibleModules() as $module )
 
                         <li class="{{ cockpit_html()->css('sidebar', $module) }}">
-                            <a href="mezzo/{{ $module->uri() }}">
+                            <a href="mezzo/{{ $module->uri() }}" data-mezzo-href-prevent>
                                 <i class="{{ $module->options('icon') }}"></i>
                                 <span>{{ $module->title() }}</span>
 

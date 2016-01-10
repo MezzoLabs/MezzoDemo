@@ -4,7 +4,11 @@
     <div class="col-md-6">
         <div class="form-group">
             <label>Google Search</label>
-            <input type="text" class="google_search form-control"/>
+            <input type="text" class="google_search form-control"
+                   data-mezzo-google-maps-search data-street="address[street]"
+                   data-street-number="address[street_extra]" data-street="address[street]"
+                   data-postal-code="address[zip]" data-city="address[city]"
+                   data-latitude="address[latitude]" data-longitude="address[longitude]"/>
         </div>
     </div>
     <div class="col-md-3">
