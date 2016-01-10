@@ -10,7 +10,6 @@
     "angular-ui-router": "~0.2.15",
     "animate.css": "~3.4.0",
     "awesome-bootstrap-checkbox": "~0.3.5",
-    "bootstrap-datepicker": "~1.5.0",
     "bootstrap-sass": "3.x",
     "font-awesome": "4.x",
     "jquery.maskedinput": "~1.4.1",
