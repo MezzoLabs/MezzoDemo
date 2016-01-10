@@ -34,6 +34,15 @@ trait HandlesLockableApiResources
         return $this->lockedResponse($resource);
     }
 
+    public function unlock(UpdateResourceRequest $request, $id)
+    {
+        $resource = $this->repository()->findOrFail($id);
+
+        $resource->unlock();
+
+        return $this->lockedResponse($resource);
+    }
+
     private function lockedResponse(LockableResource $resource)
     {
         return $this->response()->withArray(['data' => [
