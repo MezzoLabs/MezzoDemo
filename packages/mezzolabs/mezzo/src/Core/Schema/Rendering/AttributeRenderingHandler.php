@@ -179,7 +179,7 @@ abstract class AttributeRenderingHandler
     }
 
     /**
-     * @return \Illuminate\Support\Collection
+     * @return array
      */
     public function htmlAttributes()
     {

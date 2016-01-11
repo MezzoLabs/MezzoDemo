@@ -7,27 +7,27 @@ use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
 /**
-*-------------------------------------------------------------------------------------------------------------------
-*
-* AUTO GENERATED - MEZZO - MODEL PARENT
-*
-*-------------------------------------------------------------------------------------------------------------------
-*
+ *-------------------------------------------------------------------------------------------------------------------
+ *
+ * AUTO GENERATED - MEZZO - MODEL PARENT
+ *
+ *-------------------------------------------------------------------------------------------------------------------
+ *
  * Please do not edit, use "App\User" instead. Thank you.
-*
-*-------------------------------------------------------------------------------------------------------------------
-* Welcome to the model parent. This file is auto generated and tells Mezzo something about
-* your model. If you feel the need to overwrite something use the child class.
-*
-* App\Mezzo\Generated\ModelParents\MezzoUser
-*
+ *
+ *-------------------------------------------------------------------------------------------------------------------
+ * Welcome to the model parent. This file is auto generated and tells Mezzo something about
+ * your model. If you feel the need to overwrite something use the child class.
+ *
+ * App\Mezzo\Generated\ModelParents\MezzoUser
+ *
  * @property integer $id
  * @property string $name
  * @property string $email
  * @property string $password
  * @property string $remember_token
-* @property \Carbon\Carbon $created_at
-* @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  * @property boolean $backend
  * @property boolean $confirmed
  * @property string $confirmation_code
@@ -41,7 +41,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  * @property \App\ShoppingBasket $shoppingBasket
  * @property EloquentCollection $tutorials
  * @property EloquentCollection $roles
-*/
+ */
 abstract class MezzoUser extends \App\Mezzo\BaseModel
 {
     use IsMezzoModel;
@@ -57,21 +57,21 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     */
 
     /**
-    * The table associated with the model.
-    *
+     * The table associated with the model.
+     *
      * @var string
-    */
+     */
     protected $table = 'users';
 
     /**
-    * Set of rules that will be validated in resource requests.
-    *
+     * Set of rules that will be validated in resource requests.
+     *
      * @var array
-    */
+     */
     protected $rules = [
         'name' => "required|max:255",
         'email' => "required|email|max:255|unique:users",
-        'password' => "required|confirmed|min:6", 
+        'password' => "required|confirmed|min:6",
         'remember_token' => "",
         'backend' => "",
         'confirmed' => "",
@@ -79,10 +79,10 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     ];
 
     /**
-    * The attributes that should be hidden for arrays.
-    *
+     * The attributes that should be hidden for arrays.
+     *
      * @var array
-    */
+     */
     protected $hidden = [
         "remember_token",
         "password",
@@ -90,17 +90,18 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     ];
 
     /**
-    * The attributes that are mass assignable.
-    *
+     * The attributes that are mass assignable.
+     *
      * @var array
-    */
+     */
     protected $fillable = [
-        "name", 
+        "name",
         "email",
         "password",
         "roles",
-        "confirmation_code", 
+        "confirmation_code",
         "confirmed",
+        "backend",
         "created_at"
     ];
 
@@ -132,68 +133,61 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     */
 
     /**
-    * Attribute annotation property for id
-    *
+     * Attribute annotation property for id
+     *
      * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\PrimaryKeyInput", hidden="")
-    * @var integer            
-    */
+     * @var integer
+     */
     protected $_id;
 
     /**
-    * Attribute annotation property for name
-    *
+     * Attribute annotation property for name
+     *
      * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
-    * @var string            
-    */
+     * @var string
+     */
     protected $_name;
 
     /**
-    * Attribute annotation property for email
-    *
+     * Attribute annotation property for email
+     *
      * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\EmailInput", hidden="")
-    * @var string            
-    */
+     * @var string
+     */
     protected $_email;
 
     /**
-    * Attribute annotation property for password
-    *
+     * Attribute annotation property for password
+     *
      * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\PasswordInput", hidden="index")
-    * @var string            
-    */
+     * @var string
+     */
     protected $_password;
 
     /**
-    * Attribute annotation property for remember_token
-    *
+     * Attribute annotation property for remember_token
+     *
      * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
-    * @var string            
-    */
+     * @var string
+     */
     protected $_remember_token;
 
     /**
-    * Attribute annotation property for created_at
-    *
+     * Attribute annotation property for created_at
+     *
      * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="create,update")
-    * @var \Carbon\Carbon            
-    */
+     * @var \Carbon\Carbon
+     */
     protected $_created_at;
 
     /**
-    * Attribute annotation property for updated_at
-    *
+     * Attribute annotation property for updated_at
+     *
      * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="index")
-    * @var \Carbon\Carbon            
-    */
+     * @var \Carbon\Carbon
+     */
     protected $_updated_at;
 
-    /**
-     * Attribute annotation property for backend
-     *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\CheckboxInput", hidden="")
-     * @var boolean
-     */
-    protected $_backend;
 
     /**
      * Attribute annotation property for confirmed
@@ -202,6 +196,14 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
      * @var boolean
      */
     protected $_confirmed;
+
+    /**
+     * Attribute annotation property for backend
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\CheckboxInput", hidden="")
+     * @var boolean
+     */
+    protected $_backend;
 
     /**
      * Attribute annotation property for confirmation_code
