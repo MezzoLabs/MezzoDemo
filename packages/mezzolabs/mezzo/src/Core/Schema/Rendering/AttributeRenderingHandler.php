@@ -172,7 +172,7 @@ abstract class AttributeRenderingHandler
      */
     public function old($attributeName = "")
     {
-        if(empty($attributeName))
+        if (empty($attributeName))
             $attributeName = $this->dotNotationName();
 
         return old($attributeName, false);
@@ -208,17 +208,15 @@ abstract class AttributeRenderingHandler
      * Get the string of a element that is nested in this form
      *
      * @param string $nestedAttributeName
-     * @param array $attributes
+     * @param array $options
      * @return mixed
      * @throws AttributeRenderingException
      * @throws \MezzoLabs\Mezzo\Exceptions\ReflectionException
      */
-    public function renderNested($nestedAttributeName, array $attributes = [])
+    public function renderNested($nestedAttributeName, array $options = [])
     {
-        $options = [
-            'parent' => $this,
-            'attributes' => $attributes
-        ];
+
+        $options['parent'] = $this;
 
         $nestedModel = $this->relationSide()->otherModelReflection()->schema();
 

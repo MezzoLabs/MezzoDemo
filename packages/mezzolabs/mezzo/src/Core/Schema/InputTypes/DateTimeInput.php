@@ -12,4 +12,8 @@ class DateTimeInput extends TextInput
 
     protected $variableType = '\\' . Carbon::class;
 
+    protected $htmlAttributes = [
+        'data-mezzo-select2' => 1
+    ];
+
 }

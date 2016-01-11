@@ -11599,6 +11599,15 @@ a {
   padding-right: 10px;
 }
 
+.panel .panel-tabs .nav-tabs > li > a {
+  margin-top: -1px;
+  border-radius: 0px;
+}
+
+.panel .panel-tabs .nav-tabs > li:first-child > a {
+  border-left: 0px;
+}
+
 .panel .alert {
   border-radius: 0px;
   margin-top: -1px;

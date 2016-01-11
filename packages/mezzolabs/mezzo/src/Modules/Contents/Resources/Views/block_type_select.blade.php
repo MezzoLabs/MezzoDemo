@@ -1,6 +1,7 @@
-<div class="row">
-    <div class="col-md-9">
-        <div class="content-blocks" ui-sortable="vm.contentBlockService.sortableOptions" ng-model="vm.contentBlockService.contentBlocks">
+<div style="display: flex">
+    <div style="display: flex; flex-grow: 1; flex-direction: column;">
+        <div class="content-blocks" style="flex-grow: 1" ui-sortable="vm.contentBlockService.sortableOptions"
+             ng-model="vm.contentBlockService.contentBlocks">
             <div class="content-block" ng-repeat="block in vm.contentBlockService.contentBlocks">
                 <div class="content-block-heading">
                     <b>@{{ block.title }}</b>
@@ -16,9 +17,7 @@
         </div>
 
     </div>
-    <div class="col-md-3">
-        <h3>Block Types</h3>
-
+    <div style="display: flex; flex-grow: 0; flex-direction: column; padding: 10px;">
         <div class="list-group">
             @foreach(\MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar::make()->all() as $blockType)
                 <button type="button" class="list-group-item"
