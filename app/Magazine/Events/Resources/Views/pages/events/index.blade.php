@@ -30,10 +30,11 @@
                     </div>
                     <div class="col-md-4">
                         <label>Provider</label>
+
                         <select name="event_provider_id" class="form-control">
-                            <option value="1">Marc</option>
-                            <option value="2">Simon</option>
-                            <option value="3">Dei Mudda</option>
+                            @foreach($allProviders as $provider)
+                                <option value="{{ $provider->id }}">{{ $provider->label }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-4 pull-right">
