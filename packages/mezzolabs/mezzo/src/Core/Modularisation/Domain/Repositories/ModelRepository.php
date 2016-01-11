@@ -420,7 +420,7 @@ class ModelRepository extends EloquentRepository
 
     public function exists($id, $table = null)
     {
-        if (!$table) $table = $this->modelReflection()->tableName();
+        if (!$table) $table = $this->tableName();
 
         return parent::exists($id, $table);
     }
@@ -432,6 +432,11 @@ class ModelRepository extends EloquentRepository
     protected function getRelation($relation)
     {
         return $this->modelInstance()->$relation();
+    }
+
+    public function tableName()
+    {
+        return $this->modelReflection()->tableName();
     }
 
 

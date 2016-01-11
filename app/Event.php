@@ -76,5 +76,13 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
         return $this->belongsTo(EventProvider::class);
     }
 
+    public function scopeNearLocation($latitude, $longitude, $km)
+    {
+        return $this->whereHas('address', function ($q) use ($latitude, $longitude, $km){
+            $q->where('latitude', '=', $latitude)
+                ->where('longitude', '=', $longitude )
+                ->where('longitude', '=', $km );
 
+        })->get();
+    }
 }
