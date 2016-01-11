@@ -19,6 +19,10 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
 
     use CanBeLocked;
 
+    public $searchable = [
+        'title', 'description'
+    ];
+
     protected $sluggable = [
         'build_from' => 'title',
         'save_to' => 'slug',

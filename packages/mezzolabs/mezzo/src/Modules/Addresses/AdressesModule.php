@@ -7,6 +7,8 @@ namespace MezzoLabs\Mezzo\Modules\Addresses;
 use App\Address;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Http\Transformers\TransformerRegistrar;
+use MezzoLabs\Mezzo\Modules\Addresses\Http\Transformers\DistanceTransformerPlugin;
 use MezzoLabs\Mezzo\Modules\Addresses\Schema\Rendering\AddressAttributeRenderer;
 
 class AddressesModule extends ModuleProvider
@@ -41,6 +43,10 @@ class AddressesModule extends ModuleProvider
         $addressReflection = $this->modelReflectionSets->get(Address::class);
 
         $this->registerAttributeRenderer(AddressAttributeRenderer::class);
+
+        $transformers = TransformerRegistrar::make();
+
+        $transformers->registerPlugin(new DistanceTransformerPlugin());
 
         //dd($addressReflection->relationships());
     }

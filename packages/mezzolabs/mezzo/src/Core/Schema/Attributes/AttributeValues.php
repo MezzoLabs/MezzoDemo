@@ -36,7 +36,7 @@ class AttributeValues extends StrictCollection
      * @return AttributeValues
      * @throws HttpException
      */
-    public static function fromArray(ModelSchema $model, $array)
+    public static function fromArray(ModelSchema $model, $array, bool $strict = false)
     {
         $values = new AttributeValues();
 
@@ -46,9 +46,12 @@ class AttributeValues extends StrictCollection
             if (in_array($key, ["_token", "_method"]) || static::isConfirmation($key, $array))
                 continue;
 
-            if (!$attribute) {
-                throw new HttpException("\"" . $key . "\" is not a valid attribute in " . $model->className());
+            if (!$attribute && !$strict) {
+                continue;
+            }
 
+            if (!$attribute && $strict) {
+                throw new HttpException("\"" . $key . "\" is not a valid attribute in " . $model->className());
             }
 
             $value = new AttributeValue($value, $attribute);
@@ -103,7 +106,7 @@ class AttributeValues extends StrictCollection
     public function inForeignTablesOnly()
     {
         return $this->filter(function (AttributeValue $value) {
-            return ! $value->isInMainTable();
+            return !$value->isInMainTable();
         });
     }
 

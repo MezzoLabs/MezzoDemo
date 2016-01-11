@@ -48,7 +48,7 @@ class QueryObject
         $searchQuery = new SearchQuery($request->get('q', ''), $request->modelReflection()->searchable());
         $sortings = Sortings::makeByString($request->get('sort', ''));
         $filters = Filters::makeByArray($request->all(), $request->modelReflection());
-        $scopes = Scopes::makeFromString($request->get('scopes', ''));
+        $scopes = Scopes::make($request->get('scopes', ''));
 
         return (new static())
             ->withScopes($scopes)

@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
 use MezzoLabs\Mezzo\Core\Collection\StrictCollection;
+use MezzoLabs\Mezzo\Core\Collection\StrictCollectionException;
 use MezzoLabs\Mezzo\Core\Helpers\Parameter;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 
@@ -34,7 +35,12 @@ class Scopes extends StrictCollection
         return $value instanceof Scope;
     }
 
-    public static function makeFromString($scopesString)
+    /**
+     * @param string $scopesString
+     * @return Scopes
+     * @throws InvalidArgumentException
+     */
+    public static function makeFromString(string $scopesString) : Scopes
     {
         $scopes = new static();
 
@@ -49,6 +55,35 @@ class Scopes extends StrictCollection
 
         return $scopes;
     }
+
+    /**
+     * @param array $scopesArray
+     * @return Scopes
+     * @throws InvalidArgumentException
+     */
+    public static function makeFromArray(array $scopesArray) : Scopes
+    {
+
+        $scopes = new static();
+
+        foreach ($scopesArray as $name => $parameters) {
+            $scopes->add(new Scope($name, $parameters));
+        }
+
+        return $scopes;
+    }
+
+    public static function make($scopes)
+    {
+        if (is_string($scopes))
+            return static::makeFromString($scopes);
+
+        if (is_array($scopes))
+            return static::makeFromArray($scopes);
+
+        throw new StrictCollectionException('Can only make scopes from strings or arrays.');
+    }
+
 
     /**
      * Synonym for push.
@@ -68,7 +103,7 @@ class Scopes extends StrictCollection
     public function toString()
     {
         $scopes = [];
-        $this->each(function(Scope $scope ) use (&$scopes){
+        $this->each(function (Scope $scope) use (&$scopes) {
             $scopes[] = $scope->toString();
         });
 

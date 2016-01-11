@@ -9,34 +9,39 @@
     <div class="panel panel-bordered">
         <div class="panel-body">
 
-            <div class="row">
-                <div class="col-md-3">
-                    <label>Search</label>
-                    <input type="search" class="form-control"
-                           placeholder="search">
-                </div>
-                <div class="col-md-5">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <label>Location</label>
-                            <input type="search" class="form-control"
-                                   placeholder="Google search">
-                        </div>
-                        <div class="col-md-4">
-                            <label>Distance (km)</label>
-                            <input class="form-control" type="number"/>
+            <form method="GET" action="http://mezzo.dev/api/events">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Search</label>
+                        <input type="search" name="q" class="form-control"
+                               placeholder="search">
+                    </div>
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label>Zipcode</label>
+                                <input name="scopes[nearZip][0]" type="number" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label>Distance (km)</label>
+                                <input name="scopes[nearZip][1]" class="form-control" type="number"/>
+                            </div>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <label>Provider</label>
+                        <select name="event_provider_id" class="form-control">
+                            <option value="1">Marc</option>
+                            <option value="2">Simon</option>
+                            <option value="3">Dei Mudda</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 pull-right">
+                        <br/>
+                        <input type="submit" class="btn btn-default btn-block">
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <label>Provider</label>
-                    <select class="form-control">
-                        <option>Marc</option>
-                        <option>Simon</option>
-                        <option>Dei Mudda</option>
-                    </select>
-                </div>
-            </div>
+            </form>
 
 
         </div>
