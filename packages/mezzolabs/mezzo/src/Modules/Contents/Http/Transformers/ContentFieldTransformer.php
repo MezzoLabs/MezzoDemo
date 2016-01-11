@@ -33,7 +33,9 @@ class ContentFieldTransformer extends EloquentModelTransformer
         if (!$model instanceof ContentField)
             throw new InvalidArgumentException($model);
 
-        return parent::transform($model);
+        return [
+            $model->name => $model->value
+        ];
 
     }
 }

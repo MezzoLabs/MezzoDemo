@@ -32,11 +32,14 @@ class RelationAttributeMultipleRenderer extends AttributeRenderingHandler
     {
         $list = $this->makeEloquentList(false);
 
+        $attributes = $this->htmlAttributes();
+        $attributes['data-mezzo-select2'] = 1;
+
         return $this->formBuilder()->select(
             $this->name(),
             $list,
             $this->value(),
-            $this->htmlAttributes()
+            $attributes
         );
     }
 

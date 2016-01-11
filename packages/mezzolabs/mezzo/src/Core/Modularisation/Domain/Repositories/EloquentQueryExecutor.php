@@ -53,9 +53,14 @@ class EloquentQueryExecutor implements QueryExecutorContract
 
         //TODO: Improve this please
 
-        foreach ($searchQuery->columns() as $column) {
-            $this->eloquentBuilder->orWhere($column, 'LIKE', '%' . $searchQuery->value() . '%');
-        }
+
+        $this->eloquentBuilder->where(function ($subQuery) use ($searchQuery) {
+            foreach ($searchQuery->columns() as $column) {
+                $subQuery->orWhere($column, 'LIKE', '%' . $searchQuery->value() . '%');
+            }
+        });
+
+
 
     }
 

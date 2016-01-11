@@ -92,6 +92,18 @@
 
   }
 
+  .panel-tabs {
+
+    .nav-tabs > li > a {
+      margin-top: -1px;
+      border-radius: 0px;
+    }
+
+    .nav-tabs > li:first-child > a {
+      border-left: 0px;
+    }
+  }
+
   .alert {
     border-radius: 0px;
     margin-top: -1px;

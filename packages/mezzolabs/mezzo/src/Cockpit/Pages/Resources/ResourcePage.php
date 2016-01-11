@@ -142,9 +142,13 @@ abstract class ResourcePage extends ModulePage
         return implode('.', $slugParts);
     }
 
+    /**
+     * @param string $type
+     * @return ModulePage|null
+     * @throws \MezzoLabs\Mezzo\Exceptions\InvalidArgumentException
+     */
     public function sibling(string $type = "index")
     {
-
         $types = static::$types;
 
         $types = array_map(function ($c_type) {
@@ -153,8 +157,30 @@ abstract class ResourcePage extends ModulePage
 
         $name = str_replace($types, ucfirst($type), get_class($this));
 
+        if (!class_exists($name)) {
+            return null;
+        }
 
         return $this->module->makePage($name);
+    }
+
+    public function isType(string $type)
+    {
+        return strtolower($this->getType()) == strtolower($type);
+    }
+
+    public function getType() : string
+    {
+        if ($this instanceof CreateResourcePage)
+            return "create";
+
+        if ($this instanceof EditResourcePage)
+            return "edit";
+
+        if ($this instanceof IndexResourcePage)
+            return "index";
+
+        return "";
     }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Magazine\Events\Http\Controllers;
 
+use App\EventProvider;
 use App\Magazine\Events\Http\Pages\Events\CreateEventPage;
 use App\Magazine\Events\Http\Pages\Events\EditEventPage;
 use App\Magazine\Events\Http\Pages\Events\IndexEventPage;
@@ -24,7 +25,9 @@ class EventController extends CockpitResourceController
      */
     public function index(IndexResourceRequest $request)
     {
-        return $this->page(IndexEventPage::class);
+        return $this->page(IndexEventPage::class, [
+            'allProviders' => EventProvider::all()
+        ]);
     }
 
 

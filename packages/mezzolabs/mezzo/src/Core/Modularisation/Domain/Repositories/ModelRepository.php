@@ -146,7 +146,7 @@ class ModelRepository extends EloquentRepository
      */
     public function create(array $data)
     {
-        $values = $this->values($data);
+        $values = $this->values($data, true);
 
         $modelInstance = $this->modelInstance();
 
@@ -248,9 +248,9 @@ class ModelRepository extends EloquentRepository
      * @param array $data
      * @return AttributeValues
      */
-    protected function values(array $data)
+    protected function values(array $data, bool $strict = false)
     {
-        return AttributeValues::fromArray($this->modelSchema(), $data);
+        return AttributeValues::fromArray($this->modelSchema(), $data, $strict);
     }
 
     /**
@@ -286,7 +286,7 @@ class ModelRepository extends EloquentRepository
      */
     public function update(array $data, $id, $attribute = "id")
     {
-        $values = $this->values($data);
+        $values = $this->values($data, true);
 
         $model = $this->findByOrFail($attribute, $id);
 
@@ -420,7 +420,7 @@ class ModelRepository extends EloquentRepository
 
     public function exists($id, $table = null)
     {
-        if (!$table) $table = $this->modelReflection()->tableName();
+        if (!$table) $table = $this->tableName();
 
         return parent::exists($id, $table);
     }
@@ -432,6 +432,11 @@ class ModelRepository extends EloquentRepository
     protected function getRelation($relation)
     {
         return $this->modelInstance()->$relation();
+    }
+
+    public function tableName()
+    {
+        return $this->modelReflection()->tableName();
     }
 
 
