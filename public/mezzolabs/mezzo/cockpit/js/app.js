@@ -23,7 +23,7 @@ var app = angular.module('Mezzo', ['ui.router', 'ui.sortable', 'ngMessages', 'an
 
 app.config(_config2.default);
 
-},{"./common":12,"./modules/contentBlocks":16,"./modules/fileManager":26,"./modules/googleMaps":27,"./modules/resource":37,"./setup/config":40,"./setup/jquery":41}],2:[function(require,module,exports){
+},{"./common":13,"./modules/contentBlocks":18,"./modules/fileManager":29,"./modules/googleMaps":30,"./modules/resource":40,"./setup/config":43,"./setup/jquery":44}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -55,7 +55,7 @@ exports.default = RelationInputController;
 },{}],3:[function(require,module,exports){
 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -69,7 +69,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Api = function () {
+var Api = (function () {
     function Api($http) {
         _classCallCheck(this, Api);
 
@@ -129,14 +129,14 @@ var Api = function () {
     }]);
 
     return Api;
-}();
+})();
 
 exports.default = Api;
 
 },{"./ModelApi":4}],4:[function(require,module,exports){
 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -144,7 +144,7 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var ModelApi = function () {
+var ModelApi = (function () {
     function ModelApi(api, modelName) {
         _classCallCheck(this, ModelApi);
 
@@ -187,7 +187,7 @@ var ModelApi = function () {
     }]);
 
     return ModelApi;
-}();
+})();
 
 exports.default = ModelApi;
 
@@ -271,6 +271,39 @@ function compileHtmlDirective($parse, $compile) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.default = dateTimePickerDirective;
+/*@ngInject*/
+function dateTimePickerDirective() {
+    return {
+        restrict: 'A',
+        link: link
+    };
+
+    function link(scope, element, attributes) {
+        var options = {
+            icons: {
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar-o',
+                up: 'fa fa-chevron-up',
+                down: 'fa fa-chevron-down',
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-next',
+                today: 'fa fa-crosshairs',
+                clear: 'fa fa-trash-o',
+                close: 'fa fa-times-circle-o'
+            }
+        };
+
+        $(element).datetimepicker(options);
+    }
+}
+
+},{}],9:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.default = enterDirective;
 /*@ngInject*/
 function enterDirective() {
@@ -289,7 +322,7 @@ function enterDirective() {
     }
 }
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -311,7 +344,7 @@ function hasControllerService($controller) {
     }
 }
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -332,7 +365,7 @@ function hrefPreventDirective() {
     }
 }
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -372,7 +405,7 @@ function hrefReloadDirective() {
     }
 }
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var _compileDirective = require('./compileDirective');
@@ -399,6 +432,14 @@ var _hrefPreventDirective = require('./hrefPreventDirective');
 
 var _hrefPreventDirective2 = _interopRequireDefault(_hrefPreventDirective);
 
+var _select2Directive = require('./select2Directive');
+
+var _select2Directive2 = _interopRequireDefault(_select2Directive);
+
+var _dateTimePickerDirective = require('./dateTimePickerDirective');
+
+var _dateTimePickerDirective2 = _interopRequireDefault(_dateTimePickerDirective);
+
 var _uidService = require('./uidService.js');
 
 var _uidService2 = _interopRequireDefault(_uidService);
@@ -421,11 +462,13 @@ _module.directive('mezzoEnter', _enterDirective2.default);
 _module.directive('mezzoRelationInput', _relationInputDirective2.default);
 _module.directive('mezzoHrefReload', _hrefReloadDirective2.default);
 _module.directive('mezzoHrefPrevent', _hrefPreventDirective2.default);
+_module.directive('mezzoSelect2', _select2Directive2.default);
+_module.directive('mezzoDatetimepicker', _dateTimePickerDirective2.default);
 _module.factory('uid', _uidService2.default);
 _module.factory('api', _apiService2.default);
 _module.factory('hasController', _hasControllerService2.default);
 
-},{"./api/apiService":5,"./compileDirective":6,"./compileHtmlDirective":7,"./enterDirective.js":8,"./hasControllerService":9,"./hrefPreventDirective":10,"./hrefReloadDirective":11,"./relationInputDirective":13,"./uidService.js":14}],13:[function(require,module,exports){
+},{"./api/apiService":5,"./compileDirective":6,"./compileHtmlDirective":7,"./dateTimePickerDirective":8,"./enterDirective.js":9,"./hasControllerService":10,"./hrefPreventDirective":11,"./hrefReloadDirective":12,"./relationInputDirective":14,"./select2Directive":15,"./uidService.js":16}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -455,7 +498,26 @@ function relationInputDirective() {
     };
 }
 
-},{"./RelationInputController":2}],14:[function(require,module,exports){
+},{"./RelationInputController":2}],15:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = select2Directive;
+/*@ngInject*/
+function select2Directive() {
+    return {
+        restrict: 'A',
+        link: link
+    };
+
+    function link(scope, element, attributes) {
+        $(element).select2();
+    }
+}
+
+},{}],16:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -473,10 +535,10 @@ function nextUid() {
     return id++;
 }
 
-},{}],15:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -492,7 +554,7 @@ function registerContentBlockFactory(api) {
     };
 }
 
-var ContentBlockService = function () {
+var ContentBlockService = (function () {
     function ContentBlockService(api) {
         _classCallCheck(this, ContentBlockService);
 
@@ -515,7 +577,7 @@ var ContentBlockService = function () {
                 key: key,
                 hash: hash,
                 title: title,
-                nameInForm: 'fuck_off_form2js' + this.currentId++,
+                nameInForm: 'num' + this.currentId++,
                 template: null
             };
 
@@ -546,9 +608,9 @@ var ContentBlockService = function () {
     }]);
 
     return ContentBlockService;
-}();
+})();
 
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 var _contentBlockFactory = require('./contentBlockFactory');
@@ -561,7 +623,7 @@ var _module = angular.module('MezzoContentBlocks', []);
 
 _module.factory('contentBlockFactory', _contentBlockFactory2.default);
 
-},{"./contentBlockFactory":15}],17:[function(require,module,exports){
+},{"./contentBlockFactory":17}],19:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -584,10 +646,10 @@ var Category = function Category(label, icon) {
 
 exports.default = Category;
 
-},{}],18:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -609,7 +671,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var CreateFileController = function () {
+var CreateFileController = (function () {
 
     /*@ngInject*/
 
@@ -870,7 +932,6 @@ var CreateFileController = function () {
                     Accept: 'application/vnd.MezzoLabs.v1+json'
                 }
             }).then(function (response) {
-                console.log(response);
                 _this4.initFiles();
             }).catch(function (err) {
                 console.error(err);
@@ -891,14 +952,14 @@ var CreateFileController = function () {
     }]);
 
     return CreateFileController;
-}();
+})();
 
 exports.default = CreateFileController;
 
-},{"./File":19,"./Folder":21,"./categories":22}],19:[function(require,module,exports){
+},{"./File":21,"./Folder":23,"./categories":24}],21:[function(require,module,exports){
 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -906,7 +967,7 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var File = function () {
+var File = (function () {
     function File(apiFile) {
         _classCallCheck(this, File);
 
@@ -978,14 +1039,14 @@ var File = function () {
     }]);
 
     return File;
-}();
+})();
 
 exports.default = File;
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -999,7 +1060,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var FilePickerController = function () {
+var FilePickerController = (function () {
 
     /*@ngInject*/
 
@@ -1102,13 +1163,15 @@ var FilePickerController = function () {
     }, {
         key: 'onSelect',
         value: function onSelect(selectedFile) {
-            if (!this.isMultiple()) {
-                this.files.forEach(function (file) {
-                    return file.selected = false;
-                });
-
-                selectedFile.selected = true;
+            if (this.isMultiple() || !selectedFile.selected) {
+                return;
             }
+
+            this.files.forEach(function (file) {
+                return file.selected = false;
+            });
+
+            selectedFile.selected = true;
         }
     }, {
         key: 'selectedFiles',
@@ -1137,7 +1200,7 @@ var FilePickerController = function () {
         key: 'confirmSelected',
         value: function confirmSelected() {
             var selected = this.selectedFiles();
-            var $field = $('input[name="' + this.name + '"]');
+            var $field = this.inputField();
 
             if (selected.length === 1) {
                 $field.val(selected[0].id);
@@ -1157,14 +1220,38 @@ var FilePickerController = function () {
         value: function countSelected() {
             return this.selectedFiles().length;
         }
+    }, {
+        key: 'acquireInputValue',
+        value: function acquireInputValue(value) {
+            var values = [value];
+
+            if (value.indexOf(',') !== -1) {
+                values = value.split(',');
+            }
+
+            for (var i = 0; i < values.length; i++) {
+                values[i] = parseInt(values[i], 10);
+            }
+
+            this.files.forEach(function (file) {
+                if (_.contains(values, file.id)) {
+                    file.selected = true;
+                }
+            });
+        }
+    }, {
+        key: 'inputField',
+        value: function inputField() {
+            return $('input[name="' + this.name + '"]');
+        }
     }]);
 
     return FilePickerController;
-}();
+})();
 
 exports.default = FilePickerController;
 
-},{"./File":19}],21:[function(require,module,exports){
+},{"./File":21}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1183,7 +1270,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Folder = function (_File) {
+var Folder = (function (_File) {
     _inherits(Folder, _File);
 
     function Folder(name) {
@@ -1201,11 +1288,11 @@ var Folder = function (_File) {
     }
 
     return Folder;
-}(_File3.default);
+})(_File3.default);
 
 exports.default = Folder;
 
-},{"./File":19}],22:[function(require,module,exports){
+},{"./File":21}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1236,7 +1323,7 @@ function documentFilter(file) {
     return file.isDocument();
 }
 
-},{"./Category":17}],23:[function(require,module,exports){
+},{"./Category":19}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1259,7 +1346,7 @@ function draggableDirective() {
     }
 }
 
-},{}],24:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1291,7 +1378,7 @@ function droppableDirective() {
     }
 }
 
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1322,7 +1409,35 @@ function filePickerDirective() {
     };
 }
 
-},{"./FilePickerController":20}],26:[function(require,module,exports){
+},{"./FilePickerController":22}],28:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = filePickerValueDirective;
+/*@ngInject*/
+function filePickerValueDirective() {
+    return {
+        require: '^mezzoFilePicker',
+        restrict: 'A',
+        link: link
+    };
+
+    function link(scope, element, attributes, controller) {
+        scope.$watch(function () {
+            return $(element).val();
+        }, function (newValue, oldValue) {
+            if (newValue === oldValue || newValue === undefined) {
+                return;
+            }
+
+            controller.acquireInputValue(newValue);
+        });
+    }
+}
+
+},{}],29:[function(require,module,exports){
 'use strict';
 
 var _draggableDirective = require('./draggableDirective.js');
@@ -1337,6 +1452,10 @@ var _filePickerDirective = require('./filePickerDirective');
 
 var _filePickerDirective2 = _interopRequireDefault(_filePickerDirective);
 
+var _filePickerValueDirective = require('./filePickerValueDirective');
+
+var _filePickerValueDirective2 = _interopRequireDefault(_filePickerValueDirective);
+
 var _CreateFileController = require('./CreateFileController');
 
 var _CreateFileController2 = _interopRequireDefault(_CreateFileController);
@@ -1348,9 +1467,10 @@ var _module = angular.module('MezzoFileManager', []);
 _module.directive('mezzoDraggable', _draggableDirective2.default);
 _module.directive('mezzoDroppable', _droppableDirective2.default);
 _module.directive('mezzoFilePicker', _filePickerDirective2.default);
+_module.directive('mezzoFilePickerValue', _filePickerValueDirective2.default);
 _module.controller('CreateFileController', _CreateFileController2.default);
 
-},{"./CreateFileController":18,"./draggableDirective.js":23,"./droppableDirective.js":24,"./filePickerDirective":25}],27:[function(require,module,exports){
+},{"./CreateFileController":20,"./draggableDirective.js":25,"./droppableDirective.js":26,"./filePickerDirective":27,"./filePickerValueDirective":28}],30:[function(require,module,exports){
 'use strict';
 
 var _mapService = require('./mapService');
@@ -1373,7 +1493,7 @@ _module.factory('mapService', _mapService2.default);
 _module.directive('mezzoGoogleMap', _mapDirective2.default);
 _module.directive('mezzoGoogleMapsSearch', _searchDirective2.default);
 
-},{"./mapDirective":28,"./mapService":29,"./searchDirective":30}],28:[function(require,module,exports){
+},{"./mapDirective":31,"./mapService":32,"./searchDirective":33}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1406,7 +1526,7 @@ function mapDirective(mapService) {
     }
 }
 
-},{}],29:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1420,7 +1540,7 @@ function mapService() {
     };
 }
 
-},{}],30:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1445,7 +1565,6 @@ function searchDirective(mapService) {
     };
 
     function link(scope, element, attributes) {
-        console.log(scope);
         var input = element[0];
         var autoCompleteOptions = {
             types: ['geocode']
@@ -1519,7 +1638,7 @@ function searchDirective(mapService) {
     }
 }
 
-},{}],31:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1532,10 +1651,10 @@ exports.default = {
     SHOW: 'show'
 };
 
-},{}],32:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -1543,7 +1662,7 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var CreateResourceController = function () {
+var CreateResourceController = (function () {
 
     /*@ngInject*/
 
@@ -1592,14 +1711,14 @@ var CreateResourceController = function () {
     }]);
 
     return CreateResourceController;
-}();
+})();
 
 exports.default = CreateResourceController;
 
-},{}],33:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -1607,16 +1726,17 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var EditResourceController = function () {
+var EditResourceController = (function () {
 
     /*@ngInject*/
 
-    function EditResourceController($scope, $stateParams, api, formDataService, contentBlockFactory) {
+    function EditResourceController($scope, $state, $stateParams, api, formDataService, contentBlockFactory) {
         var _this = this;
 
         _classCallCheck(this, EditResourceController);
 
         this.$scope = $scope;
+        this.$state = $state;
         this.$stateParams = $stateParams;
         this.api = api;
         this.formDataService = formDataService;
@@ -1635,7 +1755,6 @@ var EditResourceController = function () {
             this.modelApi = this.api.model(modelName);
 
             this.loadContent();
-            this.startResourceLocking();
         }
     }, {
         key: 'submit',
@@ -1646,9 +1765,7 @@ var EditResourceController = function () {
 
             var formData = this.formDataService.get();
 
-            this.modelApi.update(this.modelId, formData).then(function (model) {
-                console.log(model);
-            });
+            this.modelApi.update(this.modelId, formData);
         }
     }, {
         key: 'getFormData',
@@ -1665,12 +1782,15 @@ var EditResourceController = function () {
             this.modelApi.content(this.modelId).then(function (model) {
                 var blocks = model.content.data.blocks.data;
 
+                _this2.initLockable(model);
+
                 blocks.forEach(function (block) {
                     var hash = md5(block.class);
 
                     _this2.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
                 });
 
+                _this2.stripDataEnvelopes(model.content);
                 _this2.formDataService.set(model);
             });
         }
@@ -1689,7 +1809,9 @@ var EditResourceController = function () {
     }, {
         key: 'stopResourceLocking',
         value: function stopResourceLocking() {
-            clearInterval(this.lockTask);
+            if (this.lockTask) {
+                clearInterval(this.lockTask);
+            }
         }
     }, {
         key: 'lock',
@@ -1699,30 +1821,88 @@ var EditResourceController = function () {
     }, {
         key: 'onDestroy',
         value: function onDestroy() {
-            console.log('Well, looks like I have been murdered.');
             this.stopResourceLocking();
+        }
+    }, {
+        key: 'initLockable',
+        value: function initLockable(model) {
+            this.isLockable = _.has(model, '_locked_by');
+
+            if (!this.isLockable) {
+                return;
+            }
+
+            if (model._locked_for_user) {
+                return this.redirectToIndex(model._locked_by);
+            }
+
+            this.startResourceLocking();
+        }
+    }, {
+        key: 'redirectToIndex',
+        value: function redirectToIndex(lockedBy) {
+            var title = 'Oops...';
+            var message = 'You are not allowed to edit this resource while it is locked by ' + lockedBy + '!';
+
+            this.$state.go('index' + this.modelName.toLowerCase());
+            sweetAlert(title, message, 'error');
+        }
+    }, {
+        key: 'stripDataEnvelopes',
+        value: function stripDataEnvelopes(object) {
+            var _this4 = this;
+
+            if (!_.isObject(object)) {
+                return;
+            }
+
+            var keys = _.keys(object);
+
+            keys.forEach(function (key) {
+                var value = object[key];
+
+                _this4.stripDataEnvelopes(value);
+
+                if (key === 'data') {
+                    delete object[key];
+
+                    if (_.isArray(value)) {
+                        for (var i = 0; i < value.length; i++) {
+                            object['num' + i] = value[i];
+
+                            _this4.stripDataEnvelopes(value[i]);
+                        }
+
+                        return;
+                    }
+
+                    if (_.isObject(value)) {
+                        return _.assign(object, value);
+                    }
+                }
+            });
         }
     }]);
 
     return EditResourceController;
-}();
+})();
 
 exports.default = EditResourceController;
 
-},{}],34:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var IndexResourceController = function () {
+var IndexResourceController = (function () {
 
     /*@ngInject*/
 
@@ -1983,11 +2163,11 @@ var IndexResourceController = function () {
     }]);
 
     return IndexResourceController;
-}();
+})();
 
 exports.default = IndexResourceController;
 
-},{}],35:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2005,10 +2185,10 @@ function ShowResourceController() {
 
 exports.default = ShowResourceController;
 
-},{}],36:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -2016,7 +2196,7 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var FormDataService = function () {
+var FormDataService = (function () {
     function FormDataService() {
         _classCallCheck(this, FormDataService);
     }
@@ -2039,11 +2219,11 @@ var FormDataService = function () {
     }]);
 
     return FormDataService;
-}();
+})();
 
 exports.default = FormDataService;
 
-},{}],37:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 var _stateProvider = require('./stateProvider');
@@ -2086,7 +2266,7 @@ _module.controller('CreateResourceController', _CreateResourceController2.defaul
 _module.controller('EditResourceController', _EditResourceController2.default);
 _module.controller('ShowResourceController', _ShowResourceController2.default);
 
-},{"./CreateResourceController":32,"./EditResourceController":33,"./IndexResourceController":34,"./ShowResourceController":35,"./formDataService":36,"./registerStateDirective":38,"./stateProvider":39}],38:[function(require,module,exports){
+},{"./CreateResourceController":35,"./EditResourceController":36,"./IndexResourceController":37,"./ShowResourceController":38,"./formDataService":39,"./registerStateDirective":41,"./stateProvider":42}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2179,7 +2359,7 @@ function registerStateDirective($stateProvider, hasController) {
     }
 }
 
-},{"./Action":31}],39:[function(require,module,exports){
+},{"./Action":34}],42:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2195,7 +2375,7 @@ function stateProvider($stateProvider) {
     }
 }
 
-},{}],40:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2203,13 +2383,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = config;
 /*@ngInject*/
-function config($locationProvider, $urlRouterProvider, $httpProvider) {
+function config($locationProvider, $httpProvider) {
     $httpProvider.defaults.headers.common.Accept = 'application/vnd.MezzoLabs.v1+json';
 
     $locationProvider.html5Mode(true);
 }
 
-},{}],41:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict';
 
 $(function () {
@@ -2274,8 +2454,6 @@ $(function () {
     $.fn.editableform.buttons = '<button type="submit" class="btn btn-primary btn-sm editable-submit">' + '<i class=ion-checkmark></i>' + '</button>' + '<button type="button" class="btn btn-default btn-sm editable-cancel">' + '<i class="ion-close"></i>' + '</button>';
 
     $('.editable').editable();
-
-    //$('select').select2(); uncomment for model builder
 });
 
 },{}]},{},[1]);

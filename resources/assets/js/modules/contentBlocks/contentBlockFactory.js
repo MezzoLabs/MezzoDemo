@@ -23,7 +23,7 @@ class ContentBlockService {
             key: key,
             hash: hash,
             title: title,
-            nameInForm: 'fuck_off_form2js' + this.currentId++,
+            nameInForm: 'num' + this.currentId++,
             template: null
         };
 

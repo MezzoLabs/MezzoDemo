@@ -11,7 +11,7 @@
     {!! cockpit_stylesheet('/components/Ionicons/css/ionicons.min.css') !!}
     {!! cockpit_stylesheet('/components/font-awesome/css/font-awesome.min.css') !!}
     {!! cockpit_stylesheet('/components/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css') !!}
-    {!! cockpit_stylesheet('/components/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css') !!}
+    {!! cockpit_stylesheet('/components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') !!}
     {!! cockpit_stylesheet('/components/sweetalert2/dist/sweetalert2.css') !!}
     {!! cockpit_stylesheet('/components/gridster/dist/jquery.gridster.min.css') !!}
     {!! cockpit_stylesheet('/components/chosen/chosen.min.css') !!}
@@ -39,6 +39,8 @@
 {!! cockpit_script('/components/jquery-ui/jquery-ui.min.js') !!}
 {!! cockpit_script('/components/bootstrap-sass/assets/javascripts/bootstrap.js') !!}
 {!! cockpit_script('/components/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js') !!}
+{!! cockpit_script('/components/moment/min/moment.min.js') !!}
+{!! cockpit_script('/components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') !!}
 {!! cockpit_script('/components/select2/dist/js/select2.js') !!}
 {!! cockpit_script('/components/gridster/dist/jquery.gridster.min.js') !!}
 {!! cockpit_script('/components/angular/angular.js') !!}
@@ -51,7 +53,6 @@
 {!! cockpit_script('/components/chosen/chosen.jquery.min.js') !!}
 {!! cockpit_script('/components/pluralize/pluralize.js') !!}
 {!! cockpit_script('/components/sweetalert2/dist/sweetalert2.min.js') !!}
-{!! cockpit_script('/components/moment/min/moment.min.js') !!}
 {!! cockpit_script('/components/lodash/lodash.min.js') !!}
 {!! cockpit_script('/components/js-md5/build/md5.min.js') !!}
 {!! cockpit_script('/js/lib/form2js.js') !!}

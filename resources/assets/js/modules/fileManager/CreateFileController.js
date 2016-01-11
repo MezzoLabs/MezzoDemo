@@ -230,7 +230,6 @@ export default class CreateFileController {
                 Accept: 'application/vnd.MezzoLabs.v1+json'
             }
         }).then(response => {
-            console.log(response);
             this.initFiles();
         }).catch(err => {
             console.error(err);
