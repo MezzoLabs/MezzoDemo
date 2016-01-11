@@ -2,7 +2,8 @@
 
 
 @section('content')
-    <div class="wrapper" ng-init="vm.init('{!! $model_reflection->name() !!}')">
+    <div class="wrapper"
+         ng-init="vm.init('{!! $model_reflection->name() !!}',  {!! str_replace('"', "'", $model_reflection->defaultIncludes()->toJson()) !!})">
         <div class="panel panel-bordered">
             <div class="panel-heading">
                 @include('cockpit::partials.pages.heading_edit')

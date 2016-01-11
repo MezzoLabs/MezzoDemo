@@ -9,6 +9,7 @@ use App\Mezzo\Generated\ModelParents\MezzoEvent;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
+use Illuminate\Database\Eloquent\Builder;
 
 class Event extends MezzoEvent implements SluggableInterface, LockableResource
 {
@@ -76,13 +77,15 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
         return $this->belongsTo(EventProvider::class);
     }
 
-    public function scopeNearLocation($latitude, $longitude, $km)
+    public function scopeNearLocation(Builder $q1, $latitude, $longitude, $km = 10)
     {
-        return $this->whereHas('address', function ($q) use ($latitude, $longitude, $km){
-            $q->where('latitude', '=', $latitude)
-                ->where('longitude', '=', $longitude )
-                ->where('longitude', '=', $km );
+        $this->repository()->addNearLocationScope($q1, $latitude, $longitude, $km);
 
-        })->get();
+    }
+
+    public function scopeNearZip(Builder $q1, $zip, $km = 10)
+    {
+        $this->repository()->addNearZipScope($q1, $zip, $km);
+
     }
 }

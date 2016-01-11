@@ -71,6 +71,11 @@ Route::group(['middleware' => ['auth']], function () {
  * --------------- Mezzo test area
  */
 
+Route::get('/test/distance', function () {
+
+    mezzo_dump(\App\Event::nearZip('67105', 200)->get());
+});
+
 Route::get('/test/lock', function () {
     $post = \App\Event::first();
 
