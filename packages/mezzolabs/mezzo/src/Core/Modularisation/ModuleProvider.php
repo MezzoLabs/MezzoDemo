@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\ServiceProvider;
 use MezzoLabs\Mezzo\Cockpit\Html\Rendering\AttributeRenderEngine;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
@@ -418,8 +419,13 @@ abstract class ModuleProvider extends ServiceProvider implements ExtensibleModul
      */
     public function title()
     {
+        if(Lang::has('mezzo.modules.' . strtolower($this->shortName())))
+            return Lang::get('mezzo.modules.' . strtolower($this->shortName()));
+
         if ($this->options->get('title'))
             return $this->options->get('title');
+
+
 
         return $this->shortName();
     }
