@@ -9,8 +9,6 @@ export default function tinymceDirective() {
         var elementClass = 'tinymce_' + parseInt(Math.random() * 999);
         $(element).addClass(elementClass);
 
-        alert('5');
-
         tinyMCE.init({
             plugins: [
                 "link"

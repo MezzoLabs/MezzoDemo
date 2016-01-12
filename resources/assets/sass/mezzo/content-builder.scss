@@ -21,6 +21,13 @@
     margin-bottom: 10px;
     background-color: #ffffff;
     @include box-shadow(0 3px 3px rgba(0, 0, 0, .05));
+
+    &.block__MezzoLabs_Mezzo_Modules_Contents_DefaultTypes_BlockTypes_TextOnly{
+      .content-block-body {
+        padding: 0px;
+      }
+    }
+
   }
 
   .content-block-actions {

@@ -21,6 +21,7 @@ class ContentBlockService {
         const contentBlock = {
             id: id,
             key: key,
+            cssClass: 'block__' + key.replace(/\\/g, '_'),
             hash: hash,
             title: title,
             nameInForm: 'num' + this.currentId++,
