@@ -11,13 +11,10 @@ namespace MezzoLabs\Mezzo\Core\Schema\InputTypes;
 
 use Doctrine\DBAL\Types\Type;
 
-class TextArea extends TextInput
+class RichTextArea extends TextArea
 {
-    protected $doctrineType = Type::TEXT;
-
-    protected $variableType = 'string';
-
-    protected $htmlTag = "textarea";
-
+    protected $htmlAttributes = [
+        'data-mezzo-richtext' => 1
+    ];
 
 } 
