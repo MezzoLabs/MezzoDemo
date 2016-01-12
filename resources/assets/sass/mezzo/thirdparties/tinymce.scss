@@ -1,0 +1,18 @@
+.mce-container {
+  .mce-path {
+    display: none;
+  }
+
+  .mce-statusbar.mce-panel {
+    border-color: transparent;
+  }
+
+  .mce-menubar {
+    border: none;
+  }
+
+  .mce-btn, .mce-toolbar-grp.mce-panel{
+      background: $mezzo-white;
+  }
+}
+
