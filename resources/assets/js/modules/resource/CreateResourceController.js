@@ -18,6 +18,9 @@ export default class CreateResourceController {
             return false;
         }
 
+        alert('tinymce save');
+        tinyMCE.triggerSave();
+
         const formData = this.formDataService.get();
 
         this.modelApi.create(formData)

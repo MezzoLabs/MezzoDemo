@@ -537,8 +537,12 @@ function tinymceDirective() {
     };
 
     function link(scope, element, attributes) {
+        var elementClass = 'tinymce_' + parseInt(Math.random() * 999);
+        $(element).addClass(elementClass);
 
-        $(element).tinymce({});
+        tinyMCE.init({
+            'selector': '.' + elementClass
+        });
     }
 }
 
@@ -1714,6 +1718,7 @@ var CreateResourceController = function () {
             if (this.form.$invalid) {
                 return false;
             }
+            tinyMCE.triggerSave();
 
             var formData = this.formDataService.get();
 
