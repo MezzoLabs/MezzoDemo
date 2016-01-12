@@ -17,6 +17,7 @@ export default class CreateResourceController {
         if (this.form.$invalid) {
             return false;
         }
+        tinyMCE.triggerSave();
 
         const formData = this.formDataService.get();
 

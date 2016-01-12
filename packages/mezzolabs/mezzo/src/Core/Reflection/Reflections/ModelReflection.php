@@ -3,6 +3,7 @@
 namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 use Illuminate\Database\Eloquent\Model as EloquentModel;
+use Illuminate\Support\Facades\Lang;
 use MezzoLabs\Mezzo\Core\Annotations\Attribute;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Schema\Converters\Eloquent\ModelReflectionConverter;
@@ -96,6 +97,17 @@ abstract class ModelReflection
      */
     public function name()
     {
+        return $this->modelReflectionSet->shortName();
+    }
+
+    /**
+     * @return string
+     */
+    public function title()
+    {
+        if (Lang::has('mezzo.models.' . strtolower($this->name())))
+            return Lang::get('mezzo.models.' . strtolower($this->name()));
+
         return $this->modelReflectionSet->shortName();
     }
 

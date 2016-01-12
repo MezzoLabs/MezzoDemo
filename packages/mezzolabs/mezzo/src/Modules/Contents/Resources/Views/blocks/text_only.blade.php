@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="form-group">
-        <textarea name="{{ $block->inputName('text') }}" class="form-control"></textarea>
+        <textarea data-mezzo-richtext name="{{ $block->inputName('text') }}" class="form-control"></textarea>
     </div>
 @endsection
 

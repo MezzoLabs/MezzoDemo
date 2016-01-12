@@ -1,0 +1,25 @@
+.mce-tinymce.mce-container.mce-panel{
+  border: none;
+
+  .mce-path {
+    display: none;
+  }
+
+  .mce-statusbar.mce-panel {
+    border-color: transparent;
+  }
+
+  .mce-menubar {
+    border: none;
+  }
+
+  .mce-btn, .mce-toolbar-grp.mce-panel{
+      background: $mezzo-white;
+  }
+
+  .mce-edit-area.mce-panel{
+    border-top-color: #EEEEEE;
+
+  }
+}
+

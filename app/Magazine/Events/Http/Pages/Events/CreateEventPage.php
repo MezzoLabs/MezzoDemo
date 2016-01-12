@@ -14,4 +14,9 @@ class CreateEventPage extends CreateResourcePage
         'visibleInNavigation' => true,
         'renderedByFrontend' => true
     ];
+
+    public function boot()
+    {
+        $this->options('order', 0);
+    }
 }

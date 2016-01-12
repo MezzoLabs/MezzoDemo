@@ -54,4 +54,11 @@ class ModulePages extends Collection
             return $page->isVisibleInNavigation();
         });
     }
+
+    public function sortByOrder()
+    {
+        return $this->sortBy(function (ModulePage $page) {
+            return $page->order();
+        });
+    }
 }

@@ -55,6 +55,8 @@
 {!! cockpit_script('/components/sweetalert2/dist/sweetalert2.min.js') !!}
 {!! cockpit_script('/components/lodash/lodash.min.js') !!}
 {!! cockpit_script('/components/js-md5/build/md5.min.js') !!}
+{!! cockpit_script('/components/tinymce-dist/tinymce.min.js') !!}
+{!! cockpit_script('/components/tinymce-dist/tinymce.jquery.min.js') !!}
 {!! cockpit_script('/js/lib/form2js.js') !!}
 {!! cockpit_script('/js/lib/js2form.js') !!}
 {!! cockpit_script('/js/lib/jquery.toObject.js') !!}

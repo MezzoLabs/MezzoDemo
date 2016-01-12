@@ -31,7 +31,8 @@
     "angular-loading-bar": "~0.8.0",
     "angular-ui-sortable": "~0.13.4",
     "js-md5": "md5#~0.3.0",
-    "eonasdan-bootstrap-datetimepicker": "~4.17.37"
+    "eonasdan-bootstrap-datetimepicker": "~4.17.37",
+    "tinymce-dist": "~4.3.2"
   },
   "ignore": [
     "**/.*",

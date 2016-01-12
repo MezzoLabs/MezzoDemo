@@ -76,7 +76,9 @@ abstract class ModulePage implements ModulePageContract
 
         'appendToUri' => '',
 
-        'permissions' => ''
+        'permissions' => '',
+
+        'order' => 999
     ];
     /**
      * The short name of this page.
@@ -265,6 +267,14 @@ abstract class ModulePage implements ModulePageContract
     }
 
     /**
+     * @return boolean
+     */
+    public function order()
+    {
+        return $this->options('order');
+    }
+
+    /**
      * @param null $key
      * @param null $value
      * @return Collection
@@ -369,7 +379,6 @@ abstract class ModulePage implements ModulePageContract
     {
         return route($this->routeName());
     }
-
 
 
 }

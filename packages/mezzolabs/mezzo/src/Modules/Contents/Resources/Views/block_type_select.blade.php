@@ -2,7 +2,7 @@
     <div style="display: flex; flex-grow: 1; flex-direction: column;">
         <div class="content-blocks" style="flex-grow: 1" ui-sortable="vm.contentBlockService.sortableOptions"
              ng-model="vm.contentBlockService.contentBlocks">
-            <div class="content-block" ng-repeat="block in vm.contentBlockService.contentBlocks">
+            <div class="content-block @{{ block.cssClass }}" ng-repeat="block in vm.contentBlockService.contentBlocks">
                 <div class="content-block-heading">
                     <b>@{{ block.title }}</b>
 
@@ -12,7 +12,7 @@
                         <a href="#"><i class="ion-ios-close-empty" ng-click="vm.contentBlockService.removeContentBlock($index)"></i></a>
                     </div>
                 </div>
-                <div class="content-block-body block-@{{ block.key }}" mezzo-compile-html="block.template"></div>
+                <div class="content-block-body" mezzo-compile-html="block.template"></div>
             </div>
         </div>
 

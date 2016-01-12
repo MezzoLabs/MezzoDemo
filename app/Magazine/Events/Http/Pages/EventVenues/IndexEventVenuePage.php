@@ -8,5 +8,4 @@ use MezzoLabs\Mezzo\Cockpit\Pages\Resources\IndexResourcePage;
 
 class IndexEventVenuePage extends IndexResourcePage
 {
-    protected $title = 'Venues';
 }

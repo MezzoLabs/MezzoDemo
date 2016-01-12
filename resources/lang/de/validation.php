@@ -124,7 +124,8 @@ return [
         'categories' => 'Kategorien',
         'content' => [
             'blocks' => 'Inhaltsblock'
-        ]
+        ],
+        'event_venue_id' => 'Veranstaltungs Ort'
 
     ],
 
