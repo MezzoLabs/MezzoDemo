@@ -64,10 +64,10 @@ return [
 
         's3' => [
             'driver' => 's3',
-            'key'    => 'your-key',
-            'secret' => 'your-secret',
-            'region' => 'your-region',
-            'bucket' => 'your-bucket',
+            'key' => env('S3_KEY', 'no-key'),
+            'secret' => env('S3_SECRET', 'no-secret'),
+            'region' => env('S3_REGION', 'noregion'),
+            'bucket' => env('S3_BUCKET', 'nobucket')
         ],
 
         'rackspace' => [

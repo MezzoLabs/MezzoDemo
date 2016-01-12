@@ -7,6 +7,10 @@ export default function dateTimePickerDirective() {
 
     function link(scope, element, attributes) {
         const options = {
+            format: 'DD.MM.YYYY HH:mm',
+            showTodayButton: true,
+            showClose: true,
+            calendarWeeks: true,
             icons: {
                 time: 'fa fa-clock-o',
                 date: 'fa fa-calendar-o',

@@ -1,0 +1,79 @@
+<?php
+
+
+namespace MezzoLabs\Mezzo\Modules\FileManager\Disk\Systems;
+
+
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Filesystem\Filesystem as DefaultFileSystem;
+use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
+
+class LocalDisk implements DiskSystemContract
+{
+
+    /**
+     * Move a file from one path to another.
+     *
+     * @param string $from
+     * @param string $to
+     * @return bool
+     */
+    public function move(string $from, string $to) : bool
+    {
+        $absoluteFrom = $this->absolutePath($from);
+        $absoluteTo = $this->absolutePath($to);
+
+        if ($absoluteFrom == $absoluteTo)
+            return true;
+
+        $parts = explode('/', $absoluteTo);
+        $folderTo = implode('/', array_splice($parts, 0, count($parts) - 1));
+
+        $this->fileSystem()->makeDirectory($folderTo, $mode = 0777, true, true);
+        return $this->fileSystem()->move($absoluteFrom, $absoluteTo);
+    }
+
+    /**
+     * Remove a file from this path.
+     *
+     * @param string $path
+     * @return bool
+     */
+    public function delete(string $path): bool
+    {
+        return $this->fileSystem()->delete($this->absolutePath($path));
+    }
+
+    /**
+     * Check if there is a file on the given path.
+     *
+     * @param string $path
+     * @return bool
+     */
+    public function exists(string $path) : bool
+    {
+        return $this->fileSystem()->exists($this->absolutePath($path));
+    }
+
+    /**
+     * Returns the absolute path of a file.
+     * This is needed when you want a base folder that doesnt appear in the database representation.
+     *
+     * @param string $path
+     * @return string
+     */
+    public function absolutePath(string $path) : string
+    {
+        return StringHelper::path([storage_path('mezzo/upload/'), $path]);
+    }
+
+    /**
+     * Returns the default
+     *
+     * @return \Illuminate\Filesystem\Filesystem
+     */
+    public function fileSystem() : Filesystem
+    {
+        return mezzo()->make(DefaultFileSystem::class);
+    }
+}

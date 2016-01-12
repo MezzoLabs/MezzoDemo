@@ -5,14 +5,19 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Disk;
 
 
 use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Filesystem\Filesystem as IlluminateFilesystem;
-use Illuminate\Support\Str;
-use MezzoLabs\Mezzo\Core\Files\StorageFactory;
 use MezzoLabs\Mezzo\Core\Traits\IsShared;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\Systems\AwsS3Disk;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\Systems\DiskSystemContract;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\Systems\LocalDisk;
 
 class DisksManager
 {
     use IsShared;
+
+    public static $systems = [
+        's3' => AwsS3Disk::class,
+        'local' => LocalDisk::class
+    ];
 
     /**
      * @var UrlGenerator
@@ -43,18 +48,8 @@ class DisksManager
      */
     public function moveFile($fromPath, $toPath, $disk = "local")
     {
-        $longPathFrom = $this->longPath($disk, $fromPath);
-        $longPathTo = $this->longPath($disk, $toPath);
-
-        if($longPathFrom == $longPathTo)
-            return true;
-
-        $parts = explode('/', $longPathTo);
-        $folderTo = implode('/', array_splice($parts, 0, count($parts) - 1));
-
-        //
-        $this->fileSystem()->makeDirectory($folderTo, $mode = 0777, true, true);
-        return $this->fileSystem()->move($longPathFrom, $longPathTo);
+        $system = $this->makeSystem($disk);
+        return $system->move($fromPath, $toPath);
     }
 
     /**
@@ -62,27 +57,12 @@ class DisksManager
      * @param $shortPath
      * @return string
      */
-    public function longPath($diskName, $shortPath)
+    public function absolutePath($diskName, $shortPath)
     {
-       return $this->localStoragePath($shortPath);
+        $system = $this->makeSystem($diskName);
+        return $system->absolutePath($shortPath);
     }
 
-    /**
-     * @param string $path
-     * @return string
-     */
-    public function localStoragePath($path = "")
-    {
-        return storage_path('mezzo/upload/' . $path);
-    }
-
-    /**
-     * @return \Illuminate\Contracts\Filesystem\Filesystem|IlluminateFilesystem
-     */
-    public function fileSystem()
-    {
-        return StorageFactory::root();
-    }
 
     /**
      * @param $shortPath
@@ -91,34 +71,32 @@ class DisksManager
      */
     public function deleteFile($shortPath, $diskName = "local")
     {
-        $longPath = $this->longPath($diskName, $shortPath);
-
-        return $this->fileSystem()->delete($longPath);
+        $system = $this->makeSystem($diskName);
+        return $system->delete($shortPath);
     }
 
-    /**
-     * @param $folder
-     * @param $filename
-     * @return string
-     */
-    public function shortPath($folder, $filename){
-        $connector = '/';
-        if (Str::endsWith($folder, '/'))
-            $connector = '';
-
-        return $folder . $connector . $filename;
-    }
 
     public function exists($diskName, $shortPath)
     {
-        $longPath = $this->longPath($diskName, $shortPath);
-
-        return $this->fileSystem()->exists($longPath);
+        $system = $this->makeSystem($diskName);
+        return $system->exists($shortPath);
     }
 
     public function url($shortPath, $diskName = "local")
     {
         return $this->urlGenerator->to('mezzo/upload/' . $shortPath);
+    }
+
+    /**
+     * @param string $system
+     * @return DiskSystemContract
+     */
+    public static function makeSystem(string $system) : DiskSystemContract
+    {
+        if (isset(static::$systems[$system]))
+            $system = static::$systems[$system];
+
+        return app()->make($system);
     }
 
 }

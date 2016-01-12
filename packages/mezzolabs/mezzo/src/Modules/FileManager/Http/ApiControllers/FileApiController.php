@@ -5,7 +5,7 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Http\ApiControllers;
 
 use MezzoLabs\Mezzo\Http\Controllers\GenericApiResourceController;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\FileUploadException;
-use MezzoLabs\Mezzo\Modules\FileManager\Disk\FileUploader;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\FileUploadManager;
 use MezzoLabs\Mezzo\Modules\FileManager\Http\Requests\UploadFileRequest;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -14,7 +14,7 @@ class FileApiController extends GenericApiResourceController
     public function upload(UploadFileRequest $request)
     {
         try {
-            $file = $this->uploader()->uploadInput($request);
+            $file = $this->uploader()->uploadInput($request, 's3');
 
         } catch (FileUploadException $exception) {
             throw new BadRequestHttpException($exception->getMessage());
@@ -24,10 +24,10 @@ class FileApiController extends GenericApiResourceController
     }
 
     /**
-     * @return FileUploader
+     * @return FileUploadManager
      */
     protected function uploader()
     {
-        return app()->make(FileUploader::class);
+        return app()->make(FileUploadManager::class);
     }
 }

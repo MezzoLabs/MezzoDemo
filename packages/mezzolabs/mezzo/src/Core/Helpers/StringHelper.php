@@ -23,4 +23,43 @@ class StringHelper
 
         return $date->format(static::DATETIME_LOCAL);
     }
+
+    /**
+     * Creates a path that will not have double or even missing slashes.
+     *
+     * @param string|array $directory
+     * @param null $baseName
+     * @return string
+     */
+    public static function path($directory, $baseName = null)
+    {
+        if (is_string($directory) && $baseName && is_string($baseName))
+            return rtrim($directory, '/') . '/' . ltrim($baseName, '/');
+
+        $path = "";
+        if (is_array($directory)) {
+            $i = 0;
+            foreach ($directory as $d) {
+                $i++;
+
+                // Do not remove the first '/' if you have a collection of directory parts.
+                if ($i == 1) {
+                    $path .= rtrim($d, '/') . '/';
+                    continue;
+                }
+
+                // Trim both sides of the directory part, but add a '/' on the right side.
+                $path .= trim($d, '/') . '/';
+            }
+
+            // Trim the right side, so our complete path doesn't end with a '/' on the right side
+            $path = rtrim($path, '/');
+        }
+
+        if (!$baseName)
+            return $path;
+
+        return $path . '/' . trim($baseName, '/');
+
+    }
 }

@@ -6,17 +6,26 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Disk;
 use Illuminate\Http\Request as IlluminateRequest;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Files\File;
+use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Core\Validation\Validator;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\FileUploadException;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\FileUploadValidationFailedException;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\MaximumFileSizeExceededException;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\MimeTypeNotAllowedException;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\Exceptions\UploadedFileEmptyException;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\Uploaders\AwsS3Uploader;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\Uploaders\FileUploaderContract;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\Uploaders\LocalFolderUploader;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories\FileRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class FileUploader
+class FileUploadManager
 {
+    public static $uploaders = [
+        'local' => LocalFolderUploader::class,
+        's3' => AwsS3Uploader::class
+    ];
+
     /**
      * @var \Illuminate\Validation\Validator
      */
@@ -43,17 +52,17 @@ class FileUploader
      * @throws FileUploadValidationFailedException
      * @throws UploadedFileEmptyException
      */
-    public function uploadInput(IlluminateRequest $request)
+    public function uploadInput(IlluminateRequest $request, string $uploader)
     {
         $data = [
             'title' => $request->get('title', ''),
-            'folder' => $request->get('folder', 'default'),
+            'folder' => $request->get('folder', ''),
         ];
 
-        if(!$request->hasFile('file'))
+        if (!$request->hasFile('file'))
             throw new UploadedFileEmptyException("There is no file to upload.");
 
-        return $this->upload($data, $request->file('file'));
+        return $this->upload($data, $request->file('file'), $this->makeUploader($uploader));
     }
 
     /**
@@ -61,6 +70,7 @@ class FileUploader
      *
      * @param array $metaData
      * @param UploadedFile $file
+     * @param FileUploaderContract $uploader
      * @return \App\File
      * @throws Exceptions\FileManagerException
      * @throws FileUploadException
@@ -68,7 +78,7 @@ class FileUploader
      * @throws MaximumFileSizeExceededException
      * @throws MimeTypeNotAllowedException
      */
-    public function upload(array $metaData, UploadedFile $file)
+    public function upload(array $metaData, UploadedFile $file, FileUploaderContract $uploader)
     {
         $fileValidation = $this->validateFile($file);
         if (!$fileValidation)
@@ -79,7 +89,7 @@ class FileUploader
         $data = new Collection();
 
         $data->put('extension', $this->extension($file));
-        $data->put('folder', $metaData->get('folder', '/'));
+        $data->put('folder', $metaData->get('folder', ''));
         $data->put('filename', $this->uniqueFileName($file, $data['folder']));
 
         $title = $metaData->get('title', "");
@@ -94,7 +104,10 @@ class FileUploader
             throw new FileUploadValidationFailedException($this->lastValidation);
 
         $newFile = $this->repository()->create($data->toArray());
-        $fileSaved = $this->moveFile($file, $data->get('folder'), $data->get('filename'));
+
+        $path = StringHelper::path($data->get('folder'), $data->get('filename'));
+
+        $fileSaved = $uploader->upload($path, $file);
 
         if (!$newFile || !$fileSaved)
             throw new FileUploadException('Unexpected error during file upload.');
@@ -230,18 +243,16 @@ class FileUploader
         return $validation->passes();
     }
 
+
     /**
-     * Move the uploaded file to its destination
-     *
-     * @param UploadedFile $file
-     * @param $directory
-     * @param $fileName
-     * @return \Symfony\Component\HttpFoundation\File\File
+     * @param $key
+     * @return FileUploaderContract
      */
-    protected function moveFile(UploadedFile $file, $directory, $fileName)
+    public function makeUploader($key) : FileUploaderContract
     {
-        $storageDirectory = $this->disks()->localStoragePath($directory);
-        $saved = $file->move($storageDirectory, $fileName);
-        return $saved;
+        if (class_exists($key))
+            return app()->make($key);
+
+        return app()->make(static::$uploaders[$key]);
     }
 }

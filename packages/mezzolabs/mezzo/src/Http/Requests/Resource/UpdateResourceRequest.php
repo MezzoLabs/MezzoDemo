@@ -4,6 +4,8 @@
 namespace MezzoLabs\Mezzo\Http\Requests\Resource;
 
 
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+
 class UpdateResourceRequest extends UpdateOrStoreResourceRequest
 {
 
@@ -36,5 +38,19 @@ class UpdateResourceRequest extends UpdateOrStoreResourceRequest
     public function rules()
     {
         return $this->formObject()->rulesForUpdating(array_keys($this->all()));
+    }
+
+    protected function value($key)
+    {
+        if ($this->has($key))
+            return $key;
+
+        $model = $this->currentModelInstance();
+        $attributes = $model->getAttributes();
+
+        if (!isset($attributes[$key]))
+            throw new BadRequestHttpException('The request or the resource needs the key ' . $key);
+
+        return $attributes[$key];
     }
 }

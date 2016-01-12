@@ -8935,6 +8935,10 @@ a {
       border-bottom: 1px solid #eeeeee; }
       .content-blocks .content-block .content-block-heading small {
         color: #999999; }
+
+.content-blocks .content-block.block__MezzoLabs_Mezzo_Modules_Contents_DefaultTypes_BlockTypes_TextOnly .content-block-body {
+  padding: 0px;
+}
   .content-blocks .content-block-actions a {
     padding: 8px 10px; }
   .content-blocks .content-block-actions a:last-child {
@@ -9023,5 +9027,42 @@ a {
   100% {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg); } }
+
+.mce-tinymce.mce-container.mce-panel {
+  border: none;
+}
+
+.mce-tinymce.mce-container.mce-panel .mce-path {
+  display: none;
+}
+
+.mce-tinymce.mce-container.mce-panel .mce-statusbar.mce-panel {
+  border-color: transparent;
+}
+
+.mce-tinymce.mce-container.mce-panel .mce-menubar {
+  border: none;
+}
+
+.mce-tinymce.mce-container.mce-panel .mce-btn, .mce-tinymce.mce-container.mce-panel .mce-toolbar-grp.mce-panel {
+  background: #ffffff;
+}
+
+.mce-tinymce.mce-container.mce-panel .mce-edit-area.mce-panel {
+  border-top-color: #EEEEEE;
+}
+
+.bootstrap-datetimepicker-widget a[data-action=today], .bootstrap-datetimepicker-widget a[data-action=close] {
+  color: #555555;
+}
+
+.datepicker .datepicker-days table tr td.active.active {
+  background-color: #fc7d6d;
+  background-image: none;
+}
+
+.timepicker a {
+  color: #555555;
+}
 
 /*# sourceMappingURL=app.css.map */

@@ -3,6 +3,7 @@
   "devDependencies": {
     "bootstrap-sass": "^3.3.5",
     "gulp": "^3.9.0",
+    "gulp-apigen": "^0.1.4",
     "laravel-elixir": "^4.1.1"
   }
 }

@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Domain\Observers;
 
 
 use App\File;
+use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\DisksManager;
 use MezzoLabs\Mezzo\Modules\FileManager\Exceptions\FileNotSnychronizedException;
 use MezzoLabs\Mezzo\Modules\FileManager\Exceptions\FileNotSynchronized;
@@ -46,10 +47,10 @@ class FileObserver
         if(!$file->isDirty('filename', 'folder'))
             return true;
 
-        $fromPath = $this->disks()->shortPath($file->getOriginal('folder'), $file->getOriginal('filename'));
-        $toPath = $this->disks()->shortPath($file->getAttribute('folder'), $file->getAttribute('filename'));
+        $fromPath = StringHelper::path($file->getOriginal('folder'), $file->getOriginal('filename'));
+        $toPath = StringHelper::path($file->getAttribute('folder'), $file->getAttribute('filename'));
 
-        return $this->disks()->moveFile($fromPath, $toPath);
+        return $this->disks()->moveFile($fromPath, $toPath, $file->getAttribute('disk'));
     }
 
 }

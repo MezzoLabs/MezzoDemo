@@ -4,6 +4,7 @@ namespace App;
 
 use App\Mezzo\Generated\ModelParents\MezzoFile;
 use MezzoLabs\Mezzo\Core\Files\Types\FileType;
+use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\DisksManager;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\TypedFileAddon;
 
@@ -72,7 +73,7 @@ class File extends MezzoFile
      */
     public function longPath($useOriginal = false)
     {
-        return $this->drives()->longPath($this->disk, $this->shortPath($useOriginal));
+        return $this->drives()->absolutePath($this->disk, $this->shortPath($useOriginal));
     }
 
     protected function drives()
@@ -88,7 +89,7 @@ class File extends MezzoFile
         $folder = ($useOriginal) ? $this->getOriginal('folder') : $this->getAttribute('folder');
         $filename = ($useOriginal) ? $this->getOriginal('filename') : $this->getAttribute('filename');
 
-        return $this->drives()->shortPath($folder, $filename);
+        return StringHelper::path($folder, $filename);
     }
 
     public function existsOnDrive($useOriginal = false)

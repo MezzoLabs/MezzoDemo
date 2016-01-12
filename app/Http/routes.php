@@ -71,6 +71,13 @@ Route::group(['middleware' => ['auth']], function () {
  * --------------- Mezzo test area
  */
 
+Route::get('/test/s3', function(){
+    $s3 = Storage::disk('s3');
+    $result = $s3->put('hello.txt','I\'m using s3');
+    mezzo_dump($s3);
+    mezzo_dump($result);
+});
+
 Route::get('/test/distance', function () {
 
     mezzo_dump(\App\Event::nearZip('67105', 200)->get());
