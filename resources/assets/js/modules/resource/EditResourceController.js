@@ -25,6 +25,8 @@ export default class EditResourceController {
             return false;
         }
 
+        tinyMCE.triggerSave();
+
         const formData = this.formDataService.get();
 
         this.modelApi.update(this.modelId, formData);
