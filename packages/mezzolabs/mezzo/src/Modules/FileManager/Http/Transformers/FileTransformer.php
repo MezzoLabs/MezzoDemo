@@ -52,6 +52,7 @@ class FileTransFormer extends EloquentModelTransformer
             'path' => $model->shortPath(),
             'filename' => $model->filename,
             'extension' => $model->extension,
+            'disk' => $model->disk,
             'url' => $model->url(),
             'info' => json_decode($model->info),
             'type' => $model->fileType()->name(),

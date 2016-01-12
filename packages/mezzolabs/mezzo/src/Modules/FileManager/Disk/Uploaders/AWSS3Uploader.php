@@ -5,10 +5,10 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Disk\Uploaders;
 
 
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Filesystem\Filesystem as IlluminateFileSystem;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class LocalFolderUploader extends AbstractFileUploader
+class AwsS3Uploader extends AbstractFileUploader
 {
 
     /**
@@ -18,7 +18,7 @@ class LocalFolderUploader extends AbstractFileUploader
      */
     public function fileSystem() : Filesystem
     {
-        return mezzo()->make(IlluminateFileSystem::class);
+        return Storage::disk('s3');
     }
 
     /**
@@ -30,24 +30,11 @@ class LocalFolderUploader extends AbstractFileUploader
      */
     public function upload($path, UploadedFile $file) : bool
     {
-        return $this->moveFile($file, $path);
-    }
-
-    /**
-     * Move the uploaded file to its destination
-     *
-     * @param UploadedFile $file
-     * @param $path
-     * @return bool
-     */
-    protected function moveFile(UploadedFile $file, $path) : bool
-    {
-        $saved = $file->move(storage_path('mezzo/upload/' . $path));
-        return $saved;
+        return $this->fileSystem()->put($path,  file_get_contents($file));
     }
 
     public function key() : string
     {
-        return 'local';
+        return 's3';
     }
 }

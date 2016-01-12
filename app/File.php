@@ -71,12 +71,17 @@ class File extends MezzoFile
     /**
      * @return string
      */
-    public function longPath($useOriginal = false)
+    public function absolutePath($useOriginal = false)
     {
-        return $this->drives()->absolutePath($this->disk, $this->shortPath($useOriginal));
+        return $this->disks()->absolutePath($this->disk, $this->shortPath($useOriginal));
     }
 
-    protected function drives()
+    public function sourcePath()
+    {
+        return $this->disks()->sourcePath($this->disk, $this->shortPath());
+    }
+
+    protected function disks()
     {
         return app()->make(DisksManager::class);
     }
@@ -94,12 +99,12 @@ class File extends MezzoFile
 
     public function existsOnDrive($useOriginal = false)
     {
-        return $this->drives()->exists($this->disk, $this->shortPath($useOriginal));
+        return $this->disks()->exists($this->disk, $this->shortPath($useOriginal));
     }
 
     public function url()
     {
-        return $this->drives()->url($this->shortPath(), $this->disk);
+        return $this->disks()->url($this->shortPath(), $this->disk);
     }
 
 

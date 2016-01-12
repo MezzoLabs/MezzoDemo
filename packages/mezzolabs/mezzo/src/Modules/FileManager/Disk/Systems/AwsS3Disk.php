@@ -6,9 +6,21 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Disk\Systems;
 
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
+use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
+use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 
 class AwsS3Disk implements DiskSystemContract
 {
+    /**
+     * @var MezzoConfig
+     */
+    protected $config;
+
+    public function __construct(MezzoConfig $config)
+    {
+        $this->config = $config;
+    }
+
 
     /**
      * Move a file from one path to another.
@@ -64,5 +76,25 @@ class AwsS3Disk implements DiskSystemContract
     public function fileSystem() : Filesystem
     {
         return Storage::disk('s3');
+    }
+
+    public function sourcePath(string $path) : string
+    {
+        return StringHelper::path([$this->baseUrl(), $path]);
+    }
+
+    public function baseUrl()
+    {
+        return $this->config->get('filemanager.disks.s3.base_url');
+    }
+
+    /**
+     * A unqique key for this disk.
+     *
+     * @return string
+     */
+    public function key() : string
+    {
+        return 's3';
     }
 }

@@ -52,7 +52,7 @@ class FileUploadManager
      * @throws FileUploadValidationFailedException
      * @throws UploadedFileEmptyException
      */
-    public function uploadInput(IlluminateRequest $request, string $uploader)
+    public function uploadInput(IlluminateRequest $request, string $uploader = 'local')
     {
         $data = [
             'title' => $request->get('title', ''),
@@ -84,7 +84,6 @@ class FileUploadManager
         if (!$fileValidation)
             throw new FileUploadException('File validation failed.');
 
-
         $metaData = new Collection($metaData);
         $data = new Collection();
 
@@ -97,7 +96,7 @@ class FileUploadManager
             $title = File::removeExtension($data->get('filename'));
 
         $data->put('title', $title);
-        $data->put('disk', 'local');
+        $data->put('disk', $uploader->key());
         $data->put('info', $this->fileInfoJson($file));
 
         if (!$this->validateData($data))

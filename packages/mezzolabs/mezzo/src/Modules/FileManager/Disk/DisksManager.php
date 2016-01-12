@@ -63,6 +63,11 @@ class DisksManager
         return $system->absolutePath($shortPath);
     }
 
+    public function sourcePath($diskName, $shortPath)
+    {
+        $system = $this->makeSystem($diskName);
+        return $system->sourcePath($shortPath);
+    }
 
     /**
      * @param $shortPath
@@ -81,6 +86,7 @@ class DisksManager
         $system = $this->makeSystem($diskName);
         return $system->exists($shortPath);
     }
+
 
     public function url($shortPath, $diskName = "local")
     {

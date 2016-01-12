@@ -16,6 +16,11 @@ interface FileUploaderContract
     public function fileSystem() : Filesystem;
 
     /**
+     * @return string
+     */
+    public function key() : string;
+
+    /**
      * Upload a file to the disk onto a given path.
      *
      * @param $path

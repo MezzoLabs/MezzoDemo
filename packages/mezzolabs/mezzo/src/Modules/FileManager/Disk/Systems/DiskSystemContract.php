@@ -50,5 +50,14 @@ interface DiskSystemContract
      */
     public function absolutePath(string $path) : string;
 
+    public function sourcePath(string $path) : string;
+
+    /**
+     * A unqique key for this disk.
+     *
+     * @return string
+     */
+    public function key() : string;
+
 
 }

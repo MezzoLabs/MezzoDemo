@@ -76,4 +76,19 @@ class LocalDisk implements DiskSystemContract
     {
         return mezzo()->make(DefaultFileSystem::class);
     }
+
+    public function sourcePath(string $path) : string
+    {
+        return $this->absolutePath($path);
+    }
+
+    /**
+     * A unqique key for this disk.
+     *
+     * @return string
+     */
+    public function key() : string
+    {
+        return 'local';
+    }
 }
