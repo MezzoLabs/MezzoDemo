@@ -14,12 +14,12 @@ class ContentBlockService {
         this.sortableOptions = {
             handle: 'a .ion-arrow-move',
             start: function (e, ui) {
-                $(ui.item).find('.tinymce_textarea').each(function () {
+                $(ui.item).parent().find('.tinymce_textarea').each(function () {
                     tinymce.execCommand('mceRemoveEditor', false, $(this).attr('id'));
                 });
             },
             stop: function (e, ui) {
-                $(ui.item).find('.tinymce_textarea').each(function () {
+                $(ui.item).parent().find('.tinymce_textarea').each(function () {
                     tinymce.execCommand('mceAddEditor', true, $(this).attr('id'));
                 });
             }
