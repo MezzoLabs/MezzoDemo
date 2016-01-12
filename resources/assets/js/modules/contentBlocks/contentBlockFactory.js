@@ -12,7 +12,17 @@ class ContentBlockService {
         this.contentBlocks = [];
         this.templates = {};
         this.sortableOptions = {
-            handle: 'a .ion-arrow-move'
+            handle: 'a .ion-arrow-move',
+            start: function (e, ui) {
+                $(ui.item).find('.tinymce_textarea').each(function () {
+                    tinymce.execCommand('mceRemoveEditor', false, $(this).attr('id'));
+                });
+            },
+            stop: function (e, ui) {
+                $(ui.item).find('.tinymce_textarea').each(function () {
+                    tinymce.execCommand('mceAddEditor', true, $(this).attr('id'));
+                });
+            }
         };
         this.currentId = 0;
     }

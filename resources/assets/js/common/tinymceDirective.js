@@ -6,14 +6,15 @@ export default function tinymceDirective() {
     };
 
     function link(scope, element, attributes) {
-        var elementClass = 'tinymce_' + parseInt(Math.random() * 999);
-        $(element).addClass(elementClass);
+        var elementId = 'tinymce_textarea-' + parseInt(Math.random() * 999);
+        $(element).addClass('tinymce_textarea ' + elementId);
+        $(element).attr('id', elementId);
 
         tinyMCE.init({
             plugins: [
                 "link"
             ],
-            selector : '.' + elementClass,
+            selector : '.' + elementId,
             toolbar: "undo redo | bold italic underline | link",
             menubar: "",
             elementpath: false
