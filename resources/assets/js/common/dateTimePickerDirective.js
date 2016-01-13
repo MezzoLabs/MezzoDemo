@@ -7,6 +7,7 @@ export default function dateTimePickerDirective() {
 
     function link(scope, element, attributes) {
         const options = {
+            locale: 'de',
             icons: {
                 time: 'fa fa-clock-o',
                 date: 'fa fa-calendar-o',
