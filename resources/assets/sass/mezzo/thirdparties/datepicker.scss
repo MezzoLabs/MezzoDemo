@@ -1,0 +1,20 @@
+.bootstrap-datetimepicker-widget {
+  a[data-action=today], a[data-action=close] {
+    color: $mezzo-font-color;
+
+  }
+}
+
+.datepicker {
+  .datepicker-days table tr td.active.active {
+    background-color: $brand-primary-light;
+    background-image: none;
+  }
+
+}
+
+.timepicker {
+  a {
+    color: $mezzo-font-color;
+  }
+}

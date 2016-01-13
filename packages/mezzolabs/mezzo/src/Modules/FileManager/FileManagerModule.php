@@ -12,7 +12,7 @@ use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Modules\FileManager\Content\Blocks\ImageAndText;
 use MezzoLabs\Mezzo\Modules\FileManager\Content\Blocks\Images;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\DiskSynchronization;
-use MezzoLabs\Mezzo\Modules\FileManager\Disk\FileUploader;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\FileUploadManager;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\Observers\FileObserver;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\FileTypesMapper;
 use MezzoLabs\Mezzo\Modules\FileManager\Http\Transformers\FileTransFormer;
@@ -40,7 +40,7 @@ class FileManagerModule extends ModuleProvider
      */
     public function register()
     {
-        $this->bindWithPrefix('fileuploader', FileUploader::class, true);
+        $this->bindWithPrefix('fileuploadmanager', FileUploadManager::class, true);
         $this->bindWithPrefix('typedfilemapper', FileTypesMapper::class, true);
     }
 
@@ -73,11 +73,11 @@ class FileManagerModule extends ModuleProvider
     }
 
     /**
-     * @return FileUploader
+     * @return FileUploadManager
      */
     public function uploader()
     {
-        return app(FileUploader::class);
+        return app(FileUploadManager::class);
     }
 
     /**

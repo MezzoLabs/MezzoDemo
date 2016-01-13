@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Http\Requests;
 
 
 use App\File;
+use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Http\Requests\Resource\UpdateResourceRequest;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\DisksManager;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\Repositories\FileRepository;
@@ -22,6 +23,7 @@ class UpdateFileRequest extends UpdateResourceRequest
     public function validate()
     {
         parent::validate();
+
         $this->validateUniqueInFolder();
     }
 
@@ -31,17 +33,18 @@ class UpdateFileRequest extends UpdateResourceRequest
         $old = $this->getOldFile();
 
         $shortPathFrom = $old->shortPath(true);
-        $shortPathTo = $drives->shortPath($this->input('folder'), $this->input('filename'));
+        $shortPathTo = StringHelper::path($this->value('folder'), $this->value('filename'));
 
         if ($shortPathFrom == $shortPathTo)
             return true;
 
-        if ($drives->exists($this->input('disk'), $shortPathTo)) {
-            throw new FileNameNotUniqueException($this->input('folder'), $this->input('filename'));
+        if ($drives->exists($this->value('disk'), $shortPathTo)) {
+            throw new FileNameNotUniqueException($this->value('folder'), $this->value('filename'));
         }
 
         return true;
     }
+
 
     /**
      * @return \App\File

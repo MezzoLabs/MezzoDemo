@@ -32,6 +32,18 @@ return [
         ]
     ],
 
+    'filemanager' => [
+        'active_disk' => 's3',
+        'disks' => [
+            'local' => [
+                'folder' => 'mezzo/upload'
+            ],
+            's3' => [
+                'base_url' => 'https://s3.eu-central-1.amazonaws.com/mezzo.test'
+            ],
+        ]
+    ],
+
     'cockpit' => [
         'prefix' => 'mezzo',
         'namedRouteNamespace' => 'cockpit::'

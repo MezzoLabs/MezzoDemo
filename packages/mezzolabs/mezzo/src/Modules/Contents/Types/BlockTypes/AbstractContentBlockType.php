@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes;
 
 
+use Illuminate\Support\Facades\Lang;
 use MezzoLabs\Mezzo\Cockpit\Html\Rendering\FormBuilder;
 use MezzoLabs\Mezzo\Modules\Contents\Contracts\ContentBlockTypeContract;
 use MezzoLabs\Mezzo\Modules\Contents\Contracts\ContentFieldTypeContract;
@@ -50,10 +51,18 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
      */
     public function title()
     {
+        if (Lang::has('mezzo.modules.contents.blocks.' . $this->shortKey()))
+            return Lang::get('mezzo.modules.contents.blocks.' . $this->shortKey());
+
         if (empty($this->title))
             return space_case(class_basename($this));
 
         return $this->title;
+    }
+
+    public function shortKey()
+    {
+        return snake_case(class_basename($this), '_');
     }
 
     /**

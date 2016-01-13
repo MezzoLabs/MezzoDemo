@@ -281,6 +281,10 @@ function dateTimePickerDirective() {
 
     function link(scope, element, attributes) {
         var options = {
+            format: 'DD.MM.YYYY HH:mm',
+            showTodayButton: true,
+            showClose: true,
+            calendarWeeks: true,
             icons: {
                 time: 'fa fa-clock-o',
                 date: 'fa fa-calendar-o',
@@ -537,11 +541,16 @@ function tinymceDirective() {
     };
 
     function link(scope, element, attributes) {
-        var elementClass = 'tinymce_' + parseInt(Math.random() * 999);
-        $(element).addClass(elementClass);
+        var elementId = 'tinymce_textarea-' + parseInt(Math.random() * 999);
+        $(element).addClass('tinymce_textarea ' + elementId);
+        $(element).attr('id', elementId);
 
         tinyMCE.init({
-            'selector': '.' + elementClass
+            plugins: ["link"],
+            selector: '.' + elementId,
+            toolbar: "undo redo | bold italic underline | link",
+            menubar: "",
+            elementpath: false
         });
     }
 }
@@ -591,7 +600,19 @@ var ContentBlockService = function () {
         this.contentBlocks = [];
         this.templates = {};
         this.sortableOptions = {
-            handle: 'a .ion-arrow-move'
+            handle: 'a .ion-arrow-move',
+            start: function start(e, ui) {
+                $(ui.item).parent().find('.tinymce_textarea').each(function () {
+                    $(this).css('opacity', 0.05);
+                    tinymce.execCommand('mceRemoveEditor', false, $(this).attr('id'));
+                });
+            },
+            stop: function stop(e, ui) {
+                $(ui.item).parent().find('.tinymce_textarea').each(function () {
+                    $(this).css('opacity', 1.0);
+                    tinymce.execCommand('mceAddEditor', true, $(this).attr('id'));
+                });
+            }
         };
         this.currentId = 0;
     }
@@ -604,6 +625,7 @@ var ContentBlockService = function () {
             var contentBlock = {
                 id: id,
                 key: key,
+                cssClass: 'block__' + key.replace(/\\/g, '_'),
                 hash: hash,
                 title: title,
                 nameInForm: 'num' + this.currentId++,
@@ -1792,6 +1814,8 @@ var EditResourceController = function () {
             if (this.form.$invalid) {
                 return false;
             }
+
+            tinyMCE.triggerSave();
 
             var formData = this.formDataService.get();
 

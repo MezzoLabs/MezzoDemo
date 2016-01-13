@@ -31,7 +31,17 @@ return [
         'user' => 'Nutzer',
         'categories' => 'Kategorien',
         'generator' => 'Generator',
-        'developerdashboard' => 'Dashboard'
+        'developerdashboard' => 'Dashboard',
+        'contents' => [
+            'title' => 'Inhalte',
+            'blocks' => [
+                'title' => 'Titel',
+                'text_only' => 'Text',
+                'image_and_text' => 'Text mit Bild',
+                'images' => 'Bilder',
+                'web_video' => 'Web Video'
+            ]
+        ]
     ],
     'models' => [
         'address' => 'Adresse',

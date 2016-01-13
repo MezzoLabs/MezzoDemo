@@ -101,6 +101,14 @@ abstract class MezzoPermission extends BaseModel
     protected $_id;
 
     /**
+     * Attribute annotation property for label
+     *
+     * @Mezzo\Attribute(type="TextInput")
+     * @var string
+     */
+    protected $_label;
+
+    /**
     * Attribute annotation property for model
     *
     * @Mezzo\Attribute(type="TextInput")
@@ -115,14 +123,6 @@ abstract class MezzoPermission extends BaseModel
     * @var string            
     */
     protected $_name;
-
-    /**
-    * Attribute annotation property for label
-    *
-    * @Mezzo\Attribute(type="TextInput")
-    * @var string            
-    */
-    protected $_label;
 
 
     /*
