@@ -62,6 +62,7 @@ class FileUploadManager
         if (!$request->hasFile('file'))
             throw new UploadedFileEmptyException("There is no file to upload.");
 
+
         return $this->upload($data, $request->file('file'), $this->makeUploader($disk));
     }
 
@@ -244,14 +245,17 @@ class FileUploadManager
 
 
     /**
-     * @param $key
+     * @param $class
      * @return FileUploaderContract
      */
-    public function makeUploader($key) : FileUploaderContract
+    public function makeUploader($class) : FileUploaderContract
     {
-        if (class_exists($key))
-            return app()->make($key);
+        if (isset(static::$uploaders[$class]))
+            $class = static::$uploaders[$class];
 
-        return app()->make(static::$uploaders[$key]);
+        if (empty($class) || !class_exists($class))
+            throw new FileUploadException('Disk is not valid: ' . $class);
+
+        return app()->make(static::$uploaders[$class]);
     }
 }
