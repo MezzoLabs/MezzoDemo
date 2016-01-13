@@ -69,6 +69,12 @@ export default function searchDirective(mapService) {
                     $(`[name="${ componentSelector }"]`).val(componentValue);
                 }
             });
+
+            if(mapService.map) {
+                const placeLatLng = new google.maps.LatLng(latitude, longitude);
+
+                map.setCenter(placeLatLng);
+            }
         });
 
         if (navigator.geolocation) {
