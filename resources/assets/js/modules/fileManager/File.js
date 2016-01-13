@@ -1,6 +1,6 @@
 export default class File {
 
-    constructor(apiFile){
+    constructor(apiFile) {
         this.id = apiFile.id;
         this.title = apiFile.filename;
         this.name = apiFile.filename;
@@ -10,46 +10,54 @@ export default class File {
         this.isFolder = false;
     }
 
-    icon(){
-        if(this.isImage()){
+    icon() {
+        if(this.isImage()) {
             return 'ion-image';
         }
 
-        if(this.isVideo()){
+        if(this.isVideo()) {
             return 'ion-ios-videocam';
         }
 
-        if(this.isAudio()){
+        if(this.isAudio()) {
             return 'ion-music-note';
         }
 
-        if(this.extension === 'pdf'){
+        if(this.extension === 'pdf') {
             return 'ion-printer';
         }
 
         return 'ion-document';
     }
 
-    isImage(){
+    isImage() {
         return this.hasExtension('png', 'jpg', 'gif', 'jpeg');
     }
 
-    isVideo(){
+    isVideo() {
         return this.hasExtension('mp4', 'avi');
     }
 
-    isAudio(){
+    isAudio() {
         return this.hasExtension('mp3');
     }
 
-    isDocument(){
+    isDocument() {
         return this.hasExtension('txt', 'md', 'pdf');
+    }
+
+    thumbnail() {
+        if(this.isImage()) {
+            return this.url + '?size=small';
+        }
+
+        return false;
     }
 
     /* public */
     /* private */
 
-    hasExtension(){
+    hasExtension() {
         for(var i = 0; i < arguments.length; i++){
             if(this.extension === arguments[i]){
                 return true;
