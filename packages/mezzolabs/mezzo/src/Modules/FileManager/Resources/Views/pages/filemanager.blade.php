@@ -92,7 +92,7 @@
             </div>
             <!-- Upload & Add Folder -->
             <!-- Refresh -->
-            <button type="button" class="btn btn-default">
+            <button type="button" class="btn btn-default" ng-click="vm.refresh()" ng-disabled="vm.loading">
                 <span class="ion-loop"></span>
             </button>
             <!-- Refresh -->

@@ -15,6 +15,7 @@ export default class FileManagerController {
         this.orderOptions = [ 'Title', 'Last modified' ];
         this.orderBy = this.orderOptions[0];
         this.selected = null;
+        this.loading = false;
 
         this.initFiles();
     }
@@ -23,8 +24,11 @@ export default class FileManagerController {
         this.library = new Folder('Library');
         this.folder = this.library;
         this.files = this.library.files;
+        this.loading = true;
 
         this.api.files().then(apiFiles => {
+            this.loading = false;
+
             apiFiles.forEach(apiFile => {
                 const file = new File(apiFile);
 
@@ -245,6 +249,10 @@ export default class FileManagerController {
 
         this.moveFile(dragged, folder);
         this.$scope.$apply();
+    }
+
+    refresh() {
+        this.initFiles();
     }
 
 }
