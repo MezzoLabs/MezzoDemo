@@ -70,10 +70,8 @@ export default function searchDirective(mapService) {
                 }
             });
 
-            if(mapService.map) {
-                const placeLatLng = new google.maps.LatLng(latitude, longitude);
-
-                mapService.map.setCenter(placeLatLng);
+            if(mapService.receivePlace) {
+                mapService.receivePlace(place);
             }
         });
 
