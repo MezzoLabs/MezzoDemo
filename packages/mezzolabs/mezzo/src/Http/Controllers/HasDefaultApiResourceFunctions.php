@@ -37,7 +37,11 @@ trait HasDefaultApiResourceFunctions
         $query = QueryObject::makeFromResourceRequest($request);
         $response = $this->response()->collection($this->repository()->all(['*'], $query), $this->bestModelTransformer());
 
-        $response->withHeader('X-Total-Count', $this->repository()->count($query));
+        if (!$query->pagination()->isEmpty()) {
+            $response->withHeader('X-Total-Count', $this->repository()->count($query));
+        }
+
+        event('mezzo.api.index: ' . get_class($this), $response, $query);
 
         return $response;
     }
@@ -51,7 +55,11 @@ trait HasDefaultApiResourceFunctions
      */
     public function store(StoreResourceRequest $request)
     {
-        return $this->response()->item($this->repository()->create($request->all()), $this->bestModelTransformer());
+        $response = $this->response()->item($this->repository()->create($request->all()), $this->bestModelTransformer());
+
+        event('mezzo.api.store: ' . get_class($this), $response);
+
+        return $response;
     }
 
     /**
@@ -61,10 +69,15 @@ trait HasDefaultApiResourceFunctions
      * @param int $id
      * @return ApiResponseFactory
      */
-    public function show(ShowResourceRequest $request, $id)
+    public function show(ShowResourceRequest $id)
     {
         $this->assertResourceExists($id);
-        return $this->response()->item($this->repository()->findOrFail($id), $this->bestModelTransformer());
+
+        $response = $this->response()->item($this->repository()->findOrFail($id), $this->bestModelTransformer());
+
+        event('mezzo.api.show: ' . get_class($this), $response, $id);
+
+        return $response;
     }
 
     /**
@@ -78,7 +91,11 @@ trait HasDefaultApiResourceFunctions
     {
         $this->assertResourceExists($id);
 
-        return $this->response()->item($this->repository()->update($request->all(), $id), $this->bestModelTransformer());
+        $response = $this->response()->item($this->repository()->update($request->all(), $id), $this->bestModelTransformer());
+
+        event('mezzo.api.update: ' . get_class($this), $response, $id);
+
+        return $response;
     }
 
     /**
@@ -91,7 +108,11 @@ trait HasDefaultApiResourceFunctions
     public function destroy(DestroyResourceRequest $request, $id)
     {
         $this->assertResourceExists($id);
-        return $this->response()->result($this->repository()->delete($id));
+        $response = $this->response()->result($this->repository()->delete($id));
+
+        event('mezzo.api.destroy: ' . get_class($this), $id);
+
+        return $response;
     }
 
     /**
