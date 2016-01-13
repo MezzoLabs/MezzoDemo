@@ -2,7 +2,7 @@ import File from './File';
 import Folder from './Folder';
 import categories from './categories';
 
-export default class CreateFileController {
+export default class FileManagerController {
 
     /*@ngInject*/
     constructor($scope, api, Upload){
