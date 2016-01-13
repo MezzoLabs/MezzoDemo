@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use MezzoLabs\Mezzo\Core\Schema\Relations\Scopes;
 use MezzoLabs\Mezzo\Http\Requests\Queries\Filter;
 use MezzoLabs\Mezzo\Http\Requests\Queries\Filters;
+use MezzoLabs\Mezzo\Http\Requests\Queries\Pagination;
 use MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject;
 use MezzoLabs\Mezzo\Http\Requests\Queries\SearchQuery;
 use MezzoLabs\Mezzo\Http\Requests\Queries\Sorting;
@@ -39,6 +40,7 @@ class EloquentQueryExecutor implements QueryExecutorContract
     public function run() : EloquentBuilder
     {
         $this->applyScopes($this->queryObject->scopes());
+        $this->applyPagination($this->queryObject->pagination());
         $this->applySearchQuery($this->queryObject->searchQuery());
         $this->applyFilters($this->queryObject->filters());
         $this->applySortings($this->queryObject->sortings());
@@ -87,6 +89,16 @@ class EloquentQueryExecutor implements QueryExecutorContract
         });
     }
 
+    protected function applyPagination(Pagination $pagination)
+    {
+        if ($pagination->isEmpty())
+            return;
+
+        $this->eloquentBuilder
+            ->skip($pagination->offset())
+            ->take($pagination->limit());
+    }
+
 
     public function setQueryObject(QueryObject $queryObject) : QueryObject
     {
@@ -97,4 +109,6 @@ class EloquentQueryExecutor implements QueryExecutorContract
     {
         return $this->queryObject;
     }
+
+
 }
