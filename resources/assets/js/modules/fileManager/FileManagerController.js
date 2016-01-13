@@ -91,9 +91,9 @@ export default class FileManagerController {
         }
 
         this.folderName = '';
-        var folder = new Folder(name, this.folder);
+        const newFolder = new Folder(name, this.folder);
 
-        this.folder.files.push(folder);
+        this.folder.files.push(newFolder);
         $('#add-folder-modal').modal('hide');
     }
 
@@ -209,6 +209,7 @@ export default class FileManagerController {
     }
 
     moveTo(folder){
+        this.api.moveFile(this.selected, folder.path());
         this.moveFile(this.selected, folder);
         $('#move-modal').modal('hide');
         this.enterFolder(folder);
