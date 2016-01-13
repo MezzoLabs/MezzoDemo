@@ -73,7 +73,7 @@ export default function searchDirective(mapService) {
             if(mapService.map) {
                 const placeLatLng = new google.maps.LatLng(latitude, longitude);
 
-                map.setCenter(placeLatLng);
+                mapService.map.setCenter(placeLatLng);
             }
         });
 
