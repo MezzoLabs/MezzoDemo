@@ -94,7 +94,7 @@ class File extends MezzoFile
         $folder = ($useOriginal) ? $this->getOriginal('folder') : $this->getAttribute('folder');
         $filename = ($useOriginal) ? $this->getOriginal('filename') : $this->getAttribute('filename');
 
-        return StringHelper::path($folder, $filename);
+        return ltrim(StringHelper::path($folder, $filename), '/');
     }
 
     public function existsOnDrive($useOriginal = false)
@@ -105,6 +105,22 @@ class File extends MezzoFile
     public function url()
     {
         return $this->disks()->url($this->shortPath(), $this->disk);
+    }
+
+    /**
+     * @param $to
+     * @return bool
+     */
+    public function move($to)
+    {
+        $parts = explode('/', $to);
+        $toName = $parts[count($parts) - 1];
+        $toFolder = implode('/', array_splice($parts, 0, count($parts) - 1));
+
+        $this->filename = $toName;
+        $this->folder = $toFolder;
+
+        return $this->save();
     }
 
 

@@ -5,7 +5,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>{{ $fields['text']->title() }}</label>
-            <textarea name="{{ $block->inputName('text') }}"
+            <textarea data-mezzo-richtext name="{{ $block->inputName('text') }}"
                       class="form-control">{{ old($block->inputName('text')) }}</textarea>
             </div>
         </div>

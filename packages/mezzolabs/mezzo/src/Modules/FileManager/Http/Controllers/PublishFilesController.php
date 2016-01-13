@@ -24,6 +24,8 @@ class PublishFilesController extends CockpitController
 
     public function publish(PublishFileRequest $request, $path)
     {
+        $path = ltrim($path, '/');
+
         $parts = $this->matchPath($path);
         $forceDownload = ($request->get('download', 0) == 1);
 

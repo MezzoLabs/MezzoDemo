@@ -7,6 +7,7 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Domain\Observers;
 use App\File;
 use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\DisksManager;
+use MezzoLabs\Mezzo\Modules\FileManager\Exceptions\FileManagerException;
 use MezzoLabs\Mezzo\Modules\FileManager\Exceptions\FileNotSnychronizedException;
 use MezzoLabs\Mezzo\Modules\FileManager\Exceptions\FileNotSynchronized;
 use MezzoLabs\Mezzo\Modules\FileManager\Exceptions\FileNotSynchronizedException;
@@ -41,6 +42,9 @@ class FileObserver
      */
     public function updating(File $file)
     {
+        if($file->isDirty('disk'))
+            throw new FileManagerException('You cannot change the disk of a file.');
+
         if(! $file->existsOnDrive(true))
             throw new FileNotSnychronizedException($file);
 

@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Disk;
 
 
 use Illuminate\Contracts\Routing\UrlGenerator;
+use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Core\Traits\IsShared;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\Systems\AwsS3Disk;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\Systems\DiskSystemContract;
@@ -88,9 +89,9 @@ class DisksManager
     }
 
 
-    public function url($shortPath, $diskName = "local")
+    public function url($shortPath, $diskName = "local") : string
     {
-        return $this->urlGenerator->to('mezzo/upload/' . $shortPath);
+        return StringHelper::path([$this->makeSystem($diskName)->baseUrl(), $shortPath]);
     }
 
     /**

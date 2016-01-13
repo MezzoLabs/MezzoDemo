@@ -53,11 +53,20 @@ interface DiskSystemContract
     public function sourcePath(string $path) : string;
 
     /**
+     * Returns the public http directory.
+     *
+     * @return string
+     */
+    public function baseUrl() : string;
+
+
+        /**
      * A unqique key for this disk.
      *
      * @return string
      */
     public function key() : string;
+
 
 
 }

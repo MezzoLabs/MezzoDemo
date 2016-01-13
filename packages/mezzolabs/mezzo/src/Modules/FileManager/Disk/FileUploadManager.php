@@ -52,7 +52,7 @@ class FileUploadManager
      * @throws FileUploadValidationFailedException
      * @throws UploadedFileEmptyException
      */
-    public function uploadInput(IlluminateRequest $request, string $uploader = 'local')
+    public function uploadInput(IlluminateRequest $request, string $disk = 'local')
     {
         $data = [
             'title' => $request->get('title', ''),
@@ -62,7 +62,7 @@ class FileUploadManager
         if (!$request->hasFile('file'))
             throw new UploadedFileEmptyException("There is no file to upload.");
 
-        return $this->upload($data, $request->file('file'), $this->makeUploader($uploader));
+        return $this->upload($data, $request->file('file'), $this->makeUploader($disk));
     }
 
     /**

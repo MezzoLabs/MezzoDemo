@@ -72,10 +72,10 @@ Route::group(['middleware' => ['auth']], function () {
  */
 
 Route::get('/test/s3', function(){
-    $s3 = Storage::disk('s3');
-    $result = $s3->put('hello.txt','I\'m using s3');
-    mezzo_dump($s3);
-    mezzo_dump($result);
+    $file = \App\File::where('disk', '=', 's3')->orderBy('id', 'desc')->first();
+
+    mezzo_dd($file->move('test/123/test.png'));
+    mezzo_dd($file->url());
 });
 
 Route::get('/test/distance', function () {

@@ -5,11 +5,24 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Disk\Systems;
 
 
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Filesystem\Filesystem as DefaultFileSystem;
 use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 
 class LocalDisk implements DiskSystemContract
 {
+    /**
+     * @var UrlGenerator
+     */
+    protected $urlGenerator;
+
+    /**
+     * @param UrlGenerator $urlGenerator
+     */
+    public function __construct(UrlGenerator $urlGenerator)
+    {
+        $this->urlGenerator = $urlGenerator;
+    }
 
     /**
      * Move a file from one path to another.
@@ -90,5 +103,15 @@ class LocalDisk implements DiskSystemContract
     public function key() : string
     {
         return 'local';
+    }
+
+    /**
+     * Returns the public http directory.
+     *
+     * @return string
+     */
+    public function baseUrl() : string
+    {
+        return $this->urlGenerator->to('mezzo/upload/');
     }
 }

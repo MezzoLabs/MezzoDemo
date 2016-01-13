@@ -83,7 +83,7 @@ class AwsS3Disk implements DiskSystemContract
         return StringHelper::path([$this->baseUrl(), $path]);
     }
 
-    public function baseUrl()
+    public function baseUrl() : string
     {
         return $this->config->get('filemanager.disks.s3.base_url');
     }
