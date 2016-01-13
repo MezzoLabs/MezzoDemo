@@ -1,7 +1,7 @@
 import Action from './Action';
 
 /*@ngInject*/
-export default function registerStateDirective($stateProvider, hasController) {
+export default function registerStateDirective($location, $stateProvider, hasController) {
     return {
         restrict: 'A',
         link
@@ -17,6 +17,8 @@ export default function registerStateDirective($stateProvider, hasController) {
         if(action === Action.CREATE) {
             registerState(uri.replace('create', 'edit'), page.replace('Create', 'Edit'), Action.EDIT);
         }
+
+        initSidebarBehaviour(element);
     }
 
     function registerState(uri, page, action) {
@@ -76,5 +78,23 @@ export default function registerStateDirective($stateProvider, hasController) {
         }
 
         return url;
+    }
+
+    function initSidebarBehaviour(element) {
+        const $element = $(element);
+        const url = $location.url();
+        const href = '/' + $element.attr('href');
+
+        if(url === href) {
+            $element
+                .addClass('active')
+                .parents('li.has-pages')
+                .addClass('opened');
+        }
+
+        $element.click(() => {
+            $('a[data-mezzo-register-state]').removeClass('active')
+            $element.addClass('active');
+        });
     }
 }
