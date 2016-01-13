@@ -27,6 +27,7 @@
 @endsection
 
 @section('content')
+    <div class="mezzo__filemanager_container">
         <!-- Add folder Modal -->
         <div id="add-folder-modal" class="modal fade">
             <div class="modal-dialog modal-sm">
@@ -97,7 +98,7 @@
                 </div>
                 <!-- Upload & Add Folder -->
                 <!-- Refresh -->
-                <button type="button" class="btn btn-default">
+                <button type="button" ng-click="quickviewVisible(true)" class="btn btn-default btn-refresh">
                     <span class="ion-loop"></span>
                 </button>
                 <!-- Refresh -->
@@ -135,7 +136,7 @@
         <!-- Folder Navigation -->
 
         <!-- Files -->
-        <table class="table table-hover table-responsive">
+        <table class="files table table-hover table-responsive">
             <tbody>
             <tr ng-repeat="file in vm.sortedFiles()"
                 ng-click="vm.selectFile(file)"
@@ -159,5 +160,16 @@
             </tbody>
         </table>
         <!-- Files -->
+    </div>
 
+@endsection
+
+@section('quickview_title')
+    Active File
+@endsection
+
+@section('quickview_content')
+    <div class="section">
+        <img class="img-responsive" src="http://data.whicdn.com/images/174141866/large.gif"/>
+    </div>
 @endsection

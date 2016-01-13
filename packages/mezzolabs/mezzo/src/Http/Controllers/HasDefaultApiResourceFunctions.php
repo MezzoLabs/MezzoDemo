@@ -41,7 +41,7 @@ trait HasDefaultApiResourceFunctions
             $response->withHeader('X-Total-Count', $this->repository()->count($query));
         }
 
-        event('mezzo.api.index: ' . get_class($this), $response, $query);
+        event('mezzo.api.index: ' . get_class($this), [$response, $query]);
 
         return $response;
     }
@@ -57,7 +57,7 @@ trait HasDefaultApiResourceFunctions
     {
         $response = $this->response()->item($this->repository()->create($request->all()), $this->bestModelTransformer());
 
-        event('mezzo.api.store: ' . get_class($this), $response);
+        event('mezzo.api.store: ' . get_class($this), [$response]);
 
         return $response;
     }
@@ -75,7 +75,7 @@ trait HasDefaultApiResourceFunctions
 
         $response = $this->response()->item($this->repository()->findOrFail($id), $this->bestModelTransformer());
 
-        event('mezzo.api.show: ' . get_class($this), $response, $id);
+        event('mezzo.api.show: ' . get_class($this), [$response, $id]);
 
         return $response;
     }
@@ -93,7 +93,7 @@ trait HasDefaultApiResourceFunctions
 
         $response = $this->response()->item($this->repository()->update($request->all(), $id), $this->bestModelTransformer());
 
-        event('mezzo.api.update: ' . get_class($this), $response, $id);
+        event('mezzo.api.update: ' . get_class($this), [$response, $id]);
 
         return $response;
     }
@@ -110,7 +110,7 @@ trait HasDefaultApiResourceFunctions
         $this->assertResourceExists($id);
         $response = $this->response()->result($this->repository()->delete($id));
 
-        event('mezzo.api.destroy: ' . get_class($this), $id);
+        event('mezzo.api.destroy: ' . get_class($this), [$id]);
 
         return $response;
     }
