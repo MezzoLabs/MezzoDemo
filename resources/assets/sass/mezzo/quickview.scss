@@ -1,4 +1,4 @@
-#quickview{
+#quickview {
   position: fixed;
   right: $quickview-width * -1;
   top: $topbar-height;
@@ -7,17 +7,17 @@
   bottom: 0;
   z-index: 1000;
   box-shadow: 0 0 9px rgba(0, 0, 0, 0.2);
-
+  overflow-y: scroll;
 
   transition: ease right $mezzo-animation-normal;
   //margin-top: $topbar-height;
   z-index: 500;
 
-  &.opened{
+  &.opened {
     right: 0px;
   }
 
-  .quickview-heading{
+  .quickview-heading {
     @extend .clearfix;
 
     min-height: 45px;
@@ -27,18 +27,41 @@
     background-color: $brand-primary;
     color: $mezzo-white;
 
-    h3{
+    h3 {
       @extend .pull-left;
       @include layout-heading;
       font-weight: 300;
     }
 
-    .btn{
+    .btn {
       margin-top: -7px;
       @include layout-button;
       @extend .pull-right;
     }
   }
 
+  .quickview-content {
+    .section {
+      margin-bottom: 5px;
+    }
+
+    .wrapper {
+      padding: 10px 15px;
+    }
+
+    .attribute-info {
+      label, b {
+        font-size: 0.85em;
+        display: block;
+      }
+
+      span {
+        display: block;
+        background: #efefef;
+        padding: 3px;
+        margin-bottom: 3px;
+      }
+    }
+  }
 
 }

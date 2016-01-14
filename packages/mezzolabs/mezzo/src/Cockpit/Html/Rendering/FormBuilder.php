@@ -292,4 +292,18 @@ class FormBuilder extends CollectiveFormBuilder
         return Session::get('errors')->get($sessionName);
     }
 
+    public function attributes($model, $attribute)
+    {
+        $attribute = mezzo()->attribute($model, $attribute);
+        $htmlRules = (new HtmlRules($attribute->rules(), $attribute->type()))->attributes()->toArray();
+
+        return $this->html->attributes($htmlRules);
+    }
+
+    public function title($model, $attribute)
+    {
+        $attribute = mezzo()->attribute($model, $attribute);
+        return $attribute->title();
+    }
+
 }

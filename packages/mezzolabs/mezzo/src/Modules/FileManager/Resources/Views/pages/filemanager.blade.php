@@ -169,7 +169,46 @@
 @endsection
 
 @section('quickview_content')
-    <div class="section">
+    <div class="section" v-ng-if="vm.imageSelected()">
         <img class="img-responsive" src="http://data.whicdn.com/images/174141866/large.gif"/>
     </div>
+    <div class="section section-file-info wrapper">
+        <p class="attribute-info">
+            <label>Name</label>
+            <span>my_file.png</span>
+        </p>
+        <p class="attribute-info">
+            <label>Folder</label>
+            <span>/some/folder</span>
+        </p>
+        <p class="attribute-info">
+            <label>Disk</label>
+            <span>local</span>
+        </p>
+        <p class="attribute-info">
+            <label>Disk</label>
+            <span>local</span>
+        </p>
+        <p class="attribute-info">
+            <label>Disk</label>
+            <span>local</span>
+        </p>
+        <p class="attribute-info">
+            <label>Link</label>
+            <span>/some/url</span>
+            <a class="btn btn-info btn-block btn-xs" target="_blank" href="/some/url">URL</a>
+
+        </p>
+    </div>
+    <div class="section section-addon-inputs  wrapper">
+        {!! cockpit_form()->open(['angular' => true]) !!}
+        <div class="form-group" v-ng-if="vm.imageSelected()">
+            <label>{{ cockpit_form()->title('imagefile', 'caption') }}</label>
+            <input name="caption"
+                   class="form-control" {!! cockpit_form()->attributes('imagefile', 'caption') !!} >
+        </div>
+        <input type="submit" class="btn btn-primary btn-block">
+        {!! cockpit_form()->close() !!}
+    </div>
+
 @endsection

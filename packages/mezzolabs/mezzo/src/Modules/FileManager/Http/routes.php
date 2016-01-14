@@ -18,6 +18,7 @@ module_route('FileManager', [], function (Router $router, ApiRouter $api, Cockpi
 
     $router->getModule()->generateRoutes();
     $api->resource('File');
+    $api->resource('ImageFile');
 
 });
 
