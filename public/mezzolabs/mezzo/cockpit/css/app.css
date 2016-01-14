@@ -8800,6 +8800,7 @@ a {
   bottom: 0;
   z-index: 1000;
   box-shadow: 0 0 9px rgba(0, 0, 0, 0.2);
+  overflow-y: scroll;
   transition: ease right 0.25s;
   z-index: 500; }
   #quickview.opened {
@@ -8819,6 +8820,26 @@ a {
       padding: 5px 10px;
       min-width: 50px;
       border: none; }
+
+#quickview .quickview-content .section {
+  margin-bottom: 5px;
+}
+
+#quickview .quickview-content .wrapper {
+  padding: 10px 15px;
+}
+
+#quickview .quickview-content .attribute-info label, #quickview .quickview-content .attribute-info b {
+  font-size: 0.85em;
+  display: block;
+}
+
+#quickview .quickview-content .attribute-info span {
+  display: block;
+  background: #efefef;
+  padding: 3px;
+  margin-bottom: 3px;
+}
 
 .form-group {
   position: relative;

@@ -6,7 +6,8 @@
             <i class="ion-close"></i>
         </button>
     </div>
-
-    @yield('quickview_content')
+    <div class="quickview-content">
+        @yield('quickview_content')
+    </div>
 
 </div>
