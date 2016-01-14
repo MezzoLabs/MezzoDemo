@@ -34,7 +34,7 @@ export default class CreateResourceController {
     }
 
     edit(modelId) {
-        this.$state.go('edit' + this.modelName.toLowerCase(), {modelId: modelId});
+        this.$state.go('edit' + this.modelName.replace(',', '').toLowerCase(), {modelId: modelId});
     }
 
 }
