@@ -4,7 +4,6 @@
 namespace MezzoLabs\Mezzo\Modules\FileManager\Disk\Systems;
 
 
-use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Filesystem\Filesystem as DefaultFileSystem;
 use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
@@ -85,7 +84,7 @@ class LocalDisk implements DiskSystemContract
      *
      * @return \Illuminate\Filesystem\Filesystem
      */
-    public function fileSystem() : Filesystem
+    public function fileSystem()
     {
         return mezzo()->make(DefaultFileSystem::class);
     }

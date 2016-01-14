@@ -16,7 +16,7 @@ class LocalFolderUploader extends AbstractFileUploader
      *
      * @return Filesystem
      */
-    public function fileSystem() : Filesystem
+    public function fileSystem()
     {
         return mezzo()->make(IlluminateFileSystem::class);
     }

@@ -2521,7 +2521,7 @@ $(function () {
         } else {
             $('#quickview').removeClass('opened');
             $('#view-overlay').removeClass('opened');
-        }
+    }
     }
 
 },{}]},{},[1]);
