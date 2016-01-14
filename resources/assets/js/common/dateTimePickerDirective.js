@@ -11,6 +11,7 @@ export default function dateTimePickerDirective() {
             showTodayButton: true,
             showClose: true,
             calendarWeeks: true,
+            locale: 'de',
             icons: {
                 time: 'fa fa-clock-o',
                 date: 'fa fa-calendar-o',

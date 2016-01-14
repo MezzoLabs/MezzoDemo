@@ -6,8 +6,12 @@ export default class Api {
         this.$http = $http;
     }
 
-    get(url, params) {
-        return this.apiPromise(this.$http.get(url, {'params': params}));
+    get(url, params = {}) {
+        const config = {
+            params: params
+        };
+
+        return this.apiPromise(this.$http.get(url, config));
     }
 
     post(url, data) {
@@ -33,12 +37,25 @@ export default class Api {
             })
             .catch(err => {
                 console.error(err);
+                this.showUnexpectedErrorMessage(JSON.stringify(err));
                 throw err;
             });
     }
 
     files(){
         return this.get('/api/files');
+    }
+
+    moveFile(file, folderPath) {
+        const payload = {
+            folder: folderPath
+        };
+
+        return this.put('/api/files/' + file.id, payload);
+    }
+
+    deleteFile(file) {
+        return this.delete('/api/files/' + file.id);
     }
 
     contentBlockTemplate(hash) {
@@ -50,6 +67,10 @@ export default class Api {
                 console.error(err);
                 throw err;
             });
+    }
+
+    showUnexpectedErrorMessage(message) {
+        sweetAlert('Oops, something spilled...', message, 'error');
     }
 
 }

@@ -2,19 +2,21 @@ import File from './File';
 import Folder from './Folder';
 import categories from './categories';
 
-export default class CreateFileController {
+export default class FileManagerController {
 
     /*@ngInject*/
-    constructor($scope, api, Upload){
+    constructor($scope, api, Upload, quickviewService){
         this.$scope = $scope;
         this.api = api;
         this.Upload = Upload;
+        this.quickviewService = quickviewService;
 
         this.categories = categories;
         this.category = this.categories[0];
         this.orderOptions = [ 'Title', 'Last modified' ];
         this.orderBy = this.orderOptions[0];
         this.selected = null;
+        this.loading = false;
 
         this.initFiles();
     }
@@ -23,8 +25,11 @@ export default class CreateFileController {
         this.library = new Folder('Library');
         this.folder = this.library;
         this.files = this.library.files;
+        this.loading = true;
 
         this.api.files().then(apiFiles => {
+            this.loading = false;
+
             apiFiles.forEach(apiFile => {
                 const file = new File(apiFile);
 
@@ -46,11 +51,13 @@ export default class CreateFileController {
     selectFile(file){
         if(file === this.selected){
             this.selected = null;
+            this.quickviewService.open = false;
 
             return;
         }
 
         this.selected = file;
+        this.quickviewService.open = true;
     }
 
     enterFolder(file){
@@ -87,9 +94,9 @@ export default class CreateFileController {
         }
 
         this.folderName = '';
-        var folder = new Folder(name, this.folder);
+        const newFolder = new Folder(name, this.folder);
 
-        this.folder.files.push(folder);
+        this.folder.files.push(newFolder);
         $('#add-folder-modal').modal('hide');
     }
 
@@ -195,16 +202,12 @@ export default class CreateFileController {
     }
 
     deleteFile(file){
-        for(var i = 0; i < this.files.length; i++){
-            if(file === this.files[i]){
-                this.files.splice(i, 1);
-
-                return;
-            }
-        }
+        _.remove(this.files, file);
+        this.api.deleteFile(file);
     }
 
     moveTo(folder){
+        this.api.moveFile(this.selected, folder.path());
         this.moveFile(this.selected, folder);
         $('#move-modal').modal('hide');
         this.enterFolder(folder);
@@ -245,6 +248,10 @@ export default class CreateFileController {
 
         this.moveFile(dragged, folder);
         this.$scope.$apply();
+    }
+
+    refresh() {
+        this.initFiles();
     }
 
 }

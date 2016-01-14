@@ -11,6 +11,11 @@
                    data-latitude="address[latitude]" data-longitude="address[longitude]"/>
         </div>
     </div>
+    <div class="col-md-6">
+        <div style="width: 100%; height: 200px">
+            <div mezzo-google-map style="width: 100%; height: 100%"></div>
+        </div>
+    </div>
     <div class="col-md-3">
         {!! $renderer->renderNested('latitude', ['attributes' => ['readonly' => 'readonly', 'default' => "0.0"]]) !!}
     </div>

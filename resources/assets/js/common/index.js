@@ -7,9 +7,12 @@ import hrefPreventDirective from './hrefPreventDirective';
 import tinymceDirective from './tinymceDirective';
 import select2Directive from './select2Directive';
 import dateTimePickerDirective from './dateTimePickerDirective';
+import quickviewDirective from './quickviewDirective';
+import quickviewCloseDirective from './quickviewCloseDirective';
 import uidService from './uidService.js';
 import apiService from './api/apiService';
 import hasControllerService from './hasControllerService';
+import QuickviewService from './QuickviewService';
 
 const module = angular.module('MezzoCommon', []);
 
@@ -22,6 +25,9 @@ module.directive('mezzoHrefPrevent', hrefPreventDirective);
 module.directive('mezzoSelect2', select2Directive);
 module.directive('mezzoRichtext', tinymceDirective);
 module.directive('mezzoDatetimepicker', dateTimePickerDirective);
+module.directive('mezzoQuickview', quickviewDirective);
+module.directive('mezzoQuickviewClose', quickviewCloseDirective);
 module.factory('uid', uidService);
 module.factory('api', apiService);
 module.factory('hasController', hasControllerService);
+module.service('quickviewService', QuickviewService);

@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <input type="search" class="form-control input-sm" placeholder="Search" ng-model="vm.searchText">
-                <hr>
+                <br>
                 <div class="row">
                     <div ng-class="vm.leftColumnClass()">
                         <table class="table table-condensed" ng-show="vm.filteredFiles().length > 0">
@@ -16,8 +16,9 @@
                                 <td style="width: 20px">
                                     <input type="checkbox" ng-model="file.selected" ng-change="vm.onSelect(file)">
                                 </td>
-                                <td style="width: 20px">
-                                    <span ng-class="file.icon()"></span>
+                                <td style="width: 100px">
+                                    <img class="img-responsive" ng-src="{{ file.thumbnail() }}">
+                                    <span ng-class="file.icon()" ng-if="!file.thumbnail()"></span>
                                 </td>
                                 <td>
                                     <span ng-bind="file.name" ng-hide="file.isImage()"></span>
@@ -50,5 +51,18 @@
     </div>
 </div>
 <!-- Modal -->
+
 <button type="button" class="btn btn-default btn-block" ng-click="vm.showModal($event)" ng-bind="vm.selectLabel()"></button>
 <input type="hidden" name="{{ vm.name }}" data-mezzo-file-picker-value>
+<br>
+<div class="row" ng-repeat="file in vm.selectedFiles()">
+    <a href="" class="thumbnail" title="{{ file.title }}" ng-if="file.thumbnail()" ng-click="file.selected = false">
+        <img class="img-responsive" ng-src="{{ file.thumbnail() }}">
+    </a>
+    <div ng-if="!file.thumbnail()">
+        <span class="text-muted" style="word-wrap: break-word" ng-bind="file.title"></span>
+        <button type="button" class="close pull-right" ng-click="file.selected = false">
+            <span>&times;</span>
+        </button>
+    </div>
+</div>
