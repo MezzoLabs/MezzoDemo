@@ -3,7 +3,10 @@
 
 @section('content')
     @include('cockpit::partials.pages.edit_wrapper_open')
-    <div class="panel panel-bordered">
+
+    {{ $module_page->renderSection('main_panel:before') }}
+
+    <div class="main-panel panel panel-bordered">
         <div class="panel-heading">
             @include('cockpit::partials.pages.edit_heading')
 
@@ -14,6 +17,10 @@
             {!! cockpit_form()->close() !!}
         </div>
     </div>
+
+    {{ $module_page->renderSection('main_panel:after') }}
+
     @include('cockpit::partials.pages.edit_wrapper_close')
+
 
 @endsection

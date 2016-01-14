@@ -15,4 +15,6 @@ interface ModulePageContract
     public function qualifiedName();
 
     public function template();
+
+    public function latestData();
 }

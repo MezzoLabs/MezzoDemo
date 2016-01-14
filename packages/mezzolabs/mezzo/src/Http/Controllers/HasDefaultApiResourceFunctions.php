@@ -55,7 +55,13 @@ trait HasDefaultApiResourceFunctions
      */
     public function store(StoreResourceRequest $request)
     {
-        $response = $this->response()->item($this->repository()->create($request->all()), $this->bestModelTransformer());
+        if (!$request->hasNestedRelations()) {
+            $resource = $this->repository()->create($request->all());
+        } else {
+            $resource = $this->repository()->createWithNestedRelations($request->all(), $request->nestedRelations());
+        }
+
+        $response = $this->response()->item($resource, $this->bestModelTransformer());
 
         event('mezzo.api.store: ' . get_class($this), [$response]);
 
@@ -69,7 +75,7 @@ trait HasDefaultApiResourceFunctions
      * @param int $id
      * @return ApiResponseFactory
      */
-    public function show(ShowResourceRequest $id)
+    public function show(ShowResourceRequest $request, $id)
     {
         $this->assertResourceExists($id);
 
@@ -91,7 +97,15 @@ trait HasDefaultApiResourceFunctions
     {
         $this->assertResourceExists($id);
 
-        $response = $this->response()->item($this->repository()->update($request->all(), $id), $this->bestModelTransformer());
+        if (!$request->hasNestedRelations()) {
+            $resource = $this->repository()->update($request->all(), $id);
+        } else {
+
+            $resource = $this->repository()->updateWithNestedRelations($request->all(), $id, $request->nestedRelations());
+        }
+
+        $response = $this->response()->item($resource, $this->bestModelTransformer());
+
 
         event('mezzo.api.update: ' . get_class($this), [$response, $id]);
 
