@@ -256,6 +256,6 @@ class FileUploadManager
         if (empty($class) || !class_exists($class))
             throw new FileUploadException('Disk is not valid: ' . $class);
 
-        return app()->make(static::$uploaders[$class]);
+        return app()->make($class);
     }
 }
