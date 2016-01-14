@@ -2489,6 +2489,8 @@ exports.default = ShowResourceController;
 },{}],43:[function(require,module,exports){
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 Object.defineProperty(exports, "__esModule", {
@@ -2515,7 +2517,25 @@ var FormDataService = function () {
     }, {
         key: 'set',
         value: function set(formData) {
-            js2form(this.form()[0], formData);
+            var stripped = this.stripData(formData);
+
+            console.log('fill form', stripped);
+            js2form(this.form()[0], stripped);
+        }
+    }, {
+        key: 'stripData',
+        value: function stripData(formData) {
+            var cleaned = {};
+
+            if (!formData || (typeof formData === 'undefined' ? 'undefined' : _typeof(formData)) !== 'object') return formData;
+
+            if (formData.data) return this.stripData(formData.data);
+
+            for (var i in formData) {
+                cleaned[i] = this.stripData(formData[i]);
+            }
+
+            return cleaned;
         }
     }]);
 
