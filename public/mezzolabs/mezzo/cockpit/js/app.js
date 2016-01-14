@@ -110,7 +110,7 @@ var Api = (function () {
                 return response.data.data;
             }).catch(function (err) {
                 console.error(err);
-                _this.showUnexpectedErrorMessage(err.data);
+                _this.showUnexpectedErrorMessage(JSON.stringify(err));
                 throw err;
             });
         }
@@ -1900,6 +1900,7 @@ var EditResourceController = (function () {
         this.formDataService = formDataService;
         this.contentBlockService = contentBlockFactory();
         this.modelId = this.$stateParams.modelId;
+        this.includes = [];
 
         this.$scope.$on('$destroy', function () {
             return _this.onDestroy();
@@ -1909,8 +1910,11 @@ var EditResourceController = (function () {
     _createClass(EditResourceController, [{
         key: 'init',
         value: function init(modelName) {
+            var includes = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+
             this.modelName = modelName;
             this.modelApi = this.api.model(modelName);
+            this.includes = includes;
 
             this.loadContent();
         }

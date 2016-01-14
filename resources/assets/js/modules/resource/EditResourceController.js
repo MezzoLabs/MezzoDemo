@@ -9,13 +9,15 @@ export default class EditResourceController {
         this.formDataService = formDataService;
         this.contentBlockService = contentBlockFactory();
         this.modelId = this.$stateParams.modelId;
+        this.includes = [];
 
         this.$scope.$on('$destroy', () => this.onDestroy());
     }
 
-    init(modelName) {
+    init(modelName, includes = []) {
         this.modelName = modelName;
         this.modelApi = this.api.model(modelName);
+        this.includes = includes;
 
         this.loadContent();
     }

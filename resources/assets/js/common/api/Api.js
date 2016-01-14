@@ -33,7 +33,7 @@ export default class Api {
             })
             .catch(err => {
                 console.error(err);
-                this.showUnexpectedErrorMessage(err.data);
+                this.showUnexpectedErrorMessage(JSON.stringify(err));
                 throw err;
             });
     }
