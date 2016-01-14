@@ -147,7 +147,7 @@ export default class IndexResourceController {
     }
 
     editId(id) {
-        this.$state.go('edit' + this.modelName, {modelId: id});
+        this.$state.go('edit' + this.modelName.replace(',', '').toLowerCase(), {modelId: id});
     }
 
     remove() {

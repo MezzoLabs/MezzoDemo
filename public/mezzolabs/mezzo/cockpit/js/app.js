@@ -2123,7 +2123,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }, {
         key: 'edit',
         value: function edit(modelId) {
-            this.$state.go('edit' + this.modelName.toLowerCase(), { modelId: modelId });
+            this.$state.go('edit' + this.modelName.replace(',', '').toLowerCase(), { modelId: modelId });
         }
     }]);
 
@@ -2565,7 +2565,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }, {
         key: 'editId',
         value: function editId(id) {
-            this.$state.go('edit' + this.modelName, { modelId: id });
+            this.$state.go('edit' + this.modelName.replace(',', '').toLowerCase(), { modelId: id });
         }
     }, {
         key: 'remove',
@@ -2806,7 +2806,7 @@ function registerStateDirective($location, $stateProvider, hasController) {
         if (!controller) {
             controller = controllerForAction(action);
         }
-
+        console.log(stateName);
         $stateProvider.state(stateName, {
             url: url,
             templateUrl: '/mezzo/' + uri + '.html',
