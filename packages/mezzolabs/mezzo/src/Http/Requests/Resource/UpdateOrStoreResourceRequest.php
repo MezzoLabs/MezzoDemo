@@ -16,7 +16,6 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
     private $formObject = null;
 
 
-
     /**
      * Creates a form object for the current resource request.
      *
@@ -25,6 +24,7 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
     public function formObject()
     {
         if (!$this->formObject) {
+            $this->addDefaultData();
             $this->formObject = $this->makeFormObject();
             $this->formObject->setId($this->getId());
         }
@@ -48,5 +48,21 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
     public function hasNestedRelations()
     {
         return !$this->nestedRelations()->isEmpty();
+    }
+
+    public function addDefaultData()
+    {
+        $newModel = $this->newModelInstance();
+        if (!method_exists($newModel, 'defaultData')) {
+            return;
+        }
+
+        $isUpdate = $this instanceof UpdateResourceRequest;
+
+        foreach ($newModel->defaultData() as $key => $value) {
+            if (!$isUpdate && !$this->has($key)) {
+                $this->offsetSet($key, $value);
+            }
+        }
     }
 }

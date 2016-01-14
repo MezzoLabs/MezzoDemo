@@ -90,6 +90,12 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
     public function scopeNearZip(Builder $q1, $zip, $km = 10)
     {
         $this->repository()->addNearZipScope($q1, $zip, $km);
+    }
 
+    public function defaultData()
+    {
+        return [
+            'user_id' => \Auth::id()
+        ];
     }
 }

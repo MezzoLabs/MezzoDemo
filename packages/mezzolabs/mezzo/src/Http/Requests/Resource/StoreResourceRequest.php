@@ -26,5 +26,10 @@ class StoreResourceRequest extends UpdateOrStoreResourceRequest
         return $this->formObject()->rulesForStoring();
     }
 
+    protected function makeFormObject()
+    {
+        return parent::makeFormObject();
+    }
+
 
 }
