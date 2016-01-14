@@ -33,6 +33,7 @@ export default class Api {
             })
             .catch(err => {
                 console.error(err);
+                this.showUnexpectedErrorMessage(err.data);
                 throw err;
             });
     }
@@ -62,6 +63,10 @@ export default class Api {
                 console.error(err);
                 throw err;
             });
+    }
+
+    showUnexpectedErrorMessage(message) {
+        sweetAlert('Oops...', message, 'error');
     }
 
 }

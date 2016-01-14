@@ -104,10 +104,13 @@ var Api = (function () {
     }, {
         key: 'apiPromise',
         value: function apiPromise($httpPromise) {
+            var _this = this;
+
             return $httpPromise.then(function (response) {
                 return response.data.data;
             }).catch(function (err) {
                 console.error(err);
+                _this.showUnexpectedErrorMessage(err.data);
                 throw err;
             });
         }
@@ -139,6 +142,11 @@ var Api = (function () {
                 console.error(err);
                 throw err;
             });
+        }
+    }, {
+        key: 'showUnexpectedErrorMessage',
+        value: function showUnexpectedErrorMessage(message) {
+            sweetAlert('Oops...', message, 'error');
         }
     }]);
 
