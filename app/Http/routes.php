@@ -71,6 +71,13 @@ Route::group(['middleware' => ['auth']], function () {
  * --------------- Mezzo test area
  */
 
+Route::get('/test/s3', function(){
+    $file = \App\File::where('disk', '=', 's3')->orderBy('id', 'desc')->first();
+
+    mezzo_dd($file->move('test/123/test.png'));
+    mezzo_dd($file->url());
+});
+
 Route::get('/test/distance', function () {
 
     mezzo_dump(\App\Event::nearZip('67105', 200)->get());

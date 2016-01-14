@@ -26,6 +26,8 @@ class ResourceRequest extends Request
      */
     protected $modelReflection = null;
 
+    private $currentModelInstance = null;
+
 
     /**
      * Determine if the user is authorized to make this request.
@@ -70,12 +72,16 @@ class ResourceRequest extends Request
      */
     public function currentModelInstance()
     {
-        $id = $this->getId();
+        if (!$this->currentModelInstance) {
+            $id = $this->getId();
 
-        if (!$id || !is_numeric($id))
-            throw new BadRequestHttpException('This request needs an id.');
+            if (!$id || !is_numeric($id))
+                throw new BadRequestHttpException('This request needs an id.');
 
-        return $this->modelReflection()->instance()->query()->findOrFail(intval($id));
+            $this->currentModelInstance = $this->modelReflection()->instance()->query()->findOrFail(intval($id));
+        }
+
+        return $this->currentModelInstance;
     }
 
     public function getId()
@@ -123,7 +129,7 @@ class ResourceRequest extends Request
      */
     protected function failedValidation(Validator $validator)
     {
-        if (!$this->isApi()){
+        if (!$this->isApi()) {
             throw new HttpResponseException($this->response(
                 $this->formatErrors($validator)
             ));

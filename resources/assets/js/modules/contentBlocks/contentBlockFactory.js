@@ -15,11 +15,13 @@ class ContentBlockService {
             handle: 'a .ion-arrow-move',
             start: function (e, ui) {
                 $(ui.item).parent().find('.tinymce_textarea').each(function () {
+                    $(this).css('opacity', 0.05);
                     tinymce.execCommand('mceRemoveEditor', false, $(this).attr('id'));
                 });
             },
             stop: function (e, ui) {
                 $(ui.item).parent().find('.tinymce_textarea').each(function () {
+                    $(this).css('opacity', 1.0);
                     tinymce.execCommand('mceAddEditor', true, $(this).attr('id'));
                 });
             }

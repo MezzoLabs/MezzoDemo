@@ -4,6 +4,7 @@ namespace App;
 
 use App\Mezzo\Generated\ModelParents\MezzoFile;
 use MezzoLabs\Mezzo\Core\Files\Types\FileType;
+use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\DisksManager;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\TypedFileAddon;
 
@@ -70,12 +71,17 @@ class File extends MezzoFile
     /**
      * @return string
      */
-    public function longPath($useOriginal = false)
+    public function absolutePath($useOriginal = false)
     {
-        return $this->drives()->longPath($this->disk, $this->shortPath($useOriginal));
+        return $this->disks()->absolutePath($this->disk, $this->shortPath($useOriginal));
     }
 
-    protected function drives()
+    public function sourcePath()
+    {
+        return $this->disks()->sourcePath($this->disk, $this->shortPath());
+    }
+
+    protected function disks()
     {
         return app()->make(DisksManager::class);
     }
@@ -88,17 +94,33 @@ class File extends MezzoFile
         $folder = ($useOriginal) ? $this->getOriginal('folder') : $this->getAttribute('folder');
         $filename = ($useOriginal) ? $this->getOriginal('filename') : $this->getAttribute('filename');
 
-        return $this->drives()->shortPath($folder, $filename);
+        return ltrim(StringHelper::path($folder, $filename), '/');
     }
 
     public function existsOnDrive($useOriginal = false)
     {
-        return $this->drives()->exists($this->disk, $this->shortPath($useOriginal));
+        return $this->disks()->exists($this->disk, $this->shortPath($useOriginal));
     }
 
     public function url()
     {
-        return $this->drives()->url($this->shortPath(), $this->disk);
+        return $this->disks()->url($this->shortPath(), $this->disk);
+    }
+
+    /**
+     * @param $to
+     * @return bool
+     */
+    public function move($to)
+    {
+        $parts = explode('/', $to);
+        $toName = $parts[count($parts) - 1];
+        $toFolder = implode('/', array_splice($parts, 0, count($parts) - 1));
+
+        $this->filename = $toName;
+        $this->folder = $toFolder;
+
+        return $this->save();
     }
 
 
