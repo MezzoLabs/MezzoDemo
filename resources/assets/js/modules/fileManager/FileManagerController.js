@@ -5,10 +5,11 @@ import categories from './categories';
 export default class FileManagerController {
 
     /*@ngInject*/
-    constructor($scope, api, Upload){
+    constructor($scope, api, Upload, quickviewService){
         this.$scope = $scope;
         this.api = api;
         this.Upload = Upload;
+        this.quickviewService = quickviewService;
 
         this.categories = categories;
         this.category = this.categories[0];
@@ -50,11 +51,13 @@ export default class FileManagerController {
     selectFile(file){
         if(file === this.selected){
             this.selected = null;
+            this.quickviewService.open = false;
 
             return;
         }
 
         this.selected = file;
+        this.quickviewService.open = true;
     }
 
     enterFolder(file){
