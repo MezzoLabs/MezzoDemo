@@ -66,11 +66,16 @@ export default class EditResourceController {
     stopResourceLocking() {
         if(this.lockTask) {
             clearInterval(this.lockTask);
+            this.unlock();
         }
     }
 
     lock() {
         this.modelApi.lock(this.modelId);
+    }
+
+    unlock() {
+        this.modelApi.unlock(this.modelId);
     }
 
     onDestroy() {

@@ -31,4 +31,8 @@ export default class ModelApi {
         return this.api.get(this.apiUrl + '/' + modelId + '/lock');
     }
 
+    unlock(modelId) {
+        return this.api.get(this.apiUrl + '/' + modelId + '/unlock');
+    }
+
 }
