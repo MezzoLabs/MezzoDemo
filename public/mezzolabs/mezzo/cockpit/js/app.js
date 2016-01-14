@@ -119,9 +119,16 @@ var Api = (function () {
     }, {
         key: 'moveFile',
         value: function moveFile(file, folderPath) {
-            return this.put('/api/files/' + file.id, {
+            var payload = {
                 folder: folderPath
-            });
+            };
+
+            return this.put('/api/files/' + file.id, payload);
+        }
+    }, {
+        key: 'deleteFile',
+        value: function deleteFile(file) {
+            return this.delete('/api/files/' + file.id);
         }
     }, {
         key: 'contentBlockTemplate',
@@ -1056,13 +1063,8 @@ var FileManagerController = (function () {
     }, {
         key: 'deleteFile',
         value: function deleteFile(file) {
-            for (var i = 0; i < this.files.length; i++) {
-                if (file === this.files[i]) {
-                    this.files.splice(i, 1);
-
-                    return;
-                }
-            }
+            _.remove(this.files, file);
+            this.api.deleteFile(file);
         }
     }, {
         key: 'moveTo',

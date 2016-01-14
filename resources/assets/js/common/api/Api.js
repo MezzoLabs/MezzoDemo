@@ -42,9 +42,15 @@ export default class Api {
     }
 
     moveFile(file, folderPath) {
-        return this.put('/api/files/' + file.id, {
+        const payload = {
             folder: folderPath
-        });
+        };
+
+        return this.put('/api/files/' + file.id, payload);
+    }
+
+    deleteFile(file) {
+        return this.delete('/api/files/' + file.id);
     }
 
     contentBlockTemplate(hash) {

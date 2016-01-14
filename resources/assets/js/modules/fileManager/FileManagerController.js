@@ -199,13 +199,8 @@ export default class FileManagerController {
     }
 
     deleteFile(file){
-        for(var i = 0; i < this.files.length; i++){
-            if(file === this.files[i]){
-                this.files.splice(i, 1);
-
-                return;
-            }
-        }
+        _.remove(this.files, file);
+        this.api.deleteFile(file);
     }
 
     moveTo(folder){
