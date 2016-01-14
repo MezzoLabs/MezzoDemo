@@ -29,12 +29,18 @@ class QueryObject
      */
     protected $scopes;
 
+    /**
+     * @var Pagination
+     */
+    protected $pagination;
+
     public function __construct()
     {
         $this->searchQuery = new SearchQuery('', []);
         $this->filters = new Filters();
         $this->sortings = new Sortings();
         $this->scopes = new Scopes();
+        $this->pagination = new Pagination();
     }
 
     /**
@@ -49,12 +55,14 @@ class QueryObject
         $sortings = Sortings::makeByString($request->get('sort', ''));
         $filters = Filters::makeByArray($request->all(), $request->modelReflection());
         $scopes = Scopes::make($request->get('scopes', ''));
+        $pagination = new Pagination(intval($request->get('offset', 0)), intval($request->get('limit', 0)));
 
         return (new static())
             ->withScopes($scopes)
             ->withSearch($searchQuery)
             ->withSortings($sortings)
-            ->withFilters($filters);
+            ->withFilters($filters)
+            ->withPagination($pagination);
     }
 
     /**
@@ -149,6 +157,24 @@ class QueryObject
     public function withScopes(Scopes $scopes) : QueryObject
     {
         $this->scopes = $scopes;
+        return $this;
+    }
+
+    /**
+     * @return Pagination
+     */
+    public function pagination()
+    {
+        return $this->pagination;
+    }
+
+    /**
+     * @param Pagination $pagination
+     * @return QueryObject
+     */
+    public function withPagination(Pagination $pagination) : QueryObject
+    {
+        $this->pagination = $pagination;
         return $this;
     }
 }

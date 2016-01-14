@@ -32,8 +32,10 @@ as
             <button class="btn btn-block btn-primary" type="submit">Login</button>
         </div>
     </form>
+    {{--
     <ul>
         <li><a href="{{ route('cockpit::register') }}">Register</a></li>
         <li><a href="{{ route('cockpit::password.email') }}">Forgot password</a></li>
     </ul>
+    --}}
 @endsection

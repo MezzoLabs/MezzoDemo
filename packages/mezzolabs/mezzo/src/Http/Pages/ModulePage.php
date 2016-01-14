@@ -14,6 +14,8 @@ use MezzoLabs\Mezzo\Http\Controllers\Controller;
 
 abstract class ModulePage implements ModulePageContract
 {
+    use HasModulePageExtensions;
+
     /**
      * The title that is displayed in the cockpit sidebar.
      *
@@ -87,6 +89,8 @@ abstract class ModulePage implements ModulePageContract
      */
     private $name;
 
+    protected $latestData;
+
     /**
      * Create a new module page.
      *
@@ -100,6 +104,8 @@ abstract class ModulePage implements ModulePageContract
         $this->options = $this->defaultOptions->merge($this->options);
 
         $this->validate();
+
+        $this->makeExtensions();
 
         if (method_exists($this, 'boot'))
             $this->boot();
@@ -197,7 +203,7 @@ abstract class ModulePage implements ModulePageContract
         /**
          * Add some additional data to the view data.
          */
-        $data = $this->additionalData()->merge($data);
+        $data = $this->additionalData()->merge($this->extensionsData($data))->merge($data);
 
         $view = $this->makeView($this->view, $data);
 
@@ -220,6 +226,7 @@ abstract class ModulePage implements ModulePageContract
         $additionalData->put('module_page', $this);
         $additionalData->put('page_options', $this->options);
 
+
         return $additionalData;
     }
 
@@ -235,6 +242,8 @@ abstract class ModulePage implements ModulePageContract
 
         if ($data instanceof Collection)
             $data = $this->collectionToArray($data);
+
+        $this->latestData = $data;
 
         return $this->viewFactory()->make($view, $data);
     }
@@ -380,5 +389,19 @@ abstract class ModulePage implements ModulePageContract
         return route($this->routeName());
     }
 
+    public function renderSection($sectionName)
+    {
+
+        return $this->renderSectionExtensions($sectionName);
+
+    }
+
+    /**
+     * @return mixed
+     */
+    public function latestData()
+    {
+        return $this->latestData;
+    }
 
 }

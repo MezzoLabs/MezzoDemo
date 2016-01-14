@@ -44,4 +44,9 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
     {
         return $this->formObject()->nestedRelations();
     }
+
+    public function hasNestedRelations()
+    {
+        return !$this->nestedRelations()->isEmpty();
+    }
 }

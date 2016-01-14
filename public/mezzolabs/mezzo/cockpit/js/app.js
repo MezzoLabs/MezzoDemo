@@ -2640,6 +2640,10 @@ $(function () {
         return false;
     });
 
+    $('.mezzo__filemanager_container .btn-refresh').click(function () {
+        quickviewVisible(true);
+    });
+
     $('#quickview .btn-close').click(function () {
         quickviewVisible(false);
     });
@@ -2671,6 +2675,16 @@ $(function () {
 
     $('.editable').editable();
 });
+
+    function quickviewVisible(open) {
+        if (open) {
+            $('#quickview').addClass('opened');
+            $('#view-overlay').addClass('opened');
+        } else {
+            $('#quickview').removeClass('opened');
+            $('#view-overlay').removeClass('opened');
+    }
+    }
 
 },{}]},{},[1]);
 

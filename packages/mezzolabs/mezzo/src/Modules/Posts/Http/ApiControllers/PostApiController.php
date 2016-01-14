@@ -34,7 +34,11 @@ class PostApiController extends ApiResourceController
     {
         $page = $this->repository()->createWithNestedRelations($request->all(), $request->formObject()->nestedRelations());
 
-        return $this->response()->item($page, $this->bestModelTransformer());
+        $response = $this->response()->item($page, $this->bestModelTransformer());
+
+        event('mezzo.api.store: ' . get_class($this), [$response]);
+
+        return $response;
     }
 
     /**
@@ -46,6 +50,7 @@ class PostApiController extends ApiResourceController
      */
     public function update(UpdatePostRequest $request, $id)
     {
+
         return $this->defaultUpdate($request, $id);
     }
 

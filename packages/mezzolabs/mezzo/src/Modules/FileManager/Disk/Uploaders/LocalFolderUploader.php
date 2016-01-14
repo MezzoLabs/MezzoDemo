@@ -16,7 +16,7 @@ class LocalFolderUploader extends AbstractFileUploader
      *
      * @return Filesystem
      */
-    public function fileSystem() : Filesystem
+    public function fileSystem()
     {
         return mezzo()->make(IlluminateFileSystem::class);
     }
@@ -43,7 +43,7 @@ class LocalFolderUploader extends AbstractFileUploader
     protected function moveFile(UploadedFile $file, $path) : bool
     {
         $saved = $file->move(storage_path('mezzo/upload/' . $path));
-        return $saved;
+        return $saved == true;
     }
 
     public function key() : string

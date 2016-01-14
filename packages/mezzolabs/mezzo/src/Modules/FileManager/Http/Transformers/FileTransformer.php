@@ -43,7 +43,9 @@ class FileTransFormer extends EloquentModelTransformer
         $typeAddonInfo = [];
 
         if($typeAddon){
-            $typeAddonInfo = json_decode($typeAddon->toJson());
+            $typeAddonInfo = $typeAddon->toArray();
+            $typeAddonInfo['resource'] = mezzo()->model($typeAddon)->name();
+
         }
 
 
