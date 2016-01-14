@@ -28,12 +28,11 @@ export default class IndexResourceController {
 
     loadModels() {
         this.loading = true;
-
-        var parameters = {
-            'include': this.includes.join(',')
+        const params = {
+            include: this.includes.join(',')
         };
 
-        return this.modelApi.index(parameters)
+        return this.modelApi.index(params)
             .then(data => {
                 this.loading = false;
                 this.models = data;

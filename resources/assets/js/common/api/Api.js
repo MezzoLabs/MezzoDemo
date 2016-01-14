@@ -6,8 +6,12 @@ export default class Api {
         this.$http = $http;
     }
 
-    get(url, params) {
-        return this.apiPromise(this.$http.get(url, {'params': params}));
+    get(url, params = {}) {
+        const config = {
+            params: params
+        };
+
+        return this.apiPromise(this.$http.get(url, config));
     }
 
     post(url, data) {

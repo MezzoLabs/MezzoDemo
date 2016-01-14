@@ -44,8 +44,11 @@ function RelationInputController(api) {
     this.modelApi = this.api.model(this.related);
     this.model = null;
     this.models = [];
+    var params = {
+        scopes: this.scopes
+    };
 
-    this.modelApi.index({ scopes: this.scopes }).then(function (models) {
+    this.modelApi.index(params).then(function (models) {
         _this.models = models;
     });
 };
@@ -78,8 +81,14 @@ var Api = (function () {
 
     _createClass(Api, [{
         key: 'get',
-        value: function get(url, params) {
-            return this.apiPromise(this.$http.get(url, { 'params': params }));
+        value: function get(url) {
+            var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+            var config = {
+                params: params
+            };
+
+            return this.apiPromise(this.$http.get(url, config));
         }
     }, {
         key: 'post',
@@ -178,8 +187,10 @@ var ModelApi = (function () {
 
     _createClass(ModelApi, [{
         key: 'index',
-        value: function index(parameters) {
-            return this.api.get(this.apiUrl, parameters);
+        value: function index() {
+            var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+            return this.api.get(this.apiUrl, params);
         }
     }, {
         key: 'create',
@@ -199,7 +210,9 @@ var ModelApi = (function () {
     }, {
         key: 'content',
         value: function content(modelId) {
-            return this.api.get(this.apiUrl + '/' + modelId + '?include=content');
+            var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+            return this.api.get(this.apiUrl + '/' + modelId, params);
         }
     }, {
         key: 'lock',
@@ -1900,7 +1913,7 @@ var EditResourceController = (function () {
         this.formDataService = formDataService;
         this.contentBlockService = contentBlockFactory();
         this.modelId = this.$stateParams.modelId;
-        this.includes = [];
+        this.includes = ['content'];
 
         this.$scope.$on('$destroy', function () {
             return _this.onDestroy();
@@ -1915,6 +1928,10 @@ var EditResourceController = (function () {
             this.modelName = modelName;
             this.modelApi = this.api.model(modelName);
             this.includes = includes;
+
+            if (!_.includes(this.includes, 'content')) {
+                this.includes.push('content');
+            }
 
             this.loadContent();
         }
@@ -1943,29 +1960,42 @@ var EditResourceController = (function () {
         value: function loadContent() {
             var _this2 = this;
 
-            this.modelApi.content(this.modelId).then(function (model) {
-                var blocks = model.content.data.blocks.data;
+            var params = {
+                include: this.includes.join(',')
+            };
 
+            this.modelApi.content(this.modelId, params).then(function (model) {
+                _this2.initContentBlocks(model);
                 _this2.initLockable(model);
-
-                blocks.forEach(function (block) {
-                    var hash = md5(block.class);
-
-                    _this2.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
-                });
-
                 _this2.stripDataEnvelopes(model.content);
                 _this2.formDataService.set(model);
             });
         }
     }, {
+        key: 'initContentBlocks',
+        value: function initContentBlocks(model) {
+            var _this3 = this;
+
+            if (!model.content || !model.content.data.blocks) {
+                return;
+            }
+
+            var blocks = model.content.data.blocks.data;
+
+            blocks.forEach(function (block) {
+                var hash = md5(block.class);
+
+                _this3.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
+            });
+        }
+    }, {
         key: 'startResourceLocking',
         value: function startResourceLocking() {
-            var _this3 = this;
+            var _this4 = this;
 
             var thirtySeconds = 30 * 1000;
             this.lockTask = setInterval(function () {
-                return _this3.lock();
+                return _this4.lock();
             }, thirtySeconds);
 
             this.lock();
@@ -2020,7 +2050,7 @@ var EditResourceController = (function () {
     }, {
         key: 'stripDataEnvelopes',
         value: function stripDataEnvelopes(object) {
-            var _this4 = this;
+            var _this5 = this;
 
             if (!_.isObject(object)) {
                 return;
@@ -2031,7 +2061,7 @@ var EditResourceController = (function () {
             keys.forEach(function (key) {
                 var value = object[key];
 
-                _this4.stripDataEnvelopes(value);
+                _this5.stripDataEnvelopes(value);
 
                 if (key === 'data') {
                     delete object[key];
@@ -2040,7 +2070,7 @@ var EditResourceController = (function () {
                         for (var i = 0; i < value.length; i++) {
                             object['num' + i] = value[i];
 
-                            _this4.stripDataEnvelopes(value[i]);
+                            _this5.stripDataEnvelopes(value[i]);
                         }
 
                         return;
@@ -2111,12 +2141,11 @@ var IndexResourceController = (function () {
             var _this = this;
 
             this.loading = true;
-
-            var parameters = {
-                'include': this.includes.join(',')
+            var params = {
+                include: this.includes.join(',')
             };
 
-            return this.modelApi.index(parameters).then(function (data) {
+            return this.modelApi.index(params).then(function (data) {
                 _this.loading = false;
                 _this.models = data;
 

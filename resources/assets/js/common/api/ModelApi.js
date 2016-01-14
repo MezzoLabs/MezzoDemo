@@ -7,8 +7,8 @@ export default class ModelApi {
         this.apiUrl = '/api/' + this.modelPlural;
     }
 
-    index(parameters) {
-        return this.api.get(this.apiUrl, parameters);
+    index(params = {}) {
+        return this.api.get(this.apiUrl, params);
     }
 
     create(formData) {
@@ -23,8 +23,8 @@ export default class ModelApi {
         return this.api.delete(this.apiUrl + '/' + modelId);
     }
 
-    content(modelId) {
-        return this.api.get(this.apiUrl + '/' + modelId + '?include=content');
+    content(modelId, params = {}) {
+        return this.api.get(this.apiUrl + '/' + modelId, params);
     }
 
     lock(modelId) {
