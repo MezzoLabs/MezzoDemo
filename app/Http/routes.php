@@ -71,6 +71,7 @@ Route::group(['middleware' => ['auth']], function () {
  * --------------- Mezzo test area
  */
 
+
 Route::get('/test/s3', function(){
     $file = \App\File::where('disk', '=', 's3')->orderBy('id', 'desc')->first();
 

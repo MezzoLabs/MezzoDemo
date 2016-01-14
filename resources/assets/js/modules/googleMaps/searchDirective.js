@@ -69,6 +69,10 @@ export default function searchDirective(mapService) {
                     $(`[name="${ componentSelector }"]`).val(componentValue);
                 }
             });
+
+            if(mapService.receivePlace) {
+                mapService.receivePlace(place);
+            }
         });
 
         if (navigator.geolocation) {

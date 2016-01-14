@@ -6,8 +6,11 @@ export default class RelationInputController {
         this.modelApi = this.api.model(this.related);
         this.model = null;
         this.models = [];
+        const params = {
+            scopes: this.scopes
+        };
 
-        this.modelApi.index({scopes: this.scopes})
+        this.modelApi.index(params)
             .then(models => {
                 this.models = models;
             });

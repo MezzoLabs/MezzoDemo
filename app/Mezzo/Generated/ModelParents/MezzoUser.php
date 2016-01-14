@@ -35,10 +35,13 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  * @property \App\Address $address
  * @property EloquentCollection $comments
  * @property EloquentCollection $events
+ * @property EloquentCollection $lockedEvents
  * @property EloquentCollection $likedCategories
  * @property EloquentCollection $orders
  * @property EloquentCollection $posts
+ * @property EloquentCollection $lockedPosts
  * @property \App\ShoppingBasket $shoppingBasket
+ * @property EloquentCollection $subscriptions
  * @property EloquentCollection $tutorials
  * @property EloquentCollection $roles
  */
@@ -74,7 +77,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
         'password' => "required|confirmed|min:6",
         'remember_token' => "",
         'backend' => "",
-        'confirmed' => "",
+        'confirmed' => "", 
         'confirmation_code' => ""
     ];
 
@@ -85,7 +88,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
      */
     protected $hidden = [
         "remember_token",
-        "password",
+        "password", 
         "confirmation_code"
     ];
 
@@ -102,7 +105,8 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
         "confirmation_code",
         "confirmed",
         "backend",
-        "created_at"
+        "created_at",
+        "subscriptions"
     ];
 
     /**
@@ -188,6 +192,13 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
      */
     protected $_updated_at;
 
+    /**
+     * Attribute annotation property for backend
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\CheckboxInput", hidden="")
+     * @var boolean
+     */
+    protected $_backend;
 
     /**
      * Attribute annotation property for confirmed
@@ -196,14 +207,6 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
      * @var boolean
      */
     protected $_confirmed;
-
-    /**
-     * Attribute annotation property for backend
-     *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\CheckboxInput", hidden="")
-     * @var boolean
-     */
-    protected $_backend;
 
     /**
      * Attribute annotation property for confirmation_code
@@ -265,6 +268,17 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     protected $_events;
 
     /**
+     * Relation annotation property for lockedEvents
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="lockedEvents")
+     * @Mezzo\Relations\To(table="events", primaryKey="id", naming="lockedBy")
+     * @Mezzo\Relations\JoinColumn(table="events", column="locked_by_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_lockedEvents;
+
+    /**
      * Relation annotation property for likedCategories
      * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
      * @Mezzo\Relations\OneToMany
@@ -298,6 +312,17 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     protected $_posts;
 
     /**
+     * Relation annotation property for lockedPosts
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="lockedPosts")
+     * @Mezzo\Relations\To(table="posts", primaryKey="id", naming="lockedBy")
+     * @Mezzo\Relations\JoinColumn(table="posts", column="locked_by_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_lockedPosts;
+
+    /**
      * Relation annotation property for shoppingBasket
      * @Mezzo\Relations\OneToOne
      * @Mezzo\Relations\From(table="users", primaryKey="id", naming="shoppingBasket")
@@ -306,6 +331,17 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
      * @Mezzo\Relations\Scopes("")
      */
     protected $_shoppingBasket;
+
+    /**
+     * Relation annotation property for subscriptions
+     * @Mezzo\Attribute(type="\App\Magazine\Subscriptions\Schema\SubscriptionInput", hidden="create")
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="subscriptions")
+     * @Mezzo\Relations\To(table="subscriptions", primaryKey="id", naming="user")
+     * @Mezzo\Relations\JoinColumn(table="subscriptions", column="user_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_subscriptions;
 
     /**
      * Relation annotation property for tutorials

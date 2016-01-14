@@ -188,9 +188,14 @@ class RelationUpdater extends EloquentRepository
      */
     protected function processId($id) : int
     {
+        if (is_array($id)) {
+            throw new RepositoryException('Id cannot be an array. ' . var_export($id, true));
+        }
+
         if (!is_numeric($id)) {
             throw new RepositoryException('Cannot update a relation with a non numeric id: "' . $id . '".');
         }
+
 
         return intval($id);
     }

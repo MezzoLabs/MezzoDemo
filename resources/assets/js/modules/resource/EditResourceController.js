@@ -9,13 +9,19 @@ export default class EditResourceController {
         this.formDataService = formDataService;
         this.contentBlockService = contentBlockFactory();
         this.modelId = this.$stateParams.modelId;
+        this.includes = [ 'content' ];
 
         this.$scope.$on('$destroy', () => this.onDestroy());
     }
 
-    init(modelName) {
+    init(modelName, includes = []) {
         this.modelName = modelName;
         this.modelApi = this.api.model(modelName);
+        this.includes = includes;
+
+        if(!_.includes(this.includes, 'content')) {
+            this.includes.push('content');
+        }
 
         this.loadContent();
     }
@@ -39,21 +45,31 @@ export default class EditResourceController {
     }
 
     loadContent() {
-        this.modelApi.content(this.modelId)
+        const params = {
+            include: this.includes.join(',')
+        }
+
+        this.modelApi.content(this.modelId, params)
             .then(model => {
-                const blocks = model.content.data.blocks.data;
-
+                this.initContentBlocks(model);
                 this.initLockable(model);
-
-                blocks.forEach(block => {
-                    const hash = md5(block.class);
-
-                    this.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
-                });
-
                 this.stripDataEnvelopes(model.content);
                 this.formDataService.set(model);
             });
+    }
+
+    initContentBlocks(model) {
+        if(!model.content || !model.content.data.blocks) {
+            return;
+        }
+
+        const blocks = model.content.data.blocks.data;
+
+        blocks.forEach(block => {
+            const hash = md5(block.class);
+
+            this.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
+        });
     }
 
     startResourceLocking() {
@@ -66,11 +82,16 @@ export default class EditResourceController {
     stopResourceLocking() {
         if(this.lockTask) {
             clearInterval(this.lockTask);
+            this.unlock();
         }
     }
 
     lock() {
         this.modelApi.lock(this.modelId);
+    }
+
+    unlock() {
+        this.modelApi.unlock(this.modelId);
     }
 
     onDestroy() {

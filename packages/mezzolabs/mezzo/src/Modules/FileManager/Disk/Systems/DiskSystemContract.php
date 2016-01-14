@@ -13,7 +13,7 @@ interface DiskSystemContract
      *
      * @return Filesystem
      */
-    public function fileSystem() : Filesystem;
+    public function fileSystem();
 
 
     /**
