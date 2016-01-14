@@ -11,19 +11,19 @@ export default class File {
     }
 
     icon() {
-        if(this.isImage()) {
+        if (this.isImage()) {
             return 'ion-image';
         }
 
-        if(this.isVideo()) {
+        if (this.isVideo()) {
             return 'ion-ios-videocam';
         }
 
-        if(this.isAudio()) {
+        if (this.isAudio()) {
             return 'ion-music-note';
         }
 
-        if(this.extension === 'pdf') {
+        if (this.extension === 'pdf') {
             return 'ion-printer';
         }
 
@@ -47,7 +47,7 @@ export default class File {
     }
 
     thumbnail() {
-        if(this.isImage()) {
+        if (this.isImage()) {
             return this.url + '?size=small';
         }
 

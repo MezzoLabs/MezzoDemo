@@ -7,11 +7,11 @@ export default function quickviewDirective(quickviewService) {
 
     function link(scope, element, attributes) {
         scope.$watch(() => quickviewService.open, (isOpen, wasOpen) => {
-            if(isOpen === wasOpen) {
+            if (isOpen === wasOpen) {
                 return;
             }
 
-            if(isOpen) {
+            if (isOpen) {
                 return $(element).addClass('opened');
             }
 

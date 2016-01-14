@@ -10,7 +10,7 @@ export default function mapDirective(mapService) {
         const map = new google.maps.Map(actualElement, {
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             zoom: 8,
-            center: { lat: -33.8688, lng: 151.2195 },
+            center: {lat: -33.8688, lng: 151.2195},
         });
 
         if (navigator.geolocation) {
