@@ -70,7 +70,7 @@ export default class Api {
     }
 
     showUnexpectedErrorMessage(message) {
-        sweetAlert('Oops...', message, 'error');
+        sweetAlert('Oops, something spilled...', message, 'error');
     }
 
 }

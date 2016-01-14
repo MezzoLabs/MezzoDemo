@@ -155,7 +155,7 @@ var Api = (function () {
     }, {
         key: 'showUnexpectedErrorMessage',
         value: function showUnexpectedErrorMessage(message) {
-            sweetAlert('Oops...', message, 'error');
+            sweetAlert('Oops, something spilled...', message, 'error');
         }
     }]);
 
@@ -2676,15 +2676,15 @@ $(function () {
     $('.editable').editable();
 });
 
-    function quickviewVisible(open) {
-        if (open) {
-            $('#quickview').addClass('opened');
-            $('#view-overlay').addClass('opened');
-        } else {
-            $('#quickview').removeClass('opened');
-            $('#view-overlay').removeClass('opened');
+function quickviewVisible(open) {
+    if (open) {
+        $('#quickview').addClass('opened');
+        $('#view-overlay').addClass('opened');
+    } else {
+        $('#quickview').removeClass('opened');
+        $('#view-overlay').removeClass('opened');
     }
-    }
+}
 
 },{}]},{},[1]);
 

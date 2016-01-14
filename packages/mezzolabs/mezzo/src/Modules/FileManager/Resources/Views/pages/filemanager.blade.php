@@ -84,54 +84,40 @@
                 <!-- Upload & Add folder -->
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary" ngf-select="vm.upload($file)">
-                <span style="display: inline-block; width: 20px">
-                    <span class="ion-ios-cloud-upload"></span>
-                </span>
+                        <span style="display: inline-block; width: 20px">
+                            <span class="ion-ios-cloud-upload"></span>
+                        </span>
                         <span style="display: inline-block">Upload</span>
                     </button>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-folder-modal">
-                <span style="display: inline-block; width: 20px">
-                    <span class="ion-ios-folder"></span>
-                </span>
-                    <span style="display: inline-block">Add folder</span>
-                </button>
-            </div>
-            <!-- Upload & Add Folder -->
-            <!-- Refresh -->
-            <button type="button" class="btn btn-default" ng-click="vm.refresh()" ng-disabled="vm.loading">
-                <span class="ion-loop"></span>
-            </button>
-            <!-- Refresh -->
-            <!-- Move & Delete -->
-            <div class="btn-group">
-                <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#move-modal" ng-disabled="!vm.selected">
+                        <span style="display: inline-block; width: 20px">
+                            <span class="ion-ios-folder"></span>
+                        </span>
                         <span style="display: inline-block">Add folder</span>
                     </button>
                 </div>
                 <!-- Upload & Add Folder -->
                 <!-- Refresh -->
-                <button type="button" ng-click="quickviewVisible(true)" class="btn btn-default btn-refresh">
+                <button type="button" class="btn btn-default" ng-click="vm.refresh()" ng-disabled="vm.loading">
                     <span class="ion-loop"></span>
                 </button>
                 <!-- Refresh -->
                 <!-- Move & Delete -->
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#move-modal"
-                            ng-disabled="!vm.selected">
-                <span style="display: inline-block; width: 20px">
-                    <span class="ion-arrow-swap"></span>
-                </span>
-                        <span style="display: inline-block">Move</span>
-                    </button>
-                    <button type="button" class="btn btn-default" ng-click="vm.deleteFiles()"
-                            ng-disabled="!vm.selected">
-                <span style="display: inline-block; width: 20px">
-                    <span class="ion-close"></span>
-                </span>
-                        <span style="display: inline-block">Delete</span>
-                    </button>
-                </div>
-                <!-- Move & Delete -->
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#move-modal" ng-disabled="!vm.selected">
+                    <span style="display: inline-block; width: 20px">
+                        <span class="ion-arrow-swap"></span>
+                    </span>
+                    <span style="display: inline-block">Move</span>
+                </button>
+                <!-- Move -->
+                <!-- Delete -->
+                <button type="button" class="btn btn-default" ng-click="vm.deleteFiles()" ng-disabled="!vm.selected">
+                    <span style="display: inline-block; width: 20px">
+                        <span class="ion-close"></span>
+                    </span>
+                    <span style="display: inline-block">Delete</span>
+                </button>
+                <!-- Delete -->
             </div>
         </div>
 
