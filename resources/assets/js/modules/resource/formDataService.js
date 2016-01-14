@@ -11,7 +11,11 @@ export default class FormDataService {
     set(formData) {
         var stripped = this.stripData(formData);
 
-        console.log('fill form', stripped);
+        stripped = this.unpackSelectInputs(this.form()[0], stripped);
+        stripped = this.formatTimestamps(stripped);
+
+        console.log('fill form: ', stripped);
+
         js2form(this.form()[0], stripped);
     }
 
@@ -29,6 +33,47 @@ export default class FormDataService {
         }
 
         return cleaned;
+    }
+
+    unpackSelectInputs(form, data) {
+        var clean = _.clone(data);
+        $(form).find('select').each(function (id, elem) {
+            var name = $(this).attr('name');
+
+            if (!clean[name][0]) {
+                clean[name] = clean[name].id;
+                return true;
+            }
+
+            var ids = [];
+            for (var i in clean[name]) {
+                ids.push(clean[name][i].id);
+            }
+
+            clean[name] = ids;
+        });
+
+        return clean;
+    }
+
+    formatTimestamps(formData) {
+        var cleaned = {};
+
+        //Unpack everything
+        if (formData && typeof formData === 'object') {
+            for (var i in formData) {
+                cleaned[i] = this.formatTimestamps(formData[i]);
+            }
+            return cleaned;
+        }
+
+        //Only the atomic values will land here (science bitch!)
+
+        if (typeof formData == "string" && formData.match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)) {
+            return moment(formData).format('DD.MM.YYYY HH:mm');
+        }
+
+        return formData;
     }
 
 }

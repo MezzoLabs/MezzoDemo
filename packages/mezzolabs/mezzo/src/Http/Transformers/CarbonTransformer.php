@@ -11,6 +11,6 @@ class CarbonTransformer extends TransformerAbstract
 {
     public function transform(Carbon $date)
     {
-        return $date->toIso8601String();
+        return $date->toDateTimeString();
     }
 }
