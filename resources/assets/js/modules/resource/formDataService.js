@@ -19,6 +19,7 @@ export default class FormDataService {
         console.log('fill form: ', stripped);
 
         js2form(this.form()[0], stripped);
+        this.form().find(':input').trigger('input'); // trigger input event to notify Angular that ng-model should update
     }
 
     stripData(formData) {

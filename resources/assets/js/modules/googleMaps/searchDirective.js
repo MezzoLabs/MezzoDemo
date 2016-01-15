@@ -54,8 +54,8 @@ export default function searchDirective(mapService) {
                 }
             };
 
-            $(`[name="${ scope.latitude }"]`).val(latitude);
-            $(`[name="${ scope.longitude }"]`).val(longitude);
+            setInputValue(scope.latitude, latitude);
+            setInputValue(scope.longitude, longitude);
 
             addressComponents.forEach(component => {
                 const componentType = component.types[0];
@@ -66,7 +66,7 @@ export default function searchDirective(mapService) {
                     const componentSelector = componentOptions.selector;
                     const componentValue = component[componentKey];
 
-                    $(`[name="${ componentSelector }"]`).val(componentValue);
+                    setInputValue(componentSelector, componentValue);
                 }
             });
 
@@ -90,5 +90,9 @@ export default function searchDirective(mapService) {
                 autoComplete.setBounds(bounds);
             });
         }
+    }
+
+    function setInputValue(name, value) {
+        $(`[name="${ name }"]`).val(value).trigger('input');
     }
 }
