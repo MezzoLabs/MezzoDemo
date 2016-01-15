@@ -11,7 +11,7 @@
             </div>
             <div class="panel-body">
                 Welcome to my world
-                <input data-mezzo-datetimepicker>
+                <mezzo-datetime-picker></mezzo-datetime-picker>
             </div>
         </div>
     </div>

@@ -36,5 +36,10 @@ class Address extends MezzoAddress
         return $this->hasOne(User::class);
     }
 
+    public function defaultCreateData($givenData)
+    {
+        mezzo_dd($givenData);
+    }
+
 
 }

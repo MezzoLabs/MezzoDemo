@@ -16,7 +16,6 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
     private $formObject = null;
 
 
-
     /**
      * Creates a form object for the current resource request.
      *
@@ -25,6 +24,7 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
     public function formObject()
     {
         if (!$this->formObject) {
+            $this->addDefaultData();
             $this->formObject = $this->makeFormObject();
             $this->formObject->setId($this->getId());
         }
@@ -48,5 +48,39 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
     public function hasNestedRelations()
     {
         return !$this->nestedRelations()->isEmpty();
+    }
+
+    public function addDefaultData()
+    {
+        $newModel = $this->newModelInstance();
+        if (!method_exists($newModel, 'defaultCreateData')) {
+            return;
+        }
+
+        $isUpdate = $this instanceof UpdateResourceRequest;
+
+        if ($isUpdate)
+            return;
+
+        $defaultCreateData = array_dot($newModel->defaultCreateData($this->all()));
+
+        foreach ($defaultCreateData as $key => $value) {
+            if (!$this->has($key)) {
+                $this->offsetSet($key, $value);
+            }
+        }
+    }
+
+
+    /**
+     * Get the validator instance for the request.
+     *
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function getValidatorInstance()
+    {
+        //pull the default data in before validation.
+        $this->formObject();
+        return parent::getValidatorInstance();
     }
 }

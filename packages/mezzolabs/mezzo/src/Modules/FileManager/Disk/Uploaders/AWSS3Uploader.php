@@ -16,7 +16,7 @@ class AwsS3Uploader extends AbstractFileUploader
      *
      * @return Filesystem
      */
-    public function fileSystem() : Filesystem
+    public function fileSystem()
     {
         return Storage::disk('s3');
     }

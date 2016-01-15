@@ -97,8 +97,9 @@ abstract class MezzoEvent extends \App\Mezzo\BaseModel
         "days", 
         "categories", 
         "event_venue_id", 
-        "address_id", 
-        "user_id"
+        "address_id",
+        "user_id",
+        'event_provider_id'
     ];
 
     /**

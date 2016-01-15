@@ -60,11 +60,9 @@ class EventVenueController extends CockpitResourceController
      * @param  int $id
      * @return ModuleResponse
      */
-    public function edit(EditResourceRequest $request, $id)
+    public function edit(EditResourceRequest $request, $id = 0)
     {
-        return $this->page(EditEventVenuePage::class,[
-            'model' => $this->repository()->findOrFail($id, ['*'], ['address'])
-        ]);
+        return $this->page(EditEventVenuePage::class);
     }
 
     public function store(StoreResourceRequest $request)

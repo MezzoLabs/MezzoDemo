@@ -121,9 +121,9 @@ abstract class AttributeRenderingHandler
             return $this->attribute()->name();
 
         if ($this->getOptions()->parent()->relationSide()->hasOneChild())
-            return $this->getOptions()->parentName() . '[' . $this->attribute()->name() . ']';
+            return $this->getOptions()->parentName() . '.' . $this->attribute()->name();
 
-        return $this->getOptions()->parentName() . '[' . $this->getOptions()->getAttribute('index', 0) . '][' . $this->attribute()->name() . ']';
+        return $this->getOptions()->parentName() . '[' . $this->getOptions()->getAttribute('index', 0) . '].' . $this->attribute()->name();
     }
 
     public function dotNotationName()

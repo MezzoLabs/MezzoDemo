@@ -85,7 +85,7 @@ export default function registerStateDirective($location, $stateProvider, hasCon
         const url = $location.url();
         const href = '/' + $element.attr('href');
 
-        if(url === href) {
+        if (url === href) {
             $element
                 .addClass('active')
                 .parents('li.has-pages')

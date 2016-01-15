@@ -1,10 +1,10 @@
 export default class IndexResourceController {
 
     /*@ngInject*/
-    constructor($scope, $state, api) {
+    constructor($scope, api, modelStateService) {
         this.$scope = $scope;
-        this.$state = $state;
         this.api = api;
+        this.modelStateService = modelStateService;
         this.includes = [];
         this.models = [];
         this.searchText = '';
@@ -147,7 +147,7 @@ export default class IndexResourceController {
     }
 
     editId(id) {
-        this.$state.go('edit' + this.modelName, {modelId: id});
+        this.modelStateService.name(this.modelName).id(id).edit();
     }
 
     remove() {
