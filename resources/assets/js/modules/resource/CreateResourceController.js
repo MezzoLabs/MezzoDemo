@@ -1,11 +1,12 @@
 export default class CreateResourceController {
 
     /*@ngInject*/
-    constructor($state, api, formDataService, contentBlockFactory) {
+    constructor($state, api, formDataService, contentBlockFactory, modelStateService) {
         this.$state = $state;
         this.api = api;
         this.formDataService = formDataService;
         this.contentBlockService = contentBlockFactory();
+        this.modelStateService = modelStateService;
     }
 
     init(modelName) {
@@ -34,7 +35,7 @@ export default class CreateResourceController {
     }
 
     edit(modelId) {
-        this.$state.go('edit' + this.modelName.replace(',', '').toLowerCase(), {modelId: modelId});
+        this.modelStateService.name(this.modelName).id(modelId).edit();
     }
 
 }

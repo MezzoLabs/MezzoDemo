@@ -1,13 +1,14 @@
 export default class EditResourceController {
 
     /*@ngInject*/
-    constructor($scope, $state, $stateParams, api, formDataService, contentBlockFactory) {
+    constructor($scope, $state, $stateParams, api, formDataService, contentBlockFactory, modelStateService) {
         this.$scope = $scope;
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.api = api;
         this.formDataService = formDataService;
         this.contentBlockService = contentBlockFactory();
+        this.modelStateService = modelStateService;
         this.modelId = this.$stateParams.modelId;
         this.includes = [ 'content' ];
 
@@ -116,7 +117,7 @@ export default class EditResourceController {
         const title = 'Oops...';
         const message = 'You are not allowed to edit this resource while it is locked by ' + lockedBy + '!';
 
-        this.$state.go('index' + this.modelName.toLowerCase());
+        this.modelStateService.name(this.modelName).index();
         sweetAlert(title, message, 'error');
     }
 
