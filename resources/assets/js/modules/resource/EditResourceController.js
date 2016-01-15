@@ -1,9 +1,8 @@
 export default class EditResourceController {
 
     /*@ngInject*/
-    constructor($scope, $state, $stateParams, api, formDataService, contentBlockFactory, modelStateService) {
+    constructor($scope, $stateParams, api, formDataService, contentBlockFactory, modelStateService) {
         this.$scope = $scope;
-        this.$state = $state;
         this.$stateParams = $stateParams;
         this.api = api;
         this.formDataService = formDataService;

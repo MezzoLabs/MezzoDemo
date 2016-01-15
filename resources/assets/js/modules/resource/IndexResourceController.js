@@ -1,9 +1,8 @@
 export default class IndexResourceController {
 
     /*@ngInject*/
-    constructor($scope, $state, api, modelStateService) {
+    constructor($scope, api, modelStateService) {
         this.$scope = $scope;
-        this.$state = $state;
         this.api = api;
         this.modelStateService = modelStateService;
         this.includes = [];
