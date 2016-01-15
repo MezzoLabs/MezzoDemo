@@ -48,8 +48,9 @@ export default class File {
 
     thumbnail() {
         if (this.isImage()) {
-            return this.url + '?size=small';
+            return this.url + '?size=thumb';
         }
+
 
         return false;
     }

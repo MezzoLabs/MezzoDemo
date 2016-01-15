@@ -27,11 +27,15 @@ class PublishFilesController extends CockpitController
         $path = ltrim($path, '/');
 
         $parts = $this->matchPath($path);
-        $forceDownload = ($request->get('download', 0) == 1);
 
         $this->request = $request;
 
-        $publish = $this->publishFileInFolder($parts['filename'], $parts['folder'], $forceDownload);
+        $options = [
+            'forceDownload' => ($request->get('download', 0) == 1),
+            'imageSize' => $request->get('size', 'medium')
+        ];
+
+        $publish = $this->publishFileInFolder($parts['filename'], $parts['folder'], $options);
 
         return $publish;
     }
@@ -58,7 +62,7 @@ class PublishFilesController extends CockpitController
      * @param string $folder
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    protected function publishFileInFolder($filename, $folder, $forceDownload = false)
+    protected function publishFileInFolder($filename, $folder, array $options = [])
     {
         $repo = $this->filesRepository();
 
@@ -68,10 +72,11 @@ class PublishFilesController extends CockpitController
             throw new NotFoundHttpException();
 
         $publisher = app()->make(FilePublisher::class);
-        return $publisher->publish($file, ['forceDownload' => $forceDownload]);
+        return $publisher->publish($file, $options);
 
 
     }
+
 
     /**
      * @return FileRepository

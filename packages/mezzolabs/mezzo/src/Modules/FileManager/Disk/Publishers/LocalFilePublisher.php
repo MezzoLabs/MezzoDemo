@@ -12,11 +12,24 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class LocalFilePublisher extends AbstractFilePublisher implements FilePublisherContract
 {
     protected $imageSizes = [
+        'thumb' => [75, 75],
         'small' => [300, 300],
         'medium' => [750, 750],
         'large' => [1920, 1080],
         'full' => [3500, 3500]
     ];
+
+    /**
+     * @var ImageManager
+     */
+    protected $intervention;
+
+    public function __construct(\App\File $file, array $options)
+    {
+        parent::__construct($file, $options);
+
+        $this->intervention = new ImageManager(array('driver' => 'gd'));
+    }
 
     /**
      * The underlying file disk system.
@@ -45,26 +58,39 @@ class LocalFilePublisher extends AbstractFilePublisher implements FilePublisherC
      */
     protected function publishImage(\App\File $file)
     {
-        $intervention = new ImageManager(array('driver' => 'gd'));
+
 
         $imageSizes = $this->imageSizes();
 
         $uniqueImageKey = $this->uniqueImageKey($file, $imageSizes[0], $imageSizes[1]);
 
         if (!file_exists($this->imageCacheFolder() . '/' . $uniqueImageKey)) {
-            $image = $intervention
-                ->make($file->absolutePath())
-                ->resize($imageSizes[0], $imageSizes[1], function ($constraint) {
-                    $constraint->aspectRatio();
-                });
+            $fit = $this->imageSizeKey() === "thumb";
+            $image = $this->resize($file->absolutePath(), $imageSizes[0], $imageSizes[1], $fit);
 
             $this->cacheImage($uniqueImageKey, $image);
+
 
             return $image->response();
         }
 
-        return $intervention->make($this->imageCacheFolder() . '/' . $uniqueImageKey)->response();
+        return $this->intervention->make($this->imageCacheFolder() . '/' . $uniqueImageKey)->response();
     }
+
+    protected function resize($path, $width, $height, $fit = false)
+    {
+        if ($fit) {
+            return $this->intervention
+                ->make($path)
+                ->fit($width, $height);
+        }
+
+        return $this->intervention
+            ->make($path)
+            ->resize($width, $height, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+     }
 
     protected function cacheImage($uniqueKey, InterventionImage $file)
     {
@@ -88,6 +114,7 @@ class LocalFilePublisher extends AbstractFilePublisher implements FilePublisherC
 
         return $this->imageSizes[$sizeKey];
     }
+
 
     protected function uniqueImageKey(\App\File $file, $width, $height)
     {

@@ -317,7 +317,7 @@ Object.defineProperty(exports, "__esModule", {
 
                 scope.vm.form[nameAttribute] = valueBeforeCompile;
             });
-        }
+    }
     }
 
 }, {}], 8: [function (require, module, exports) {
@@ -968,7 +968,7 @@ var File = function () {
         key: 'thumbnail',
         value: function thumbnail() {
             if (this.isImage()) {
-                return this.url + '?size=small';
+                return this.url + '?size=thumb';
             }
 
             return false;
@@ -1363,7 +1363,7 @@ var FilePickerController = function () {
         value: function showModal($event) {
             var target = $event.target;
 
-            $(target).prev().modal();
+            $(target).parent().find('.modal').modal();
         }
     }, {
         key: 'loadFiles',
@@ -2587,7 +2587,7 @@ exports.default = IndexResourceController;
                 this.modelName = modelName;
 
                 return this;
-            }
+        }
         }, {
             key: 'id',
             value: function id(modelId) {

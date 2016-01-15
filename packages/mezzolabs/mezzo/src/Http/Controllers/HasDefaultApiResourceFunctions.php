@@ -14,6 +14,7 @@ use MezzoLabs\Mezzo\Http\Requests\Resource\ShowResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\StoreResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\UpdateResourceRequest;
 use MezzoLabs\Mezzo\Http\Responses\ApiResponseFactory;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
 /**
  * Class HasApiResourceFunctions
@@ -122,7 +123,14 @@ trait HasDefaultApiResourceFunctions
     public function destroy(DestroyResourceRequest $request, $id)
     {
         $this->assertResourceExists($id);
-        $response = $this->response()->result($this->repository()->delete($id));
+
+        $delete = $this->repository()->delete($id);
+
+        if($delete == 0){
+            throw new ConflictHttpException('Delete failed.');
+        }
+
+        $response = $this->response()->result($delete);
 
         event('mezzo.api.destroy: ' . get_class($this), [$id]);
 
