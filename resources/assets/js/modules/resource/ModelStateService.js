@@ -34,6 +34,9 @@ export default class ModelStateService {
         this.go(stateName, stateParams);
     }
 
+    /* public */
+    /* private */
+
     go(stateName, stateParams = {}) {
         this.$state.go(stateName, stateParams);
     }
