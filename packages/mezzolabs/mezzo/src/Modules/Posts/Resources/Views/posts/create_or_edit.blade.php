@@ -17,10 +17,10 @@
                 <div class="panel-body">
                     @if($module_page->isType('create'))
                         @include(cockpit_html()->viewKey('form-content-create'), [
-                            'hide_submit' => true, 'without' => ['user_id', 'content_id', 'main_image_id', 'published_at', 'slug', 'state']])
+                            'hide_submit' => true, 'without' => ['categories','user_id', 'content_id', 'main_image_id', 'published_at', 'slug', 'state']])
                     @else
                         @include(cockpit_html()->viewKey('form-content-edit'), [
-                                'hide_submit' => true, 'without' => ['user_id', 'content_id', 'main_image_id', 'published_at', 'slug', 'state']])
+                                'hide_submit' => true, 'without' => ['categories', 'user_id', 'content_id', 'main_image_id', 'published_at', 'slug', 'state']])
                     @endif
                 </div>
             </div>
@@ -49,7 +49,18 @@
                     @endif
                 </div>
             </div>
+            <div class="panel panel-bordered">
+                <div class="panel-heading">
+                    <h3>Categories</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        {!! $model_reflection->schema()->attributes('categories')->render(['wrap' => false]) !!}
+                    </div>
+                </div>
+            </div>
         </div>
+
     </div>
     {!! cockpit_form()->close() !!}
     @include('cockpit::partials.pages.edit_wrapper_close')
