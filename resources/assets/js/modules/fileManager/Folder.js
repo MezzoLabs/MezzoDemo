@@ -17,10 +17,10 @@ export default class Folder extends File {
     }
 
     path() {
-        const folders = [ this.name ];
+        const folders = [this.name];
         let folder = this;
 
-        while(folder.parent) {
+        while (folder.parent) {
             folders.push(folder.parent.name);
 
             folder = folder.parent;

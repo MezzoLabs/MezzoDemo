@@ -103,7 +103,8 @@
                 </button>
                 <!-- Refresh -->
                 <!-- Move & Delete -->
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#move-modal" ng-disabled="!vm.selected">
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#move-modal"
+                        ng-disabled="!vm.selected">
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-arrow-swap"></span>
                     </span>

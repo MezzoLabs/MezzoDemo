@@ -72,11 +72,8 @@ Route::group(['middleware' => ['auth']], function () {
  */
 
 
-Route::get('/test/s3', function(){
-    $file = \App\File::where('disk', '=', 's3')->orderBy('id', 'desc')->first();
+Route::get('/test/carbon', function () {
 
-    mezzo_dd($file->move('test/123/test.png'));
-    mezzo_dd($file->url());
 });
 
 Route::get('/test/distance', function () {

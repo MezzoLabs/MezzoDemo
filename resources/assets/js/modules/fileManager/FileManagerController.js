@@ -5,7 +5,7 @@ import categories from './categories';
 export default class FileManagerController {
 
     /*@ngInject*/
-    constructor($scope, api, Upload, quickviewService){
+    constructor($scope, api, Upload, quickviewService) {
         this.$scope = $scope;
         this.api = api;
         this.Upload = Upload;

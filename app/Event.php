@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 class Event extends MezzoEvent implements SluggableInterface, LockableResource
 {
@@ -90,6 +91,23 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
     public function scopeNearZip(Builder $q1, $zip, $km = 10)
     {
         $this->repository()->addNearZipScope($q1, $zip, $km);
+    }
 
+    public function defaultCreateData($givenData)
+    {
+        $default = [
+            'user_id' => \Auth::id(),
+        ];
+
+        if (isset($givenData['event_venue_id'])) {
+            $venue = EventVenue::findOrFail($givenData['event_venue_id']);
+
+            $address = (new Collection($venue->address->getAttributes()))
+                ->except('id', 'created_at', 'updated_at', 'deleted_at');
+
+            $default['address'] = $address->toArray();
+        }
+
+        return $default;
     }
 }

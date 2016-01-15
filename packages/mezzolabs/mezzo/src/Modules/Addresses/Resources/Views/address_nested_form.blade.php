@@ -5,22 +5,22 @@
         <div class="form-group">
             <label>Google Search</label>
             <input type="text" class="google_search form-control"
-                   data-mezzo-google-maps-search data-street="address[street]"
-                   data-street-number="address[street_extra]" data-street="address[street]"
-                   data-postal-code="address[zip]" data-city="address[city]"
-                   data-latitude="address[latitude]" data-longitude="address[longitude]"/>
+                   data-mezzo-google-maps-search data-street="address.street"
+                   data-street-number="address.street_extra" data-street="address.street"
+                   data-postal-code="address.zip" data-city="address.city"
+                   data-latitude="address.latitude" data-longitude="address.longitude"/>
         </div>
+        {!! $renderer->renderNested('latitude', ['attributes' => ['readonly' => 'readonly']]) !!}
+        {!! $renderer->renderNested('longitude', ['attributes' => ['readonly' => 'readonly']]) !!}
+
     </div>
     <div class="col-md-6">
+
         <div style="width: 100%; height: 200px">
             <div mezzo-google-map style="width: 100%; height: 100%"></div>
         </div>
-    </div>
-    <div class="col-md-3">
-        {!! $renderer->renderNested('latitude', ['attributes' => ['readonly' => 'readonly', 'default' => "0.0"]]) !!}
-    </div>
-    <div class="col-md-3">
-        {!! $renderer->renderNested('longitude', ['attributes' => ['readonly' => 'readonly', 'default' => "0.0"]]) !!}
+
+
     </div>
     <div class="col-md-12">
         <hr/>

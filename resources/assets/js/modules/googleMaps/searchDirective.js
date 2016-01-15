@@ -70,7 +70,7 @@ export default function searchDirective(mapService) {
                 }
             });
 
-            if(mapService.receivePlace) {
+            if (mapService.receivePlace) {
                 mapService.receivePlace(place);
             }
         });

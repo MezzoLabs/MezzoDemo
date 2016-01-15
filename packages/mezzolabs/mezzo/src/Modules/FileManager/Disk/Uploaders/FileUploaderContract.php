@@ -13,7 +13,7 @@ interface FileUploaderContract
      *
      * @return Filesystem
      */
-    public function fileSystem() : Filesystem;
+    public function fileSystem();
 
     /**
      * @return string

@@ -9,7 +9,7 @@ export default class EditResourceController {
         this.contentBlockService = contentBlockFactory();
         this.modelStateService = modelStateService;
         this.modelId = this.$stateParams.modelId;
-        this.includes = [ 'content' ];
+        this.includes = ['content'];
 
         this.$scope.$on('$destroy', () => this.onDestroy());
     }
@@ -19,7 +19,7 @@ export default class EditResourceController {
         this.modelApi = this.api.model(modelName);
         this.includes = includes;
 
-        if(!_.includes(this.includes, 'content')) {
+        if (!_.includes(this.includes, 'content')) {
             this.includes.push('content');
         }
 
@@ -59,7 +59,7 @@ export default class EditResourceController {
     }
 
     initContentBlocks(model) {
-        if(!model.content || !model.content.data.blocks) {
+        if (!model.content || !model.content.data.blocks) {
             return;
         }
 
