@@ -9,6 +9,8 @@ export default class FormDataService {
     }
 
     set(formData) {
+        console.log('received data: ', formData);
+
         var stripped = this.stripData(formData);
 
         stripped = this.unpackSelectInputs(this.form()[0], stripped);
@@ -40,11 +42,17 @@ export default class FormDataService {
         $(form).find('select').each(function (id, elem) {
             var name = $(this).attr('name');
 
+            //html input element is not in response or already an id
+            if (!clean[name] || typeof clean[name] !== 'object')
+                return true;
+
+            // not an array
             if (!clean[name][0]) {
                 clean[name] = clean[name].id;
                 return true;
             }
 
+            //unpack the array of relation elements
             var ids = [];
             for (var i in clean[name]) {
                 ids.push(clean[name][i].id);

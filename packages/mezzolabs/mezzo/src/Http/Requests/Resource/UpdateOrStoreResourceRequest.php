@@ -53,16 +53,34 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
     public function addDefaultData()
     {
         $newModel = $this->newModelInstance();
-        if (!method_exists($newModel, 'defaultData')) {
+        if (!method_exists($newModel, 'defaultCreateData')) {
             return;
         }
 
         $isUpdate = $this instanceof UpdateResourceRequest;
 
-        foreach ($newModel->defaultData() as $key => $value) {
-            if (!$isUpdate && !$this->has($key)) {
+        if ($isUpdate)
+            return;
+
+        $defaultCreateData = array_dot($newModel->defaultCreateData($this->all()));
+
+        foreach ($defaultCreateData as $key => $value) {
+            if (!$this->has($key)) {
                 $this->offsetSet($key, $value);
             }
         }
+    }
+
+
+    /**
+     * Get the validator instance for the request.
+     *
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function getValidatorInstance()
+    {
+        //pull the default data in before validation.
+        $this->formObject();
+        return parent::getValidatorInstance();
     }
 }

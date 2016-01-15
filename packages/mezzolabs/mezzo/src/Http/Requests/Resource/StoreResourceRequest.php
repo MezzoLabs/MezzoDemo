@@ -23,6 +23,8 @@ class StoreResourceRequest extends UpdateOrStoreResourceRequest
      */
     public function rules()
     {
+        $this->formObject();
+
         return $this->formObject()->rulesForStoring();
     }
 

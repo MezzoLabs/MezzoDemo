@@ -55,6 +55,7 @@ class Request extends FormRequest
      */
     public static function capture()
     {
+        mezzo_dd('capture');
         if (!static::$current)
             static::$current = parent::capture();
 
@@ -106,7 +107,7 @@ class Request extends FormRequest
      */
     public function controller()
     {
-        if (! $this->controller)
+        if (!$this->controller)
             $this->controller = $this->detectControllerFromRoute();
 
         return $this->controller;
@@ -141,6 +142,21 @@ class Request extends FormRequest
     protected function permissionGuard()
     {
         return app()->make(PermissionGuard::class);
+    }
+
+
+    /**
+     * Get all of the input and files for the request.
+     *
+     * @return array
+     */
+    public function all()
+    {
+        $array = array();
+        foreach (parent::all() as $key => $value) {
+            array_set($array, $key, $value);
+        }
+        return $array;
     }
 
 

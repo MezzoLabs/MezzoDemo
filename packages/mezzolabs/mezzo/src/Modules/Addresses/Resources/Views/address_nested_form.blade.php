@@ -10,8 +10,8 @@
                    data-postal-code="address.zip" data-city="address.city"
                    data-latitude="address.latitude" data-longitude="address.longitude"/>
         </div>
-        {!! $renderer->renderNested('latitude', ['attributes' => ['readonly' => 'readonly', 'default' => "0.0"]]) !!}
-        {!! $renderer->renderNested('longitude', ['attributes' => ['readonly' => 'readonly', 'default' => "0.0"]]) !!}
+        {!! $renderer->renderNested('latitude', ['attributes' => ['readonly' => 'readonly']]) !!}
+        {!! $renderer->renderNested('longitude', ['attributes' => ['readonly' => 'readonly']]) !!}
 
     </div>
     <div class="col-md-6">
