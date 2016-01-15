@@ -29,7 +29,7 @@ export default function registerStateDirective($location, $stateProvider, hasCon
         if (!controller) {
             controller = controllerForAction(action);
         }
-        console.log(stateName);
+
         $stateProvider.state(stateName, {
             url: url,
             templateUrl: '/mezzo/' + uri + '.html',
