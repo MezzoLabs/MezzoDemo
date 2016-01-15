@@ -157,6 +157,7 @@ return [
 
         Codesleeve\LaravelStapler\Providers\L5ServiceProvider::class,
         Webpatser\Countries\CountriesServiceProvider::class,
+        Skovmand\Mailchimp\MailchimpServiceProvider::class,
 
         /*
          * Mezzo Provider - Mezzo is love

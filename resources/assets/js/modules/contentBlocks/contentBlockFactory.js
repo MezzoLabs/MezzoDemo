@@ -29,13 +29,14 @@ class ContentBlockService {
         this.currentId = 0;
     }
 
-    addContentBlock(key, hash, title, id = '') {
+    addContentBlock(key, hash, title, id = '', fields = {}) {
         const contentBlock = {
             id: id,
             key: key,
             cssClass: 'block__' + key.replace(/\\/g, '_'),
             hash: hash,
             title: title,
+            fields: fields,
             nameInForm: 'num' + this.currentId++,
             template: null
         };
@@ -52,11 +53,14 @@ class ContentBlockService {
         const cachedTemplate = this.templates[contentBlock.hash];
 
         if (cachedTemplate) {
+            console.log('fill template: ', contentBlock);
             return contentBlock.template = cachedTemplate;
         }
 
         this.api.contentBlockTemplate(contentBlock.hash)
             .then(template => {
+                console.log('fill fresh template: ', contentBlock);
+
                 contentBlock.template = template;
                 this.templates[contentBlock.hash] = template;
             });

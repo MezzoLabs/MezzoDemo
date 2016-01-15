@@ -22,7 +22,6 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  * App\Mezzo\Generated\ModelParents\MezzoUser
  *
  * @property integer $id
- * @property string $name
  * @property string $email
  * @property string $password
  * @property string $remember_token
@@ -32,6 +31,9 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  * @property boolean $confirmed
  * @property string $confirmation_code
  * @property integer $address_id
+ * @property string $gender
+ * @property string $first_name
+ * @property string $last_name
  * @property \App\Address $address
  * @property EloquentCollection $comments
  * @property EloquentCollection $events
@@ -72,13 +74,15 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $rules = [
-        'name' => "required|max:255",
         'email' => "required|email|max:255|unique:users",
         'password' => "required|confirmed|min:6",
         'remember_token' => "",
-        'backend' => "",
-        'confirmed' => "", 
-        'confirmation_code' => ""
+        'backend' => "", 
+        'confirmed' => "",
+        'confirmation_code' => "",
+        'gender' => "required|max:1|in:m,f,n",
+        'first_name' => "required|between:2,255",
+        'last_name' => "required|between:2,255"
     ];
 
     /**
@@ -87,7 +91,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $hidden = [
-        "remember_token",
+        "remember_token", 
         "password", 
         "confirmation_code"
     ];
@@ -98,14 +102,16 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $fillable = [
-        "name",
+        "gender",
+        "first_name",
+        "last_name",
         "email",
         "password",
         "roles",
         "confirmation_code",
         "confirmed",
         "backend",
-        "created_at",
+        "created_at", 
         "subscriptions"
     ];
 
@@ -145,12 +151,28 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     protected $_id;
 
     /**
-     * Attribute annotation property for name
+     * Attribute annotation property for gender
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\SelectInput", hidden="")
+     * @var string
+     */
+    protected $_gender;
+
+    /**
+     * Attribute annotation property for first_name
      *
      * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
      * @var string
      */
-    protected $_name;
+    protected $_first_name;
+
+    /**
+     * Attribute annotation property for last_name
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
+     * @var string
+     */
+    protected $_last_name;
 
     /**
      * Attribute annotation property for email
@@ -334,7 +356,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
 
     /**
      * Relation annotation property for subscriptions
-     * @Mezzo\Attribute(type="\App\Magazine\Subscriptions\Schema\SubscriptionInput", hidden="create")
+     * @Mezzo\Attribute(type="App\Magazine\Subscriptions\Schema\SubscriptionInput", hidden="create")
      * @Mezzo\Relations\OneToMany
      * @Mezzo\Relations\From(table="users", primaryKey="id", naming="subscriptions")
      * @Mezzo\Relations\To(table="subscriptions", primaryKey="id", naming="user")

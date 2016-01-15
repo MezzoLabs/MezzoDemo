@@ -9,6 +9,7 @@ use App\Listeners\EmailRegisterNotification;
 use App\Listeners\EmailSuccessfullyVerifiedInfo;
 use App\Listeners\EmailUserVerification;
 use App\Listeners\UnlockUser;
+use App\Listeners\UserWasVerified\SubscribeToNewsletter;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -27,7 +28,8 @@ class EventServiceProvider extends ServiceProvider
         UserWasVerified::class => [
             UnlockUser::class,
             EmailSuccessfullyVerifiedInfo::class,
-            AddDefaultRole::class
+            AddDefaultRole::class,
+            SubscribeToNewsletter::class
         ]
     ];
 

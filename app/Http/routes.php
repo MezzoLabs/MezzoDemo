@@ -12,6 +12,7 @@
 */
 
 
+use App\Magazine\NewsLetter\Services\NewsletterService;
 use App\Tutorial;
 use App\User;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -72,8 +73,10 @@ Route::group(['middleware' => ['auth']], function () {
  */
 
 
-Route::get('/test/carbon', function () {
+Route::get('/test/mailchimp', function () {
+    $newsletterService = app(NewsLetterService::class);
 
+    $newsletterService->addEmailToList('simon.sch@outlook.com');
 });
 
 Route::get('/test/distance', function () {

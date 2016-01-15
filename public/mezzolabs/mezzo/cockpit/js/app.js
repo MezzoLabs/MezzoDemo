@@ -823,6 +823,7 @@ var ContentBlockService = function () {
         key: 'addContentBlock',
         value: function addContentBlock(key, hash, title) {
             var id = arguments.length <= 3 || arguments[3] === undefined ? '' : arguments[3];
+            var fields = arguments.length <= 4 || arguments[4] === undefined ? {} : arguments[4];
 
             var contentBlock = {
                 id: id,
@@ -830,6 +831,7 @@ var ContentBlockService = function () {
                 cssClass: 'block__' + key.replace(/\\/g, '_'),
                 hash: hash,
                 title: title,
+                fields: fields,
                 nameInForm: 'num' + this.currentId++,
                 template: null
             };
@@ -850,10 +852,13 @@ var ContentBlockService = function () {
             var cachedTemplate = this.templates[contentBlock.hash];
 
             if (cachedTemplate) {
+                console.log('fill template: ', contentBlock);
                 return contentBlock.template = cachedTemplate;
             }
 
             this.api.contentBlockTemplate(contentBlock.hash).then(function (template) {
+                console.log('fill fresh template: ', contentBlock);
+
                 contentBlock.template = template;
                 _this.templates[contentBlock.hash] = template;
             });
@@ -2113,6 +2118,10 @@ var EditResourceController = function () {
         key: 'submit',
         value: function submit() {
             if (this.form.$invalid) {
+
+                console.log('invalid', this.form);
+                swal('Booh you!', 'Invalid Form', "error");
+
                 return false;
             }
 
@@ -2159,7 +2168,7 @@ var EditResourceController = function () {
             blocks.forEach(function (block) {
                 var hash = md5(block.class);
 
-                _this3.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
+                _this3.contentBlockService.addContentBlock(block.class, hash, block._label, block.id, block.fields);
             });
         }
     }, {
@@ -2614,7 +2623,7 @@ exports.default = IndexResourceController;
                 };
 
                 this.go(stateName, stateParams);
-            }
+        }
 
             /* public */
             /* private */
@@ -2691,7 +2700,7 @@ var FormDataService = function () {
 
             var stripped = this.stripData(formData);
 
-            stripped = this.unpackSelectInputs(this.form()[0], stripped);
+            stripped = this.unpackRelationInputs(this.form()[0], stripped);
             stripped = this.formatTimestamps(stripped);
 
             console.log('fill form: ', stripped);
@@ -2715,12 +2724,10 @@ var FormDataService = function () {
             return cleaned;
         }
     }, {
-        key: 'unpackSelectInputs',
-        value: function unpackSelectInputs(form, data) {
+        key: 'unpackRelationInputs',
+        value: function unpackRelationInputs(form, data) {
             var clean = _.clone(data);
             $(form).find('select').each(function (id, elem) {
-                var name = $(this).attr('name');
-
                 //html input element is not in response or already an id
                 if (!clean[name] || _typeof(clean[name]) !== 'object') return true;
 
@@ -2739,6 +2746,27 @@ var FormDataService = function () {
                 clean[name] = ids;
             });
 
+            //unpack checkboxes
+            for (var i in _.clone(clean)) {
+                var attribute = clean[i];
+
+                if (!_.isObject(attribute) || !attribute[0]) continue;
+
+                //run through the checkbox array (each relation entry)
+                for (var j in attribute) {
+                    var relationEntry = attribute[j];
+
+                    var selector = 'input[type=checkbox][name="' + i + '[' + relationEntry.id + ']"]';
+
+                    if (selector.length == 0) continue;
+
+                    if (!_.isArray(clean[i])) {
+                        clean[i] = [];
+                    }
+                    clean[i].push(relationEntry.id);
+                }
+            }
+
             return clean;
         }
     }, {
@@ -2747,7 +2775,15 @@ var FormDataService = function () {
             var cleaned = {};
 
             //Unpack everything
-            if (formData && (typeof formData === 'undefined' ? 'undefined' : _typeof(formData)) === 'object') {
+            if (formData && _.isArray(formData)) {
+                cleaned = [];
+                for (var i in formData) {
+                    cleaned[i] = this.formatTimestamps(formData[i]);
+                }
+                return cleaned;
+            }
+
+            if (formData && _.isObject(formData)) {
                 for (var i in formData) {
                     cleaned[i] = this.formatTimestamps(formData[i]);
                 }

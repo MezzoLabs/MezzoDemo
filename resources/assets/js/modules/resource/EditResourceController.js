@@ -28,6 +28,10 @@ export default class EditResourceController {
 
     submit() {
         if (this.form.$invalid) {
+
+            console.log('invalid', this.form);
+            swal('Booh you!', 'Invalid Form', "error");
+
             return false;
         }
 
@@ -37,6 +41,7 @@ export default class EditResourceController {
 
         this.modelApi.update(this.modelId, formData);
     }
+
 
     getFormData() {
         const $form = $('form[name="vm.form"]');
@@ -68,7 +73,7 @@ export default class EditResourceController {
         blocks.forEach(block => {
             const hash = md5(block.class);
 
-            this.contentBlockService.addContentBlock(block.class, hash, block._label, block.id);
+            this.contentBlockService.addContentBlock(block.class, hash, block._label, block.id, block.fields);
         });
     }
 
@@ -80,7 +85,7 @@ export default class EditResourceController {
     }
 
     stopResourceLocking() {
-        if(this.lockTask) {
+        if (this.lockTask) {
             clearInterval(this.lockTask);
             this.unlock();
         }
@@ -101,11 +106,11 @@ export default class EditResourceController {
     initLockable(model) {
         this.isLockable = _.has(model, '_locked_by');
 
-        if(!this.isLockable) {
+        if (!this.isLockable) {
             return;
         }
 
-        if(model._locked_for_user) {
+        if (model._locked_for_user) {
             return this.redirectToIndex(model._locked_by);
         }
 
@@ -121,7 +126,7 @@ export default class EditResourceController {
     }
 
     stripDataEnvelopes(object) {
-        if(!_.isObject(object)) {
+        if (!_.isObject(object)) {
             return;
         }
 
@@ -132,11 +137,11 @@ export default class EditResourceController {
 
             this.stripDataEnvelopes(value);
 
-            if(key === 'data') {
+            if (key === 'data') {
                 delete object[key];
 
-                if(_.isArray(value)) {
-                    for(let i = 0; i < value.length; i++) {
+                if (_.isArray(value)) {
+                    for (let i = 0; i < value.length; i++) {
                         object['num' + i] = value[i];
 
                         this.stripDataEnvelopes(value[i]);
@@ -145,7 +150,7 @@ export default class EditResourceController {
                     return;
                 }
 
-                if(_.isObject(value)) {
+                if (_.isObject(value)) {
                     return _.assign(object, value);
                 }
             }
