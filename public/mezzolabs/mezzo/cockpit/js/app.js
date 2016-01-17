@@ -885,7 +885,25 @@ var _module = angular.module('MezzoContentBlocks', []);
 _module.factory('contentBlockFactory', _contentBlockFactory2.default);
 
 }, {"./contentBlockFactory": 22}], 24: [function (require, module, exports) {
-    'use strict';
+    "use strict";
+
+    var _createClass = function () {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || false;
+                descriptor.configurable = true;
+                if ("value" in descriptor) descriptor.writable = true;
+                Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+            if (protoProps) defineProperties(Constructor.prototype, protoProps);
+            if (staticProps) defineProperties(Constructor, staticProps);
+            return Constructor;
+        };
+    }();
 
     Object.defineProperty(exports, "__esModule", {
         value: true
@@ -897,14 +915,40 @@ _module.factory('contentBlockFactory', _contentBlockFactory2.default);
         }
     }
 
-    var FilePickerController =
-
-        /*@ngInject*/
-        function FilePickerController(api) {
+    var FilePickerController = function () {
+        function FilePickerController() {
             _classCallCheck(this, FilePickerController);
 
-            console.log('im here');
-        };
+            this.days = [];
+
+            this.days.push({
+                start: "",
+                end: "",
+                id: null
+            });
+    }
+
+        _createClass(FilePickerController, [{
+            key: "addDay",
+            value: function addDay() {
+                this.days.push({
+                    start: "",
+                    end: "",
+                    id: null
+                });
+
+                console.log(this.days);
+            }
+        }, {
+            key: "removeDay",
+            value: function removeDay(id) {
+                delete this.days[id];
+                console.log(this.days);
+            }
+        }]);
+
+        return FilePickerController;
+    }();
 
     exports.default = FilePickerController;
 
@@ -914,7 +958,7 @@ _module.factory('contentBlockFactory', _contentBlockFactory2.default);
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.default = filePickerDirective;
+    exports.default = eventDaysDirective;
 
     var _EventDaysController = require('./EventDaysController');
 
@@ -925,12 +969,12 @@ _module.factory('contentBlockFactory', _contentBlockFactory2.default);
     }
 
     /*@ngInject*/
-    function filePickerDirective() {
+    function eventDaysDirective() {
         return {
             restrict: 'E',
             templateUrl: '/mezzolabs/mezzo/cockpit/templates/eventDaysDirective.html',
             scope: {
-                name: '@'
+                naming: '@'
             },
             controller: _EventDaysController2.default,
             controllerAs: 'vm',
@@ -950,6 +994,8 @@ _module.factory('contentBlockFactory', _contentBlockFactory2.default);
     }
 
     var _module = angular.module('MezzoEvents', []);
+
+    _module.directive('mezzoEventDays', _eventDaysDirective2.default);
 
 }, {"./eventDaysDirective": 25}], 27: [function (require, module, exports) {
 "use strict";

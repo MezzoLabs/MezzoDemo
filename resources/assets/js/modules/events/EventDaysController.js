@@ -1,7 +1,32 @@
 export default class FilePickerController {
 
-    /*@ngInject*/
-    constructor(api) {
-        console.log('im here');
+    constructor() {
+        this.days = [];
+
+        this.days.push({
+            start: "",
+            end: "",
+            id: null
+        });
+
+
     }
+
+    addDay() {
+        this.days.push({
+            start: "",
+            end: "",
+            id: null
+        });
+
+        console.log(this.days);
+    }
+
+    removeDay(id) {
+        delete(this.days[id]);
+        console.log(this.days);
+
+    }
+
+
 }

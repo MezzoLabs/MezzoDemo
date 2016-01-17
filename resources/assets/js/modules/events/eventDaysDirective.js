@@ -1,12 +1,12 @@
 import EventDaysController from './EventDaysController';
 
 /*@ngInject*/
-export default function filePickerDirective() {
+export default function eventDaysDirective() {
     return {
         restrict: 'E',
         templateUrl: '/mezzolabs/mezzo/cockpit/templates/eventDaysDirective.html',
         scope: {
-            name: '@'
+            naming: '@'
         },
         controller: EventDaysController,
         controllerAs: 'vm',
