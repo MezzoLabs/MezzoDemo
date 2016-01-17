@@ -2,22 +2,24 @@
 
 <div class="days">
     <div class="row day" ng-repeat="day in vm.days track by $index">
+        <input type="hidden" name="{{ vm.naming }}[{{ $index }}].id" ng-model="vm.days[$index].id">
         <div class="col-md-5">
             <div class="form-group">
                 <label>Start</label>
-                <input type="text" data-mezzo-datetimepicker class="form-control"
+                <input type="text" ng-model="vm.days[$index].start" data-mezzo-datetimepicker class="form-control"
                        name="{{ vm.naming }}[{{ $index }}].start">
             </div>
         </div>
         <div class="col-md-5">
             <div class="form-group">
                 <label>End</label>
-                <input type="text" data-mezzo-datetimepicker class="form-control"
+                <input type="text" ng-model="vm.days[$index].end" data-mezzo-datetimepicker class="form-control"
                        name="{{ vm.naming }}[{{ $index }}].end">
             </div>
         </div>
         <div class="col-md-2">
-            <button ng-click="vm.removeDay($index)" class="btn btn-default btn-sm"><i class="ion-ios-close"></i>
+            <button ng-click="vm.removeDay($index)" ng-if="vm.days.length > 1" class="btn btn-default btn-sm"><i
+                    class="ion-ios-close"></i>
             </button>
         </div>
     </div>

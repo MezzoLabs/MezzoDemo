@@ -4,9 +4,9 @@ export default class FilePickerController {
         this.days = [];
 
         this.days.push({
-            start: "",
-            end: "",
-            id: null
+            start: "11.12.1991 12:30",
+            end: "12.12.1991 12:30",
+            id: 1
         });
 
 
@@ -22,9 +22,13 @@ export default class FilePickerController {
         console.log(this.days);
     }
 
-    removeDay(id) {
-        delete(this.days[id]);
-        console.log(this.days);
+    removeDay(index) {
+        this.days.splice(index, 1);
+        console.log(this.days, 'removed ' + index);
+
+    }
+
+    fill() {
 
     }
 
