@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\UserWasVerified;
 
 use App\Events\UserWasVerified;
 

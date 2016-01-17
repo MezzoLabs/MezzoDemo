@@ -9,6 +9,8 @@ require('./modules/resource');
 
 require('./modules/fileManager');
 
+    require('./modules/events');
+
 require('./modules/contentBlocks');
 
 require('./modules/googleMaps');
@@ -19,18 +21,19 @@ var _config2 = _interopRequireDefault(_config);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var app = angular.module('Mezzo', ['ui.router', 'ui.sortable', 'ngMessages', 'angular-sortable-view', 'angular-loading-bar', 'ngFileUpload', 'MezzoCommon', 'MezzoResources', 'MezzoFileManager', 'MezzoContentBlocks', 'MezzoGoogleMaps']);
+    var app = angular.module('Mezzo', ['ui.router', 'ui.sortable', 'ngMessages', 'angular-sortable-view', 'angular-loading-bar', 'ngFileUpload', 'MezzoCommon', 'MezzoResources', 'MezzoFileManager', 'MezzoEvents', 'MezzoContentBlocks', 'MezzoGoogleMaps']);
 
 app.config(_config2.default);
 
 }, {
     "./common": 15,
     "./modules/contentBlocks": 23,
-    "./modules/fileManager": 34,
-    "./modules/googleMaps": 35,
-    "./modules/resource": 46,
-    "./setup/config": 49,
-    "./setup/jquery": 50
+    "./modules/events": 26,
+    "./modules/fileManager": 37,
+    "./modules/googleMaps": 38,
+    "./modules/resource": 49,
+    "./setup/config": 52,
+    "./setup/jquery": 53
 }], 2: [function (require, module, exports) {
 "use strict";
 
@@ -882,6 +885,73 @@ var _module = angular.module('MezzoContentBlocks', []);
 _module.factory('contentBlockFactory', _contentBlockFactory2.default);
 
 }, {"./contentBlockFactory": 22}], 24: [function (require, module, exports) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var FilePickerController =
+
+        /*@ngInject*/
+        function FilePickerController(api) {
+            _classCallCheck(this, FilePickerController);
+
+            console.log('im here');
+        };
+
+    exports.default = FilePickerController;
+
+}, {}], 25: [function (require, module, exports) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = filePickerDirective;
+
+    var _EventDaysController = require('./EventDaysController');
+
+    var _EventDaysController2 = _interopRequireDefault(_EventDaysController);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {default: obj};
+    }
+
+    /*@ngInject*/
+    function filePickerDirective() {
+        return {
+            restrict: 'E',
+            templateUrl: '/mezzolabs/mezzo/cockpit/templates/eventDaysDirective.html',
+            scope: {
+                name: '@'
+            },
+            controller: _EventDaysController2.default,
+            controllerAs: 'vm',
+            bindToController: true
+        };
+    }
+
+}, {"./EventDaysController": 24}], 26: [function (require, module, exports) {
+    'use strict';
+
+    var _eventDaysDirective = require('./eventDaysDirective');
+
+    var _eventDaysDirective2 = _interopRequireDefault(_eventDaysDirective);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {default: obj};
+    }
+
+    var _module = angular.module('MezzoEvents', []);
+
+}, {"./eventDaysDirective": 25}], 27: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -904,7 +974,7 @@ var Category = function Category(label, icon) {
 
 exports.default = Category;
 
-}, {}], 25: [function (require, module, exports) {
+}, {}], 28: [function (require, module, exports) {
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1000,7 +1070,7 @@ var File = function () {
 
 exports.default = File;
 
-}, {}], 26: [function (require, module, exports) {
+}, {}], 29: [function (require, module, exports) {
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1318,7 +1388,7 @@ var FileManagerController = function () {
 
 exports.default = FileManagerController;
 
-}, {"./File": 25, "./Folder": 28, "./categories": 29}], 27: [function (require, module, exports) {
+}, {"./File": 28, "./Folder": 31, "./categories": 32}], 30: [function (require, module, exports) {
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1526,7 +1596,7 @@ var FilePickerController = function () {
 
 exports.default = FilePickerController;
 
-}, {"./File": 25}], 28: [function (require, module, exports) {
+}, {"./File": 28}], 31: [function (require, module, exports) {
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1592,7 +1662,7 @@ var Folder = function (_File) {
 
 exports.default = Folder;
 
-}, {"./File": 25}], 29: [function (require, module, exports) {
+}, {"./File": 28}], 32: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1623,7 +1693,7 @@ function documentFilter(file) {
     return file.isDocument();
 }
 
-}, {"./Category": 24}], 30: [function (require, module, exports) {
+}, {"./Category": 27}], 33: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1646,7 +1716,7 @@ function draggableDirective() {
     }
 }
 
-}, {}], 31: [function (require, module, exports) {
+}, {}], 34: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1678,7 +1748,7 @@ function droppableDirective() {
     }
 }
 
-}, {}], 32: [function (require, module, exports) {
+}, {}], 35: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1709,7 +1779,7 @@ function filePickerDirective() {
     };
 }
 
-}, {"./FilePickerController": 27}], 33: [function (require, module, exports) {
+}, {"./FilePickerController": 30}], 36: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1737,7 +1807,7 @@ function filePickerValueDirective() {
     }
 }
 
-}, {}], 34: [function (require, module, exports) {
+}, {}], 37: [function (require, module, exports) {
 'use strict';
 
 var _draggableDirective = require('./draggableDirective.js');
@@ -1771,12 +1841,12 @@ _module.directive('mezzoFilePickerValue', _filePickerValueDirective2.default);
 _module.controller('CreateFileController', _FileManagerController2.default);
 
 }, {
-    "./FileManagerController": 26,
-    "./draggableDirective.js": 30,
-    "./droppableDirective.js": 31,
-    "./filePickerDirective": 32,
-    "./filePickerValueDirective": 33
-}], 35: [function (require, module, exports) {
+    "./FileManagerController": 29,
+    "./draggableDirective.js": 33,
+    "./droppableDirective.js": 34,
+    "./filePickerDirective": 35,
+    "./filePickerValueDirective": 36
+}], 38: [function (require, module, exports) {
 'use strict';
 
 var _mapService = require('./mapService');
@@ -1799,7 +1869,7 @@ _module.factory('mapService', _mapService2.default);
 _module.directive('mezzoGoogleMap', _mapDirective2.default);
 _module.directive('mezzoGoogleMapsSearch', _searchDirective2.default);
 
-}, {"./mapDirective": 36, "./mapService": 37, "./searchDirective": 38}], 36: [function (require, module, exports) {
+}, {"./mapDirective": 39, "./mapService": 40, "./searchDirective": 41}], 39: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1867,7 +1937,7 @@ function mapDirective(mapService) {
     }
 }
 
-}, {}], 37: [function (require, module, exports) {
+}, {}], 40: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1881,7 +1951,7 @@ function mapService() {
     };
 }
 
-}, {}], 38: [function (require, module, exports) {
+}, {}], 41: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1987,7 +2057,7 @@ function searchDirective(mapService) {
     }
 }
 
-}, {}], 39: [function (require, module, exports) {
+}, {}], 42: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2000,7 +2070,7 @@ exports.default = {
     SHOW: 'show'
 };
 
-}, {}], 40: [function (require, module, exports) {
+}, {}], 43: [function (require, module, exports) {
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -2065,7 +2135,7 @@ var CreateResourceController = function () {
 
 exports.default = CreateResourceController;
 
-}, {}], 41: [function (require, module, exports) {
+}, {}], 44: [function (require, module, exports) {
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -2272,7 +2342,7 @@ var EditResourceController = function () {
 
 exports.default = EditResourceController;
 
-}, {}], 42: [function (require, module, exports) {
+}, {}], 45: [function (require, module, exports) {
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2549,7 +2619,7 @@ var IndexResourceController = function () {
 
 exports.default = IndexResourceController;
 
-}, {}], 43: [function (require, module, exports) {
+}, {}], 46: [function (require, module, exports) {
     'use strict';
 
     var _createClass = function () {
@@ -2603,7 +2673,7 @@ exports.default = IndexResourceController;
                 this.modelId = modelId;
 
                 return this;
-            }
+        }
         }, {
             key: 'index',
             value: function index() {
@@ -2647,7 +2717,7 @@ exports.default = IndexResourceController;
 
     exports.default = ModelStateService;
 
-}, {}], 44: [function (require, module, exports) {
+}, {}], 47: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2665,7 +2735,7 @@ function ShowResourceController() {
 
 exports.default = ShowResourceController;
 
-}, {}], 45: [function (require, module, exports) {
+}, {}], 48: [function (require, module, exports) {
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2805,7 +2875,7 @@ var FormDataService = function () {
 
 exports.default = FormDataService;
 
-}, {}], 46: [function (require, module, exports) {
+}, {}], 49: [function (require, module, exports) {
 'use strict';
 
 var _stateProvider = require('./stateProvider');
@@ -2854,15 +2924,15 @@ _module.controller('EditResourceController', _EditResourceController2.default);
 _module.controller('ShowResourceController', _ShowResourceController2.default);
 
 }, {
-    "./CreateResourceController": 40,
-    "./EditResourceController": 41,
-    "./IndexResourceController": 42,
-    "./ModelStateService": 43,
-    "./ShowResourceController": 44,
-    "./formDataService": 45,
-    "./registerStateDirective": 47,
-    "./stateProvider": 48
-}], 47: [function (require, module, exports) {
+    "./CreateResourceController": 43,
+    "./EditResourceController": 44,
+    "./IndexResourceController": 45,
+    "./ModelStateService": 46,
+    "./ShowResourceController": 47,
+    "./formDataService": 48,
+    "./registerStateDirective": 50,
+    "./stateProvider": 51
+}], 50: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2972,7 +3042,7 @@ function registerStateDirective($location, $stateProvider, hasController) {
     }
 }
 
-}, {"./Action": 39}], 48: [function (require, module, exports) {
+}, {"./Action": 42}], 51: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2988,7 +3058,7 @@ function stateProvider($stateProvider) {
     }
 }
 
-}, {}], 49: [function (require, module, exports) {
+}, {}], 52: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3002,7 +3072,7 @@ function config($locationProvider, $httpProvider) {
     $locationProvider.html5Mode(true);
 }
 
-}, {}], 50: [function (require, module, exports) {
+}, {}], 53: [function (require, module, exports) {
 'use strict';
 
 $(function () {

@@ -2,6 +2,7 @@ import './setup/jquery';
 import './common';
 import './modules/resource';
 import './modules/fileManager';
+import './modules/events';
 import './modules/contentBlocks';
 import './modules/googleMaps';
 import config from './setup/config';
@@ -16,6 +17,7 @@ const app = angular.module('Mezzo', [
     'MezzoCommon',
     'MezzoResources',
     'MezzoFileManager',
+    'MezzoEvents',
     'MezzoContentBlocks',
     'MezzoGoogleMaps'
 ]);

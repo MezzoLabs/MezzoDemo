@@ -6,10 +6,10 @@ use App\Events\UserWasRegistered;
 use App\Events\UserWasVerified;
 use App\Listeners\AddDefaultRole;
 use App\Listeners\EmailRegisterNotification;
-use App\Listeners\EmailSuccessfullyVerifiedInfo;
 use App\Listeners\EmailUserVerification;
-use App\Listeners\UnlockUser;
+use App\Listeners\UserWasVerified\EmailSuccessfullyVerifiedInfo;
 use App\Listeners\UserWasVerified\SubscribeToNewsletter;
+use App\Listeners\UserWasVerified\UnlockUser;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 

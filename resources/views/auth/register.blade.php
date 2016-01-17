@@ -7,7 +7,7 @@
         <div>
             Gender
             <select name="gender">
-                <option value="h">Herr</option>
+                <option value="m">Herr</option>
                 <option value="f">Frau</option>
             </select>
         </div>

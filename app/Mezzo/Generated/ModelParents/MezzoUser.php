@@ -150,6 +150,15 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
      */
     protected $_id;
 
+
+    /**
+     * Attribute annotation property for email
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\EmailInput", hidden="")
+     * @var string
+     */
+    protected $_email;
+
     /**
      * Attribute annotation property for gender
      *
@@ -174,13 +183,6 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
      */
     protected $_last_name;
 
-    /**
-     * Attribute annotation property for email
-     *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\EmailInput", hidden="")
-     * @var string
-     */
-    protected $_email;
 
     /**
      * Attribute annotation property for password
