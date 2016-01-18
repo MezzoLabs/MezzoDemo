@@ -60,7 +60,6 @@ export default class EditResourceController {
             .then(model => {
                 this.initContentBlocks(model);
                 this.initLockable(model);
-                this.stripDataEnvelopes(model.content);
                 this.formDataService.set(model);
             });
     }
@@ -75,7 +74,15 @@ export default class EditResourceController {
         blocks.forEach(block => {
             const hash = md5(block.class);
 
-            this.contentBlockService.addContentBlock(block.class, hash, block._label, block.id, block.fields);
+            this.contentBlockService.addContentBlock(
+                block.class,
+                hash,
+                block._label,
+                block.id,
+                block.fields,
+                block.options,
+                block.sort
+            );
         });
     }
 
@@ -125,38 +132,6 @@ export default class EditResourceController {
 
         this.modelStateService.name(this.modelName).index();
         sweetAlert(title, message, 'error');
-    }
-
-    stripDataEnvelopes(object) {
-        if (!_.isObject(object)) {
-            return;
-        }
-
-        const keys = _.keys(object);
-
-        keys.forEach(key => {
-            const value = object[key];
-
-            this.stripDataEnvelopes(value);
-
-            if (key === 'data') {
-                delete object[key];
-
-                if (_.isArray(value)) {
-                    for (let i = 0; i < value.length; i++) {
-                        object['num' + i] = value[i];
-
-                        this.stripDataEnvelopes(value[i]);
-                    }
-
-                    return;
-                }
-
-                if (_.isObject(value)) {
-                    return _.assign(object, value);
-                }
-            }
-        });
     }
 
 }

@@ -17,7 +17,8 @@ export default class FormDataService {
     set(formData) {
         console.log('received data: ', formData);
 
-        var stripped = this.stripData(formData);
+        var stripped = this.unfoldData(formData);
+
 
         stripped = this.unpackRelationInputs(this.form()[0], stripped);
         stripped = this.formatTimestamps(stripped);
@@ -34,17 +35,19 @@ export default class FormDataService {
 
     }
 
-    stripData(formData) {
+    unfoldData(formData) {
         var cleaned = {};
 
         if (!formData || typeof formData !== 'object')
             return formData;
 
-        if (formData.data)
-            return this.stripData(formData.data);
+        if (formData.data) {
+            return this.unfoldData(formData.data);
+        }
+
 
         for (var i in formData) {
-            cleaned[i] = this.stripData(formData[i]);
+            cleaned[i] = this.unfoldData(formData[i]);
         }
 
         return cleaned;
@@ -98,6 +101,7 @@ export default class FormDataService {
 
         return clean;
     }
+
 
     formatTimestamps(formData) {
         var cleaned = {};

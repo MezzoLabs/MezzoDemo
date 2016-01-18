@@ -4,7 +4,7 @@
     <div class="form-group">
         <label>{{ $fields['images']->title() }}</label>
 
-        {!! $formBuilder->filePicker($block->inputName('images'), new \App\ImageFile(), ['multiple' => true]) !!}
+        {!! $formBuilder->filePicker($block->inputName('images'), new \App\ImageFile(), ['multiple' => true, 'attributes'=> ['data-value' => '@{{ block.fields.images }}']]) !!}
     </div>
 
 
@@ -12,9 +12,9 @@
         <label>Display</label>
 
         <select name="{{ $block->optionInputName('display') }}">
-            <option value="grid">Grid</option>
-            <option value="list">List</option>
-            <option value="lightbox">Lightbox</option>
+            <option ng-selected="block.options.display == 'grid'" value="grid">Grid</option>
+            <option ng-selected="block.options.display == 'list'" value="list">List</option>
+            <option ng-selected="block.options.display == 'lightbox'" value="lightbox">Lightbox</option>
         </select>
     </div>
 @endsection

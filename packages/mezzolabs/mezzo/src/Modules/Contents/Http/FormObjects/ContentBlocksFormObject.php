@@ -145,7 +145,7 @@ class ContentBlocksFormObject implements FormObject
 
     protected function contentBlockRules($mode = "create", $dirty = [])
     {
-        if ($mode == 'update' && !isset($dirty[static::CONTENT_FORM_NAME]))
+        if ($mode == 'update' && array_has($dirty, static::CONTENT_FORM_NAME))
             return [];
 
 
@@ -162,7 +162,6 @@ class ContentBlocksFormObject implements FormObject
                 ]
             );
         }
-
 
         $blocksRules = Arr::dot([
             static::CONTENT_FORM_NAME . '.' . static::BLOCKS_FORM_NAME => $rules

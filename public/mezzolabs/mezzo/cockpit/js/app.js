@@ -11,6 +11,8 @@ require('./modules/fileManager');
 
 require('./modules/events');
 
+    require('./modules/users');
+
 require('./modules/contentBlocks');
 
 require('./modules/googleMaps');
@@ -21,11 +23,21 @@ var _config2 = _interopRequireDefault(_config);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var app = angular.module('Mezzo', ['ui.router', 'ui.sortable', 'ngMessages', 'angular-sortable-view', 'angular-loading-bar', 'ngFileUpload', 'MezzoCommon', 'MezzoResources', 'MezzoFileManager', 'MezzoEvents', 'MezzoContentBlocks', 'MezzoGoogleMaps']);
+    var app = angular.module('Mezzo', ['ui.router', 'ui.sortable', 'ngMessages', 'angular-sortable-view', 'angular-loading-bar', 'ngFileUpload', 'MezzoCommon', 'MezzoResources', 'MezzoFileManager', 'MezzoEvents', 'MezzoUsers', 'MezzoContentBlocks', 'MezzoGoogleMaps']);
 
 app.config(_config2.default);
 
-},{"./common":15,"./modules/contentBlocks":23,"./modules/events":26,"./modules/fileManager":37,"./modules/googleMaps":38,"./modules/resource":49,"./setup/config":52,"./setup/jquery":53}],2:[function(require,module,exports){
+}, {
+    "./common": 15,
+    "./modules/contentBlocks": 23,
+    "./modules/events": 27,
+    "./modules/fileManager": 38,
+    "./modules/googleMaps": 39,
+    "./modules/resource": 50,
+    "./modules/users": 53,
+    "./setup/config": 54,
+    "./setup/jquery": 55
+}], 2: [function (require, module, exports) {
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -56,7 +68,25 @@ var QuickviewService = function () {
 exports.default = QuickviewService;
 
 },{}],3:[function(require,module,exports){
-"use strict";
+    'use strict';
+
+    var _createClass = function () {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || false;
+                descriptor.configurable = true;
+                if ("value" in descriptor) descriptor.writable = true;
+                Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+            if (protoProps) defineProperties(Constructor.prototype, protoProps);
+            if (staticProps) defineProperties(Constructor, staticProps);
+            return Constructor;
+        };
+    }();
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -64,26 +94,62 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var RelationInputController =
+    var RelationInputController = function () {
 
-/*@ngInject*/
-function RelationInputController(api) {
-    var _this = this;
+        /*@ngInject*/
 
-    _classCallCheck(this, RelationInputController);
+        function RelationInputController(api, $scope, $element, $timeout) {
+            var _this = this;
 
-    this.api = api;
-    this.modelApi = this.api.model(this.related);
-    this.model = null;
-    this.models = [];
-    var params = {
-        scopes: this.scopes
-    };
+            _classCallCheck(this, RelationInputController);
 
-    this.modelApi.index(params).then(function (models) {
-        _this.models = models;
-    });
-};
+            this.api = api;
+            this.modelApi = this.api.model(this.related);
+            this.model = null;
+            this.$element = $element;
+            this.models = [];
+            this.selected = null;
+
+            var params = {
+                scopes: this.scopes
+            };
+
+            var base = this;
+
+            this.modelApi.index(params).then(function (models) {
+                _this.models = models;
+
+                $timeout(function () {
+                    if (!base.selected) return;
+
+                    var value = base.selected;
+
+                    if (base.selected[0]) {
+                        value = _.map(base.selected, 'id');
+                    }
+
+                    $(base.$element).val(value).trigger('change', {'filledFromApi': true}).blur();
+                });
+            });
+
+            var base = this;
+
+            $scope.$on('mezzo.formdata.set', function (event, mass) {
+                base.fill(mass.data, mass.form);
+            });
+        }
+
+        _createClass(RelationInputController, [{
+            key: 'fill',
+            value: function fill(data, form) {
+                if (form != $(this.$element).parents('form')[0]) return false;
+
+                this.selected = data[this.$element.attr('name')];
+            }
+        }]);
+
+        return RelationInputController;
+    }();
 
 exports.default = RelationInputController;
 
@@ -403,7 +469,34 @@ function dateTimePickerDirective() {
             }
         };
 
+        $(element).on('dp.hide', function () {
+            changed(this);
+            $(this).trigger('change');
+        });
+
         $(element).datetimepicker(options);
+
+        changed(element);
+
+        function changed(element) {
+            var before = $(element).attr('data-before');
+            var after = $(element).attr('data-after');
+
+            var $before = before ? $(before) : null;
+            var $after = after ? $(after) : null;
+
+            if ($(element).val() == "") return true;
+
+            var date = moment($(element).val(), options.format);
+
+            if ($after) {
+                $after.data("DateTimePicker").maxDate(date);
+            }
+
+            if ($before) {
+                $before.data("DateTimePicker").minDate(date);
+            }
+        }
     }
 }
 
@@ -775,6 +868,8 @@ var ContentBlockService = function () {
     function ContentBlockService(api) {
         _classCallCheck(this, ContentBlockService);
 
+        var base = this;
+
         this.api = api;
         this.contentBlocks = [];
         this.templates = {};
@@ -791,6 +886,11 @@ var ContentBlockService = function () {
                     $(this).css('opacity', 1.0);
                     tinymce.execCommand('mceAddEditor', true, $(this).attr('id'));
                 });
+
+                $(ui.item).parents('form').find('.content-block').each(function (index, element) {
+                    console.log($(this).find('[name$=".sort"]'));
+                    $(this).find('[name$=".sort"]').attr('value', index);
+                });
             }
         };
         this.currentId = 0;
@@ -801,20 +901,26 @@ var ContentBlockService = function () {
         value: function addContentBlock(key, hash, title) {
             var id = arguments.length <= 3 || arguments[3] === undefined ? '' : arguments[3];
             var fields = arguments.length <= 4 || arguments[4] === undefined ? {} : arguments[4];
+            var options = arguments.length <= 5 || arguments[5] === undefined ? {} : arguments[5];
+            var sort = arguments.length <= 6 || arguments[6] === undefined ? 0 : arguments[6];
 
             var contentBlock = {
                 id: id,
                 key: key,
+                sort: sort,
                 cssClass: 'block__' + key.replace(/\\/g, '_'),
                 hash: hash,
                 title: title,
                 fields: fields,
+                options: options,
                 nameInForm: 'num' + this.currentId++,
                 template: null
             };
 
             this.fillTemplate(contentBlock);
             this.contentBlocks.push(contentBlock);
+
+            this.refreshSortings();
         }
     }, {
         key: 'removeContentBlock',
@@ -829,16 +935,19 @@ var ContentBlockService = function () {
             var cachedTemplate = this.templates[contentBlock.hash];
 
             if (cachedTemplate) {
-                console.log('fill template: ', contentBlock);
                 return contentBlock.template = cachedTemplate;
             }
 
             this.api.contentBlockTemplate(contentBlock.hash).then(function (template) {
-                console.log('fill fresh template: ', contentBlock);
-
                 contentBlock.template = template;
                 _this.templates[contentBlock.hash] = template;
             });
+        }
+    }, {
+        key: 'refreshSortings',
+        value: function refreshSortings() {
+            this.contentBlocks = _.sortBy(this.contentBlocks, 'sort');
+            console.log('sorted', this.contentBlocks);
         }
     }]);
 
@@ -859,7 +968,7 @@ var _module = angular.module('MezzoContentBlocks', []);
 _module.factory('contentBlockFactory', _contentBlockFactory2.default);
 
 },{"./contentBlockFactory":22}],24:[function(require,module,exports){
-"use strict";
+    'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -870,38 +979,143 @@ Object.defineProperty(exports, "__esModule", {
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var FilePickerController = function () {
-    function FilePickerController() {
+
+    /*@ngInject*/
+
+    function FilePickerController(api, $scope, $element) {
         _classCallCheck(this, FilePickerController);
 
         this.days = [];
 
-        this.days.push({
-            start: "11.12.1991 12:30",
-            end: "12.12.1991 12:30",
-            id: 1
+        this.format = 'DD.MM.YYYY HH:mm';
+
+        this.api = api;
+        this.modelApi = api.model('EventDay');
+
+        this.$element = $element;
+        this.$form = $element.parents('form')[0];
+
+        var base = this;
+        $scope.$on('mezzo.formdata.set', function (event, mass) {
+            base.fill(mass.data, mass.form);
         });
+
+        this.addDay();
     }
 
     _createClass(FilePickerController, [{
-        key: "addDay",
+        key: 'addDay',
         value: function addDay() {
+            var start = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
+            var end = arguments.length <= 1 || arguments[1] === undefined ? "" : arguments[1];
+            var id = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+
             this.days.push({
-                start: "",
-                end: "",
-                id: null
+                start: start, end: end, id: id
             });
 
-            console.log(this.days);
+            $(this.$form).find('[data-mezzo-datetimepicker]').trigger('dp.refresh');
         }
     }, {
-        key: "removeDay",
+        key: 'removeDay',
         value: function removeDay(index) {
+            if (this.days.length <= 1) return false;
+
+            var day = this.days[index];
+
+            if (day.id) {
+                this.removeDayFromServer(day);
+            }
+
             this.days.splice(index, 1);
             console.log(this.days, 'removed ' + index);
         }
     }, {
-        key: "fill",
-        value: function fill() {}
+        key: 'removeDayFromServer',
+        value: function removeDayFromServer(day) {
+            this.modelApi.delete(day.id).then(function (response) {
+                console.log(response);
+            }).catch(function (error) {
+                console.log('error', error);
+            });
+        }
+    }, {
+        key: 'fill',
+        value: function fill(data, form) {
+            if (form != this.$form) {
+                return;
+            }
+
+            if (_.size(data.days) == 0) {
+                return;
+            }
+
+            this.days = [];
+
+            for (var i in data.days) {
+                var day = data.days[i];
+                this.addDay(day.start, day.end, day.id);
+            }
+
+            this.sort();
+        }
+    }, {
+        key: 'submit',
+        value: function submit() {
+            console.log('submit');
+        }
+    }, {
+        key: 'sort',
+        value: function sort() {
+            this.days = this.sortedDays();
+        }
+    }, {
+        key: 'sortedDays',
+        value: function sortedDays() {
+            return _.sortBy(this.days, 'start');
+        }
+    }, {
+        key: 'startChanged',
+        value: function startChanged() {
+            this.sort();
+        }
+    }, {
+        key: 'getStart',
+        value: function getStart() {
+            return this.getDate(this.sortedDays()[0], 'start');
+        }
+    }, {
+        key: 'getEnd',
+        value: function getEnd() {
+            return this.getDate(this.sortedDays()[this.days.length - 1], 'end');
+        }
+    }, {
+        key: 'getDate',
+        value: function getDate(day, type) {
+
+            if (!day) return null;
+
+            if (!day[type] || day[type] == "") return null;
+
+            return moment(day[type], this.format);
+        }
+    }, {
+        key: 'startString',
+        value: function startString() {
+            var start = this.getStart();
+
+            if (!start) return "...";
+
+            return start.format('dd, DD.MM.YYYY HH:mm');
+        }
+    }, {
+        key: 'endString',
+        value: function endString() {
+            var end = this.getEnd();
+            if (!end) return "...";
+
+            return end.format('dd, DD.MM.YYYY HH:mm');
+        }
     }]);
 
     return FilePickerController;
@@ -940,17 +1154,66 @@ function eventDaysDirective() {
 },{"./EventDaysController":24}],26:[function(require,module,exports){
 'use strict';
 
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = eventVenueDirective;
+    /*@ngInject*/
+    function eventVenueDirective(api) {
+        return {
+            restrict: 'A',
+            link: link
+        };
+
+        function link(scope, element, attributes) {
+            var modelApi = api.model('EventVenue');
+            var $form = $(element).parents('form');
+
+            $(element).on('change', function (e, parameters) {
+                var filledFromApi = parameters && parameters.filledFromApi;
+
+                if (!$(this).val() || $(this).val() == "" || filledFromApi) return true;
+
+                modelApi.content($(this).val(), {include: 'address'}).then(function (result) {
+                    fillAddress(result.address.data);
+                });
+            });
+
+            function fillAddress(data) {
+                for (var attributeName in data) {
+                    var selector = '[name="address.' + attributeName + '"]';
+                    var $input = $form.find(selector);
+
+                    if ($input.length == 0) {
+                        continue;
+                    }
+
+                    $input.val(data[attributeName]);
+                    $input.trigger('input');
+                }
+            }
+        }
+    }
+
+}, {}], 27: [function (require, module, exports) {
+    'use strict';
+
 var _eventDaysDirective = require('./eventDaysDirective');
 
 var _eventDaysDirective2 = _interopRequireDefault(_eventDaysDirective);
+
+    var _eventVenueDirective = require('./eventVenueDirective');
+
+    var _eventVenueDirective2 = _interopRequireDefault(_eventVenueDirective);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _module = angular.module('MezzoEvents', []);
 
 _module.directive('mezzoEventDays', _eventDaysDirective2.default);
+    _module.directive('mezzoEventVenue', _eventVenueDirective2.default);
 
-},{"./eventDaysDirective":25}],27:[function(require,module,exports){
+}, {"./eventDaysDirective": 25, "./eventVenueDirective": 26}], 28: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -973,7 +1236,7 @@ var Category = function Category(label, icon) {
 
 exports.default = Category;
 
-},{}],28:[function(require,module,exports){
+}, {}], 29: [function (require, module, exports) {
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1069,7 +1332,7 @@ var File = function () {
 
 exports.default = File;
 
-},{}],29:[function(require,module,exports){
+}, {}], 30: [function (require, module, exports) {
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1387,7 +1650,7 @@ var FileManagerController = function () {
 
 exports.default = FileManagerController;
 
-},{"./File":28,"./Folder":31,"./categories":32}],30:[function(require,module,exports){
+}, {"./File": 29, "./Folder": 32, "./categories": 33}], 31: [function (require, module, exports) {
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1454,7 +1717,36 @@ var FilePickerController = function () {
 
                     _this.files.push(file);
                 });
+
+                _this.filesLoaded();
             });
+        }
+    }, {
+        key: 'filesLoaded',
+        value: function filesLoaded() {
+            this.selectOldValue();
+        }
+    }, {
+        key: 'selectOldValue',
+        value: function selectOldValue() {
+            if (!this.value) {
+                return false;
+            }
+
+            if (this.value.indexOf(',') == -1) {
+                this.selectId(this.value);
+                this.confirmSelected();
+                return true;
+            }
+
+            var ids = this.value.split(',');
+            for (var i in ids) {
+                this.selectId(ids[i]);
+            }
+
+            this.confirmSelected();
+
+            return true;
         }
     }, {
         key: 'filteredFiles',
@@ -1503,6 +1795,13 @@ var FilePickerController = function () {
         key: 'isMultiple',
         value: function isMultiple() {
             return this.multiple !== undefined;
+        }
+    }, {
+        key: 'selectId',
+        value: function selectId(id) {
+            var file = _.find(this.files, {id: parseInt(id)});
+
+            file.selected = true;
         }
     }, {
         key: 'onSelect',
@@ -1595,7 +1894,7 @@ var FilePickerController = function () {
 
 exports.default = FilePickerController;
 
-},{"./File":28}],31:[function(require,module,exports){
+}, {"./File": 29}], 32: [function (require, module, exports) {
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1661,7 +1960,7 @@ var Folder = function (_File) {
 
 exports.default = Folder;
 
-},{"./File":28}],32:[function(require,module,exports){
+}, {"./File": 29}], 33: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1692,7 +1991,7 @@ function documentFilter(file) {
     return file.isDocument();
 }
 
-},{"./Category":27}],33:[function(require,module,exports){
+}, {"./Category": 28}], 34: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1715,7 +2014,7 @@ function draggableDirective() {
     }
 }
 
-},{}],34:[function(require,module,exports){
+}, {}], 35: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1747,7 +2046,7 @@ function droppableDirective() {
     }
 }
 
-},{}],35:[function(require,module,exports){
+}, {}], 36: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1770,7 +2069,8 @@ function filePickerDirective() {
             fileType: '@',
             fieldName: '@',
             multiple: '@',
-            name: '@'
+            name: '@',
+            value: '@'
         },
         controller: _FilePickerController2.default,
         controllerAs: 'vm',
@@ -1778,7 +2078,7 @@ function filePickerDirective() {
     };
 }
 
-},{"./FilePickerController":30}],36:[function(require,module,exports){
+}, {"./FilePickerController": 31}], 37: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1806,7 +2106,7 @@ function filePickerValueDirective() {
     }
 }
 
-},{}],37:[function(require,module,exports){
+}, {}], 38: [function (require, module, exports) {
 'use strict';
 
 var _draggableDirective = require('./draggableDirective.js');
@@ -1839,7 +2139,13 @@ _module.directive('mezzoFilePicker', _filePickerDirective2.default);
 _module.directive('mezzoFilePickerValue', _filePickerValueDirective2.default);
 _module.controller('CreateFileController', _FileManagerController2.default);
 
-},{"./FileManagerController":29,"./draggableDirective.js":33,"./droppableDirective.js":34,"./filePickerDirective":35,"./filePickerValueDirective":36}],38:[function(require,module,exports){
+}, {
+    "./FileManagerController": 30,
+    "./draggableDirective.js": 34,
+    "./droppableDirective.js": 35,
+    "./filePickerDirective": 36,
+    "./filePickerValueDirective": 37
+}], 39: [function (require, module, exports) {
 'use strict';
 
 var _mapService = require('./mapService');
@@ -1862,7 +2168,7 @@ _module.factory('mapService', _mapService2.default);
 _module.directive('mezzoGoogleMap', _mapDirective2.default);
 _module.directive('mezzoGoogleMapsSearch', _searchDirective2.default);
 
-},{"./mapDirective":39,"./mapService":40,"./searchDirective":41}],39:[function(require,module,exports){
+}, {"./mapDirective": 40, "./mapService": 41, "./searchDirective": 42}], 40: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1930,7 +2236,7 @@ function mapDirective(mapService) {
     }
 }
 
-},{}],40:[function(require,module,exports){
+}, {}], 41: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1944,7 +2250,7 @@ function mapService() {
     };
 }
 
-},{}],41:[function(require,module,exports){
+}, {}], 42: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2050,7 +2356,7 @@ function searchDirective(mapService) {
     }
 }
 
-},{}],42:[function(require,module,exports){
+}, {}], 43: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2063,7 +2369,7 @@ exports.default = {
     SHOW: 'show'
 };
 
-},{}],43:[function(require,module,exports){
+}, {}], 44: [function (require, module, exports) {
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -2099,6 +2405,8 @@ var CreateResourceController = function () {
             var _this = this;
 
             if (this.form.$invalid) {
+                swal('Booh you!', 'Invalid Form', "error");
+                console.log(this.form.$error);
                 return false;
             }
             tinyMCE.triggerSave();
@@ -2128,7 +2436,7 @@ var CreateResourceController = function () {
 
 exports.default = CreateResourceController;
 
-},{}],44:[function(require,module,exports){
+}, {}], 45: [function (require, module, exports) {
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -2180,6 +2488,8 @@ var EditResourceController = function () {
     }, {
         key: 'submit',
         value: function submit() {
+            console.log('clicked edit resource submit');
+
             if (this.form.$invalid) {
 
                 console.log('invalid', this.form);
@@ -2213,7 +2523,6 @@ var EditResourceController = function () {
             this.modelApi.content(this.modelId, params).then(function (model) {
                 _this2.initContentBlocks(model);
                 _this2.initLockable(model);
-                _this2.stripDataEnvelopes(model.content);
                 _this2.formDataService.set(model);
             });
         }
@@ -2231,7 +2540,7 @@ var EditResourceController = function () {
             blocks.forEach(function (block) {
                 var hash = md5(block.class);
 
-                _this3.contentBlockService.addContentBlock(block.class, hash, block._label, block.id, block.fields);
+                _this3.contentBlockService.addContentBlock(block.class, hash, block._label, block.id, block.fields, block.options, block.sort);
             });
         }
     }, {
@@ -2293,41 +2602,6 @@ var EditResourceController = function () {
             this.modelStateService.name(this.modelName).index();
             sweetAlert(title, message, 'error');
         }
-    }, {
-        key: 'stripDataEnvelopes',
-        value: function stripDataEnvelopes(object) {
-            var _this5 = this;
-
-            if (!_.isObject(object)) {
-                return;
-            }
-
-            var keys = _.keys(object);
-
-            keys.forEach(function (key) {
-                var value = object[key];
-
-                _this5.stripDataEnvelopes(value);
-
-                if (key === 'data') {
-                    delete object[key];
-
-                    if (_.isArray(value)) {
-                        for (var i = 0; i < value.length; i++) {
-                            object['num' + i] = value[i];
-
-                            _this5.stripDataEnvelopes(value[i]);
-                        }
-
-                        return;
-                    }
-
-                    if (_.isObject(value)) {
-                        return _.assign(object, value);
-                    }
-                }
-            });
-        }
     }]);
 
     return EditResourceController;
@@ -2335,7 +2609,7 @@ var EditResourceController = function () {
 
 exports.default = EditResourceController;
 
-},{}],45:[function(require,module,exports){
+}, {}], 46: [function (require, module, exports) {
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2612,7 +2886,7 @@ var IndexResourceController = function () {
 
 exports.default = IndexResourceController;
 
-},{}],46:[function(require,module,exports){
+}, {}], 47: [function (require, module, exports) {
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -2690,7 +2964,7 @@ var ModelStateService = function () {
 
 exports.default = ModelStateService;
 
-},{}],47:[function(require,module,exports){
+}, {}], 48: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2708,7 +2982,7 @@ function ShowResourceController() {
 
 exports.default = ShowResourceController;
 
-},{}],48:[function(require,module,exports){
+}, {}], 49: [function (require, module, exports) {
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2722,8 +2996,13 @@ Object.defineProperty(exports, "__esModule", {
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var FormDataService = function () {
-    function FormDataService() {
+
+    /*@ngInject*/
+
+    function FormDataService($rootScope) {
         _classCallCheck(this, FormDataService);
+
+        this.$rootScope = $rootScope;
     }
 
     _createClass(FormDataService, [{
@@ -2741,7 +3020,7 @@ var FormDataService = function () {
         value: function set(formData) {
             console.log('received data: ', formData);
 
-            var stripped = this.stripData(formData);
+            var stripped = this.unfoldData(formData);
 
             stripped = this.unpackRelationInputs(this.form()[0], stripped);
             stripped = this.formatTimestamps(stripped);
@@ -2750,18 +3029,25 @@ var FormDataService = function () {
 
             js2form(this.form()[0], stripped);
             this.form().find(':input').trigger('input'); // trigger input event to notify Angular that ng-model should update
+
+            this.$rootScope.$broadcast('mezzo.formdata.set', {
+                form: this.form()[0],
+                data: stripped
+            });
         }
     }, {
-        key: 'stripData',
-        value: function stripData(formData) {
+        key: 'unfoldData',
+        value: function unfoldData(formData) {
             var cleaned = {};
 
             if (!formData || (typeof formData === 'undefined' ? 'undefined' : _typeof(formData)) !== 'object') return formData;
 
-            if (formData.data) return this.stripData(formData.data);
+            if (formData.data) {
+                return this.unfoldData(formData.data);
+            }
 
             for (var i in formData) {
-                cleaned[i] = this.stripData(formData[i]);
+                cleaned[i] = this.unfoldData(formData[i]);
             }
 
             return cleaned;
@@ -2801,7 +3087,7 @@ var FormDataService = function () {
 
                     var selector = 'input[type=checkbox][name="' + i + '[' + relationEntry.id + ']"]';
 
-                    if (selector.length == 0) continue;
+                    if ($(selector).length == 0) continue;
 
                     if (!_.isArray(clean[i])) {
                         clean[i] = [];
@@ -2848,7 +3134,7 @@ var FormDataService = function () {
 
 exports.default = FormDataService;
 
-},{}],49:[function(require,module,exports){
+}, {}], 50: [function (require, module, exports) {
 'use strict';
 
 var _stateProvider = require('./stateProvider');
@@ -2896,7 +3182,16 @@ _module.controller('CreateResourceController', _CreateResourceController2.defaul
 _module.controller('EditResourceController', _EditResourceController2.default);
 _module.controller('ShowResourceController', _ShowResourceController2.default);
 
-},{"./CreateResourceController":43,"./EditResourceController":44,"./IndexResourceController":45,"./ModelStateService":46,"./ShowResourceController":47,"./formDataService":48,"./registerStateDirective":50,"./stateProvider":51}],50:[function(require,module,exports){
+}, {
+    "./CreateResourceController": 44,
+    "./EditResourceController": 45,
+    "./IndexResourceController": 46,
+    "./ModelStateService": 47,
+    "./ShowResourceController": 48,
+    "./formDataService": 49,
+    "./registerStateDirective": 51,
+    "./stateProvider": 52
+}], 51: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3006,7 +3301,7 @@ function registerStateDirective($location, $stateProvider, hasController) {
     }
 }
 
-},{"./Action":42}],51:[function(require,module,exports){
+}, {"./Action": 43}], 52: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3022,8 +3317,13 @@ function stateProvider($stateProvider) {
     }
 }
 
-},{}],52:[function(require,module,exports){
+}, {}], 53: [function (require, module, exports) {
 'use strict';
+
+    var _module = angular.module('MezzoUsers', []);
+
+}, {}], 54: [function (require, module, exports) {
+    'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -3036,7 +3336,7 @@ function config($locationProvider, $httpProvider) {
     $locationProvider.html5Mode(true);
 }
 
-},{}],53:[function(require,module,exports){
+}, {}], 55: [function (require, module, exports) {
 'use strict';
 
 $(function () {

@@ -21,11 +21,9 @@ class ContentBlockTransformer extends EloquentModelTransformer
      * @var array
      */
     protected $availableIncludes = [
-        'fields'
     ];
 
     protected $defaultIncludes = [
-        'fields'
     ];
 
     public function transform($model)
@@ -33,12 +31,16 @@ class ContentBlockTransformer extends EloquentModelTransformer
         if (!$model instanceof ContentBlock)
             throw new InvalidArgumentException($model);
 
-        return parent::transform($model);
+        $array = parent::transform($model);
 
+        $array['options'] = json_decode($array['options']);
+        $array['fields'] = [];
+
+        foreach ($model->fields as $field) {
+            $array['fields'][$field->name] = $field->value;
+        }
+
+        return $array;
     }
 
-    public function includeFields(ContentBlock $block)
-    {
-        return $this->automaticCollection($block->fields);
-    }
 }

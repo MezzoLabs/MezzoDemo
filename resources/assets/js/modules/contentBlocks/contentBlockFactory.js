@@ -8,6 +8,8 @@ export default function registerContentBlockFactory(api) {
 class ContentBlockService {
 
     constructor(api) {
+        var base = this;
+
         this.api = api;
         this.contentBlocks = [];
         this.templates = {};
@@ -24,25 +26,35 @@ class ContentBlockService {
                     $(this).css('opacity', 1.0);
                     tinymce.execCommand('mceAddEditor', true, $(this).attr('id'));
                 });
+
+                $(ui.item).parents('form').find('.content-block').each(function (index, element) {
+                    console.log($(this).find('[name$=".sort"]'));
+                    $(this).find('[name$=".sort"]').attr('value', index);
+
+                });
             }
         };
         this.currentId = 0;
     }
 
-    addContentBlock(key, hash, title, id = '', fields = {}) {
+    addContentBlock(key, hash, title, id = '', fields = {}, options = {}, sort = 0) {
         const contentBlock = {
             id: id,
             key: key,
+            sort: sort,
             cssClass: 'block__' + key.replace(/\\/g, '_'),
             hash: hash,
             title: title,
             fields: fields,
+            options: options,
             nameInForm: 'num' + this.currentId++,
             template: null
         };
 
         this.fillTemplate(contentBlock);
         this.contentBlocks.push(contentBlock);
+
+        this.refreshSortings();
     }
 
     removeContentBlock(index) {
@@ -53,17 +65,19 @@ class ContentBlockService {
         const cachedTemplate = this.templates[contentBlock.hash];
 
         if (cachedTemplate) {
-            console.log('fill template: ', contentBlock);
             return contentBlock.template = cachedTemplate;
         }
 
         this.api.contentBlockTemplate(contentBlock.hash)
             .then(template => {
-                console.log('fill fresh template: ', contentBlock);
-
                 contentBlock.template = template;
                 this.templates[contentBlock.hash] = template;
             });
+    }
+
+    refreshSortings() {
+        this.contentBlocks = _.sortBy(this.contentBlocks, 'sort');
+        console.log('sorted', this.contentBlocks);
     }
 
 }

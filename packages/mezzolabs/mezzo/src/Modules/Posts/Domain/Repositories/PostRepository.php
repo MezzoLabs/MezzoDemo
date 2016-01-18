@@ -33,9 +33,14 @@ class PostRepository extends ModelRepository
      */
     public function update(array $data, $id, $attribute = "id")
     {
+        $post = $this->findOrFail($id);
+
+        $data['content']['id'] = $post->content->id;
+
         if (isset($data['content'])) {
             $data = $this->replaceBlocksWithContentId($data)->toArray();
         }
+
 
         return parent::update($data, $id, $attribute);
     }

@@ -20,7 +20,6 @@ class ContentRepository extends ModelRepository
 
         $exists = $contentData->get('id', null);
 
-
         if (!$exists)
             $content = parent::create($contentData->except('blocks')->toArray());
         else {
@@ -41,7 +40,7 @@ class ContentRepository extends ModelRepository
     {
         $content = $this->findOrFail($content_id);
 
-        $content->recent_text = $content->text();
+        $content->recent_text = strip_tags($content->text());
 
         $content->save();
 

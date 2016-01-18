@@ -25,13 +25,10 @@ export default function dateTimePickerDirective() {
             }
         };
 
-
         $(element).on('dp.hide', function () {
             changed(this);
             $(this).trigger('change');
         });
-
-
 
         $(element).datetimepicker(options);
 

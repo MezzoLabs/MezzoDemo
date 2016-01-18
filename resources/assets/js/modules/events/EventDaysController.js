@@ -84,7 +84,7 @@ export default class FilePickerController {
     }
 
     startChanged(){
-        //this.sort();
+        this.sort();
     }
 
     getStart(){

@@ -17,4 +17,9 @@ class ContentBlock extends ContentsModuleContentBlock
     {
         return $this->belongsTo(Content::class, 'content_id', 'id');
     }
+
+    public function getLabelAttribute()
+    {
+        return $this->id . ': ' . $this->getType()->title();
+    }
 }

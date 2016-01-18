@@ -49,6 +49,7 @@ trait HasAngularDirectives
     {
         $multiple = $options['multiple'] ?? false;
         $rules = $options['rules'] ?? new Rules();
+        $mergeAttributes = $options['attributes'] ?? [];
 
         $htmlAttributes = [
             'data-file-type' => $fileTypeModel->fileType()->name(),
@@ -59,7 +60,7 @@ trait HasAngularDirectives
 
 
         $validationRules = (new HtmlRules($rules))->attributes()->toArray();
-        $htmlAttributes = array_merge($htmlAttributes, $validationRules);
+        $htmlAttributes = array_merge($htmlAttributes, $validationRules, $mergeAttributes);
         $htmlAttributesString = $this->html->attributes($htmlAttributes);
 
         return "<mezzo-file-picker {$htmlAttributesString}></mezzo-file-picker>";

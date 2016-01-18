@@ -15,7 +15,7 @@ export default class FilePickerController {
     selectLabel() {
         var label = 'Select file';
 
-        if(this.isMultiple()) {
+        if (this.isMultiple()) {
             label += 's';
         }
 
@@ -30,60 +30,98 @@ export default class FilePickerController {
         $(target).parent().find('.modal').modal();
     }
 
-    loadFiles(){
+    loadFiles() {
         this.api.files().then(apiFiles => {
             apiFiles.forEach(apiFile => {
                 const file = new File(apiFile);
 
-                if(this.fileType && file.type !== this.fileType){
+                if (this.fileType && file.type !== this.fileType) {
                     return;
                 }
 
                 this.files.push(file);
+
             });
+
+            this.filesLoaded();
         });
     }
 
-    filteredFiles(){
-        if(this.searchText.length > 0){
+    filesLoaded() {
+        this.selectOldValue();
+
+
+    }
+
+    selectOldValue() {
+        if (!this.value) {
+            return false;
+        }
+
+        if (this.value.indexOf(',') == -1) {
+            this.selectId(this.value);
+            this.confirmSelected();
+            return true;
+        }
+
+        var ids = this.value.split(',');
+        for (var i in ids) {
+            this.selectId(ids[i]);
+        }
+
+        this.confirmSelected();
+
+        return true;
+
+
+    }
+
+    filteredFiles() {
+        if (this.searchText.length > 0) {
             return this.files.filter(file => file.name.indexOf(this.searchText) !== -1);
         }
 
         return this.files;
     }
 
-    setPreview(file){
-        if(file.isImage()){
+    setPreview(file) {
+        if (file.isImage()) {
             this.preview = file;
         }
     }
 
-    previewSource(){
-        if(this.preview){
+    previewSource() {
+        if (this.preview) {
             return this.preview.url;
         }
 
         return '';
     }
 
-    hidePreview(){
+    hidePreview() {
         this.preview = null;
     }
 
-    leftColumnClass(){
-        if(this.previewSource()){
+    leftColumnClass() {
+        if (this.previewSource()) {
             return 'col-xs-6';
         }
 
         return 'col-xs-12';
     }
 
-    isMultiple(){
+    isMultiple() {
         return this.multiple !== undefined;
     }
 
-    onSelect(selectedFile){
-        if(this.isMultiple() || !selectedFile.selected) {
+    selectId(id) {
+        var file = _.find(this.files, {id: parseInt(id)});
+
+        file.selected = true;
+    }
+
+    onSelect(selectedFile) {
+        if (this.isMultiple() || !selectedFile.selected) {
             return;
         }
 
@@ -92,29 +130,29 @@ export default class FilePickerController {
         selectedFile.selected = true;
     }
 
-    selectedFiles(){
+    selectedFiles() {
         return this.files.filter(file => file.selected);
     }
 
-    disableSelectButton(){
+    disableSelectButton() {
         return this.selectedFiles().length === 0;
     }
 
-    selectButtonLabel(){
+    selectButtonLabel() {
         const selected = this.selectedFiles().length;
 
-        if(selected === 0){
+        if (selected === 0) {
             return 'Please choose a file first';
         }
 
         return 'Select ' + selected + ' file' + (selected !== 1 ? 's' : '');
     }
 
-    confirmSelected(){
+    confirmSelected() {
         const selected = this.selectedFiles();
         const $field = this.inputField();
 
-        if(selected.length === 1){
+        if (selected.length === 1) {
             $field.val(selected[0].id);
 
             return;
@@ -131,18 +169,18 @@ export default class FilePickerController {
     }
 
     acquireInputValue(value) {
-        let values = [ value ];
+        let values = [value];
 
-        if(value.indexOf(',') !== -1) {
+        if (value.indexOf(',') !== -1) {
             values = value.split(',');
         }
 
-        for(let i = 0; i < values.length; i++) {
+        for (let i = 0; i < values.length; i++) {
             values[i] = parseInt(values[i], 10);
         }
 
         this.files.forEach(file => {
-            if(_.contains(values, file.id)) {
+            if (_.contains(values, file.id)) {
                 file.selected = true;
             }
         });

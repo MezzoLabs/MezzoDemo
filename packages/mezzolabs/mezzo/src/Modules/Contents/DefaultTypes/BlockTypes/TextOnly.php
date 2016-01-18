@@ -4,7 +4,7 @@
 namespace MezzoLabs\Mezzo\Modules\Contents\DefaultTypes\BlockTypes;
 
 
-use MezzoLabs\Mezzo\Modules\Contents\DefaultTypes\FieldTypes\TextField;
+use MezzoLabs\Mezzo\Modules\Contents\DefaultTypes\FieldTypes\RichTextField;
 use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\AbstractContentBlockType;
 
 class TextOnly extends AbstractContentBlockType
@@ -20,7 +20,7 @@ class TextOnly extends AbstractContentBlockType
      */
     public function boot()
     {
-        $this->addField(new TextField('text'));
+        $this->addField(new RichTextField('text'));
     }
 
     /**
