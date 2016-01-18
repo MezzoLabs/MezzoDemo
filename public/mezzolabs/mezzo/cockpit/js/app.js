@@ -2430,10 +2430,10 @@ var IndexResourceController = (function () {
         value: function loadModels() {
             var _this = this;
 
+            var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
             this.loading = true;
-            var params = {
-                include: this.includes.join(',')
-            };
+            params.include = this.includes.join(',');
 
             return this.modelApi.index(params).then(function (data) {
                 _this.loading = false;
@@ -2631,6 +2631,26 @@ var IndexResourceController = (function () {
         key: 'displayAsLink',
         value: function displayAsLink($first, model) {
             return $first && !this.isLocked(model);
+        }
+    }, {
+        key: 'applyScopes',
+        value: function applyScopes($event) {
+            var $formInputs = $($event.target).parents('form').find(':input');
+            var params = {};
+
+            $formInputs.each(function (index, formInput) {
+                var $formInput = $(formInput);
+                var inputName = $formInput.attr('name');
+                var inputValue = $formInput.val();
+
+                if (!inputName || !inputValue) {
+                    return;
+                }
+
+                params[inputName] = inputValue;
+            });
+
+            this.loadModels(params);
         }
     }]);
 

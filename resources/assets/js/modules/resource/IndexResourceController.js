@@ -25,11 +25,9 @@ export default class IndexResourceController {
         this.attributes.push({name: name, type: type});
     }
 
-    loadModels() {
+    loadModels(params = {}) {
         this.loading = true;
-        const params = {
-            include: this.includes.join(',')
-        };
+        params.include = this.includes.join(',');
 
         return this.modelApi.index(params)
             .then(data => {
@@ -196,6 +194,25 @@ export default class IndexResourceController {
 
     displayAsLink($first, model) {
         return $first && !this.isLocked(model);
+    }
+
+    applyScopes($event) {
+        const $formInputs = $($event.target).parents('form').find(':input');
+        const params = {};
+
+        $formInputs.each((index, formInput) => {
+            const $formInput = $(formInput);
+            const inputName = $formInput.attr('name');
+            const inputValue = $formInput.val();
+
+            if (!inputName || !inputValue) {
+                return;
+            }
+
+            params[inputName] = inputValue;
+        });
+
+        this.loadModels(params);
     }
 
 }
