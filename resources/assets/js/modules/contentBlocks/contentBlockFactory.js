@@ -37,11 +37,11 @@ class ContentBlockService {
         this.currentId = 0;
     }
 
-    addContentBlock(key, hash, title, id = '', fields = {}, options = {}, sort = 0) {
+    addContentBlock(key, hash, title, id = '', fields = {}, options = {}, sort = false) {
         const contentBlock = {
             id: id,
             key: key,
-            sort: sort,
+            sort: (sort !== false) ? sort : this.contentBlocks.length,
             cssClass: 'block__' + key.replace(/\\/g, '_'),
             hash: hash,
             title: title,
@@ -77,7 +77,6 @@ class ContentBlockService {
 
     refreshSortings() {
         this.contentBlocks = _.sortBy(this.contentBlocks, 'sort');
-        console.log('sorted', this.contentBlocks);
     }
 
 }

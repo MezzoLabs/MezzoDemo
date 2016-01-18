@@ -129,7 +129,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     }
 
                     $(base.$element).val(value).trigger('change', {'filledFromApi': true}).blur();
-                });
+            });
             });
 
             var base = this;
@@ -902,12 +902,12 @@ var ContentBlockService = function () {
             var id = arguments.length <= 3 || arguments[3] === undefined ? '' : arguments[3];
             var fields = arguments.length <= 4 || arguments[4] === undefined ? {} : arguments[4];
             var options = arguments.length <= 5 || arguments[5] === undefined ? {} : arguments[5];
-            var sort = arguments.length <= 6 || arguments[6] === undefined ? 0 : arguments[6];
+            var sort = arguments.length <= 6 || arguments[6] === undefined ? false : arguments[6];
 
             var contentBlock = {
                 id: id,
                 key: key,
-                sort: sort,
+                sort: sort !== false ? sort : this.contentBlocks.length,
                 cssClass: 'block__' + key.replace(/\\/g, '_'),
                 hash: hash,
                 title: title,
@@ -947,7 +947,6 @@ var ContentBlockService = function () {
         key: 'refreshSortings',
         value: function refreshSortings() {
             this.contentBlocks = _.sortBy(this.contentBlocks, 'sort');
-            console.log('sorted', this.contentBlocks);
         }
     }]);
 
@@ -1176,7 +1175,7 @@ function eventDaysDirective() {
 
                 modelApi.content($(this).val(), {include: 'address'}).then(function (result) {
                     fillAddress(result.address.data);
-                });
+            });
             });
 
             function fillAddress(data) {
@@ -1186,13 +1185,13 @@ function eventDaysDirective() {
 
                     if ($input.length == 0) {
                         continue;
-                    }
+                }
 
                     $input.val(data[attributeName]);
                     $input.trigger('input');
-                }
             }
         }
+    }
     }
 
 }, {}], 27: [function (require, module, exports) {

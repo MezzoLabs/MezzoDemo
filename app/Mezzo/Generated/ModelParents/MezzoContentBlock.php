@@ -63,7 +63,8 @@ abstract class MezzoContentBlock extends BaseModel
     protected $rules = [
         'name' => "between:2,200|alpha_num|unique_with:content_blocks,content_id",
         //'sort' => "unique_with:content_blocks,content_id",
-        'class' => "required|between:2,200", 
+        'sort' => "required",
+        'class' => "required|between:2,200",
         'options' => ""
     ];
 
