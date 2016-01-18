@@ -5550,11 +5550,11 @@ button.close {
   .carousel-indicators {
     bottom: 20px; } }
 
-.clearfix:before, .nav-main > li > a:before, .panel .panel-heading:before, #quickview .quickview-heading:before, .clearfix:after, .nav-main > li > a:after, .panel .panel-heading:after, #quickview .quickview-heading:after {
+.clearfix:before, .nav-main > li > a:before, .panel .panel-heading:before, #quickview .quickview-heading:before, mezzo-file-picker .thumbnails:before, .clearfix:after, .nav-main > li > a:after, .panel .panel-heading:after, #quickview .quickview-heading:after, mezzo-file-picker .thumbnails:after {
   content: " ";
   display: table; }
 
-.clearfix:after, .nav-main > li > a:after, .panel .panel-heading:after, #quickview .quickview-heading:after {
+.clearfix:after, .nav-main > li > a:after, .panel .panel-heading:after, #quickview .quickview-heading:after, mezzo-file-picker .thumbnails:after {
   clear: both; }
 
 .center-block {
@@ -8964,6 +8964,19 @@ a {
     padding: 8px 10px; }
   .content-blocks .content-block-actions a:last-child {
     padding-right: 0px; }
+
+mezzo-file-picker .thumbnails .thumbnail {
+  float: left;
+  padding: 0px;
+  margin: 0px 3px 5px 0px;
+  border-radius: 0px;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+}
+
+mezzo-file-picker .thumbnails .thumbnail img {
+  width: 50px;
+  height: 50px;
+}
 
 .jstree-proton .jstree-clicked, .jstree-proton .jstree-hovered {
   box-shadow: none;

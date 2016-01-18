@@ -66,6 +66,13 @@ return [
         'shoppingbasket' => 'Warenkorb',
         'tag' => 'Tag',
         'user' => 'Nutzer'
+    ],
+    'selects' => [
+        'gender' => [
+            'm' => 'Herr',
+            'f' => 'Frau',
+            'n' => '-'
+        ]
     ]
 ];
 ?>

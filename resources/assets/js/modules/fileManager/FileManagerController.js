@@ -21,21 +21,53 @@ export default class FileManagerController {
         this.initFiles();
     }
 
-    initFiles(){
-        this.library = new Folder('Library');
+    initFiles() {
+        this.library = new Folder('Library', null, true);
         this.folder = this.library;
         this.files = this.library.files;
         this.loading = true;
+        const folders = {};
 
         this.api.files().then(apiFiles => {
             this.loading = false;
 
             apiFiles.forEach(apiFile => {
                 const file = new File(apiFile);
+                const filePath = apiFile.path;
 
-                this.library.files.push(file);
+                if(filePath.indexOf('/') === -1) {
+                    this.library.files.push(file);
+                    return;
+                }
+
+                const filePathArray = filePath.split('/');
+                const folderPathArray = filePathArray.slice(0, filePathArray.length - 1);
+                console.log('folders before:', folders);
+                const folderForFile = this.getFolderByPath(folders, folderPathArray);
+                console.log('folders after:', folders, folderForFile);
+                folderForFile.files.push(file);
             });
         });
+    }
+
+    getFolderByPath(folders, folderPathArray) {
+        if (folderPathArray.length === 0) {
+            return this.library;
+        }
+
+        const previousFolder = this.getFolderByPath(folders, folderPathArray.slice(0, folderPathArray.length - 1));
+        const folderPath = folderPathArray.join('.');
+        let folder = _.get(folders, folderPath);
+
+        if (!folder) {
+            const folderName = folderPathArray[folderPathArray.length - 1];
+            folder = new Folder(folderName, previousFolder);
+
+            previousFolder.files.push(folder);
+            _.set(folders, folderPath, folder);
+        }
+
+        return folder;
     }
 
     isActive(category){
@@ -201,20 +233,25 @@ export default class FileManagerController {
         }
     }
 
-    deleteFile(file){
+    deleteFile(file, deleteRemote = true){
         _.remove(this.files, file);
+
+        if (!deleteRemote) {
+            return;
+        }
+
         this.api.deleteFile(file);
     }
 
     moveTo(folder){
-        this.api.moveFile(this.selected, folder.path());
         this.moveFile(this.selected, folder);
         $('#move-modal').modal('hide');
         this.enterFolder(folder);
     }
 
     moveFile(file, folder){
-        this.deleteFile(file);
+        this.api.moveFile(file, folder.path());
+        this.deleteFile(file, false); // false because we do not want to delete the remote file
 
         if(file.isFolder){
             file.parent = folder;

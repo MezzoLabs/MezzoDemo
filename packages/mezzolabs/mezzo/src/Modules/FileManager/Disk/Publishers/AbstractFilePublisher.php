@@ -18,7 +18,7 @@ abstract class AbstractFilePublisher
      */
     protected $options;
 
-    final public function __construct(\App\File $file, array $options)
+    public function __construct(\App\File $file, array $options)
     {
         $this->file = $file;
         $this->options = new Collection($options);

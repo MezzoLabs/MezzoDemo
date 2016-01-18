@@ -1,3 +1,5 @@
+<mezzo-event-days naming="{{ $renderer->attribute()->relationSide()->naming() }}"></mezzo-event-days>
+
 {!! cockpit_form()->openNestedRelation($renderer->attribute()) !!}
 <div class="row days">
     <div class="col-md-5">

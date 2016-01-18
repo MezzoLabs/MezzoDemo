@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\UserWasVerified;
 
 use App\Events\UserWasVerified;
 
@@ -28,7 +28,7 @@ class EmailSuccessfullyVerifiedInfo
 
         \Mail::send('emails.verified', $userData, function ($message) use ($userData) {
             $message
-                ->to($userData['email'], $userData['name'])
+                ->to($userData['email'], $userData['first_name'] . ' ' . $userData['last_name'])
                 ->subject('You can now use the magazine.');
         });
     }

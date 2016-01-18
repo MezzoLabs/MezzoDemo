@@ -10,6 +10,9 @@ use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\EloquentModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use Validator;
 
 class AuthController extends Controller
@@ -18,6 +21,11 @@ class AuthController extends Controller
     protected $redirectPath = '/profile';
 
     protected $loginPath = '/auth/login';
+
+    /**
+     * @var EloquentModelReflection|MezzoModelReflection|ModelReflection
+     */
+    protected $userReflection;
 
     /*
     |--------------------------------------------------------------------------
@@ -39,6 +47,7 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'getLogout']);
+        $this->userReflection = mezzo()->model('User');
 
     }
 
@@ -50,11 +59,9 @@ class AuthController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
-        ]);
+        $rules = $this->userReflection->rules();
+
+        return Validator::make($data, $rules);
     }
 
     /**
@@ -66,7 +73,9 @@ class AuthController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
+            'gender' => $data['gender'],
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'confirmation_code' => $data['confirmation_code'],

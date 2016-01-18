@@ -20,6 +20,7 @@ use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValue;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValues;
 use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 use MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject;
+use MezzoLabs\Mezzo\Http\Requests\Queries\Sorting;
 
 class ModelRepository extends EloquentRepository
 {
@@ -82,7 +83,7 @@ class ModelRepository extends EloquentRepository
     public static function makeRepository($model = null)
     {
         if ($model) {
-             // Find the model reflection, normalize the $model variable.
+            // Find the model reflection, normalize the $model variable.
             $model = mezzo()->model($model);
 
             return new ModelRepository($model);
@@ -110,10 +111,11 @@ class ModelRepository extends EloquentRepository
      */
     public function all($columns = array('*'), QueryObject $query = null)
     {
-        if ($query)
+        if ($query) {
             return $this->search($query, $columns);
+        }
 
-        return $this->query()->get($columns);
+        return $this->query()->orderBy('id', 'desc')->get($columns);
     }
 
     public function count(QueryObject $queryObject)
@@ -130,6 +132,10 @@ class ModelRepository extends EloquentRepository
 
     public function search(QueryObject $queryObject, $columns = array('*'))
     {
+        if ($queryObject->sortings()->isEmpty()) {
+            $queryObject->sortings()->add(new Sorting('id', 'desc'));
+        }
+
         return (new EloquentQueryExecutor($queryObject, $this->query()))->run()->get($columns);
     }
 
@@ -162,9 +168,9 @@ class ModelRepository extends EloquentRepository
 
         $modelInstance = $this->modelInstance();
 
-        $model =  $modelInstance->create($values->inMainTableOnly()->toArray());
+        $model = $modelInstance->create($values->inMainTableOnly()->toArray());
 
-        if(!$model)
+        if (!$model)
             throw new RepositoryException('Cannot create new model of type ' . $this->modelReflection()->className());
 
         $this->updateRelations($model, $values->inForeignTablesOnly());

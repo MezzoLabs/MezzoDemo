@@ -13,7 +13,7 @@ export default class FormDataService {
 
         var stripped = this.stripData(formData);
 
-        stripped = this.unpackSelectInputs(this.form()[0], stripped);
+        stripped = this.unpackRelationInputs(this.form()[0], stripped);
         stripped = this.formatTimestamps(stripped);
 
         console.log('fill form: ', stripped);
@@ -38,11 +38,9 @@ export default class FormDataService {
         return cleaned;
     }
 
-    unpackSelectInputs(form, data) {
+    unpackRelationInputs(form, data) {
         var clean = _.clone(data);
         $(form).find('select').each(function (id, elem) {
-            var name = $(this).attr('name');
-
             //html input element is not in response or already an id
             if (!clean[name] || typeof clean[name] !== 'object')
                 return true;
@@ -62,6 +60,29 @@ export default class FormDataService {
             clean[name] = ids;
         });
 
+        //unpack checkboxes
+        for (var i in _.clone(clean)) {
+            var attribute = clean[i];
+
+            if (!_.isObject(attribute) || !attribute[0])
+                continue;
+
+            //run through the checkbox array (each relation entry)
+            for (var j in attribute) {
+                var relationEntry = attribute[j];
+
+                var selector = 'input[type=checkbox][name="' + i + '[' + relationEntry.id + ']"]';
+
+                if (selector.length == 0)
+                    continue;
+
+                if (!_.isArray(clean[i])) {
+                    clean[i] = [];
+                }
+                clean[i].push(relationEntry.id);
+            }
+        }
+
         return clean;
     }
 
@@ -69,7 +90,15 @@ export default class FormDataService {
         var cleaned = {};
 
         //Unpack everything
-        if (formData && typeof formData === 'object') {
+        if (formData && _.isArray(formData)) {
+            cleaned = [];
+            for (var i in formData) {
+                cleaned[i] = this.formatTimestamps(formData[i]);
+            }
+            return cleaned;
+        }
+
+        if (formData && _.isObject(formData)) {
             for (var i in formData) {
                 cleaned[i] = this.formatTimestamps(formData[i]);
             }

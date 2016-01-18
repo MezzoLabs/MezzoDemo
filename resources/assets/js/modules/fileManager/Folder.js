@@ -2,7 +2,7 @@ import File from './File';
 
 export default class Folder extends File {
 
-    constructor(name, parent = null){
+    constructor(name, parent = null, skipInPath = false){
         super({
             id: '',
             filename: name,
@@ -11,6 +11,7 @@ export default class Folder extends File {
         });
 
         this.parent = parent;
+        this.skipInPath = skipInPath;
         this.type = 'folder';
         this.isFolder = true;
         this.files = [];
@@ -21,6 +22,10 @@ export default class Folder extends File {
         let folder = this;
 
         while (folder.parent) {
+            if (folder.parent.skipInPath) {
+                break;
+            }
+
             folders.push(folder.parent.name);
 
             folder = folder.parent;

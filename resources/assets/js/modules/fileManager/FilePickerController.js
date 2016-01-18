@@ -27,7 +27,7 @@ export default class FilePickerController {
     showModal($event) {
         const target = $event.target;
 
-        $(target).prev().modal();
+        $(target).parent().find('.modal').modal();
     }
 
     loadFiles(){

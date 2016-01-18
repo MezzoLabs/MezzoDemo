@@ -125,7 +125,8 @@ return [
         'content' => [
             'blocks' => 'Inhaltsblock'
         ],
-        'event_venue_id' => 'Veranstaltungs Ort'
+        'event_venue_id' => 'Veranstaltungs Ort',
+        'gender' => 'Anrede'
 
     ],
 

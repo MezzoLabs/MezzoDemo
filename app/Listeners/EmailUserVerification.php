@@ -28,7 +28,7 @@ class EmailUserVerification
 
         \Mail::send('emails.verify', $userData, function ($message) use ($userData) {
             $message
-                ->to($userData['email'], $userData['name'])
+                ->to($userData['email'], $userData['first_name'] . ' ' . $userData['last_name'])
                 ->subject('Verify your email address');
         });
     }
