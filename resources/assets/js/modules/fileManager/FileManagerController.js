@@ -22,7 +22,7 @@ export default class FileManagerController {
     }
 
     initFiles(){
-        this.library = new Folder('Library');
+        this.library = new Folder('Library', null, true);
         this.folder = this.library;
         this.files = this.library.files;
         this.loading = true;
@@ -201,20 +201,25 @@ export default class FileManagerController {
         }
     }
 
-    deleteFile(file){
+    deleteFile(file, deleteRemote = true){
         _.remove(this.files, file);
+
+        if (!deleteRemote) {
+            return;
+        }
+
         this.api.deleteFile(file);
     }
 
     moveTo(folder){
-        this.api.moveFile(this.selected, folder.path());
         this.moveFile(this.selected, folder);
         $('#move-modal').modal('hide');
         this.enterFolder(folder);
     }
 
     moveFile(file, folder){
-        this.deleteFile(file);
+        this.api.moveFile(file, folder.path());
+        this.deleteFile(file, false); // false because we do not want to delete the remote file
 
         if(file.isFolder){
             file.parent = folder;
