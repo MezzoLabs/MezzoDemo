@@ -26,6 +26,7 @@ export default class FileManagerController {
         this.folder = this.library;
         this.files = this.library.files;
         this.loading = true;
+        const folders = {};
 
         this.api.files().then(apiFiles => {
             this.loading = false;
@@ -36,6 +37,31 @@ export default class FileManagerController {
                 this.library.files.push(file);
             });
         });
+    }
+
+    getFolderByPath(folders, folderPathArray) {
+        let previousFolder = null;
+
+        for(let i = 0; i < folderPathArray.length; i++) {
+            const baseFolderPathArray = folderPathArray.slice();
+
+            baseFolderPathArray.splice(0, i + 1);
+            
+            const baseFolderPath = baseFolderPathArray.join('.');
+            const currentFolder = _.get(folders, baseFolderPath);
+
+            if (currentFolder) {
+                previousFolder = currentFolder;
+                continue;
+            }
+
+            const folderName = folderPathArray[i];
+            const newFolder = new Folder(folderName, previousFolder);
+
+            _.set(folders, baseFolderPath, newFolder);
+        }
+
+        return previousFolder;
     }
 
     isActive(category){
