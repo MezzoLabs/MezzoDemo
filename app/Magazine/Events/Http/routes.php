@@ -10,6 +10,7 @@ module_route('Events', [], function (Router $router, ApiRouter $api, CockpitRout
     $api->resource('Event');
     $api->resource('EventVenue');
     $api->resource('EventProvider');
+    $api->resource('EventDay');
 
     $api->action('locked', 'Event', ['mode' => 'single']);
     $api->action('lock', 'Event', ['mode' => 'single']);

@@ -121,6 +121,8 @@ class HtmlHelper
                 return 'cockpit::partials.form-content-edit';
             case 'formcontentcreate':
                 return 'cockpit::partials.form-content-create';
+            case 'formcontentcreateoredit':
+                return 'cockpit::partials.formcontent.create_or_edit';
             default:
                 return 'UNKOWN VIEW KEY ' . $shortName;
         }

@@ -1,5 +1,11 @@
 export default class FormDataService {
 
+
+    /*@ngInject*/
+    constructor($rootScope) {
+        this.$rootScope = $rootScope;
+    }
+
     form() {
         return $('form[name="vm.form"]');
     }
@@ -20,6 +26,12 @@ export default class FormDataService {
 
         js2form(this.form()[0], stripped);
         this.form().find(':input').trigger('input'); // trigger input event to notify Angular that ng-model should update
+
+        this.$rootScope.$broadcast('mezzo.formdata.set', {
+            form: this.form()[0],
+            data: stripped
+        })
+
     }
 
     stripData(formData) {
@@ -60,6 +72,7 @@ export default class FormDataService {
             clean[name] = ids;
         });
 
+
         //unpack checkboxes
         for (var i in _.clone(clean)) {
             var attribute = clean[i];
@@ -73,7 +86,7 @@ export default class FormDataService {
 
                 var selector = 'input[type=checkbox][name="' + i + '[' + relationEntry.id + ']"]';
 
-                if (selector.length == 0)
+                if ($(selector).length == 0)
                     continue;
 
                 if (!_.isArray(clean[i])) {

@@ -15,6 +15,8 @@ export default class CreateResourceController {
 
     submit() {
         if (this.form.$invalid) {
+            swal('Booh you!', 'Invalid Form', "error");
+            console.log(this.form.$error);
             return false;
         }
         tinyMCE.triggerSave();

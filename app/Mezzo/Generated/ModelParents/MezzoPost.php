@@ -286,7 +286,7 @@ abstract class MezzoPost extends \App\Mezzo\BaseModel
     /**
      * Relation annotation property for main_image
      * @Mezzo\Relations\OneToMany
-     * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="main_image")
+     * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="mainImage")
      * @Mezzo\Relations\To(table="image_files", primaryKey="id", naming="posts")
      * @Mezzo\Relations\JoinColumn(table="posts", column="main_image_id")
      * @Mezzo\Relations\Scopes("")

@@ -30,17 +30,7 @@ class RelationAttributeMultipleRenderer extends AttributeRenderingHandler
      */
     public function render(array $options = [])
     {
-        $list = $this->makeEloquentList(false);
-
-        $attributes = $this->htmlAttributes();
-        //$attributes['data-mezzo-select2'] = 1;
-
-        return $this->formBuilder()->select(
-            $this->name(),
-            $list,
-            $this->value(),
-            $attributes
-        );
+        return $this->formBuilder()->relationship($this->attribute);
     }
 
 

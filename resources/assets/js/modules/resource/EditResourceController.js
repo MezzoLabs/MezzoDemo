@@ -27,6 +27,8 @@ export default class EditResourceController {
     }
 
     submit() {
+        console.log('clicked edit resource submit');
+
         if (this.form.$invalid) {
 
             console.log('invalid', this.form);
