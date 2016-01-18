@@ -10,7 +10,6 @@ export default class IndexResourceController {
         this.searchText = '';
         this.selectAll = false;
         this.loading = false;
-        this.removing = 0;
         this.attributes = [];
     }
 
@@ -170,26 +169,16 @@ export default class IndexResourceController {
     }
 
     removeModel(model) {
-        this.removing++;
         this.selectAll = false;
-        model._meta.selected = false;
-        model._meta.removed = true;
 
-        this.removeRemoteModel(model)
-            .then(() => this.removeLocalModel(model))
-            .catch(() => this.removing--);
-    }
+        this.modelApi.delete(model.id);
 
-    removeLocalModel(model) {
         for (var i = 0; i < this.models.length; i++) {
             if (this.models[i] === model) {
                 return this.models.splice(i, 1);
             }
         }
-    }
 
-    removeRemoteModel(model) {
-        return this.modelApi.delete(model.id);
     }
 
     countSelected() {

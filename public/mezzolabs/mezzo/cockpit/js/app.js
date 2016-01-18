@@ -2408,7 +2408,6 @@ var IndexResourceController = (function () {
         this.searchText = '';
         this.selectAll = false;
         this.loading = false;
-        this.removing = 0;
         this.attributes = [];
     }
 
@@ -2603,32 +2602,15 @@ var IndexResourceController = (function () {
     }, {
         key: 'removeModel',
         value: function removeModel(model) {
-            var _this5 = this;
-
-            this.removing++;
             this.selectAll = false;
-            model._meta.selected = false;
-            model._meta.removed = true;
 
-            this.removeRemoteModel(model).then(function () {
-                return _this5.removeLocalModel(model);
-            }).catch(function () {
-                return _this5.removing--;
-            });
-        }
-    }, {
-        key: 'removeLocalModel',
-        value: function removeLocalModel(model) {
+            this.modelApi.delete(model.id);
+
             for (var i = 0; i < this.models.length; i++) {
                 if (this.models[i] === model) {
                     return this.models.splice(i, 1);
                 }
             }
-        }
-    }, {
-        key: 'removeRemoteModel',
-        value: function removeRemoteModel(model) {
-            return this.modelApi.delete(model.id);
         }
     }, {
         key: 'countSelected',

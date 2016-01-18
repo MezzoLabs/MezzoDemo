@@ -26,15 +26,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="model in vm.getModels() track by $index"
-                    ng-class="{ danger: model._meta.removed }">
+                <tr ng-repeat="model in vm.getModels() track by $index">
                     <td>
                             <span class="locked-for-user" title="Locked by @{{ vm.lockedBy(model) }}"
                                   ng-show="vm.isLocked(model)"><i class="ion-ios-locked"></i></span>
                     </td>
                     <td>
-                        <input type="checkbox" ng-model="model._meta.selected"
-                               ng-disabled="model._meta.removed">
+                        <input type="checkbox" ng-model="model._meta.selected">
                     </td>
                     <td ng-repeat="value in vm.getModelValues(model) track by $index">
                         <a href="" class="disabled" title="ID: @{{ model.id }}"
