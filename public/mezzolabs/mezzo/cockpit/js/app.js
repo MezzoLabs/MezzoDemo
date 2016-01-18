@@ -3174,13 +3174,13 @@ function run($rootScope) {
     showStateChangeErrors();
 
     function showStateChangeErrors() {
-        $rootScope.$on('$stateChangeStart', onStateChangeError);
+        $rootScope.$on('$stateChangeError', onStateChangeError);
     }
 
     function onStateChangeError(event, toState, toParams, fromState, fromParams, error) {
         console.error(event, toState, toParams, fromState, fromParams, error);
 
-        var messageBuilder = ['Event: ' + event.name, 'To state: ' + JSON.stringify(toState), 'To params: ' + JSON.stringify(toParams), 'From state: ' + JSON.stringify(fromState), 'From params: ' + JSON.stringify(fromParams), 'Error: ' + JSON.stringify(error)];
+        var messageBuilder = ['<strong>Event:</strong> ' + event.name, '<strong>To state:</strong> ' + JSON.stringify(toState), '<strong>To params:</strong> ' + JSON.stringify(toParams), '<strong>From state:</strong> ' + JSON.stringify(fromState), '<strong>From params:</strong> ' + JSON.stringify(fromParams), '<strong>Error:</strong> ' + JSON.stringify(error)];
         var message = messageBuilder.join('<br>');
 
         swal({
