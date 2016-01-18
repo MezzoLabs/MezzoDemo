@@ -1137,36 +1137,42 @@ var FileManagerController = (function () {
 
                 apiFiles.forEach(function (apiFile) {
                     var file = new _File2.default(apiFile);
+                    var filePath = apiFile.path;
 
-                    _this.library.files.push(file);
+                    if (filePath.indexOf('/') === -1) {
+                        _this.library.files.push(file);
+                        return;
+                    }
+
+                    var filePathArray = filePath.split('/');
+                    var folderPathArray = filePathArray.slice(0, filePathArray.length - 1);
+                    console.log('folders before:', folders);
+                    var folderForFile = _this.getFolderByPath(folders, folderPathArray);
+                    console.log('folders after:', folders, folderForFile);
+                    folderForFile.files.push(file);
                 });
             });
         }
     }, {
         key: 'getFolderByPath',
         value: function getFolderByPath(folders, folderPathArray) {
-            var previousFolder = null;
-
-            for (var i = 0; i < folderPathArray.length; i++) {
-                var baseFolderPathArray = folderPathArray.slice();
-
-                baseFolderPathArray.splice(0, i + 1);
-
-                var baseFolderPath = baseFolderPathArray.join('.');
-                var currentFolder = _.get(folders, baseFolderPath);
-
-                if (currentFolder) {
-                    previousFolder = currentFolder;
-                    continue;
-                }
-
-                var folderName = folderPathArray[i];
-                var newFolder = new _Folder2.default(folderName, previousFolder);
-
-                _.set(folders, baseFolderPath, newFolder);
+            if (folderPathArray.length === 0) {
+                return this.library;
             }
 
-            return previousFolder;
+            var previousFolder = this.getFolderByPath(folders, folderPathArray.slice(0, folderPathArray.length - 1));
+            var folderPath = folderPathArray.join('.');
+            var folder = _.get(folders, folderPath);
+
+            if (!folder) {
+                var folderName = folderPathArray[folderPathArray.length - 1];
+                folder = new _Folder2.default(folderName, previousFolder);
+
+                previousFolder.files.push(folder);
+                _.set(folders, folderPath, folder);
+            }
+
+            return folder;
         }
     }, {
         key: 'isActive',

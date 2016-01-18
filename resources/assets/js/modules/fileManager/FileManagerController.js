@@ -21,7 +21,7 @@ export default class FileManagerController {
         this.initFiles();
     }
 
-    initFiles(){
+    initFiles() {
         this.library = new Folder('Library', null, true);
         this.folder = this.library;
         this.files = this.library.files;
@@ -33,35 +33,41 @@ export default class FileManagerController {
 
             apiFiles.forEach(apiFile => {
                 const file = new File(apiFile);
+                const filePath = apiFile.path;
 
-                this.library.files.push(file);
+                if(filePath.indexOf('/') === -1) {
+                    this.library.files.push(file);
+                    return;
+                }
+
+                const filePathArray = filePath.split('/');
+                const folderPathArray = filePathArray.slice(0, filePathArray.length - 1);
+                console.log('folders before:', folders);
+                const folderForFile = this.getFolderByPath(folders, folderPathArray);
+                console.log('folders after:', folders, folderForFile);
+                folderForFile.files.push(file);
             });
         });
     }
 
     getFolderByPath(folders, folderPathArray) {
-        let previousFolder = null;
-
-        for(let i = 0; i < folderPathArray.length; i++) {
-            const baseFolderPathArray = folderPathArray.slice();
-
-            baseFolderPathArray.splice(0, i + 1);
-            
-            const baseFolderPath = baseFolderPathArray.join('.');
-            const currentFolder = _.get(folders, baseFolderPath);
-
-            if (currentFolder) {
-                previousFolder = currentFolder;
-                continue;
-            }
-
-            const folderName = folderPathArray[i];
-            const newFolder = new Folder(folderName, previousFolder);
-
-            _.set(folders, baseFolderPath, newFolder);
+        if (folderPathArray.length === 0) {
+            return this.library;
         }
 
-        return previousFolder;
+        const previousFolder = this.getFolderByPath(folders, folderPathArray.slice(0, folderPathArray.length - 1));
+        const folderPath = folderPathArray.join('.');
+        let folder = _.get(folders, folderPath);
+
+        if (!folder) {
+            const folderName = folderPathArray[folderPathArray.length - 1];
+            folder = new Folder(folderName, previousFolder);
+
+            previousFolder.files.push(folder);
+            _.set(folders, folderPath, folder);
+        }
+
+        return folder;
     }
 
     isActive(category){
