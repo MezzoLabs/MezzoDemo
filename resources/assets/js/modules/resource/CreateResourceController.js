@@ -1,11 +1,10 @@
-export default class CreateResourceController {
+import ResourceController from './ResourceController';
+
+export default class CreateResourceController extends ResourceController {
 
     /*@ngInject*/
-    constructor(api, formDataService, contentBlockFactory, modelStateService) {
-        this.api = api;
-        this.formDataService = formDataService;
-        this.contentBlockService = contentBlockFactory();
-        this.modelStateService = modelStateService;
+    constructor($scope, $injector) {
+        super($scope, $injector);
     }
 
     init(modelName) {
@@ -24,13 +23,8 @@ export default class CreateResourceController {
         this.modelApi.create(formData)
             .then(model => {
                 this.edit(model.id);
-            });
-    }
-
-    hasError(formControl) {
-        if (Object.keys(formControl.$error).length && formControl.$dirty) {
-            return 'has-error';
-        }
+            })
+            .catch(err => this.catchServerSideErrors(err));
     }
 
     edit(modelId) {

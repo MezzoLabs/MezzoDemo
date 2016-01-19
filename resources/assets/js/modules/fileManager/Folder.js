@@ -18,6 +18,10 @@ export default class Folder extends File {
     }
 
     path() {
+        if (this.skipInPath) {
+            return '';
+        }
+
         const folders = [this.name];
         let folder = this;
 

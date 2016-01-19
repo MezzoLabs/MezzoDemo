@@ -17,7 +17,7 @@
     <div class="col-md-6">
 
         <div style="width: 100%; height: 200px">
-            <div mezzo-google-map style="width: 100%; height: 100%"></div>
+            <div mezzo-google-map data-latitude="address.latitude" data-longitude="address.longitude" style="width: 100%; height: 100%"></div>
         </div>
 
 

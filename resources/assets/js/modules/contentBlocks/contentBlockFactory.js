@@ -1,14 +1,17 @@
 /*@ngInject*/
-export default function registerContentBlockFactory(api) {
-    return function contentBlockFactory() {
-        return new ContentBlockService(api);
+export default function registerContentBlockFactory($compile, api, formValidationService) {
+    return function contentBlockFactory($scope) {
+        return new ContentBlockService($compile, $scope, api, formValidationService);
     }
 }
 
 class ContentBlockService {
 
-    constructor(api) {
+    constructor($compile, $scope, api, formValidationService) {
+        this.$compile = $compile;
+        this.$scope = $scope;
         this.api = api;
+        this.formValidationService = formValidationService;
         this.contentBlocks = [];
         this.templates = {};
         this.sortableOptions = {
@@ -54,6 +57,8 @@ class ContentBlockService {
 
         if (cachedTemplate) {
             console.log('fill template: ', contentBlock);
+            this.deferFormValidation();
+
             return contentBlock.template = cachedTemplate;
         }
 
@@ -63,6 +68,24 @@ class ContentBlockService {
 
                 contentBlock.template = template;
                 this.templates[contentBlock.hash] = template;
+
+                this.deferFormValidation();
+            });
+    }
+
+    deferFormValidation() {
+        setTimeout(() => {
+            this.applyFormValidation();
+        }, 1);
+    }
+
+    applyFormValidation() {
+        $('div.content-block-body')
+            .children('div.form-group')
+            .find(':input')
+            .each((index, formInput) => {
+                this.formValidationService.assign(formInput);
+                this.$compile(formInput)(this.$scope);
             });
     }
 
