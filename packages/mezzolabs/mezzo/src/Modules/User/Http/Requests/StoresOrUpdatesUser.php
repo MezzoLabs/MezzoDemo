@@ -16,4 +16,12 @@ trait StoresOrUpdatesUser
 
         return $rules;
     }
+
+    protected function setPasswordRulesForCreate($rules) : array
+    {
+        $rules['password'] = str_replace('sometimes', 'required', $rules['password']);
+
+        return $rules;
+    }
+
 }

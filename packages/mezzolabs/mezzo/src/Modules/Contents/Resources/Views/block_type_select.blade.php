@@ -4,7 +4,7 @@
              ng-model="vm.contentBlockService.contentBlocks">
             <div class="content-block @{{ block.cssClass }}" ng-repeat="block in vm.contentBlockService.contentBlocks">
                 <div class="content-block-heading">
-                    <b>@{{ block.title }}</b>
+                    <b>@{{ block.sort + 1 }}. @{{ block.title }}</b>
 
                     <div class="content-block-actions">
                         <a class="" href="#"><i class="ion-ios-gear"></i></a>

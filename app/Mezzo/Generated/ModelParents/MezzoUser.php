@@ -75,7 +75,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
      */
     protected $rules = [
         'email' => "required|email|max:255|unique:users",
-        'password' => "required|confirmed|min:6",
+        'password' => "sometimes|confirmed|min:6",
         'remember_token' => "",
         'backend' => "", 
         'confirmed' => "",

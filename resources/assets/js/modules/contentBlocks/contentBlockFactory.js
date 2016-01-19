@@ -11,6 +11,7 @@ class ContentBlockService {
         var base = this;
 
         this.api = api;
+        this.modelApi = api.model('ContentBlock');
         this.contentBlocks = [];
         this.templates = {};
         this.sortableOptions = {
@@ -27,11 +28,9 @@ class ContentBlockService {
                     tinymce.execCommand('mceAddEditor', true, $(this).attr('id'));
                 });
 
-                $(ui.item).parents('form').find('.content-block').each(function (index, element) {
-                    console.log($(this).find('[name$=".sort"]'));
-                    $(this).find('[name$=".sort"]').attr('value', index);
+                base.rebaseSortingOnHtml();
 
-                });
+
             }
         };
         this.currentId = 0;
@@ -58,7 +57,15 @@ class ContentBlockService {
     }
 
     removeContentBlock(index) {
+        var block = this.contentBlocks[index];
+
+        if (block.id) {
+            this.modelApi.delete(block.id);
+        }
+
         this.contentBlocks.splice(index, 1);
+
+        this.refreshSortings();
     }
 
     fillTemplate(contentBlock) {
@@ -77,6 +84,29 @@ class ContentBlockService {
 
     refreshSortings() {
         this.contentBlocks = _.sortBy(this.contentBlocks, 'sort');
+
+        for(var i in this.contentBlocks){
+            this.contentBlocks[i].sort = parseInt(i);
+        }
+    }
+
+    rebaseSortingOnHtml() {
+        var base = this;
+
+        $('.content-block').each(function (index, element) {
+            var $sort = $(this).find('[name$=".sort"]');
+            var nameInForm = $sort.attr('name').replace('.sort', '').split('.');
+            nameInForm = nameInForm[nameInForm.length - 1];
+
+            var block = _.find(base.contentBlocks, function (test) {
+                return test.nameInForm == nameInForm;
+            });
+            block.sort = index;
+
+            $sort.attr('value', index).trigger('change');
+        });
+
+        this.refreshSortings();
     }
 
 }

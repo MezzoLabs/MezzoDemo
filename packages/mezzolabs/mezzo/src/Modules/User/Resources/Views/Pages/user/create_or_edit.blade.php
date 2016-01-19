@@ -8,7 +8,7 @@
                     @include('cockpit::partials.pages.create_or_edit_heading')
                 </div>
                 <div class="panel-body">
-                    @include(cockpit_html()->viewKey('form-content.create_or_edit'), ['without' => 'password'])
+                    @include(cockpit_html()->viewKey('form-content.create_or_edit'), ['without' => ['password', 'subscriptions'] ])
                 </div>
             </div>
         </div>
@@ -32,7 +32,8 @@
                                 <h3>Subscriptions</h3>
                             </div>
                             <div class="panel-body">
-                                <mezzo-subscriptions user="@{{ vm.id }}"></mezzo-subscriptions>
+                                Subscriptions:
+                                <mezzo-user-subscriptions user="@{{ vm.id }}"></mezzo-user-subscriptions>
                             </div>
                         </div>
                     </div>

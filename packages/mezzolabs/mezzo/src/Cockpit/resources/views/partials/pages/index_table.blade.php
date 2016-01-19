@@ -1,10 +1,10 @@
 <!-- Bottom Container -->
 <div class="panel panel-bordered">
+
     <div class="panel-heading">
-        <h3>{{ str_plural($model_reflection->name()) }}</h3>
+        <h3>{{ str_plural($model_reflection->name()) }} (@{{ vm.getModels().length }})</h3>
     </div>
     <div class="panel-body">
-
         <div class="progress" ng-show="vm.loading">
             <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width: 100%">Please
                 be patient...
@@ -26,7 +26,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="model in vm.getModels() track by $index"
+                <tr ng-repeat="model in vm.getPagedModels() track by $index"
                     ng-class="{ danger: model._meta.removed }">
                     <td>
                             <span class="locked-for-user" title="Locked by @{{ vm.lockedBy(model) }}"
@@ -46,6 +46,12 @@
                 </tbody>
             </table>
         </div>
+        <div class="text-right">
+
+            <uib-pagination total-items="vm.getModels().length" previous-text="<" next-text=">" ng-model="vm.currentPage" items-per-page="vm.perPage" ng-change="vm.pageChanged()"></uib-pagination>
+
+        </div>
+
 
     </div>
 </div>

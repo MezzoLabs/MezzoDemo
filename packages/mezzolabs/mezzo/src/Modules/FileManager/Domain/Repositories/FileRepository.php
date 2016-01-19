@@ -56,6 +56,7 @@ class FileRepository extends ModelRepository
 
         $newTypedFile->file_id = $newFile->id;
 
+
         $newTypedFile->save();
 
         return $newTypedFile;

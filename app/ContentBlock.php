@@ -20,6 +20,6 @@ class ContentBlock extends ContentsModuleContentBlock
 
     public function getLabelAttribute()
     {
-        return $this->id . ': ' . $this->getType()->title();
+        return $this->getType()->title() . ' (' . $this->id . ')';
     }
 }
