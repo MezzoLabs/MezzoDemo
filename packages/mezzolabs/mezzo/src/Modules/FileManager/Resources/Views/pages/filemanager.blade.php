@@ -168,17 +168,17 @@
 @endsection
 
 @section('quickview_content')
-    <div class="section" v-ng-if="vm.imageSelected()">
-        <img class="img-responsive" src="http://data.whicdn.com/images/174141866/large.gif"/>
+    <div class="section" ng-if="vm.selected.thumbnail()">
+        <img class="img-responsive" ng-src="@{{ vm.selected.thumbnail(false) }}"/>
     </div>
     <div class="section section-file-info wrapper">
         <p class="attribute-info">
             <label>Name</label>
-            <span>my_file.png</span>
+            <span ng-bind="vm.selected.name"></span>
         </p>
         <p class="attribute-info">
             <label>Folder</label>
-            <span>/some/folder</span>
+            <span ng-bind="vm.selected.displayFolderPath()"></span>
         </p>
         <p class="attribute-info">
             <label>Disk</label>
@@ -194,8 +194,8 @@
         </p>
         <p class="attribute-info">
             <label>Link</label>
-            <span>/some/url</span>
-            <a class="btn btn-info btn-block btn-xs" target="_blank" href="/some/url">URL</a>
+            <span ng-bind="vm.selected.url"></span>
+            <a class="btn btn-info btn-block btn-xs" target="_blank" ng-href="@{{ vm.selected.url }}">URL</a>
 
         </p>
     </div>
