@@ -1,16 +1,15 @@
-export default class EditResourceController {
+import ResourceController from './ResourceController';
+
+export default class EditResourceController extends ResourceController {
 
     /*@ngInject*/
     constructor($scope, $stateParams, api, formDataService, contentBlockFactory, modelStateService) {
+        super(api, formDataService, contentBlockFactory, modelStateService);
+
         this.$scope = $scope;
         this.$stateParams = $stateParams;
-        this.api = api;
-        this.formDataService = formDataService;
-        this.contentBlockService = contentBlockFactory();
-        this.modelStateService = modelStateService;
         this.modelId = this.$stateParams.modelId;
         this.includes = ['content'];
-        this.inputs = {}; // ng-model Controller of the input fields will bind to this object
 
         this.$scope.$on('$destroy', () => this.onDestroy());
     }
@@ -41,13 +40,6 @@ export default class EditResourceController {
         const formData = this.formDataService.get();
 
         this.modelApi.update(this.modelId, formData);
-    }
-
-
-    getFormData() {
-        const $form = $('form[name="vm.form"]');
-
-        return $form.toObject();
     }
 
     loadContent() {

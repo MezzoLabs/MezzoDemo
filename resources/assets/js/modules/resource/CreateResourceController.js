@@ -1,12 +1,10 @@
-export default class CreateResourceController {
+import ResourceController from './ResourceController';
+
+export default class CreateResourceController extends ResourceController {
 
     /*@ngInject*/
     constructor(api, formDataService, contentBlockFactory, modelStateService) {
-        this.api = api;
-        this.formDataService = formDataService;
-        this.contentBlockService = contentBlockFactory();
-        this.modelStateService = modelStateService;
-        this.inputs = {};  // ng-model Controller of the input fields will bind to this object
+        super(api, formDataService, contentBlockFactory, modelStateService);
     }
 
     init(modelName) {
@@ -26,16 +24,6 @@ export default class CreateResourceController {
             .then(model => {
                 this.edit(model.id);
             });
-    }
-
-    hasError(inputName) {
-        const formControl = this.form[inputName];
-        const atLeastOneError = Object.keys(formControl.$error).length > 0;
-        const isDirty = formControl.$dirty;
-
-        if(atLeastOneError && isDirty) {
-            return 'has-error';
-        }
     }
 
     edit(modelId) {
