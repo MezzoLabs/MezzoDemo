@@ -9,16 +9,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.12.2",
+            "version": "3.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "07e01f31ebfe283f24d06544c0cd615b5758486c"
+                "reference": "dff1c76551777fcc5890d2d5324f9f9e5cdd4e3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/07e01f31ebfe283f24d06544c0cd615b5758486c",
-                "reference": "07e01f31ebfe283f24d06544c0cd615b5758486c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/dff1c76551777fcc5890d2d5324f9f9e5cdd4e3d",
+                "reference": "dff1c76551777fcc5890d2d5324f9f9e5cdd4e3d",
                 "shasum": ""
             },
             "require": {
@@ -40,7 +40,7 @@
                 "ext-simplexml": "*",
                 "ext-spl": "*",
                 "nette/neon": "^2.3",
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "~4.0|~5.0"
             },
             "suggest": {
                 "aws/aws-php-sns-message-validator": "To validate incoming SNS notifications",
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-01-13 02:19:36"
+            "time": "2016-01-15 02:01:24"
         },
         {
             "name": "barryvdh/laravel-debugbar",
@@ -205,16 +205,16 @@
         },
         {
             "name": "caouecs/laravel4-lang",
-            "version": "2.0.29",
+            "version": "2.0.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/caouecs/Laravel-lang.git",
-                "reference": "b4bf844b3f78cc6be63f35c8aeeaaa075cb17bc7"
+                "reference": "bfd1fc786129f07d1a3b5272f577f39a15117cc3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/caouecs/Laravel-lang/zipball/b4bf844b3f78cc6be63f35c8aeeaaa075cb17bc7",
-                "reference": "b4bf844b3f78cc6be63f35c8aeeaaa075cb17bc7",
+                "url": "https://api.github.com/repos/caouecs/Laravel-lang/zipball/bfd1fc786129f07d1a3b5272f577f39a15117cc3",
+                "reference": "bfd1fc786129f07d1a3b5272f577f39a15117cc3",
                 "shasum": ""
             },
             "require-dev": {
@@ -241,7 +241,7 @@
                 "laravel",
                 "lpm"
             ],
-            "time": "2016-01-11 07:08:20"
+            "time": "2016-01-13 22:10:00"
         },
         {
             "name": "classpreloader/classpreloader",

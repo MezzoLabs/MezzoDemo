@@ -1,12 +1,10 @@
-export default class CreateResourceController {
+import ResourceController from './ResourceController';
+
+export default class CreateResourceController extends ResourceController {
 
     /*@ngInject*/
-    constructor(api, formDataService, $rootScope, contentBlockFactory, modelStateService) {
-        this.api = api;
-        this.$rootScope = $rootScope;
-        this.formDataService = formDataService;
-        this.contentBlockService = contentBlockFactory();
-        this.modelStateService = modelStateService;
+    constructor($scope, $injector) {
+        super($scope, $injector);
     }
 
     init(modelName) {
@@ -16,8 +14,6 @@ export default class CreateResourceController {
 
     submit() {
         if (this.form.$invalid) {
-            swal('Booh you!', 'Invalid Form', "error");
-            console.log(this.form.$error);
             return false;
         }
         tinyMCE.triggerSave();
@@ -27,13 +23,8 @@ export default class CreateResourceController {
         this.modelApi.create(formData)
             .then(model => {
                 this.edit(model.id);
-            });
-    }
-
-    hasError(formControl) {
-        if (Object.keys(formControl.$error).length && formControl.$dirty) {
-            return 'has-error';
-        }
+            })
+            .catch(err => this.catchServerSideErrors(err));
     }
 
     edit(modelId) {

@@ -10,7 +10,6 @@ export default class IndexResourceController {
         this.searchText = '';
         this.selectAll = false;
         this.loading = false;
-        this.removing = 0;
         this.attributes = [];
         this.perPage = 10;
         this.currentPage = 1;
@@ -29,11 +28,9 @@ export default class IndexResourceController {
         this.attributes.push({name: name, type: type});
     }
 
-    loadModels() {
+    loadModels(params = {}) {
         this.loading = true;
-        const params = {
-            include: this.includes.join(',')
-        };
+        params.include = this.includes.join(',');
 
         return this.modelApi.index(params)
             .then(data => {
@@ -181,26 +178,15 @@ export default class IndexResourceController {
     }
 
     removeModel(model) {
-        this.removing++;
         this.selectAll = false;
-        model._meta.selected = false;
-        model._meta.removed = true;
 
-        this.removeRemoteModel(model)
-            .then(() => this.removeLocalModel(model))
-            .catch(() => this.removing--);
-    }
+        this.modelApi.delete(model.id);
 
-    removeLocalModel(model) {
         for (var i = 0; i < this.models.length; i++) {
             if (this.models[i] === model) {
                 return this.models.splice(i, 1);
             }
         }
-    }
-
-    removeRemoteModel(model) {
-        return this.modelApi.delete(model.id);
     }
 
     countSelected() {
@@ -218,6 +204,25 @@ export default class IndexResourceController {
 
     displayAsLink($first, model) {
         return $first && !this.isLocked(model);
+    }
+
+    applyScopes($event) {
+        const $formInputs = $($event.target).parents('form').find(':input');
+        const params = {};
+
+        $formInputs.each((index, formInput) => {
+            const $formInput = $(formInput);
+            const inputName = $formInput.attr('name');
+            const inputValue = $formInput.val();
+
+            if (!inputName || !inputValue) {
+                return;
+            }
+
+            params[inputName] = inputValue;
+        });
+
+        this.loadModels(params);
     }
 
     pageChanged(){

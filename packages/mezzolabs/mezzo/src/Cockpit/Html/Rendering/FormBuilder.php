@@ -60,7 +60,7 @@ class FormBuilder extends CollectiveFormBuilder
     public function open(array $options = [])
     {
         if ($options['angular'] ?? false) {
-            return '<form name="vm.form" novalidate="novalidate" ng-submit="vm.submit()" data-mezzo-assign-ng-model>';
+            return '<form name="vm.form" novalidate="novalidate" ng-submit="vm.submit()" data-mezzo-form-validation>';
         }
 
         return parent::open($options);

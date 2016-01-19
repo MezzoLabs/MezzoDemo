@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-md-4 pull-right">
                         <br/>
-                        <input type="submit" class="btn btn-default btn-block">
+                        <button type="button" class="btn btn-default btn-block" ng-click="vm.applyScopes($event)">Submit</button>
                     </div>
                 </div>
             </form>

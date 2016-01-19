@@ -2,6 +2,10 @@
 export default function mapDirective(mapService) {
     return {
         restrict: 'A',
+        scope: {
+            latitude: '@',
+            longitude: '@'
+        },
         link
     };
 
@@ -12,6 +16,8 @@ export default function mapDirective(mapService) {
             zoom: 8,
             center: {lat: -33.8688, lng: 151.2195},
         });
+
+        setupLatitudeLongitudeWatches();
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(position => {
@@ -55,6 +61,66 @@ export default function mapDirective(mapService) {
             });
             marker.setPosition(place.geometry.location);
             marker.setVisible(true);
+        }
+
+        function setupLatitudeLongitudeWatches() {
+            const coordinates = {
+                latitude: undefined,
+                longitude: undefined
+            };
+            const latitudeName = scope.latitude;
+            const longitudeName = scope.longitude;
+            const $latitude = getElementByName(latitudeName);
+            const $longitude = getElementByName(longitudeName);
+
+            $latitude.on('input', onLatitudeChange);
+            $longitude.on('input', onLongitudeChange);
+
+            function onLatitudeChange(event, extraParams) {
+                if (extraParams !== 'triggeredByFormDataService') {
+                    return;
+                }
+
+                coordinates.latitude = $latitude.val();
+
+                tryUpdatingMap();
+            }
+
+            function onLongitudeChange(event, extraParams) {
+                if (extraParams !== 'triggeredByFormDataService') {
+                    return;
+                }
+
+                coordinates.longitude = $longitude.val();
+
+                tryUpdatingMap();
+            }
+
+            function tryUpdatingMap() {
+                if (!coordinates.latitude || !coordinates.longitude) {
+                    return; // Cannot update map without both coordinates
+                }
+
+                const geocoder = new google.maps.Geocoder;
+                const location = {
+                    location: {
+                        lat: parseFloat(coordinates.latitude),
+                        lng: parseFloat(coordinates.longitude)
+                    }
+                };
+
+                geocoder.geocode(location, (results, status) => {
+                    if (status !== google.maps.GeocoderStatus.OK || results.length === 0) {
+                        return;
+                    }
+
+                    receivePlace(results[0]);
+                });
+            }
+        }
+
+        function getElementByName(name) {
+            return $(`[name="${ name }"]`);
         }
     }
 }

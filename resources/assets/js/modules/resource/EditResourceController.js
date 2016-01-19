@@ -1,14 +1,12 @@
-export default class EditResourceController {
+import ResourceController from './ResourceController';
+
+export default class EditResourceController extends ResourceController {
 
     /*@ngInject*/
-    constructor($scope, $rootScope, $stateParams, api, formDataService, contentBlockFactory, modelStateService) {
-        this.$rootScope = $rootScope;
-        this.$scope = $scope;
+    constructor($scope, $injector, $stateParams) {
+        super($scope, $injector);
+
         this.$stateParams = $stateParams;
-        this.api = api;
-        this.formDataService = formDataService;
-        this.contentBlockService = contentBlockFactory();
-        this.modelStateService = modelStateService;
         this.modelId = this.$stateParams.modelId;
         this.content = {};
 
@@ -42,15 +40,8 @@ export default class EditResourceController {
 
         const formData = this.formDataService.get();
 
-
-        this.modelApi.update(this.modelId, formData);
-    }
-
-
-    getFormData() {
-        const $form = $('form[name="vm.form"]');
-
-        return $form.toObject();
+        this.modelApi.update(this.modelId, formData)
+            .catch(err => this.catchServerSideErrors(err));
     }
 
     loadContent() {

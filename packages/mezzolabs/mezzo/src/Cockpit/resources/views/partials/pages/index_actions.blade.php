@@ -22,15 +22,6 @@
         </button>
         <!-- Delete -->
 
-        <!-- Deletion progress -->
-        <div class="progress" style="display: inline-block; width: 200px; margin-top: auto; margin-bottom: auto"
-             ng-show="vm.removing">
-            <div class="progress-bar progress-bar-striped active" style="width: 100%">
-                Deleting <span ng-bind="vm.removing"></span> models...
-            </div>
-        </div>
-        <!-- Deletion progress -->
-
     </div>
 </div>
 <!-- Top Container -->

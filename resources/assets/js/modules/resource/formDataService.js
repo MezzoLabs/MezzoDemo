@@ -23,6 +23,10 @@ export default class FormDataService {
             data: formData
         })
 
+        js2form(this.form()[0], stripped);
+        // trigger input event to notify Angular that ng-model should update
+        // 'triggeredByFormDataService' is required for the Google Maps Directive
+        this.form().find(':input').trigger('input', 'triggeredByFormDataService');
     }
 
     transform(data){
@@ -52,8 +56,6 @@ export default class FormDataService {
         return cleaned;
     }
 
-
-
     unpackRelationInputs(form, data) {
         var clean = _.clone(data);
         $(form).find('select').each(function (id, elem) {
@@ -75,7 +77,6 @@ export default class FormDataService {
 
             clean[name] = ids;
         });
-
 
         //unpack checkboxes
         for (var i in _.clone(clean)) {

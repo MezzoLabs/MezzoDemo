@@ -7,7 +7,18 @@ export default class File {
         this.extension = apiFile.extension;
         this.url = apiFile.url;
         this.type = apiFile.type;
+        this.filePath = apiFile.path;
         this.isFolder = false;
+    }
+
+    displayFolderPath() {
+        if(this.filePath.indexOf('/') === -1) {
+            return 'Library';
+        }
+
+        const filePathSplitted = this.filePath.split('/');
+
+        return filePathSplitted.slice(0, filePathSplitted.length - 1);
     }
 
     icon() {
@@ -46,9 +57,13 @@ export default class File {
         return this.hasExtension('txt', 'md', 'pdf');
     }
 
-    thumbnail() {
+    thumbnail(size = 'thumb') {
         if (this.isImage()) {
-            return this.url + '?size=thumb';
+            if(size) {
+                return this.url + '?size=' + size;
+            }
+
+            return this.url;
         }
 
 

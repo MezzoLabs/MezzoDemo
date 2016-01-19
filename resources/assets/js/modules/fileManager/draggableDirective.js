@@ -5,6 +5,12 @@ export default function draggableDirective(){
     };
 
     function link(scope, element, attributes){
+        const droppable = attributes.mezzoDraggable;
+
+        if(droppable === 'false') {
+            return;
+        }
+
         $(element).draggable({
             axis: 'y',
             containment: 'table',
