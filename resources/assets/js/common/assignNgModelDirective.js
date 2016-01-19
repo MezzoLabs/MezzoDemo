@@ -16,7 +16,8 @@ export default function assignNgModelDirective($compile) {
             $(formInput)
                 .attr('ng-model', `vm.inputs['${ nameAttribute }']`)
                 .parents('.form-group')
-                .attr('ng-class', `vm.hasError('${ nameAttribute }')`);
+                .attr('ng-class', `vm.hasError('${ nameAttribute }')`)
+                .prepend(`<mezzo-validation-messages data-form-input="vm.form['${ nameAttribute }']"></mezzo-validation-messages>`);
         });
     }
 }
