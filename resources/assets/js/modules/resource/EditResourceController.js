@@ -10,6 +10,7 @@ export default class EditResourceController {
         this.modelStateService = modelStateService;
         this.modelId = this.$stateParams.modelId;
         this.includes = ['content'];
+        this.inputs = {}; // ng-model Controller of the input fields will bind to this object
 
         this.$scope.$on('$destroy', () => this.onDestroy());
     }

@@ -6,7 +6,7 @@ export default class CreateResourceController {
         this.formDataService = formDataService;
         this.contentBlockService = contentBlockFactory();
         this.modelStateService = modelStateService;
-        this.inputs = {};
+        this.inputs = {};  // ng-model Controller of the input fields will bind to this object
     }
 
     init(modelName) {
