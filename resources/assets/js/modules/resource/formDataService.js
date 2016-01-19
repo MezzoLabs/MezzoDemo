@@ -19,7 +19,9 @@ export default class FormDataService {
         console.log('fill form: ', stripped);
 
         js2form(this.form()[0], stripped);
-        this.form().find(':input').trigger('input', 'triggeredByFormDataService'); // trigger input event to notify Angular that ng-model should update
+        // trigger input event to notify Angular that ng-model should update
+        // 'triggeredByFormDataService' is required for the Google Maps Directive
+        this.form().find(':input').trigger('input', 'triggeredByFormDataService');
     }
 
     stripData(formData) {
