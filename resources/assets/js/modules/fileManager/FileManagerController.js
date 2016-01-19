@@ -291,4 +291,12 @@ export default class FileManagerController {
         this.initFiles();
     }
 
+    canMove() {
+        if(this.selected && this.selected.isFile) {
+            return true;
+        }
+
+        return false;
+    }
+
 }
