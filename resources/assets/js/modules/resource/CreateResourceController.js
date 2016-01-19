@@ -6,6 +6,7 @@ export default class CreateResourceController {
         this.formDataService = formDataService;
         this.contentBlockService = contentBlockFactory();
         this.modelStateService = modelStateService;
+        this.inputs = {};
     }
 
     init(modelName) {
@@ -27,8 +28,12 @@ export default class CreateResourceController {
             });
     }
 
-    hasError(formControl) {
-        if (Object.keys(formControl.$error).length && formControl.$dirty) {
+    hasError(inputName) {
+        const formControl = this.form[inputName];
+        const atLeastOneError = Object.keys(formControl.$error).length > 0;
+        const isDirty = formControl.$dirty;
+
+        if(atLeastOneError && isDirty) {
             return 'has-error';
         }
     }

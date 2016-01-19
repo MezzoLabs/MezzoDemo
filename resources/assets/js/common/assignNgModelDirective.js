@@ -2,10 +2,10 @@
 export default function assignNgModelDirective($compile) {
     return {
         restrict: 'A',
-        link
+        compile
     };
 
-    function link(scope, element, attributes) {
+    function compile(element) {
         $(element).find(':input').each((index, formInput) => {
             const nameAttribute = $(formInput).attr('name');
 
@@ -13,12 +13,10 @@ export default function assignNgModelDirective($compile) {
                 return;
             }
 
-            const valueBeforeCompile = $(formInput).val();
-
-            $(formInput).attr('ng-model', `vm.form['${ nameAttribute }']`);
-            $compile(formInput)(scope);
-
-            scope.vm.form[nameAttribute] = valueBeforeCompile;
+            $(formInput)
+                .attr('ng-model', `vm.inputs['${ nameAttribute }']`)
+                .parents('.form-group')
+                .attr('ng-class', `vm.hasError('${ nameAttribute }')`);
         });
     }
 }
