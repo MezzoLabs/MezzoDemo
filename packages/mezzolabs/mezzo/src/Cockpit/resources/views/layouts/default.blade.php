@@ -15,6 +15,7 @@
     {!! cockpit_stylesheet('/components/sweetalert2/dist/sweetalert2.css') !!}
     {!! cockpit_stylesheet('/components/gridster/dist/jquery.gridster.min.css') !!}
     {!! cockpit_stylesheet('/components/chosen/chosen.min.css') !!}
+    {!! cockpit_stylesheet('/components/toastr/toastr.min.css') !!}
     {!! cockpit_stylesheet('/css/app.css') !!}
             <!-- CSS -->
 </head>
@@ -58,6 +59,7 @@
 {!! cockpit_script('/components/js-md5/build/md5.min.js') !!}
 {!! cockpit_script('/components/tinymce-dist/tinymce.min.js') !!}
 {!! cockpit_script('/components/tinymce-dist/tinymce.jquery.min.js') !!}
+{!! cockpit_script('/components/toastr/toastr.min.js') !!}
 {!! cockpit_script('/js/lib/form2js.js') !!}
 {!! cockpit_script('/js/lib/js2form.js') !!}
 {!! cockpit_script('/js/lib/jquery.toObject.js') !!}

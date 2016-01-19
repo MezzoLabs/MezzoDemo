@@ -34,11 +34,6 @@ export default class Api {
         return $httpPromise
             .then(response => {
                 return response.data.data;
-            })
-            .catch(err => {
-                console.error(err);
-                this.showUnexpectedErrorMessage(JSON.stringify(err));
-                throw err;
             });
     }
 
@@ -65,12 +60,7 @@ export default class Api {
             })
             .catch(err => {
                 console.error(err);
-                throw err;
             });
-    }
-
-    showUnexpectedErrorMessage(message) {
-        sweetAlert('Oops, something spilled...', message, 'error');
     }
 
 }

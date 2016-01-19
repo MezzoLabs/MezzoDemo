@@ -3,10 +3,9 @@ import ResourceController from './ResourceController';
 export default class EditResourceController extends ResourceController {
 
     /*@ngInject*/
-    constructor($scope, $stateParams, api, formDataService, contentBlockFactory, modelStateService) {
-        super($scope, api, formDataService, contentBlockFactory, modelStateService);
+    constructor($scope, $injector, $stateParams) {
+        super($scope, $injector);
 
-        this.$scope = $scope;
         this.$stateParams = $stateParams;
         this.modelId = this.$stateParams.modelId;
         this.includes = ['content'];
@@ -39,7 +38,8 @@ export default class EditResourceController extends ResourceController {
 
         const formData = this.formDataService.get();
 
-        this.modelApi.update(this.modelId, formData);
+        this.modelApi.update(this.modelId, formData)
+            .catch(err => this.catchServerSideErrors(err));
     }
 
     loadContent() {

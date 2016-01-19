@@ -3,8 +3,8 @@ import ResourceController from './ResourceController';
 export default class CreateResourceController extends ResourceController {
 
     /*@ngInject*/
-    constructor($scope, api, formDataService, contentBlockFactory, modelStateService) {
-        super($scope, api, formDataService, contentBlockFactory, modelStateService);
+    constructor($scope, $injector) {
+        super($scope, $injector);
     }
 
     init(modelName) {
@@ -23,7 +23,8 @@ export default class CreateResourceController extends ResourceController {
         this.modelApi.create(formData)
             .then(model => {
                 this.edit(model.id);
-            });
+            })
+            .catch(err => this.catchServerSideErrors(err));
     }
 
     edit(modelId) {
