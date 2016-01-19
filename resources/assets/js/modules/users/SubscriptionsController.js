@@ -31,6 +31,10 @@ export default class SubscriptionsController {
         return moment(subscription.subscribed_until);
     }
 
+    timeLeft(subscription) {
+        return this.subscribedUntilDate(subscription).fromNow();
+    }
+
     isCancelled(subscription) {
         return subscription.cancelled == 1;
     }

@@ -4,7 +4,9 @@
 namespace App\Magazine\Subscriptions;
 
 
+use App\Magazine\Subscriptions\Http\SubscriptionTransformerPlugin;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Http\Transformers\TransformerRegistrar;
 
 class SubscriptionsModule extends ModuleProvider
 {
@@ -33,6 +35,13 @@ class SubscriptionsModule extends ModuleProvider
      */
     public function register()
     {
-        // TODO: Implement register() method.
+        $this->registerTransformerPlugin();
+    }
+
+    private function registerTransformerPlugin()
+    {
+        $transformers = TransformerRegistrar::make();
+
+        $transformers->registerPlugin(new SubscriptionTransformerPlugin());
     }
 }

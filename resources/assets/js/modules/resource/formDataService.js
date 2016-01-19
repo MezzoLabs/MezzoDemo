@@ -15,24 +15,23 @@ export default class FormDataService {
     }
 
     set(formData) {
-        console.log('received data: ', formData);
-
-        var stripped = this.unfoldData(formData);
-
-
-        stripped = this.unpackRelationInputs(this.form()[0], stripped);
-        stripped = this.formatTimestamps(stripped);
-
-        console.log('fill form: ', stripped);
-
-        js2form(this.form()[0], stripped);
+        js2form(this.form()[0], formData);
         this.form().find(':input').trigger('input'); // trigger input event to notify Angular that ng-model should update
 
         this.$rootScope.$broadcast('mezzo.formdata.set', {
             form: this.form()[0],
-            data: stripped
+            data: formData
         })
 
+    }
+
+    transform(data){
+        var stripped = this.unfoldData(data);
+
+        stripped = this.unpackRelationInputs(this.form()[0], stripped);
+        stripped = this.formatTimestamps(stripped);
+
+        return stripped;
     }
 
     unfoldData(formData) {
@@ -52,6 +51,8 @@ export default class FormDataService {
 
         return cleaned;
     }
+
+
 
     unpackRelationInputs(form, data) {
         var clean = _.clone(data);

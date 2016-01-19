@@ -37,7 +37,7 @@ class SubscriptionsAttributeRenderer extends RelationAttributeMultipleRenderer
 
     public function before() : string
     {
-        return '<label>' . $this->attribute()->title() . '</label>';
+        return '';
     }
 
     public function after() : string

@@ -24,20 +24,6 @@
                         </div>
                     </div>
                 </div>
-
-                @if($module_page->isType('edit'))
-                    <div class="col-md-12">
-                        <div class="panel panel-bordered">
-                            <div class="panel-heading">
-                                <h3>Subscriptions</h3>
-                            </div>
-                            <div class="panel-body">
-                                Subscriptions:
-                                <mezzo-user-subscriptions user="@{{ vm.id }}"></mezzo-user-subscriptions>
-                            </div>
-                        </div>
-                    </div>
-                @endif
             </div>
 
         </div>

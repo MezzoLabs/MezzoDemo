@@ -117,6 +117,8 @@ class HtmlHelper
         $shortName = str_replace(['.', '-', '_'], '', $shortName);
         //TODO-SCHS: Replace this with something nicer
         switch ($shortName) {
+            case 'editpagelayout':
+                return 'cockpit::pages.layouts.edit';
             case 'formcontentedit':
                 return 'cockpit::partials.form-content-edit';
             case 'formcontentcreate':

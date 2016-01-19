@@ -1,8 +1,9 @@
 export default class CreateResourceController {
 
     /*@ngInject*/
-    constructor(api, formDataService, contentBlockFactory, modelStateService) {
+    constructor(api, formDataService, $rootScope, contentBlockFactory, modelStateService) {
         this.api = api;
+        this.$rootScope = $rootScope;
         this.formDataService = formDataService;
         this.contentBlockService = contentBlockFactory();
         this.modelStateService = modelStateService;

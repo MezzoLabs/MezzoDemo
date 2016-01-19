@@ -42,10 +42,12 @@ export default class RelationInputController {
     }
 
     fill(data, form) {
+
         if (form != $(this.$element).parents('form')[0])
             return false;
 
         this.selected = data[this.$element.attr('name')];
+
     }
 
 }

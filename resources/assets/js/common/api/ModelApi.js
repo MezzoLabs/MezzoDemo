@@ -16,7 +16,10 @@ export default class ModelApi {
     }
 
     update(modelId, formData) {
-        return this.api.put(this.apiUrl + '/' + modelId, formData);
+
+        var request = this.api.put(this.apiUrl + '/' + modelId, formData);
+
+        return request;
     }
 
     delete(modelId) {
@@ -33,6 +36,14 @@ export default class ModelApi {
 
     unlock(modelId) {
         return this.api.get(this.apiUrl + '/' + modelId + '/unlock');
+    }
+
+    throwEvent(name, data) {
+        var payload = _.merge({
+            'modelName': this.modelName
+        }, data);
+
+        this.$rootScope.$broadcast('mezzo.model.' + name, payload);
     }
 
 }

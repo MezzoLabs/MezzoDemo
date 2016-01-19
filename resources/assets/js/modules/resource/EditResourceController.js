@@ -1,7 +1,8 @@
 export default class EditResourceController {
 
     /*@ngInject*/
-    constructor($scope, $stateParams, api, formDataService, contentBlockFactory, modelStateService) {
+    constructor($scope, $rootScope, $stateParams, api, formDataService, contentBlockFactory, modelStateService) {
+        this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.$stateParams = $stateParams;
         this.api = api;
@@ -9,6 +10,8 @@ export default class EditResourceController {
         this.contentBlockService = contentBlockFactory();
         this.modelStateService = modelStateService;
         this.modelId = this.$stateParams.modelId;
+        this.content = {};
+
         this.includes = ['content'];
 
         this.$scope.$on('$destroy', () => this.onDestroy());
@@ -27,8 +30,6 @@ export default class EditResourceController {
     }
 
     submit() {
-        console.log('clicked edit resource submit');
-
         if (this.form.$invalid) {
 
             console.log('invalid', this.form);
@@ -40,6 +41,7 @@ export default class EditResourceController {
         tinyMCE.triggerSave();
 
         const formData = this.formDataService.get();
+
 
         this.modelApi.update(this.modelId, formData);
     }
@@ -54,14 +56,28 @@ export default class EditResourceController {
     loadContent() {
         const params = {
             include: this.includes.join(',')
-        }
+        };
 
         this.modelApi.content(this.modelId, params)
             .then(model => {
-                this.initContentBlocks(model);
-                this.initLockable(model);
-                this.formDataService.set(model);
+                this.contentLoaded(model);
             });
+    }
+
+    contentLoaded(model) {
+
+        console.log('received data: ', model);
+
+        this.initContentBlocks(model);
+        this.initLockable(model);
+
+        var cleaned = this.formDataService.transform(model);
+
+        this.formDataService.set(cleaned);
+
+        this.content = cleaned;
+
+        console.log('fill form: ', this.content);
     }
 
     initContentBlocks(model) {

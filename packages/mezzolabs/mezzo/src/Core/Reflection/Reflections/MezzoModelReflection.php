@@ -78,7 +78,7 @@ class MezzoModelReflection extends ModelReflection
     /**
      * @return static
      */
-    public function defaultIncludes($form = "index")
+    public function defaultIncludes($form = "index", $merge = [])
     {
 
         $attributes = $this->attributes()->relationAttributes()->visibleInForm($form);
@@ -87,7 +87,7 @@ class MezzoModelReflection extends ModelReflection
             return $relationAttribute->relationSide()->naming();
         });
 
-        return $attributes->keys();
+        return $attributes->keys()->merge($merge);
     }
 
     /**

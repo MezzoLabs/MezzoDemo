@@ -203,7 +203,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for created_at
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="create,update")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="create,edit")
      * @var \Carbon\Carbon
      */
     protected $_created_at;
@@ -235,7 +235,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for confirmation_code
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="create,index")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="create,index,edit")
      * @var string
      */
     protected $_confirmation_code;
@@ -358,7 +358,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
 
     /**
      * Relation annotation property for subscriptions
-     * @Mezzo\Attribute(type="App\Magazine\Subscriptions\Schema\SubscriptionInput", hidden="create")
+     * @Mezzo\Attribute(type="App\Magazine\Subscriptions\Schema\SubscriptionInput", hidden="create,edit")
      * @Mezzo\Relations\OneToMany
      * @Mezzo\Relations\From(table="users", primaryKey="id", naming="subscriptions")
      * @Mezzo\Relations\To(table="subscriptions", primaryKey="id", naming="user")
