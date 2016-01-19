@@ -3,8 +3,8 @@ import ResourceController from './ResourceController';
 export default class CreateResourceController extends ResourceController {
 
     /*@ngInject*/
-    constructor(api, formDataService, contentBlockFactory, modelStateService) {
-        super(api, formDataService, contentBlockFactory, modelStateService);
+    constructor($scope, api, formDataService, contentBlockFactory, modelStateService) {
+        super($scope, api, formDataService, contentBlockFactory, modelStateService);
     }
 
     init(modelName) {

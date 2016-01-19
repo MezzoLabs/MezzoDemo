@@ -4,7 +4,7 @@ export default class EditResourceController extends ResourceController {
 
     /*@ngInject*/
     constructor($scope, $stateParams, api, formDataService, contentBlockFactory, modelStateService) {
-        super(api, formDataService, contentBlockFactory, modelStateService);
+        super($scope, api, formDataService, contentBlockFactory, modelStateService);
 
         this.$scope = $scope;
         this.$stateParams = $stateParams;

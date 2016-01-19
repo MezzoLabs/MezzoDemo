@@ -2,10 +2,11 @@
 export default class ResourceController {
 
     /*@ngInject*/
-    constructor(api, formDataService, contentBlockFactory, modelStateService) {
+    constructor($scope, api, formDataService, contentBlockFactory, modelStateService) {
+        this.$scope = $scope;
         this.api = api;
         this.formDataService = formDataService;
-        this.contentBlockService = contentBlockFactory();
+        this.contentBlockService = contentBlockFactory(this.$scope);
         this.modelStateService = modelStateService;
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
     }
