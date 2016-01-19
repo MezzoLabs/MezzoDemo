@@ -249,7 +249,7 @@ export default class FileManagerController {
         this.enterFolder(folder);
     }
 
-    moveFile(file, folder){
+    moveFile(file, folder) {
         this.api.moveFile(file, folder.path());
         this.deleteFile(file, false); // false because we do not want to delete the remote file
 

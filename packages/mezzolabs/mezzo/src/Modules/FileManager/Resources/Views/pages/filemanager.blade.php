@@ -140,7 +140,7 @@
             <tr ng-repeat="file in vm.sortedFiles()"
                 ng-click="vm.selectFile(file)"
                 ng-class="{ danger: file === vm.selected }"
-                mezzo-draggable
+                mezzo-draggable="@{{ !file.isFolder }}"
                 mezzo-droppable="@{{ file.isFolder }}"
                 data-index="@{{ $index }}">
                 <td style="width: 20px">
