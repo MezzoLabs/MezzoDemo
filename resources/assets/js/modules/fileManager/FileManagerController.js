@@ -292,7 +292,7 @@ export default class FileManagerController {
     }
 
     canMove() {
-        if(this.selected && this.selected.isFile) {
+        if(this.selected && !this.selected.isFolder) {
             return true;
         }
 

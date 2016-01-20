@@ -17,6 +17,10 @@ export default class Folder extends File {
         this.files = [];
     }
 
+    displayFolderPath() {
+        return this.path();
+    }
+
     path() {
         if (this.skipInPath) {
             return '';

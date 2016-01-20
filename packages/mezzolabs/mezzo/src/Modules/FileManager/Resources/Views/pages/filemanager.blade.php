@@ -102,7 +102,7 @@
                     <span class="ion-loop"></span>
                 </button>
                 <!-- Refresh -->
-                <!-- Move & Delete -->
+                <!-- Move -->
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#move-modal"
                         ng-disabled="!vm.canMove()">
                     <span style="display: inline-block; width: 20px">
