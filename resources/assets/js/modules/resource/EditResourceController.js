@@ -28,11 +28,7 @@ export default class EditResourceController extends ResourceController {
     }
 
     submit() {
-        if (this.form.$invalid) {
-
-            console.log('invalid', this.form);
-            swal('Booh you!', 'Invalid Form', "error");
-
+        if (!this.attemptSubmit()) {
             return false;
         }
 

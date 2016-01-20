@@ -54,18 +54,44 @@ export default class ResourceController {
     }
 
     clearServerSideErrors() {
-        angular.forEach(this.form, (value, key) => {
-            if (!value || !value.$error) { // check if value is a formControl object with the $error property
-                return;
-            }
-
-            delete value.$error.mezzoServerSide;
+        this.formControls().forEach(formControl => {
+            delete formControl.$error.mezzoServerSide;
         });
     }
 
     attachServerSideError(formControl, errorMessage) {
         formControl.$error.mezzoServerSide = errorMessage;
         formControl.$dirty = true;
+    }
+
+    submitButtonClass() {
+        if (this.form.$invalid) {
+            return 'disabled';
+        }
+    }
+
+    formControls() {
+        return _.filter(this.form, potentialFormControl => {
+            const isFormControl = potentialFormControl && potentialFormControl.$error;
+
+            return isFormControl;
+        });
+    }
+
+    attemptSubmit() {
+        if (this.form.$invalid) {
+            this.dirtyFormControls(); // if a submit attempt failed because of an $invalid form all validation messages should be visible
+
+            return false;
+        }
+
+        return true;
+    }
+
+    dirtyFormControls() {
+        this.formControls().forEach(formControl => {
+            formControl.$dirty = true;
+        });
     }
 
 }

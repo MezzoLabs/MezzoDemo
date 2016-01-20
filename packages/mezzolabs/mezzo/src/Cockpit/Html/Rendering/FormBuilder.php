@@ -31,7 +31,7 @@ class FormBuilder extends CollectiveFormBuilder
     {
         $options = $this->mergeDefault([
             'class' => 'btn btn-primary btn-block',
-            'ng-disabled' => 'vm.form.$invalid'
+            'ng-class' => 'vm.submitButtonClass()'
         ], $options);
 
         return parent::submit($value, $options);

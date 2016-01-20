@@ -13,9 +13,10 @@ export default class CreateResourceController extends ResourceController {
     }
 
     submit() {
-        if (this.form.$invalid) {
+        if (!this.attemptSubmit()) {
             return false;
         }
+
         tinyMCE.triggerSave();
 
         const formData = this.formDataService.get();
