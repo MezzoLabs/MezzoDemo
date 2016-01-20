@@ -53,6 +53,7 @@
 {!! cockpit_script('/components/angular-ui-sortable/sortable.min.js') !!}
 {!! cockpit_script('/components/ng-file-upload/ng-file-upload.min.js') !!}
 {!! cockpit_script('/components/angular-loading-bar/build/loading-bar.min.js') !!}
+{!! cockpit_script('/components/angular-bootstrap/ui-bootstrap.min.js') !!}
 {!! cockpit_script('/components/chosen/chosen.jquery.min.js') !!}
 {!! cockpit_script('/components/pluralize/pluralize.js') !!}
 {!! cockpit_script('/components/sweetalert2/dist/sweetalert2.min.js') !!}
