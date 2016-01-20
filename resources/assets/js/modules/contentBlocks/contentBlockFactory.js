@@ -81,6 +81,7 @@ class ContentBlockService {
 
         this.api.contentBlockTemplate(contentBlock.hash)
             .then(template => {
+                console.log('fill fresh template: ', contentBlock);
                 contentBlock.template = template;
                 this.templates[contentBlock.hash] = template;
 
