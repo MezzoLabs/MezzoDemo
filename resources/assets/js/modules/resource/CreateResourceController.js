@@ -3,8 +3,8 @@ import ResourceController from './ResourceController';
 export default class CreateResourceController extends ResourceController {
 
     /*@ngInject*/
-    constructor($scope, $injector) {
-        super($scope, $injector);
+    constructor($injector) {
+        super($injector);
     }
 
     init(modelName) {

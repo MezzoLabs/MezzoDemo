@@ -1,5 +1,4 @@
 import compileDirective from './compileDirective';
-import compileHtmlDirective from './compileHtmlDirective';
 import enterDirective from './enterDirective.js';
 import relationInputDirective from './relationInputDirective';
 import hrefReloadDirective from './hrefReloadDirective';
@@ -21,7 +20,6 @@ import ErrorHandlerService from './ErrorHandlerService';
 const module = angular.module('MezzoCommon', []);
 
 module.directive('mezzoCompile', compileDirective);
-module.directive('mezzoCompileHtml', compileHtmlDirective);
 module.directive('mezzoEnter', enterDirective);
 module.directive('mezzoRelationInput', relationInputDirective);
 module.directive('mezzoHrefReload', hrefReloadDirective);

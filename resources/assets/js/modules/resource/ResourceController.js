@@ -1,13 +1,12 @@
 // Intended for CreateResourceController & EditResourceController
 export default class ResourceController {
 
-    constructor($scope, $injector, api, formDataService, contentBlockFactory, modelStateService, errorHandlerService) {
-        this.$scope = $scope;
+    constructor($injector, api, formDataService, contentBlockFactory, modelStateService, errorHandlerService) {
         this.$injector = $injector;
         this.api = this.$injector.get('api');
         this.formDataService = this.$injector.get('formDataService');
         this.contentBlockFactory = this.$injector.get('contentBlockFactory');
-        this.contentBlockService = this.contentBlockFactory(this.$scope);
+        this.contentBlockService = this.contentBlockFactory();
         this.modelStateService = this.$injector.get('modelStateService');
         this.errorHandlerService = this.$injector.get('errorHandlerService');
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
