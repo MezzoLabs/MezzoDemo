@@ -1363,6 +1363,7 @@ var File = function () {
         this.title = apiFile.filename;
         this.name = apiFile.filename;
         this.extension = apiFile.extension;
+        this.addon = apiFile.addon;
         this.url = apiFile.url;
         this.type = apiFile.type;
         this.filePath = apiFile.path;
@@ -1911,6 +1912,11 @@ var FilePickerController = function () {
             });
         }
     }, {
+        key: 'selectAddonIds',
+        value: function selectAddonIds() {
+            return this.fileType == 'image' || this.fileType == 'video';
+        }
+    }, {
         key: 'filesLoaded',
         value: function filesLoaded() {
             this.selectOldValue();
@@ -2031,21 +2037,27 @@ var FilePickerController = function () {
     }, {
         key: 'confirmSelected',
         value: function confirmSelected() {
+            console.log(this.inputField(), this.selectedIdsString());
+            this.inputField().val(this.selectedIdsString());
+        }
+    }, {
+        key: 'selectedIdsString',
+        value: function selectedIdsString() {
+            var _this3 = this;
+
             var selected = this.selectedFiles();
-            var $field = this.inputField();
 
             if (selected.length === 1) {
-                $field.val(selected[0].id);
-
-                return;
+                return this.id(selected[0]);
             }
 
             var fileIds = [];
 
             selected.forEach(function (file) {
-                return fileIds.push(file.id);
+                return fileIds.push(_this3.id(file));
             });
-            $field.val(fileIds);
+
+            return fileIds.join(',');
         }
     }, {
         key: 'countSelected',
@@ -2055,6 +2067,8 @@ var FilePickerController = function () {
     }, {
         key: 'acquireInputValue',
         value: function acquireInputValue(value) {
+            var _this4 = this;
+
             var values = [value];
 
             if (value.indexOf(',') !== -1) {
@@ -2066,10 +2080,15 @@ var FilePickerController = function () {
             }
 
             this.files.forEach(function (file) {
-                if (_.contains(values, file.id)) {
+                if (_.contains(values, _this4.id(file))) {
                     file.selected = true;
                 }
             });
+        }
+    }, {
+        key: 'id',
+        value: function id(file) {
+            return this.selectAddonIds() ? file.addon.id : file.id;
         }
     }, {
         key: 'inputField',
@@ -2780,9 +2799,17 @@ var EditResourceController = function (_ResourceController) {
 
             var formData = this.formDataService.get();
 
-            this.modelApi.update(this.modelId, formData).catch(function (err) {
+            this.modelApi.update(this.modelId, formData).then(function (response) {
+                return _this2.onUpdated(_this2.formDataService.transform(response), formData);
+            }).catch(function (err) {
                 return _this2.catchServerSideErrors(err);
             });
+
+            return true;
+        }
+    }, {
+        key: 'onUpdated',
+        value: function onUpdated(response, request) {
         }
     }, {
         key: 'loadContent',
@@ -2928,7 +2955,10 @@ var EditSubscriptionsController = function (_EditResourceControll) {
     function EditSubscriptionsController($injector, $scope) {
         _classCallCheck(this, EditSubscriptionsController);
 
-        return _possibleConstructorReturn(this, Object.getPrototypeOf(EditSubscriptionsController).call(this, $injector, $scope));
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EditSubscriptionsController).call(this, $injector, $scope));
+
+        _this.subscriptionsApi = _this.api.model('Subscription');
+        return _this;
     }
 
     _createClass(EditSubscriptionsController, [{
@@ -2937,6 +2967,24 @@ var EditSubscriptionsController = function (_EditResourceControll) {
             _get(Object.getPrototypeOf(EditSubscriptionsController.prototype), 'contentLoaded', this).call(this, model);
 
             this.sortSubscriptions();
+        }
+
+        /**
+         * Strip the data tags and update the subscriptions on the screen.
+         * @param response
+         */
+
+    }, {
+        key: 'onUpdated',
+        value: function onUpdated(response, request) {
+            var _this2 = this;
+
+            _get(Object.getPrototypeOf(EditSubscriptionsController.prototype), 'onUpdated', this).call(this, response, request);
+
+            this.subscriptionsApi.index({'user': this.modelId}).then(function (response) {
+                _this2.content.subscriptions = _.values(_this2.formDataService.transform(response));
+                _this2.sortSubscriptions();
+            });
         }
     }, {
         key: 'timeLeft',
@@ -2951,11 +2999,10 @@ var EditSubscriptionsController = function (_EditResourceControll) {
     }, {
         key: 'sortSubscriptions',
         value: function sortSubscriptions() {
-            var _this2 = this;
+            var _this3 = this;
 
-            var base = this;
             this.content.subscriptions = _.sortBy(this.content.subscriptions, function (s) {
-                return _this2.subscribedUntilDate(s).format('X');
+                return _this3.subscribedUntilDate(s).format('X');
             }).reverse();
         }
     }, {
@@ -2963,7 +3010,7 @@ var EditSubscriptionsController = function (_EditResourceControll) {
         value: function changeCancel(subscription) {
             var cancelled = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
 
-            this.modelApi.update(subscription.id, {
+            this.subscriptionsApi.update(subscription.id, {
                 'cancelled': cancelled
             }).then(function () {
                 subscription.cancelled = cancelled;
@@ -2972,11 +3019,11 @@ var EditSubscriptionsController = function (_EditResourceControll) {
     }, {
         key: 'deleteSubscription',
         value: function deleteSubscription(subscription) {
-            var base = this;
-            this.modelApi.delete(subscription.id).then(function () {
-                var index = base.subscriptions.indexOf(subscription);
-                base.subscriptions.splice(index, 1);
-                console.log('remove from ', index);
+            var _this4 = this;
+
+            this.subscriptionsApi.delete(subscription.id).then(function () {
+                var index = _this4.content.subscriptions.indexOf(subscription);
+                _this4.content.subscriptions.splice(index, 1);
             });
         }
     }]);

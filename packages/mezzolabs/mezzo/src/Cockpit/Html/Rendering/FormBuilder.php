@@ -6,9 +6,11 @@ namespace MezzoLabs\Mezzo\Cockpit\Html\Rendering;
 use Collective\Html\FormBuilder as CollectiveFormBuilder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Session;
 use MezzoLabs\Mezzo\Cockpit\Html\Rendering\Inputs\InputRenderer;
 use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
+use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Modules\General\Options\OptionField;
@@ -35,6 +37,16 @@ class FormBuilder extends CollectiveFormBuilder
         ], $options);
 
         return parent::submit($value, $options);
+    }
+
+    public function submitEdit(MezzoModelReflection $model_reflection)
+    {
+        return $this->submit(Lang::get('mezzo.general.editing') . ' ' . $model_reflection->title());
+    }
+
+    public function submitCreate(MezzoModelReflection $model_reflection)
+    {
+        return $this->submit(Lang::get('mezzo.general.creating') . ' ' . $model_reflection->title());
     }
 
     /**

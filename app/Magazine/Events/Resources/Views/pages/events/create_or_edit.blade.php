@@ -21,7 +21,11 @@
 
         </div>
         <div class="panel-footer text-right">
-            <input class="btn btn-primary" type="submit">
+            @if($module_page->isType('create'))
+                {!! cockpit_form()->submitCreate($model_reflection) !!}
+            @else
+                {!! cockpit_form()->submitEdit($model_reflection) !!}
+            @endif
         </div>
     </div>
 

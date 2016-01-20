@@ -47,6 +47,10 @@ export default class FilePickerController {
         });
     }
 
+    selectAddonIds() {
+        return this.fileType == 'image' || this.fileType == 'video';
+    }
+
     filesLoaded() {
         this.selectOldValue();
 
@@ -149,19 +153,22 @@ export default class FilePickerController {
     }
 
     confirmSelected() {
+        console.log(this.inputField(), this.selectedIdsString());
+        this.inputField().val(this.selectedIdsString());
+    }
+
+    selectedIdsString() {
         const selected = this.selectedFiles();
-        const $field = this.inputField();
 
         if (selected.length === 1) {
-            $field.val(selected[0].id);
-
-            return;
+            return this.id(selected[0]);
         }
 
         const fileIds = [];
 
-        selected.forEach(file => fileIds.push(file.id));
-        $field.val(fileIds);
+        selected.forEach(file => fileIds.push(this.id(file)));
+
+        return fileIds.join(',');
     }
 
     countSelected() {
@@ -180,14 +187,18 @@ export default class FilePickerController {
         }
 
         this.files.forEach(file => {
-            if (_.contains(values, file.id)) {
+            if (_.contains(values, this.id(file))) {
                 file.selected = true;
             }
         });
     }
 
+    id(file) {
+        return (this.selectAddonIds()) ? file.addon.id : file.id;
+    }
+
     inputField() {
-        return $(`input[name="${ this.name }"]`);
+        return $('input[name="' + this.name + '"]');
     }
 
 }

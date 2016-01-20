@@ -27,6 +27,7 @@ class UserTransformer extends EloquentModelTransformer
     ];
 
     protected $defaultIncludes = [
+        'roles'
     ];
 
     public function transform($model)

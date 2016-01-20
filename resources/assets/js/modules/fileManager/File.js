@@ -5,6 +5,7 @@ export default class File {
         this.title = apiFile.filename;
         this.name = apiFile.filename;
         this.extension = apiFile.extension;
+        this.addon = apiFile.addon;
         this.url = apiFile.url;
         this.type = apiFile.type;
         this.filePath = apiFile.path;

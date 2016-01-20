@@ -5,12 +5,28 @@ export default class EditSubscriptionsController extends EditResourceController 
     constructor($injector, $scope) {
         super($injector, $scope);
 
+        this.subscriptionsApi = this.api.model('Subscription');
     }
 
     contentLoaded(model) {
         super.contentLoaded(model);
 
         this.sortSubscriptions();
+    }
+
+    /**
+     * Strip the data tags and update the subscriptions on the screen.
+     * @param response
+     */
+    onUpdated(response, request) {
+        super.onUpdated(response, request);
+
+        this.subscriptionsApi.index({'user': this.modelId})
+            .then(response => {
+                this.content.subscriptions = _.values(this.formDataService.transform(response));
+                this.sortSubscriptions();
+            });
+
 
     }
 
@@ -24,7 +40,6 @@ export default class EditSubscriptionsController extends EditResourceController 
     }
 
     sortSubscriptions() {
-        var base = this;
         this.content.subscriptions = _.sortBy(this.content.subscriptions, (s) => {
                 return this.subscribedUntilDate(s).format('X');
             }
@@ -33,7 +48,7 @@ export default class EditSubscriptionsController extends EditResourceController 
     }
 
     changeCancel(subscription, cancelled = 1) {
-        this.modelApi.update(subscription.id, {
+        this.subscriptionsApi.update(subscription.id, {
             'cancelled': cancelled
         }).then(function () {
             subscription.cancelled = cancelled;
@@ -41,11 +56,9 @@ export default class EditSubscriptionsController extends EditResourceController 
     }
 
     deleteSubscription(subscription) {
-        var base = this;
-        this.modelApi.delete(subscription.id).then(function () {
-            var index = base.subscriptions.indexOf(subscription);
-            base.subscriptions.splice(index, 1);
-            console.log('remove from ', index);
+        this.subscriptionsApi.delete(subscription.id).then(() => {
+            var index = this.content.subscriptions.indexOf(subscription);
+            this.content.subscriptions.splice(index, 1);
         });
     }
 

@@ -36,7 +36,9 @@ trait HasDefaultApiResourceFunctions
     public function index(IndexResourceRequest $request)
     {
         $query = QueryObject::makeFromResourceRequest($request);
-        $response = $this->response()->collection($this->repository()->all(['*'], $query), $this->bestModelTransformer());
+        $response = $this->response()->collection(
+            $this->repository()->all(['*'], $query),
+            $this->bestModelTransformer());
 
         if (!$query->pagination()->isEmpty()) {
             $response->withHeader('X-Total-Count', $this->repository()->count($query));

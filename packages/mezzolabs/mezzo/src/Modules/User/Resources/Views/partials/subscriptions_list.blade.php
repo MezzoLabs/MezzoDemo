@@ -24,7 +24,7 @@
             <div class="form-group">
                 <label>Cancelled</label>
                 <input type="checkbox" class="checkbox" disabled
-                       ng-checked="vm.isCancelled(subscription)"/>
+                       ng-checked="subscription.cancelled == 1"/>
             </div>
         </div>
         <div class="col-md-12 text-right">
