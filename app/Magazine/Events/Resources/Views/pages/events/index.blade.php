@@ -32,6 +32,7 @@
                         <label>Provider</label>
 
                         <select name="event_provider_id" class="form-control">
+                            <option value="">-</option>
                             @foreach($allProviders as $provider)
                                 <option value="{{ $provider->id }}">{{ $provider->label }}</option>
                             @endforeach

@@ -3,15 +3,16 @@ import ResourceController from './ResourceController';
 export default class EditResourceController extends ResourceController {
 
     /*@ngInject*/
-    constructor($scope, $injector, $stateParams) {
+    constructor($injector, $scope) {
         super($injector);
 
         this.$scope = $scope;
-        this.$stateParams = $stateParams;
+        this.$stateParams = $injector.get('$stateParams');
         this.modelId = this.$stateParams.modelId;
         this.content = {};
 
         this.includes = ['content'];
+
 
         this.$scope.$on('$destroy', () => this.onDestroy());
     }
@@ -112,6 +113,7 @@ export default class EditResourceController extends ResourceController {
         this.modelApi.unlock(this.modelId);
     }
 
+
     onDestroy() {
         this.stopResourceLocking();
     }
@@ -137,5 +139,6 @@ export default class EditResourceController extends ResourceController {
         this.modelStateService.name(this.modelName).index();
         sweetAlert(title, message, 'error');
     }
+
 
 }

@@ -2,6 +2,7 @@ import ModelApi from './ModelApi';
 
 export default class Api {
 
+    /** @ngInject */
     constructor($http){
         this.$http = $http;
     }

@@ -47,7 +47,7 @@ export default class ModelApi {
         }, data);
 
 
-        $rootScope.$broadcast('mezzo.model.' + name, payload);
+        //$rootScope.$broadcast('mezzo.model.' + name, payload);
     }
 
 }

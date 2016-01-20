@@ -79,6 +79,7 @@ export default class ResourceController {
 
     attemptSubmit() {
         if (this.form.$invalid) {
+
             this.dirtyFormControls(); // if a submit attempt failed because of an $invalid form all validation messages should be visible
 
             return false;
@@ -91,6 +92,10 @@ export default class ResourceController {
         this.formControls().forEach(formControl => {
             formControl.$dirty = true;
         });
+    }
+
+    form() {
+        return $('form[name="vm.form"]');
     }
 
 }

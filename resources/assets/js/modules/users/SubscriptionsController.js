@@ -34,41 +34,10 @@ export default class SubscriptionsController {
         return this.subscribedUntilDate(subscription).format('DD.MM.YYYY HH:mm');
     }
 
-    subscribedUntilDate(subscription) {
-        return moment(subscription.subscribed_until, 'DD.MM.YYYY HH:mm');
-    }
-
-    timeLeft(subscription) {
-        return this.subscribedUntilDate(subscription).fromNow();
-    }
 
     isCancelled(subscription) {
         return subscription.cancelled == 1;
     }
 
-    sort() {
-        var base = this;
-        this.subscriptions = _.sortBy(this.subscriptions, function (s) {
-                return base.subscribedUntilDate(s).format('X');
-            }
-        ).reverse();
 
-    }
-
-    changeCancel(subscription, cancelled = 1) {
-        this.modelApi.update(subscription.id, {
-            'cancelled': cancelled
-        }).then(function () {
-            subscription.cancelled = cancelled;
-        });
-    }
-
-    delete(subscription) {
-        var base = this;
-        this.modelApi.delete(subscription.id).then(function () {
-            var index = base.subscriptions.indexOf(subscription);
-            base.subscriptions.splice(index,1);
-            console.log('remove from ', index);
-        });
-    }
 }
