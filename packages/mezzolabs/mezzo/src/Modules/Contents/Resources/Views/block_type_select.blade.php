@@ -12,7 +12,7 @@
                         <a href="#"><i class="ion-ios-close-empty" ng-click="vm.contentBlockService.removeContentBlock($index)"></i></a>
                     </div>
                 </div>
-                <div class="content-block-body" mezzo-compile-html="block.template"></div>
+                <div class="content-block-body" mezzo-compile-content-block="block.template"></div>
             </div>
         </div>
 

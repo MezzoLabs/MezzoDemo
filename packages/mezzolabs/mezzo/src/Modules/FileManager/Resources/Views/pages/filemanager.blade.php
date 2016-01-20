@@ -28,30 +28,6 @@
 
 @section('content')
     <div class="mezzo__filemanager_container">
-        <!-- Add folder Modal -->
-        <div id="add-folder-modal" class="modal fade">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Add a new folder</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Folder name" ng-model="vm.folderName"
-                                   mezzo-enter="vm.addFolder(vm.folderName)">
-                        <span class="input-group-btn">
-                            <button class="btn btn-success" type="button" ng-click="vm.addFolder(vm.folderName)"
-                                    ng-disabled="!vm.folderName">
-                                <span class="ion-plus"></span>
-                            </button>
-                        </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Add folder Modal -->
-
         <!-- Move Modal -->
         <div id="move-modal" class="modal fade">
             <div class="modal-dialog">
@@ -81,30 +57,30 @@
                 <input type="search" class="form-control pull-right" style="width: 200px" placeholder="Search"
                        ng-model="vm.search">
                 <!-- Search -->
-                <!-- Upload & Add folder -->
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary" ngf-select="vm.upload($file)">
-                        <span style="display: inline-block; width: 20px">
-                            <span class="ion-ios-cloud-upload"></span>
-                        </span>
-                        <span style="display: inline-block">Upload</span>
-                    </button>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-folder-modal">
-                        <span style="display: inline-block; width: 20px">
-                            <span class="ion-ios-folder"></span>
-                        </span>
-                        <span style="display: inline-block">Add folder</span>
-                    </button>
-                </div>
-                <!-- Upload & Add Folder -->
+                <!-- Upload -->
+                <button type="button" class="btn btn-primary" ngf-select="vm.upload($file)">
+                    <span style="display: inline-block; width: 20px">
+                        <span class="ion-ios-cloud-upload"></span>
+                    </span>
+                    <span style="display: inline-block">Upload</span>
+                </button>
+                <!-- Upload -->
+                <!-- Add Folder -->
+                <button type="button" class="btn btn-primary" ng-click="vm.addFolderPrompt()">
+                    <span style="display: inline-block; width: 20px">
+                        <span class="ion-ios-folder"></span>
+                    </span>
+                    <span style="display: inline-block">Add folder</span>
+                </button>
+                <!-- Add Folder -->
                 <!-- Refresh -->
                 <button type="button" class="btn btn-default" ng-click="vm.refresh()" ng-disabled="vm.loading">
                     <span class="ion-loop"></span>
                 </button>
                 <!-- Refresh -->
-                <!-- Move & Delete -->
+                <!-- Move -->
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#move-modal"
-                        ng-disabled="!vm.canMove()">
+                        ng-disabled="!vm.canMoveOrDelete()">
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-arrow-swap"></span>
                     </span>
@@ -112,7 +88,7 @@
                 </button>
                 <!-- Move -->
                 <!-- Delete -->
-                <button type="button" class="btn btn-default" ng-click="vm.deleteFiles()" ng-disabled="!vm.selected">
+                <button type="button" class="btn btn-default" ng-click="vm.deleteFiles()" ng-disabled="!vm.canMoveOrDelete()">
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-close"></span>
                     </span>

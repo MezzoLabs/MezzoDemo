@@ -3,8 +3,8 @@ import ResourceController from './ResourceController';
 export default class CreateResourceController extends ResourceController {
 
     /*@ngInject*/
-    constructor($scope, $injector) {
-        super($scope, $injector);
+    constructor($injector) {
+        super($injector);
     }
 
     init(modelName) {
@@ -13,9 +13,10 @@ export default class CreateResourceController extends ResourceController {
     }
 
     submit() {
-        if (this.form.$invalid) {
+        if (!this.attemptSubmit()) {
             return false;
         }
+
         tinyMCE.triggerSave();
 
         const formData = this.formDataService.get();

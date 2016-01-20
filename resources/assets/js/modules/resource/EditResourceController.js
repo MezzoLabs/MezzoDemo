@@ -4,8 +4,9 @@ export default class EditResourceController extends ResourceController {
 
     /*@ngInject*/
     constructor($scope, $injector, $stateParams) {
-        super($scope, $injector);
+        super($injector);
 
+        this.$scope = $scope;
         this.$stateParams = $stateParams;
         this.modelId = this.$stateParams.modelId;
         this.content = {};
@@ -28,11 +29,7 @@ export default class EditResourceController extends ResourceController {
     }
 
     submit() {
-        if (this.form.$invalid) {
-
-            console.log('invalid', this.form);
-            swal('Booh you!', 'Invalid Form', "error");
-
+        if (!this.attemptSubmit()) {
             return false;
         }
 
