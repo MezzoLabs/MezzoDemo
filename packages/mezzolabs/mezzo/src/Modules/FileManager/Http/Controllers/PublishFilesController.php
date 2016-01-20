@@ -15,8 +15,6 @@ class PublishFilesController extends CockpitController
 {
     protected $pathRegex = '|((?:[a-zA-Z0-9\_\-]+\/)*)([a-zA-Z0-9\_\-]+)\.([a-z0-9]+)|';
 
-
-
     /**
      * @var PublishFileRequest
      */
