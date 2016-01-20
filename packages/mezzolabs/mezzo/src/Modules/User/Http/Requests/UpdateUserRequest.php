@@ -21,4 +21,11 @@ class UpdateUserRequest extends UpdateResourceRequest
         return $this->unsetPasswordConfirmationRules($rules);
     }
 
+    public function all()
+    {
+        $all = parent::all();
+
+        return $all;
+    }
+
 }

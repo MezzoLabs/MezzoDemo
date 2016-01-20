@@ -54,6 +54,18 @@ if (!function_exists('cockpit_html')) {
     }
 }
 
+if (!function_exists('cockpit_view')) {
+    /**
+     * Gives you a instance of the cockpit html helper class.
+     *
+     * @return HtmlHelper
+     */
+    function cockpit_view(string $name)
+    {
+        return cockpit_html()->viewKey($name);
+    }
+}
+
 if (!function_exists('cockpit_form')) {
     /**
      * Retrieve the formbuilder instance.

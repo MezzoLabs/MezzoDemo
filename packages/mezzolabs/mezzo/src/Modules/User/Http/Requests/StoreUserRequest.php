@@ -18,7 +18,11 @@ class StoreUserRequest extends StoreResourceRequest
     public function rules()
     {
         $rules = parent::rules();
-        return $this->unsetPasswordConfirmationRules($rules);
+
+        $rules = $this->unsetPasswordConfirmationRules($rules);
+        $rules = $this->setPasswordRulesForCreate($rules);
+
+        return $rules;
     }
 
 }

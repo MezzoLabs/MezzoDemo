@@ -26,7 +26,7 @@ class Post extends ModulePostModel implements LockableResource
         return $this->belongsTo(Content::class);
     }
 
-    public function main_image()
+    public function mainImage()
     {
         return $this->belongsTo(ImageFile::class, 'main_image_id', 'id');
     }

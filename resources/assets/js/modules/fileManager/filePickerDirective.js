@@ -9,7 +9,8 @@ export default function filePickerDirective() {
             fileType: '@',
             fieldName: '@',
             multiple: '@',
-            name: '@'
+            name: '@',
+            value: '@'
         },
         controller: FilePickerController,
         controllerAs: 'vm',

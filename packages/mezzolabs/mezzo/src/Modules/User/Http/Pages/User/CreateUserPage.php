@@ -7,4 +7,5 @@ use MezzoLabs\Mezzo\Cockpit\Pages\Resources\CreateResourcePage;
 
 class CreateUserPage extends CreateResourcePage
 {
+
 }

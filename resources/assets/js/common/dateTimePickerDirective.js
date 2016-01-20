@@ -25,6 +25,36 @@ export default function dateTimePickerDirective() {
             }
         };
 
+        $(element).on('dp.hide', function () {
+            changed(this);
+            $(this).trigger('change');
+        });
+
         $(element).datetimepicker(options);
+
+        changed(element);
+
+        function changed(element) {
+            var before = $(element).attr('data-before');
+            var after = $(element).attr('data-after');
+
+            var $before = (before) ? $(before) : null;
+            var $after = (after) ? $(after) : null;
+
+            if ($(element).val() == "") return true;
+
+            var date = moment($(element).val(), options.format);
+
+            if ($after) {
+                $after.data("DateTimePicker").maxDate(date);
+            }
+
+            if ($before) {
+                $before.data("DateTimePicker").minDate(date);
+            }
+
+        }
     }
+
+
 }

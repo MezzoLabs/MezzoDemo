@@ -26,6 +26,7 @@
     <div id="view-main">
         @include('cockpit::layouts.default.topbar')
         @include('cockpit::layouts.default.errors')
+
         @if( ! isset($content_container) )
             <div ui-view></div>
         @else

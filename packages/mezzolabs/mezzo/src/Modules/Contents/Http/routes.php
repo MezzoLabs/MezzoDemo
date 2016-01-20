@@ -3,6 +3,7 @@
 use MezzoLabs\Mezzo\Core\Routing\ApiRouter;
 use MezzoLabs\Mezzo\Core\Routing\CockpitRouter;
 use MezzoLabs\Mezzo\Core\Routing\Router;
+use MezzoLabs\Mezzo\Modules\Contents\Html\BlockFormHelper;
 use MezzoLabs\Mezzo\Modules\Contents\Http\ApiControllers\ContentBlockTypeApiController;
 
 module_route('Contents', [], function (Router $router, ApiRouter $api, CockpitRouter $cockpit) {
@@ -20,5 +21,10 @@ module_route('Contents', [], function (Router $router, ApiRouter $api, CockpitRo
 
 
 });
+
+function content_block_form($block)
+{
+    return app(BlockFormHelper::class, ['block' => $block]);
+}
 
 

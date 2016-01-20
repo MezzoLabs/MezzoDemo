@@ -10,6 +10,7 @@ use MezzoLabs\Mezzo\Modules\Contents\Contracts\ContentBlockTypeContract;
 use MezzoLabs\Mezzo\Modules\Contents\Contracts\ContentFieldTypeContract;
 use MezzoLabs\Mezzo\Modules\Contents\Exceptions\ContentBlockException;
 use MezzoLabs\Mezzo\Modules\Contents\Exceptions\NoKeyForContentBlockException;
+use MezzoLabs\Mezzo\Modules\Contents\Html\BlockFormHelper;
 use MezzoLabs\Mezzo\Modules\Contents\Types\FieldTypes\ContentFieldTypeCollection;
 
 abstract class AbstractContentBlockType implements ContentBlockTypeContract
@@ -115,7 +116,7 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
      */
     public function propertyInputName($propertyName)
     {
-        return "content[blocks][" . $this->formName() . "][" . $propertyName . "]";
+        return "content.blocks." . $this->formName() . "." . $propertyName;
     }
 
     /**
@@ -126,7 +127,7 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
      */
     public function inputName($fieldName)
     {
-        return "content[blocks][" . $this->formName() . "][fields][" . $fieldName . "]";
+        return "content.blocks." . $this->formName() . ".fields." . $fieldName;
     }
 
     /**
@@ -137,7 +138,7 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
      */
     public function optionInputName($optionName)
     {
-        return "content[blocks][" . $this->formName() . "][options][" . $optionName . "]";
+        return "content.blocks." . $this->formName() . ".options." . $optionName;
     }
 
     private function formName()
@@ -182,5 +183,10 @@ abstract class AbstractContentBlockType implements ContentBlockTypeContract
     public function icon()
     {
         return $this->options['icon'];
+    }
+
+    public function form()
+    {
+        return new BlockFormHelper($this, app(FormBuilder::class));
     }
 }

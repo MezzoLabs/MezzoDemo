@@ -55,7 +55,7 @@ abstract class MezzoEventProvider extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $rules = [
-        'label' => "",
+        'label' => "unique:event_providers",
         'description' => ""
     ];
 

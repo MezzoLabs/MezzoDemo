@@ -11,6 +11,9 @@ export default class IndexResourceController {
         this.selectAll = false;
         this.loading = false;
         this.attributes = [];
+        this.perPage = 10;
+        this.currentPage = 1;
+
     }
 
     init(modelName, defaultIncludes) {
@@ -37,13 +40,21 @@ export default class IndexResourceController {
                 this.models.forEach(model => model._meta = {});
             });
     }
-
     getModels() {
         if (this.searchText.length > 0) {
             return this.search();
         }
 
         return this.models;
+    }
+
+    getPagedModels(){
+        var models = this.getModels();
+
+        var start = (this.currentPage - 1) * this.perPage;
+        var end = (this.currentPage) * this.perPage - 1;
+
+        return models.slice(start, end);
     }
 
     getModelKeys(model) {
@@ -176,7 +187,6 @@ export default class IndexResourceController {
                 return this.models.splice(i, 1);
             }
         }
-
     }
 
     countSelected() {
@@ -213,6 +223,11 @@ export default class IndexResourceController {
         });
 
         this.loadModels(params);
+    }
+
+    pageChanged(){
+
+        console.log(this.currentPage);
     }
 
 }

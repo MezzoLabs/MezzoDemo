@@ -1,5 +1,11 @@
 export default class FormDataService {
 
+
+    /*@ngInject*/
+    constructor($rootScope) {
+        this.$rootScope = $rootScope;
+    }
+
     form() {
         return $('form[name="vm.form"]');
     }
@@ -9,32 +15,42 @@ export default class FormDataService {
     }
 
     set(formData) {
-        console.log('received data: ', formData);
+        js2form(this.form()[0], formData);
+        this.form().find(':input').trigger('input'); // trigger input event to notify Angular that ng-model should update
 
-        var stripped = this.stripData(formData);
+        this.$rootScope.$broadcast('mezzo.formdata.set', {
+            form: this.form()[0],
+            data: formData
+        })
 
-        stripped = this.unpackRelationInputs(this.form()[0], stripped);
-        stripped = this.formatTimestamps(stripped);
-
-        console.log('fill form: ', stripped);
-
-        js2form(this.form()[0], stripped);
+        js2form(this.form()[0], formData);
         // trigger input event to notify Angular that ng-model should update
         // 'triggeredByFormDataService' is required for the Google Maps Directive
         this.form().find(':input').trigger('input', 'triggeredByFormDataService');
     }
 
-    stripData(formData) {
+    transform(data){
+        var stripped = this.unfoldData(data);
+
+        stripped = this.unpackRelationInputs(this.form()[0], stripped);
+        stripped = this.formatTimestamps(stripped);
+
+        return stripped;
+    }
+
+    unfoldData(formData) {
         var cleaned = {};
 
         if (!formData || typeof formData !== 'object')
             return formData;
 
-        if (formData.data)
-            return this.stripData(formData.data);
+        if (formData.data) {
+            return this.unfoldData(formData.data);
+        }
+
 
         for (var i in formData) {
-            cleaned[i] = this.stripData(formData[i]);
+            cleaned[i] = this.unfoldData(formData[i]);
         }
 
         return cleaned;
@@ -75,7 +91,7 @@ export default class FormDataService {
 
                 var selector = 'input[type=checkbox][name="' + i + '[' + relationEntry.id + ']"]';
 
-                if (selector.length == 0)
+                if ($(selector).length == 0)
                     continue;
 
                 if (!_.isArray(clean[i])) {
@@ -87,6 +103,7 @@ export default class FormDataService {
 
         return clean;
     }
+
 
     formatTimestamps(formData) {
         var cleaned = {};

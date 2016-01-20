@@ -61,6 +61,8 @@ class AuthController extends Controller
     {
         $rules = $this->userReflection->rules();
 
+        $rules['password'] = 'required|' . $rules['password'];
+
         return Validator::make($data, $rules);
     }
 

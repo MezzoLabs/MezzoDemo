@@ -1,31 +1,55 @@
-{{ vm.naming }}
-
 <div class="days">
-    <div class="row day" ng-repeat="day in vm.days track by $index">
-        <input type="hidden" name="{{ vm.naming }}[{{ $index }}].id" ng-model="vm.days[$index].id">
-        <div class="col-md-5">
-            <div class="form-group">
-                <label>Start</label>
-                <input type="text" ng-model="vm.days[$index].start" data-mezzo-datetimepicker class="form-control"
-                       name="{{ vm.naming }}[{{ $index }}].start">
-            </div>
-        </div>
-        <div class="col-md-5">
-            <div class="form-group">
-                <label>End</label>
-                <input type="text" ng-model="vm.days[$index].end" data-mezzo-datetimepicker class="form-control"
-                       name="{{ vm.naming }}[{{ $index }}].end">
-            </div>
-        </div>
-        <div class="col-md-2">
-            <button ng-click="vm.removeDay($index)" ng-if="vm.days.length > 1" class="btn btn-default btn-sm"><i
-                    class="ion-ios-close"></i>
-            </button>
-        </div>
-    </div>
     <div class="row">
-        <div class="col-md-12">
-            <button ng-click="vm.addDay()" class="btn btn-info">Add</button>
+        <div class="col-md-12 text-center">
+            <div class="col-md-5">
+                <div class="label label-info">{{ vm.startString() }}</div>
+
+            </div>
+            <div class="col-md-1">
+                <i class="ion-ios-arrow-thin-right"></i>
+
+            </div>
+            <div class="col-md-5">
+                <div class="label label-info">{{ vm.endString() }}</div>
+            </div>
+            <div class="col-md-1">
+            </div>
+
         </div>
     </div>
+</div>
+<hr/>
+
+<div class="row day" ng-repeat="day in vm.days track by $index">
+    <input type="hidden" name="{{ vm.naming }}[{{ $index }}].id" value="{{ vm.days[$index].id }}">
+    <div class="col-md-5">
+        <div class="form-group">
+            <input ng-change="vm.startChanged()" data-before="[name='{{ vm.naming }}[{{ $index }}].end']"
+                   required="required" ng-change="vm.startChanged()" type="text" ng-model="vm.days[$index].start"
+                   data-mezzo-datetimepicker class="form-control"
+                   name="{{ vm.naming }}[{{ $index }}].start">
+        </div>
+    </div>
+    <div class="col-md-1">
+
+    </div>
+    <div class="col-md-5">
+        <div class="form-group">
+            <input data-after="[name='{{ vm.naming }}[{{ $index }}].start']" required="required" type="text"
+                   ng-model="vm.days[$index].end" data-mezzo-datetimepicker class="form-control"
+                   name="{{ vm.naming }}[{{ $index }}].end">
+        </div>
+    </div>
+    <div class="col-md-1">
+        <button type="button" ng-click="vm.removeDay($index)" ng-if="vm.days.length > 1"
+                class="btn btn-danger btn-block btn-sm"><i
+                class="ion-android-close"></i>
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-1 col-md-offset-11">
+        <button type="button" ng-click="vm.addDay()" class="btn btn-success btn-block btn-sm"><i class="ion-plus"/></button>
+    </div>
+</div>
 </div>

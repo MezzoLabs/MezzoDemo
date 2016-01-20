@@ -2,9 +2,10 @@
   background-color: #f5f5f5;
   min-height: 150px;
   padding: 10px;
+  max-height: 80vh;
+  overflow: auto;
 
   .content-block {
-
     .content-block-body {
       padding: 15px;
     }

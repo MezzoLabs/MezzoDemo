@@ -12,6 +12,7 @@ class ContentBlockService {
         this.$scope = $scope;
         this.api = api;
         this.formValidationService = formValidationService;
+        this.modelApi = api.model('ContentBlock');
         this.contentBlocks = [];
         this.templates = {};
         this.sortableOptions = {
@@ -27,29 +28,45 @@ class ContentBlockService {
                     $(this).css('opacity', 1.0);
                     tinymce.execCommand('mceAddEditor', true, $(this).attr('id'));
                 });
+
+                base.rebaseSortingOnHtml();
+
+
             }
         };
         this.currentId = 0;
     }
 
-    addContentBlock(key, hash, title, id = '', fields = {}) {
+    addContentBlock(key, hash, title, id = '', fields = {}, options = {}, sort = false) {
         const contentBlock = {
             id: id,
             key: key,
+            sort: (sort !== false) ? sort : this.contentBlocks.length,
             cssClass: 'block__' + key.replace(/\\/g, '_'),
             hash: hash,
             title: title,
             fields: fields,
+            options: options,
             nameInForm: 'num' + this.currentId++,
             template: null
         };
 
         this.fillTemplate(contentBlock);
         this.contentBlocks.push(contentBlock);
+
+        this.refreshSortings();
     }
 
     removeContentBlock(index) {
+        var block = this.contentBlocks[index];
+
+        if (block.id) {
+            this.modelApi.delete(block.id);
+        }
+
         this.contentBlocks.splice(index, 1);
+
+        this.refreshSortings();
     }
 
     fillTemplate(contentBlock) {
@@ -65,7 +82,6 @@ class ContentBlockService {
         this.api.contentBlockTemplate(contentBlock.hash)
             .then(template => {
                 console.log('fill fresh template: ', contentBlock);
-
                 contentBlock.template = template;
                 this.templates[contentBlock.hash] = template;
 
@@ -87,6 +103,33 @@ class ContentBlockService {
                 this.formValidationService.assign(formInput);
                 this.$compile(formInput)(this.$scope);
             });
+    }
+
+    refreshSortings() {
+        this.contentBlocks = _.sortBy(this.contentBlocks, 'sort');
+
+        for(var i in this.contentBlocks){
+            this.contentBlocks[i].sort = parseInt(i);
+        }
+    }
+
+    rebaseSortingOnHtml() {
+        var base = this;
+
+        $('.content-block').each(function (index, element) {
+            var $sort = $(this).find('[name$=".sort"]');
+            var nameInForm = $sort.attr('name').replace('.sort', '').split('.');
+            nameInForm = nameInForm[nameInForm.length - 1];
+
+            var block = _.find(base.contentBlocks, function (test) {
+                return test.nameInForm == nameInForm;
+            });
+            block.sort = index;
+
+            $sort.attr('value', index).trigger('change');
+        });
+
+        this.refreshSortings();
     }
 
 }

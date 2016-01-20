@@ -25,8 +25,9 @@ class ModulePages extends Collection
 
         $pageClasses = (new ClassFinder())->findClasses($folder);
         foreach ($pageClasses as $pageClass) {
-            if (!is_subclass_of($pageClass, ModulePage::class) )
+            if (!is_subclass_of($pageClass, ModulePage::class) ){
                 throw new ModulePageException($pageClass . ' is not a valid module page.');
+            }
 
             $this->add(new $pageClass($module));
         }

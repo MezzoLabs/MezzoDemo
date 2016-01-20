@@ -13,6 +13,7 @@ use MezzoLabs\Mezzo\Modules\User\Http\Pages\User\CreateUserPage;
 use MezzoLabs\Mezzo\Modules\User\Http\Pages\User\EditUserPage;
 use MezzoLabs\Mezzo\Modules\User\Http\Pages\User\IndexUserPage;
 use MezzoLabs\Mezzo\Modules\User\Http\Pages\User\ShowUserPage;
+use MezzoLabs\Mezzo\Modules\User\Http\Pages\User\UserSubscriptionsPage;
 
 class UserController extends CockpitResourceController
 {
@@ -61,5 +62,10 @@ class UserController extends CockpitResourceController
     public function edit(EditResourceRequest $request, $id = 0)
     {
         return $this->page(EditUserPage::class);
+    }
+
+    public function subscriptions(EditResourceRequest $request, $id = 0)
+    {
+        return $this->page(UserSubscriptionsPage::class);
     }
 }

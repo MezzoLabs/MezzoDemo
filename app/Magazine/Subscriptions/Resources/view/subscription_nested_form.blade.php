@@ -1,12 +1,10 @@
 {!! cockpit_form()->openNestedRelation($renderer->attribute()) !!}
 
-<div class="row days">
-    <div class="col-md-6">
-        {!! $renderer->renderNested('plan') !!}
-    </div>
-    <div class="col-md-6">
-        {!! $renderer->renderNested('subscribed_until') !!}
-    </div>
+<div class="subscription_add">
+
+    {!! $renderer->renderNested('plan') !!}
+
+    {!! $renderer->renderNested('subscribed_until') !!}
 </div>
 
 {!! cockpit_form()->closeNestedRelation() !!}

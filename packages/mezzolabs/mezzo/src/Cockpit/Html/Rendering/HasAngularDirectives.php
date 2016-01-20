@@ -20,7 +20,7 @@ trait HasAngularDirectives
      * @param RelationAttribute $attribute
      * @return string
      */
-    public function relationship(RelationAttribute $attribute) : string
+    public function relationship(RelationAttribute $attribute, array $htmlAttributes = []) : string
     {
         $htmlAttributes = [
             'data-related' => $attribute->relationSide()->otherModelReflection()->name(),
@@ -32,7 +32,9 @@ trait HasAngularDirectives
 
         $validationRules = (new HtmlRules($attribute->rules()))->attributes()->toArray();
 
-        $htmlAttributes = array_merge($htmlAttributes, $validationRules);
+        $inputHtmlRules = $attribute->type()->htmlAttributes();
+
+        $htmlAttributes = array_merge($htmlAttributes, $validationRules, $inputHtmlRules);
 
         return '<mezzo-relation-input ' . $this->html->attributes($htmlAttributes) . '></mezzo-relation-input>';
     }
@@ -47,6 +49,7 @@ trait HasAngularDirectives
     {
         $multiple = $options['multiple'] ?? false;
         $rules = $options['rules'] ?? new Rules();
+        $mergeAttributes = $options['attributes'] ?? [];
 
         $htmlAttributes = [
             'data-file-type' => $fileTypeModel->fileType()->name(),
@@ -57,7 +60,7 @@ trait HasAngularDirectives
 
 
         $validationRules = (new HtmlRules($rules))->attributes()->toArray();
-        $htmlAttributes = array_merge($htmlAttributes, $validationRules);
+        $htmlAttributes = array_merge($htmlAttributes, $validationRules, $mergeAttributes);
         $htmlAttributesString = $this->html->attributes($htmlAttributes);
 
         return "<mezzo-file-picker {$htmlAttributesString}></mezzo-file-picker>";
