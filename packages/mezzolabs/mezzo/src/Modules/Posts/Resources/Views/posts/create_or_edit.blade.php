@@ -49,7 +49,7 @@
                     @endif
                 </div>
             </div>
-            <div class="panel panel-bordered">
+            <div class="panel categories-panel panel-bordered">
                 <div class="panel-heading">
                     <h3>Categories</h3>
                 </div>

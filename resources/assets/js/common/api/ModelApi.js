@@ -3,6 +3,7 @@ export default class ModelApi {
     constructor(api, modelName) {
         this.api = api;
         this.modelName = modelName;
+
         this.modelPlural = _.kebabCase(pluralize(this.modelName));
         this.apiUrl = '/api/' + this.modelPlural;
     }
@@ -17,7 +18,9 @@ export default class ModelApi {
 
     update(modelId, formData) {
 
+        this.throwEvent('update', {data: formData, id: modelId});
         var request = this.api.put(this.apiUrl + '/' + modelId, formData);
+        this.throwEvent('updated', {data: formData, id: modelId});
 
         return request;
     }
@@ -43,7 +46,8 @@ export default class ModelApi {
             'modelName': this.modelName
         }, data);
 
-        this.$rootScope.$broadcast('mezzo.model.' + name, payload);
+
+        $rootScope.$broadcast('mezzo.model.' + name, payload);
     }
 
 }
