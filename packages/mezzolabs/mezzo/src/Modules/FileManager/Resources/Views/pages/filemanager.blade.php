@@ -80,7 +80,7 @@
                 <!-- Refresh -->
                 <!-- Move -->
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#move-modal"
-                        ng-disabled="!vm.canMove()">
+                        ng-disabled="!vm.canMoveOrDelete()">
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-arrow-swap"></span>
                     </span>
@@ -88,7 +88,7 @@
                 </button>
                 <!-- Move -->
                 <!-- Delete -->
-                <button type="button" class="btn btn-default" ng-click="vm.deleteFiles()" ng-disabled="!vm.selected">
+                <button type="button" class="btn btn-default" ng-click="vm.deleteFiles()" ng-disabled="!vm.canMoveOrDelete()">
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-close"></span>
                     </span>
