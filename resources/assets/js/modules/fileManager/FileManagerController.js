@@ -121,15 +121,13 @@ export default class FileManagerController {
     }
 
     addFolder(name){
-        if(!name){
+        if(!name || !name.length){
             return false;
         }
 
-        this.folderName = '';
         const newFolder = new Folder(name, this.folder);
 
         this.folder.files.push(newFolder);
-        $('#add-folder-modal').modal('hide');
     }
 
     getFiles(){
@@ -297,6 +295,19 @@ export default class FileManagerController {
         }
 
         return false;
+    }
+
+    addFolderPrompt() {
+        swal({
+            title: 'Enter new folder name',
+            html: '<input id="new-folder-name" type="text" class="form-control">',
+            confirmButtonText: 'Create folder'
+        }, () => {
+            const newFolderName = $('#new-folder-name').val();
+
+            this.addFolder(newFolderName);
+            this.$scope.$apply();
+        });
     }
 
 }
