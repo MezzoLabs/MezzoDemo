@@ -15,9 +15,6 @@ export default class FormDataService {
     }
 
     set(formData) {
-        js2form(this.form()[0], formData);
-        this.form().find(':input').trigger('input'); // trigger input event to notify Angular that ng-model should update
-
         this.$rootScope.$broadcast('mezzo.formdata.set', {
             form: this.form()[0],
             data: formData
