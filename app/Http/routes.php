@@ -73,10 +73,11 @@ Route::group(['middleware' => ['auth']], function () {
  */
 
 
-Route::get('/test/mailchimp', function () {
-    $newsletterService = app(NewsLetterService::class);
+Route::get('/test/during', function () {
+    $from = "18.01.2015 10:00";
+    $to = "18.01.2016 12:00";
 
-    $newsletterService->addEmailToList('simon.sch@outlook.com');
+    mezzo_dump(\App\Event::betweenDates($from, '')->get());
 });
 
 Route::get('/test/distance', function () {

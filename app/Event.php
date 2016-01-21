@@ -11,6 +11,7 @@ use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 
 class Event extends MezzoEvent implements SluggableInterface, LockableResource
 {
@@ -19,6 +20,10 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
     use SluggableTrait;
 
     use CanBeLocked;
+
+    public $with = [
+        'days'
+    ];
 
     public $searchable = [
         'title', 'description'
@@ -82,15 +87,15 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
         return $this->belongsTo(EventProvider::class);
     }
 
-    public function scopeNearLocation(Builder $q1, $latitude, $longitude, $km = 10)
+    public function scopeNearLocation(Builder $q, $latitude, $longitude, $km = 10)
     {
-        $this->repository()->addNearLocationScope($q1, $latitude, $longitude, $km);
+        $this->repository()->addNearLocationScope($q, $latitude, $longitude, $km);
 
     }
 
-    public function scopeNearZip(Builder $q1, $zip, $km = 10)
+    public function scopeNearZip(Builder $q, $zip, $km = 10)
     {
-        $this->repository()->addNearZipScope($q1, $zip, $km);
+        $this->repository()->addNearZipScope($q, $zip, $km);
     }
 
     public function defaultCreateData($givenData)
@@ -109,5 +114,11 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
         }
 
         return $default;
+    }
+
+    public function scopeBetweenDates(Builder $q, $from, $to)
+    {
+        return $this->repository()->addScopeBetweenDates($q, $from, $to);
+
     }
 }

@@ -12,9 +12,12 @@
             <form method="GET" action="http://mezzo.dev/api/events">
                 <div class="row">
                     <div class="col-md-3">
-                        <label>Search</label>
-                        <input type="search" name="q" class="form-control"
-                               placeholder="search">
+                        <label>From</label>
+                        <input data-mezzo-datetimepicker type="text" name="scopes[betweenDates][0]" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label>To</label>
+                        <input data-mezzo-datetimepicker type="text" name="scopes[betweenDates][1]" class="form-control">
                     </div>
                     <div class="col-md-5">
                         <div class="row">

@@ -14,4 +14,17 @@ class IndexEventPage extends IndexResourcePage
     {
         $this->options('order', 1);
     }
+
+
+    public function columns()
+    {
+        $columns = parent::columns();
+
+        $columns['_start'] = ['type' => \Doctrine\DBAL\Types\Type::DATETIME, 'title' => 'Start'];
+        $columns['_end'] = ['type' => \Doctrine\DBAL\Types\Type::DATETIME, 'title' => 'End'];
+
+        return $columns;
+    }
+
+
 }

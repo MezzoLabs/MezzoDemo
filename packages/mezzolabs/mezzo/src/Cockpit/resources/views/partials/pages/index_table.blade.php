@@ -20,8 +20,8 @@
                         <input type="checkbox" ng-model="vm.selectAll" ng-change="vm.updateSelectAll()">
                     </th>
 
-                    @foreach($model_reflection->attributes()->visibleInForm('index') as $attribute)
-                        <th ng-init="vm.addAttribute('{{ $attribute->naming() }}', '{{ $attribute->type()->doctrineTypeName() }}')">{{ $attribute->title() }}</th>
+                    @foreach($module_page->columns() as $name => $column)
+                        <th ng-init="vm.addAttribute('{{ $name }}', '{{ $column['type'] }}')">{{ $column['title'] }}</th>
                     @endforeach
                 </tr>
                 </thead>
