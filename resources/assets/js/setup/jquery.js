@@ -75,6 +75,16 @@ $(() => {
         '</button>';
 
     $('.editable').editable();
+
+    const noUiView = $('div[ui-view]').length === 0;
+
+    if (noUiView) {
+        console.info('Backend Rendered Page detected!');
+
+        $('a[href]:not([data-mezzo-href-prevent])').click(() => {
+            window.location.reload();
+        });
+    }
 });
 
 function quickviewVisible(open) {
