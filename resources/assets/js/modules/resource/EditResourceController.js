@@ -38,6 +38,9 @@ export default class EditResourceController extends ResourceController {
         const formData = this.formDataService.get();
 
         this.modelApi.update(this.modelId, formData)
+            .then(model => {
+                toastr.success('Success! ' + model._label + ' updated');
+            })
             .catch(err => this.catchServerSideErrors(err));
     }
 

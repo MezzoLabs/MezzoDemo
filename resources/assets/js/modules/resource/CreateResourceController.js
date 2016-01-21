@@ -24,6 +24,7 @@ export default class CreateResourceController extends ResourceController {
         this.modelApi.create(formData)
             .then(model => {
                 this.edit(model.id);
+                toastr.success('Success! ' + model._label + ' created');
             })
             .catch(err => this.catchServerSideErrors(err));
     }
