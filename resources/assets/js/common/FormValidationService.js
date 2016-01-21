@@ -13,6 +13,10 @@ export default class FormValidationService {
             .parents('.form-group')
             .attr('ng-class', `vm.hasError('${ nameAttribute }')`)
             .append(`<mezzo-validation-messages data-form-input="vm.form['${ nameAttribute }']"></mezzo-validation-messages>`);
+
+        $formInput
+            .not('[readonly],[disabled]')
+            .attr('ng-disabled', 'vm.loading');
     }
 
 }

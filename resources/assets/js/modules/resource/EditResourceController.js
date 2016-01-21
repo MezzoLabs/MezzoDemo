@@ -36,18 +36,26 @@ export default class EditResourceController extends ResourceController {
         tinyMCE.triggerSave();
 
         const formData = this.formDataService.get();
+        this.loading = true;
 
         this.modelApi.update(this.modelId, formData)
             .then(model => {
+                this.loading = false;
+
                 toastr.success('Success! ' + model._label + ' updated');
             })
-            .catch(err => this.catchServerSideErrors(err));
+            .catch(err => {
+                this.loading = false;
+
+                this.catchServerSideErrors(err)
+            });
     }
 
     loadContent() {
         const params = {
             include: this.includes.join(',')
         };
+        this.loading = true;
 
         this.modelApi.content(this.modelId, params)
             .then(model => {
@@ -69,6 +77,8 @@ export default class EditResourceController extends ResourceController {
         this.content = cleaned;
 
         console.log('fill form: ', this.content);
+
+        this.loading = false;
     }
 
     initContentBlocks(model) {
