@@ -131,7 +131,7 @@ export default class ResourceController {
         });
     }
 
-    formData() {
+    getFormData() {
         const formData = {};
 
         _.forOwn(this.inputs, (value, key) => {

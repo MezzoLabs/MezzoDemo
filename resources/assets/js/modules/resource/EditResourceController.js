@@ -32,7 +32,7 @@ export default class EditResourceController extends ResourceController {
     doSubmit() {
         tinyMCE.triggerSave();
 
-        const formData = this.formData();
+        const formData = this.getFormData();
 
         return this.modelApi.update(this.modelId, formData)
             .then(model => {
