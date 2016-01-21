@@ -14,6 +14,11 @@ export default class ResourceController {
 
     hasError(inputName) {
         const formControl = this.form[inputName];
+
+        if (!formControl) {
+            return;
+        }
+
         const atLeastOneError = Object.keys(formControl.$error).length > 0;
         const isDirty = formControl.$dirty;
 
@@ -29,7 +34,7 @@ export default class ResourceController {
         }
 
         const errors = err.data.errors;
-
+        console.error(err);
         this.handleServerSideErrors(errors);
     }
 
@@ -78,7 +83,10 @@ export default class ResourceController {
     }
 
     attemptSubmit() {
+        console.info('attemptSubmit()');
+
         if (this.form.$invalid) {
+            console.warn('attemptSubmit() failed because of an invalid form');
             this.dirtyFormControls(); // if a submit attempt failed because of an $invalid form all validation messages should be visible
 
             return false;
@@ -87,10 +95,76 @@ export default class ResourceController {
         return true;
     }
 
+    // Override this method in extending class
+    doSubmit() {
+        console.warn('doSubmit() should be implemented by the extending class!');
+        return Promise.resolve();
+    }
+
+    submit() {
+        console.info('submit()');
+
+        if (!this.attemptSubmit()) {
+            return false;
+        }
+
+        this.loading = true;
+
+        this.doSubmit()
+            .then(() => {
+                console.info('doSubmit().then()');
+
+                this.loading = false;
+            })
+            .catch(err => {
+                console.info('doSubmit().catch()');
+
+                this.loading = false;
+
+                this.catchServerSideErrors(err);
+            });
+    }
+
     dirtyFormControls() {
         this.formControls().forEach(formControl => {
             formControl.$dirty = true;
         });
+    }
+
+    getFormData() {
+        const formData = {};
+
+        _.forOwn(this.inputs, (value, key) => {
+            const formInput = $(`:input[name="${ key }"]`);
+
+            if (!formInput.length) {
+                return;
+            }
+
+            // match checkbox key e.g. categories[1] or categories[10]
+            const regex = /(.+)\[([0-9]+)\]/i;
+            const match = key.match(regex);
+
+            if (match) {
+                const checkboxKey = match[1];
+                const checkboxId = match[2];
+                let checkbox = _.get(formData, checkboxKey);
+
+                if (!_.isArray(checkbox)) {
+                    checkbox = [];
+
+                    _.set(formData, checkboxKey, checkbox);
+                }
+
+                checkbox.push(checkboxId);
+
+                return;
+            }
+
+            _.set(formData, key, value);
+        });
+
+        return formData;
     }
 
 }

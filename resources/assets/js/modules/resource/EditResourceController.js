@@ -3,11 +3,12 @@ import ResourceController from './ResourceController';
 export default class EditResourceController extends ResourceController {
 
     /*@ngInject*/
-    constructor($scope, $injector, $stateParams) {
+    constructor($scope, $injector, $stateParams, $rootScope) {
         super($injector);
 
         this.$scope = $scope;
         this.$stateParams = $stateParams;
+        this.$rootScope = $rootScope;
         this.modelId = this.$stateParams.modelId;
         this.content = {};
 
@@ -28,23 +29,22 @@ export default class EditResourceController extends ResourceController {
         this.loadContent();
     }
 
-    submit() {
-        if (!this.attemptSubmit()) {
-            return false;
-        }
-
+    doSubmit() {
         tinyMCE.triggerSave();
 
-        const formData = this.formDataService.get();
+        const formData = this.getFormData();
 
-        this.modelApi.update(this.modelId, formData)
-            .catch(err => this.catchServerSideErrors(err));
+        return this.modelApi.update(this.modelId, formData)
+            .then(model => {
+                toastr.success('Success! ' + model._label + ' updated');
+            });
     }
 
     loadContent() {
         const params = {
             include: this.includes.join(',')
         };
+        this.loading = true;
 
         this.modelApi.content(this.modelId, params)
             .then(model => {
@@ -53,19 +53,17 @@ export default class EditResourceController extends ResourceController {
     }
 
     contentLoaded(model) {
-
-        console.log('received data: ', model);
-
         this.initContentBlocks(model);
         this.initLockable(model);
 
-        var cleaned = this.formDataService.transform(model);
+        const cleaned = this.formDataService.transform(model);
 
-        this.formDataService.set(cleaned);
+        this.$rootScope.$broadcast('mezzo.formdata.set', {
+            data: cleaned
+        });
 
-        this.content = cleaned;
-
-        console.log('fill form: ', this.content);
+        this.inputs = cleaned;
+        this.loading = false;
     }
 
     initContentBlocks(model) {
@@ -83,7 +81,6 @@ export default class EditResourceController extends ResourceController {
                 hash,
                 block._label,
                 block.id,
-                block.fields,
                 block.options,
                 block.sort
             );

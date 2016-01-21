@@ -8,6 +8,7 @@ export default function hrefPreventDirective() {
     function link(scope, element, attributes) {
         $(element).click($event => {
             $event.preventDefault();
+            $event.stopPropagation();
         });
     }
 }
