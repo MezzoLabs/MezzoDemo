@@ -131,4 +131,40 @@ export default class ResourceController {
         });
     }
 
+    formData() {
+        const formData = {};
+
+        _.forOwn(this.inputs, (value, key) => {
+            const formInput = $(`:input[name="${ key }"]`);
+
+            if (!formInput.length) {
+                return;
+            }
+
+            // match checkbox key e.g. categories[1] or categories[10]
+            const regex = /(.+)\[([0-9]+)\]/i;
+            const match = key.match(regex);
+
+            if (match) {
+                const checkboxKey = match[1];
+                const checkboxId = match[2];
+                let checkbox = _.get(formData, checkboxKey);
+
+                if (!_.isArray(checkbox)) {
+                    checkbox = [];
+
+                    _.set(formData, checkboxKey, checkbox);
+                }
+
+                checkbox.push(checkboxId);
+
+                return;
+            }
+
+            _.set(formData, key, value);
+        });
+
+        return formData;
+    }
+
 }
