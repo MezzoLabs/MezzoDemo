@@ -28,26 +28,14 @@ export default class EditResourceController extends ResourceController {
         this.loadContent();
     }
 
-    submit() {
-        if (!this.attemptSubmit()) {
-            return false;
-        }
-
+    doSubmit() {
         tinyMCE.triggerSave();
 
         const formData = this.formDataService.get();
-        this.loading = true;
 
-        this.modelApi.update(this.modelId, formData)
+        return this.modelApi.update(this.modelId, formData)
             .then(model => {
-                this.loading = false;
-
                 toastr.success('Success! ' + model._label + ' updated');
-            })
-            .catch(err => {
-                this.loading = false;
-
-                this.catchServerSideErrors(err)
             });
     }
 

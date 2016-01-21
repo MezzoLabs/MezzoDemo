@@ -78,6 +78,8 @@ export default class ResourceController {
     }
 
     attemptSubmit() {
+        console.info('attemptSubmit()');
+
         if (this.form.$invalid) {
             console.warn('attemptSubmit() failed because of an invalid form');
             this.dirtyFormControls(); // if a submit attempt failed because of an $invalid form all validation messages should be visible
@@ -86,6 +88,36 @@ export default class ResourceController {
         }
 
         return true;
+    }
+
+    // Override this method in extending class
+    doSubmit() {
+        console.warn('doSubmit() should be implemented by the extending class!');
+        return Promise.resolve();
+    }
+
+    submit() {
+        console.info('submit()');
+
+        if (!this.attemptSubmit()) {
+            return false;
+        }
+
+        this.loading = true;
+
+        this.doSubmit()
+            .then(() => {
+                console.info('doSubmit().then()');
+
+                this.loading = false;
+            })
+            .catch(err => {
+                console.info('doSubmit().catch()');
+
+                this.loading = false;
+
+                this.catchServerSideErrors(err);
+            });
     }
 
     dirtyFormControls() {
