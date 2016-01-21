@@ -29,7 +29,7 @@ export default class ResourceController {
         }
 
         const errors = err.data.errors;
-
+        console.error(err);
         this.handleServerSideErrors(errors);
     }
 
@@ -79,6 +79,7 @@ export default class ResourceController {
 
     attemptSubmit() {
         if (this.form.$invalid) {
+            console.warn('attemptSubmit() failed because of an invalid form');
             this.dirtyFormControls(); // if a submit attempt failed because of an $invalid form all validation messages should be visible
 
             return false;
