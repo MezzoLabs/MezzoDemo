@@ -15,14 +15,24 @@ export default function compileContentBlockDirective($parse, $compile, formValid
             }
 
             element.html(html);
+            deferFormValidation(element);
+            $compile(element.contents())(scope);
+        });
+
+        function deferFormValidation(element) {
+            setTimeout(() => {
+                assignFormValidation(element);
+            }, 1);
+        }
+
+        function assignFormValidation(element) {
             element
                 .children('div.form-group')
                 .find(':input')
                 .each((index, formInput) => {
                     formValidationService.assign(formInput);
                 });
-
             $compile(element.contents())(scope);
-        });
+        }
     }
 }
