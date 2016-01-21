@@ -14,6 +14,11 @@ export default class ResourceController {
 
     hasError(inputName) {
         const formControl = this.form[inputName];
+
+        if (!formControl) {
+            return;
+        }
+
         const atLeastOneError = Object.keys(formControl.$error).length > 0;
         const isDirty = formControl.$dirty;
 

@@ -25,7 +25,7 @@ $(() => {
             $('.nav-main .opened').removeClass('opened');
     });
 
-    $('.nav-main > li.has-pages > a .dropdown').click(function () {
+    $('.nav-main > li.has-pages > a span').click(function () {
         $(this).parents('li').toggleClass('opened');
     });
 
