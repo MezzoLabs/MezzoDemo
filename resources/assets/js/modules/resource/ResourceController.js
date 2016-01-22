@@ -96,7 +96,7 @@ export default class ResourceController {
     }
 
     // Override this method in extending class
-    doSubmit() {
+    doSubmit(formData) {
         console.warn('doSubmit() should be implemented by the extending class!');
         return Promise.resolve();
     }
@@ -104,13 +104,18 @@ export default class ResourceController {
     submit() {
         console.info('submit()');
 
+        tinyMCE.triggerSave();
+
         if (!this.attemptSubmit()) {
             return false;
         }
 
         this.loading = true;
+        const formData = this.getFormData();
 
-        this.doSubmit()
+        console.info('doSubmit() with', formData);
+
+        this.doSubmit(formData)
             .then(() => {
                 console.info('doSubmit().then()');
 
@@ -134,35 +139,39 @@ export default class ResourceController {
     getFormData() {
         const formData = {};
 
-        _.forOwn(this.inputs, (value, key) => {
-            const formInput = $(`:input[name="${ key }"]`);
+        $('form[name="vm.form"]')
+            .find(':input[name]')
+            .each((index, formInput) => {
+                const $formInput = $(formInput);
+                const name = $formInput.attr('name');
+                let value = this.inputs[name];
 
-            if (!formInput.length) {
-                return;
-            }
-
-            // match checkbox key e.g. categories[1] or categories[10]
-            const regex = /(.+)\[([0-9]+)\]/i;
-            const match = key.match(regex);
-
-            if (match) {
-                const checkboxKey = match[1];
-                const checkboxId = match[2];
-                let checkbox = _.get(formData, checkboxKey);
-
-                if (!_.isArray(checkbox)) {
-                    checkbox = [];
-
-                    _.set(formData, checkboxKey, checkbox);
+                if (value === undefined) {
+                    value = $formInput.val();
                 }
 
-                checkbox.push(checkboxId);
+                // match checkbox key e.g. categories[1] or categories[10]
+                const regex = /(.+)\[([0-9]+)\]/i;
+                const match = name.match(regex);
 
-                return;
-            }
+                if (match) {
+                    const checkboxKey = match[1];
+                    const checkboxId = match[2];
+                    let checkbox = _.get(formData, checkboxKey);
 
-            _.set(formData, key, value);
-        });
+                    if (!_.isArray(checkbox)) {
+                        checkbox = [];
+
+                        _.set(formData, checkboxKey, checkbox);
+                    }
+
+                    checkbox.push(checkboxId);
+
+                    return;
+                }
+
+                _.set(formData, name, value);
+            });
 
         return formData;
     }

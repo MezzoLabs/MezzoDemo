@@ -29,11 +29,7 @@ export default class EditResourceController extends ResourceController {
         this.loadContent();
     }
 
-    doSubmit() {
-        tinyMCE.triggerSave();
-
-        const formData = this.getFormData();
-
+    doSubmit(formData) {
         return this.modelApi.update(this.modelId, formData)
             .then(model => {
                 toastr.success('Success! ' + model._label + ' updated');
@@ -57,6 +53,8 @@ export default class EditResourceController extends ResourceController {
         this.initLockable(model);
 
         const cleaned = this.formDataService.transform(model);
+
+        console.log('cleaned', cleaned);
 
         this.$rootScope.$broadcast('mezzo.formdata.set', {
             data: cleaned
