@@ -358,7 +358,7 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
 
     /**
      * Relation annotation property for subscriptions
-     * @Mezzo\Attribute(type="App\Magazine\Subscriptions\Schema\SubscriptionInput", hidden="create,edit")
+     * @Mezzo\Attribute(type="App\Magazine\Subscriptions\Schema\SubscriptionInput", hidden="create,edit,index")
      * @Mezzo\Relations\OneToMany
      * @Mezzo\Relations\From(table="users", primaryKey="id", naming="subscriptions")
      * @Mezzo\Relations\To(table="subscriptions", primaryKey="id", naming="user")

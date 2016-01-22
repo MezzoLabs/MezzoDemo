@@ -64,6 +64,9 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
      */
     public function start()
     {
+        if($this->days->count() == 0)
+            return Carbon::now();
+
         return $this->days->sortBy('start')->first()->start;
     }
 
@@ -72,6 +75,9 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
      */
     public function end()
     {
+        if($this->days->count() == 0)
+            return Carbon::now();
+
         return $this->days->sortBy('end')->last()->end;
     }
 

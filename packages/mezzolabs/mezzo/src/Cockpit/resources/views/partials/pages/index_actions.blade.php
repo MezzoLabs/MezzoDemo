@@ -12,8 +12,10 @@
             </a>
         @endif
 
+        {{--
         <button type="button" class="btn btn-default" ng-disabled="!vm.canEdit()" ng-click="vm.duplicate()">
             <span class="ion-ios-copy"></span> {{ Lang::get('mezzo.general.duplicate') }}</button>
+            --}}
 
         <!-- Delete -->
         <button type="button" class="btn btn-default" ng-disabled="!vm.canRemove()" ng-click="vm.remove()">

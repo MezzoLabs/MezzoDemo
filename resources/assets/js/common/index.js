@@ -15,6 +15,7 @@ import apiService from './api/apiService';
 import hasControllerService from './hasControllerService';
 import QuickviewService from './QuickviewService';
 import FormValidationService from './FormValidationService';
+import LanguageService from './LanguageService';
 import ErrorHandlerService from './ErrorHandlerService';
 
 const module = angular.module('MezzoCommon', []);
@@ -37,3 +38,4 @@ module.factory('hasController', hasControllerService);
 module.service('quickviewService', QuickviewService);
 module.service('formValidationService', FormValidationService);
 module.service('errorHandlerService', ErrorHandlerService);
+module.service('languageService', LanguageService);

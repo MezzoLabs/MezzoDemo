@@ -63,6 +63,9 @@ class Post extends ModulePostModel implements LockableResource
 
     public function isPublished()
     {
+        if(!$this->published_at)
+            return false;
+
         return $this->state == 'published' && Carbon::now()->gte($this->published_at);
     }
 

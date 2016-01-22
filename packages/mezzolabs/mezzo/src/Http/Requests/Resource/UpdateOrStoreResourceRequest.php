@@ -61,10 +61,12 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
         $overwriteData = array_dot($newModel->defaultData($this->all()));
 
 
+        $all = $this->all();
+
         foreach ($overwriteData as $key => $value) {
 
             //Only set the default data on a update request when the key is not set
-            if ($isUpdate && ($this->has($key) && empty($this->get($key))) ) {
+            if ($isUpdate && (isset($all[$key]) && empty($this->get($key))) ) {
                 $this->offsetSet($key, $value);
                 continue;
             }

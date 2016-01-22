@@ -1,11 +1,13 @@
 export default class IndexResourceController {
 
     /*@ngInject*/
-    constructor($scope, api, modelStateService) {
+    constructor($scope, api, modelStateService, languageService) {
         this.$scope = $scope;
         this.api = api;
+        this.lang = languageService;
         this.modelStateService = modelStateService;
         this.includes = [];
+        this.language = languageService;
         this.models = [];
         this.searchText = '';
         this.selectAll = false;
@@ -16,6 +18,7 @@ export default class IndexResourceController {
         this.pagination = {
             size: 10
         };
+
 
     }
 
@@ -102,9 +105,16 @@ export default class IndexResourceController {
             return moment(value).format('DD.MM.YYYY hh:mm');
         }
 
-        if (attribute.type == "boolean") {
-            return (value == "1") ? "y" : "n";
+
+
+        if (this.lang.has('attributes.'+  attribute.name +'.' + value)){
+            return this.lang.get('attributes.'+  attribute.name +'.' + value);
         }
+
+        if (attribute.type == "boolean") {
+            return this.lang.get('attributes.boolean.' + (value == "1") ? "true" : "false");
+        }
+
 
         return value;
     }

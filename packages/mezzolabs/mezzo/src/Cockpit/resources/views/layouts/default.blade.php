@@ -63,6 +63,7 @@
 {!! cockpit_script('/components/tinymce-dist/tinymce.min.js') !!}
 {!! cockpit_script('/components/tinymce-dist/tinymce.jquery.min.js') !!}
 {!! cockpit_script('/components/toastr/toastr.min.js') !!}
+{!! cockpit_script('/components/angular-translate/angular-translate.js') !!}
 {!! cockpit_script('/js/app.js') !!}
 <!-- JavaScript -->
 </body>
