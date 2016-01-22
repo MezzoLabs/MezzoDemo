@@ -67,6 +67,10 @@ class StringHelper
 
     public static function toDateTimeString($value)
     {
+        if(!$value){
+            return null;
+        }
+
         //DD.MM.YYY HH:mm:SS
         if (preg_match('/^\d{2}.\d{2}.\d{4} \d{2}:\d{2}$/', $value)) {
             return Carbon::createFromFormat('d.m.Y H:i', $value)->toDateTimeString();
@@ -81,13 +85,14 @@ class StringHelper
             return str_replace('T', ' ', $value);
 
         //DD.MM.YYY HH:mm:SS
-        if (preg_match('/^\d{4}-\d{2}-\d{4} \d{2}:\d{2}\d{2}$/', $value)) {
+        if (preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value)) {
             return $value;
         }
 
         if($value instanceof Carbon){
             return $value->toDateTimeString();
         }
+
 
         return null;
     }

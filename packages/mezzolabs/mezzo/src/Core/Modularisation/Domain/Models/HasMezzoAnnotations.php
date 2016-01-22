@@ -165,5 +165,16 @@ trait HasMezzoAnnotations
         return app()->make($repositoryClass);
     }
 
+    /**
+     * Data that will be added to the request if the field is empty
+     *
+     * @param array $requestData
+     * @return array
+     */
+    public function defaultData(array $requestData) : array
+    {
+        return [];
+    }
+
 
 }

@@ -43,6 +43,10 @@
                     {!! $model_reflection->schema()->attributes('state')->render() !!}
 
                     @if($module_page->isType('create'))
+                    <span class="is_published"></span>
+                    @endif
+
+                    @if($module_page->isType('create'))
                         {!! cockpit_form()->submitCreate($model_reflection) !!}
                     @else
                         {!! cockpit_form()->submitEdit($model_reflection) !!}

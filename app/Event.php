@@ -6,12 +6,11 @@ use App\LockableResources\CanBeLocked;
 use App\LockableResources\LockableResource;
 use App\Magazine\Relevance\CanBeSortedByRelevance;
 use App\Mezzo\Generated\ModelParents\MezzoEvent;
+use Auth;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
-use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 
 class Event extends MezzoEvent implements SluggableInterface, LockableResource
 {
@@ -98,25 +97,20 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
         $this->repository()->addNearZipScope($q, $zip, $km);
     }
 
-    public function defaultCreateData($givenData)
+    /**
+     * Data that will be added to the request if the field is empty
+     *
+     * @param array $requestData
+     * @return array
+     */
+    public function defaultData(array $requestData) : array
     {
-        $default = [
-            'user_id' => \Auth::id(),
+        return [
+            'user_id' => Auth::id()
         ];
-
-        if (isset($givenData['event_venue_id'])) {
-            $venue = EventVenue::findOrFail($givenData['event_venue_id']);
-
-            $address = (new Collection($venue->address->getAttributes()))
-                ->except('id', 'created_at', 'updated_at', 'deleted_at');
-
-            $default['address'] = $address->toArray();
-        }
-
-        return $default;
     }
 
-    public function scopeBetweenDates(Builder $q, $from, $to)
+    public function scopeBetweenDates(Builder $q, $from, $to = "")
     {
         return $this->repository()->addScopeBetweenDates($q, $from, $to);
 

@@ -4,8 +4,10 @@
 namespace MezzoLabs\Mezzo\Modules\Posts;
 
 
+use App\Post;
 use App\User;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Modules\Posts\Http\Transformers\PostTransformer;
 
 class PostsModule extends ModuleProvider
 {
@@ -34,5 +36,9 @@ class PostsModule extends ModuleProvider
     public function ready()
     {
         $this->loadViews();
+
+        $this->registerTransformers([
+            Post::class => PostTransformer::class
+        ]);
     }
 }

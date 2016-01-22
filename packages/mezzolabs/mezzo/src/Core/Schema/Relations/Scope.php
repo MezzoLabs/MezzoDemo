@@ -128,6 +128,7 @@ class Scope
             default:
                 throw new ReflectionException('Scopes with more than 4 parameters are not supported.');
         }
+
     }
 
     public function toString()

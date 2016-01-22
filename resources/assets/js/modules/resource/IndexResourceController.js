@@ -13,6 +13,9 @@ export default class IndexResourceController {
         this.attributes = [];
         this.perPage = 10;
         this.currentPage = 1;
+        this.pagination = {
+            size: 10
+        };
 
     }
 
@@ -40,6 +43,7 @@ export default class IndexResourceController {
                 this.models.forEach(model => model._meta = {});
             });
     }
+
     getModels() {
         if (this.searchText.length > 0) {
             return this.search();
@@ -48,7 +52,7 @@ export default class IndexResourceController {
         return this.models;
     }
 
-    getPagedModels(){
+    getPagedModels() {
         var models = this.getModels();
 
         var start = (this.currentPage - 1) * this.perPage;
@@ -225,9 +229,8 @@ export default class IndexResourceController {
         this.loadModels(params);
     }
 
-    pageChanged(){
+    pageChanged() {
 
-        console.log(this.currentPage);
     }
 
 }
