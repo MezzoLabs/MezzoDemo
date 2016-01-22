@@ -27,7 +27,7 @@
         <div class="col-md-8">
             <div class="main-panel panel panel-bordered">
                 <div class="panel-heading">
-                    <h3>Subscriptions for @{{ vm.content.email }}</h3>
+                    <h3>Subscriptions for @{{ vm.inputs.email }}</h3>
                 </div>
                 <div class="panel-body">
                     @include('modules.user::partials.subscriptions_list')

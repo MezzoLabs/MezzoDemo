@@ -1,36 +1,15 @@
 export default class FormDataService {
 
-
-    /*@ngInject*/
-    constructor($rootScope) {
-        this.$rootScope = $rootScope;
-    }
-
     form() {
         return $('form[name="vm.form"]');
-    }
-
-    get() {
-        return this.form().toObject();
-    }
-
-    set(formData) {
-        this.$rootScope.$broadcast('mezzo.formdata.set', {
-            form: this.form()[0],
-            data: formData
-        })
-
-        js2form(this.form()[0], formData);
-        // trigger input event to notify Angular that ng-model should update
-        // 'triggeredByFormDataService' is required for the Google Maps Directive
-        this.form().find(':input').trigger('input', 'triggeredByFormDataService');
     }
 
     transform(data){
         var stripped = this.unfoldData(data);
 
         stripped = this.unpackRelationInputs(this.form()[0], stripped);
-        stripped = this.formatTimestamps(stripped);
+        stripped = this.formatTimestamps(stripped)
+        stripped = this.flattenObject(stripped);
 
         return stripped;
     }
@@ -85,16 +64,13 @@ export default class FormDataService {
             //run through the checkbox array (each relation entry)
             for (var j in attribute) {
                 var relationEntry = attribute[j];
-
-                var selector = 'input[type=checkbox][name="' + i + '[' + relationEntry.id + ']"]';
+                const checkboxName = i + '[' + relationEntry.id + ']';
+                var selector = `input[type=checkbox][name="${ checkboxName }"]`;
 
                 if ($(selector).length == 0)
                     continue;
 
-                if (!_.isArray(clean[i])) {
-                    clean[i] = [];
-                }
-                clean[i].push(relationEntry.id);
+                clean[checkboxName] = true;
             }
         }
 
@@ -128,6 +104,27 @@ export default class FormDataService {
         }
 
         return formData;
+    }
+
+    // Source: https://gist.github.com/penguinboy/762197
+    flattenObject(ob) {
+        var toReturn = {};
+
+        for (var i in ob) {
+            if (!ob.hasOwnProperty(i)) continue;
+
+            if ((typeof ob[i]) == 'object') {
+                var flatObject = this.flattenObject(ob[i]);
+                for (var x in flatObject) {
+                    if (!flatObject.hasOwnProperty(x)) continue;
+
+                    toReturn[i + '.' + x] = flatObject[x];
+                }
+            } else {
+                toReturn[i] = ob[i];
+            }
+        }
+        return toReturn;
     }
 
 }

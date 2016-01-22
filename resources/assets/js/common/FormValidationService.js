@@ -8,11 +8,17 @@ export default class FormValidationService {
             return;
         }
 
+        const $formGroup = $formInput.parents('.form-group');
+        const validationMessagesTemplate = `<mezzo-validation-messages data-form-input="vm.form['${ nameAttribute }']"></mezzo-validation-messages>`;
+
         $formInput
             .attr('ng-model', `vm.inputs['${ nameAttribute }']`)
-            .parents('.form-group')
+            .not('[readonly],[disabled]')
+            .attr('ng-disabled', 'vm.loading');
+
+        $formGroup
             .attr('ng-class', `vm.hasError('${ nameAttribute }')`)
-            .prepend(`<mezzo-validation-messages data-form-input="vm.form['${ nameAttribute }']"></mezzo-validation-messages>`);
+            .append(validationMessagesTemplate);
     }
 
 }

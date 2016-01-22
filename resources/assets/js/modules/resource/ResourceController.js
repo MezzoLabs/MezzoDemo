@@ -14,6 +14,11 @@ export default class ResourceController {
 
     hasError(inputName) {
         const formControl = this.form[inputName];
+
+        if (!formControl) {
+            return;
+        }
+
         const atLeastOneError = Object.keys(formControl.$error).length > 0;
         const isDirty = formControl.$dirty;
 
@@ -29,7 +34,7 @@ export default class ResourceController {
         }
 
         const errors = err.data.errors;
-
+        console.error(err);
         this.handleServerSideErrors(errors);
     }
 
@@ -78,8 +83,10 @@ export default class ResourceController {
     }
 
     attemptSubmit() {
-        if (this.form.$invalid) {
+        console.info('attemptSubmit()');
 
+        if (this.form.$invalid) {
+            console.warn('attemptSubmit() failed because of an invalid form');
             this.dirtyFormControls(); // if a submit attempt failed because of an $invalid form all validation messages should be visible
 
             return false;
@@ -88,10 +95,87 @@ export default class ResourceController {
         return true;
     }
 
+    // Override this method in extending class
+    doSubmit(formData) {
+        console.warn('doSubmit() should be implemented by the extending class!');
+        return Promise.resolve();
+    }
+
+    submit() {
+        console.info('submit()');
+
+        tinyMCE.triggerSave();
+
+        if (!this.attemptSubmit()) {
+            return false;
+        }
+
+        this.loading = true;
+        const formData = this.getFormData();
+
+        console.info('doSubmit() with', formData);
+
+        this.doSubmit(formData)
+            .then(() => {
+                console.info('doSubmit().then()');
+
+                this.loading = false;
+            })
+            .catch(err => {
+                console.info('doSubmit().catch()');
+
+                this.loading = false;
+
+                this.catchServerSideErrors(err);
+            });
+    }
+
     dirtyFormControls() {
         this.formControls().forEach(formControl => {
             formControl.$dirty = true;
         });
+    }
+
+    getFormData() {
+        const formData = {};
+
+        $('form[name="vm.form"]')
+            .find(':input[name]')
+            .each((index, formInput) => {
+                const $formInput = $(formInput);
+                const name = $formInput.attr('name');
+                const value = $formInput.val();
+
+                /* Start checkbox edge case */
+                // match checkbox key e.g. categories[1] or categories[10]
+                const regex = /(.+)\[([0-9]+)\]/i;
+                const match = name.match(regex);
+
+                if (match) {
+                    const checkboxKey = match[1];
+                    const checkboxId = match[2];
+                    let checkbox = _.get(formData, checkboxKey);
+
+                    if (!_.isArray(checkbox)) {
+                        checkbox = [];
+
+                        _.set(formData, checkboxKey, checkbox);
+                    }
+
+                    if (!$formInput.prop('checked')) {
+                        return;
+                    }
+
+                    checkbox.push(checkboxId);
+
+                    return;
+                }
+                /* End checkbox edge case */
+
+                _.set(formData, name, value);
+            });
+
+        return formData;
     }
 
     form() {

@@ -8,11 +8,11 @@ export default class EditResourceController extends ResourceController {
 
         this.$scope = $scope;
         this.$stateParams = $injector.get('$stateParams');
+        this.$rootScope =  $injector.get('$rootScope');
         this.modelId = this.$stateParams.modelId;
         this.content = {};
 
         this.includes = ['content'];
-
 
         this.$scope.$on('$destroy', () => this.onDestroy());
     }
@@ -29,30 +29,18 @@ export default class EditResourceController extends ResourceController {
         this.loadContent();
     }
 
-    submit() {
-        if (!this.attemptSubmit()) {
-            return false;
-        }
-
-        tinyMCE.triggerSave();
-
-        const formData = this.formDataService.get();
-
-        this.modelApi.update(this.modelId, formData)
-            .then(response => this.onUpdated(this.formDataService.transform(response), formData))
-            .catch(err => this.catchServerSideErrors(err));
-
-        return true;
-    }
-
-    onUpdated(response, request) {
-
+    doSubmit(formData) {
+        return this.modelApi.update(this.modelId, formData)
+            .then(model => {
+                toastr.success('Success! ' + model._label + ' updated');
+            });
     }
 
     loadContent() {
         const params = {
             include: this.includes.join(',')
         };
+        this.loading = true;
 
         this.modelApi.content(this.modelId, params)
             .then(model => {
@@ -61,19 +49,19 @@ export default class EditResourceController extends ResourceController {
     }
 
     contentLoaded(model) {
-
-        console.log('received data: ', model);
-
         this.initContentBlocks(model);
         this.initLockable(model);
 
-        var cleaned = this.formDataService.transform(model);
+        const cleaned = this.formDataService.transform(model);
 
-        this.formDataService.set(cleaned);
+        console.log('cleaned', cleaned);
 
-        this.content = cleaned;
+        this.$rootScope.$broadcast('mezzo.formdata.set', {
+            data: cleaned
+        });
 
-        console.log('fill form: ', this.content);
+        this.inputs = cleaned;
+        this.loading = false;
     }
 
     initContentBlocks(model) {
@@ -91,7 +79,6 @@ export default class EditResourceController extends ResourceController {
                 hash,
                 block._label,
                 block.id,
-                block.fields,
                 block.options,
                 block.sort
             );
@@ -146,6 +133,5 @@ export default class EditResourceController extends ResourceController {
         this.modelStateService.name(this.modelName).index();
         sweetAlert(title, message, 'error');
     }
-
 
 }

@@ -25,7 +25,7 @@ $(() => {
             $('.nav-main .opened').removeClass('opened');
     });
 
-    $('.nav-main > li.has-pages > a .dropdown').click(function () {
+    $('.nav-main > li.has-pages > a span').click(function () {
         $(this).parents('li').toggleClass('opened');
     });
 
@@ -75,6 +75,16 @@ $(() => {
         '</button>';
 
     $('.editable').editable();
+
+    const noUiView = $('div[ui-view]').length === 0;
+
+    if (noUiView) {
+        console.info('Backend Rendered Page detected!');
+
+        $('a[href]:not([data-mezzo-href-prevent])').click(() => {
+            window.location.reload();
+        });
+    }
 });
 
 function quickviewVisible(open) {
