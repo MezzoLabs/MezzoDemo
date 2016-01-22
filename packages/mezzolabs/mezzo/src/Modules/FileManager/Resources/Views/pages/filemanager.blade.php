@@ -88,7 +88,8 @@
                 </button>
                 <!-- Move -->
                 <!-- Delete -->
-                <button type="button" class="btn btn-default" ng-click="vm.deleteFiles()" ng-disabled="!vm.canMoveOrDelete()">
+                <button type="button" class="btn btn-default" ng-click="vm.deleteFiles()"
+                        ng-disabled="!vm.canMoveOrDelete()">
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-close"></span>
                     </span>
@@ -150,20 +151,25 @@
     <div class="section section-file-info wrapper">
         <p class="attribute-info">
             <label>Name</label>
-            <input class="form-control" type="text" disabled value="@{{ vm.selected.name }}" />
+            <input class="form-control" type="text" disabled value="@{{ vm.selected.name }}"/>
         </p>
         <p class="attribute-info">
             <label>Folder</label>
-            <input class="form-control" type="text" disabled value="@{{ vm.selected.displayFolderPath() }}" />
+            <input class="form-control" type="text" disabled value="@{{ vm.selected.displayFolderPath() }}"/>
         </p>
         <p class="attribute-info">
             <label>Link</label>
-            <input class="form-control" type="text" disabled value="@{{ vm.selected.url }}" />
-            <br/>
-            <a class="btn btn-info btn-block btn-xs" target="_blank" ng-href="@{{ vm.selected.url }}">URL</a>
+        <div class="input-group">
+            <input class="form-control" style="height: 38px;" type="text" disabled value="@{{ vm.selected.url }}"/>
+            <span class="input-group-btn">
+                <a class="btn btn-info" target="_blank" ng-href="@{{ vm.selected.url }}"><i
+                            class="fa fa-chevron-right"></i></a>
+            </span>
+        </div><!-- /input-group -->
 
         </p>
     </div>
+    <hr/>
     <div class="section section-addon-inputs  wrapper">
         <div class="form-group" ng-if="vm.selected.isImage()">
             <label>{{ cockpit_form()->title('imagefile', 'caption') }}</label>
