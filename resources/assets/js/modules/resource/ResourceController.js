@@ -146,6 +146,7 @@ export default class ResourceController {
                 const name = $formInput.attr('name');
                 const value = $formInput.val();
 
+                /* Start checkbox edge case */
                 // match checkbox key e.g. categories[1] or categories[10]
                 const regex = /(.+)\[([0-9]+)\]/i;
                 const match = name.match(regex);
@@ -169,6 +170,7 @@ export default class ResourceController {
 
                     return;
                 }
+                /* End checkbox edge case */
 
                 _.set(formData, name, value);
             });
