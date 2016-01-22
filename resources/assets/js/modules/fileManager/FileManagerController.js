@@ -13,7 +13,7 @@ export default class FileManagerController {
 
         this.categories = categories;
         this.category = this.categories[0];
-        this.orderOptions = [ 'Title', 'Last modified' ];
+        this.orderOptions = ['Title', 'Last modified'];
         this.orderBy = this.orderOptions[0];
         this.selected = null;
         this.loading = false;
@@ -35,7 +35,7 @@ export default class FileManagerController {
                 const file = new File(apiFile);
                 const filePath = apiFile.path;
 
-                if(filePath.indexOf('/') === -1) {
+                if (filePath.indexOf('/') === -1) {
                     this.library.files.push(file);
                     return;
                 }
@@ -70,18 +70,18 @@ export default class FileManagerController {
         return folder;
     }
 
-    isActive(category){
-        if(category === this.category){
+    isActive(category) {
+        if (category === this.category) {
             return 'active';
         }
     }
 
-    selectCategory(category){
+    selectCategory(category) {
         this.category = category;
     }
 
-    selectFile(file){
-        if(file === this.selected){
+    selectFile(file) {
+        if (file === this.selected) {
             this.selected = null;
             this.quickviewService.open = false;
 
@@ -92,18 +92,18 @@ export default class FileManagerController {
         this.quickviewService.open = true;
     }
 
-    enterFolder(file){
-        if(file.isFolder){
+    enterFolder(file) {
+        if (file.isFolder) {
             this.folder = file;
             this.files = file.files;
         }
     }
 
-    folderHierarchy(){
+    folderHierarchy() {
         var folders = [];
         var folder = this.folder;
 
-        while(folder){
+        while (folder) {
             folders.push(folder);
 
             folder = folder.parent;
@@ -112,16 +112,16 @@ export default class FileManagerController {
         return folders.reverse();
     }
 
-    showFolderHierarchy(){
+    showFolderHierarchy() {
         return this.category.everything && !this.search;
     }
 
-    showCategoryAsFolderHierarchy(){
+    showCategoryAsFolderHierarchy() {
         return !this.category.everything && !this.search;
     }
 
-    addFolder(name){
-        if(!name || !name.length){
+    addFolder(name) {
+        if (!name || !name.length) {
             return false;
         }
 
@@ -130,21 +130,21 @@ export default class FileManagerController {
         this.folder.files.push(newFolder);
     }
 
-    getFiles(){
-        if(this.search){
+    getFiles() {
+        if (this.search) {
             return this.searchFiles();
         }
 
         var category = this.category;
 
-        if(category.everything){
+        if (category.everything) {
             return this.files;
         }
 
         var filteredFiles = [];
 
         this.allFiles().forEach(file => {
-            if(category.filter(file)){
+            if (category.filter(file)) {
                 filteredFiles.push(file);
             }
         });
@@ -152,13 +152,13 @@ export default class FileManagerController {
         return filteredFiles;
     }
 
-    searchFiles(){
+    searchFiles() {
         var files = this.allFiles();
         var found = [];
         var lowerSearch = this.search.toLowerCase();
 
         files.forEach(file => {
-            if(file.title.toLowerCase().indexOf(lowerSearch) !== -1){
+            if (file.title.toLowerCase().indexOf(lowerSearch) !== -1) {
                 found.push(file);
             }
         });
@@ -166,13 +166,13 @@ export default class FileManagerController {
         return found;
     }
 
-    sortedFiles(){
+    sortedFiles() {
         var files = this.getFiles();
         var folders = [];
         var notFolders = [];
 
         files.forEach(file => {
-            if(file.isFolder){
+            if (file.isFolder) {
                 folders.push(file);
             } else {
                 notFolders.push(file);
@@ -182,13 +182,13 @@ export default class FileManagerController {
         return folders.concat(notFolders);
     }
 
-    allFiles(folder = this.library){
+    allFiles(folder = this.library) {
         var files = [];
 
         folder.files.forEach(file => {
             files.push(file);
 
-            if(file.isFolder){
+            if (file.isFolder) {
                 files = files.concat(this.allFiles(file));
             }
         });
@@ -196,20 +196,20 @@ export default class FileManagerController {
         return files;
     }
 
-    items(file){
+    items(file) {
         var count = 0;
 
-        if(file.isFolder){
+        if (file.isFolder) {
             count = file.files.length;
         }
 
-        return count + ' ' + (count === 1 ? 'item': 'items');
+        return count + ' ' + (count === 1 ? 'item' : 'items');
     }
 
-    deleteFiles(){
+    deleteFiles() {
         var file = this.selected;
 
-        if(file) {
+        if (file) {
             swal({
                 title: 'Sind Sie sicher?',
                 text: 'Die folgenden Dateien werden unwiderruflich gelöscht: ' + file.title,
@@ -231,7 +231,7 @@ export default class FileManagerController {
         }
     }
 
-    deleteFile(file, deleteRemote = true){
+    deleteFile(file, deleteRemote = true) {
         _.remove(this.files, file);
 
         if (!deleteRemote) {
@@ -241,7 +241,7 @@ export default class FileManagerController {
         this.api.deleteFile(file);
     }
 
-    moveTo(folder){
+    moveTo(folder) {
         this.moveFile(this.selected, folder);
         $('#move-modal').modal('hide');
         this.enterFolder(folder);
@@ -251,14 +251,14 @@ export default class FileManagerController {
         this.api.moveFile(file, folder.path());
         this.deleteFile(file, false); // false because we do not want to delete the remote file
 
-        if(file.isFolder){
+        if (file.isFolder) {
             file.parent = folder;
         }
 
         folder.files.push(file);
     }
 
-    upload(file){
+    upload(file) {
         this.Upload.upload({
             url: '/api/files/upload',
             data: {
@@ -274,7 +274,7 @@ export default class FileManagerController {
         });
     }
 
-    onDrop(droppable, draggable){
+    onDrop(droppable, draggable) {
         var files = this.sortedFiles();
         var folderIndex = $(droppable).data('index');
         var draggedIndex = $(draggable).data('index');
@@ -290,7 +290,7 @@ export default class FileManagerController {
     }
 
     canMoveOrDelete() {
-        if(this.selected && !this.selected.isFolder) {
+        if (this.selected && !this.selected.isFolder) {
             return true;
         }
 
@@ -308,6 +308,29 @@ export default class FileManagerController {
             this.addFolder(newFolderName);
             this.$scope.$apply();
         });
+    }
+
+    submitAddon() {
+        var addon = this.selected.addon;
+
+        var addonModelApi = this.addonModelApi(this.selected);
+
+        if (!addonModelApi) {
+            return false;
+        }
+
+        addonModelApi.update(addon.id, _.omit(addon, ['_model', 'id']));
+    }
+
+    addonModelApi(file) {
+        var addon = file.addon;
+
+        if (!addon || addon.length == 0) {
+            return false;
+        }
+
+        return this.api.model(addon._model);
+
     }
 
 }

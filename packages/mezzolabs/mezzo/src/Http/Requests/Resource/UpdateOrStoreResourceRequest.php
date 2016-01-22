@@ -25,11 +25,17 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
     {
         if (!$this->formObject) {
             $this->addDefaultData();
+            $this->processData();
             $this->formObject = $this->makeFormObject();
             $this->formObject->setId($this->getId());
         }
 
         return $this->formObject;
+    }
+
+    public function processData()
+    {
+
     }
 
     protected function makeFormObject()

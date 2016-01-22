@@ -78,7 +78,7 @@ abstract class MezzoImageFile extends \App\Mezzo\BaseModel
      * @var array
     */
     protected $fillable = [
-
+        'cropping', 'caption'
     ];
 
     /**
