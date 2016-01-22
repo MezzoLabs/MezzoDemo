@@ -9,6 +9,7 @@ export default class FormValidationService {
         }
 
         const $formGroup = $formInput.parents('.form-group');
+        const validationMessagesTemplate = `<mezzo-validation-messages data-form-input="vm.form['${ nameAttribute }']"></mezzo-validation-messages>`;
 
         $formInput
             .attr('ng-model', `vm.inputs['${ nameAttribute }']`)
@@ -17,7 +18,7 @@ export default class FormValidationService {
 
         $formGroup
             .attr('ng-class', `vm.hasError('${ nameAttribute }')`)
-            .append(`<mezzo-validation-messages data-form-input="vm.form['${ nameAttribute }']"></mezzo-validation-messages>`);
+            .append(validationMessagesTemplate);
     }
 
 }
