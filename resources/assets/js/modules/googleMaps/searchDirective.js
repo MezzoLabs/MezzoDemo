@@ -93,6 +93,7 @@ export default function searchDirective(mapService) {
     }
 
     function setInputValue(name, value) {
+        console.log(name, value);
         $(`[name="${ name }"]`).val(value).trigger('input');
     }
 }

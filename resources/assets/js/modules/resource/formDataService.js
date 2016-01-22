@@ -9,8 +9,7 @@ export default class FormDataService {
 
         stripped = this.unpackRelationInputs(this.form()[0], stripped);
         stripped = this.formatTimestamps(stripped)
-
-        this.flattenContent(stripped);
+        stripped = this.flattenObject(stripped);
 
         return stripped;
     }
@@ -102,20 +101,6 @@ export default class FormDataService {
 
         if (typeof formData == "string" && formData.match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)) {
             return moment(formData).format('DD.MM.YYYY HH:mm');
-        }
-
-        return formData;
-    }
-
-    flattenContent(formData) {
-        const content = formData.content;
-
-        if (content) {
-            const flatContent = this.flattenObject(content);
-
-            _.forOwn(flatContent, (value, key) => {
-                formData['content.' + key] = value;
-            });
         }
 
         return formData;

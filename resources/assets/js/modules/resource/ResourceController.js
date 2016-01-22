@@ -144,11 +144,7 @@ export default class ResourceController {
             .each((index, formInput) => {
                 const $formInput = $(formInput);
                 const name = $formInput.attr('name');
-                let value = this.inputs[name];
-
-                if (value === undefined) {
-                    value = $formInput.val();
-                }
+                const value = $formInput.val();
 
                 // match checkbox key e.g. categories[1] or categories[10]
                 const regex = /(.+)\[([0-9]+)\]/i;
@@ -163,6 +159,10 @@ export default class ResourceController {
                         checkbox = [];
 
                         _.set(formData, checkboxKey, checkbox);
+                    }
+
+                    if (!$formInput.prop('checked')) {
+                        return;
                     }
 
                     checkbox.push(checkboxId);
