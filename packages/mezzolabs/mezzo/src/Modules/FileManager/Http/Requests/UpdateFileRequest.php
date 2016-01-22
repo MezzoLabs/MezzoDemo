@@ -80,8 +80,8 @@ class UpdateFileRequest extends UpdateResourceRequest
     public function rules()
     {
         return [
-            'filename' => 'required|between:3,255',
-            'folder' => 'required|between:1,255'
+            'filename' => 'sometimes|between:3,255',
+            'folder' => 'sometimes|between:1,255'
         ];
     }
 

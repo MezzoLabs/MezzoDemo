@@ -19,7 +19,7 @@ export default class File {
 
         const filePathSplitted = this.filePath.split('/');
 
-        return filePathSplitted.slice(0, filePathSplitted.length - 1);
+        return filePathSplitted.slice(0, filePathSplitted.length - 1).join('/');
     }
 
     icon() {
