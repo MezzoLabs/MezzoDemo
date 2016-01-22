@@ -1,5 +1,9 @@
 export default class FormDataService {
 
+    form() {
+        return $('form[name="vm.form"]');
+    }
+
     transform(data){
         var stripped = this.unfoldData(data);
 
