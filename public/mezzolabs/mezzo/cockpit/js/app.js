@@ -96,10 +96,23 @@ var FormValidationService = (function () {
 
             var $formGroup = $formInput.parents('.form-group');
             var validationMessagesTemplate = '<mezzo-validation-messages data-form-input="vm.form[\'' + nameAttribute + '\']"></mezzo-validation-messages>';
+            var ngModel = 'vm.inputs[\'' + nameAttribute + '\']';
 
-            $formInput.attr('ng-model', 'vm.inputs[\'' + nameAttribute + '\']').not('[readonly],[disabled]').attr('ng-disabled', 'vm.loading');
+            $formInput.attr('ng-model', ngModel).not('[readonly],[disabled]').attr('ng-disabled', 'vm.loading');
 
             $formGroup.attr('ng-class', 'vm.hasError(\'' + nameAttribute + '\')').append(validationMessagesTemplate);
+
+            var isSelect = $formInput.is('select');
+
+            if (isSelect) {
+                var firstOption = $formInput.children(':first');
+
+                if (firstOption.length) {
+                    var selectDefaultValue = firstOption.val();
+
+                    $formInput.attr('ng-init', ngModel + (' = \'' + selectDefaultValue + '\''));
+                }
+            }
         }
     }]);
 
