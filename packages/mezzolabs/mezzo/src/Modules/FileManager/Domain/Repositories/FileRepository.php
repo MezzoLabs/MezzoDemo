@@ -119,6 +119,7 @@ class FileRepository extends ModelRepository
     protected function trimSlashes($data)
     {
         if (isset($data['folder']))
+
             $data['folder'] = str_replace('.', '', trim($data['folder']));
 
         if (isset($data['filename']))

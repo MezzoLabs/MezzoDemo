@@ -12,7 +12,6 @@
 */
 
 
-use App\Magazine\NewsLetter\Services\NewsletterService;
 use App\Tutorial;
 use App\User;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -42,6 +41,9 @@ Route::group(['middleware' => ['mezzo.no_permissions_check', 'mezzo.no_model_val
         'register' => 'Auth\AuthController',
         'password' => 'Auth\PasswordController',
     ]);
+
+    Route::get('oauth/callback/{provider}', 'Auth\AuthController@oauthCallback');
+    Route::get('oauth/redirect/{provider}', 'Auth\AuthController@oauthToProvider');
 
 
 });

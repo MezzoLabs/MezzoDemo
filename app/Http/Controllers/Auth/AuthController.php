@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Authentication\Social\SocialAuthenticator;
 use App\Events\UserWasRegistered;
 use App\Events\UserWasVerified;
 use App\Exceptions\InvalidConfirmationCodeException;
@@ -22,10 +23,21 @@ class AuthController extends Controller
 
     protected $loginPath = '/auth/login';
 
+    protected $oauthProviders = [
+        'github' => [
+
+        ]
+    ];
+
     /**
      * @var EloquentModelReflection|MezzoModelReflection|ModelReflection
      */
     protected $userReflection;
+
+    /**
+     * @var SocialAuthenticator
+     */
+    private $socialAuthenticator;
 
     /*
     |--------------------------------------------------------------------------
@@ -44,11 +56,12 @@ class AuthController extends Controller
     /**
      * Create a new authentication controller instance.
      */
-    public function __construct()
+    public function __construct(SocialAuthenticator $socialAuthenticator)
     {
         $this->middleware('guest', ['except' => 'getLogout']);
         $this->userReflection = mezzo()->model('User');
 
+        $this->socialAuthenticator = $socialAuthenticator;
     }
 
     /**
@@ -131,5 +144,16 @@ class AuthController extends Controller
         \Session::flash('message', 'You have successfully verified your account.');
 
         return redirect('auth/login');
+    }
+
+    public function oauthToProvider($provider)
+    {
+        return $this->socialAuthenticator->getProvider($provider)->redirect();
+    }
+
+    public function oauthCallback($provider)
+    {
+        return $this->socialAuthenticator->getProvider($provider)->handleCallback();
+
     }
 }

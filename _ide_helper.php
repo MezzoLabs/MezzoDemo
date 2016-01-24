@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.1.28 (LTS) on 2016-01-20.
+ * Generated for Laravel 5.1.28 (LTS) on 2016-01-24.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -2254,7 +2254,7 @@ namespace {
          * @static 
          */
         public static function increment($key, $value = 1){
-            return \Illuminate\Cache\FileStore::increment($key, $value);
+            return \Illuminate\Cache\RedisStore::increment($key, $value);
         }
         
         /**
@@ -2266,7 +2266,7 @@ namespace {
          * @static 
          */
         public static function decrement($key, $value = 1){
-            return \Illuminate\Cache\FileStore::decrement($key, $value);
+            return \Illuminate\Cache\RedisStore::decrement($key, $value);
         }
         
         /**
@@ -2276,29 +2276,43 @@ namespace {
          * @static 
          */
         public static function flush(){
-            \Illuminate\Cache\FileStore::flush();
+            \Illuminate\Cache\RedisStore::flush();
         }
         
         /**
-         * Get the Filesystem instance.
+         * Get the Redis connection instance.
          *
-         * @return \Illuminate\Filesystem\Filesystem 
+         * @return \Predis\ClientInterface 
          * @static 
          */
-        public static function getFilesystem(){
-            return \Illuminate\Cache\FileStore::getFilesystem();
+        public static function connection()
+        {
+            return \Illuminate\Cache\RedisStore::connection();
         }
         
         /**
-         * Get the working directory of the cache.
+         * Set the connection name to be used.
          *
-         * @return string 
+         * @param string $connection
+         * @return void 
          * @static 
          */
-        public static function getDirectory(){
-            return \Illuminate\Cache\FileStore::getDirectory();
+        public static function setConnection($connection)
+        {
+            \Illuminate\Cache\RedisStore::setConnection($connection);
         }
         
+        /**
+         * Get the Redis database instance.
+         *
+         * @return \Illuminate\Redis\Database
+         * @static
+         */
+        public static function getRedis()
+        {
+            return \Illuminate\Cache\RedisStore::getRedis();
+        }
+
         /**
          * Get the cache key prefix.
          *
@@ -2306,7 +2320,19 @@ namespace {
          * @static 
          */
         public static function getPrefix(){
-            return \Illuminate\Cache\FileStore::getPrefix();
+            return \Illuminate\Cache\RedisStore::getPrefix();
+        }
+
+        /**
+         * Set the cache key prefix.
+         *
+         * @param string $prefix
+         * @return void
+         * @static
+         */
+        public static function setPrefix($prefix)
+        {
+            \Illuminate\Cache\RedisStore::setPrefix($prefix);
         }
         
     }
@@ -15139,6 +15165,100 @@ namespace {
 
 
     class Html extends \App\Html\HtmlHelper{
+
+    }
+
+
+    class Socialite extends \Laravel\Socialite\Facades\Socialite
+    {
+
+        /**
+         * Get a driver instance.
+         *
+         * @param string $driver
+         * @return mixed
+         * @static
+         */
+        public static function with($driver)
+        {
+            return \Laravel\Socialite\SocialiteManager::with($driver);
+        }
+
+        /**
+         * Build an OAuth 2 provider instance.
+         *
+         * @param string $provider
+         * @param array $config
+         * @return \Laravel\Socialite\Two\AbstractProvider
+         * @static
+         */
+        public static function buildProvider($provider, $config)
+        {
+            return \Laravel\Socialite\SocialiteManager::buildProvider($provider, $config);
+        }
+
+        /**
+         * Format the server configuration.
+         *
+         * @param array $config
+         * @return array
+         * @static
+         */
+        public static function formatConfig($config)
+        {
+            return \Laravel\Socialite\SocialiteManager::formatConfig($config);
+        }
+
+        /**
+         * Get the default driver name.
+         *
+         * @throws \InvalidArgumentException
+         * @return string
+         * @static
+         */
+        public static function getDefaultDriver()
+        {
+            return \Laravel\Socialite\SocialiteManager::getDefaultDriver();
+        }
+
+        /**
+         * Get a driver instance.
+         *
+         * @param string $driver
+         * @return mixed
+         * @static
+         */
+        public static function driver($driver = null)
+        {
+            //Method inherited from \Illuminate\Support\Manager            
+            return \Laravel\Socialite\SocialiteManager::driver($driver);
+        }
+
+        /**
+         * Register a custom driver creator Closure.
+         *
+         * @param string $driver
+         * @param \Closure $callback
+         * @return $this
+         * @static
+         */
+        public static function extend($driver, $callback)
+        {
+            //Method inherited from \Illuminate\Support\Manager            
+            return \Laravel\Socialite\SocialiteManager::extend($driver, $callback);
+        }
+
+        /**
+         * Get all of the created "drivers".
+         *
+         * @return array
+         * @static
+         */
+        public static function getDrivers()
+        {
+            //Method inherited from \Illuminate\Support\Manager            
+            return \Laravel\Socialite\SocialiteManager::getDrivers();
+        }
         
     }
 

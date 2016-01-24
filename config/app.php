@@ -154,10 +154,11 @@ return [
 
         JeroenG\Packager\PackagerServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-
+        Laravel\Socialite\SocialiteServiceProvider::class,
         Codesleeve\LaravelStapler\Providers\L5ServiceProvider::class,
         Webpatser\Countries\CountriesServiceProvider::class,
         Skovmand\Mailchimp\MailchimpServiceProvider::class,
+
 
         /*
          * Mezzo Provider - Mezzo is love
@@ -220,7 +221,8 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Form' => App\Html\FormFacade::class,
         'Countries' => Webpatser\Countries\CountriesFacade::class,
-        'Html' => App\Html\HtmlHelper::class
-    ],
+        'Html' => App\Html\HtmlHelper::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class
+    ]
 
 ];
