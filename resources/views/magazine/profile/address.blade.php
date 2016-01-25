@@ -4,28 +4,41 @@
     Address {{ $user->email }}
 
     @if($user->address)
-        {!! Form::model($user->address, ['url' => 'profile/address']) !!}
+        {!! Form::model($user->address, ['url' => 'profile/address', 'method' => 'PUT']) !!}
+
     @else
         {!! Form::create(\App\Address::class, ['url' => 'profile/address']) !!}
     @endif
 
-    {!! csrf_field() !!}
 
-    @foreach($address->attributes as $attribute)
-        {!! $attribute->render() !!}
-    @endforeach
-
+    <label>Addressant</label>
     {!! Form::attribute('addressee') !!}
+
+    <label>Organisation</label>
     {!! Form::attribute('organization') !!}
+
+    <label>Straße</label>
     {!! Form::attribute('street') !!}
+
+    <label>Straßennummer</label>
     {!! Form::attribute('street_extra') !!}
+
+    <label>PLZ</label>
     {!! Form::attribute('zip') !!}
+
+    <label>Stadt</label>
     {!! Form::attribute('city') !!}
+
+    <label>Telefon</label>
     {!! Form::attribute('phone') !!}
+
+    <label>Fax</label>
     {!! Form::attribute('fax') !!}
-    {{-- Form::attribute('latitude', ['wrap' => false, 'attributes' => ['type' => 'hidden']]) --}}
-    {!! Form::attribute('latitude') !!}
-    {!! Form::attribute('longitude') !!}
+    {!! Form::attribute('longitude', ['wrap' => false, 'attributes' => ['type' => 'hidden']]) !!}
+    {!! Form::attribute('latitude', ['wrap' => false, 'attributes' => ['type' => 'hidden']]) !!}
+
+
+    <label>Land</label>
     {!! Form::attribute('country') !!}
 
 

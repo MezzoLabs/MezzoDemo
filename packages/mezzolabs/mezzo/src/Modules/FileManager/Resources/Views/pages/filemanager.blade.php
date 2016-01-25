@@ -146,8 +146,10 @@
 
 @section('quickview_content')
     <div class="section" ng-if="vm.selected.thumbnail()">
-        <img class="img-responsive" ng-src="@{{ vm.selected.thumbnail(false) }}"/>
+        <img style="padding: 3px;" class="img-responsive" ng-src="@{{ vm.selected.thumbnail('small') }}"/>
     </div>
+    <hr/>
+
     <div class="section section-file-info wrapper">
         <p class="attribute-info">
             <label>Name</label>

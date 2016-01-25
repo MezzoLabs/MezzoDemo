@@ -16,4 +16,9 @@ final class GithubAuthenticator extends SocialAuthenticationProvider
     {
         return [];
     }
+
+    public function userData() : array
+    {
+        return [];
+    }
 }

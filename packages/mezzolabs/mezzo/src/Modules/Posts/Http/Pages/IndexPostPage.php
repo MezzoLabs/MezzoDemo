@@ -7,4 +7,6 @@ use MezzoLabs\Mezzo\Cockpit\Pages\Resources\IndexResourcePage;
 
 class IndexPostPage extends IndexResourcePage
 {
+    protected $view = 'modules.posts::posts.index';
+
 }

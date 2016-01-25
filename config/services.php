@@ -44,7 +44,7 @@ return [
     'facebook' => [
         'client_id' => env('FACEBOOK_CLIENT_ID', 'your-facebook-app-id'),
         'client_secret' => env('FACEBOOK_CLIENT_SECRET', 'your-facebook-app-secret'),
-        'redirect' => 'http://mezzo.dev/oauth/callback/facebook',
+        'redirect' => 'http://mezzo.dev/oauth/callback/facebook/',
     ],
 
 ];

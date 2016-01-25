@@ -12,11 +12,16 @@
   box-shadow: $top-shadow;
 
   .toolbox {
+    a {
+      color: $mezzo-font-color;
+
+    }
+
     @include layout-list();
 
     margin: 0px 20px;
 
-    li {
+    > li {
       font-size: 14px;
       padding-top: 10px;
       height: 40px;
@@ -30,15 +35,20 @@
     }
   }
 
-  .toolbox-right{
+  .toolbox-right {
     @extend .pull-right;
+
+    .dropdown-menu{
+      right: 0;
+      left: auto;
+    }
   }
 
-  .toolbox-left{
+  .toolbox-left {
     @extend .pull-left;
   }
 }
 
-.sidebar-unpinned #topbar{
+.sidebar-unpinned #topbar {
   padding-left: $sidebar-closed-width;
 }

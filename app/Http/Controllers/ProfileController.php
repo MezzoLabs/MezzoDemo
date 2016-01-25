@@ -81,7 +81,7 @@ class ProfileController extends Controller
         return redirect()->back()->with('message', 'New address stored');
     }
 
-    public function updateAddress(UpdateAddressRequest $request)
+    public function updateAddress(\App\Http\Requests\UpdateAddressRequest $request)
     {
         $this->addresses->update($request->all(), $this->user->address->id);
 

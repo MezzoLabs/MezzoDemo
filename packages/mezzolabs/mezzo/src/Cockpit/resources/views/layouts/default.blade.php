@@ -16,6 +16,7 @@
     {!! cockpit_stylesheet('/components/gridster/dist/jquery.gridster.min.css') !!}
     {!! cockpit_stylesheet('/components/chosen/chosen.min.css') !!}
     {!! cockpit_stylesheet('/components/toastr/toastr.min.css') !!}
+    {!! cockpit_stylesheet('/components/ng-table/dist/ng-table.min.css') !!}
     {!! cockpit_stylesheet('/css/app.css') !!}
             <!-- CSS -->
 </head>

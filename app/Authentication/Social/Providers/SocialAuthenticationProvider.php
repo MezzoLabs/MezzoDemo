@@ -57,13 +57,12 @@ abstract class SocialAuthenticationProvider
 
     public function handleCallback()
     {
-        mezzo_dd($this->userData());
+
     }
 
-    public function userData()
-    {
-        return $this->socialiteDriver()->user();
-    }
+    abstract public function userData() : array;
+
+
 
 
 }

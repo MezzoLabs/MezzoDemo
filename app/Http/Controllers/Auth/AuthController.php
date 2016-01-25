@@ -4,10 +4,16 @@ namespace App\Http\Controllers\Auth;
 
 use App\Authentication\Social\SocialAuthenticator;
 use App\Events\UserWasRegistered;
+use App\Events\UserWasRegisteredWithEmail;
+use App\Events\UserWasRegisteredWithSocialAuthentication;
 use App\Events\UserWasVerified;
+use App\Events\UserWasVerifiedWithEmail;
+use App\Events\UserWasVerifiedWithSocialAuthentication;
 use App\Exceptions\InvalidConfirmationCodeException;
 use App\Http\Controllers\Controller;
+use App\Repositories\UserRepository;
 use App\User;
+use Auth;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
@@ -39,6 +45,12 @@ class AuthController extends Controller
      */
     private $socialAuthenticator;
 
+
+    /**
+     * @var UserRepository
+     */
+    private $users;
+
     /*
     |--------------------------------------------------------------------------
     | Registration & Login Controller
@@ -55,13 +67,16 @@ class AuthController extends Controller
 
     /**
      * Create a new authentication controller instance.
+     * @param SocialAuthenticator $socialAuthenticator
+     * @param UserRepository $users
      */
-    public function __construct(SocialAuthenticator $socialAuthenticator)
+    public function __construct(SocialAuthenticator $socialAuthenticator, UserRepository $users)
     {
         $this->middleware('guest', ['except' => 'getLogout']);
         $this->userReflection = mezzo()->model('User');
 
         $this->socialAuthenticator = $socialAuthenticator;
+        $this->users = $users;
     }
 
     /**
@@ -70,9 +85,11 @@ class AuthController extends Controller
      * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
+    protected function validator(array $data, $rules = null)
     {
-        $rules = $this->userReflection->rules();
+        if (!$rules) {
+            $rules = $this->userReflection->rules();
+        }
 
         $rules['password'] = 'required|' . $rules['password'];
 
@@ -92,7 +109,7 @@ class AuthController extends Controller
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'password' => (!empty($data['password'])) ? bcrypt($data['password']) : '',
             'confirmation_code' => $data['confirmation_code'],
             'confirmed' => false,
             'backend' => 0
@@ -121,7 +138,7 @@ class AuthController extends Controller
 
         $user = $this->create($data);
 
-        event(new UserWasRegistered($user));
+        event(new UserWasRegisteredWithEmail($user));
 
         \Session::flash('message', 'Please check your mail.');
         return redirect('/');
@@ -139,7 +156,7 @@ class AuthController extends Controller
             throw new InvalidConfirmationCodeException;
         }
 
-        event(new UserWasVerified($user));
+        event(new UserWasVerifiedWithEmail($user));
 
         \Session::flash('message', 'You have successfully verified your account.');
 
@@ -153,7 +170,37 @@ class AuthController extends Controller
 
     public function oauthCallback($provider)
     {
-        return $this->socialAuthenticator->getProvider($provider)->handleCallback();
+        $provider = $this->socialAuthenticator->getProvider($provider);
+
+        $data = $provider->userData();
+
+        $existing = $this->users->findByEmail($data['email']);
+
+        if ($existing) {
+            $existing->fill($data)->save();
+            \Session::flash('message', 'Account updated.');
+
+            Auth::login($existing, true);
+
+        } else {
+            $user = $this->create($data);
+            event(new UserWasRegisteredWithSocialAuthentication($user));
+
+            $user->confirmed = true;
+            $user->save();
+
+            event(new UserWasVerifiedWithSocialAuthentication($user));
+
+
+
+            \Session::flash('message', 'New account.');
+
+            Auth::login($user, true);
+
+
+        }
+
+        return redirect('/');
 
     }
 }

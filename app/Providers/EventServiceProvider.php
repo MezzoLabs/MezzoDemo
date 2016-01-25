@@ -3,7 +3,11 @@
 namespace App\Providers;
 
 use App\Events\UserWasRegistered;
+use App\Events\UserWasRegisteredWithEmail;
+use App\Events\UserWasRegisteredWithSocialAuthentication;
 use App\Events\UserWasVerified;
+use App\Events\UserWasVerifiedWithEmail;
+use App\Events\UserWasVerifiedWithSocialAuthentication;
 use App\Listeners\AddDefaultRole;
 use App\Listeners\EmailRegisterNotification;
 use App\Listeners\EmailUserVerification;
@@ -21,13 +25,20 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        UserWasRegistered::class => [
+        UserWasRegisteredWithEmail::class => [
             EmailUserVerification::class,
             EmailRegisterNotification::class
         ],
-        UserWasVerified::class => [
+        UserWasRegisteredWithSocialAuthentication::class => [
+            //EmailRegisterNotification::class
+        ],
+        UserWasVerifiedWithEmail::class => [
             UnlockUser::class,
             EmailSuccessfullyVerifiedInfo::class,
+            AddDefaultRole::class,
+            SubscribeToNewsletter::class
+        ],
+        UserWasVerifiedWithSocialAuthentication::class => [
             AddDefaultRole::class,
             SubscribeToNewsletter::class
         ]

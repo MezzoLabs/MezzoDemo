@@ -9,6 +9,7 @@ export default class IndexResourceController {
         this.includes = [];
         this.language = languageService;
         this.models = [];
+        this.modelValues = {};
         this.searchText = '';
         this.selectAll = false;
         this.loading = false;
@@ -31,7 +32,12 @@ export default class IndexResourceController {
     }
 
     addAttribute(name, type) {
-        this.attributes.push({name: name, type: type});
+
+        this.attributes.push({name: name, type: type, order: '', filter: ''});
+    }
+
+    attribute(name) {
+        return _.find(this.attributes, ['name', name]);
     }
 
     loadModels(params = {}) {
@@ -48,11 +54,19 @@ export default class IndexResourceController {
     }
 
     getModels() {
-        if (this.searchText.length > 0) {
+        if (this.searchText.length > 0 || this.hasFilters()) {
             return this.search();
         }
 
         return this.models;
+    }
+
+    hasFilters() {
+        for (var i in this.attributes) {
+            if (this.attributes[i].filter != "") return true;
+        }
+
+        return false;
     }
 
     getPagedModels() {
@@ -79,12 +93,14 @@ export default class IndexResourceController {
     }
 
     getModelValues(model) {
-        var values = [];
+        var values = {};
 
         for (var i in this.attributes) {
             var attribute = this.attributes[i];
-            values.push(this.transformModelValue(attribute, model[attribute.name]));
+            values[attribute.name] = this.transformModelValue(attribute, model[attribute.name]);
         }
+
+        this.modelValues[model.id] = values;
 
         return values;
     }
@@ -106,9 +122,8 @@ export default class IndexResourceController {
         }
 
 
-
-        if (this.lang.has('attributes.'+  attribute.name +'.' + value)){
-            return this.lang.get('attributes.'+  attribute.name +'.' + value);
+        if (this.lang.has('attributes.' + attribute.name + '.' + value)) {
+            return this.lang.get('attributes.' + attribute.name + '.' + value);
         }
 
         if (attribute.type == "boolean") {
@@ -143,16 +158,24 @@ export default class IndexResourceController {
 
     search() {
         return this.models.filter(model => {
-            for (var key in model) {
-                if (model.hasOwnProperty(key)) {
-                    var value = model[key];
+            return this.modelIsInFilters(model) && this.modelIsInFilters(model);
+        });
+    }
 
-                    if (String(value).indexOf(this.searchText) !== -1) {
-                        return true;
-                    }
+    modelIsInSearch() {
+        for (var key in model) {
+            if (model.hasOwnProperty(key)) {
+                var value = model[key];
+
+                if (String(value).indexOf(this.searchText) !== -1) {
+                    return true;
                 }
             }
-        });
+        }
+    }
+
+    modelIsInFilters(model) {
+
     }
 
     updateSelectAll() {
@@ -241,6 +264,50 @@ export default class IndexResourceController {
 
     pageChanged() {
 
+    }
+
+    sortIcon(name) {
+        switch (this.attribute(name).order) {
+            case 'desc':
+                return 'fa fa-sort-desc';
+            case 'asc':
+                return 'fa fa-sort-asc';
+            default:
+                return 'fa fa-sort';
+        }
+    }
+
+    sortBy(name) {
+        _.forEach(this.attributes, (attribute) => {
+            if (attribute.name != name) {
+                attribute.order = '';
+            }
+        });
+
+        var attribute = this.attribute(name);
+        attribute.order = this.nextOrderDirection(attribute.order);
+
+        switch (attribute.order) {
+            case 'desc':
+                return this.models = _.sortBy(this.getModels(), name).reverse();
+            case 'asc':
+                return this.models = _.sortBy(this.getModels(), name);
+            default:
+                return this.models = _.sortBy(this.getModels(), 'id');
+        }
+
+
+    }
+
+    nextOrderDirection(orderDirection) {
+        switch (orderDirection) {
+            case 'desc':
+                return 'asc';
+            case 'asc':
+                return '';
+            default:
+                return 'desc';
+        }
     }
 
 }

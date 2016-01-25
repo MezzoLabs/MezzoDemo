@@ -53,7 +53,10 @@
     margin: 5px;
     padding: 20px 25px;
     background: #f5f5f5;
+  }
 
+  .panel-body-nopadding {
+    padding: 0px;
   }
 
   .panel-heading {
@@ -194,7 +197,7 @@
   .panel-body {
     padding: 10px;
 
-    .form-group{
+    .form-group {
       margin-bottom: 0px;
     }
   }

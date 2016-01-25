@@ -5,7 +5,7 @@ namespace App\Events;
 use App\User;
 use Illuminate\Queue\SerializesModels;
 
-class UserWasRegistered extends Event
+abstract class UserWasRegistered extends Event
 {
     use SerializesModels;
 

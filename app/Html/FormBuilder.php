@@ -14,7 +14,10 @@ use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderEngine as AbstractRende
 
 class FormBuilder extends CollectiveFormBuilder
 {
-
+    public function hello()
+    {
+        return "can you hear me?";
+    }
 
     /**
      * @var CockpitFormBuilder

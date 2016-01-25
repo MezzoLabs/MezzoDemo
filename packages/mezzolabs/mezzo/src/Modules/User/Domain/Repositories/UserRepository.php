@@ -61,4 +61,13 @@ class UserRepository extends ModelRepository
     {
         return parent::findByOrFail($attribute, $value, $columns);
     }
+
+    /**
+     * @param $email
+     * @return \App\User
+     */
+    public function findByEmail($email)
+    {
+        return $this->findBy('email', $email);
+    }
 }
