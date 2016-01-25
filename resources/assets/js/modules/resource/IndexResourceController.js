@@ -11,9 +11,10 @@ export default class IndexResourceController {
         this.models = [];
         this.modelValues = {};
         this.searchText = '';
+        this.searchText = '';
         this.selectAll = false;
         this.loading = false;
-        this.attributes = [];
+        this.attributes = {};
         this.perPage = 10;
         this.currentPage = 1;
         this.pagination = {
@@ -33,7 +34,7 @@ export default class IndexResourceController {
 
     addAttribute(name, type) {
 
-        this.attributes.push({name: name, type: type, order: '', filter: ''});
+        this.attributes[name] = {name: name, type: type, order: '', filter: ''};
     }
 
     attribute(name) {
@@ -157,29 +158,59 @@ export default class IndexResourceController {
     }
 
     search() {
-        return this.models.filter(model => {
-            return this.modelIsInFilters(model) && this.modelIsInFilters(model);
+        var searched = this.models.filter(model => {
+            return this.modelIsInSearch(model) && this.modelIsInFilters(model);
+
         });
+
+        return searched;
     }
 
-    modelIsInSearch() {
+    modelIsInSearch(model) {
+        if (this.searchText.length == 0) {
+            return true;
+        }
+
         for (var key in model) {
             if (model.hasOwnProperty(key)) {
                 var value = model[key];
 
-                if (String(value).indexOf(this.searchText) !== -1) {
+                if (String(value).toLowerCase().indexOf(this.searchText.toLowerCase()) !== -1) {
                     return true;
                 }
             }
         }
+
+        return false;
     }
 
     modelIsInFilters(model) {
+        var values = this.modelValues[model.id];
+
+        for (var key in values) {
+            var value = values[key];
+            var attribute = this.attribute(key);
+
+
+            if (!attribute || !attribute.filter || attribute.filter == "") continue;
+
+            if (!value) {
+                return false;
+            }
+
+            if (String(value).toLowerCase().indexOf(attribute.filter.toLowerCase()) === -1) {
+                return false;
+            }
+
+        }
+
+        return true;
+
 
     }
 
     updateSelectAll() {
-        var models = this.getModels();
+        var models = this.getModelsgetModels();
 
         models.forEach(model => model._meta.selected = this.selectAll);
     }
@@ -284,19 +315,39 @@ export default class IndexResourceController {
             }
         });
 
+        var base = this;
         var attribute = this.attribute(name);
         attribute.order = this.nextOrderDirection(attribute.order);
 
         switch (attribute.order) {
             case 'desc':
-                return this.models = _.sortBy(this.getModels(), name).reverse();
+                return this.models = _.sortBy(this.getModels(), function (model) {
+                    return base.sortByFunction(model, attribute)
+                }).reverse();
             case 'asc':
-                return this.models = _.sortBy(this.getModels(), name);
+                return this.models = _.sortBy(this.getModels(), function (model) {
+                    return base.sortByFunction(model, attribute)
+                });
             default:
                 return this.models = _.sortBy(this.getModels(), 'id');
         }
+    }
+
+    sortByFunction(model, attribute) {
+        var value = model[attribute.name];
 
 
+        if (attribute.type == "datetime") {
+
+            if (!value || !moment(value).isValid())
+                return "";
+
+
+            return moment(value).format('YYYY-MM-DD-HH-mm');
+        }
+
+
+        return String(value).toLowerCase();
     }
 
     nextOrderDirection(orderDirection) {

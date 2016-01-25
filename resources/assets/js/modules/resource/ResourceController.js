@@ -139,7 +139,7 @@ export default class ResourceController {
     getFormData() {
         const formData = {};
 
-        $('form[name="vm.form"]')
+        this.htmlForm()
             .find(':input[name]')
             .each((index, formInput) => {
                 const $formInput = $(formInput);
@@ -178,7 +178,7 @@ export default class ResourceController {
         return formData;
     }
 
-    form() {
+    htmlForm() {
         return $('form[name="vm.form"]');
     }
 

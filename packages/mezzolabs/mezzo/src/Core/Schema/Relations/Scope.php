@@ -35,7 +35,8 @@ class Scope
 
 
         $this->parameters = $this->fillParatemers($parameters);
-        sort($this->parameters);
+        ksort($this->parameters);
+
     }
 
     private function fillParatemers($parameters)

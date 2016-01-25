@@ -8,10 +8,14 @@ export default class FormDataService {
         var stripped = this.unfoldData(data);
 
         stripped = this.unpackRelationInputs(this.form()[0], stripped);
-        stripped = this.formatTimestamps(stripped)
-        stripped = this.flattenObject(stripped);
+        stripped = this.formatTimestamps(stripped);
 
-        return stripped;
+        //TODO: Move this into a class
+        return {
+            stripped: _.cloneDeep(stripped),
+            flattened: this.flattenObject(_.cloneDeep(stripped))
+        };
+
     }
 
     unfoldData(formData) {

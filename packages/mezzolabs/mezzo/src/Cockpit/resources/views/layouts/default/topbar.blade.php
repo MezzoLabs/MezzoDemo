@@ -3,8 +3,12 @@
         {{-- <li>
              <i class="fa fa-bars"></i>
          </li>--}}
-        <li>
-            <i class="fa fa-search"></i>
+        <li class="global-search active" data-mezzo-global-search>
+            <div class="clearfix">
+                <i class="fa fa-search pull-left"></i>
+                <input type="search" class="form-control pull-left"/>
+            </div>
+
         </li>
         <li>
             <a data-mezzo-href-reload="1" href="/"><i class="fa fa-globe"></i></a>

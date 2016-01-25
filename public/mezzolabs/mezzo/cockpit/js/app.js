@@ -178,8 +178,8 @@ exports.default = FormValidationService;
                             published: 'Veröffentlicht',
                             draft: 'Zur Vorlage',
                             deleted: 'Papierkorb'
-                        }
                     }
+                }
                 }
             };
         }
@@ -193,7 +193,7 @@ exports.default = FormValidationService;
 
                 if (!this.cache[cacheKey]) {
                     this.cache[cacheKey] = this.findInTree(key, language);
-                }
+            }
 
                 return this.cache[cacheKey];
             }
@@ -211,12 +211,12 @@ exports.default = FormValidationService;
                         lang = lang[keyPart];
                     } else {
                         break;
-                    }
+                }
                 }
 
                 if (typeof lang != "string") {
                     return key;
-                }
+            }
 
                 return lang;
             }
@@ -1286,6 +1286,7 @@ var FilePickerController = function () {
         this.$form = $element.parents('form')[0];
 
         var base = this;
+
         $scope.$on('mezzo.formdata.set', function (event, mass) {
             base.fill(mass.data, mass.form);
         });
@@ -1332,6 +1333,7 @@ var FilePickerController = function () {
     }, {
         key: 'fill',
         value: function fill(data, form) {
+            console.log(data);
             if (form != this.$form) {
                 return;
             }
@@ -3023,10 +3025,12 @@ var EditResourceController = function (_ResourceController) {
             console.log('cleaned', cleaned);
 
             this.$rootScope.$broadcast('mezzo.formdata.set', {
-                data: cleaned
+                data: cleaned.stripped,
+                flattened: cleaned.flattened,
+                form: this.htmlForm()[0]
             });
 
-            this.inputs = cleaned;
+            this.inputs = cleaned.flattened;
             this.loading = false;
         }
     }, {
@@ -3248,10 +3252,12 @@ var IndexResourceController = function () {
         this.includes = [];
         this.language = languageService;
         this.models = [];
+        this.modelValues = {};
+        this.searchText = '';
         this.searchText = '';
         this.selectAll = false;
         this.loading = false;
-        this.attributes = [];
+        this.attributes = {};
         this.perPage = 10;
         this.currentPage = 1;
         this.pagination = {
@@ -3271,7 +3277,13 @@ var IndexResourceController = function () {
     }, {
         key: 'addAttribute',
         value: function addAttribute(name, type) {
-            this.attributes.push({ name: name, type: type });
+
+            this.attributes[name] = {name: name, type: type, order: '', filter: ''};
+        }
+    }, {
+        key: 'attribute',
+        value: function attribute(name) {
+            return _.find(this.attributes, ['name', name]);
         }
     }, {
         key: 'loadModels',
@@ -3295,11 +3307,20 @@ var IndexResourceController = function () {
     }, {
         key: 'getModels',
         value: function getModels() {
-            if (this.searchText.length > 0) {
+            if (this.searchText.length > 0 || this.hasFilters()) {
                 return this.search();
             }
 
             return this.models;
+        }
+    }, {
+        key: 'hasFilters',
+        value: function hasFilters() {
+            for (var i in this.attributes) {
+                if (this.attributes[i].filter != "") return true;
+            }
+
+            return false;
         }
     }, {
         key: 'getPagedModels',
@@ -3331,12 +3352,14 @@ var IndexResourceController = function () {
     }, {
         key: 'getModelValues',
         value: function getModelValues(model) {
-            var values = [];
+            var values = {};
 
             for (var i in this.attributes) {
                 var attribute = this.attributes[i];
-                values.push(this.transformModelValue(attribute, model[attribute.name]));
+                values[attribute.name] = this.transformModelValue(attribute, model[attribute.name]);
             }
+
+            this.modelValues[model.id] = values;
 
             return values;
         }
@@ -3399,24 +3422,59 @@ var IndexResourceController = function () {
         value: function search() {
             var _this2 = this;
 
-            return this.models.filter(function (model) {
-                for (var key in model) {
-                    if (model.hasOwnProperty(key)) {
-                        var value = model[key];
+            var searched = this.models.filter(function (model) {
+                return _this2.modelIsInSearch(model) && _this2.modelIsInFilters(model);
+            });
 
-                        if (String(value).indexOf(_this2.searchText) !== -1) {
-                            return true;
-                        }
+            return searched;
+        }
+    }, {
+        key: 'modelIsInSearch',
+        value: function modelIsInSearch(model) {
+            if (this.searchText.length == 0) {
+                return true;
+            }
+
+            for (var key in model) {
+                if (model.hasOwnProperty(key)) {
+                    var value = model[key];
+
+                    if (String(value).toLowerCase().indexOf(this.searchText.toLowerCase()) !== -1) {
+                        return true;
                     }
                 }
-            });
+            }
+
+            return false;
+        }
+    }, {
+        key: 'modelIsInFilters',
+        value: function modelIsInFilters(model) {
+            var values = this.modelValues[model.id];
+
+            for (var key in values) {
+                var value = values[key];
+                var attribute = this.attribute(key);
+
+                if (!attribute || !attribute.filter || attribute.filter == "") continue;
+
+                if (!value) {
+                    return false;
+                }
+
+                if (String(value).toLowerCase().indexOf(attribute.filter.toLowerCase()) === -1) {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }, {
         key: 'updateSelectAll',
         value: function updateSelectAll() {
             var _this3 = this;
 
-            var models = this.getModels();
+            var models = this.getModelsgetModels();
 
             models.forEach(function (model) {
                 return model._meta.selected = _this3.selectAll;
@@ -3517,6 +3575,70 @@ var IndexResourceController = function () {
     }, {
         key: 'pageChanged',
         value: function pageChanged() {
+        }
+    }, {
+        key: 'sortIcon',
+        value: function sortIcon(name) {
+            switch (this.attribute(name).order) {
+                case 'desc':
+                    return 'fa fa-sort-desc';
+                case 'asc':
+                    return 'fa fa-sort-asc';
+                default:
+                    return 'fa fa-sort';
+            }
+        }
+    }, {
+        key: 'sortBy',
+        value: function sortBy(name) {
+            _.forEach(this.attributes, function (attribute) {
+                if (attribute.name != name) {
+                    attribute.order = '';
+                }
+            });
+
+            var base = this;
+            var attribute = this.attribute(name);
+            attribute.order = this.nextOrderDirection(attribute.order);
+
+            switch (attribute.order) {
+                case 'desc':
+                    return this.models = _.sortBy(this.getModels(), function (model) {
+                        return base.sortByFunction(model, attribute);
+                    }).reverse();
+                case 'asc':
+                    return this.models = _.sortBy(this.getModels(), function (model) {
+                        return base.sortByFunction(model, attribute);
+                    });
+                default:
+                    return this.models = _.sortBy(this.getModels(), 'id');
+            }
+        }
+    }, {
+        key: 'sortByFunction',
+        value: function sortByFunction(model, attribute) {
+            var value = model[attribute.name];
+
+            if (attribute.type == "datetime") {
+
+                if (!value || !moment(value).isValid()) return "";
+
+                return moment(value).format('YYYY-MM-DD-HH-mm');
+            }
+
+            return String(value).toLowerCase();
+        }
+    }, {
+        key: 'nextOrderDirection',
+        value: function nextOrderDirection(orderDirection) {
+            switch (orderDirection) {
+                case 'desc':
+                    return 'asc';
+                case 'asc':
+                    return '';
+                default:
+                    return 'desc';
+            }
         }
     }]);
 
@@ -3775,7 +3897,7 @@ var ResourceController = function () {
         value: function getFormData() {
             var formData = {};
 
-            $('form[name="vm.form"]').find(':input[name]').each(function (index, formInput) {
+            this.htmlForm().find(':input[name]').each(function (index, formInput) {
                 var $formInput = $(formInput);
                 var name = $formInput.attr('name');
                 var value = $formInput.val();
@@ -3812,8 +3934,8 @@ var ResourceController = function () {
             return formData;
         }
     }, {
-        key: 'form',
-        value: function form() {
+        key: 'htmlForm',
+        value: function htmlForm() {
             return $('form[name="vm.form"]');
         }
     }]);
@@ -3871,9 +3993,12 @@ var FormDataService = function () {
 
             stripped = this.unpackRelationInputs(this.form()[0], stripped);
             stripped = this.formatTimestamps(stripped);
-            stripped = this.flattenObject(stripped);
 
-            return stripped;
+            //TODO: Move this into a class
+            return {
+                stripped: _.cloneDeep(stripped),
+                flattened: this.flattenObject(_.cloneDeep(stripped))
+            };
         }
     }, {
         key: 'unfoldData',
@@ -4440,7 +4565,7 @@ function quickviewVisible(open) {
         $translateProvider.translations('de', {
             'ATTRIBUTES.GENDER': {m: 'Herr', f: 'Frau'},
             'FOO': 'Dies ist ein Absatz'
-        });
+    });
 
         $translateProvider.preferredLanguage('de');
     }

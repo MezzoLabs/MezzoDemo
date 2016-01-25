@@ -13,6 +13,7 @@ export default class FilePickerController {
         this.$form = $element.parents('form')[0];
 
         var base = this;
+
         $scope.$on('mezzo.formdata.set', function (event, mass) {
             base.fill(mass.data, mass.form);
         });
@@ -53,6 +54,7 @@ export default class FilePickerController {
     }
 
     fill(data, form) {
+        console.log(data);
         if (form != this.$form) {
             return;
         }

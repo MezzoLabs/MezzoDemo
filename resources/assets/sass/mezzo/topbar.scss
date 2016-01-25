@@ -17,6 +17,10 @@
 
     }
 
+    .form-control {
+      border-radius: 0px;
+    }
+
     @include layout-list();
 
     margin: 0px 20px;
@@ -32,13 +36,59 @@
       text-align: center;
       cursor: pointer;
       margin-right: 4px;
+      float: left;
+
+      &.global-search {
+        position: relative;
+        width: 40px;
+        padding-top: 0px;
+        background-color: transparent;
+        transition: ease all 0.5s;
+
+        i.fa {
+          background-color: $mezzo-white-paper;
+          height: 40px;
+          width: 40px;
+          padding-top: 10px;
+          margin-right: 0px;
+        }
+
+        input[type=search] {
+          position: absolute;
+          top: 0;
+          left: 40px;
+          height: 40px;
+          width: 0px;
+          visibility: hidden;
+          border-left: none;
+          transition: ease all 0.5s;
+
+        }
+      }
+
+      &.global-search.active {
+        width: 220px;
+
+        input[type=search] {
+          width: 180px;
+          visibility: visible;
+        }
+      }
+
+      &.global-search:not(.active) {
+        input[type=search] {
+          padding-left: 0px;
+          padding-right: 0px;
+        }
+      }
     }
+
   }
 
   .toolbox-right {
     @extend .pull-right;
 
-    .dropdown-menu{
+    .dropdown-menu {
       right: 0;
       left: auto;
     }

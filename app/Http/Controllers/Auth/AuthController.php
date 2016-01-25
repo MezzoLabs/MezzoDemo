@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Authentication\Social\SocialAuthenticator;
-use App\Events\UserWasRegistered;
 use App\Events\UserWasRegisteredWithEmail;
 use App\Events\UserWasRegisteredWithSocialAuthentication;
-use App\Events\UserWasVerified;
 use App\Events\UserWasVerifiedWithEmail;
 use App\Events\UserWasVerifiedWithSocialAuthentication;
 use App\Exceptions\InvalidConfirmationCodeException;
@@ -177,6 +175,7 @@ class AuthController extends Controller
         $existing = $this->users->findByEmail($data['email']);
 
         if ($existing) {
+            $data['password'] = '';
             $existing->fill($data)->save();
             \Session::flash('message', 'Account updated.');
 

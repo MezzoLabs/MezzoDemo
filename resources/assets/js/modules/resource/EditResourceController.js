@@ -57,10 +57,12 @@ export default class EditResourceController extends ResourceController {
         console.log('cleaned', cleaned);
 
         this.$rootScope.$broadcast('mezzo.formdata.set', {
-            data: cleaned
+            data: cleaned.stripped,
+            flattened: cleaned.flattened,
+            form: this.htmlForm()[0]
         });
 
-        this.inputs = cleaned;
+        this.inputs = cleaned.flattened;
         this.loading = false;
     }
 

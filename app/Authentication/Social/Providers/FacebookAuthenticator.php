@@ -28,10 +28,8 @@ final class FacebookAuthenticator extends SocialAuthenticationProvider
             'first_name' => $raw['first_name'],
             'last_name' => $raw['last_name'],
             'email' => $raw['email'],
-            'password' => '',
             'confirmation_code' => '',
-            'confirmed' => true,
-            'backend' => 0
+            'backend' => false
         ];
     }
 }
