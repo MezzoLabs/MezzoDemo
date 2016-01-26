@@ -21,12 +21,14 @@ export default class FileManagerController {
         this.initFiles();
     }
 
-    initFiles() {
+    initFiles(folder = null) {
         this.library = new Folder('Library', null, true);
         this.folder = this.library;
         this.files = this.library.files;
         this.loading = true;
         const folders = {};
+
+        console.log('folder', this.folder);
 
         this.api.files().then(apiFiles => {
             this.loading = false;
@@ -42,12 +44,18 @@ export default class FileManagerController {
 
                 const filePathArray = filePath.split('/');
                 const folderPathArray = filePathArray.slice(0, filePathArray.length - 1);
-                console.log('folders before:', folders);
+                //console.log('folders before:', folders);
                 const folderForFile = this.getFolderByPath(folders, folderPathArray);
-                console.log('folders after:', folders, folderForFile);
+                //console.log('folders after:', folders, folderForFile);
                 folderForFile.files.push(file);
             });
         });
+
+        if(folder){
+            var newFolder = this.getFolderByPath(folders, folder.pathArray());
+            this.enterFolder(newFolder);
+        }
+
     }
 
     getFolderByPath(folders, folderPathArray) {
@@ -259,16 +267,19 @@ export default class FileManagerController {
     }
 
     upload(file) {
+        const folder = this.folder;
+
         this.Upload.upload({
             url: '/api/files/upload',
             data: {
-                file: file
+                file: file,
+                folder: folder.path()
             },
             headers: {
                 Accept: 'application/vnd.MezzoLabs.v1+json'
             }
         }).then(response => {
-            this.initFiles();
+            this.initFiles(folder);
         }).catch(err => {
             console.error(err);
         });
@@ -286,7 +297,7 @@ export default class FileManagerController {
     }
 
     refresh() {
-        this.initFiles();
+        this.initFiles(this.folder);
     }
 
     canMoveOrDelete() {
