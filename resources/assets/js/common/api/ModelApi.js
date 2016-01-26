@@ -16,10 +16,10 @@ export default class ModelApi {
         return this.api.post(this.apiUrl, formData);
     }
 
-    update(modelId, formData) {
+    update(modelId, formData, config = {}) {
 
         this.throwEvent('update', {data: formData, id: modelId});
-        var request = this.api.put(this.apiUrl + '/' + modelId, formData);
+        var request = this.api.put(this.apiUrl + '/' + modelId, formData, config);
         this.throwEvent('updated', {data: formData, id: modelId});
 
         return request;

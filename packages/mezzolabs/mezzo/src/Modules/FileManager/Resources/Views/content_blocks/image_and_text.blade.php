@@ -6,7 +6,7 @@
             <div class="form-group">
                 <label>{{ $fields['text']->title() }}</label>
                 <textarea
-                        {!! $block->form()->htmlAttributes('text', ['ng-value' => null]) !!} class="form-control">@{{ block.fields.text }}</textarea>
+                        {!! $block->form()->htmlAttributes('text') !!} class="form-control"></textarea>
             </div>
         </div>
         <div class="col-md-6">
@@ -18,7 +18,7 @@
     </div>
 
     <div class="form-group">
-        <label>Image position</label>
+        <label>Image position</label> <br/>
 
         <div class="radio-inline">
             <label><input type="radio"

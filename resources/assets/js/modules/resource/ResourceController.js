@@ -1,3 +1,5 @@
+import FormEvent from './../../common/forms/FormEvent';
+
 // Intended for CreateResourceController & EditResourceController
 export default class ResourceController {
 
@@ -9,6 +11,7 @@ export default class ResourceController {
         this.contentBlockService = this.contentBlockFactory();
         this.modelStateService = this.$injector.get('modelStateService');
         this.errorHandlerService = this.$injector.get('errorHandlerService');
+        this.eventDispatcher = this.$injector.get('eventDispatcher');
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
     }
 
@@ -22,7 +25,7 @@ export default class ResourceController {
         const atLeastOneError = Object.keys(formControl.$error).length > 0;
         const isDirty = formControl.$dirty;
 
-        if(atLeastOneError && isDirty) {
+        if (atLeastOneError && isDirty) {
             return 'has-error';
         }
     }
@@ -85,6 +88,7 @@ export default class ResourceController {
     attemptSubmit() {
         console.info('attemptSubmit()');
 
+
         if (this.form.$invalid) {
             console.warn('attemptSubmit() failed because of an invalid form');
             this.dirtyFormControls(); // if a submit attempt failed because of an $invalid form all validation messages should be visible
@@ -113,10 +117,12 @@ export default class ResourceController {
         this.loading = true;
         const formData = this.getFormData();
 
+        this.fireEvent('sending', formData);
+
         console.info('doSubmit() with', formData);
 
         this.doSubmit(formData)
-            .then(() => {
+            .then((response) => {
                 console.info('doSubmit().then()');
 
                 this.loading = false;
@@ -145,6 +151,12 @@ export default class ResourceController {
                 const $formInput = $(formInput);
                 const name = $formInput.attr('name');
                 const value = $formInput.val();
+
+                if($formInput.is('input[type=radio]')){
+                    if (!$formInput.prop('checked')) {
+                        return;
+                    }
+                }
 
                 /* Start checkbox edge case */
                 // match checkbox key e.g. categories[1] or categories[10]
@@ -181,5 +193,26 @@ export default class ResourceController {
     htmlForm() {
         return $('form[name="vm.form"]');
     }
+
+    tinymceOptions() {
+        return {
+            plugins: [
+                "link"
+            ],
+            toolbar: "undo redo | bold italic underline | link",
+            menubar: "",
+            elementpath: false
+        }
+    };
+
+    fireEvent(name, data) {
+        return this.eventDispatcher.fire(new FormEvent('form.' + name, data, this.htmlForm()[0]));
+    }
+
+    getInput(name) {
+        console.log('get', this.inputs[name]);
+        return this.inputs[name];
+    }
+
 
 }

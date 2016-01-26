@@ -1,5 +1,5 @@
 /*@ngInject*/
-export default function compileContentBlockDirective($parse, $compile, formValidationService){
+export default function compileContentBlockDirective($parse, $compile, formValidationService, eventdistr){
     return {
         restrict: 'A',
         link
@@ -27,8 +27,7 @@ export default function compileContentBlockDirective($parse, $compile, formValid
 
         function assignFormValidation(element) {
             element
-                .children('div.form-group')
-                .find(':input')
+                .find('div.form-group :input')
                 .each((index, formInput) => {
                     formValidationService.assign(formInput);
                 });

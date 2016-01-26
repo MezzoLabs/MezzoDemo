@@ -19,12 +19,14 @@ class EventTransformerPlugin extends TransformerPlugin
             return [];
         }
 
+
         $start = $model->start();
         $end = $model->end();
 
         return [
             '_start' => (!$start) ? '' : $start->toDateTimeString(),
-            '_end' => (!$end) ? '' : $end->toDateTimeString()
+            '_end' => (!$end) ? '' : $end->toDateTimeString(),
+            '_distance' => round($model->distance,2)
         ];
     }
 }
