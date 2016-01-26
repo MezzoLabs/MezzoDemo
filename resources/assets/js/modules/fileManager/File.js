@@ -22,6 +22,10 @@ export default class File {
         return filePathSplitted.slice(0, filePathSplitted.length - 1).join('/');
     }
 
+    displayPath(){
+        return this.displayFolderPath() + '/' + this.name;
+    }
+
     icon() {
         if (this.isImage()) {
             return 'ion-image';

@@ -15,12 +15,13 @@ export default class Api {
         return this.apiPromise(this.$http.get(url, config));
     }
 
-    post(url, data) {
-        return this.apiPromise(this.$http.post(url, data));
+    post(url, data, config = {}) {
+        return this.apiPromise(this.$http.post(url, data,  config));
     }
 
-    put(url, data) {
-        return this.apiPromise(this.$http.put(url, data));
+    put(url, data, config = {}) {
+        console.log('put', config);
+        return this.apiPromise(this.$http.put(url, data, config));
     }
 
     delete(url){

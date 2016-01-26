@@ -9,6 +9,12 @@ export default class FilePickerController {
         this.preview = null;
         this.searchText = '';
 
+        this.pagination = {
+            size: 10,
+            current: 1,
+            perPage: 5
+        };
+
         this.loadFiles();
     }
 
@@ -86,6 +92,15 @@ export default class FilePickerController {
         }
 
         return this.files;
+    }
+
+    pagedFiles() {
+        var files = this.filteredFiles();
+
+        var start = (this.pagination.current - 1) * this.pagination.perPage;
+        var end = (this.pagination.current) * this.pagination.perPage - 1;
+
+        return files.slice(start, end);
     }
 
     setPreview(file) {

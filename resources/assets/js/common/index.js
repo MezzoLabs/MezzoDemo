@@ -8,15 +8,16 @@ import select2Directive from './select2Directive';
 import dateTimePickerDirective from './dateTimePickerDirective';
 import quickviewDirective from './quickviewDirective';
 import quickviewCloseDirective from './quickviewCloseDirective';
-import formValidationDirective from './formValidationDirective';
+import formValidationDirective from './forms/formValidationDirective';
 import validationMessagesDirective from './validationMessagesDirective';
 import uidService from './uidService.js';
 import apiService from './api/apiService';
 import hasControllerService from './hasControllerService';
 import QuickviewService from './QuickviewService';
-import FormValidationService from './FormValidationService';
+import FormValidationService from './forms/FormValidationService';
 import LanguageService from './LanguageService';
 import ErrorHandlerService from './ErrorHandlerService';
+import EventDispatcherService from './events/EventDispatcherService';
 
 const module = angular.module('MezzoCommon', []);
 
@@ -39,3 +40,4 @@ module.service('quickviewService', QuickviewService);
 module.service('formValidationService', FormValidationService);
 module.service('errorHandlerService', ErrorHandlerService);
 module.service('languageService', LanguageService);
+module.service('eventDispatcher', EventDispatcherService);

@@ -1,4 +1,5 @@
 import ResourceController from './ResourceController';
+import FormEvent from './../../common/forms/FormEvent';
 
 export default class EditResourceController extends ResourceController {
 
@@ -8,7 +9,8 @@ export default class EditResourceController extends ResourceController {
 
         this.$scope = $scope;
         this.$stateParams = $injector.get('$stateParams');
-        this.$rootScope =  $injector.get('$rootScope');
+        this.$rootScope = $injector.get('$rootScope');
+        this.eventDispatcher = $injector.get('eventDispatcher');
         this.modelId = this.$stateParams.modelId;
         this.content = {};
 
@@ -30,8 +32,12 @@ export default class EditResourceController extends ResourceController {
     }
 
     doSubmit(formData) {
-        return this.modelApi.update(this.modelId, formData)
+        return this.modelApi.update(
+            this.modelId,
+            formData,
+            { params: {include: this.includes.join(',')}})
             .then(model => {
+                this.fireEvent('updated', this.formDataService.transform(model));
                 toastr.success('Success! ' + model._label + ' updated');
             });
     }
@@ -56,7 +62,13 @@ export default class EditResourceController extends ResourceController {
 
         console.log('cleaned', cleaned);
 
+        this.eventDispatcher.fire(new FormEvent('form.received', {
+            data: cleaned.stripped,
+            flattened: cleaned.flattened
+        }, this.htmlForm()[0]));
+
         this.$rootScope.$broadcast('mezzo.formdata.set', {
+
             data: cleaned.stripped,
             flattened: cleaned.flattened,
             form: this.htmlForm()[0]

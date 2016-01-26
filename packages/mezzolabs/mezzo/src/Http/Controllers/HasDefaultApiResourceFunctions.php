@@ -107,7 +107,9 @@ trait HasDefaultApiResourceFunctions
             $resource = $this->repository()->updateWithNestedRelations($request->all(), $id, $request->nestedRelations());
         }
 
-        $response = $this->response()->item($resource, $this->bestModelTransformer());
+        $updated = $this->repository()->find($id);
+
+        $response = $this->response()->item($updated, $this->bestModelTransformer());
 
 
         event('mezzo.api.update: ' . get_class($this), [$response, $id]);
