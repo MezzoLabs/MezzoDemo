@@ -122,6 +122,10 @@ export default class IndexResourceController {
             return moment(value).format('DD.MM.YYYY hh:mm');
         }
 
+        if (value && attribute.type == "distance") {
+            return parseFloat(value);
+        }
+
 
         if (this.lang.has('attributes.' + attribute.name + '.' + value)) {
             return this.lang.get('attributes.' + attribute.name + '.' + value);
@@ -338,12 +342,14 @@ export default class IndexResourceController {
 
 
         if (attribute.type == "datetime") {
-
             if (!value || !moment(value).isValid())
                 return "";
 
-
             return moment(value).format('YYYY-MM-DD-HH-mm');
+        }
+
+        if (value && typeof(value) == 'number') {
+            return value;
         }
 
 

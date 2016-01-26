@@ -22,6 +22,7 @@ class IndexEventPage extends IndexResourcePage
 
         $columns['_start'] = ['type' => \Doctrine\DBAL\Types\Type::DATETIME, 'title' => 'Start'];
         $columns['_end'] = ['type' => \Doctrine\DBAL\Types\Type::DATETIME, 'title' => 'End'];
+        $columns['_distance'] = ['type' => 'distance', 'title' => 'Distance'];
 
         return $columns;
     }

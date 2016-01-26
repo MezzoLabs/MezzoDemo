@@ -156,7 +156,7 @@ abstract class MezzoEvent extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for description
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextArea", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextArea", hidden="index")
      * @var string
      */
     protected $_description;

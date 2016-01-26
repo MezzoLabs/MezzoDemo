@@ -21,7 +21,8 @@ class EventTransformerPlugin extends TransformerPlugin
 
         return [
             '_start' => $model->start()->toDateTimeString(),
-            '_end' => $model->end()->toDateTimeString()
+            '_end' => $model->end()->toDateTimeString(),
+            '_distance' => round($model->distance,2)
         ];
     }
 }

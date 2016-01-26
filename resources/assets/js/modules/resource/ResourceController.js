@@ -152,6 +152,12 @@ export default class ResourceController {
                 const name = $formInput.attr('name');
                 const value = $formInput.val();
 
+                if($formInput.is('input[type=radio]')){
+                    if (!$formInput.prop('checked')) {
+                        return;
+                    }
+                }
+
                 /* Start checkbox edge case */
                 // match checkbox key e.g. categories[1] or categories[10]
                 const regex = /(.+)\[([0-9]+)\]/i;
@@ -201,6 +207,11 @@ export default class ResourceController {
 
     fireEvent(name, data) {
         return this.eventDispatcher.fire(new FormEvent('form.' + name, data, this.htmlForm()[0]));
+    }
+
+    getInput(name) {
+        console.log('get', this.inputs[name]);
+        return this.inputs[name];
     }
 
 

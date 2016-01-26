@@ -51,7 +51,8 @@ export default class FileManagerController {
             });
         });
 
-        if(folder){
+        // Move to the given folder if it is not the Library (Home) folder
+        if(folder && folder.parent){
             var newFolder = this.getFolderByPath(folders, folder.pathArray());
             this.enterFolder(newFolder);
         }

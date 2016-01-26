@@ -3,11 +3,14 @@ import File from './File';
 export default class FilePickerController {
 
     /*@ngInject*/
-    constructor(api) {
+    constructor(api, $scope) {
         this.api = api;
         this.files = [];
         this.preview = null;
         this.searchText = '';
+
+        this.$parent = $scope.$parent;
+
 
         this.pagination = {
             size: 10,
@@ -59,22 +62,23 @@ export default class FilePickerController {
 
     filesLoaded() {
         this.selectOldValue();
-
-
     }
 
     selectOldValue() {
-        if (!this.value) {
-            return false;
-        }
+        var value = this.$parent.vm.inputs[this.name];
 
-        if (this.value.indexOf(',') == -1) {
-            this.selectId(this.value);
+        if(!value || value == "")
+            return false;
+
+        value = String(value);
+
+        if (value.indexOf(',') == -1) {
+            this.selectId(value);
             this.confirmSelected();
             return true;
         }
 
-        var ids = this.value.split(',');
+        var ids = value.split(',');
         for (var i in ids) {
             this.selectId(ids[i]);
         }
@@ -82,8 +86,6 @@ export default class FilePickerController {
         this.confirmSelected();
 
         return true;
-
-
     }
 
     filteredFiles() {
@@ -134,7 +136,12 @@ export default class FilePickerController {
     }
 
     selectId(id) {
-        var file = _.find(this.files, {id: parseInt(id)});
+        if(!id || id == "") return false;
+
+
+        var file = _.find(this.files, file => {
+            return this.id(file) == id;
+        });
 
         file.selected = true;
     }
@@ -167,9 +174,15 @@ export default class FilePickerController {
         return 'Select ' + selected + ' file' + (selected !== 1 ? 's' : '');
     }
 
+    deselect(file){
+        file.selected = false;
+
+        this.confirmSelected();
+    }
+
     confirmSelected() {
-        console.log(this.inputField(), this.selectedIdsString());
-        this.inputField().val(this.selectedIdsString());
+        this.$parent.vm.inputs[this.name] = this.selectedIdsString();
+
     }
 
     selectedIdsString() {
