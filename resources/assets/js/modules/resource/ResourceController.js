@@ -90,7 +90,7 @@ export default class ResourceController {
 
 
         if (this.form.$invalid) {
-            console.warn('attemptSubmit() failed because of an invalid form');
+            console.warn('attemptSubmit() failed because of an invalid form', this.form);
             this.dirtyFormControls(); // if a submit attempt failed because of an $invalid form all validation messages should be visible
 
             return false;
@@ -117,7 +117,7 @@ export default class ResourceController {
         this.loading = true;
         const formData = this.getFormData();
 
-        this.fireEvent('sending', formData);
+        this.fireEvent('form.sending', formData);
 
         console.info('doSubmit() with', formData);
 
@@ -206,7 +206,7 @@ export default class ResourceController {
     };
 
     fireEvent(name, data) {
-        return this.eventDispatcher.fire(new FormEvent('form.' + name, data, this.htmlForm()[0]));
+        return this.eventDispatcher.fire(new FormEvent(name, data, this.htmlForm()[0]));
     }
 
     getInput(name) {

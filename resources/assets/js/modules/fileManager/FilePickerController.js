@@ -3,11 +3,13 @@ import File from './File';
 export default class FilePickerController {
 
     /*@ngInject*/
-    constructor(api, $scope) {
+    constructor(api, $scope, eventDispatcher) {
         this.api = api;
         this.files = [];
         this.preview = null;
         this.searchText = '';
+        this.eventDispatcher = eventDispatcher;
+        this.uniqueKey = _.random(10000, 90000);
 
         this.$parent = $scope.$parent;
 
@@ -18,7 +20,26 @@ export default class FilePickerController {
             perPage: 5
         };
 
+
+        this.registerListeners();
+
         this.loadFiles();
+
+    }
+
+    registerListeners() {
+        //Form was already received -> we dont have to wait for the selected value
+        if (this.eventDispatcher.isInHistory('form.received')){
+            return this.eventDispatcher.on('filepicker.files_loaded.' + this.uniqueKey, (event, payload) => {
+                this.selectOldValue();
+            });
+        }
+
+        // Wait for the form content and the possible files before selecting the old value
+        return this.eventDispatcher.on(['form.received', 'filepicker.files_loaded.' + this.uniqueKey], (events, payloads) => {
+            this.selectOldValue();
+        });
+
     }
 
     selectLabel() {
@@ -61,13 +82,14 @@ export default class FilePickerController {
     }
 
     filesLoaded() {
-        this.selectOldValue();
+        this.eventDispatcher.makeAndFire('filepicker.files_loaded.' + this.uniqueKey, {'files': this.files});
     }
 
     selectOldValue() {
         var value = this.$parent.vm.inputs[this.name];
 
-        if(!value || value == "")
+
+        if (!value || value == "")
             return false;
 
         value = String(value);
@@ -136,7 +158,7 @@ export default class FilePickerController {
     }
 
     selectId(id) {
-        if(!id || id == "") return false;
+        if (!id || id == "") return false;
 
 
         var file = _.find(this.files, file => {
@@ -174,7 +196,7 @@ export default class FilePickerController {
         return 'Select ' + selected + ' file' + (selected !== 1 ? 's' : '');
     }
 
-    deselect(file){
+    deselect(file) {
         file.selected = false;
 
         this.confirmSelected();

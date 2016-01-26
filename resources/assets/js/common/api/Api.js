@@ -3,8 +3,10 @@ import ModelApi from './ModelApi';
 export default class Api {
 
     /** @ngInject */
-    constructor($http){
+    constructor($http, eventDispatcher) {
         this.$http = $http;
+        this.eventDispatcher = eventDispatcher;
+        console.log('make api');
     }
 
     get(url, params = {}) {
@@ -29,7 +31,7 @@ export default class Api {
     }
 
     model(modelName){
-        return new ModelApi(this, modelName);
+        return new ModelApi(this, modelName, this.eventDispatcher);
     }
 
     apiPromise($httpPromise){

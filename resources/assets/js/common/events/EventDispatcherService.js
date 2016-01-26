@@ -1,19 +1,23 @@
 import Listener from './Listener';
-import Event from './Event';
+import MezzoEvent from './Event';
 
 export default class EventDispatcherService {
 
     constructor() {
         this.listeners = [];
+        this.eventHistory = [];
     }
 
 
     /**
      * Execute all the listeners that listen to this event.
      *
-     * @param {Event} event
+     * @param {MezzoEvent} event
      */
     fire(event) {
+        this.eventHistory.push(event);
+
+
         for (var i in this.listeners) {
             var listener = this.listeners[i];
 
@@ -23,7 +27,7 @@ export default class EventDispatcherService {
 
             var execution = listener.execute(event, event.payload);
 
-            if(execution === false){
+            if (execution === false) {
                 console.error('A listener stopped the chain', listener, event);
                 return false;
             }
@@ -46,7 +50,7 @@ export default class EventDispatcherService {
      *
      * @param {Listener} listener
      */
-    register(listener){
+    register(listener) {
         this.listen(listener);
     }
 
@@ -64,6 +68,65 @@ export default class EventDispatcherService {
 
         return listener;
     }
+
+    /**
+     * Creates an event and fires it directly.
+     *
+     *
+     * @param eventKey
+     * @param payload
+     */
+    makeAndFire(eventKey, payload) {
+        var event = new MezzoEvent(eventKey, payload);
+
+        return this.fire(event);
+    }
+
+    /**
+     * Alias for makelistener
+     *
+     *
+     * @param eventKey
+     * @param callback
+     * @returns {Listener}
+     */
+    on(eventKey, callback) {
+        if (Array.isArray(eventKey))
+            return this.listenForAll(eventKey, callback);
+
+        return this.makeListener(eventKey, callback);
+    }
+
+    listenForAll(eventKeys, callback) {
+        var received = {};
+        var payloads = {};
+        var events = {};
+
+        for (var i in eventKeys) {
+            const eventKey = eventKeys[i];
+            this.makeListener(eventKey, (event, payload) => {
+                received[event.key] = 1;
+                payloads[eventKey] = payload;
+                events[eventKey] = event;
+
+                if (_.size(received) == eventKeys.length) {
+                    callback(events, payloads);
+                }
+            });
+        }
+    }
+
+    findInHistory(eventKey) {
+        return _.find(this.eventHistory, function (event) {
+            return event.key == eventKey;
+        });
+    }
+
+    isInHistory(eventKey) {
+        return !!this.findInHistory(eventKey);
+    }
+
+
 
 
 }

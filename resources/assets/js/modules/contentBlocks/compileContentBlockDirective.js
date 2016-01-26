@@ -1,16 +1,16 @@
 /*@ngInject*/
-export default function compileContentBlockDirective($parse, $compile, formValidationService, eventdistr){
+export default function compileContentBlockDirective($parse, $compile, formValidationService, eventDispatcher) {
     return {
         restrict: 'A',
         link
     };
 
-    function link(scope, element, attributes){
+    function link(scope, element, attributes) {
         const expression = attributes.mezzoCompileContentBlock;
         const getter = $parse(expression);
 
         scope.$watch(getter, html => {
-            if(!html){
+            if (!html) {
                 return;
             }
 
@@ -18,6 +18,8 @@ export default function compileContentBlockDirective($parse, $compile, formValid
             deferFormValidation(element);
             $compile(element.contents())(scope);
         });
+
+        eventDispatcher.on('form.updated', (event, payload) => onUpdate(payload));
 
         function deferFormValidation(element) {
             setTimeout(() => {
@@ -32,6 +34,14 @@ export default function compileContentBlockDirective($parse, $compile, formValid
                     formValidationService.assign(formInput);
                 });
             $compile(element.contents())(scope);
+        }
+
+        function onUpdate(data) {
+            var $idInput = element.find('[name$=".id"]');
+            var id = data.flattened[$idInput.attr('name')];
+
+            //TODO: Find the right input via the api response (send a unique handle / sort
+            //$idInput.val(id);
         }
     }
 }

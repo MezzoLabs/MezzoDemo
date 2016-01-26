@@ -1,22 +1,16 @@
 export default class SubscriptionsController {
 
     /*@ngInject*/
-    constructor(api, $scope, $rootScope, $element) {
+    constructor(api, $scope, $rootScope, $element, eventDispatcher) {
         this.api = api;
         this.modelApi = api.model('Subscription');
         this.$form = $element.parents('form')[0];
 
         var base = this;
-        $scope.$on('mezzo.formdata.set', function (event, mass) {
-            base.fill(mass.data, mass.form);
-        });
 
-        $rootScope.$on('mezzo.model.update', function () {
-            console.log('event', one, two, three);
-        });
+        eventDispatcher.on('form.received', (event, payload) => {
+            base.fill(payload.data, payload.form);
 
-        $scope.$on('mezzo.model.update', function () {
-            console.log('event', one, two, three);
         });
     }
 

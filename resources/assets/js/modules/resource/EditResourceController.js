@@ -37,7 +37,7 @@ export default class EditResourceController extends ResourceController {
             formData,
             { params: {include: this.includes.join(',')}})
             .then(model => {
-                this.fireEvent('updated', this.formDataService.transform(model));
+                this.fireEvent('form.updated', this.formDataService.transform(model));
                 toastr.success('Success! ' + model._label + ' updated');
             });
     }
@@ -62,20 +62,16 @@ export default class EditResourceController extends ResourceController {
 
         console.log('cleaned', cleaned);
 
-        this.eventDispatcher.fire(new FormEvent('form.received', {
-            data: cleaned.stripped,
-            flattened: cleaned.flattened
-        }, this.htmlForm()[0]));
-
-        this.$rootScope.$broadcast('mezzo.formdata.set', {
-
-            data: cleaned.stripped,
-            flattened: cleaned.flattened,
-            form: this.htmlForm()[0]
-        });
 
         this.inputs = cleaned.flattened;
         this.loading = false;
+
+
+        this.eventDispatcher.fire(new FormEvent('form.received', {
+            data: cleaned.stripped,
+            flattened: cleaned.flattened,
+            form: this.htmlForm()[0]
+        }, this.htmlForm()[0]));
     }
 
     initContentBlocks(model) {
