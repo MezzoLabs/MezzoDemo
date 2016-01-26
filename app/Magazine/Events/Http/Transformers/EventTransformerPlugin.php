@@ -19,9 +19,12 @@ class EventTransformerPlugin extends TransformerPlugin
             return [];
         }
 
+        $start = $model->start();
+        $end = $model->end();
+
         return [
-            '_start' => $model->start()->toDateTimeString(),
-            '_end' => $model->end()->toDateTimeString()
+            '_start' => (!$start) ? '' : $start->toDateTimeString(),
+            '_end' => (!$end) ? '' : $end->toDateTimeString()
         ];
     }
 }

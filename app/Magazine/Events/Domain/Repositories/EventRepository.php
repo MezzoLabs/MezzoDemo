@@ -20,7 +20,7 @@ class EventRepository extends ModelRepository
 
         return $q1->whereHas('days', function (Builder $q2) use ($from, $to) {
             if ($from && $to) {
-                return $q2->where('start', '>', $from)->orWhere('end', '<', $to);
+                return $q2->where('start', '>', $from)->where('end', '<', $to);
             }
 
             if ($to) {
