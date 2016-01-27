@@ -105,6 +105,7 @@ class ContentBlocksFormObject implements FormObject
     {
         $rules = $this->genericFormObject->rulesForStoring();
 
+
         return array_merge($rules, $this->contentBlockRules("create"));
     }
 
@@ -153,14 +154,10 @@ class ContentBlocksFormObject implements FormObject
             return [static::CONTENT_FORM_NAME . '.' . static::BLOCKS_FORM_NAME => 'required'];
         }
 
+
         $rules = [];
         foreach ($this->blocksData() as $blockIndex => $blockData) {
-            $rules = array_merge(
-                $rules,
-                [
-                    $blockIndex => $this->rulesForBlock(new Collection($blockData))
-                ]
-            );
+            $rules = $rules +  [$blockIndex => $this->rulesForBlock(new Collection($blockData))];
         }
 
         $blocksRules = Arr::dot([

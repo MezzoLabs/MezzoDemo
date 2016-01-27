@@ -36,7 +36,8 @@
     "toastr": "~2.1.2",
     "lodash": "~4.0.0",
     "angular-translate": "~2.8.1",
-    "angular-ui-tinymce": "~0.0.12"
+    "angular-ui-tinymce": "~0.0.12",
+    "textAngular": "~1.5.0"
   },
   "ignore": [
     "**/.*",

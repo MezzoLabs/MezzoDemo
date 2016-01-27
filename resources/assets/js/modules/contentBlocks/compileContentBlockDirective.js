@@ -19,8 +19,6 @@ export default function compileContentBlockDirective($parse, $compile, formValid
             $compile(element.contents())(scope);
         });
 
-        eventDispatcher.on('form.updated', (event, payload) => onUpdate(payload));
-
         function deferFormValidation(element) {
             setTimeout(() => {
                 assignFormValidation(element);
@@ -36,12 +34,6 @@ export default function compileContentBlockDirective($parse, $compile, formValid
             $compile(element.contents())(scope);
         }
 
-        function onUpdate(data) {
-            var $idInput = element.find('[name$=".id"]');
-            var id = data.flattened[$idInput.attr('name')];
 
-            //TODO: Find the right input via the api response (send a unique handle / sort
-            //$idInput.val(id);
-        }
     }
 }

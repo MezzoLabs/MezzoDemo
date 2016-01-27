@@ -3,6 +3,7 @@
 
 namespace MezzoLabs\Mezzo\Core\Validation;
 use MezzoLabs\Mezzo\Http\Requests\Request;
+use MezzoLabs\Mezzo\Modules\Posts\Domain\Observers\UserObserver;
 
 /**
  * Class HasValidationRules
@@ -17,8 +18,9 @@ trait HasValidationRules
 
     public static function bootHasValidationRules()
     {
-        app('events')->listen('eloquent.saving*', \MezzoLabs\Mezzo\Core\Validation\Validator::class . '@onSaving');
-        app('events')->listen('eloquent.deleting*', \MezzoLabs\Mezzo\Core\Validation\Validator::class . '@onDeleting');
+        app()['events']->listen('eloquent.saving*', \MezzoLabs\Mezzo\Core\Validation\Validator::class . '@onSaving');
+        app()['events']->listen('eloquent.deleting*', \MezzoLabs\Mezzo\Core\Validation\Validator::class . '@onDeleting');
+
     }
 
 

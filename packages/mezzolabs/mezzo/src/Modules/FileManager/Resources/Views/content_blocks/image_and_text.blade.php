@@ -20,6 +20,8 @@
     <div class="form-group">
         <label>Image position</label> <br/>
 
+        Position:
+
         <div class="radio-inline">
             <label><input type="radio"
                           ng-checked="@{{ !block.options.image_position || block.options.image_position == 'left' }}"

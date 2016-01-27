@@ -9,6 +9,16 @@ class UpdateUserRequest extends UpdateResourceRequest
 {
     use StoresOrUpdatesUser;
 
+    public function processData()
+    {
+        parent::processData();
+
+        // Do not touch the password if it is empty.
+        if(empty($this->offsetGet('password'))){
+            $this->offsetUnset('password');
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *

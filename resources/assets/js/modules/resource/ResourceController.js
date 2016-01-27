@@ -13,6 +13,7 @@ export default class ResourceController {
         this.errorHandlerService = this.$injector.get('errorHandlerService');
         this.eventDispatcher = this.$injector.get('eventDispatcher');
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
+        this.isBusy = false;
     }
 
     hasError(inputName) {
@@ -106,11 +107,19 @@ export default class ResourceController {
     }
 
     submit() {
+        if (this.isBusy) {
+            console.error('Resource controller is still busy. Cannot submit at the moment.');
+            return false;
+        }
+
+        this.isBusy = true;
+
         console.info('submit()');
 
         tinyMCE.triggerSave();
 
         if (!this.attemptSubmit()) {
+            this.isBusy = false;
             return false;
         }
 
@@ -119,7 +128,6 @@ export default class ResourceController {
 
         this.fireEvent('form.sending', formData);
 
-        console.info('doSubmit() with', formData);
 
         this.doSubmit(formData)
             .then((response) => {
@@ -133,7 +141,10 @@ export default class ResourceController {
                 this.loading = false;
 
                 this.catchServerSideErrors(err);
-            });
+            })
+            .finally(() => {
+                this.isBusy = false;
+        });
     }
 
     dirtyFormControls() {
@@ -152,7 +163,7 @@ export default class ResourceController {
                 const name = $formInput.attr('name');
                 const value = $formInput.val();
 
-                if($formInput.is('input[type=radio]')){
+                if ($formInput.is('input[type=radio]')) {
                     if (!$formInput.prop('checked')) {
                         return;
                     }
@@ -180,6 +191,11 @@ export default class ResourceController {
 
                     checkbox.push(checkboxId);
 
+                    return;
+                }
+
+                if ($formInput.is('input[type=checkbox]')){
+                    _.set(formData, name, ($formInput.prop('checked')) ? 1 : 0 );
                     return;
                 }
                 /* End checkbox edge case */

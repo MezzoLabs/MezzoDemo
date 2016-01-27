@@ -12,10 +12,12 @@ export default class FormValidationService {
         const validationMessagesTemplate = `<mezzo-validation-messages data-form-input="vm.form['${ nameAttribute }']"></mezzo-validation-messages>`;
         const ngModel = `vm.inputs['${ nameAttribute }']`;
 
+        this.addModelConnection($formInput, ngModel);
+
         $formInput
-            .attr('ng-model', ngModel)
             .not('[readonly],[disabled]')
             .attr('ng-disabled', 'vm.loading');
+
 
         $formGroup
             .attr('ng-class', `vm.hasError('${ nameAttribute }')`)
@@ -32,6 +34,20 @@ export default class FormValidationService {
                 $formInput.attr('ng-init', ngModel + ` = '${ selectDefaultValue }'`);
             }
         }
+    }
+
+    addModelConnection($formInput, ngModelValue) {
+        if ($formInput.is('[type=checkbox],[type=radio]')) {
+            if ($formInput.attr('ng-checked'))
+                return false;
+
+            return $formInput.attr('ng-checked', ngModelValue);
+        }
+
+        if ($formInput.attr('ng-model'))
+            return false;
+
+        return $formInput.attr('ng-model', ngModelValue);
     }
 
 }

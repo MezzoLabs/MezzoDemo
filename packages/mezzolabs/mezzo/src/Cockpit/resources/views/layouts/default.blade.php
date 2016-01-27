@@ -62,7 +62,7 @@
 {!! cockpit_script('/components/lodash/dist/lodash.min.js') !!}
 {!! cockpit_script('/components/js-md5/build/md5.min.js') !!}
 {!! cockpit_script('/components/tinymce-dist/tinymce.js') !!}
-{!! cockpit_script('/components/angular-ui-tinymce/src/tinymce.js') !!}
+{!! cockpit_script('/modified_components/angular-ui-tinymce/src/tinymce.js') !!}
 
 {!! cockpit_script('/components/toastr/toastr.min.js') !!}
 {!! cockpit_script('/components/angular-translate/angular-translate.js') !!}

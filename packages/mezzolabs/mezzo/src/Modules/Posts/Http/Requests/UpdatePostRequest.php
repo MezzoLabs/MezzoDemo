@@ -19,6 +19,7 @@ class UpdatePostRequest extends UpdateResourceRequest
         return $this->makeContentBlocksFormObject();
     }
 
+
     /**
      * Get the validation rules that apply to the request.
      *
