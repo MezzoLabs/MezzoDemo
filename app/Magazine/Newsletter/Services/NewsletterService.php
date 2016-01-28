@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Magazine\NewsLetter\Services;
+namespace App\Magazine\Newsletter\Services;
 
 
 use Mailchimp;

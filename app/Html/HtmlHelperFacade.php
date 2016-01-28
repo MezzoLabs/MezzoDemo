@@ -5,7 +5,7 @@ namespace App\Html;
 
 use Collective\Html\FormFacade as CollectiveFormFacade;
 
-class FormFacade extends CollectiveFormFacade
+class HtmlHelperFacade extends CollectiveFormFacade
 {
 
     /**

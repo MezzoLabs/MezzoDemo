@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Modules\Posts\Domain\Repositories;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
 use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 use packages\mezzolabs\mezzo\src\Modules\Contents\Domain\Repositories\IsRepositoryWithContentBlocks;
@@ -43,6 +44,13 @@ class PostRepository extends ModelRepository
 
 
         return parent::update($data, $id, $attribute);
+    }
+
+    public function moveOwnership(\App\User $fromUser, \App\User $toUser)
+    {
+        return DB::table('posts')
+            ->where('user_id', $fromUser->id)
+            ->update(array('user_id' => $toUser->id));
     }
 
 

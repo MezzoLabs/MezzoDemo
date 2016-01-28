@@ -13,6 +13,8 @@ const app = angular.module('Mezzo', [
     'ui.router',
     'ui.sortable',
     'ui.bootstrap',
+    'mezzo.ui.tinymce',
+    'pascalprecht.translate',
     'ngMessages',
     'angular-sortable-view',
     'angular-loading-bar',

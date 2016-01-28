@@ -6,8 +6,8 @@ namespace App\Magazine\Shop\Http\Controllers;
 
 use App\Magazine\Shop\Http\Pages\IndexMerchantPage;
 use App\Magazine\Shop\Http\Pages\Product\CreateProductPage;
+use App\Magazine\Shop\Http\Pages\Product\EditProductPage;
 use App\Magazine\Shop\Http\Pages\Product\IndexProductPage;
-use MezzoLabs\Mezzo\Cockpit\Pages\Resources\EditResourcePage;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\CreateResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\EditResourceRequest;
@@ -59,8 +59,8 @@ class ProductController extends CockpitResourceController
      * @param  int $id
      * @return ModuleResponse
      */
-    public function edit(EditResourceRequest $request, $id)
+    public function edit(EditResourceRequest $request, $id = 0)
     {
-        return $this->page(EditResourcePage::class);
+        return $this->page(EditProductPage::class);
     }
 }

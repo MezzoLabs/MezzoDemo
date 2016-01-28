@@ -1,16 +1,16 @@
 /*@ngInject*/
-export default function compileContentBlockDirective($parse, $compile, formValidationService){
+export default function compileContentBlockDirective($parse, $compile, formValidationService, eventDispatcher) {
     return {
         restrict: 'A',
         link
     };
 
-    function link(scope, element, attributes){
+    function link(scope, element, attributes) {
         const expression = attributes.mezzoCompileContentBlock;
         const getter = $parse(expression);
 
         scope.$watch(getter, html => {
-            if(!html){
+            if (!html) {
                 return;
             }
 
@@ -27,12 +27,13 @@ export default function compileContentBlockDirective($parse, $compile, formValid
 
         function assignFormValidation(element) {
             element
-                .children('div.form-group')
-                .find(':input')
+                .find('div.form-group :input')
                 .each((index, formInput) => {
                     formValidationService.assign(formInput);
                 });
             $compile(element.contents())(scope);
         }
+
+
     }
 }

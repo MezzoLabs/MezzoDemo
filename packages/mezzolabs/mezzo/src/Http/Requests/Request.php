@@ -154,6 +154,7 @@ class Request extends FormRequest
     {
         $array = array();
         foreach (parent::all() as $key => $value) {
+            //replace names with dots with arrays.
             array_set($array, $key, $value);
         }
         return $array;

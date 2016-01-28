@@ -7,44 +7,69 @@
     @include('cockpit::partials.pages.index_actions')
 
     <div class="panel panel-bordered">
-        <div class="panel-body">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" data-target="#extra_filters">Special Filters</a>
+            </h3>
+        </div>
+        <div id="extra_filters" class="panel-collapse collapse">
+            <div class="panel-body">
 
-            <form method="GET" action="http://mezzo.dev/api/events">
-                <div class="row">
-                    <div class="col-md-3">
-                        <label>Search</label>
-                        <input type="search" name="q" class="form-control"
-                               placeholder="search">
-                    </div>
-                    <div class="col-md-5">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <label>Zipcode</label>
-                                <input name="scopes[nearZip][0]" type="number" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <label>Distance (km)</label>
-                                <input name="scopes[nearZip][1]" class="form-control" type="number"/>
+                <form method="GET" action="http://mezzo.dev/api/events">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>From</label>
+                                <input data-mezzo-datetimepicker type="text" name="scopes[betweenDates][0]"
+                                       class="form-control">
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label>Provider</label>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>To</label>
+                                <input data-mezzo-datetimepicker type="text" name="scopes[betweenDates][1]"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Zipcode</label>
+                                        <input name="scopes[nearZip][0]" type="number" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Distance (km)</label>
+                                        <input name="scopes[nearZip][1]" class="form-control" type="number"/>
+                                    </div>
 
-                        <select name="event_provider_id" class="form-control">
-                            @foreach($allProviders as $provider)
-                                <option value="{{ $provider->id }}">{{ $provider->label }}</option>
-                            @endforeach
-                        </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Provider</label>
+                                <select name="event_provider_id" class="form-control">
+                                    <option value="">-</option>
+                                    @foreach($allProviders as $provider)
+                                        <option value="{{ $provider->id }}">{{ $provider->label }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 pull-right">
+                            <br/>
+                            <button type="button" class="btn btn-default btn-block" ng-click="vm.applyScopes($event)">
+                                Submit
+                            </button>
+                        </div>
                     </div>
-                    <div class="col-md-4 pull-right">
-                        <br/>
-                        <button type="button" class="btn btn-default btn-block" ng-click="vm.applyScopes($event)">Submit</button>
-                    </div>
-                </div>
-            </form>
+                </form>
 
 
+            </div>
         </div>
     </div>
 

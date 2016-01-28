@@ -26,6 +26,10 @@ export default class Folder extends File {
             return '';
         }
 
+        return '/' + this.pathArray().join('/');
+    }
+
+    pathArray() {
         const folders = [this.name];
         let folder = this;
 
@@ -41,7 +45,7 @@ export default class Folder extends File {
 
         folders.reverse();
 
-        return '/' + folders.join('/');
+        return folders;
     }
 
 }

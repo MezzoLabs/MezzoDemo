@@ -11,22 +11,39 @@
                 <br>
                 <div class="row">
                     <div ng-class="vm.leftColumnClass()">
-                        <table class="table table-condensed" ng-show="vm.filteredFiles().length > 0">
-                            <tr ng-repeat="file in vm.filteredFiles() track by file.id">
-                                <td style="width: 20px">
-                                    <input type="checkbox" ng-model="file.selected" ng-change="vm.onSelect(file)">
-                                </td>
-                                <td style="width: 100px">
-                                    <img class="img-responsive" ng-src="{{ file.thumbnail() }}">
-                                    <span ng-class="file.icon()" ng-if="!file.thumbnail()"></span>
-                                </td>
-                                <td>
-                                    <span ng-bind="file.name" ng-hide="file.isImage()"></span>
-                                    <a href="" ng-bind="file.name" ng-click="vm.setPreview(file)"
-                                       ng-show="file.isImage()"></a>
-                                </td>
-                            </tr>
-                        </table>
+                        <div ng-show="vm.filteredFiles().length > 0">
+                            <table class="table table-condensed">
+                                <tr ng-repeat="file in vm.pagedFiles() track by file.id">
+                                    <td style="width: 20px">
+                                        <input type="checkbox" ng-model="file.selected" ng-change="vm.onSelect(file)">
+                                    </td>
+                                    <td style="width: 75px">
+                                        <div style="width: 75px; height: 75px;">
+                                            <img class="img-responsive" ng-src="{{ file.thumbnail() }}">
+                                            <span ng-class="file.icon()" ng-if="!file.thumbnail()"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="file.displayPath()" ng-hide="file.isImage()"></span>
+                                        <a href="" ng-bind="file.displayPath()" ng-click="vm.setPreview(file)"
+                                           ng-show="file.isImage()"></a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="clearfix">
+                                <div class="pull-right">
+                                    <uib-pagination last-text=">>"
+                                                    first-text="<<" force-ellipses="true"
+                                                    boundary-links="true" max-size="vm.pagination.size"
+                                                    total-items="vm.filteredFiles().length"
+                                                    previous-text="<" next-text=">" ng-model="vm.pagination.current"
+                                                    items-per-page="vm.pagination.perPage"></uib-pagination>
+                                </div>
+                                <div class="pull-right" style="margin-top: 28px; padding-right: 10px;">
+                                    <small>{{ vm.filteredFiles().length }} / {{ vm.files.length }}</small>
+                                </div>
+                            </div>
+                        </div>
                         <div class="alert alert-danger" ng-show="vm.filteredFiles().length === 0">
                             Nothing here to see...
                         </div>
@@ -55,12 +72,12 @@
 
 <div class="thumbnails">
     <div class="thumbnail-wrap" ng-repeat="file in vm.selectedFiles()">
-        <a href="" class="thumbnail" title="{{ file.title }}" ng-if="file.thumbnail()" ng-click="file.selected = false">
+        <a href="" class="thumbnail" title="{{ file.title }}" ng-if="file.thumbnail()" ng-click="vm.deselect(file)">
             <img class="img-responsive" ng-src="{{ file.thumbnail() }}">
         </a>
         <div ng-if="!file.thumbnail()">
             <span class="text-muted" style="word-wrap: break-word" ng-bind="file.title"></span>
-            <button type="button" class="close pull-right" ng-click="file.selected = false">
+            <button type="button" class="close pull-right" ng-click="vm.deselect(file)">
                 <span>&times;</span>
             </button>
         </div>
@@ -69,7 +86,7 @@
 
 <button type="button" class="btn btn-default btn-block" ng-click="vm.showModal($event)"
         ng-bind="vm.selectLabel()"></button>
-<input type="hidden" name="{{ vm.name }}" data-mezzo-file-picker-value>
+<input type="hidden" data-value-key="vm.$parent.vm.inputs[{{vm.name}}]" value="{{ vm.$parent.vm.inputs[vm.name] }}" name="{{ vm.name }}">
 <br>
 
 

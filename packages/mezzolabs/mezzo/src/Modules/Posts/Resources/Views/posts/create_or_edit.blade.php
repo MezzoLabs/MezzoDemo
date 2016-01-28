@@ -43,13 +43,17 @@
                     {!! $model_reflection->schema()->attributes('state')->render() !!}
 
                     @if($module_page->isType('create'))
-                        {!! cockpit_form()->submit('Save as new ' . $model_reflection->name()) !!}
+                    <span class="is_published"></span>
+                    @endif
+
+                    @if($module_page->isType('create'))
+                        {!! cockpit_form()->submitCreate($model_reflection) !!}
                     @else
-                        {!! cockpit_form()->submit('Update ' . $model_reflection->name()) !!}
+                        {!! cockpit_form()->submitEdit($model_reflection) !!}
                     @endif
                 </div>
             </div>
-            <div class="panel panel-bordered">
+            <div class="panel categories-panel panel-bordered">
                 <div class="panel-heading">
                     <h3>Categories</h3>
                 </div>

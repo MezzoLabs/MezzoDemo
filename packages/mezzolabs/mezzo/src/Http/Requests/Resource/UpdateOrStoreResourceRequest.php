@@ -25,11 +25,18 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
     {
         if (!$this->formObject) {
             $this->addDefaultData();
+            $this->removeEmptyArrayItems();
+            $this->processData();
             $this->formObject = $this->makeFormObject();
             $this->formObject->setId($this->getId());
         }
 
         return $this->formObject;
+    }
+
+    public function processData()
+    {
+
     }
 
     protected function makeFormObject()
@@ -53,22 +60,32 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
     public function addDefaultData()
     {
         $newModel = $this->newModelInstance();
-        if (!method_exists($newModel, 'defaultCreateData')) {
+        if (!method_exists($newModel, 'defaultData')) {
             return;
         }
 
         $isUpdate = $this instanceof UpdateResourceRequest;
+        $overwriteData = array_dot($newModel->defaultData($this->all()));
 
-        if ($isUpdate)
-            return;
 
-        $defaultCreateData = array_dot($newModel->defaultCreateData($this->all()));
+        $all = $this->all();
 
-        foreach ($defaultCreateData as $key => $value) {
-            if (!$this->has($key)) {
+        foreach ($overwriteData as $key => $value) {
+
+            //Only set the default data on a update request when the key is not set
+            if ($isUpdate && (isset($all[$key]) && empty($this->get($key)))) {
                 $this->offsetSet($key, $value);
+                continue;
+            }
+
+            //Do Always set the default data on a store request
+            if (!$isUpdate && (!$this->has($key) || empty($this->get($key)))) {
+                $this->offsetSet($key, $value);
+                continue;
             }
         }
+
+
     }
 
 
@@ -77,10 +94,34 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
      *
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function getValidatorInstance()
+    protected
+    function getValidatorInstance()
     {
         //pull the default data in before validation.
         $this->formObject();
         return parent::getValidatorInstance();
+    }
+
+    private function removeEmptyArrayItems()
+    {
+        foreach ($this->all() as $key => &$value) {
+            if (is_array($value)) {
+                $value = $this->arrayFilterRecursive($value);
+                $this->offsetSet($key, $value);
+            }
+        }
+    }
+
+    private function arrayFilterRecursive($input)
+    {
+        foreach ($input as &$value)
+        {
+            if (is_array($value))
+            {
+                $value = $this->arrayFilterRecursive($value);
+            }
+        }
+
+        return array_filter($input);
     }
 }

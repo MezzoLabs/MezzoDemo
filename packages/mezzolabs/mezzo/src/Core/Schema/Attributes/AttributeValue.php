@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 
 
 use Carbon\Carbon;
+use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput;
 
 class AttributeValue
@@ -126,20 +127,12 @@ class AttributeValue
      */
     protected function processDateTimeValue($value)
     {
-        //DD.MM.YYY HH:mm:SS
-        if (preg_match('/^\d{2}.\d{2}.\d{4} \d{2}:\d{2}$/', $value)) {
-            return Carbon::createFromFormat('d.m.Y H:i', $value)->toDateTimeString();
-        }
+        return StringHelper::toDateTimeString($value);
 
-        //YYYY-MM-DDTHH:MM -> YYYY-MM-DD HH:MM:SS
-        if (preg_match('/^\d{3,4}-\d{1,2}-\d{1,2}T\d{1,2}:\d{1,2}$/', $value))
-            return str_replace('T', ' ', $value) . ':00';
 
-        //YYYY-MM-DDTHH:MM:SS -> YYYY-MM-DD HH:MM:SS
-        if (preg_match('/^\d{3,4}-\d{1,2}-\d{1,2}T\d{1,2}:\d{1,2}:\d{1,2}$/', $value))
-            return str_replace('T', ' ', $value);
+    }
 
-        return $value;
-
+    protected function isDateTimeString($value){
+        return StringHelper::toDateTimeString($value) != null;
     }
 }

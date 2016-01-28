@@ -2,8 +2,11 @@ import ModelApi from './ModelApi';
 
 export default class Api {
 
-    constructor($http){
+    /** @ngInject */
+    constructor($http, eventDispatcher) {
         this.$http = $http;
+        this.eventDispatcher = eventDispatcher;
+        console.log('make api');
     }
 
     get(url, params = {}) {
@@ -14,12 +17,13 @@ export default class Api {
         return this.apiPromise(this.$http.get(url, config));
     }
 
-    post(url, data) {
-        return this.apiPromise(this.$http.post(url, data));
+    post(url, data, config = {}) {
+        return this.apiPromise(this.$http.post(url, data,  config));
     }
 
-    put(url, data) {
-        return this.apiPromise(this.$http.put(url, data));
+    put(url, data, config = {}) {
+        console.log('put', config);
+        return this.apiPromise(this.$http.put(url, data, config));
     }
 
     delete(url){
@@ -27,7 +31,7 @@ export default class Api {
     }
 
     model(modelName){
-        return new ModelApi(this, modelName);
+        return new ModelApi(this, modelName, this.eventDispatcher);
     }
 
     apiPromise($httpPromise){

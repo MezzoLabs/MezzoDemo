@@ -1,13 +1,16 @@
 export default class SubscriptionsController {
 
     /*@ngInject*/
-    constructor(api, $scope, $element) {
+    constructor(api, $scope, $rootScope, $element, eventDispatcher) {
         this.api = api;
+        this.modelApi = api.model('Subscription');
         this.$form = $element.parents('form')[0];
 
         var base = this;
-        $scope.$on('mezzo.formdata.set', function (event, mass) {
-            base.fill(mass.data, mass.form);
+
+        eventDispatcher.on('form.received', (event, payload) => {
+            base.fill(payload.data, payload.form);
+
         });
     }
 
@@ -19,31 +22,16 @@ export default class SubscriptionsController {
         this.subscriptions = data.subscriptions;
 
         this.sort();
-
-        console.log('subscriptions', this.subscriptions);
     }
 
     subscribedUntilString(subscription) {
-        return moment(subscription.subscribed_until).format('DD.MM.YYYY HH:mm')
+        return this.subscribedUntilDate(subscription).format('DD.MM.YYYY HH:mm');
     }
 
-    subscribedUntilDate(subscription) {
-        return moment(subscription.subscribed_until);
-    }
-
-    timeLeft(subscription) {
-        return this.subscribedUntilDate(subscription).fromNow();
-    }
 
     isCancelled(subscription) {
         return subscription.cancelled == 1;
     }
 
-    sort() {
-        var base = this;
-        this.subscriptions = _.sortBy(this.subscriptions, function (s) {
-                return base.subscribedUntilDate(s).format('X');
-            }
-        );
-    }
+
 }

@@ -151,7 +151,7 @@ abstract class MezzoPost extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for teaser
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextArea", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextArea", hidden="index")
      * @var string
      */
     protected $_teaser;
@@ -159,7 +159,7 @@ abstract class MezzoPost extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for slug
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="create,edit")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="create,edit,index")
      * @var string
      */
     protected $_slug;
@@ -167,7 +167,7 @@ abstract class MezzoPost extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for state
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Posts\Schema\InputTypes\PostStateInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Posts\Schema\InputTypes\PostStateInput", hidden="index")
      * @var string
      */
     protected $_state;

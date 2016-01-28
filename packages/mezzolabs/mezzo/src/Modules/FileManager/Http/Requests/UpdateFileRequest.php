@@ -13,6 +13,8 @@ use MezzoLabs\Mezzo\Modules\FileManager\Exceptions\FileNameNotUniqueException;
 
 class UpdateFileRequest extends UpdateResourceRequest
 {
+    use UpdatesOrUploadsFiles;
+
     public $model = File::class;
 
     /**
@@ -25,6 +27,13 @@ class UpdateFileRequest extends UpdateResourceRequest
         parent::validate();
 
         $this->validateUniqueInFolder();
+    }
+
+    public function processData()
+    {
+        parent::processData();
+
+        $this->processFileNameAndFolder();
     }
 
     protected function validateUniqueInFolder()
@@ -71,8 +80,8 @@ class UpdateFileRequest extends UpdateResourceRequest
     public function rules()
     {
         return [
-            'filename' => 'required|between:3,255',
-            'folder' => 'required|between:1,255'
+            'filename' => 'sometimes|between:3,255',
+            'folder' => 'sometimes|between:1,255'
         ];
     }
 

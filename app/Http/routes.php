@@ -12,7 +12,6 @@
 */
 
 
-use App\Magazine\NewsLetter\Services\NewsletterService;
 use App\Tutorial;
 use App\User;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -42,6 +41,9 @@ Route::group(['middleware' => ['mezzo.no_permissions_check', 'mezzo.no_model_val
         'register' => 'Auth\AuthController',
         'password' => 'Auth\PasswordController',
     ]);
+
+    Route::get('oauth/callback/{provider}', 'Auth\AuthController@oauthCallback');
+    Route::get('oauth/redirect/{provider}', 'Auth\AuthController@oauthToProvider');
 
 
 });
@@ -73,10 +75,11 @@ Route::group(['middleware' => ['auth']], function () {
  */
 
 
-Route::get('/test/mailchimp', function () {
-    $newsletterService = app(NewsLetterService::class);
+Route::get('/test/during', function () {
+    $from = "18.01.2015 10:00";
+    $to = "18.01.2016 12:00";
 
-    $newsletterService->addEmailToList('simon.sch@outlook.com');
+    mezzo_dump(\App\Event::betweenDates($from, '')->get());
 });
 
 Route::get('/test/distance', function () {

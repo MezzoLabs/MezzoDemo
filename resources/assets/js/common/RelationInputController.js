@@ -1,52 +1,69 @@
 export default class RelationInputController {
 
     /*@ngInject*/
-    constructor(api, $scope, $element, $timeout) {
+    constructor(api, $scope, $element, $timeout, eventDispatcher) {
         this.api = api;
         this.modelApi = this.api.model(this.related);
         this.model = null;
         this.$element = $element;
         this.models = [];
         this.selected = null;
+        this.modelsLoaded = false;
+        this.$timeout = $timeout;
+        this.uniqueKey = _.random(10000, 90000);
 
+        this.eventDispatcher = eventDispatcher;
+
+
+        this.eventDispatcher.on(['form.received', 'relationinput.models_loaded.' + this.uniqueKey], (events, payloads) => {
+            this.fill(payloads['form.received'].data, payloads['form.received'].form);
+
+        });
+
+
+        this.loadModels();
+    }
+
+    loadModels() {
         const params = {
             scopes: this.scopes
         };
-
-        var base = this;
 
         this.modelApi.index(params)
             .then(models => {
                 this.models = models;
 
-                $timeout(function () {
-                    if (!base.selected) return;
+                this.modelsLoaded = true;
 
-                    var value = base.selected;
+                this.eventDispatcher.makeAndFire('relationinput.models_loaded.' + this.uniqueKey, {'models': models});
 
-                    if (base.selected[0]) {
-                        value = _.map(base.selected, 'id');
-                    }
-
-                    $(base.$element).val(value).trigger('change', {'filledFromApi': true}).blur();
-
-                });
 
             });
-
-        var base = this;
-
-        $scope.$on('mezzo.formdata.set', function (event, mass) {
-            base.fill(mass.data, mass.form);
-        });
     }
 
     fill(data, form) {
+        if (!this.modelsLoaded) {
+            console.error('fill without models loaded');
+        }
 
         if (form != $(this.$element).parents('form')[0])
             return false;
 
         this.selected = data[this.$element.attr('name')];
+
+        var htmlValue = _.clone(this.selected);
+
+
+        this.$timeout(() => {
+            if (htmlValue[0]) {
+                htmlValue = _.map(htmlValue, 'id');
+            }
+
+            $(this.$element).val(htmlValue).trigger('change', {'filledFromApi': true}).blur();
+        });
+
+
+
 
     }
 

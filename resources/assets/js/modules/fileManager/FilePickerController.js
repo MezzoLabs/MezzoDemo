@@ -3,13 +3,43 @@ import File from './File';
 export default class FilePickerController {
 
     /*@ngInject*/
-    constructor(api) {
+    constructor(api, $scope, eventDispatcher) {
         this.api = api;
         this.files = [];
         this.preview = null;
         this.searchText = '';
+        this.eventDispatcher = eventDispatcher;
+        this.uniqueKey = _.random(10000, 90000);
+
+        this.$parent = $scope.$parent;
+
+
+        this.pagination = {
+            size: 10,
+            current: 1,
+            perPage: 5
+        };
+
+
+        this.registerListeners();
 
         this.loadFiles();
+
+    }
+
+    registerListeners() {
+        //Form was already received -> we dont have to wait for the selected value
+        if (this.eventDispatcher.isInHistory('form.received')){
+            return this.eventDispatcher.on('filepicker.files_loaded.' + this.uniqueKey, (event, payload) => {
+                this.selectOldValue();
+            });
+        }
+
+        // Wait for the form content and the possible files before selecting the old value
+        return this.eventDispatcher.on(['form.received', 'filepicker.files_loaded.' + this.uniqueKey], (events, payloads) => {
+            this.selectOldValue();
+        });
+
     }
 
     selectLabel() {
@@ -47,24 +77,30 @@ export default class FilePickerController {
         });
     }
 
+    selectAddonIds() {
+        return this.fileType == 'image' || this.fileType == 'video';
+    }
+
     filesLoaded() {
-        this.selectOldValue();
-
-
+        this.eventDispatcher.makeAndFire('filepicker.files_loaded.' + this.uniqueKey, {'files': this.files});
     }
 
     selectOldValue() {
-        if (!this.value) {
-            return false;
-        }
+        var value = this.$parent.vm.inputs[this.name];
 
-        if (this.value.indexOf(',') == -1) {
-            this.selectId(this.value);
+
+        if (!value || value == "")
+            return false;
+
+        value = String(value);
+
+        if (value.indexOf(',') == -1) {
+            this.selectId(value);
             this.confirmSelected();
             return true;
         }
 
-        var ids = this.value.split(',');
+        var ids = value.split(',');
         for (var i in ids) {
             this.selectId(ids[i]);
         }
@@ -72,8 +108,6 @@ export default class FilePickerController {
         this.confirmSelected();
 
         return true;
-
-
     }
 
     filteredFiles() {
@@ -82,6 +116,15 @@ export default class FilePickerController {
         }
 
         return this.files;
+    }
+
+    pagedFiles() {
+        var files = this.filteredFiles();
+
+        var start = (this.pagination.current - 1) * this.pagination.perPage;
+        var end = (this.pagination.current) * this.pagination.perPage - 1;
+
+        return files.slice(start, end);
     }
 
     setPreview(file) {
@@ -115,7 +158,12 @@ export default class FilePickerController {
     }
 
     selectId(id) {
-        var file = _.find(this.files, {id: parseInt(id)});
+        if (!id || id == "") return false;
+
+
+        var file = _.find(this.files, file => {
+            return this.id(file) == id;
+        });
 
         file.selected = true;
     }
@@ -148,20 +196,29 @@ export default class FilePickerController {
         return 'Select ' + selected + ' file' + (selected !== 1 ? 's' : '');
     }
 
+    deselect(file) {
+        file.selected = false;
+
+        this.confirmSelected();
+    }
+
     confirmSelected() {
+        this.$parent.vm.inputs[this.name] = this.selectedIdsString();
+
+    }
+
+    selectedIdsString() {
         const selected = this.selectedFiles();
-        const $field = this.inputField();
 
         if (selected.length === 1) {
-            $field.val(selected[0].id);
-
-            return;
+            return this.id(selected[0]);
         }
 
         const fileIds = [];
 
-        selected.forEach(file => fileIds.push(file.id));
-        $field.val(fileIds);
+        selected.forEach(file => fileIds.push(this.id(file)));
+
+        return fileIds.join(',');
     }
 
     countSelected() {
@@ -180,14 +237,18 @@ export default class FilePickerController {
         }
 
         this.files.forEach(file => {
-            if (_.contains(values, file.id)) {
+            if (_.contains(values, this.id(file))) {
                 file.selected = true;
             }
         });
     }
 
+    id(file) {
+        return (this.selectAddonIds()) ? file.addon.id : file.id;
+    }
+
     inputField() {
-        return $(`input[name="${ this.name }"]`);
+        return $('input[name="' + this.name + '"]');
     }
 
 }

@@ -43,7 +43,6 @@ class BlockFormHelper
         $field = $this->getField($fieldName);
 
         $mergeAttributes['name'] = $mergeAttributes['name'] ?? $this->block->inputName($fieldName);
-        $mergeAttributes['ng-value'] = $mergeAttributes['ng-value'] ?? "block.fields." . $field->name();
 
         $htmlRules = (new HtmlRules(Rules::makeCollection($field->rulesString()), $field->inputType()))->attributes()->toArray();
         $typeAttributes = $field->inputType()->htmlAttributes();

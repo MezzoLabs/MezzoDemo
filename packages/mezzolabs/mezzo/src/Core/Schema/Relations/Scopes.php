@@ -75,6 +75,7 @@ class Scopes extends StrictCollection
 
     public static function make($scopes)
     {
+
         if (is_string($scopes))
             return static::makeFromString($scopes);
 

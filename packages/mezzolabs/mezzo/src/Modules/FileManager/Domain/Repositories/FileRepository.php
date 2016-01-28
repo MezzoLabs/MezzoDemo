@@ -38,7 +38,7 @@ class FileRepository extends ModelRepository
      */
     protected function createFile(array $data)
     {
-        return parent::create($data);
+        return parent::create($this->trimSlashes($data));
     }
 
     /**
@@ -105,7 +105,7 @@ class FileRepository extends ModelRepository
     {
         $folder = trim($folder, '/');
 
-        return $this->query()->where('folder', '=', $folder)->where('filename','=', $filename)->first();
+        return $this->query()->where('folder', '=', $folder)->where('filename', '=', $filename)->first();
     }
 
     /**
@@ -116,5 +116,28 @@ class FileRepository extends ModelRepository
         return parent::modelInstance();
     }
 
+    protected function trimSlashes($data)
+    {
+        if (isset($data['folder']))
 
+            $data['folder'] = str_replace('.', '', trim($data['folder']));
+
+        if (isset($data['filename']))
+            $data['filename'] = trim($data['filename'], '/');
+
+        return $data;
+    }
+
+
+    /**
+     * @param array $data
+     * @param $id
+     * @param string $attribute
+     * @return MezzoModel
+     * @throws RepositoryException
+     */
+    public function update(array $data, $id, $attribute = "id")
+    {
+        return parent::update($this->trimSlashes($data), $id, $attribute);
+    }
 }

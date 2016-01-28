@@ -1,18 +1,26 @@
 export default class IndexResourceController {
 
     /*@ngInject*/
-    constructor($scope, api, modelStateService) {
+    constructor($scope, api, modelStateService, languageService) {
         this.$scope = $scope;
         this.api = api;
+        this.lang = languageService;
         this.modelStateService = modelStateService;
         this.includes = [];
+        this.language = languageService;
         this.models = [];
+        this.modelValues = {};
+        this.searchText = '';
         this.searchText = '';
         this.selectAll = false;
         this.loading = false;
-        this.attributes = [];
+        this.attributes = {};
         this.perPage = 10;
         this.currentPage = 1;
+        this.pagination = {
+            size: 10
+        };
+
 
     }
 
@@ -25,7 +33,12 @@ export default class IndexResourceController {
     }
 
     addAttribute(name, type) {
-        this.attributes.push({name: name, type: type});
+
+        this.attributes[name] = {name: name, type: type, order: '', filter: ''};
+    }
+
+    attribute(name) {
+        return _.find(this.attributes, ['name', name]);
     }
 
     loadModels(params = {}) {
@@ -40,15 +53,24 @@ export default class IndexResourceController {
                 this.models.forEach(model => model._meta = {});
             });
     }
+
     getModels() {
-        if (this.searchText.length > 0) {
+        if (this.searchText.length > 0 || this.hasFilters()) {
             return this.search();
         }
 
         return this.models;
     }
 
-    getPagedModels(){
+    hasFilters() {
+        for (var i in this.attributes) {
+            if (this.attributes[i].filter != "") return true;
+        }
+
+        return false;
+    }
+
+    getPagedModels() {
         var models = this.getModels();
 
         var start = (this.currentPage - 1) * this.perPage;
@@ -72,12 +94,14 @@ export default class IndexResourceController {
     }
 
     getModelValues(model) {
-        var values = [];
+        var values = {};
 
         for (var i in this.attributes) {
             var attribute = this.attributes[i];
-            values.push(this.transformModelValue(attribute, model[attribute.name]));
+            values[attribute.name] = this.transformModelValue(attribute, model[attribute.name]);
         }
+
+        this.modelValues[model.id] = values;
 
         return values;
     }
@@ -98,9 +122,19 @@ export default class IndexResourceController {
             return moment(value).format('DD.MM.YYYY hh:mm');
         }
 
-        if (attribute.type == "boolean") {
-            return (value == "1") ? "y" : "n";
+        if (value && attribute.type == "distance") {
+            return parseFloat(value);
         }
+
+
+        if (this.lang.has('attributes.' + attribute.name + '.' + value)) {
+            return this.lang.get('attributes.' + attribute.name + '.' + value);
+        }
+
+        if (attribute.type == "boolean") {
+            return this.lang.get('attributes.boolean.' + (value == "1") ? "true" : "false");
+        }
+
 
         return value;
     }
@@ -128,21 +162,59 @@ export default class IndexResourceController {
     }
 
     search() {
-        return this.models.filter(model => {
-            for (var key in model) {
-                if (model.hasOwnProperty(key)) {
-                    var value = model[key];
+        var searched = this.models.filter(model => {
+            return this.modelIsInSearch(model) && this.modelIsInFilters(model);
 
-                    if (String(value).indexOf(this.searchText) !== -1) {
-                        return true;
-                    }
+        });
+
+        return searched;
+    }
+
+    modelIsInSearch(model) {
+        if (this.searchText.length == 0) {
+            return true;
+        }
+
+        for (var key in model) {
+            if (model.hasOwnProperty(key)) {
+                var value = model[key];
+
+                if (String(value).toLowerCase().indexOf(this.searchText.toLowerCase()) !== -1) {
+                    return true;
                 }
             }
-        });
+        }
+
+        return false;
+    }
+
+    modelIsInFilters(model) {
+        var values = this.modelValues[model.id];
+
+        for (var key in values) {
+            var value = values[key];
+            var attribute = this.attribute(key);
+
+
+            if (!attribute || !attribute.filter || attribute.filter == "") continue;
+
+            if (!value) {
+                return false;
+            }
+
+            if (String(value).toLowerCase().indexOf(attribute.filter.toLowerCase()) === -1) {
+                return false;
+            }
+
+        }
+
+        return true;
+
+
     }
 
     updateSelectAll() {
-        var models = this.getModels();
+        var models = this.getModelsgetModels();
 
         models.forEach(model => model._meta.selected = this.selectAll);
     }
@@ -225,9 +297,74 @@ export default class IndexResourceController {
         this.loadModels(params);
     }
 
-    pageChanged(){
+    pageChanged() {
 
-        console.log(this.currentPage);
+    }
+
+    sortIcon(name) {
+        switch (this.attribute(name).order) {
+            case 'desc':
+                return 'fa fa-sort-desc';
+            case 'asc':
+                return 'fa fa-sort-asc';
+            default:
+                return 'fa fa-sort';
+        }
+    }
+
+    sortBy(name) {
+        _.forEach(this.attributes, (attribute) => {
+            if (attribute.name != name) {
+                attribute.order = '';
+            }
+        });
+
+        var base = this;
+        var attribute = this.attribute(name);
+        attribute.order = this.nextOrderDirection(attribute.order);
+
+        switch (attribute.order) {
+            case 'desc':
+                return this.models = _.sortBy(this.getModels(), function (model) {
+                    return base.sortByFunction(model, attribute)
+                }).reverse();
+            case 'asc':
+                return this.models = _.sortBy(this.getModels(), function (model) {
+                    return base.sortByFunction(model, attribute)
+                });
+            default:
+                return this.models = _.sortBy(this.getModels(), 'id');
+        }
+    }
+
+    sortByFunction(model, attribute) {
+        var value = model[attribute.name];
+
+
+        if (attribute.type == "datetime") {
+            if (!value || !moment(value).isValid())
+                return "";
+
+            return moment(value).format('YYYY-MM-DD-HH-mm');
+        }
+
+        if (value && typeof(value) == 'number') {
+            return value;
+        }
+
+
+        return String(value).toLowerCase();
+    }
+
+    nextOrderDirection(orderDirection) {
+        switch (orderDirection) {
+            case 'desc':
+                return 'asc';
+            case 'asc':
+                return '';
+            default:
+                return 'desc';
+        }
     }
 
 }

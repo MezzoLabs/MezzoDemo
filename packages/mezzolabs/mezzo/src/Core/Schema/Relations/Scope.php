@@ -32,7 +32,26 @@ class Scope
             throw new ReflectionException('A scope needs to have a valid name.');
 
         $this->name = $name;
-        $this->parameters = $parameters;
+
+
+        $this->parameters = $this->fillParatemers($parameters);
+        ksort($this->parameters);
+
+    }
+
+    private function fillParatemers($parameters)
+    {
+        if (empty($parameters))
+            return $parameters;
+
+        for ($i = 0; $i != 10; $i++) {
+            if (isset($parameters[$i])) break;
+
+            $parameters[$i] = "";
+        }
+
+
+        return $parameters;
     }
 
     /**
@@ -110,6 +129,7 @@ class Scope
             default:
                 throw new ReflectionException('Scopes with more than 4 parameters are not supported.');
         }
+
     }
 
     public function toString()

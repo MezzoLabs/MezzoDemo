@@ -12,11 +12,7 @@ export default class CreateResourceController extends ResourceController {
         this.modelApi = this.api.model(this.modelName);
     }
 
-    doSubmit() {
-        tinyMCE.triggerSave();
-
-        const formData = this.getFormData();
-
+    doSubmit(formData) {
         return this.modelApi.create(formData)
             .then(model => {
                 this.edit(model.id);

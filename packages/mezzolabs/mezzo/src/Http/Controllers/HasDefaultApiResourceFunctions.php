@@ -36,7 +36,9 @@ trait HasDefaultApiResourceFunctions
     public function index(IndexResourceRequest $request)
     {
         $query = QueryObject::makeFromResourceRequest($request);
-        $response = $this->response()->collection($this->repository()->all(['*'], $query), $this->bestModelTransformer());
+        $response = $this->response()->collection(
+            $this->repository()->all(['*'], $query),
+            $this->bestModelTransformer());
 
         if (!$query->pagination()->isEmpty()) {
             $response->withHeader('X-Total-Count', $this->repository()->count($query));
@@ -105,7 +107,9 @@ trait HasDefaultApiResourceFunctions
             $resource = $this->repository()->updateWithNestedRelations($request->all(), $id, $request->nestedRelations());
         }
 
-        $response = $this->response()->item($resource, $this->bestModelTransformer());
+        $updated = $this->repository()->find($id);
+
+        $response = $this->response()->item($updated, $this->bestModelTransformer());
 
 
         event('mezzo.api.update: ' . get_class($this), [$response, $id]);

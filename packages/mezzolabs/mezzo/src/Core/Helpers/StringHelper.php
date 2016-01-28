@@ -4,6 +4,8 @@
 namespace MezzoLabs\Mezzo\Core\Helpers;
 
 
+use Carbon\Carbon;
+
 class StringHelper
 {
     const DATETIME_LOCAL = 'Y-m-d\TH:i:s';
@@ -61,6 +63,38 @@ class StringHelper
 
         return $path . '/' . trim($baseName, '/');
 
+    }
+
+    public static function toDateTimeString($value)
+    {
+        if(!$value){
+            return null;
+        }
+
+        //DD.MM.YYY HH:mm:SS
+        if (preg_match('/^\d{2}.\d{2}.\d{4} \d{2}:\d{2}$/', $value)) {
+            return Carbon::createFromFormat('d.m.Y H:i', $value)->toDateTimeString();
+        }
+
+        //YYYY-MM-DDTHH:MM -> YYYY-MM-DD HH:MM:SS
+        if (preg_match('/^\d{3,4}-\d{1,2}-\d{1,2}T\d{1,2}:\d{1,2}$/', $value))
+            return str_replace('T', ' ', $value) . ':00';
+
+        //YYYY-MM-DDTHH:MM:SS -> YYYY-MM-DD HH:MM:SS
+        if (preg_match('/^\d{3,4}-\d{1,2}-\d{1,2}T\d{1,2}:\d{1,2}:\d{1,2}$/', $value))
+            return str_replace('T', ' ', $value);
+
+        //DD.MM.YYY HH:mm:SS
+        if (preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value)) {
+            return $value;
+        }
+
+        if($value instanceof Carbon){
+            return $value->toDateTimeString();
+        }
+
+
+        return null;
     }
 
 }

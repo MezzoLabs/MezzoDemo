@@ -43,7 +43,8 @@ class UpdateResourceRequest extends UpdateOrStoreResourceRequest
     protected function value($key)
     {
         if ($this->has($key))
-            return $key;
+            return $this->offsetGet($key);
+
 
         $model = $this->currentModelInstance();
         $attributes = $model->getAttributes();

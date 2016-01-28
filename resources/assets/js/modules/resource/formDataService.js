@@ -1,14 +1,21 @@
 export default class FormDataService {
 
+    form() {
+        return $('form[name="vm.form"]');
+    }
+
     transform(data){
         var stripped = this.unfoldData(data);
 
         stripped = this.unpackRelationInputs(this.form()[0], stripped);
-        stripped = this.formatTimestamps(stripped)
+        stripped = this.formatTimestamps(stripped);
 
-        this.flattenContent(stripped);
+        //TODO: Move this into a class
+        return {
+            stripped: _.cloneDeep(stripped),
+            flattened: this.flattenObject(_.cloneDeep(stripped))
+        };
 
-        return stripped;
     }
 
     unfoldData(formData) {
@@ -98,20 +105,6 @@ export default class FormDataService {
 
         if (typeof formData == "string" && formData.match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)) {
             return moment(formData).format('DD.MM.YYYY HH:mm');
-        }
-
-        return formData;
-    }
-
-    flattenContent(formData) {
-        const content = formData.content;
-
-        if (content) {
-            const flatContent = this.flattenObject(content);
-
-            _.forOwn(flatContent, (value, key) => {
-                formData['content.' + key] = value;
-            });
         }
 
         return formData;

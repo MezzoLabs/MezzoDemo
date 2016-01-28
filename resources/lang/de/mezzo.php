@@ -6,7 +6,11 @@ return [
         'delete' => 'Löschen',
         'duplicate' => 'Duplizieren',
         'creating' => 'Erstelle',
-        'editing' => 'Bearbeite'
+        'editing' => 'Bearbeite',
+        'pagination' => [
+            'first' => 'Erste',
+            'last' => 'Letzte'
+        ]
     ],
     'pages' => [
         'permission_index' => 'Zugriffsrechte',
@@ -72,6 +76,11 @@ return [
             'm' => 'Herr',
             'f' => 'Frau',
             'n' => '-'
+        ],
+        'state' => [
+            'published' => 'Veröffentlicht',
+            'draft' => 'In Bearbeitung',
+            'deleted' => 'Gelöscht'
         ]
     ]
 ];

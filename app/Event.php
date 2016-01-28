@@ -6,11 +6,11 @@ use App\LockableResources\CanBeLocked;
 use App\LockableResources\LockableResource;
 use App\Magazine\Relevance\CanBeSortedByRelevance;
 use App\Mezzo\Generated\ModelParents\MezzoEvent;
+use Auth;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 
 class Event extends MezzoEvent implements SluggableInterface, LockableResource
 {
@@ -19,6 +19,10 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
     use SluggableTrait;
 
     use CanBeLocked;
+
+    public $with = [
+        'days'
+    ];
 
     public $searchable = [
         'title', 'description'
@@ -60,6 +64,9 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
      */
     public function start()
     {
+        if($this->days->count() == 0)
+            return null;
+
         return $this->days->sortBy('start')->first()->start;
     }
 
@@ -68,6 +75,9 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
      */
     public function end()
     {
+        if($this->days->count() == 0)
+            return null;
+
         return $this->days->sortBy('end')->last()->end;
     }
 
@@ -82,32 +92,33 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
         return $this->belongsTo(EventProvider::class);
     }
 
-    public function scopeNearLocation(Builder $q1, $latitude, $longitude, $km = 10)
+    public function scopeNearLocation(Builder $q, $latitude, $longitude, $km = 10)
     {
-        $this->repository()->addNearLocationScope($q1, $latitude, $longitude, $km);
+        $this->repository()->addNearLocationScope($q, $latitude, $longitude, $km);
 
     }
 
-    public function scopeNearZip(Builder $q1, $zip, $km = 10)
+    public function scopeNearZip(Builder $q, $zip, $km = 10)
     {
-        $this->repository()->addNearZipScope($q1, $zip, $km);
+        $this->repository()->addNearZipScope($q, $zip, $km);
     }
 
-    public function defaultCreateData($givenData)
+    /**
+     * Data that will be added to the request if the field is empty
+     *
+     * @param array $requestData
+     * @return array
+     */
+    public function defaultData(array $requestData) : array
     {
-        $default = [
-            'user_id' => \Auth::id(),
+        return [
+            'user_id' => Auth::id()
         ];
+    }
 
-        if (isset($givenData['event_venue_id'])) {
-            $venue = EventVenue::findOrFail($givenData['event_venue_id']);
+    public function scopeBetweenDates(Builder $q, $from, $to = "")
+    {
+        return $this->repository()->addScopeBetweenDates($q, $from, $to);
 
-            $address = (new Collection($venue->address->getAttributes()))
-                ->except('id', 'created_at', 'updated_at', 'deleted_at');
-
-            $default['address'] = $address->toArray();
-        }
-
-        return $default;
     }
 }

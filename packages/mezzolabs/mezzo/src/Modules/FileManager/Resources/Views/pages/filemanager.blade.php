@@ -88,7 +88,8 @@
                 </button>
                 <!-- Move -->
                 <!-- Delete -->
-                <button type="button" class="btn btn-default" ng-click="vm.deleteFiles()" ng-disabled="!vm.canMoveOrDelete()">
+                <button type="button" class="btn btn-default" ng-click="vm.deleteFiles()"
+                        ng-disabled="!vm.canMoveOrDelete()">
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-close"></span>
                     </span>
@@ -140,50 +141,44 @@
 @endsection
 
 @section('quickview_title')
-    Active File
+    File
 @endsection
 
 @section('quickview_content')
     <div class="section" ng-if="vm.selected.thumbnail()">
-        <img class="img-responsive" ng-src="@{{ vm.selected.thumbnail(false) }}"/>
+        <img style="padding: 3px;" class="img-responsive" ng-src="@{{ vm.selected.thumbnail('small') }}"/>
     </div>
+    <hr/>
+
     <div class="section section-file-info wrapper">
         <p class="attribute-info">
             <label>Name</label>
-            <span ng-bind="vm.selected.name"></span>
+            <input class="form-control" type="text" disabled value="@{{ vm.selected.name }}"/>
         </p>
         <p class="attribute-info">
             <label>Folder</label>
-            <span ng-bind="vm.selected.displayFolderPath()"></span>
-        </p>
-        <p class="attribute-info">
-            <label>Disk</label>
-            <span>local</span>
-        </p>
-        <p class="attribute-info">
-            <label>Disk</label>
-            <span>local</span>
-        </p>
-        <p class="attribute-info">
-            <label>Disk</label>
-            <span>local</span>
+            <input class="form-control" type="text" disabled value="@{{ vm.selected.displayFolderPath() }}"/>
         </p>
         <p class="attribute-info">
             <label>Link</label>
-            <span ng-bind="vm.selected.url"></span>
-            <a class="btn btn-info btn-block btn-xs" target="_blank" ng-href="@{{ vm.selected.url }}">URL</a>
+        <div class="input-group">
+            <input class="form-control" style="height: 38px;" type="text" disabled value="@{{ vm.selected.url }}"/>
+            <span class="input-group-btn">
+                <a class="btn btn-info" target="_blank" ng-href="@{{ vm.selected.url }}"><i
+                            class="fa fa-chevron-right"></i></a>
+            </span>
+        </div><!-- /input-group -->
 
         </p>
     </div>
+    <hr/>
     <div class="section section-addon-inputs  wrapper">
-        {!! cockpit_form()->open(['angular' => true]) !!}
-        <div class="form-group" v-ng-if="vm.imageSelected()">
+        <div class="form-group" ng-if="vm.selected.isImage()">
             <label>{{ cockpit_form()->title('imagefile', 'caption') }}</label>
-            <input name="caption"
+            <input ng-model="vm.selected.addon.caption" name="caption"
                    class="form-control" {!! cockpit_form()->attributes('imagefile', 'caption') !!} >
         </div>
-        <input type="submit" class="btn btn-primary btn-block">
-        {!! cockpit_form()->close() !!}
+        <input type="submit" ng-click="vm.submitAddon()" class="btn btn-primary btn-block">
     </div>
 
 @endsection

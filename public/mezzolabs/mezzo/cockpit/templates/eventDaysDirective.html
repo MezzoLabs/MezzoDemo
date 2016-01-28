@@ -21,13 +21,13 @@
 <hr/>
 
 <div class="row day" ng-repeat="day in vm.days track by $index">
-    <input type="hidden" name="{{ vm.naming }}[{{ $index }}].id" value="{{ vm.days[$index].id }}">
+    <input type="hidden" name="{{ vm.naming }}.{{ $index }}.id" value="{{ vm.days[$index].id }}">
     <div class="col-md-5">
         <div class="form-group">
-            <input ng-change="vm.startChanged()" data-before="[name='{{ vm.naming }}[{{ $index }}].end']"
+            <input ng-change="vm.startChanged()" data-before="[name='{{ vm.naming }}.{{ $index }}.end']"
                    required="required" ng-change="vm.startChanged()" type="text" ng-model="vm.days[$index].start"
                    data-mezzo-datetimepicker class="form-control"
-                   name="{{ vm.naming }}[{{ $index }}].start">
+                   name="{{ vm.naming }}.{{ $index }}.start">
         </div>
     </div>
     <div class="col-md-1">
@@ -35,9 +35,9 @@
     </div>
     <div class="col-md-5">
         <div class="form-group">
-            <input data-after="[name='{{ vm.naming }}[{{ $index }}].start']" required="required" type="text"
+            <input data-after="[name='{{ vm.naming }}.{{ $index }}.start']" required="required" type="text"
                    ng-model="vm.days[$index].end" data-mezzo-datetimepicker class="form-control"
-                   name="{{ vm.naming }}[{{ $index }}].end">
+                   name="{{ vm.naming }}.{{ $index }}.end">
         </div>
     </div>
     <div class="col-md-1">

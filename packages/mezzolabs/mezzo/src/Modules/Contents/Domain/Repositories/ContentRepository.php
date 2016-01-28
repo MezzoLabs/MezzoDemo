@@ -27,6 +27,11 @@ class ContentRepository extends ModelRepository
         }
 
         foreach ($blocksData as &$blockData) {
+            if(!$blockData){
+                mezzo_dump('ignored block');
+                continue;
+            }
+
             $blockData['content_id'] = $content->id;
             $this->blockRepository()->updateOrCreateWithArray($blockData);
         }

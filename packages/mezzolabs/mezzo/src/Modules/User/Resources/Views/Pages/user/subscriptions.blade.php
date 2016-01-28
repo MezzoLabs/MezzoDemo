@@ -30,10 +30,12 @@
                     <h3>Subscriptions for @{{ vm.inputs.email }}</h3>
                 </div>
                 <div class="panel-body">
-                    <mezzo-user-subscriptions user="@{{ vm.id }}"></mezzo-user-subscriptions>
+                    @include('modules.user::partials.subscriptions_list')
                 </div>
             </div>
         </div>
+        </div>
+    </div>
 
     </div>
 

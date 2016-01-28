@@ -1,14 +1,16 @@
 import ResourceController from './ResourceController';
+import FormEvent from './../../common/forms/FormEvent';
 
 export default class EditResourceController extends ResourceController {
 
     /*@ngInject*/
-    constructor($scope, $injector, $stateParams, $rootScope) {
+    constructor($injector, $scope) {
         super($injector);
 
         this.$scope = $scope;
-        this.$stateParams = $stateParams;
-        this.$rootScope = $rootScope;
+        this.$stateParams = $injector.get('$stateParams');
+        this.$rootScope = $injector.get('$rootScope');
+        this.eventDispatcher = $injector.get('eventDispatcher');
         this.modelId = this.$stateParams.modelId;
         this.content = {};
 
@@ -29,13 +31,13 @@ export default class EditResourceController extends ResourceController {
         this.loadContent();
     }
 
-    doSubmit() {
-        tinyMCE.triggerSave();
-
-        const formData = this.getFormData();
-
-        return this.modelApi.update(this.modelId, formData)
+    doSubmit(formData) {
+        return this.modelApi.update(
+            this.modelId,
+            formData,
+            { params: {include: this.includes.join(',')}})
             .then(model => {
+                this.fireEvent('form.updated', this.formDataService.transform(model));
                 toastr.success('Success! ' + model._label + ' updated');
             });
     }
@@ -58,12 +60,18 @@ export default class EditResourceController extends ResourceController {
 
         const cleaned = this.formDataService.transform(model);
 
-        this.$rootScope.$broadcast('mezzo.formdata.set', {
-            data: cleaned
-        });
+        console.log('cleaned', cleaned);
 
-        this.inputs = cleaned;
+
+        this.inputs = cleaned.flattened;
         this.loading = false;
+
+
+        this.eventDispatcher.fire(new FormEvent('form.received', {
+            data: cleaned.stripped,
+            flattened: cleaned.flattened,
+            form: this.htmlForm()[0]
+        }, this.htmlForm()[0]));
     }
 
     initContentBlocks(model) {
@@ -108,6 +116,7 @@ export default class EditResourceController extends ResourceController {
     unlock() {
         this.modelApi.unlock(this.modelId);
     }
+
 
     onDestroy() {
         this.stopResourceLocking();

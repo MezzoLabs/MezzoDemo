@@ -12,43 +12,14 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-responsive">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>
-                        <input type="checkbox" ng-model="vm.selectAll" ng-change="vm.updateSelectAll()">
-                    </th>
-
-                    @foreach($model_reflection->attributes()->visibleInForm('index') as $attribute)
-                        <th ng-init="vm.addAttribute('{{ $attribute->naming() }}', '{{ $attribute->type()->doctrineTypeName() }}')">{{ $attribute->title() }}</th>
-                    @endforeach
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="model in vm.getPagedModels() track by $index">
-                    <td>
-                            <span class="locked-for-user" title="Locked by @{{ vm.lockedBy(model) }}"
-                                  ng-show="vm.isLocked(model)"><i class="ion-ios-locked"></i></span>
-                    </td>
-                    <td>
-                        <input type="checkbox" ng-model="model._meta.selected">
-                    </td>
-                    <td ng-repeat="value in vm.getModelValues(model) track by $index">
-                        <a href="" class="disabled" title="ID: @{{ model.id }}"
-                           ng-if="vm.displayAsLink($first, model)" ng-click="vm.editId(model.id)"
-                           ng-bind="value"></a>
-                        <span ng-if="!vm.displayAsLink($first, model)" ng-bind="value"></span>
-                    </td>
-                </tr>
-                </tbody>
+            <table class="resource-index-table table table-responsive">
+                @include('cockpit::partials.pages.index_table_heading')
+                @include('cockpit::partials.pages.index_table_body')
             </table>
         </div>
-        <div class="text-right">
 
-            <uib-pagination total-items="vm.getModels().length" previous-text="<" next-text=">" ng-model="vm.currentPage" items-per-page="vm.perPage" ng-change="vm.pageChanged()"></uib-pagination>
+        @include('cockpit::partials.pages.index_pagination')
 
-        </div>
 
     </div>
 </div>

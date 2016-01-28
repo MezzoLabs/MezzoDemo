@@ -55,6 +55,8 @@ class GeneralModuleExtension extends ModuleExtension
         parent::register();
 
         $this->module()->optionRegistry()->register([
+            'magazine::ads_1',
+
             'magazine::social-media_youtube' => [
                 'title' => 'Social media: Youtube',
                 'rules' => 'required|url',

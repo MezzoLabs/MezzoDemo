@@ -5,6 +5,7 @@ export default class File {
         this.title = apiFile.filename;
         this.name = apiFile.filename;
         this.extension = apiFile.extension;
+        this.addon = apiFile.addon;
         this.url = apiFile.url;
         this.type = apiFile.type;
         this.filePath = apiFile.path;
@@ -18,7 +19,11 @@ export default class File {
 
         const filePathSplitted = this.filePath.split('/');
 
-        return filePathSplitted.slice(0, filePathSplitted.length - 1);
+        return filePathSplitted.slice(0, filePathSplitted.length - 1).join('/');
+    }
+
+    displayPath(){
+        return this.displayFolderPath() + '/' + this.name;
     }
 
     icon() {

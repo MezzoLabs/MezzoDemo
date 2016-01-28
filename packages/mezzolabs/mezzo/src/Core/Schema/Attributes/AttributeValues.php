@@ -43,7 +43,7 @@ class AttributeValues extends StrictCollection
         foreach ($array as $key => $value) {
             $attribute = $model->attributes($key);
 
-            if (in_array($key, ["_token", "_method"]) || static::isConfirmation($key, $array))
+            if (in_array($key, ["_token", "_method", 'include']) || static::isConfirmation($key, $array))
                 continue;
 
             if (!$attribute && !$strict) {

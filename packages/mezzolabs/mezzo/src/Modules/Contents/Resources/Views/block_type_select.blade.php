@@ -4,12 +4,12 @@
              ng-model="vm.contentBlockService.contentBlocks">
             <div class="content-block @{{ block.cssClass }}" ng-repeat="block in vm.contentBlockService.contentBlocks">
                 <div class="content-block-heading">
-                    <b>@{{ block.sort + 1 }}. @{{ block.title }}</b>
+                    <b>@{{ block.sort }}. @{{ block.title }}</b>
 
                     <div class="content-block-actions">
                         <a class="" href="#"><i class="ion-ios-gear"></i></a>
                         <a href="#"><i class="ion-arrow-move"></i></a>
-                        <a href="#"><i class="ion-ios-close-empty" ng-click="vm.contentBlockService.removeContentBlock($index)"></i></a>
+                        <a href="#"><i class="ion-ios-close-empty" ng-click="vm.contentBlockService.removeContentBlock(block.nameInForm)"></i></a>
                     </div>
                 </div>
                 <div class="content-block-body" mezzo-compile-content-block="block.template"></div>

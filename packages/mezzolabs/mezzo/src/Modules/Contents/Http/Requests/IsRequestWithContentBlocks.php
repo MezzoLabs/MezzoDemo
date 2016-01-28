@@ -21,4 +21,5 @@ trait IsRequestWithContentBlocks
     {
         return new ContentBlocksFormObject($this->modelReflection(), $this->all());
     }
+
 }

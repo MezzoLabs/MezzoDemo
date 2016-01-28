@@ -8632,7 +8632,11 @@ a {
     display: block;
     list-style: none;
     margin: 0px 20px; }
-    #topbar .toolbox li {
+    #topbar .toolbox a {
+      color: #555555; }
+    #topbar .toolbox .form-control {
+      border-radius: 0px; }
+    #topbar .toolbox > li {
       font-size: 14px;
       padding-top: 10px;
       height: 40px;
@@ -8642,7 +8646,40 @@ a {
       background-color: #e4e7e8;
       text-align: center;
       cursor: pointer;
-      margin-right: 4px; }
+      margin-right: 4px;
+      float: left; }
+      #topbar .toolbox > li.global-search {
+        position: relative;
+        width: 40px;
+        padding-top: 0px;
+        background-color: transparent;
+        transition: ease all 0.5s; }
+        #topbar .toolbox > li.global-search i.fa {
+          background-color: #e4e7e8;
+          height: 40px;
+          width: 40px;
+          padding-top: 10px;
+          margin-right: 0px; }
+        #topbar .toolbox > li.global-search input[type=search] {
+          position: absolute;
+          top: 0;
+          left: 40px;
+          height: 40px;
+          width: 0px;
+          visibility: hidden;
+          border-left: none;
+          transition: ease all 0.5s; }
+      #topbar .toolbox > li.global-search.active {
+        width: 220px; }
+        #topbar .toolbox > li.global-search.active input[type=search] {
+          width: 180px;
+          visibility: visible; }
+      #topbar .toolbox > li.global-search:not(.active) input[type=search] {
+        padding-left: 0px;
+        padding-right: 0px; }
+  #topbar .toolbox-right .dropdown-menu {
+    right: 0;
+    left: auto; }
 
 .sidebar-unpinned #topbar {
   padding-left: 50px; }
@@ -8682,6 +8719,8 @@ a {
     margin: 5px;
     padding: 20px 25px;
     background: #f5f5f5; }
+  .panel .panel-body-nopadding {
+    padding: 0px; }
   .panel .panel-heading {
     padding: 0; }
     .panel .panel-heading h3 {
@@ -8767,13 +8806,21 @@ a {
 .categories {
   max-height: 235px;
   border: 1px solid #EEEEEE;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding: 0px 10px; }
   .categories li.checkbox {
     margin-top: 1px;
     margin-bottom: 4px; }
   .categories ul ul {
     margin-left: 15px; }
+
+.categories-panel .panel-body {
+  padding: 10px; }
+  .categories-panel .panel-body .form-group {
+    margin-bottom: 0px; }
+
+.categories-panel .categories {
+  border: none; }
 
 #content-footer {
   height: 50px;
@@ -8820,26 +8867,18 @@ a {
       padding: 5px 10px;
       min-width: 50px;
       border: none; }
-
-#quickview .quickview-content .section {
-  margin-bottom: 5px;
-}
-
-#quickview .quickview-content .wrapper {
-  padding: 10px 15px;
-}
-
-#quickview .quickview-content .attribute-info label, #quickview .quickview-content .attribute-info b {
-  font-size: 0.85em;
-  display: block;
-}
-
-#quickview .quickview-content .attribute-info span {
-  display: block;
-  background: #efefef;
-  padding: 3px;
-  margin-bottom: 3px;
-}
+  #quickview .quickview-content .section {
+    margin-bottom: 5px; }
+  #quickview .quickview-content .wrapper {
+    padding: 10px 15px; }
+  #quickview .quickview-content .attribute-info label, #quickview .quickview-content .attribute-info b {
+    font-size: 0.85em;
+    display: block; }
+  #quickview .quickview-content .attribute-info span {
+    display: block;
+    background: #efefef;
+    padding: 3px;
+    margin-bottom: 3px; }
 
 .form-group {
   position: relative;
@@ -8944,7 +8983,9 @@ a {
 .content-blocks {
   background-color: #f5f5f5;
   min-height: 150px;
-  padding: 10px; }
+  padding: 10px;
+  max-height: 80vh;
+  overflow: auto; }
   .content-blocks .content-block {
     margin-bottom: 10px;
     background-color: #ffffff;
@@ -8956,10 +8997,8 @@ a {
       border-bottom: 1px solid #eeeeee; }
       .content-blocks .content-block .content-block-heading small {
         color: #999999; }
-
-.content-blocks .content-block.block__MezzoLabs_Mezzo_Modules_Contents_DefaultTypes_BlockTypes_TextOnly .content-block-body {
-  padding: 0px;
-}
+    .content-blocks .content-block.block__MezzoLabs_Mezzo_Modules_Contents_DefaultTypes_BlockTypes_TextOnly .content-block-body {
+      padding: 0px; }
   .content-blocks .content-block-actions a {
     padding: 8px 10px; }
   .content-blocks .content-block-actions a:last-child {
@@ -8970,13 +9009,10 @@ mezzo-file-picker .thumbnails .thumbnail {
   padding: 0px;
   margin: 0px 3px 5px 0px;
   border-radius: 0px;
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
-}
-
-mezzo-file-picker .thumbnails .thumbnail img {
-  width: 50px;
-  height: 50px;
-}
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1); }
+  mezzo-file-picker .thumbnails .thumbnail img {
+    width: 50px;
+    height: 50px; }
 
 .jstree-proton .jstree-clicked, .jstree-proton .jstree-hovered {
   box-shadow: none;
@@ -9063,51 +9099,34 @@ mezzo-file-picker .thumbnails .thumbnail img {
     transform: rotate(360deg); } }
 
 .mce-tinymce.mce-container.mce-panel {
-  border: none;
-}
-
-.mce-tinymce.mce-container.mce-panel .mce-path {
-  display: none;
-}
-
-.mce-tinymce.mce-container.mce-panel .mce-statusbar.mce-panel {
-  border-color: transparent;
-}
-
-.mce-tinymce.mce-container.mce-panel .mce-menubar {
-  border: none;
-}
-
-.mce-tinymce.mce-container.mce-panel .mce-btn, .mce-tinymce.mce-container.mce-panel .mce-toolbar-grp.mce-panel {
-  background: #ffffff;
-}
-
-.mce-tinymce.mce-container.mce-panel .mce-edit-area.mce-panel {
-  border-top-color: #EEEEEE;
-}
+  border: none; }
+  .mce-tinymce.mce-container.mce-panel .mce-path {
+    display: none; }
+  .mce-tinymce.mce-container.mce-panel .mce-statusbar.mce-panel {
+    border-color: transparent; }
+  .mce-tinymce.mce-container.mce-panel .mce-menubar {
+    border: none; }
+  .mce-tinymce.mce-container.mce-panel .mce-btn, .mce-tinymce.mce-container.mce-panel .mce-toolbar-grp.mce-panel {
+    background: #ffffff; }
+  .mce-tinymce.mce-container.mce-panel .mce-edit-area.mce-panel {
+    border-top-color: #EEEEEE; }
 
 .bootstrap-datetimepicker-widget a[data-action=today], .bootstrap-datetimepicker-widget a[data-action=close] {
-  color: #555555;
-}
+  color: #555555; }
 
 .datepicker .datepicker-days table tr td.active.active {
   background-color: #fc7d6d;
-  background-image: none;
-}
+  background-image: none; }
 
 .timepicker a {
-  color: #555555;
-}
+  color: #555555; }
 
 .select2-container--default {
   max-width: 100%;
-  width: 100% !important;
-}
-
-.select2-container--default span.select2-selection {
-  border-radius: 0px;
-  border: none;
-  box-shadow: 0 1px 0 #DDD;
-}
+  width: 100% !important; }
+  .select2-container--default span.select2-selection {
+    border-radius: 0px;
+    border: none;
+    box-shadow: 0 1px 0 #DDD; }
 
 /*# sourceMappingURL=app.css.map */

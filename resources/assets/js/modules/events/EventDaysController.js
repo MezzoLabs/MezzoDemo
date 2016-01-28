@@ -1,24 +1,45 @@
+import FormEventListener from './../../common/forms/FormEventListener';
+
 export default class FilePickerController {
 
     /*@ngInject*/
-    constructor(api, $scope, $element) {
+    constructor(api, $scope, $element, eventDispatcher) {
         this.days = [];
 
         this.format = 'DD.MM.YYYY HH:mm';
 
         this.api = api;
         this.modelApi = api.model('EventDay');
+        this.eventDispatcher = eventDispatcher;
 
         this.$element = $element;
         this.$form = $element.parents('form')[0];
 
         var base = this;
-        $scope.$on('mezzo.formdata.set', function (event, mass) {
-            base.fill(mass.data, mass.form);
-        });
+
+        this.registerListeners();
 
         this.addDay();
     }
+
+    registerListeners() {
+        var receivedListener = new FormEventListener(
+            'form.received',
+            (event, mass) => this.fill(mass.data.days),
+            this.$form
+        );
+
+        var updatedListener = new FormEventListener(
+            'form.updated',
+            (event, mass) => this.fill(mass.stripped.days),
+            this.$form
+        );
+
+
+        this.eventDispatcher.listen(receivedListener);
+        this.eventDispatcher.listen(updatedListener);
+    }
+
 
     addDay(start = "", end = "", id = null) {
         this.days.push({
@@ -52,72 +73,70 @@ export default class FilePickerController {
         });
     }
 
-    fill(data, form) {
-        if (form != this.$form) {
-            return;
-        }
-
-        if (_.size(data.days) == 0) {
+    fill(days) {
+        if (_.size(days) == 0) {
             return;
         }
 
         this.days = [];
 
-        for (var i in data.days) {
-            var day = data.days[i];
+        for (var i in days) {
+            var day = days[i];
             this.addDay(day.start, day.end, day.id);
         }
 
         this.sort();
     }
 
-    submit() {
-        console.log('submit');
+    onSend(data) {
+
     }
+
+
 
     sort() {
         this.days = this.sortedDays();
     }
 
-    sortedDays(){
+    sortedDays() {
         return _.sortBy(this.days, 'start');
     }
 
-    startChanged(){
-        this.sort();
+    startChanged() {
+        //this.sort();
     }
 
-    getStart(){
+    getStart() {
         return this.getDate(this.sortedDays()[0], 'start');
     }
 
-    getEnd(){
+    getEnd() {
         return this.getDate(this.sortedDays()[this.days.length - 1], 'end');
     }
 
-    getDate(day, type){
+    getDate(day, type) {
 
-        if(!day)
+        if (!day)
             return null;
 
-        if(!day[type] || day[type] == "")
+        if (!day[type] || day[type] == "")
             return null;
 
         return moment(day[type], this.format);
     }
 
-    startString(){
+    startString() {
         var start = this.getStart();
 
-        if(!start) return "...";
+        if (!start) return "...";
 
         return start.format('dd, DD.MM.YYYY HH:mm');
 
     }
 
-    endString(){
+    endString() {
         var end = this.getEnd();
-        if(!end) return "...";
+        if (!end) return "...";
 
         return end.format('dd, DD.MM.YYYY HH:mm');
     }

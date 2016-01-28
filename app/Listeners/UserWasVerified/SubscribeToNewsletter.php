@@ -5,7 +5,7 @@ namespace App\Listeners\UserWasVerified;
 
 
 use App\Events\UserWasVerified;
-use App\Magazine\NewsLetter\Services\NewsletterService;
+use App\Magazine\Newsletter\Services\NewsletterService;
 
 class SubscribeToNewsletter
 {
