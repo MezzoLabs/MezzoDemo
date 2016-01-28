@@ -9,28 +9,50 @@ use MezzoLabs\Mezzo\Core\Collection\DecoratedCollection;
 
 class AttributeRenderingOptions extends DecoratedCollection
 {
+    /**
+     * @return int|mixed
+     */
     public function index()
     {
-        if($this->has('index'))
+        if ($this->has('index'))
             return $this->get('index');
 
-        if($this->parent()->getOptions()->has('index')){
+        if ($this->hasParent() && $this->parent()->getOptions()->has('index')) {
             return $this->parent()->getOptions()->get('index');
         }
 
         return 0;
     }
 
+    /**
+     *
+     *
+     * @return boolean | null
+     */
+    public function ngModel()
+    {
+        return $this->getFromThisOrParent('ngModel', null);
+    }
+
+    /**
+     *
+     */
     public function arraySeperators()
     {
 
     }
 
+    /**
+     * @return mixed
+     */
     public function renderBefore()
     {
         return $this->get('wrap', true);
     }
 
+    /**
+     * @return mixed
+     */
     public function renderAfter()
     {
         return $this->get('wrap', true);
@@ -54,6 +76,29 @@ class AttributeRenderingOptions extends DecoratedCollection
         return $this->get('parent', null);
     }
 
+    /**
+     * @return AttributeRenderingOptions|null
+     */
+    public function parentOptions()
+    {
+        if (!$this->hasParent())
+            return null;
+
+        return $this->parent()->getOptions();
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasParent()
+    {
+        return $this->has('parent');
+    }
+
+    /**
+     * @return string
+     * @throws AttributeRenderingException
+     */
     public function parentName()
     {
         $parent = $this->parent();
@@ -70,9 +115,17 @@ class AttributeRenderingOptions extends DecoratedCollection
      */
     public function attributes() : array
     {
-        return $this->get('attributes', []);
+        $attributes = $this->get('attributes', []);
+
+
+        return $attributes;
     }
 
+    /**
+     * @param $key
+     * @param null $default
+     * @return mixed
+     */
     public function getAttribute($key, $default = null)
     {
         $attributes = new Collection($this->attributes());
@@ -80,10 +133,31 @@ class AttributeRenderingOptions extends DecoratedCollection
         return $attributes->get($key, $default);
     }
 
+    /**
+     * @param $key
+     * @return bool
+     */
     public function hasAttribute($key)
     {
         $attributes = new Collection($this->attributes());
 
         return $attributes->has($key);
+    }
+
+    /**
+     * @param $key
+     * @param null $default
+     * @return mixed|null
+     */
+    public function getFromThisOrParent($key, $default = null)
+    {
+        if ($this->has($key))
+            return $this->get($key);
+
+
+        if ($this->hasParent() && $this->parentOptions()->has($key))
+            return $this->parent()->getOptions()->get($key);
+
+        return $default;
     }
 }

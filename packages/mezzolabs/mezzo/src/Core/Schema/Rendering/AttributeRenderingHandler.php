@@ -126,6 +126,16 @@ abstract class AttributeRenderingHandler
         return $this->getOptions()->parentName() . '.' . $this->getOptions()->index() . '.' . $this->attribute()->name();
     }
 
+    public function ngModel()
+    {
+        if (!$this->getOptions()->isNested() || $this->getOptions()->parent()->relationSide()->hasOneChild())
+            return 'vm.inputs["' . $this->attribute()->name() . '"]';
+
+        $index = '$index';
+
+        return "vm.inputs['" . $this->getOptions()->parentName() . ".'+ $index +'." . $this->attribute()->name() . "']";
+    }
+
     public function dotNotationName()
     {
         return StringHelper::fromArrayToDotNotation($this->name());
@@ -183,9 +193,17 @@ abstract class AttributeRenderingHandler
      */
     public function htmlAttributes()
     {
+
         $htmlAttributes = $this->attributeRenderer->htmlAttributes($this->attribute());
 
-        return array_merge($htmlAttributes, $this->getOptions()->attributes());
+        $optionsAttributes = $this->getOptions()->attributes();
+
+        if ($this->getOptions()->ngModel()) {
+            $optionsAttributes['ng-model'] = $this->ngModel();
+        }
+
+
+        return array_merge($htmlAttributes, $optionsAttributes);
     }
 
     /**

@@ -39,14 +39,18 @@ class FormBuilder extends CollectiveFormBuilder
         return parent::submit($value, $options);
     }
 
-    public function submitEdit(MezzoModelReflection $model_reflection)
+    public function submitEdit(MezzoModelReflection $model_reflection, $value = false)
     {
-        return $this->submit(Lang::get('mezzo.general.editing') . ' ' . $model_reflection->title());
+        $value = ($value !== false) ? $value : Lang::get('mezzo.general.editing') . ' ' . $model_reflection->title();
+
+        return $this->submit($value);
     }
 
-    public function submitCreate(MezzoModelReflection $model_reflection)
+    public function submitCreate(MezzoModelReflection $model_reflection, $value = false)
     {
-        return $this->submit(Lang::get('mezzo.general.creating') . ' ' . $model_reflection->title());
+        $value = ($value !== false) ? $value : Lang::get('mezzo.general.creating') . ' ' . $model_reflection->title();
+
+        return $this->submit($value);
     }
 
     /**

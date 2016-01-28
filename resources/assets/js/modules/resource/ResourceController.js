@@ -13,6 +13,7 @@ export default class ResourceController {
         this.modelStateService = this.$injector.get('modelStateService');
         this.errorHandlerService = this.$injector.get('errorHandlerService');
         this.eventDispatcher = this.$injector.get('eventDispatcher');
+        this.$timeout = this.$injector.get('$timeout');
         this.formDataReader = new FormDataReader(this.htmlForm());
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
         this.isBusy = false;

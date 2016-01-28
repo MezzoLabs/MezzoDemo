@@ -1,8 +1,16 @@
 <div class="subscriptions">
     <div class="row subscription" ng-repeat="subscription in vm.content.subscriptions track by $index">
-        {!! $model_reflection->schema()->attributes('subscriptions')->render(['index' => '@{{ $index }}']) !!}
 
-        <!--
+        <input ng-model="vm.inputs['subscriptions.'+ $index +'.id']" name="@{{ 'subscriptions.' + $index +'.id' }}"
+               type="hidden">
+
+        {!! $model_reflection->schema()->attributes('subscriptions')->render(
+        ['index' => '@{{ $index }}', 'ngModel' => true]) !!}
+
+        {!! cockpit_form()->submitCreate($model_reflection, null) !!}
+
+
+                <!--
         <div class="col-md-12">
             <div class="form-group">
                 <label>Plan</label>
