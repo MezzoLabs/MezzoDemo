@@ -1,5 +1,8 @@
 <div class="subscriptions">
     <div class="row subscription" ng-repeat="subscription in vm.content.subscriptions track by $index">
+        {!! $model_reflection->schema()->attributes('subscriptions')->render(['index' => '@{{ $index }}']) !!}
+
+        <!--
         <div class="col-md-12">
             <div class="form-group">
                 <label>Plan</label>
@@ -36,6 +39,6 @@
                 <span class="btn btn-danger" ng-click="vm.deleteSubscription(subscription)">Delete</span>
             </div>
             <hr/>
-        </div>
+        </div>-->
     </div>
 </div>

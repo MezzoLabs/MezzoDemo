@@ -123,7 +123,7 @@ abstract class AttributeRenderingHandler
         if ($this->getOptions()->parent()->relationSide()->hasOneChild())
             return $this->getOptions()->parentName() . '.' . $this->attribute()->name();
 
-        return $this->getOptions()->parentName() . '[' . $this->getOptions()->getAttribute('index', 0) . '].' . $this->attribute()->name();
+        return $this->getOptions()->parentName() . '.' . $this->getOptions()->index() . '.' . $this->attribute()->name();
     }
 
     public function dotNotationName()

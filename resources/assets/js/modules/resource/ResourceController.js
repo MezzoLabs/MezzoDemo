@@ -1,4 +1,5 @@
 import FormEvent from './../../common/forms/FormEvent';
+import FormDataReader from './../../common/forms/FormDataReader';
 
 // Intended for CreateResourceController & EditResourceController
 export default class ResourceController {
@@ -12,6 +13,7 @@ export default class ResourceController {
         this.modelStateService = this.$injector.get('modelStateService');
         this.errorHandlerService = this.$injector.get('errorHandlerService');
         this.eventDispatcher = this.$injector.get('eventDispatcher');
+        this.formDataReader = new FormDataReader(this.htmlForm());
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
         this.isBusy = false;
     }
@@ -154,56 +156,7 @@ export default class ResourceController {
     }
 
     getFormData() {
-        const formData = {};
-
-        this.htmlForm()
-            .find(':input[name]')
-            .each((index, formInput) => {
-                const $formInput = $(formInput);
-                const name = $formInput.attr('name');
-                const value = $formInput.val();
-
-                if ($formInput.is('input[type=radio]')) {
-                    if (!$formInput.prop('checked')) {
-                        return;
-                    }
-                }
-
-                /* Start checkbox edge case */
-                // match checkbox key e.g. categories[1] or categories[10]
-                const regex = /(.+)\[([0-9]+)\]/i;
-                const match = name.match(regex);
-
-                if (match) {
-                    const checkboxKey = match[1];
-                    const checkboxId = match[2];
-                    let checkbox = _.get(formData, checkboxKey);
-
-                    if (!_.isArray(checkbox)) {
-                        checkbox = [];
-
-                        _.set(formData, checkboxKey, checkbox);
-                    }
-
-                    if (!$formInput.prop('checked')) {
-                        return;
-                    }
-
-                    checkbox.push(checkboxId);
-
-                    return;
-                }
-
-                if ($formInput.is('input[type=checkbox]')){
-                    _.set(formData, name, ($formInput.prop('checked')) ? 1 : 0 );
-                    return;
-                }
-                /* End checkbox edge case */
-
-                _.set(formData, name, value);
-            });
-
-        return formData;
+        return this.formDataReader.read();
     }
 
     htmlForm() {
@@ -226,7 +179,6 @@ export default class ResourceController {
     }
 
     getInput(name) {
-        console.log('get', this.inputs[name]);
         return this.inputs[name];
     }
 

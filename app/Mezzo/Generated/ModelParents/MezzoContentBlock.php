@@ -61,7 +61,8 @@ abstract class MezzoContentBlock extends BaseModel
      * @var array
     */
     protected $rules = [
-        'name' => "between:2,200|alpha_num|unique_with:content_blocks,content_id",
+        //'name' => "between:2,200|alpha_num|unique_with:content_blocks,content_id",
+        'name' => "between:2,200|regex:@^[a-zA-Z0-9_.-]+$@",
         //'sort' => "unique_with:content_blocks,content_id",
         'sort' => "required",
         'class' => "required|between:2,200",

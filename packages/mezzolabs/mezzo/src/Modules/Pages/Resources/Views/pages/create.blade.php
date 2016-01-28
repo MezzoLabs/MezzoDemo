@@ -3,11 +3,11 @@
 
 @section('content')
 
-    <div class="wrapper">
-        {!! cockpit_form()->open(['route' => 'cockpit::page.store', 'method' => 'POST']) !!}
+    <div class="wrapper" ng-init="vm.init('{{ $model_reflection->name() }}')">
+        {!! cockpit_form()->open(['angular' => true]) !!}
         <div class="panel panel-bordered">
             <div class="panel-heading">
-                @include('cockpit::partials.pages.heading_create')
+                @include('cockpit::partials.pages.create_heading')
             </div>
             <div class="panel-body">
                 @include(cockpit_html()->viewKey('form-content-create'), [
@@ -25,11 +25,12 @@
             @include('modules.contents::block_type_select')
 
             <div class="panel panel-bordered">
-                {!! cockpit_form()->submit('Save as new ' . $model_reflection->name()) !!}
+                {!! cockpit_form()->submitCreate($model_reflection) !!}
             </div>
 
 
             {!! cockpit_form()->close() !!}
         </div>
+    </div>
 
 @endsection

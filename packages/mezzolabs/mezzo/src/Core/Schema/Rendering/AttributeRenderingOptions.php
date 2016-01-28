@@ -9,6 +9,23 @@ use MezzoLabs\Mezzo\Core\Collection\DecoratedCollection;
 
 class AttributeRenderingOptions extends DecoratedCollection
 {
+    public function index()
+    {
+        if($this->has('index'))
+            return $this->get('index');
+
+        if($this->parent()->getOptions()->has('index')){
+            return $this->parent()->getOptions()->get('index');
+        }
+
+        return 0;
+    }
+
+    public function arraySeperators()
+    {
+
+    }
+
     public function renderBefore()
     {
         return $this->get('wrap', true);

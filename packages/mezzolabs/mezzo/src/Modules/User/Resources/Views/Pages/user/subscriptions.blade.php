@@ -1,6 +1,7 @@
 @extends(cockpit_content_container())
 
 @section('content')
+
     @include('cockpit::partials.pages.edit_wrapper_open', ['includes' => ['subscriptions']])
 
     {{ $module_page->renderSection('main_panel:before') }}
@@ -17,7 +18,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    {!! $model_reflection->schema()->attributes('subscriptions')->render() !!}
+                    {!! $model_reflection->schema()->attributes('subscriptions')->render(['index' => 'new']) !!}
                 </div>
                 <div class="panel-footer text-right">
                     <input type="submit" class="btn btn-primary"/>

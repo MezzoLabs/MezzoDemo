@@ -11,6 +11,8 @@ export default class EditSubscriptionsController extends EditResourceController 
     contentLoaded(model) {
         super.contentLoaded(model);
 
+        console.log('loaded', this);
+
         this.sortSubscriptions();
     }
 
@@ -26,8 +28,6 @@ export default class EditSubscriptionsController extends EditResourceController 
                 this.content.subscriptions = _.values(this.formDataService.transform(response));
                 this.sortSubscriptions();
             });
-
-
     }
 
 

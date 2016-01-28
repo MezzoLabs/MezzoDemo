@@ -27,11 +27,7 @@ class AuthController extends Controller
 
     protected $loginPath = '/auth/login';
 
-    protected $oauthProviders = [
-        'github' => [
 
-        ]
-    ];
 
     /**
      * @var EloquentModelReflection|MezzoModelReflection|ModelReflection
@@ -175,7 +171,10 @@ class AuthController extends Controller
         $existing = $this->users->findByEmail($data['email']);
 
         if ($existing) {
-            $data['password'] = '';
+
+            unset($data['confirmed']);
+            unset($data['backend']);
+            unset($data['password']);
             $existing->fill($data)->save();
             \Session::flash('message', 'Account updated.');
 

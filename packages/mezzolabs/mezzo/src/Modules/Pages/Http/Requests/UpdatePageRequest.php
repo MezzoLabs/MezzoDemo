@@ -5,7 +5,7 @@ use Illuminate\Support\Arr;
 use MezzoLabs\Mezzo\Http\Requests\Resource\StoreResourceRequest;
 use MezzoLabs\Mezzo\Modules\Contents\Http\Requests\IsRequestWithContentBlocks;
 
-class StorePageRequest extends StoreResourceRequest
+class UpdatePageRequest extends \MezzoLabs\Mezzo\Http\Requests\Resource\UpdateResourceRequest
 {
     use IsRequestWithContentBlocks;
 

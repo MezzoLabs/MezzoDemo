@@ -7,7 +7,7 @@
                     <b>@{{ block.sort }}. @{{ block.title }}</b>
 
                     <div class="content-block-actions">
-                        <a class="" href="#"><i class="ion-ios-gear"></i></a>
+                        <a class="" href="#"><i class="ion-ios-gear"  ng-click="vm.contentBlockService.contentBlockOptionsDialog(block.nameInForm)"></i></a>
                         <a href="#"><i class="ion-arrow-move"></i></a>
                         <a href="#"><i class="ion-ios-close-empty" ng-click="vm.contentBlockService.removeContentBlock(block.nameInForm)"></i></a>
                     </div>
