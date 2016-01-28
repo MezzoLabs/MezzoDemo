@@ -21,6 +21,8 @@ class FormBuilder extends CollectiveFormBuilder
 
     protected $formGroupName = null;
 
+    protected $formOptions = [];
+
     /**
      * Create a submit button element.
      *
@@ -31,9 +33,11 @@ class FormBuilder extends CollectiveFormBuilder
      */
     public function submit($value = null, $options = [])
     {
+        $ngFormName = $this->formOptions['name'] ?? 'vm.form';
+
         $options = $this->mergeDefault([
             'class' => 'btn btn-primary btn-block',
-            'ng-class' => 'vm.submitButtonClass()'
+            'ng-class' => 'vm.submitButtonClass(' . $ngFormName . ')'
         ], $options);
 
         return parent::submit($value, $options);
@@ -75,8 +79,11 @@ class FormBuilder extends CollectiveFormBuilder
      */
     public function open(array $options = [])
     {
+        $this->formOptions = $options;
+
         if ($options['angular'] ?? false) {
-            return '<form name="vm.form" novalidate="novalidate" ng-submit="vm.submit()" data-mezzo-form-validation>';
+            $ngFormName = $options['name'] ?? 'vm.form';
+            return '<form name="' . $ngFormName . '" novalidate="novalidate" ng-submit="vm.submit($event, ' . $ngFormName . ')" data-mezzo-form-validation>';
         }
 
         return parent::open($options);

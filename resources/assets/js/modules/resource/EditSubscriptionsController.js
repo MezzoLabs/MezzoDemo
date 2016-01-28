@@ -7,27 +7,13 @@ export default class EditSubscriptionsController extends EditResourceController 
 
 
         this.subscriptionsApi = this.api.model('Subscription');
-        $('#updatemeplease').attr('ng-model', 'vm.updatemeplease');
 
-        this.updatemeplease = "updated";
-
-        $('#updatemeplease').trigger('input');
 
     }
 
     contentLoaded(model) {
         super.contentLoaded(model);
 
-        this.$timeout(() => {
-            console.log('trigger input');
-            this.htmlForm().find(':input').trigger('input');
-
-            this.updatemeplease = "updated 2";
-
-            this.$scope.$apply();
-
-
-        });
 
 
 

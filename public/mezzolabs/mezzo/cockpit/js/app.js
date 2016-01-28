@@ -924,9 +924,17 @@ Object.defineProperty(exports, "__esModule", {
             _createClass(FormDataReader, [{
                 key: 'read',
                 value: function read() {
+                    var form = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+
                     var formData = {};
 
-                    this.$form.find(':input[name]').each(function (index, formInput) {
+                    var $form = this.$form;
+
+                    if (form) {
+                        $form = $(form);
+                    }
+
+                    $form.find(':input[name]').each(function (index, formInput) {
                         //TODO Move to own function (each edge case gets one)
                         var $formInput = $(formInput);
                         var name = $formInput.attr('name');
@@ -961,7 +969,7 @@ Object.defineProperty(exports, "__esModule", {
                             checkbox.push(checkboxId);
 
                             return;
-                        }
+                }
 
                         if ($formInput.is('input[type=checkbox]')) {
                             _.set(formData, name, $formInput.prop('checked') ? 1 : 0);
@@ -3853,11 +3861,6 @@ var EditSubscriptionsController = function (_EditResourceControll) {
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EditSubscriptionsController).call(this, $injector, $scope));
 
         _this.subscriptionsApi = _this.api.model('Subscription');
-        $('#updatemeplease').attr('ng-model', 'vm.updatemeplease');
-
-        _this.updatemeplease = "updated";
-
-        $('#updatemeplease').trigger('input');
 
         return _this;
     }
@@ -3865,18 +3868,7 @@ var EditSubscriptionsController = function (_EditResourceControll) {
     _createClass(EditSubscriptionsController, [{
         key: 'contentLoaded',
         value: function contentLoaded(model) {
-            var _this2 = this;
-
             _get(Object.getPrototypeOf(EditSubscriptionsController.prototype), 'contentLoaded', this).call(this, model);
-
-            this.$timeout(function () {
-                console.log('trigger input');
-                _this2.htmlForm().find(':input').trigger('input');
-
-                _this2.updatemeplease = "updated 2";
-
-                _this2.$scope.$apply();
-            });
 
             this.sortSubscriptions();
         }
@@ -3889,13 +3881,13 @@ var EditSubscriptionsController = function (_EditResourceControll) {
     }, {
         key: 'onUpdated',
         value: function onUpdated(response, request) {
-            var _this3 = this;
+            var _this2 = this;
 
             _get(Object.getPrototypeOf(EditSubscriptionsController.prototype), 'onUpdated', this).call(this, response, request);
 
             this.subscriptionsApi.index({ 'user': this.modelId }).then(function (response) {
-                _this3.content.subscriptions = _.values(_this3.formDataService.transform(response));
-                _this3.sortSubscriptions();
+                _this2.content.subscriptions = _.values(_this2.formDataService.transform(response));
+                _this2.sortSubscriptions();
             });
         }
     }, {
@@ -3911,10 +3903,10 @@ var EditSubscriptionsController = function (_EditResourceControll) {
     }, {
         key: 'sortSubscriptions',
         value: function sortSubscriptions() {
-            var _this4 = this;
+            var _this3 = this;
 
             this.content.subscriptions = _.sortBy(this.content.subscriptions, function (s) {
-                return _this4.subscribedUntilDate(s).format('X');
+                return _this3.subscribedUntilDate(s).format('X');
             }).reverse();
         }
     }, {
@@ -3931,11 +3923,11 @@ var EditSubscriptionsController = function (_EditResourceControll) {
     }, {
         key: 'deleteSubscription',
         value: function deleteSubscription(subscription) {
-            var _this5 = this;
+            var _this4 = this;
 
             this.subscriptionsApi.delete(subscription.id).then(function () {
-                var index = _this5.content.subscriptions.indexOf(subscription);
-                _this5.content.subscriptions.splice(index, 1);
+                var index = _this4.content.subscriptions.indexOf(subscription);
+                _this4.content.subscriptions.splice(index, 1);
             });
         }
     }]);
@@ -4493,12 +4485,23 @@ var ResourceController = function () {
         this.formDataReader = new _FormDataReader2.default(this.htmlForm());
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
         this.isBusy = false;
+
+        this.form = {}; //name of the main form is vm.form
+
+        // TODO: Make resource controller ready for multiple forms.
+        this.submittingForm = null;
     }
 
     _createClass(ResourceController, [{
         key: 'hasError',
         value: function hasError(inputName) {
-            var formControl = this.form[inputName];
+            var form = this.activeForm();
+
+            if (!form) {
+                return;
+            }
+
+            var formControl = form[inputName];
 
             if (!formControl) {
                 return;
@@ -4535,7 +4538,7 @@ var ResourceController = function () {
             var _this = this;
 
             _.forOwn(errors, function (value, key) {
-                var formControl = _this.form[key];
+                var formControl = _this.activeForm()[key];
                 var errorMessage = value[0];
 
                 if (formControl) {
@@ -4561,15 +4564,16 @@ var ResourceController = function () {
         }
     }, {
         key: 'submitButtonClass',
-        value: function submitButtonClass() {
-            if (this.form.$invalid) {
+        value: function submitButtonClass(form) {
+
+            if (form && form.$invalid) {
                 return 'disabled';
             }
         }
     }, {
         key: 'formControls',
         value: function formControls() {
-            return _.filter(this.form, function (potentialFormControl) {
+            return _.filter(this.activeForm(), function (potentialFormControl) {
                 var isFormControl = potentialFormControl && potentialFormControl.$error;
 
                 return isFormControl;
@@ -4580,8 +4584,8 @@ var ResourceController = function () {
         value: function attemptSubmit() {
             console.info('attemptSubmit()');
 
-            if (this.form.$invalid) {
-                console.warn('attemptSubmit() failed because of an invalid form', this.form);
+            if (this.activeForm().$invalid) {
+                console.warn('attemptSubmit() failed because of an invalid form', this.activeForm());
                 this.dirtyFormControls(); // if a submit attempt failed because of an $invalid form all validation messages should be visible
 
                 return false;
@@ -4600,13 +4604,15 @@ var ResourceController = function () {
         }
     }, {
         key: 'submit',
-        value: function submit() {
+        value: function submit($event, form) {
             var _this2 = this;
 
             if (this.isBusy) {
                 console.error('Resource controller is still busy. Cannot submit at the moment.');
                 return false;
             }
+
+            this.submittingForm = form;
 
             this.isBusy = true;
 
@@ -4620,7 +4626,7 @@ var ResourceController = function () {
             }
 
             this.loading = true;
-            var formData = this.getFormData();
+            var formData = this.getFormData($event.target);
 
             this.fireEvent('form.sending', formData);
 
@@ -4636,6 +4642,7 @@ var ResourceController = function () {
                 _this2.catchServerSideErrors(err);
             }).finally(function () {
                 _this2.isBusy = false;
+                _this2.submittingForm = null;
             });
         }
     }, {
@@ -4648,7 +4655,9 @@ var ResourceController = function () {
     }, {
         key: 'getFormData',
         value: function getFormData() {
-            return this.formDataReader.read();
+            var form = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+
+            return this.formDataReader.read(form);
         }
     }, {
         key: 'htmlForm',
@@ -4674,6 +4683,11 @@ var ResourceController = function () {
         key: 'getInput',
         value: function getInput(name) {
             return this.inputs[name];
+        }
+    }, {
+        key: 'activeForm',
+        value: function activeForm() {
+            return this.submittingForm ? this.submittingForm : this.form;
         }
     }]);
 

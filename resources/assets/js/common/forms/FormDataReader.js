@@ -3,10 +3,16 @@ export default class FormDataReader{
         this.$form = $form;
     }
 
-    read(){
+    read(form = null) {
         const formData = {};
 
-        this.$form
+        var $form = this.$form;
+
+        if (form) {
+            $form = $(form);
+        }
+
+        $form
             .find(':input[name]')
             .each((index, formInput) => {
                 //TODO Move to own function (each edge case gets one)

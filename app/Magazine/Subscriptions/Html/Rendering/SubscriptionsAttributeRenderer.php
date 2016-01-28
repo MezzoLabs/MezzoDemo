@@ -30,8 +30,8 @@ class SubscriptionsAttributeRenderer extends RelationAttributeMultipleRenderer
      */
     public function render(array $options = [])
     {
-        return view('modules.subscriptions::subscription_nested_form', [
-            'renderer' => $this
+        return $this->view('modules.subscriptions::subscription_nested_form', [
+
         ]);
     }
 

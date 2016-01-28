@@ -17,10 +17,23 @@ export default class ResourceController {
         this.formDataReader = new FormDataReader(this.htmlForm());
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
         this.isBusy = false;
+
+        this.form = {}; //name of the main form is vm.form
+
+        // TODO: Make resource controller ready for multiple forms.
+        this.submittingForm = null;
+
     }
 
     hasError(inputName) {
-        const formControl = this.form[inputName];
+        const form = this.activeForm();
+
+
+        if (!form) {
+            return;
+        }
+
+        const formControl = form[inputName];
 
         if (!formControl) {
             return;
@@ -52,7 +65,7 @@ export default class ResourceController {
 
     showServerSideErrors(errors) {
         _.forOwn(errors, (value, key) => {
-            const formControl = this.form[key];
+            const formControl = this.activeForm()[key];
             const errorMessage = value[0];
 
             if (formControl) {
@@ -75,14 +88,15 @@ export default class ResourceController {
         formControl.$dirty = true;
     }
 
-    submitButtonClass() {
-        if (this.form.$invalid) {
+    submitButtonClass(form) {
+
+        if (form && form.$invalid) {
             return 'disabled';
         }
     }
 
     formControls() {
-        return _.filter(this.form, potentialFormControl => {
+        return _.filter(this.activeForm(), potentialFormControl => {
             const isFormControl = potentialFormControl && potentialFormControl.$error;
 
             return isFormControl;
@@ -93,8 +107,8 @@ export default class ResourceController {
         console.info('attemptSubmit()');
 
 
-        if (this.form.$invalid) {
-            console.warn('attemptSubmit() failed because of an invalid form', this.form);
+        if (this.activeForm().$invalid) {
+            console.warn('attemptSubmit() failed because of an invalid form', this.activeForm());
             this.dirtyFormControls(); // if a submit attempt failed because of an $invalid form all validation messages should be visible
 
             return false;
@@ -109,11 +123,13 @@ export default class ResourceController {
         return Promise.resolve();
     }
 
-    submit() {
+    submit($event, form) {
         if (this.isBusy) {
             console.error('Resource controller is still busy. Cannot submit at the moment.');
             return false;
         }
+
+        this.submittingForm = form;
 
         this.isBusy = true;
 
@@ -127,7 +143,7 @@ export default class ResourceController {
         }
 
         this.loading = true;
-        const formData = this.getFormData();
+        const formData = this.getFormData($event.target);
 
         this.fireEvent('form.sending', formData);
 
@@ -147,7 +163,8 @@ export default class ResourceController {
             })
             .finally(() => {
                 this.isBusy = false;
-        });
+                this.submittingForm = null;
+            });
     }
 
     dirtyFormControls() {
@@ -156,8 +173,8 @@ export default class ResourceController {
         });
     }
 
-    getFormData() {
-        return this.formDataReader.read();
+    getFormData(form = null) {
+        return this.formDataReader.read(form);
     }
 
     htmlForm() {
@@ -181,6 +198,10 @@ export default class ResourceController {
 
     getInput(name) {
         return this.inputs[name];
+    }
+
+    activeForm() {
+        return (this.submittingForm) ? this.submittingForm : this.form;
     }
 
 
