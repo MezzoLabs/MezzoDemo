@@ -27,7 +27,7 @@ var _run2 = _interopRequireDefault(_run);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var app = angular.module('Mezzo', ['ui.router', 'ui.sortable', 'ui.bootstrap', 'ui.tinymce', 'pascalprecht.translate', 'ngMessages', 'angular-sortable-view', 'angular-loading-bar', 'ngFileUpload', 'MezzoCommon', 'MezzoResources', 'MezzoFileManager', 'MezzoEvents', 'MezzoUsers', 'MezzoContentBlocks', 'MezzoGoogleMaps']);
+var app = angular.module('Mezzo', ['ui.router', 'ui.sortable', 'ui.bootstrap', 'mezzo.ui.tinymce', 'pascalprecht.translate', 'ngMessages', 'angular-sortable-view', 'angular-loading-bar', 'ngFileUpload', 'MezzoCommon', 'MezzoResources', 'MezzoFileManager', 'MezzoEvents', 'MezzoUsers', 'MezzoContentBlocks', 'MezzoGoogleMaps']);
 
 app.config(_config2.default);
 app.run(_run2.default);
@@ -51,14 +51,8 @@ var ErrorHandlerService = function () {
     _createClass(ErrorHandlerService, [{
         key: 'showUnexpected',
         value: function showUnexpected(err) {
-            var message = JSON.stringify(err);
-
-            if (err.data && err.data.message) {
-                message = error.statusText + '. ' + error.data.message;
-            }
-
             console.error(err);
-            sweetAlert('Oops, something spilled...', message, 'error');
+            sweetAlert('Oops, something spilled...', JSON.stringify(err), 'error');
             throw err;
         }
     }]);
@@ -990,7 +984,9 @@ var FormValidationService = function () {
             var validationMessagesTemplate = '<mezzo-validation-messages data-form-input="vm.form[\'' + nameAttribute + '\']"></mezzo-validation-messages>';
             var ngModel = 'vm.inputs[\'' + nameAttribute + '\']';
 
-            $formInput.attr('ng-model', ngModel).not('[readonly],[disabled]').attr('ng-disabled', 'vm.loading');
+            this.addModelConnection($formInput, ngModel);
+
+            $formInput.not('[readonly],[disabled]').attr('ng-disabled', 'vm.loading');
 
             $formGroup.attr('ng-class', 'vm.hasError(\'' + nameAttribute + '\')').append(validationMessagesTemplate);
 
@@ -1005,6 +1001,19 @@ var FormValidationService = function () {
                     $formInput.attr('ng-init', ngModel + (' = \'' + selectDefaultValue + '\''));
                 }
             }
+        }
+    }, {
+        key: 'addModelConnection',
+        value: function addModelConnection($formInput, ngModelValue) {
+            if ($formInput.is('[type=checkbox],[type=radio]')) {
+                if ($formInput.attr('ng-checked')) return false;
+
+                return $formInput.attr('ng-checked', ngModelValue);
+            }
+
+            if ($formInput.attr('ng-model')) return false;
+
+            return $formInput.attr('ng-model', ngModelValue);
         }
     }]);
 
@@ -1422,10 +1431,6 @@ function compileContentBlockDirective($parse, $compile, formValidationService, e
             $compile(element.contents())(scope);
         });
 
-        eventDispatcher.on('form.updated', function (event, payload) {
-            return onUpdate(payload);
-        });
-
         function deferFormValidation(element) {
             setTimeout(function () {
                 assignFormValidation(element);
@@ -1437,14 +1442,6 @@ function compileContentBlockDirective($parse, $compile, formValidationService, e
                 formValidationService.assign(formInput);
             });
             $compile(element.contents())(scope);
-        }
-
-        function onUpdate(data) {
-            var $idInput = element.find('[name$=".id"]');
-            var id = data.flattened[$idInput.attr('name')];
-
-            //TODO: Find the right input via the api response (send a unique handle / sort
-            //$idInput.val(id);
         }
     }
 }
@@ -1462,14 +1459,16 @@ exports.default = registerContentBlockFactory;
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /*@ngInject*/
-function registerContentBlockFactory($compile, api) {
+function registerContentBlockFactory($compile, api, eventDispatcher) {
     return function contentBlockFactory() {
-        return new ContentBlockService($compile, api);
+        return new ContentBlockService($compile, api, eventDispatcher);
     };
 }
 
 var ContentBlockService = function () {
-    function ContentBlockService($compile, api) {
+    function ContentBlockService($compile, api, eventDispatcher) {
+        var _this = this;
+
         _classCallCheck(this, ContentBlockService);
 
         this.$compile = $compile;
@@ -1477,16 +1476,29 @@ var ContentBlockService = function () {
         this.modelApi = api.model('ContentBlock');
         this.contentBlocks = [];
         this.templates = {};
+
+        var base = this;
+
+        eventDispatcher.on('form.updated', function (event, payload) {
+            return _this.onFormUpdate(event, payload);
+        });
+
         this.sortableOptions = {
             handle: 'a .ion-arrow-move',
+            setup: function setup(ed) {
+                ed.on('remove', function () {
+                    console.log('mce better remove');
+                });
+            },
             start: function start(e, ui) {
-                $(ui.item).parent().find('.tinymce_textarea').each(function () {
+                console.log('sort');
+                $(ui.item).parent().find('[ui-tinymce]').each(function () {
                     $(this).css('opacity', 0.05);
                     tinymce.execCommand('mceRemoveEditor', false, $(this).attr('id'));
                 });
             },
             stop: function stop(e, ui) {
-                $(ui.item).parent().find('.tinymce_textarea').each(function () {
+                $(ui.item).parent().find('[ui-tinymce]').each(function () {
                     $(this).css('opacity', 1.0);
                     tinymce.execCommand('mceAddEditor', true, $(this).attr('id'));
                 });
@@ -1507,7 +1519,7 @@ var ContentBlockService = function () {
             var contentBlock = {
                 id: id,
                 key: key,
-                sort: sort !== false ? sort : this.contentBlocks.length,
+                sort: sort !== false ? sort : this.contentBlocks.length + 1,
                 cssClass: 'block__' + key.replace(/\\/g, '_'),
                 hash: hash,
                 title: title,
@@ -1523,21 +1535,43 @@ var ContentBlockService = function () {
         }
     }, {
         key: 'removeContentBlock',
-        value: function removeContentBlock(index) {
+        value: function removeContentBlock(nameInForm) {
+            var index = this.findIndex(nameInForm);
+
+            if (index === false) {
+                console.error('Cannot find index for name: ' + nameInForm);
+                return false;
+            }
+
             var block = this.contentBlocks[index];
 
             if (block.id) {
-                this.modelApi.delete(block.id);
+                this.modelApi.delete(block.id).then(function () {
+                    toastr.success(block.id + ' deleted');
+                });
             }
+
+            console.log('before remove', this.contentBlocks);
 
             this.contentBlocks.splice(index, 1);
 
-            this.refreshSortings();
+            console.log('after remove', this.contentBlocks);
+
+            this.refreshSortings(true);
+        }
+    }, {
+        key: 'findIndex',
+        value: function findIndex(nameInForm) {
+            for (var i in this.contentBlocks) {
+                if (this.contentBlocks[i].nameInForm == nameInForm) return i;
+            }
+
+            return false;
         }
     }, {
         key: 'fillTemplate',
         value: function fillTemplate(contentBlock) {
-            var _this = this;
+            var _this2 = this;
 
             var cachedTemplate = this.templates[contentBlock.hash];
 
@@ -1547,16 +1581,22 @@ var ContentBlockService = function () {
 
             this.api.contentBlockTemplate(contentBlock.hash).then(function (template) {
                 contentBlock.template = template;
-                _this.templates[contentBlock.hash] = template;
+                _this2.templates[contentBlock.hash] = template;
             });
         }
     }, {
         key: 'refreshSortings',
         value: function refreshSortings() {
+            var updateSort = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+
             this.contentBlocks = _.sortBy(this.contentBlocks, 'sort');
 
+            if (updateSort == false) {
+                return;
+            }
+
             for (var i in this.contentBlocks) {
-                this.contentBlocks[i].sort = parseInt(i);
+                this.contentBlocks[i].sort = parseInt(i) + 1;
             }
         }
     }, {
@@ -1572,12 +1612,43 @@ var ContentBlockService = function () {
                 var block = _.find(base.contentBlocks, function (test) {
                     return test.nameInForm == nameInForm;
                 });
-                block.sort = index;
 
-                $sort.attr('value', index).trigger('change');
+                block.sort = index + 1;
             });
+        }
+    }, {
+        key: 'tinyMceModels',
+        value: function tinyMceModels() {}
+    }, {
+        key: 'onFormUpdate',
+        value: function onFormUpdate(event, data) {
+            if (!data.stripped.content) {
+                //console.error('Form update without content.');
+                return true;
+            }
 
-            this.refreshSortings();
+            var contentBlocksData = data.stripped.content.blocks;
+
+            for (var i in this.contentBlocks) {
+                var contentBlock = this.contentBlocks[i];
+
+                for (var j in contentBlocksData) {
+                    var contentBlockData = contentBlocksData[j];
+
+                    if (contentBlockData.sort == contentBlock.sort) {
+
+                        if (contentBlock.id != contentBlockData.id && contentBlock.id != "") {
+                            alert('Unexpected error with content block id.');
+                            console.error('Content block ids wont fit.', contentBlock, contentBlockData);
+                        }
+
+                        if (contentBlock.id != contentBlockData.id) {
+                            contentBlock.id = contentBlockData.id;
+                            console.log('assign content block id' + contentBlock.id);
+                        }
+                    }
+                }
+            }
         }
     }]);
 
@@ -4128,7 +4199,7 @@ var ModelStateService = function () {
     }, {
         key: 'index',
         value: function index() {
-            this.go('index', this.modelStateName());
+            this.go('index' + this.modelStateName());
         }
     }, {
         key: 'create',
@@ -4200,6 +4271,7 @@ var ResourceController = function () {
         this.errorHandlerService = this.$injector.get('errorHandlerService');
         this.eventDispatcher = this.$injector.get('eventDispatcher');
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
+        this.isBusy = false;
     }
 
     _createClass(ResourceController, [{
@@ -4310,11 +4382,19 @@ var ResourceController = function () {
         value: function submit() {
             var _this2 = this;
 
+            if (this.isBusy) {
+                console.error('Resource controller is still busy. Cannot submit at the moment.');
+                return false;
+            }
+
+            this.isBusy = true;
+
             console.info('submit()');
 
             tinyMCE.triggerSave();
 
             if (!this.attemptSubmit()) {
+                this.isBusy = false;
                 return false;
             }
 
@@ -4322,8 +4402,6 @@ var ResourceController = function () {
             var formData = this.getFormData();
 
             this.fireEvent('form.sending', formData);
-
-            console.info('doSubmit() with', formData);
 
             this.doSubmit(formData).then(function (response) {
                 console.info('doSubmit().then()');
@@ -4335,6 +4413,8 @@ var ResourceController = function () {
                 _this2.loading = false;
 
                 _this2.catchServerSideErrors(err);
+            }).finally(function () {
+                _this2.isBusy = false;
             });
         }
     }, {
@@ -4382,6 +4462,11 @@ var ResourceController = function () {
 
                     checkbox.push(checkboxId);
 
+                    return;
+                }
+
+                if ($formInput.is('input[type=checkbox]')) {
+                    _.set(formData, name, $formInput.prop('checked') ? 1 : 0);
                     return;
                 }
                 /* End checkbox edge case */
