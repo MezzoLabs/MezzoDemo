@@ -18,7 +18,7 @@ export default class ModelStateService {
     }
 
     index() {
-        this.go('index', this.modelStateName());
+        this.go('index' + this.modelStateName());
     }
 
     create() {
