@@ -48,6 +48,9 @@
 
 
 @mixin light-button-variant($background) {
+  border-radius:0px;
+  background-color: $background;
+
   &:focus,
   &.focus {
     background-color: lighten($background, 10%);

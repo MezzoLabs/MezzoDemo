@@ -11,6 +11,8 @@
 .btn-warning{  @include light-button-variant($btn-warning-bg); }
 .btn-info   {  @include light-button-variant($btn-info-bg); }
 .btn-primary{  @include light-button-variant($btn-primary-bg); }
+.btn-gray{  @include light-button-variant($btn-gray-bg); }
+.btn-white{  @include light-button-variant(#ffffff); border: 1px solid #ddd; }
 
 
 .btn-sm, .btn-group-sm > .btn {
@@ -47,4 +49,8 @@ textarea { resize:vertical; }
 
 .center-block {
   float: none;
+}
+
+a.btn{
+  color: $mezzo-font-color;
 }
