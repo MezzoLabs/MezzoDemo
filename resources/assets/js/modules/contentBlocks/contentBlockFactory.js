@@ -181,7 +181,7 @@ class ContentBlockService {
                 if (contentBlockData.sort == contentBlock.sort) {
 
                     if (contentBlock.id != contentBlockData.id && contentBlock.id != "") {
-                        alert('Unexpected error with content block id.');
+                        //alert('Unexpected error with content block id.');
                         console.error('Content block ids wont fit.', contentBlock, contentBlockData);
                     }
 
