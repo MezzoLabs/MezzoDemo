@@ -57,7 +57,8 @@ export default class FilePickerController {
     showModal($event) {
         const target = $event.target;
 
-        $(target).parent().find('.modal').modal();
+        $(target).parents('mezzo-file-picker').find('.modal').modal();
+
     }
 
     loadFiles() {

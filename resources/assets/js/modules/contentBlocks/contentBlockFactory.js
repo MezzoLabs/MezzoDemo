@@ -49,7 +49,7 @@ class ContentBlockService {
 
     addContentBlock(key, hash, title, block = {}) {
         const contentBlock = {
-            id:  block.id,
+            id: block.id,
             key: key,
             sort: (block.sort) ? block.sort : this.contentBlocks.length + 1,
             cssClass: 'block__' + key.replace(/\\/g, '_'),
@@ -98,7 +98,7 @@ class ContentBlockService {
             title: 'Options',
             html: '<div class="form-group">' +
             '<label>Block Handle</label>' +
-            '<input id="handle-name" type="text" value="'+ block.handle +'" class="form-control">' +
+            '<input id="handle-name" type="text" value="' + block.handle + '" class="form-control">' +
             '</div>',
             confirmButtonText: 'Set'
         }, () => {
@@ -180,8 +180,9 @@ class ContentBlockService {
 
                 if (contentBlockData.sort == contentBlock.sort) {
 
-                    if (contentBlock.id != contentBlockData.id && contentBlock.id != "") {
-                        //alert('Unexpected error with content block id.');
+                    if (contentBlock.id != contentBlockData.id && contentBlock.id != "" && typeof contentBlock.id != "undefined") {
+                        alert('Unexpected error with content block id.');
+                        console.error(typeof contentBlock.id, typeof contentBlockData.id, contentBlock.id, contentBlockData.id);
                         console.error('Content block ids wont fit.', contentBlock, contentBlockData);
                     }
 
