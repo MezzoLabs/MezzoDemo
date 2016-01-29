@@ -250,8 +250,15 @@ class Attribute
             'validation.attributes.' . $this->naming()
         ]);
 
-        if ($translation)
+        if(is_array($translation))
+            $translation = array_values($translation)[0];
+
+
+        if ($translation){
+
             return $translation;
+
+        }
 
         $nameParts = explode('_', $this->name());
 
@@ -259,6 +266,7 @@ class Attribute
             if ($namePart == "id" && $i != 0) $namePart = "";
             $nameParts[$i] = ucfirst($namePart);
         }
+
 
         return implode(' ', $nameParts);
 

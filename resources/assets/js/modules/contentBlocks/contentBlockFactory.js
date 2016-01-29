@@ -47,15 +47,16 @@ class ContentBlockService {
         this.currentId = 0;
     }
 
-    addContentBlock(key, hash, title, id = '', options = {}, sort = false) {
+    addContentBlock(key, hash, title, block = {}) {
         const contentBlock = {
-            id: id,
+            id:  block.id,
             key: key,
-            sort: (sort !== false) ? sort : this.contentBlocks.length + 1,
+            sort: (block.sort) ? block.sort : this.contentBlocks.length + 1,
             cssClass: 'block__' + key.replace(/\\/g, '_'),
+            handle: (block.name) ? block.name : '',
             hash: hash,
             title: title,
-            options: options,
+            options: (block.options) ? block.options : {},
             nameInForm: this.currentId++,
             template: null
         };
@@ -83,14 +84,28 @@ class ContentBlockService {
             });
         }
 
-        console.log('before remove', this.contentBlocks);
-
         this.contentBlocks.splice(index, 1);
 
-        console.log('after remove', this.contentBlocks);
-
-
         this.refreshSortings(true);
+    }
+
+    contentBlockOptionsDialog(nameInForm) {
+        var block = this.contentBlocks[this.findIndex(nameInForm)];
+
+        console.log(block);
+
+        swal({
+            title: 'Options',
+            html: '<div class="form-group">' +
+            '<label>Block Handle</label>' +
+            '<input id="handle-name" type="text" value="'+ block.handle +'" class="form-control">' +
+            '</div>',
+            confirmButtonText: 'Set'
+        }, () => {
+
+            block.handle = $('#handle-name').val();
+        });
+
     }
 
     findIndex(nameInForm) {
@@ -166,7 +181,7 @@ class ContentBlockService {
                 if (contentBlockData.sort == contentBlock.sort) {
 
                     if (contentBlock.id != contentBlockData.id && contentBlock.id != "") {
-                        alert('Unexpected error with content block id.');
+                        //alert('Unexpected error with content block id.');
                         console.error('Content block ids wont fit.', contentBlock, contentBlockData);
                     }
 

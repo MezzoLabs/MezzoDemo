@@ -5,11 +5,17 @@ export default class EditSubscriptionsController extends EditResourceController 
     constructor($injector, $scope) {
         super($injector, $scope);
 
+
         this.subscriptionsApi = this.api.model('Subscription');
+
+
     }
 
     contentLoaded(model) {
         super.contentLoaded(model);
+
+
+
 
         this.sortSubscriptions();
     }
@@ -26,8 +32,6 @@ export default class EditSubscriptionsController extends EditResourceController 
                 this.content.subscriptions = _.values(this.formDataService.transform(response));
                 this.sortSubscriptions();
             });
-
-
     }
 
 

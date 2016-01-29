@@ -10,6 +10,5 @@ class CreatePagePage extends CreateResourcePage
 {
     protected $model = Page::class;
 
-    protected $view = 'modules.pages::pages.create';
 
 }

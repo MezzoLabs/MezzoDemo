@@ -6,6 +6,7 @@ namespace App\Magazine\General;
 
 use App\Magazine\General\Http\Pages\MagazineOptionsPage;
 use MezzoLabs\Mezzo\Core\Modularisation\Extensions\ModuleExtension;
+use MezzoLabs\Mezzo\Core\Schema\InputTypes\RichTextArea;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\UrlInput;
 use MezzoLabs\Mezzo\Modules\General\GeneralModule;
 
@@ -55,8 +56,11 @@ class GeneralModuleExtension extends ModuleExtension
         parent::register();
 
         $this->module()->optionRegistry()->register([
-            'magazine::ads_1',
-
+            'magazine::ads_1' => [
+                'title' => 'Ad 1',
+                'rules' => 'required',
+                'inputType' => RichTextArea::class
+            ],
             'magazine::social-media_youtube' => [
                 'title' => 'Social media: Youtube',
                 'rules' => 'required|url',

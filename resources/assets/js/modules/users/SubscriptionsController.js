@@ -2,6 +2,8 @@ export default class SubscriptionsController {
 
     /*@ngInject*/
     constructor(api, $scope, $rootScope, $element, eventDispatcher) {
+        console.log('subscription controller');
+
         this.api = api;
         this.modelApi = api.model('Subscription');
         this.$form = $element.parents('form')[0];

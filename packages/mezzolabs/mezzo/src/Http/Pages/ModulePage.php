@@ -223,7 +223,8 @@ abstract class ModulePage implements ModulePageContract
         if ($this instanceof ResourcePage)
             $additionalData->put('model_reflection', $this->model());
 
-        $additionalData->put('module_page', $this);
+        view()->share('module_page', $this);
+
         $additionalData->put('page_options', $this->options);
 
 

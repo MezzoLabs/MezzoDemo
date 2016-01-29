@@ -60,9 +60,7 @@ export default class EditResourceController extends ResourceController {
 
         const cleaned = this.formDataService.transform(model);
 
-        console.log('cleaned', cleaned);
-
-
+        this.content = cleaned.stripped;
         this.inputs = cleaned.flattened;
         this.loading = false;
 
@@ -88,9 +86,7 @@ export default class EditResourceController extends ResourceController {
                 block.class,
                 hash,
                 block._label,
-                block.id,
-                block.options,
-                block.sort
+                block
             );
         });
     }

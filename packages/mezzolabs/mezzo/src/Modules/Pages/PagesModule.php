@@ -21,7 +21,7 @@ class PagesModule extends ModuleProvider
      * @var array|Collection
      */
     protected $options = [
-        'visible' => false
+        'visible' => true
     ];
 
     /**
