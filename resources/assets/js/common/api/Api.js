@@ -6,7 +6,6 @@ export default class Api {
     constructor($http, eventDispatcher) {
         this.$http = $http;
         this.eventDispatcher = eventDispatcher;
-        console.log('make api');
     }
 
     get(url, params = {}) {
