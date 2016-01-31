@@ -133,7 +133,6 @@ Route::get('/test/posts', function () {
 });
 
 
-
 Route::get('/test/reflection', function () {
     $reflectionManager = mezzo()->makeReflectionManager();
     $mezzoReflection = $reflectionManager->mezzoReflection('Event');
@@ -149,7 +148,6 @@ Route::get('/test/events', function () {
     mezzo_dd($event->start());
     mezzo_dd($event->end());
 });
-
 
 
 Route::get('debug/tutorial', function () {
@@ -247,6 +245,12 @@ Route::get('debug/annotations', function () {
     $annotations = $reader->getPropertyAnnotations($property);
 
     mezzo_dd($annotations);
+});
+
+Route::get('seed/posts', function () {
+    $postsTableSeeder = app()->make(PostsTableSeeder::class);
+
+    $postsTableSeeder->run();
 });
 
 
