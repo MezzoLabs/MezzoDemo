@@ -40,7 +40,8 @@ abstract class IndexResourcePage extends ResourcePage
         $attributes->each(function (Attribute $attribute) use (&$columns) {
             $columns[$attribute->naming()] = [
                 'type' => $attribute->type()->doctrineTypeName(),
-                'title' => $attribute->title()
+                'title' => $attribute->title(),
+                //TODO: Add options like: relation (multiple, single ; related ; column)
             ];
         });
 

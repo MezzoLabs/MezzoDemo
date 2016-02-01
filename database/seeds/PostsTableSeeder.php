@@ -59,7 +59,6 @@ class PostsTableSeeder extends Seeder
             'content_id' => $content->id,
             'user_id' => 1
         ];
-
         $post = \App\Post::create($array);
 
         return $post;

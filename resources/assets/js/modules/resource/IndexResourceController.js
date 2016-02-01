@@ -1,3 +1,5 @@
+import QueryObject from './QueryObject';
+
 export default class IndexResourceController {
 
     /*@ngInject*/
@@ -24,6 +26,9 @@ export default class IndexResourceController {
         this.pagination = {
             size: 10
         };
+
+        this.queryObject = QueryObject.makeFromController(this);
+        this.formParameters = {};
     }
 
     init(modelName, defaultIncludes, options) {
@@ -47,10 +52,9 @@ export default class IndexResourceController {
         this.loading = true;
         params.include = this.includes.join(',');
 
-        if (this.options.backendPagination) {
-            params.offset = (this.currentPage - 1) * this.perPage;
-            params.limit = this.perPage;
-        }
+        this.queryObject = QueryObject.makeFromController(this);
+
+        params = _.merge(this.queryObject.getParameters(), params);
 
         return this.modelApi.index(params)
             .then(data => {
@@ -298,6 +302,12 @@ export default class IndexResourceController {
         return $first && !this.isLocked(model);
     }
 
+    /**
+     *
+     * Apply parameters that were given in the API-Query formular.
+     *
+     * @param $event
+     */
     applyScopes($event) {
         const $formInputs = $($event.target).parents('form').find(':input');
         const params = {};
@@ -314,9 +324,14 @@ export default class IndexResourceController {
             params[inputName] = inputValue;
         });
 
+        this.formParameters = params;
+
         this.loadModels(params);
     }
 
+    /**
+     * Triggered when the user hits a pagination link.
+     */
     pageChanged() {
         if (!this.options.backendPagination) {
             return;
@@ -325,6 +340,12 @@ export default class IndexResourceController {
         this.loadModels();
     }
 
+    /**
+     *
+     *
+     * @param name
+     * @returns {string}
+     */
     sortIcon(name) {
         switch (this.attribute(name).order) {
             case 'desc':
@@ -336,6 +357,12 @@ export default class IndexResourceController {
         }
     }
 
+    /**
+     * Move the sorting of a certain column one step further.
+     * (desc -> asc -> none)
+     *
+     * @param name
+     */
     sortBy(name) {
         _.forEach(this.attributes, (attribute) => {
             if (attribute.name != name) {
@@ -347,6 +374,23 @@ export default class IndexResourceController {
         var attribute = this.attribute(name);
         attribute.order = this.nextOrderDirection(attribute.order);
 
+        if (!this.options.backendPagination) {
+            return this.clientSideSort(attribute.name, attribute.order);
+        }
+
+        this.loadModels();
+    }
+
+    /**
+     *
+     * Perform a client side sorting, this is only possible if we have all the models.
+     * In other words, we can only do this if we dont use the client side pagination.
+     *
+     * @param name
+     * @param order
+     * @returns {*}
+     */
+    clientSideSort(name, order) {
         switch (attribute.order) {
             case 'desc':
                 return this.models = _.sortBy(this.getModels(), function (model) {
@@ -395,12 +439,18 @@ export default class IndexResourceController {
         return !this.options.backendPagination;
     }
 
-    useSortings() {
-        return !this.options.backendPagination;
+    useSortings(column) {
+        console.log('use sorting', column, this.attribute(column));
+
+        return this.attribute(column).type != "simple_array";
     }
 
     useSearch() {
         return !this.options.backendPagination;
+
+    }
+
+    buildQuery() {
 
     }
 

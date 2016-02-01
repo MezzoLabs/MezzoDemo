@@ -38,11 +38,11 @@ app.run(_run2.default);
     "./modules/events": 38,
     "./modules/fileManager": 49,
     "./modules/googleMaps": 50,
-    "./modules/resource": 63,
-    "./modules/users": 67,
-    "./setup/config": 69,
-    "./setup/jquery": 71,
-    "./setup/run": 73
+    "./modules/resource": 64,
+    "./modules/users": 68,
+    "./setup/config": 70,
+    "./setup/jquery": 72,
+    "./setup/run": 74
 }],
     2: [function (require, module, exports) {
 'use strict';
@@ -331,18 +331,20 @@ var Api = function () {
 
         this.$http = $http;
         this.eventDispatcher = eventDispatcher;
+        this.latestResponse = null;
     }
 
     _createClass(Api, [{
         key: 'get',
         value: function get(url) {
             var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+            var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
             var config = {
                 params: params
             };
 
-            return this.apiPromise(this.$http.get(url, config));
+            return this.apiPromise(this.$http.get(url, config), options);
         }
     }, {
         key: 'post',
@@ -356,7 +358,6 @@ var Api = function () {
         value: function put(url, data) {
             var config = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
-            console.log('put', config);
             return this.apiPromise(this.$http.put(url, data, config));
         }
     }, {
@@ -372,7 +373,14 @@ var Api = function () {
     }, {
         key: 'apiPromise',
         value: function apiPromise($httpPromise) {
+            var _this = this;
+
+            var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
             return $httpPromise.then(function (response) {
+
+                _this.latestResponse = response;
+
                 return response.data.data;
             });
         }
@@ -438,6 +446,7 @@ var ModelApi = function () {
         key: 'index',
         value: function index() {
             var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+            var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
             return this.api.get(this.apiUrl, params);
         }
@@ -488,6 +497,11 @@ var ModelApi = function () {
             }, data);
 
             this.eventDispatcher.makeAndFire('model.' + name, payload);
+        }
+    }, {
+        key: 'latestResponse',
+        value: function latestResponse() {
+            return this.api.latestResponse;
         }
     }]);
 
@@ -3699,7 +3713,7 @@ var CreateResourceController = function (_ResourceController) {
 
 exports.default = CreateResourceController;
 
-    }, {"./ResourceController": 60}],
+    }, {"./ResourceController": 61}],
     56: [function (require, module, exports) {
 'use strict';
 
@@ -3890,7 +3904,7 @@ var EditResourceController = function (_ResourceController) {
 
 exports.default = EditResourceController;
 
-    }, {"./../../common/forms/FormEvent": 16, "./ResourceController": 60}],
+    }, {"./../../common/forms/FormEvent": 16, "./ResourceController": 61}],
     57: [function (require, module, exports) {
 'use strict';
 
@@ -4013,6 +4027,14 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+        var _QueryObject = require('./QueryObject');
+
+        var _QueryObject2 = _interopRequireDefault(_QueryObject);
+
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {default: obj};
+        }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var IndexResourceController = function () {
@@ -4035,26 +4057,33 @@ var IndexResourceController = function () {
         this.selectAll = false;
         this.loading = false;
         this.attributes = {};
-        this.perPage = 10;
+        this.perPage = 15;
         this.currentPage = 1;
+        this.options = {
+            backendPagination: false
+        };
+        this.totalCount = 0;
         this.pagination = {
             size: 10
         };
+
+        this.queryObject = _QueryObject2.default.makeFromController(this);
+        this.formParameters = {};
     }
 
     _createClass(IndexResourceController, [{
         key: 'init',
-        value: function init(modelName, defaultIncludes) {
+        value: function init(modelName, defaultIncludes, options) {
             this.modelName = modelName;
             this.modelApi = this.api.model(modelName);
             this.includes = defaultIncludes;
+            this.options = _.merge(this.options, options);
 
             this.loadModels();
         }
     }, {
         key: 'addAttribute',
         value: function addAttribute(name, type) {
-
             this.attributes[name] = { name: name, type: type, order: '', filter: '' };
         }
     }, {
@@ -4072,9 +4101,21 @@ var IndexResourceController = function () {
             this.loading = true;
             params.include = this.includes.join(',');
 
+            this.queryObject = _QueryObject2.default.makeFromController(this);
+
+            params = _.merge(this.queryObject.getParameters(), params);
+
             return this.modelApi.index(params).then(function (data) {
+                var latestResponse = _this.modelApi.latestResponse();
+
                 _this.loading = false;
                 _this.models = data;
+
+                if (_this.options.backendPagination) {
+                    _this.totalCount = latestResponse.headers('X-Total-Count');
+                } else {
+                    _this.totalCount = _.size(_this.models);
+                }
 
                 _this.models.forEach(function (model) {
                     return model._meta = {};
@@ -4103,6 +4144,12 @@ var IndexResourceController = function () {
         key: 'getPagedModels',
         value: function getPagedModels() {
             var models = this.getModels();
+
+            if (this.options.backendPagination) {
+                return models;
+            }
+
+            console.log('get paged');
 
             var start = (this.currentPage - 1) * this.perPage;
             var end = this.currentPage * this.perPage - 1;
@@ -4333,6 +4380,14 @@ var IndexResourceController = function () {
         value: function displayAsLink($first, model) {
             return $first && !this.isLocked(model);
         }
+
+        /**
+         *
+         * Apply parameters that were given in the API-Query formular.
+         *
+         * @param $event
+         */
+
     }, {
         key: 'applyScopes',
         value: function applyScopes($event) {
@@ -4351,11 +4406,32 @@ var IndexResourceController = function () {
                 params[inputName] = inputValue;
             });
 
+            this.formParameters = params;
+
             this.loadModels(params);
         }
+
+        /**
+         * Triggered when the user hits a pagination link.
+         */
+
     }, {
         key: 'pageChanged',
-        value: function pageChanged() {}
+        value: function pageChanged() {
+            if (!this.options.backendPagination) {
+                return;
+            }
+
+            this.loadModels();
+        }
+
+        /**
+         *
+         *
+         * @param name
+         * @returns {string}
+         */
+
     }, {
         key: 'sortIcon',
         value: function sortIcon(name) {
@@ -4368,6 +4444,14 @@ var IndexResourceController = function () {
                     return 'fa fa-sort';
             }
         }
+
+        /**
+         * Move the sorting of a certain column one step further.
+         * (desc -> asc -> none)
+         *
+         * @param name
+         */
+
     }, {
         key: 'sortBy',
         value: function sortBy(name) {
@@ -4381,6 +4465,26 @@ var IndexResourceController = function () {
             var attribute = this.attribute(name);
             attribute.order = this.nextOrderDirection(attribute.order);
 
+            if (!this.options.backendPagination) {
+                return this.clientSideSort(attribute.name, attribute.order);
+            }
+
+            this.loadModels();
+        }
+
+        /**
+         *
+         * Perform a client side sorting, this is only possible if we have all the models.
+         * In other words, we can only do this if we dont use the client side pagination.
+         *
+         * @param name
+         * @param order
+         * @returns {*}
+         */
+
+    }, {
+        key: 'clientSideSort',
+        value: function clientSideSort(name, order) {
             switch (attribute.order) {
                 case 'desc':
                     return this.models = _.sortBy(this.getModels(), function (model) {
@@ -4423,6 +4527,27 @@ var IndexResourceController = function () {
                     return 'desc';
             }
         }
+    }, {
+        key: 'useFilters',
+        value: function useFilters() {
+            return !this.options.backendPagination;
+        }
+    }, {
+        key: 'useSortings',
+        value: function useSortings(column) {
+            console.log('use sorting', column, this.attribute(column));
+
+            return this.attribute(column).type != "simple_array";
+        }
+    }, {
+        key: 'useSearch',
+        value: function useSearch() {
+            return !this.options.backendPagination;
+        }
+    }, {
+        key: 'buildQuery',
+        value: function buildQuery() {
+        }
     }]);
 
     return IndexResourceController;
@@ -4430,7 +4555,7 @@ var IndexResourceController = function () {
 
 exports.default = IndexResourceController;
 
-    }, {}],
+    }, {"./QueryObject": 60}],
     59: [function (require, module, exports) {
 'use strict';
 
@@ -4511,6 +4636,232 @@ exports.default = ModelStateService;
 
     }, {}],
     60: [function (require, module, exports) {
+        "use strict";
+
+        var _createClass = function () {
+            function defineProperties(target, props) {
+                for (var i = 0; i < props.length; i++) {
+                    var descriptor = props[i];
+                    descriptor.enumerable = descriptor.enumerable || false;
+                    descriptor.configurable = true;
+                    if ("value" in descriptor) descriptor.writable = true;
+                    Object.defineProperty(target, descriptor.key, descriptor);
+                }
+            }
+
+            return function (Constructor, protoProps, staticProps) {
+                if (protoProps) defineProperties(Constructor.prototype, protoProps);
+                if (staticProps) defineProperties(Constructor, staticProps);
+                return Constructor;
+            };
+        }();
+
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+
+        var _IndexResourceController = require("./IndexResourceController");
+
+        var _IndexResourceController2 = _interopRequireDefault(_IndexResourceController);
+
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {default: obj};
+        }
+
+        function _classCallCheck(instance, Constructor) {
+            if (!(instance instanceof Constructor)) {
+                throw new TypeError("Cannot call a class as a function");
+            }
+        }
+
+        var QueryObject = function () {
+            function QueryObject() {
+                _classCallCheck(this, QueryObject);
+
+                this.clear();
+            }
+
+            _createClass(QueryObject, [{
+                key: "clear",
+                value: function clear() {
+                    this.scopes = {};
+
+                    this.searchText = "";
+
+                    this.paginationObject = {
+                        offset: 0,
+                        limit: false
+                    };
+
+                    this.filters = {};
+
+                    this.sortings = {};
+
+                    this.overwritingParameters = {};
+                }
+
+                /**
+                 *
+                 * @param {string} column
+                 * @param {string} direction
+                 * @returns {QueryObject}
+                 */
+
+            }, {
+                key: "addSorting",
+                value: function addSorting(column, direction) {
+                    this.sortings[column] = direction;
+
+                    return this;
+                }
+
+                /**
+                 *
+                 * @param {string} query
+                 * @returns {QueryObject}
+                 */
+
+            }, {
+                key: "search",
+                value: function search(query) {
+                    this.searchText = query;
+
+                    return this;
+                }
+
+                /**
+                 *
+                 * @param {int} offset
+                 * @param {int} limit
+                 * @returns {QueryObject}
+                 */
+
+            }, {
+                key: "pagination",
+                value: function pagination(offset, limit) {
+                    this.paginationObject.offset = offset;
+                    this.paginationObject.limit = limit;
+
+                    return this;
+                }
+
+                /**
+                 *
+                 * @param {string} column
+                 * @param {string} value
+                 * @returns {QueryObject}
+                 */
+
+            }, {
+                key: "addFilter",
+                value: function addFilter(column, value) {
+                    this.filters[column] = value;
+
+                    return this;
+                }
+
+                /**
+                 *
+                 * @param {string} name
+                 * @param {Array} parameters
+                 */
+
+            }, {
+                key: "addScope",
+                value: function addScope(name, parameters) {
+                    this.scopes[name] = _.values(parameters);
+                }
+
+                /**
+                 * Get the parameters for this query.
+                 *
+                 * @returns {Object}
+                 */
+
+            }, {
+                key: "getParameters",
+                value: function getParameters() {
+                    var parameters = {};
+
+                    if (_.size(this.sortings) > 0) {
+                        parameters.sort = this.sortString();
+                    }
+
+                    if (this.paginationObject.offset != 0 || this.paginationObject.limit) {
+                        parameters.offset = this.paginationObject.offset;
+                        parameters.limit = this.paginationObject.limit;
+                    }
+
+                    if (this.searchText != "") {
+                        parameters.q = this.searchText;
+                    }
+
+                    if (_.size(this.scopes) > 0) {
+                        parameters.scopes = this.scopes;
+                    }
+
+                    return _.merge(parameters, this.overwritingParameters);
+                }
+
+                /**
+                 *
+                 * @returns {string}
+                 */
+
+            }, {
+                key: "sortString",
+                value: function sortString() {
+                    var sortingStrings = [];
+
+                    for (var column in this.sortings) {
+                        var direction = this.sortings[column];
+
+                        if (direction == "asc" || direction == "ascending" || direction == "" || direction == false) {
+                            sortingStrings.push(column);
+                            continue;
+                        }
+
+                        sortingStrings.push('-' + column);
+                    }
+
+                    return sortingStrings.join(',');
+                }
+
+                /**
+                 *
+                 * @param {IndexResourceController} controller
+                 */
+
+            }], [{
+                key: "makeFromController",
+                value: function makeFromController(controller) {
+                    var queryObject = new QueryObject();
+
+                    if (controller.options.backendPagination) {
+                        queryObject.pagination((controller.currentPage - 1) * controller.perPage, controller.perPage);
+                    }
+
+                    queryObject.search(controller.searchText);
+
+                    _.forEach(controller.attributes, function (attribute) {
+                        if (attribute.order != '') {
+                            queryObject.addSorting(attribute.name, attribute.order);
+                        }
+                    });
+
+                    this.overwritingParameters = controller.formParameters;
+
+                    return queryObject;
+                }
+            }]);
+
+            return QueryObject;
+        }();
+
+        exports.default = QueryObject;
+
+    }, {"./IndexResourceController": 58}],
+    61: [function (require, module, exports) {
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -4761,7 +5112,7 @@ var ResourceController = function () {
 exports.default = ResourceController;
 
     }, {"./../../common/forms/FormDataReader": 15, "./../../common/forms/FormEvent": 16}],
-    61: [function (require, module, exports) {
+    62: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4780,7 +5131,7 @@ function ShowResourceController() {
 exports.default = ShowResourceController;
 
     }, {}],
-    62: [function (require, module, exports) {
+    63: [function (require, module, exports) {
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -4938,7 +5289,7 @@ var FormDataService = function () {
 exports.default = FormDataService;
 
     }, {}],
-    63: [function (require, module, exports) {
+    64: [function (require, module, exports) {
 'use strict';
 
 var _stateProvider = require('./stateProvider');
@@ -4991,12 +5342,12 @@ _module.controller('ShowResourceController', _ShowResourceController2.default);
         "./EditResourceController": 56,
         "./IndexResourceController": 58,
         "./ModelStateService": 59,
-        "./ShowResourceController": 61,
-        "./formDataService": 62,
-        "./registerStateDirective": 64,
-        "./stateProvider": 65
+        "./ShowResourceController": 62,
+        "./formDataService": 63,
+        "./registerStateDirective": 65,
+        "./stateProvider": 66
     }],
-    64: [function (require, module, exports) {
+    65: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -5107,7 +5458,7 @@ function registerStateDirective($location, $stateProvider, hasController) {
 }
 
     }, {"./Action": 54}],
-    65: [function (require, module, exports) {
+    66: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5124,7 +5475,7 @@ function stateProvider($stateProvider) {
 }
 
     }, {}],
-    66: [function (require, module, exports) {
+    67: [function (require, module, exports) {
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -5184,7 +5535,7 @@ var SubscriptionsController = function () {
 exports.default = SubscriptionsController;
 
     }, {}],
-    67: [function (require, module, exports) {
+    68: [function (require, module, exports) {
 'use strict';
 
 var _subscriptionsDirective = require('./subscriptionsDirective');
@@ -5197,8 +5548,8 @@ var _module = angular.module('MezzoUsers', []);
 
 _module.directive('mezzoUserSubscriptions', _subscriptionsDirective2.default);
 
-    }, {"./subscriptionsDirective": 68}],
-    68: [function (require, module, exports) {
+    }, {"./subscriptionsDirective": 69}],
+    69: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -5226,8 +5577,8 @@ function subscriptionsDirective() {
     };
 }
 
-    }, {"./SubscriptionsController": 66}],
-    69: [function (require, module, exports) {
+    }, {"./SubscriptionsController": 67}],
+    70: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5255,8 +5606,8 @@ function config($locationProvider, $httpProvider, $stateProvider, $translateProv
     $locationProvider.html5Mode(true);
 }
 
-    }, {"./customRoutes": 70, "./lang": 72}],
-    70: [function (require, module, exports) {
+    }, {"./customRoutes": 71, "./lang": 73}],
+    71: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -5282,7 +5633,7 @@ function customRoutes($stateProvider) {
 }
 
     }, {"./../modules/resource/EditSubscriptionsController": 57}],
-    71: [function (require, module, exports) {
+    72: [function (require, module, exports) {
 'use strict';
 
 $(function () {
@@ -5374,7 +5725,7 @@ function quickviewVisible(open) {
 }
 
     }, {}],
-    72: [function (require, module, exports) {
+    73: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -5393,7 +5744,7 @@ function addTranslations($translateProvider, languageService) {
 }
 
     }, {}],
-    73: [function (require, module, exports) {
+    74: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
