@@ -15,25 +15,27 @@ export default class IndexResourceController {
         this.selectAll = false;
         this.loading = false;
         this.attributes = {};
-        this.perPage = 10;
+        this.perPage = 15;
         this.currentPage = 1;
+        this.options = {
+            backendPagination: false
+        };
+        this.totalCount = 0;
         this.pagination = {
             size: 10
         };
-
-
     }
 
-    init(modelName, defaultIncludes) {
+    init(modelName, defaultIncludes, options) {
         this.modelName = modelName;
         this.modelApi = this.api.model(modelName);
         this.includes = defaultIncludes;
+        this.options = _.merge(this.options, options);
 
         this.loadModels();
     }
 
     addAttribute(name, type) {
-
         this.attributes[name] = {name: name, type: type, order: '', filter: ''};
     }
 
@@ -45,10 +47,23 @@ export default class IndexResourceController {
         this.loading = true;
         params.include = this.includes.join(',');
 
+        if (this.options.backendPagination) {
+            params.offset = (this.currentPage - 1) * this.perPage;
+            params.limit = this.perPage;
+        }
+
         return this.modelApi.index(params)
             .then(data => {
+                const latestResponse = this.modelApi.latestResponse();
+
                 this.loading = false;
                 this.models = data;
+
+                if (this.options.backendPagination) {
+                    this.totalCount = latestResponse.headers('X-Total-Count');
+                } else {
+                    this.totalCount = _.size(this.models);
+                }
 
                 this.models.forEach(model => model._meta = {});
             });
@@ -72,6 +87,12 @@ export default class IndexResourceController {
 
     getPagedModels() {
         var models = this.getModels();
+
+        if (this.options.backendPagination) {
+            return models;
+        }
+
+        console.log('get paged');
 
         var start = (this.currentPage - 1) * this.perPage;
         var end = (this.currentPage) * this.perPage - 1;
@@ -125,7 +146,6 @@ export default class IndexResourceController {
         if (value && attribute.type == "distance") {
             return parseFloat(value);
         }
-
 
         if (this.lang.has('attributes.' + attribute.name + '.' + value)) {
             return this.lang.get('attributes.' + attribute.name + '.' + value);
@@ -298,7 +318,11 @@ export default class IndexResourceController {
     }
 
     pageChanged() {
+        if (!this.options.backendPagination) {
+            return;
+        }
 
+        this.loadModels();
     }
 
     sortIcon(name) {
@@ -365,6 +389,19 @@ export default class IndexResourceController {
             default:
                 return 'desc';
         }
+    }
+
+    useFilters() {
+        return !this.options.backendPagination;
+    }
+
+    useSortings() {
+        return !this.options.backendPagination;
+    }
+
+    useSearch() {
+        return !this.options.backendPagination;
+
     }
 
 }

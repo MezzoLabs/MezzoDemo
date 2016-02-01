@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Cockpit\Pages\Resources;
 
 
+use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 
 abstract class IndexResourcePage extends ResourcePage
@@ -15,6 +16,15 @@ abstract class IndexResourcePage extends ResourcePage
     protected $options = [
         'visibleInNavigation' => true,
         'appendToUri' => ''
+    ];
+
+    /**
+     * Options that will be passed to the frontend controller in the vm.init function.
+     *
+     * @var array
+     */
+    protected $frontendOptions = [
+        'backendPagination' => false
     ];
 
     /**
@@ -35,5 +45,15 @@ abstract class IndexResourcePage extends ResourcePage
         });
 
         return $columns;
+    }
+
+    /**
+     *
+     *
+     * @return Collection
+     */
+    public function frontendOptions()
+    {
+        return new Collection($this->frontendOptions);
     }
 }

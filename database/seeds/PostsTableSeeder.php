@@ -41,7 +41,7 @@ class PostsTableSeeder extends Seeder
         \MezzoLabs\Mezzo\Core\Permission\PermissionGuard::setActive(false);
 
 
-        for ($i = 0; $i != 200; $i++) {
+        for ($i = 0; $i != 2000; $i++) {
             $this->seedPost($this->faker());
         }
 

@@ -9,4 +9,10 @@ class IndexPostPage extends IndexResourcePage
 {
     protected $view = 'modules.posts::posts.index';
 
+
+    public function boot()
+    {
+        $this->frontendOptions['backendPagination'] = true;
+    }
+
 }
