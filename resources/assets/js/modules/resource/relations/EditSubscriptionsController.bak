@@ -1,6 +1,6 @@
-import EditResourceController from "./EditResourceController";
+import EditRelationsController from "./EditRelationsController";
 
-export default class EditSubscriptionsController extends EditResourceController {
+export default class EditSubscriptionsController extends EditRelationsController {
     /*@ngInject*/
     constructor($injector, $scope) {
         super($injector, $scope);
@@ -13,9 +13,6 @@ export default class EditSubscriptionsController extends EditResourceController 
 
     contentLoaded(model) {
         super.contentLoaded(model);
-
-
-
 
         this.sortSubscriptions();
     }

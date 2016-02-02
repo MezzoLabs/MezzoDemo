@@ -13,6 +13,7 @@ use MezzoLabs\Mezzo\Http\Requests\Resource\InfoResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\ShowResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\StoreResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\UpdateResourceRequest;
+use Mezzolabs\Mezzo\Http\Responses\ApiResources\IndexResourceResponse;
 use MezzoLabs\Mezzo\Http\Responses\ApiResponseFactory;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
@@ -35,18 +36,7 @@ trait HasDefaultApiResourceFunctions
      */
     public function index(IndexResourceRequest $request)
     {
-        $query = QueryObject::makeFromResourceRequest($request);
-        $response = $this->response()->collection(
-            $this->repository()->all(['*'], $query),
-            $this->bestModelTransformer());
-
-        if (!$query->pagination()->isEmpty()) {
-            $response->withHeader('X-Total-Count', $this->repository()->count($query));
-        }
-
-        event('mezzo.api.index: ' . get_class($this), [$response, $query]);
-
-        return $response;
+        return (new IndexResourceResponse(QueryObject::makeFromResourceRequest($request), $this->repository()))->get();
     }
 
     /**

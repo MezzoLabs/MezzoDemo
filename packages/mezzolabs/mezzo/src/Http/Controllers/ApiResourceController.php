@@ -13,6 +13,8 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
 
     protected $allowStaticRepositories = false;
 
+    public $model = "";
+
     /**
      * Find the best model transformer based on the class name and the registered transformers.
      * If there is no registration for the given model a new instance of "EloquentModelTransformer" will be returned.

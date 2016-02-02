@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @include('cockpit::partials.pages.edit_wrapper_open', ['includes' => ['subscriptions']])
+    <div class="wrapper" ng-init="vm.init('User', 'Subscription')">
 
     {{ $module_page->renderSection('main_panel:before') }}
 

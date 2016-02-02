@@ -18,9 +18,11 @@ use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflection;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\ModelReflectionSet;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValue;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValues;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 use MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject;
 use MezzoLabs\Mezzo\Http\Requests\Queries\Sorting;
+use MongoDB\Driver\Query;
 
 class ModelRepository extends EloquentRepository
 {
@@ -116,6 +118,11 @@ class ModelRepository extends EloquentRepository
         }
 
         return $this->query()->orderBy('id', 'desc')->get($columns);
+    }
+
+    public function relationshipItems(RelationAttribute $attribute, $columns = array('*'), QueryObject $queryObject)
+    {
+        return (new EloquentQueryExecutor($queryObject, $attribute->query()))->run()->get($columns);
     }
 
     public function count(QueryObject $queryObject)

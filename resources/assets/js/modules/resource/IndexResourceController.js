@@ -40,8 +40,8 @@ export default class IndexResourceController {
         this.loadModels();
     }
 
-    addAttribute(name, type) {
-        this.attributes[name] = {name: name, type: type, order: '', filter: ''};
+    addAttribute(name, type, options = {}) {
+        this.attributes[name] = {name: name, type: type, order: '', filter: '', options: options};
     }
 
     attribute(name) {
@@ -96,8 +96,6 @@ export default class IndexResourceController {
             return models;
         }
 
-        console.log('get paged');
-
         var start = (this.currentPage - 1) * this.perPage;
         var end = (this.currentPage) * this.perPage - 1;
 
@@ -133,6 +131,8 @@ export default class IndexResourceController {
 
     transformModelValue(attribute, value) {
 
+        console.log('transformModelValue', value, attribute);
+
         if (value && typeof value === "object") {
             if (Object.prototype.toString.call(value.data) === "[object Array]") {
                 return this.transformArrayValueToString(name, value.data);
@@ -144,11 +144,12 @@ export default class IndexResourceController {
         }
 
         if (value && attribute.type == "datetime") {
+            console.log('is datetime');
             return moment(value).format('DD.MM.YYYY hh:mm');
         }
 
         if (value && attribute.type == "distance") {
-            return parseFloat(value);
+            return parseFloat(value) ;
         }
 
         if (this.lang.has('attributes.' + attribute.name + '.' + value)) {
@@ -375,7 +376,7 @@ export default class IndexResourceController {
         attribute.order = this.nextOrderDirection(attribute.order);
 
         if (!this.options.backendPagination) {
-            return this.clientSideSort(attribute.name, attribute.order);
+            return this.clientSideSort(attribute);
         }
 
         this.loadModels();
@@ -390,15 +391,15 @@ export default class IndexResourceController {
      * @param order
      * @returns {*}
      */
-    clientSideSort(name, order) {
+    clientSideSort(attribute, order) {
         switch (attribute.order) {
             case 'desc':
-                return this.models = _.sortBy(this.getModels(), function (model) {
-                    return base.sortByFunction(model, attribute)
+                return this.models = _.sortBy(this.getModels(),  (model) => {
+                    return this.sortByFunction(model, attribute)
                 }).reverse();
             case 'asc':
-                return this.models = _.sortBy(this.getModels(), function (model) {
-                    return base.sortByFunction(model, attribute)
+                return this.models = _.sortBy(this.getModels(),  (model) => {
+                    return this.sortByFunction(model, attribute)
                 });
             default:
                 return this.models = _.sortBy(this.getModels(), 'id');
@@ -440,9 +441,17 @@ export default class IndexResourceController {
     }
 
     useSortings(column) {
-        console.log('use sorting', column, this.attribute(column));
+        var attribute = this.attribute(column);
 
-        return this.attribute(column).type != "simple_array";
+        if(!attribute){
+            return false;
+        }
+
+        if(!this.options.backendPagination){
+            return true;
+        }
+
+        return attribute.options.column != "";
     }
 
     useSearch() {
@@ -452,6 +461,10 @@ export default class IndexResourceController {
 
     buildQuery() {
 
+    }
+
+    filterChanged(){
+        console.log('filter changed');
     }
 
 }

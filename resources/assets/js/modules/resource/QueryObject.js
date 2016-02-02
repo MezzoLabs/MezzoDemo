@@ -30,6 +30,9 @@ export default class QueryObject {
      * @returns {QueryObject}
      */
     addSorting(column, direction) {
+        if(!column || column == "")
+            return this;
+
         this.sortings[column] = direction;
 
         return this;
@@ -139,15 +142,15 @@ export default class QueryObject {
 
         if (controller.options.backendPagination) {
             queryObject.pagination((controller.currentPage - 1) * controller.perPage, controller.perPage);
+
+            queryObject.search(controller.searchText);
+
+            _.forEach(controller.attributes, (attribute) => {
+                if (attribute.order != '') {
+                    queryObject.addSorting(attribute.options.column, attribute.order);
+                }
+            });
         }
-
-        queryObject.search(controller.searchText);
-
-        _.forEach(controller.attributes, (attribute) => {
-            if (attribute.order != '') {
-                queryObject.addSorting(attribute.name, attribute.order);
-            }
-        });
 
         this.overwritingParameters = controller.formParameters;
 

@@ -5,6 +5,8 @@ namespace MezzoLabs\Mezzo\Cockpit\Pages\Resources;
 
 
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Cockpit\Pages\Forms\IndexTableColumn;
+use MezzoLabs\Mezzo\Cockpit\Pages\Forms\IndexTableColumns;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 
 abstract class IndexResourcePage extends ResourcePage
@@ -32,17 +34,16 @@ abstract class IndexResourcePage extends ResourcePage
      *
      * @return array
      */
-    public function columns()
+    public function columns() : IndexTableColumns
     {
         $attributes = $this->model()->attributes()->visibleInForm('index');
 
-        $columns = [];
+        $columns = new IndexTableColumns();
         $attributes->each(function (Attribute $attribute) use (&$columns) {
-            $columns[$attribute->naming()] = [
-                'type' => $attribute->type()->doctrineTypeName(),
-                'title' => $attribute->title(),
-                //TODO: Add options like: relation (multiple, single ; related ; column)
-            ];
+            $columns->put(
+                $attribute->naming(),
+                IndexTableColumn::makeFromAttribute($attribute)
+            );
         });
 
         return $columns;

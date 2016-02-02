@@ -95,6 +95,8 @@
 
   }
 
+
+
   .panel-tabs {
 
     .nav-tabs > li > a {
@@ -114,6 +116,31 @@
     margin-bottom: 0px;
   }
 
+}
+
+.panel-collapsible {
+  .panel-title a {
+    @extend .clearfix;
+
+    &:hover{
+      text-decoration: none;
+    }
+
+    cursor: pointer;
+
+    i {
+      @extend .light-icon.highlight;
+      line-height: 37px;
+      float: left;
+      display: block;
+      margin-right: 10px;
+    }
+
+    span{
+      float: left;
+      margin-top: 10px;
+    }
+  }
 }
 
 #content-main > .content > :last-child {
