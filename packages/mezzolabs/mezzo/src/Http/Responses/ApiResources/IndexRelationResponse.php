@@ -2,22 +2,11 @@
 
 namespace Mezzolabs\Mezzo\Http\Responses\ApiResources;
 
+use MezzoLabs\Mezzo\Http\Responses\ApiResources\Types\IndexResponse;
 
-use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
-use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
-use MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject;
-
-class IndexRelationResponse extends ResourceResponse
+class IndexRelationResponse extends ResourceResponse implements IndexResponse
 {
-    /**
-     * IndexResourceResponse constructor.
-     * @param QueryObject $query
-     * @param ModelRepository $repository
-     */
-    public function __construct()
-    {
-        $this->indexResourceResponse = new IndexResourceResponse($query, $repository);
-    }
+
 
     public function models($columns = ['*'])
     {

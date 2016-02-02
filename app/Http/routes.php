@@ -254,10 +254,11 @@ Route::get('seed/posts', function () {
 });
 
 Route::get('test/api/relations', function(){
+
     $users = app()->make(\MezzoLabs\Mezzo\Modules\User\Domain\Repositories\UserRepository::class);
 
     $attribute = mezzo()->attribute('User', 'subscriptions');
-    $items = $users->relationshipItems($attribute, ['*'], new \MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject());
+    $items = $users->relationshipItems(\Auth::user()->subscriptions(), ['*'], new \MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject());
 
 
     mezzo_dd($items);

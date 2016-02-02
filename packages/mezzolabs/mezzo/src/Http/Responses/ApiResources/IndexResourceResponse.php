@@ -3,28 +3,16 @@
 namespace Mezzolabs\Mezzo\Http\Responses\ApiResources;
 
 
-use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
-use MezzoLabs\Mezzo\Http\Controllers\ApiResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject;
-use MezzoLabs\Mezzo\Http\Requests\Resource\IndexResourceRequest;
+use MezzoLabs\Mezzo\Http\Responses\ApiResources\Types\IndexResponse;
 
-class IndexResourceResponse extends ResourceResponse
+class IndexResourceResponse extends ResourceResponse implements IndexResponse
 {
     /**
      * @var QueryObject
      */
     protected $query;
 
-    /**
-     * IndexResourceResponse constructor.
-     * @param QueryObject $query
-     * @param ModelRepository $repository
-     */
-    public function __construct(QueryObject $query, ModelRepository $repository)
-    {
-        $this->query = $query;
-        $this->repository = $repository;
-    }
 
     public function get()
     {
@@ -51,13 +39,7 @@ class IndexResourceResponse extends ResourceResponse
         return $this->repository->all($columns, $this->query);
     }
 
-    /**
-     * @return QueryObject
-     */
-    public function query()
-    {
-        return $this->query;
-    }
+
 
     public function beforeResponse()
     {
@@ -67,6 +49,22 @@ class IndexResourceResponse extends ResourceResponse
     public function afterResponse()
     {
         event('mezzo.api.indexed: ' . $this->modelReflection()->className(), [$this]);
+    }
+
+    /**
+     * @return QueryObject
+     */
+    public function getQuery()
+    {
+        return $this->query;
+    }
+
+    /**
+     * @param QueryObject $query
+     */
+    public function setQuery($query)
+    {
+        $this->query = $query;
     }
 
 }

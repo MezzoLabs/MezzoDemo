@@ -5565,11 +5565,11 @@ button.close {
   .carousel-indicators {
     bottom: 20px; } }
 
-.clearfix:before, .nav-main > li > a:before, .panel .panel-heading:before, #quickview .quickview-heading:before, mezzo-file-picker .thumbnails:before, .clearfix:after, .nav-main > li > a:after, .panel .panel-heading:after, #quickview .quickview-heading:after, mezzo-file-picker .thumbnails:after {
+.clearfix:before, .nav-main > li > a:before, .panel .panel-heading:before, .panel-collapsible .panel-title a:before, #quickview .quickview-heading:before, mezzo-file-picker .thumbnails:before, .clearfix:after, .nav-main > li > a:after, .panel .panel-heading:after, .panel-collapsible .panel-title a:after, #quickview .quickview-heading:after, mezzo-file-picker .thumbnails:after {
   content: " ";
   display: table; }
 
-.clearfix:after, .nav-main > li > a:after, .panel .panel-heading:after, #quickview .quickview-heading:after, mezzo-file-picker .thumbnails:after {
+.clearfix:after, .nav-main > li > a:after, .panel .panel-heading:after, .panel-collapsible .panel-title a:after, #quickview .quickview-heading:after, mezzo-file-picker .thumbnails:after {
   clear: both; }
 
 .center-block {
@@ -8590,7 +8590,7 @@ a {
   cursor: pointer;
   text-decoration: none; }
 
-.light-icon.highlight, .panel .panel-actions a.highlight, .content-blocks .content-block-actions a.highlight {
+.light-icon.highlight, .panel .panel-actions a.highlight, .panel-collapsible .panel-title a i, .content-blocks .content-block-actions a.highlight {
   transition: ease box-shadow 0.3s;
   background-color: #EEE;
   border-radius: 50px;
@@ -8600,7 +8600,7 @@ a {
   height: 37px;
   text-align: center; }
 
-.light-icon.highlight:hover, .panel .panel-actions a.highlight:hover, .content-blocks .content-block-actions a.highlight:hover {
+.light-icon.highlight:hover, .panel .panel-actions a.highlight:hover, .panel-collapsible .panel-title a i:hover, .content-blocks .content-block-actions a.highlight:hover {
   color: #333333;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25); }
 
@@ -8865,6 +8865,26 @@ a {
     margin-top: -1px;
     padding-right: 50px;
     margin-bottom: 0px; }
+
+.panel-collapsible .panel-title a {
+  cursor: pointer;
+}
+
+.panel-collapsible .panel-title a:hover {
+  text-decoration: none;
+}
+
+.panel-collapsible .panel-title a i {
+  line-height: 37px;
+  float: left;
+  display: block;
+  margin-right: 10px;
+}
+
+.panel-collapsible .panel-title a span {
+  float: left;
+  margin-top: 10px;
+}
 
 #content-main > .content > :last-child {
   margin-bottom: 0px !important; }

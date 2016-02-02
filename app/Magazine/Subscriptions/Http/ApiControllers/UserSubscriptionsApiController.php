@@ -5,7 +5,6 @@ namespace App\Magazine\Subscriptions\Http\ApiControllers;
 
 use MezzoLabs\Mezzo\Http\Controllers\ApiResourceController;
 use MezzoLabs\Mezzo\Http\Controllers\HasDefaultApiResourceFunctions;
-use MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject;
 use MezzoLabs\Mezzo\Http\Requests\Resource\IndexResourceRequest;
 
 class UserSubscriptionsApiController extends ApiResourceController
@@ -27,8 +26,10 @@ class UserSubscriptionsApiController extends ApiResourceController
         return mezzo()->attribute(\App\User::class, 'subscriptions');
     }
 
-    public function index(IndexResourceRequest $request)
+    public function index(IndexResourceRequest $request, $id)
     {
+        $this->repository()->relationshipItems();
+
         $this->resourceIndex($request);
     }
 }

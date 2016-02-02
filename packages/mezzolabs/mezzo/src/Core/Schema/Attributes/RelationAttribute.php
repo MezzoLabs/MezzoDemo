@@ -39,19 +39,17 @@ class RelationAttribute extends Attribute
     {
         $annotationsType = $this->options()->get('type');
 
-        if (!empty($annotationsType))
-            $this->type = $annotationsType;
-        else {
-            if ($this->hasOneChild()) {
-                $this->type = new RelationInputSingle();
-            } else {
-                $this->type = new RelationInputMultiple();
-            }
+        if (!empty($annotationsType)) {
+            return $this->type = $annotationsType;
         }
 
+        if ($this->hasOneChild()) {
+            return $this->type = new RelationInputSingle();
+        }
 
-        return $this->type;
+        return $this->type = new RelationInputMultiple();
     }
+
 
     /**
      * @return bool
@@ -113,9 +111,13 @@ class RelationAttribute extends Attribute
         return $this->relationSide()->otherModelReflection();
     }
 
-    public function query()
+    public function query($instance = null)
     {
-        $query = $this->relationSide()->otherModelReflection()->instance()->query();
+        if (!$instance) {
+            $instance = $this->relationSide()->otherModelReflection()->instance();
+        }
+
+        $query = $instance->query();
         $relation = $this->relation();
 
         $relation->getScopes()->addToQuery($query);

@@ -14,6 +14,11 @@ abstract class ResourceResponse
      */
     protected $repository;
 
+    private function __construct()
+    {
+
+    }
+
     /**
      * @return ApiResponseFactory
      */
