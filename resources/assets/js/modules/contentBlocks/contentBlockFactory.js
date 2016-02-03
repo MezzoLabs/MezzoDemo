@@ -170,6 +170,7 @@ class ContentBlockService {
             return true;
         }
 
+
         var contentBlocksData = data.stripped.content.blocks;
 
         for (var i in this.contentBlocks) {

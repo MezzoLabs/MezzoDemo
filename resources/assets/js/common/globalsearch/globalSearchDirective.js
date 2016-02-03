@@ -1,5 +1,5 @@
 /*@ngInject*/
-export default function eventDaysDirective() {
+export default function globalSearchDirective() {
     return {
         restrict: 'A',
         link
@@ -33,7 +33,6 @@ export default function eventDaysDirective() {
         };
 
 
-        console.log('lin edays');
     }
 
 

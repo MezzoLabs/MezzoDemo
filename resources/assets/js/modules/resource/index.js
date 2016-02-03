@@ -5,7 +5,7 @@ import registerStateDirective from './registerStateDirective';
 import IndexResourceController from './IndexResourceController';
 import CreateResourceController from './CreateResourceController';
 import EditResourceController from './EditResourceController';
-import EditSubscriptionsController from './relations/EditSubscriptionsController';
+import EditUserSubscriptionsController from './relations/EditUserSubscriptionsController';
 import ShowResourceController from './ShowResourceController';
 
 const module = angular.module('MezzoResources', []);
@@ -19,4 +19,4 @@ module.controller('CreateResourceController', CreateResourceController);
 module.controller('EditResourceController', EditResourceController);
 module.controller('ShowResourceController', ShowResourceController);
 
-module.controller('EditSubscriptionsController', EditSubscriptionsController);
+module.controller('EditUserSubscriptionsController', EditUserSubscriptionsController);

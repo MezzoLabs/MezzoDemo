@@ -122,7 +122,6 @@ class ModelRepository extends EloquentRepository
 
     public function relationshipItems(EloquentRelation $relation, $columns = array('*'), QueryObject $queryObject)
     {
-
         return (new EloquentQueryExecutor($queryObject, $relation->getQuery()))->run()->get($columns);
     }
 

@@ -14,6 +14,8 @@ export default class FormEventListener extends EventListener {
      * @returns {boolean}
      */
     listensTo(event) {
+        console.log('check listen to', event.form, this.form);
+
         return event.key == this.eventKey && event.form == this.form;
     }
 }

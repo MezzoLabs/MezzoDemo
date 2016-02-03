@@ -68,8 +68,8 @@ export default class EditResourceController extends ResourceController {
         this.eventDispatcher.fire(new FormEvent('form.received', {
             data: cleaned.stripped,
             flattened: cleaned.flattened,
-            form: this.htmlForm()[0]
-        }, this.htmlForm()[0]));
+            form: this.form
+        }, this.form));
     }
 
     initContentBlocks(model) {

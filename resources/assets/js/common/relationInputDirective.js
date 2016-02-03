@@ -10,8 +10,12 @@ export default function relationInputDirective() {
             related: '@',
             scopes: '@'
         },
+        require: "^form",
         controller: RelationInputController,
         controllerAs: 'vm',
-        bindToController: true
+        bindToController: true,
+        link: function(scope, element, attrs, ctrls){
+            scope.vm.linked(scope, element, attrs, ctrls);
+        }
     };
 }

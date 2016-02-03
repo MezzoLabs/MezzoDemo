@@ -1,4 +1,5 @@
 import ModelApi from './ModelApi';
+import RelationApi from './RelationApi';
 
 export default class Api {
 
@@ -31,6 +32,10 @@ export default class Api {
 
     model(modelName) {
         return new ModelApi(this, modelName, this.eventDispatcher);
+    }
+
+    relation(modelName, relationName){
+        return new RelationApi(this, modelName, relationName, this.eventDispatcher);
     }
 
     apiPromise($httpPromise, options = {}) {

@@ -131,8 +131,6 @@ export default class IndexResourceController {
 
     transformModelValue(attribute, value) {
 
-        console.log('transformModelValue', value, attribute);
-
         if (value && typeof value === "object") {
             if (Object.prototype.toString.call(value.data) === "[object Array]") {
                 return this.transformArrayValueToString(name, value.data);
@@ -144,7 +142,6 @@ export default class IndexResourceController {
         }
 
         if (value && attribute.type == "datetime") {
-            console.log('is datetime');
             return moment(value).format('DD.MM.YYYY hh:mm');
         }
 

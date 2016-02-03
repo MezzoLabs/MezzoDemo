@@ -6,6 +6,7 @@ namespace Mezzolabs\Mezzo\Http\Responses\ApiResources;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
 use MezzoLabs\Mezzo\Http\Responses\ApiResponseFactory;
 use MezzoLabs\Mezzo\Http\Transformers\EloquentModelTransformer;
+use Dingo\Api\Http\Response as DingoResponse;
 
 abstract class ResourceResponse
 {
@@ -14,9 +15,37 @@ abstract class ResourceResponse
      */
     protected $repository;
 
-    private function __construct()
+    /**
+     * Use the factories
+     *
+     * ResourceResponse constructor.
+     */
+    final public function __construct()
     {
 
+    }
+
+    /**
+     * Generate a dingo response out of the given parameters.
+     *
+     * @return DingoResponse
+     */
+    abstract public function dingoResponse() : DingoResponse;
+
+    /**
+     * @return ModelRepository
+     */
+    public function getRepository()
+    {
+        return $this->repository;
+    }
+
+    /**
+     * @param ModelRepository $repository
+     */
+    public function setRepository($repository)
+    {
+        $this->repository = $repository;
     }
 
     /**
@@ -40,10 +69,6 @@ abstract class ResourceResponse
         return $this->repository->modelReflection();
     }
 
-    public function repository()
-    {
-        return $this->repository();
-    }
 
     public function beforeResponse()
     {

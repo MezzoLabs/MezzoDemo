@@ -3,9 +3,12 @@
 namespace App\Magazine\Subscriptions\Http\ApiControllers;
 
 
+use App\Magazine\Subscriptions\Domain\Repositories\SubscriptionRepository;
 use MezzoLabs\Mezzo\Http\Controllers\ApiResourceController;
 use MezzoLabs\Mezzo\Http\Controllers\HasDefaultApiResourceFunctions;
+use MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject;
 use MezzoLabs\Mezzo\Http\Requests\Resource\IndexResourceRequest;
+use MezzoLabs\Mezzo\Modules\User\Domain\Repositories\UserRepository;
 
 class UserSubscriptionsApiController extends ApiResourceController
 {
@@ -16,6 +19,21 @@ class UserSubscriptionsApiController extends ApiResourceController
     }
 
     public $model = \App\User::class;
+    /**
+     * @var UserRepository
+     */
+    private $users;
+    /**
+     * @var SubscriptionRepository
+     */
+    private $subscriptions;
+
+    public function __construct(UserRepository $users, SubscriptionRepository $subscriptions)
+    {
+        $this->users = $users;
+
+        $this->subscriptions = $subscriptions;
+    }
 
     /**
      * @return \MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute
@@ -28,8 +46,8 @@ class UserSubscriptionsApiController extends ApiResourceController
 
     public function index(IndexResourceRequest $request, $id)
     {
-        $this->repository()->relationshipItems();
+        $user = $this->users->findOrFail($id);
 
-        $this->resourceIndex($request);
+        return $this->resourceResponse()->indexRelation($user->subscriptions(), $request->queryObject(), $this->subscriptions);
     }
 }

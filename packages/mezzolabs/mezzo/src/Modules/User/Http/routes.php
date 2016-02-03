@@ -11,7 +11,6 @@ module_route('User', [], function (Router $router, ApiRouter $api, CockpitRouter
     $api->resource('Permission');
     $api->resource('Role');
 
-    $cockpit->page(\MezzoLabs\Mezzo\Modules\User\Http\Pages\User\UserSubscriptionsPage::class, true);
 
     //$api->relation('User', 'roles');
 

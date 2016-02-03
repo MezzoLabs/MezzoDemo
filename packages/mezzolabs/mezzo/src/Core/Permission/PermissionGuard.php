@@ -36,7 +36,13 @@ class PermissionGuard
         if ($user)
             return $user;
 
-        return $this->authGuard->user();
+        $authUser = $this->authGuard->user();
+
+        if(!$authUser){
+            $this->fail('Only logged in users can perform this task.');
+        }
+
+        return $authUser;
     }
 
     /**

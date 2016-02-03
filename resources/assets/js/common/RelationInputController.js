@@ -13,7 +13,7 @@ export default class RelationInputController {
         this.uniqueKey = _.random(10000, 90000);
 
         this.eventDispatcher = eventDispatcher;
-
+        this.formController = null;
 
         this.eventDispatcher.on(['form.received', 'relationinput.models_loaded.' + this.uniqueKey], (events, payloads) => {
             this.fill(payloads['form.received'].data, payloads['form.received'].form);
@@ -22,6 +22,10 @@ export default class RelationInputController {
 
 
         this.loadModels();
+    }
+
+    linked(scope, element, attrs, ctrls){
+        this.formController = ctrls;
     }
 
     loadModels() {
@@ -46,7 +50,7 @@ export default class RelationInputController {
             console.error('fill without models loaded');
         }
 
-        if (form != $(this.$element).parents('form')[0])
+        if (form != this.formController)
             return false;
 
         this.selected = data[this.$element.attr('name')];
