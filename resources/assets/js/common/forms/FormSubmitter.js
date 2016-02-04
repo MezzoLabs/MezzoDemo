@@ -8,9 +8,16 @@ export default class FormSubmitter {
         this.formObject = null;
         this.reader = new FormDataReader();
         this.eventDispatcher = $injector.get('eventDispatcher');
+        this.errorHandlerService = $injector.get('errorHandlerService');
+
+
     }
 
-    run(form, formController) {
+    run(form, formController, mergeOptions) {
+        const options = this.options = _.merge({
+            doSubmit: this.pageController.doSubmit
+        }, mergeOptions);
+
         if (this.isBusy) {
             console.error('Resource controller is still busy. Cannot submit at the moment.');
             return false;
@@ -35,7 +42,7 @@ export default class FormSubmitter {
 
         this.fireEvent('form.submitting', {data: formData, form: form});
 
-        this.pageController.doSubmit(formData)
+        options.doSubmit(formData)
             .then((response) => {
                 console.info('doSubmit().then()');
             })
@@ -57,7 +64,7 @@ export default class FormSubmitter {
         }
 
         const errors = err.data.errors;
-        console.error(err);
+        console.warn('Server side error', err);
         this.handleServerSideErrors(errors);
     }
 

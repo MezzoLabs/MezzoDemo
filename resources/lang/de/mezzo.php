@@ -24,7 +24,9 @@ return [
         'event_venue_index' => 'Alle Orte',
         'event_venue_create' => 'Ort erstellen',
         'post_create' => 'Erstellen',
-        'post_index' => 'Alle Artikel'
+        'post_index' => 'Alle Artikel',
+        'advertisement_index' => 'Alle Werbungen',
+        'advertisement_create' => 'Werbung erstellen',
     ],
     'modules' => [
         'posts' => 'Artikel',
@@ -36,6 +38,7 @@ return [
         'categories' => 'Kategorien',
         'generator' => 'Generator',
         'developerdashboard' => 'Dashboard',
+        'advertisements' => 'Werbungen',
         'contents' => [
             'title' => 'Inhalte',
             'blocks' => [
@@ -48,6 +51,7 @@ return [
         ]
     ],
     'models' => [
+        'advertisement' => 'Werbung|Werbungen',
         'address' => 'Adresse',
         'category' => 'Kategorie',
         'categorygroup' => 'Kategoriengruppe',

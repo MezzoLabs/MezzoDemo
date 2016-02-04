@@ -4,6 +4,7 @@ namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Core\Annotations\Attribute;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Schema\Converters\Eloquent\ModelReflectionConverter;
@@ -109,6 +110,14 @@ abstract class ModelReflection
             return Lang::get('mezzo.models.' . strtolower($this->name()));
 
         return $this->modelReflectionSet->shortName();
+    }
+
+    public function pluralTitle()
+    {
+        if (Lang::has('mezzo.models.' . strtolower($this->name())))
+            return Lang::choice('mezzo.models.' . strtolower($this->name()), 2);
+
+        return Str::plural($this->title());
     }
 
     public function slug()

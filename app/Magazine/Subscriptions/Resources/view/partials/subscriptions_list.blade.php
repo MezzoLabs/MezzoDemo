@@ -12,7 +12,7 @@
 
         <div class="row">
             <div class="col-md-6">
-                <button type="button" class="btn btn-block btn-danger" ng-click="vm.deleteSubscription(subscription)">
+                <button type="button" class="btn btn-link" ng-click="vm.deleteRelationItem(subscription)">
                     Delete
                 </button>
             </div>

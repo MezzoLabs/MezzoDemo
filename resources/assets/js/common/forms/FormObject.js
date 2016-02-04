@@ -35,7 +35,7 @@ export default class FormObject {
 
     showServerSideErrors(errors) {
         _.forOwn(errors, (value, key) => {
-            const formControl = this.formController[key];
+            const formControl = this.controller[key];
             const errorMessage = value[0];
 
             if (formControl) {

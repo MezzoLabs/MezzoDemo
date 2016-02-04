@@ -4,6 +4,7 @@
 namespace App\Providers;
 
 
+use App\Magazine\Advertisements\AdvertisementsModule;
 use App\Magazine\Events\EventsModule;
 use App\Magazine\General\GeneralModuleExtension;
 use App\Magazine\Shop\ShopModule;
@@ -36,6 +37,7 @@ class MezzoAppServiceProvider extends ServiceProvider
         $this->moduleCenter->register(EventsModule::class);
         $this->moduleCenter->register(ShopModule::class);
         $this->moduleCenter->register(SubscriptionsModule::class);
+        $this->moduleCenter->register(AdvertisementsModule::class);
 
         $this->moduleCenter->registerExtensions([
             'general' => [

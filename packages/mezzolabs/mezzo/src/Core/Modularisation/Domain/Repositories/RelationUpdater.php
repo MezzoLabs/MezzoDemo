@@ -153,6 +153,10 @@ class RelationUpdater extends EloquentRepository
     {
         $value = $this->attributeValue()->value();
 
+        if(empty($value)){
+            return [];
+        }
+
         if (is_string($value) && str_contains($value, ',')) {
             return $this->processIds(explode(',', $value));
         }

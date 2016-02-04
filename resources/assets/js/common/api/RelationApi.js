@@ -10,7 +10,7 @@ export default class ModelApi {
         this.eventDispatcher = eventDispatcher;
     }
 
-    index(modelId, params = {}, options = {}) {
+    index(modelId, params = {'sort': '-id'}, options = {}) {
         return this.api.get(this.modelUri + '/'+ modelId + '/' + this.relationName, params);
     }
 

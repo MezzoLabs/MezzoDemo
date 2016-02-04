@@ -30,7 +30,7 @@
             <div class="col-md-8">
                 <div class="main-panel panel panel-bordered">
                     <div class="panel-heading">
-                        <h3>Subscriptions for @{{ vm.inputs.email }}</h3>
+                        <h3>Subscriptions for "@{{ vm.user()._label }}"</h3>
                     </div>
                     <div class="panel-body">
                         @include('modules.subscriptions::partials.subscriptions_list')

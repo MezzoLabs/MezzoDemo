@@ -2,7 +2,7 @@
 <div class="panel panel-bordered">
 
     <div class="panel-heading">
-        <h3>{{ str_plural($model_reflection->name()) }} (@{{ vm.totalCount }})</h3>
+        <h3>{{ $model_reflection->pluralTitle() }} (@{{ vm.totalCount }})</h3>
     </div>
     <div class="panel-body">
         <div class="progress" ng-show="vm.loading">

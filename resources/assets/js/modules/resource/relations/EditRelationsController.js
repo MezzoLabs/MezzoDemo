@@ -27,10 +27,12 @@ export default class EditRelationsController {
         this.relationApi = null;
 
         this.relationItems = {};
+        this.modelItem = {};
         this.inputs = {};
 
         this.formDataReader = new FormDataReader();
         this.formSubmitter = new FormSubmitter(this, $injector);
+
     }
 
     init(modelName, relationName) {
@@ -41,6 +43,8 @@ export default class EditRelationsController {
         this.relationApi = this.api.relation(modelName, relationName);
 
         this.loadRelationItems();
+        this.loadModelItem();
+
     }
 
     loadRelationItems() {
@@ -49,19 +53,32 @@ export default class EditRelationsController {
         });
     }
 
+    loadModelItem(){
+        this.modelApi.content(this.modelId).then((data) => {
+           this.modelItemLoaded(data);
+        });
+    }
+
     relationItemsLoaded(data) {
         const cleaned = this.formDataService.transform(data);
 
         var prefixedAndFlattened = {};
 
-
         _.forEach(cleaned.flattened, (value, key) => {
-            prefixedAndFlattened[this.relationName + '.'+ key] = value;
+            prefixedAndFlattened[this.relationName + '.' + key] = value;
         });
 
         this.inputs = prefixedAndFlattened;
         this.relationItems = cleaned.stripped;
 
+            this.addRelationForm().$setPristine();
+
+    }
+
+    modelItemLoaded(data){
+        const cleaned = this.formDataService.transform(data);
+
+        this.modelItem = cleaned.stripped;
     }
 
     submit($event, formController) {
@@ -73,11 +90,34 @@ export default class EditRelationsController {
     }
 
     submitAddRelation($event) {
-        return this.formSubmitter.run($event.target, this.addRelationForm());
+        return this.formSubmitter.run($event.target, this.addRelationForm(), {
+            doSubmit: (formData) => {
+                return this.doAddRelation(formData)
+            }
+        });
     }
 
-    submitEditRelation(event, form) {
+    doAddRelation(formData) {
+        return this.modelApi.update(this.modelId, formData, {})
+            .then(model => {
+                toastr.success('Added to ' + this.relationName);
+                this.loadRelationItems();
+            });
+    }
 
+    submitEditRelation($event, formController) {
+        return this.formSubmitter.run($event.target, formController, {
+            doSubmit: (formData) => {
+                return this.doEditRelation(formData)
+            }
+        });
+    }
+
+    doEditRelation(formData) {
+        return this.modelApi.update(this.modelId, formData, {})
+            .then(model => {
+                toastr.success('Edited ' + this.relationName);
+            });
     }
 
     addRelationForm() {
@@ -86,6 +126,10 @@ export default class EditRelationsController {
 
     editRelationForms() {
         return this.forms;
+    }
+
+    deleteRelationItem(relationItem) {
+
     }
 
 

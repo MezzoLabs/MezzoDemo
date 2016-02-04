@@ -126,7 +126,13 @@ return [
             'blocks' => 'Inhaltsblock'
         ],
         'event_venue_id' => 'Veranstaltungs Ort',
-        'gender' => 'Anrede'
+        'gender' => 'Anrede',
+        'type' => 'Typ',
+        'active' => 'Aktiv',
+        'url' => 'URL',
+        'imageUrö' => 'Bild URL',
+        'description' => 'Beschreibung',
+        'priority' => 'Priorität'
 
     ],
 

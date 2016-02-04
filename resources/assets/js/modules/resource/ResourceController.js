@@ -59,7 +59,9 @@ export default class ResourceController {
 
     submit($event, formController) {
         console.log('submit', $event, formController);
-        return this.formSubmitter.run($event.target, formController);
+        return this.formSubmitter.run($event.target, formController, {
+            doSubmit: (formData) => { return this.doSubmit(formData); }
+        });
     }
 
     tinymceOptions() {
