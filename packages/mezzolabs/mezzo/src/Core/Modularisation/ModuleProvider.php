@@ -419,12 +419,15 @@ abstract class ModuleProvider extends ServiceProvider implements ExtensibleModul
      */
     public function title()
     {
-        if(Lang::has('mezzo.modules.' . strtolower($this->shortName())))
-            return Lang::get('mezzo.modules.' . strtolower($this->shortName()));
+        if (Lang::has('mezzo.modules.' . strtolower($this->shortName()))) {
+            $title = Lang::get('mezzo.modules.' . strtolower($this->shortName()));
+
+            return (!is_array($title)) ? $title : $title['title'];
+
+        }
 
         if ($this->options->get('title'))
             return $this->options->get('title');
-
 
 
         return $this->shortName();

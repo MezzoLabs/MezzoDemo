@@ -118,7 +118,9 @@ return [
         'longitude' => 'Längengrad',
         'country' => 'Land',
         'user' => 'Nutzer',
-        'published_at' => 'Veröffentlichungs Datum',
+        'user_id' => 'Nutzer',
+        'merchant_id' => 'Händler',
+        'published_at' => 'Veröffentlichen am',
         'created_at' => 'Erstellungsdatum',
         'updated_at' => 'Änderungsdatum',
         'categories' => 'Kategorien',
@@ -132,7 +134,12 @@ return [
         'url' => 'URL',
         'imageUrö' => 'Bild URL',
         'description' => 'Beschreibung',
-        'priority' => 'Priorität'
+        'priority' => 'Priorität',
+        'title' => 'Titel',
+        'password' => 'Passwort',
+        'teaser' => 'Teaser',
+        'mainimage' => 'Hauptbild',
+        'state' => 'Status'
 
     ],
 

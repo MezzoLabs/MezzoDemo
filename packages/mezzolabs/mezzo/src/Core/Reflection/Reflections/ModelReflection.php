@@ -102,12 +102,13 @@ abstract class ModelReflection
     }
 
     /**
+     * @param int $amount
      * @return string
      */
-    public function title()
+    public function title($amount = 1)
     {
         if (Lang::has('mezzo.models.' . strtolower($this->name())))
-            return Lang::get('mezzo.models.' . strtolower($this->name()));
+            return Lang::choice('mezzo.models.' . strtolower($this->name()), $amount);
 
         return $this->modelReflectionSet->shortName();
     }

@@ -45,14 +45,14 @@ class FormBuilder extends CollectiveFormBuilder
 
     public function submitEdit(MezzoModelReflection $model_reflection, $value = false)
     {
-        $value = ($value !== false) ? $value : Lang::get('mezzo.general.editing') . ' ' . $model_reflection->title();
+        $value = ($value !== false) ? $value : Lang::get('mezzo.general.edit_model', ['name' => $model_reflection->title()]);
 
         return $this->submit($value);
     }
 
     public function submitCreate(MezzoModelReflection $model_reflection, $value = false)
     {
-        $value = ($value !== false) ? $value : Lang::get('mezzo.general.creating') . ' ' . $model_reflection->title();
+        $value = ($value !== false) ? $value : Lang::get('mezzo.general.create_model', ['name' => $model_reflection->title()]);
 
         return $this->submit($value);
     }

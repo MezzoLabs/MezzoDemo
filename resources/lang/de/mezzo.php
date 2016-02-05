@@ -7,6 +7,8 @@ return [
         'duplicate' => 'Duplizieren',
         'creating' => 'Erstelle',
         'editing' => 'Bearbeite',
+        'edit_model' => ':name bearbeiten',
+        'create_model' => ':name erstellen',
         'pagination' => [
             'first' => 'Erste',
             'last' => 'Letzte'
@@ -27,9 +29,25 @@ return [
         'post_index' => 'Alle Artikel',
         'advertisement_index' => 'Alle Werbungen',
         'advertisement_create' => 'Werbung erstellen',
+        'page_index' => 'Alle Seiten',
+        'page_create' => 'Seite hinzufügen',
+        'product_create' => 'Produkt hinzufügen',
+        'product_index' => 'Alle Produkte',
+        'merchant_create' => 'Händler erstellen',
+        'merchant_index' => 'Händler',
+        'order_index' => 'Alle Bestellungen'
     ],
     'modules' => [
-        'posts' => 'Artikel',
+        'groups' => [
+
+        ],
+        'posts' => [
+            'title'=> 'Artikel',
+            'form' => [
+                'publish' => 'Veröffentlichen',
+
+            ]
+        ],
         'filemanager' => 'Dateien',
         'events' => 'Veranstaltungen',
         'shop' => 'Shop',
@@ -48,31 +66,32 @@ return [
                 'images' => 'Bilder',
                 'web_video' => 'Web Video'
             ]
-        ]
+        ],
+        'pages' => 'Seiten'
     ],
     'models' => [
         'advertisement' => 'Werbung|Werbungen',
-        'address' => 'Adresse',
-        'category' => 'Kategorie',
-        'categorygroup' => 'Kategoriengruppe',
-        'content' => 'Inhalt',
-        'country' => 'Land',
-        'event' => 'Verantaltung',
-        'eventday' => 'Veranstaltungs Tag',
-        'eventprovider' => 'Verantaltungs Lieferant',
-        'eventvenue' => 'Verantaltungs Ort',
-        'file' => 'Datei',
-        'imagefile' => 'Bild',
+        'address' => 'Adresse|Adressen',
+        'category' => 'Kategorie|Kategorien',
+        'categorygroup' => 'Kategoriengruppe|Kategoriengruppen',
+        'content' => 'Inhalt|Inhalte',
+        'country' => 'Land|Länder',
+        'event' => 'Verantaltung|Veranstaltungen',
+        'eventday' => 'Veranstaltungs Tag|Veranstaltungs Tage',
+        'eventprovider' => 'Verantaltungs Lieferant|Veranstaltungs Lieferanten',
+        'eventvenue' => 'Verantaltungs Ort| Veranstaltungs Orte',
+        'file' => 'Datei|Dateien',
+        'imagefile' => 'Bild|Bilder',
         'merchant' => 'Händler',
-        'option' => 'Option',
+        'option' => 'Option|Optionen',
         'order' => 'Bestellung',
-        'page' => 'Seite',
-        'permission' => 'Zugriffsrecht',
+        'page' => 'Seite|Seiten',
+        'permission' => 'Zugriffsrecht|Zugriffsrechte',
         'post' => 'Artikel',
-        'product' => 'Produkt',
-        'role' => 'Rolle',
-        'shoppingbasket' => 'Warenkorb',
-        'tag' => 'Tag',
+        'product' => 'Produkt|Produkte',
+        'role' => 'Rolle|Rollen',
+        'shoppingbasket' => 'Warenkorb|Warenkörbe',
+        'tag' => 'Tag|Tags',
         'user' => 'Nutzer'
     ],
     'selects' => [

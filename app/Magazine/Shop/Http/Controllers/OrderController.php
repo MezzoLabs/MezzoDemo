@@ -4,6 +4,8 @@
 namespace App\Magazine\Shop\Http\Controllers;
 
 
+use App\Magazine\Shop\Http\Pages\Order\CreateOrderPage;
+use App\Magazine\Shop\Http\Pages\Order\EditOrderPage;
 use App\Magazine\Shop\Http\Pages\Order\IndexOrderPage;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\CreateResourceRequest;
@@ -34,7 +36,7 @@ class OrderController extends CockpitResourceController
      */
     public function create(CreateResourceRequest $request)
     {
-        // TODO: Implement create() method.
+        return $this->page(CreateOrderPage::class);
     }
 
     /**
@@ -56,8 +58,8 @@ class OrderController extends CockpitResourceController
      * @param  int $id
      * @return ModuleResponse
      */
-    public function edit(EditResourceRequest $request, $id)
+    public function edit(EditResourceRequest $request, $id = 0)
     {
-        // TODO: Implement edit() method.
+        return $this->page(EditOrderPage::class);
     }
 }

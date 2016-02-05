@@ -4,6 +4,8 @@
 namespace App\Magazine\Shop\Http\Controllers;
 
 
+use App\Magazine\Shop\Http\Pages\Merchant\CreateMerchantPage;
+use App\Magazine\Shop\Http\Pages\Merchant\EditMerchantPage;
 use App\Magazine\Shop\Http\Pages\Merchant\IndexMerchantPage;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\CreateResourceRequest;
@@ -34,7 +36,7 @@ class MerchantController extends CockpitResourceController
      */
     public function create(CreateResourceRequest $request)
     {
-        // TODO: Implement create() method.
+        return $this->page(CreateMerchantPage::class);
     }
 
     /**
@@ -56,8 +58,8 @@ class MerchantController extends CockpitResourceController
      * @param  int $id
      * @return ModuleResponse
      */
-    public function edit(EditResourceRequest $request, $id)
+    public function edit(EditResourceRequest $request, $id = 0)
     {
-        // TODO: Implement edit() method.
+        return $this->page(EditMerchantPage::class);
     }
 }
