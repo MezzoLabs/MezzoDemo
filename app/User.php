@@ -162,6 +162,11 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return $this->hasOne(Merchant::class);
     }
 
+    public function vouchers()
+    {
+        return $this->hasMany(Voucher::class, 'redeemed_by_id', 'id');
+    }
+
     public function getLabelAttribute()
     {
         return $this->id . ': ' . $this->fullName();
