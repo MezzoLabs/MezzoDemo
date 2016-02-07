@@ -4,7 +4,6 @@ namespace App\Mezzo\Generated\ModelParents;
 
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 /**
 *-------------------------------------------------------------------------------------------------------------------
@@ -21,7 +20,14 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 *
 * App\Mezzo\Generated\ModelParents\MezzoVoucher
 *
+ * @property integer $id
+ * @property string $voucher_key
+ * @property string $type
+ * @property string $options
+ * @property \Carbon\Carbon $redeemed_at
 * @property integer $redeemed_by_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
 * @property \App\User $redeemedBy
 */
 abstract class MezzoVoucher extends \App\Mezzo\BaseModel
@@ -51,7 +57,10 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
     * @var array            
     */
     protected $rules = [
-        
+        'voucher_key' => "",
+        'type' => "in:default,subscription,coupon",
+        'options' => "",
+        'redeemed_at' => ""
     ];
 
     /**
@@ -69,7 +78,11 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
     * @var array            
     */
     protected $fillable = [
-        
+        'voucher_key',
+        'type',
+        'options',
+        'redeemed_at',
+        'redeemed_by_id'
     ];
 
     /**
@@ -100,12 +113,68 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
     */
 
     /**
+     * Attribute annotation property for id
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\PrimaryKeyInput", hidden="create,edit")
+     * @var integer
+     */
+    protected $_id;
+
+    /**
+     * Attribute annotation property for voucher_key
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
+     * @var string
+     */
+    protected $_voucher_key;
+
+    /**
+     * Attribute annotation property for type
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\SelectInput", hidden="")
+     * @var string
+     */
+    protected $_type;
+
+    /**
+     * Attribute annotation property for options
+     *
+     * @Mezzo\Attribute(type="App\Magazine\Shop\Schema\InputTypes\VoucherOptionsInput", hidden="")
+     * @var string
+     */
+    protected $_options;
+
+    /**
+     * Attribute annotation property for redeemed_at
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
+     * @var \Carbon\Carbon
+     */
+    protected $_redeemed_at;
+
+    /**
     * Attribute annotation property for redeemed_by_id
     *
     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="")
     * @var integer            
     */
     protected $_redeemed_by_id;
+
+    /**
+     * Attribute annotation property for created_at
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="create")
+     * @var \Carbon\Carbon
+     */
+    protected $_created_at;
+
+    /**
+     * Attribute annotation property for updated_at
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="create,update")
+     * @var \Carbon\Carbon
+     */
+    protected $_updated_at;
 
 
     /*

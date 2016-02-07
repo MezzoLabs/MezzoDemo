@@ -7,6 +7,7 @@ use App\LockableResources\LockableResource;
 use App\Magazine\Relevance\CanBeSortedByRelevance;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use MezzoLabs\Mezzo\Modules\Posts\Domain\Models\Post as ModulePostModel;
 
@@ -63,11 +64,22 @@ class Post extends ModulePostModel implements LockableResource
 
     public function isPublished()
     {
-        if(!$this->published_at)
+        if (!$this->published_at)
             return false;
 
         return $this->state == 'published' && Carbon::now()->gte($this->published_at);
     }
 
+
+    public function scopeIsPublished(Builder $q, bool $isPublished = true)
+    {
+
+        if (!$isPublished) {
+            return $q->where('state', '!=', 'published')->orWhere('published_at', '>', Carbon::now());
+        }
+
+        return $q->where('state', '=', 'published')->where('published_at', '<=', Carbon::now());
+
+    }
 
 }

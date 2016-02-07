@@ -15,8 +15,6 @@ class CategoryPage extends ResourcePage
 
     protected $model = Category::class;
 
-    protected $title = 'List Categories';
-
     protected $view = 'modules.categories::pages.categories';
 
     protected $options = [

@@ -244,6 +244,7 @@ class Attribute
 
     protected function makeTitle() : string
     {
+
         $translation = Translator::find([
             'attributes.' . $this->getModel()->shortName() . '.' . $this->naming(),
             'attributes.' . $this->naming(),

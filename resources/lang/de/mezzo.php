@@ -35,14 +35,16 @@ return [
         'product_index' => 'Alle Produkte',
         'merchant_create' => 'Händler erstellen',
         'merchant_index' => 'Händler',
-        'order_index' => 'Alle Bestellungen'
+        'order_index' => 'Alle Bestellungen',
+        'category_group' => 'Kategorien gruppieren',
+        'category' => 'Kategorien'
     ],
     'modules' => [
         'groups' => [
 
         ],
         'posts' => [
-            'title'=> 'Artikel',
+            'title' => 'Artikel',
             'form' => [
                 'publish' => 'Veröffentlichen',
 
@@ -50,7 +52,14 @@ return [
         ],
         'filemanager' => 'Dateien',
         'events' => 'Veranstaltungen',
-        'shop' => 'Shop',
+        'shop' => [
+            'title' => 'Shop',
+            'vouchers' => [
+                'subscription_months' => 'Abo in Monaten',
+                'money_coupon' => 'Wertgutschein in Euro',
+                'for_user' => 'Nur für Nutzer'
+            ]
+        ],
         'general' => 'Allgemein',
         'user' => 'Nutzer',
         'categories' => 'Kategorien',
@@ -92,7 +101,8 @@ return [
         'role' => 'Rolle|Rollen',
         'shoppingbasket' => 'Warenkorb|Warenkörbe',
         'tag' => 'Tag|Tags',
-        'user' => 'Nutzer'
+        'user' => 'Nutzer',
+        'voucher' => 'Gutschein|Gutscheine'
     ],
     'selects' => [
         'gender' => [
@@ -104,6 +114,13 @@ return [
             'published' => 'Veröffentlicht',
             'draft' => 'In Bearbeitung',
             'deleted' => 'Gelöscht'
+        ],
+        'voucher' => [
+            'type' => [
+                'default' => 'Normal',
+                'subscription' => 'Abonement',
+                'coupon' => 'Wertgutschein'
+            ]
         ]
     ]
 ];

@@ -12,7 +12,6 @@ use MezzoLabs\Mezzo\Cockpit\Html\Rendering\Inputs\InputRenderer;
 use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
-use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Modules\General\Options\OptionField;
 
 class FormBuilder extends CollectiveFormBuilder
@@ -271,8 +270,12 @@ class FormBuilder extends CollectiveFormBuilder
         return $this->inputField('options[' . $field->name() . ']', $field->inputType(), $field->settings());
     }
 
-    public function inputField($name, InputType $inputType = null, $settings = [])
+    public function inputField($name, $inputType = null, $settings = [])
     {
+        if (is_string($inputType)) {
+            $inputType = app()->make($inputType);
+        }
+
         return (new InputRenderer($name, $inputType, $settings))->render();
     }
 

@@ -48,7 +48,11 @@ export default class ResourceController {
     }
 
     submitButtonClass(formController) {
-        return this.formObject(null, formController).submitButtonClass();
+        if (this.formController && this.formController.$invalid) {
+            return 'disabled';
+        }
+
+        return '';
     }
 
     // Override this method in extending class
@@ -88,6 +92,7 @@ export default class ResourceController {
     }
 
     formObject(form, formController){
+
         return new FormObject(form, formController);
     }
 

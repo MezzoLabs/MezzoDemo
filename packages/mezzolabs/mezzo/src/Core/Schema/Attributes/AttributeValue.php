@@ -4,9 +4,9 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 
 
-use Carbon\Carbon;
 use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput;
+use MezzoLabs\Mezzo\Core\Schema\InputTypes\JsonInput;
 
 class AttributeValue
 {
@@ -117,6 +117,10 @@ class AttributeValue
         if ($this->attribute()->type() instanceof DateTimeInput) {
             $this->value = $this->processDateTimeValue($this->value);
         }
+
+        if ($this->attribute()->type() instanceof JsonInput) {
+            $this->value = $this->processJsonValue($this->value);
+        }
     }
 
     /**
@@ -128,11 +132,41 @@ class AttributeValue
     protected function processDateTimeValue($value)
     {
         return StringHelper::toDateTimeString($value);
-
-
     }
 
-    protected function isDateTimeString($value){
+
+    protected function processJsonValue($value)
+    {
+        if (is_array($value)) {
+            unset($value['_json']);
+
+            foreach ($value as $key => $subValue) {
+                $value[$key] = $this->processNumericValue($subValue);
+            }
+
+            return json_encode($value);
+        }
+
+        return $value;
+    }
+
+    protected function processNumericValue($value)
+    {
+        if (!is_numeric($value)) {
+            return $value;
+        }
+
+        $value = str_replace(',', '.', $value);
+
+        if (str_contains($value, '.')) {
+            return floatval($value);
+        }
+
+        return intval($value);
+    }
+
+    protected function isDateTimeString($value)
+    {
         return StringHelper::toDateTimeString($value) != null;
     }
 }

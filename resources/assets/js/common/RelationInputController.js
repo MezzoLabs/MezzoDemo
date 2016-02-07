@@ -50,16 +50,17 @@ export default class RelationInputController {
             console.error('fill without models loaded');
         }
 
+
         if (form != this.formController)
             return false;
 
-        this.selected = data[this.$element.attr('name')];
+        this.selected = _.get(data, this.$element.attr('name'));
 
         var htmlValue = _.clone(this.selected);
 
 
         this.$timeout(() => {
-            if (htmlValue[0]) {
+            if (htmlValue && _.isArray(htmlValue)) {
                 htmlValue = _.map(htmlValue, 'id');
             }
 

@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
 use Mezzolabs\Mezzo\Cockpit\Http\FormObjects\NestedRelations;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
@@ -315,6 +315,7 @@ class ModelRepository extends EloquentRepository
 
         $model = $this->findByOrFail($attribute, $id);
 
+
         $result = $this->updateRow($values->inMainTableOnly(), $model);
 
         if (!$result)
@@ -369,11 +370,13 @@ class ModelRepository extends EloquentRepository
 
         $model->fill($values);
 
+
         if (count($model->getDirty()) == 0) {
             return $model;
         }
 
-        $model->save();
+
+        $saved = $model->save();
 
         return $model;
     }

@@ -62,6 +62,7 @@ export default class EditResourceController extends ResourceController {
 
         this.content = cleaned.stripped;
         this.inputs = cleaned.flattened;
+
         this.loading = false;
 
 

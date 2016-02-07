@@ -132,14 +132,21 @@ return [
         'type' => 'Typ',
         'active' => 'Aktiv',
         'url' => 'URL',
-        'imageUrö' => 'Bild URL',
+        'imageUrl' => 'Bild URL',
         'description' => 'Beschreibung',
         'priority' => 'Priorität',
         'title' => 'Titel',
         'password' => 'Passwort',
         'teaser' => 'Teaser',
         'mainimage' => 'Hauptbild',
-        'state' => 'Status'
+        'state' => 'Status',
+        'options' => 'Optionen',
+        'voucher_key' => 'Schlüssel',
+        'redeemed_at' => 'Eingelöst am',
+        'redeemedby' => 'Einlöser',
+        'label' => 'Bezeichner',
+        'group' => 'Gruppe',
+        'parent' => 'Elternelement'
 
     ],
 

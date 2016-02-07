@@ -1,3 +1,7 @@
+@if(!empty($module_page->filtersView))
+@include($module_page->filtersView)
+@endif
+
 <!-- Bottom Container -->
 <div class="panel panel-bordered">
 

@@ -4,6 +4,8 @@
 namespace App\Magazine\Shop;
 
 
+use App\Magazine\Shop\Html\Rendering\VoucherOptionsRenderer;
+use MezzoLabs\Mezzo\Cockpit\Html\Rendering\AttributeRenderEngine;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 
 class ShopModule extends ModuleProvider
@@ -25,7 +27,7 @@ class ShopModule extends ModuleProvider
      */
     public function ready()
     {
-        // TODO: Implement ready() method.
+        $this->loadViews();
     }
 
     /**
@@ -35,6 +37,8 @@ class ShopModule extends ModuleProvider
      */
     public function register()
     {
-        // TODO: Implement register() method.
+
+        AttributeRenderEngine::registerHandler(VoucherOptionsRenderer::class);
+
     }
 }

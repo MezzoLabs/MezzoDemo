@@ -301,12 +301,12 @@ var RelationInputController = function () {
 
             if (form != this.formController) return false;
 
-            this.selected = data[this.$element.attr('name')];
+            this.selected = _.get(data, this.$element.attr('name'));
 
             var htmlValue = _.clone(this.selected);
 
             this.$timeout(function () {
-                if (htmlValue[0]) {
+                if (htmlValue && _.isArray(htmlValue)) {
                     htmlValue = _.map(htmlValue, 'id');
                 }
 
@@ -1013,7 +1013,7 @@ Object.defineProperty(exports, "__esModule", {
     var FormDataReader = function () {
         function FormDataReader() {
             _classCallCheck(this, FormDataReader);
-        }
+    }
 
         _createClass(FormDataReader, [{
             key: 'read',
@@ -1053,18 +1053,18 @@ Object.defineProperty(exports, "__esModule", {
                         }
 
                         if (!$formInput.prop('checked')) {
-                            return;
-                        }
+                        return;
+                    }
 
                         checkbox.push(checkboxId);
 
                         return;
-                    }
+                }
 
                     if ($formInput.is('input[type=checkbox]')) {
                         _.set(formData, name, $formInput.prop('checked') ? 1 : 0);
                         return;
-                }
+                    }
                     /* End checkbox edge case */
 
                     _.set(formData, name, value);
@@ -1196,7 +1196,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             if (!formController) {
                 alert('Invalid form controller.');
                 console.error(form, formController);
-            }
+        }
 
             this.form = form;
             this.controller = formController;
@@ -1223,7 +1223,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             value: function submitButtonClass() {
                 if (this.controller && this.controller.$invalid) {
                     return 'disabled';
-                }
+            }
 
                 return '';
             }
@@ -1238,8 +1238,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                     if (formControl) {
                         _this.attachServerSideError(formControl, errorMessage);
-                        return;
-                    }
+                    return;
+                }
 
                     toastr.error(errorMessage);
                 });
@@ -1269,7 +1269,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     alert('Cannot fire event without form.');
                     console.error('No form given', this);
                     return;
-                }
+            }
 
                 return eventDispatcher.fire(new _FormEvent2.default(name, data, angular.element(this.form)[0]));
             }
@@ -1385,7 +1385,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 if (!err.data || !err.data.errors) {
                     this.errorHandlerService.showUnexpected(err);
                     return;
-                }
+            }
 
                 var errors = err.data.errors;
                 console.warn('Server side error', err);
@@ -1415,7 +1415,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     this.formObject.dirtyControls(); // if a submit attempt failed because of an $invalid form all validation messages should be visible
 
                     return false;
-                }
+            }
 
                 return true;
             }
@@ -1607,7 +1607,7 @@ function formValidationDirective(formValidationService) {
             if (query.length < 3) return false;
 
             return true;
-        }
+    }
     }
 
 }, {}], 24: [function (require, module, exports) {
@@ -4186,6 +4186,7 @@ var EditResourceController = function (_ResourceController) {
 
             this.content = cleaned.stripped;
             this.inputs = cleaned.flattened;
+
             this.loading = false;
 
             this.eventDispatcher.fire(new _FormEvent2.default('form.received', {
@@ -4953,7 +4954,7 @@ exports.default = ModelStateService;
             _classCallCheck(this, QueryObject);
 
             this.clear();
-        }
+    }
 
         _createClass(QueryObject, [{
             key: "clear",
@@ -5061,7 +5062,7 @@ exports.default = ModelStateService;
 
                 if (_.size(this.sortings) > 0) {
                     parameters.sort = this.sortString();
-                }
+            }
 
                 if (this.paginationObject.offset != 0 || this.paginationObject.limit) {
                     parameters.offset = this.paginationObject.offset;
@@ -5074,7 +5075,7 @@ exports.default = ModelStateService;
 
                 if (_.size(this.scopes) > 0) {
                     parameters.scopes = this.scopes;
-                }
+            }
 
                 return _.merge(parameters, this.overwritingParameters);
             }
@@ -5095,10 +5096,10 @@ exports.default = ModelStateService;
                     if (direction == "asc" || direction == "ascending" || direction == "" || direction == false) {
                         sortingStrings.push(column);
                         continue;
-                    }
+                }
 
                     sortingStrings.push('-' + column);
-                }
+            }
 
                 return sortingStrings.join(',');
             }
@@ -5211,7 +5212,11 @@ var ResourceController = function () {
     }, {
         key: 'submitButtonClass',
         value: function submitButtonClass(formController) {
-            return this.formObject(null, formController).submitButtonClass();
+            if (this.formController && this.formController.$invalid) {
+                return 'disabled';
+            }
+
+            return '';
         }
 
         // Override this method in extending class
@@ -5262,6 +5267,7 @@ var ResourceController = function () {
     }, {
         key: 'formObject',
         value: function formObject(form, formController) {
+
             return new _FormObject2.default(form, formController);
         }
     }]);

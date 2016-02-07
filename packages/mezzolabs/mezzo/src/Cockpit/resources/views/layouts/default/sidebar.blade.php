@@ -29,6 +29,7 @@
                                         <a href="mezzo/{{ $page->uri() }}" data-mezzo-register-state
                                            data-action="{{ $page->action()}}" data-uri="{{ $page->uri() }}"
                                            data-page="{{ $page->name() }}"
+                                           data-slug="{{ $page->slug() }}"
                                            data-mezzo-href-reload="{{ (!$page->isRenderedByFrontend())? 1 : 0 }}">
                                             <span>{{ $page->title() }}</span>
                                         </a>

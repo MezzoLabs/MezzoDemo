@@ -16,6 +16,8 @@ abstract class IndexResourcePage extends ResourcePage
 
     protected $view = 'cockpit::pages.resources.index';
 
+    protected $filtersView = false;
+
     protected $options = [
         'visibleInNavigation' => true,
         'appendToUri' => ''
@@ -73,6 +75,4 @@ abstract class IndexResourcePage extends ResourcePage
 
         return PermissionGuard::make()->allowsShow($this->model()->instance(true));
     }
-
-
 }

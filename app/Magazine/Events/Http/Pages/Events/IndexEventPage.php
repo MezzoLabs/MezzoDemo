@@ -11,6 +11,7 @@ class IndexEventPage extends IndexResourcePage
 {
     protected $view = 'modules.events::pages.events.index';
 
+    public $filtersView = 'modules.events::partials.event_index_filters';
 
     public function boot()
     {
