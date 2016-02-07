@@ -4,6 +4,8 @@
 namespace MezzoLabs\Mezzo\Cockpit\Pages\Resources;
 
 
+use MezzoLabs\Mezzo\Core\Permission\PermissionGuard;
+
 class CreateResourcePage extends ResourcePage
 {
     protected $action = 'create';
@@ -13,6 +15,20 @@ class CreateResourcePage extends ResourcePage
     protected $options = [
         'visibleInNavigation' => true,
     ];
+
+    /**
+     * Check if the current user is allowed to view this page.
+     *
+     * @return bool
+     */
+    public function isAllowed()
+    {
+        if (!parent::isAllowed()) {
+            return false;
+        }
+
+        return PermissionGuard::make()->allowsCreate($this->model()->instance(true));
+    }
 
 
 }

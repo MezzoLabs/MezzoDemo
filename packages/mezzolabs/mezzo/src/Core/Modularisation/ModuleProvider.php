@@ -307,6 +307,11 @@ abstract class ModuleProvider extends ServiceProvider implements ExtensibleModul
         return $this->pages;
     }
 
+    public function hasVisiblePages()
+    {
+        return $this->pages()->filterVisibleInNavigation()->count() > 0;
+    }
+
     protected function collectPages()
     {
         $pages = new ModulePages();
@@ -521,6 +526,9 @@ abstract class ModuleProvider extends ServiceProvider implements ExtensibleModul
     public function isVisible()
     {
         if (!$this->isAllowed())
+            return false;
+
+        if (!$this->hasVisiblePages())
             return false;
 
         return $this->options()->get('visible', true);

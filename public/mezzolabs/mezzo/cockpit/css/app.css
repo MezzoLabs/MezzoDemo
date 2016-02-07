@@ -8694,6 +8694,11 @@ a {
     height: 32px;
     display: inline-block;
     font-size: 19px; }
+
+.nav-main > li i.fa {
+  font-size: 14px;
+  line-height: 25px;
+}
   .nav-main .dropdown {
     position: absolute;
     top: 50%;
