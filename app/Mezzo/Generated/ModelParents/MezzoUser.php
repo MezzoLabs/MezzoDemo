@@ -2,9 +2,9 @@
 
 namespace App\Mezzo\Generated\ModelParents;
 
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 /**
 *-------------------------------------------------------------------------------------------------------------------
@@ -35,18 +35,20 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 * @property string $first_name
 * @property string $last_name
 * @property \App\Address $address
-* @property \App\Magazine\Shop\Domain\Models\Merchant $merchant
 * @property EloquentCollection $comments
-* @property EloquentCollection $likedCategories
-* @property EloquentCollection $tutorials
-* @property EloquentCollection $roles
-* @property EloquentCollection $posts
-* @property EloquentCollection $lockedPosts
 * @property EloquentCollection $events
 * @property EloquentCollection $lockedEvents
+ * @property EloquentCollection $likedCategories
+ * @property \App\Merchant $merchant
 * @property EloquentCollection $orders
+ * @property EloquentCollection $posts
+ * @property EloquentCollection $lockedPosts
 * @property \App\ShoppingBasket $shoppingBasket
 * @property EloquentCollection $subscriptions
+ * @property EloquentCollection $tutorials
+ * @property EloquentCollection $roles
+ * @property EloquentCollection $redeemedVouchers
+ * @property EloquentCollection $personalVouchers
 */
 abstract class MezzoUser extends \App\Mezzo\BaseModel
 {
@@ -261,22 +263,12 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     /**
     * Relation annotation property for address
     * @Mezzo\Relations\OneToOne
-    * @Mezzo\Relations\From(table="addresses", primaryKey="id", naming="user")
-    * @Mezzo\Relations\To(table="users", primaryKey="id", naming="address")
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="address")
+     * @Mezzo\Relations\To(table="addresses", primaryKey="id", naming="user")
     * @Mezzo\Relations\JoinColumn(table="users", column="address_id")
     * @Mezzo\Relations\Scopes("")
     */
     protected $_address;
-
-    /**
-    * Relation annotation property for merchant
-    * @Mezzo\Relations\OneToOne
-    * @Mezzo\Relations\From(table="users", primaryKey="id", naming="merchant")
-    * @Mezzo\Relations\To(table="merchants", primaryKey="id", naming="user")
-    * @Mezzo\Relations\JoinColumn(table="merchants", column="user_id")
-    * @Mezzo\Relations\Scopes("")
-    */
-    protected $_merchant;
 
     /**
     * Relation annotation property for comments
@@ -290,6 +282,28 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     protected $_comments;
 
     /**
+     * Relation annotation property for events
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="events")
+     * @Mezzo\Relations\To(table="events", primaryKey="id", naming="user")
+     * @Mezzo\Relations\JoinColumn(table="events", column="user_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_events;
+
+    /**
+     * Relation annotation property for lockedEvents
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="lockedEvents")
+     * @Mezzo\Relations\To(table="events", primaryKey="id", naming="lockedBy")
+     * @Mezzo\Relations\JoinColumn(table="events", column="locked_by_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_lockedEvents;
+
+    /**
     * Relation annotation property for likedCategories
     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
     * @Mezzo\Relations\OneToMany
@@ -301,33 +315,32 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     protected $_likedCategories;
 
     /**
-    * Relation annotation property for tutorials
-    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
-    * @Mezzo\Relations\OneToMany
-    * @Mezzo\Relations\From(table="users", primaryKey="id", naming="tutorials")
-    * @Mezzo\Relations\To(table="tutorials", primaryKey="id", naming="owner")
-    * @Mezzo\Relations\JoinColumn(table="tutorials", column="user_id")
+     * Relation annotation property for merchant
+     * @Mezzo\Relations\OneToOne
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="merchant")
+     * @Mezzo\Relations\To(table="merchants", primaryKey="id", naming="user")
+     * @Mezzo\Relations\JoinColumn(table="merchants", column="user_id")
     * @Mezzo\Relations\Scopes("")
     */
-    protected $_tutorials;
+    protected $_merchant;
 
     /**
-    * Relation annotation property for roles
+     * Relation annotation property for orders
     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
-    * @Mezzo\Relations\ManyToMany
-    * @Mezzo\Relations\From(table="users", primaryKey="id", naming="roles")
-    * @Mezzo\Relations\To(table="roles", primaryKey="id", naming="")
-    * @Mezzo\Relations\PivotTable(name="role_user", fromColumn="user_id", toColumn="role_id")
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="orders")
+     * @Mezzo\Relations\To(table="orders", primaryKey="id", naming="user")
+     * @Mezzo\Relations\JoinColumn(table="orders", column="user_id")
     * @Mezzo\Relations\Scopes("")
     */
-    protected $_roles;
+    protected $_orders;
 
     /**
     * Relation annotation property for posts
     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
     * @Mezzo\Relations\OneToMany
-    * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="user")
-    * @Mezzo\Relations\To(table="users", primaryKey="id", naming="posts")
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="posts")
+     * @Mezzo\Relations\To(table="posts", primaryKey="id", naming="user")
     * @Mezzo\Relations\JoinColumn(table="posts", column="user_id")
     * @Mezzo\Relations\Scopes("")
     */
@@ -337,66 +350,77 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     * Relation annotation property for lockedPosts
     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
     * @Mezzo\Relations\OneToMany
-    * @Mezzo\Relations\From(table="posts", primaryKey="id", naming="lockedBy")
-    * @Mezzo\Relations\To(table="users", primaryKey="id", naming="lockedPosts")
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="lockedPosts")
+     * @Mezzo\Relations\To(table="posts", primaryKey="id", naming="lockedBy")
     * @Mezzo\Relations\JoinColumn(table="posts", column="locked_by_id")
     * @Mezzo\Relations\Scopes("")
     */
     protected $_lockedPosts;
 
     /**
-    * Relation annotation property for events
-    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
-    * @Mezzo\Relations\OneToMany
-    * @Mezzo\Relations\From(table="events", primaryKey="id", naming="user")
-    * @Mezzo\Relations\To(table="users", primaryKey="id", naming="events")
-    * @Mezzo\Relations\JoinColumn(table="events", column="user_id")
-    * @Mezzo\Relations\Scopes("")
-    */
-    protected $_events;
-
-    /**
-    * Relation annotation property for lockedEvents
-    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
-    * @Mezzo\Relations\OneToMany
-    * @Mezzo\Relations\From(table="events", primaryKey="id", naming="lockedBy")
-    * @Mezzo\Relations\To(table="users", primaryKey="id", naming="lockedEvents")
-    * @Mezzo\Relations\JoinColumn(table="events", column="locked_by_id")
-    * @Mezzo\Relations\Scopes("")
-    */
-    protected $_lockedEvents;
-
-    /**
-    * Relation annotation property for orders
-    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
-    * @Mezzo\Relations\OneToMany
-    * @Mezzo\Relations\From(table="orders", primaryKey="id", naming="user")
-    * @Mezzo\Relations\To(table="users", primaryKey="id", naming="orders")
-    * @Mezzo\Relations\JoinColumn(table="orders", column="user_id")
-    * @Mezzo\Relations\Scopes("")
-    */
-    protected $_orders;
-
-    /**
-    * Relation annotation property for shoppingBasket
-    * @Mezzo\Relations\OneToOne
-    * @Mezzo\Relations\From(table="shopping_baskets", primaryKey="id", naming="user")
-    * @Mezzo\Relations\To(table="users", primaryKey="id", naming="shoppingBasket")
-    * @Mezzo\Relations\JoinColumn(table="shopping_baskets", column="user_id")
-    * @Mezzo\Relations\Scopes("")
-    */
+     * Relation annotation property for shoppingBasket
+     * @Mezzo\Relations\OneToOne
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="shoppingBasket")
+     * @Mezzo\Relations\To(table="shopping_baskets", primaryKey="id", naming="user")
+     * @Mezzo\Relations\JoinColumn(table="shopping_baskets", column="user_id")
+     * @Mezzo\Relations\Scopes("")
+     */
     protected $_shoppingBasket;
 
     /**
-    * Relation annotation property for subscriptions
-    * @Mezzo\Attribute(type="App\Magazine\Subscriptions\Schema\SubscriptionInput", hidden="create,edit,index")
+     * Relation annotation property for subscriptions
+     * @Mezzo\Attribute(type="App\Magazine\Subscriptions\Schema\SubscriptionInput", hidden="create,edit,index")
     * @Mezzo\Relations\OneToMany
-    * @Mezzo\Relations\From(table="subscriptions", primaryKey="id", naming="user")
-    * @Mezzo\Relations\To(table="users", primaryKey="id", naming="subscriptions")
-    * @Mezzo\Relations\JoinColumn(table="subscriptions", column="user_id")
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="subscriptions")
+     * @Mezzo\Relations\To(table="subscriptions", primaryKey="id", naming="user")
+     * @Mezzo\Relations\JoinColumn(table="subscriptions", column="user_id")
     * @Mezzo\Relations\Scopes("")
     */
     protected $_subscriptions;
+
+    /**
+     * Relation annotation property for tutorials
+    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+    * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="tutorials")
+     * @Mezzo\Relations\To(table="tutorials", primaryKey="id", naming="owner")
+     * @Mezzo\Relations\JoinColumn(table="tutorials", column="user_id")
+    * @Mezzo\Relations\Scopes("")
+    */
+    protected $_tutorials;
+
+    /**
+     * Relation annotation property for roles
+    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\ManyToMany
+     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="roles")
+     * @Mezzo\Relations\To(table="roles", primaryKey="id", naming="")
+     * @Mezzo\Relations\PivotTable(name="role_user", fromColumn="user_id", toColumn="role_id")
+    * @Mezzo\Relations\Scopes("")
+    */
+    protected $_roles;
+
+    /**
+     * Relation annotation property for redeemedVouchers
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="vouchers", primaryKey="id", naming="redeemedBy")
+     * @Mezzo\Relations\To(table="users", primaryKey="id", naming="redeemedVouchers")
+     * @Mezzo\Relations\JoinColumn(table="vouchers", column="redeemed_by_id")
+    * @Mezzo\Relations\Scopes("")
+    */
+    protected $_redeemedVouchers;
+
+    /**
+     * Relation annotation property for personalVouchers
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+    * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="vouchers", primaryKey="id", naming="onlyFor")
+     * @Mezzo\Relations\To(table="users", primaryKey="id", naming="personalVouchers")
+     * @Mezzo\Relations\JoinColumn(table="vouchers", column="only_for_id")
+    * @Mezzo\Relations\Scopes("")
+    */
+    protected $_personalVouchers;
 
 
 }

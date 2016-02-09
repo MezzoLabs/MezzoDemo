@@ -768,6 +768,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var EventDispatcherService = function () {
     function EventDispatcherService($rootScope) {
+        var _this = this;
+
         _classCallCheck(this, EventDispatcherService);
 
         this.listeners = [];
@@ -775,10 +777,8 @@ var EventDispatcherService = function () {
 
         this.$rootScope = $rootScope;
 
-        console.log('register route change');
-
         this.$rootScope.$on('$routeChangeStart', function (next, current) {
-            alert('route change');
+            _this.clear();
         });
     }
 
@@ -888,7 +888,7 @@ var EventDispatcherService = function () {
     }, {
         key: 'listenForAll',
         value: function listenForAll(eventKeys, callback) {
-            var _this = this;
+            var _this2 = this;
 
             var received = {};
             var payloads = {};
@@ -896,7 +896,7 @@ var EventDispatcherService = function () {
 
             var _loop = function _loop() {
                 var eventKey = eventKeys[i];
-                _this.makeListener(eventKey, function (event, payload) {
+                _this2.makeListener(eventKey, function (event, payload) {
                     received[event.key] = 1;
                     payloads[eventKey] = payload;
                     events[eventKey] = event;
@@ -926,14 +926,16 @@ var EventDispatcherService = function () {
     }, {
         key: 'clear',
         value: function clear() {
-            var i = 0;
-            for (i in this.listeners) {
+            for (var i in this.listeners) {
                 delete this.listeners[i];
             }
 
-            for (i in this.eventHistory) {
-                delete this.eventHistory[i];
+            for (var j in this.eventHistory) {
+                delete this.eventHistory[j];
             }
+
+            this.listeners = [];
+            this.eventHistory = [];
 
             console.log('listeners and history cleared');
         }
@@ -1181,8 +1183,6 @@ var FormEventListener = function (_EventListener) {
     _createClass(FormEventListener, [{
         key: 'listensTo',
         value: function listensTo(event) {
-            console.log('check listen to', event.form, this.form);
-
             return event.key == this.eventKey && event.form == this.form;
         }
     }]);
@@ -4284,6 +4284,7 @@ var EditResourceController = function (_ResourceController) {
         key: 'onDestroy',
         value: function onDestroy() {
             this.stopResourceLocking();
+            this.eventDispatcher.clear();
         }
     }, {
         key: 'initLockable',
@@ -5105,7 +5106,7 @@ exports.default = ModelStateService;
                 if (this.paginationObject.offset != 0 || this.paginationObject.limit) {
                     parameters.offset = this.paginationObject.offset;
                     parameters.limit = this.paginationObject.limit;
-                }
+            }
 
                 if (this.searchText != "") {
                     parameters.q = this.searchText;

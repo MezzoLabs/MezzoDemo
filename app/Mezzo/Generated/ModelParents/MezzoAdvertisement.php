@@ -4,7 +4,6 @@ namespace App\Mezzo\Generated\ModelParents;
 
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 /**
 *-------------------------------------------------------------------------------------------------------------------
@@ -26,6 +25,7 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 * @property boolean $active
 * @property string $url
 * @property string $imageUrl
+ * @property string $label
 * @property string $description
 * @property float $priority
 * @property \Carbon\Carbon $created_at
@@ -58,11 +58,12 @@ abstract class MezzoAdvertisement extends \App\Mezzo\BaseModel
     * @var array            
     */
     protected $rules = [
-        'type' => "required",
-        'active' => "", 
+        'type' => "required", 
+        'active' => "",
         'url' => "required|url",
         'imageUrl' => "url",
-        'description' => "between:2,2000",
+        'label' => "",
+        'description' => "between:2,2000", 
         'priority' => "between:0,10"
     ];
 
@@ -81,12 +82,13 @@ abstract class MezzoAdvertisement extends \App\Mezzo\BaseModel
     * @var array            
     */
     protected $fillable = [
-        'type',
-        'active',
-        'url',
-        'imageUrl',
-        'description',
-        'priority'
+        "label",
+        "description",
+        "type",
+        "url",
+        "imageUrl",
+        "active",
+        "priority"
     ];
 
     /**
@@ -155,6 +157,14 @@ abstract class MezzoAdvertisement extends \App\Mezzo\BaseModel
     * @var string            
     */
     protected $_imageUrl;
+
+    /**
+     * Attribute annotation property for label
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
+     * @var string
+     */
+    protected $_label;
 
     /**
     * Attribute annotation property for description

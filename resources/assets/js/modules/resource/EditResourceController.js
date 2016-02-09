@@ -122,6 +122,7 @@ export default class EditResourceController extends ResourceController {
 
     onDestroy() {
         this.stopResourceLocking();
+        this.eventDispatcher.clear();
     }
 
     initLockable(model) {

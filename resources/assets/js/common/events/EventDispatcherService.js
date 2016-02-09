@@ -9,10 +9,8 @@ export default class EventDispatcherService {
 
         this.$rootScope = $rootScope;
 
-        console.log('register route change');
-
-        this.$rootScope.$on('$routeChangeStart', function (next, current) {
-            alert('route change');
+        this.$rootScope.$on('$routeChangeStart', (next, current) => {
+            this.clear();
         });
     }
 
@@ -135,14 +133,16 @@ export default class EventDispatcherService {
     }
 
     clear() {
-        var i = 0;
-        for (i in this.listeners) {
+        for (var i in this.listeners) {
             delete this.listeners[i];
         }
 
-        for (i in this.eventHistory) {
-            delete this.eventHistory[i];
+        for (var j in this.eventHistory) {
+            delete this.eventHistory[j];
         }
+
+        this.listeners = [];
+        this.eventHistory = [];
 
         console.log('listeners and history cleared');
     }

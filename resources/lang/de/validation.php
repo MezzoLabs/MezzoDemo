@@ -149,7 +149,10 @@ return [
         'parent' => 'Elternelement',
         'images' => 'Bilder',
         'image' => 'Bild',
-        'text' => 'Text'
+        'text' => 'Text',
+        'onlyfor' => 'Nur für',
+        'active_until' => 'Gültig bis',
+        'is_global' => 'Global gültig'
 
     ],
 

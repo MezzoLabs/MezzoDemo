@@ -23,11 +23,15 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  * @property integer $id
  * @property string $voucher_key
  * @property string $type
+ * @property integer $only_for_id
+ * @property boolean $is_global
+ * @property \Carbon\Carbon $active_until
  * @property string $options
  * @property \Carbon\Carbon $redeemed_at
 * @property integer $redeemed_by_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property \App\User $onlyFor
 * @property \App\User $redeemedBy
 */
 abstract class MezzoVoucher extends \App\Mezzo\BaseModel
@@ -59,7 +63,9 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
     protected $rules = [
         'voucher_key' => "",
         'type' => "in:default,subscription,coupon",
-        'options' => "",
+        'is_global' => "",
+        'active_until' => "",
+        'options' => "", 
         'redeemed_at' => ""
     ];
 
@@ -78,11 +84,14 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
     * @var array            
     */
     protected $fillable = [
-        'voucher_key',
-        'type',
-        'options',
-        'redeemed_at',
-        'redeemed_by_id'
+        "voucher_key",
+        "type",
+        "is_global",
+        "active_until",
+        "only_for_id",
+        "options",
+        "redeemed_at",
+        "redeemed_by_id"
     ];
 
     /**
@@ -123,7 +132,7 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for voucher_key
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="create")
      * @var string
      */
     protected $_voucher_key;
@@ -137,9 +146,33 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
     protected $_type;
 
     /**
+     * Attribute annotation property for only_for_id
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="")
+     * @var integer
+     */
+    protected $_only_for_id;
+
+    /**
+     * Attribute annotation property for is_global
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\CheckboxInput", hidden="")
+     * @var boolean
+     */
+    protected $_is_global;
+
+    /**
+     * Attribute annotation property for active_until
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
+     * @var \Carbon\Carbon
+     */
+    protected $_active_until;
+
+    /**
      * Attribute annotation property for options
      *
-     * @Mezzo\Attribute(type="App\Magazine\Shop\Schema\InputTypes\VoucherOptionsInput", hidden="")
+     * @Mezzo\Attribute(type="App\Magazine\Shop\Schema\InputTypes\VoucherOptionsInput", hidden="index")
      * @var string
      */
     protected $_options;
@@ -188,10 +221,20 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
     */
 
     /**
+     * Relation annotation property for onlyFor
+     * @Mezzo\Relations\OneToMany
+     * @Mezzo\Relations\From(table="vouchers", primaryKey="id", naming="onlyFor")
+     * @Mezzo\Relations\To(table="users", primaryKey="id", naming="personalVouchers")
+     * @Mezzo\Relations\JoinColumn(table="vouchers", column="only_for_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_onlyFor;
+
+    /**
     * Relation annotation property for redeemedBy
     * @Mezzo\Relations\OneToMany
     * @Mezzo\Relations\From(table="vouchers", primaryKey="id", naming="redeemedBy")
-    * @Mezzo\Relations\To(table="users", primaryKey="id", naming="vouchers")
+     * @Mezzo\Relations\To(table="users", primaryKey="id", naming="redeemedVouchers")
     * @Mezzo\Relations\JoinColumn(table="vouchers", column="redeemed_by_id")
     * @Mezzo\Relations\Scopes("")
     */

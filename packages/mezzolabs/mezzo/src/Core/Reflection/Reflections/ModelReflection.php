@@ -132,8 +132,9 @@ abstract class ModelReflection
      */
     public function attributes(string $name = null)
     {
-        if (!$name)
-            return $this->schema()->attributes();
+        if (!$name) {
+            return $this->schema()->attributes()->orderByStringArray($this->instance(true)->getFillable());
+        }
 
         return $this->schema()->attributes($name);
     }

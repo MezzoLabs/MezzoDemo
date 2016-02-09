@@ -60,7 +60,8 @@ return [
             'vouchers' => [
                 'subscription_months' => 'Abo in Monaten',
                 'money_coupon' => 'Wertgutschein in Euro',
-                'for_user' => 'Nur für Nutzer'
+                'for_user' => 'Nur für Nutzer',
+                'discount_percent' => 'Rabatt in Prozent'
             ]
         ],
         'general' => 'Allgemein',
