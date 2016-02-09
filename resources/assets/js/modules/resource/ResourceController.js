@@ -5,7 +5,7 @@ import FormObject from './../../common/forms/FormObject';
 // Intended for CreateResourceController & EditResourceController
 export default class ResourceController {
 
-    constructor($injector, api, formDataService, contentBlockFactory, modelStateService, errorHandlerService) {
+    constructor($injector, $scope) {
         this.$injector = $injector;
         this.api = this.$injector.get('api');
         this.formDataService = this.$injector.get('formDataService');
@@ -18,6 +18,7 @@ export default class ResourceController {
         this.formSubmitter = new FormSubmitter(this, $injector);
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
         this.isBusy = false;
+        this.$scope = $scope;
 
         this.form = {}; //name of the main form is vm.form
 
@@ -25,12 +26,11 @@ export default class ResourceController {
             this.contentBlockService.formController = this.form;
         }, 1);
 
-        console.log('controller', this.form);
-
 
         // TODO: Make resource controller ready for multiple forms.
         this.submittingForm = null;
 
+        this.$scope.$on('$destroy', () => this.onDestroy());
     }
 
     hasError(inputName) {
@@ -101,6 +101,10 @@ export default class ResourceController {
     formObject(form, formController){
 
         return new FormObject(form, formController);
+    }
+
+    onDestroy() {
+        this.eventDispatcher.clear();
     }
 
 

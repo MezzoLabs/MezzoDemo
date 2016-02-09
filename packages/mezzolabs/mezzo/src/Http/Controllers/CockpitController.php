@@ -7,9 +7,13 @@ use MezzoLabs\Mezzo\Http\Responses\ModuleResponseFactory;
 
 abstract class CockpitController extends Controller
 {
+    protected $noAuth = false;
+
     public function __construct()
     {
-        $this->middleware('mezzo.auth');
+        if (!$this->noAuth) {
+            $this->middleware('mezzo.auth');
+        }
     }
 
     /**

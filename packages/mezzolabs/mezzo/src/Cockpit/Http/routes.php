@@ -23,3 +23,5 @@ Route::group(['as' => 'cockpit::', 'prefix' => 'mezzo', 'namespace' => 'MezzoLab
     Route::get('{slug?}', ['as' => 'start', 'uses' => mezzo()->makeCockpit()->startAction()])->where('slug', '.+');
 });
 
+
+

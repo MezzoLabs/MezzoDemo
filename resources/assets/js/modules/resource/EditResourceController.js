@@ -5,7 +5,7 @@ export default class EditResourceController extends ResourceController {
 
     /*@ngInject*/
     constructor($injector, $scope) {
-        super($injector);
+        super($injector, $scope);
 
         this.$scope = $scope;
         this.$stateParams = $injector.get('$stateParams');
@@ -17,7 +17,6 @@ export default class EditResourceController extends ResourceController {
 
         this.includes = ['content'];
 
-        this.$scope.$on('$destroy', () => this.onDestroy());
 
         this.$scope.$on('$routeChangeStart', function (next, current) {
             alert('route change scope edit resource');
@@ -121,8 +120,8 @@ export default class EditResourceController extends ResourceController {
 
 
     onDestroy() {
+        super.onDestroy();
         this.stopResourceLocking();
-        this.eventDispatcher.clear();
     }
 
     initLockable(model) {

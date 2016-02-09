@@ -20,6 +20,10 @@ class PublishFilesController extends CockpitController
      */
     protected $request;
 
+    protected $noAuth = true;
+
+
+
     public function publish(PublishFileRequest $request, $path)
     {
         $path = ltrim($path, '/');
@@ -84,9 +88,6 @@ class PublishFilesController extends CockpitController
     {
         return FileRepository::makeRepository();
     }
-
-
-
 
 
 

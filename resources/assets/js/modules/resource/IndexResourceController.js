@@ -29,6 +29,8 @@ export default class IndexResourceController {
 
         this.queryObject = QueryObject.makeFromController(this);
         this.formParameters = {};
+
+        this.$scope.$on('$destroy', () => this.onDestroy());
     }
 
     init(modelName, defaultIncludes, options) {
@@ -462,6 +464,10 @@ export default class IndexResourceController {
 
     filterChanged(){
         console.log('filter changed');
+    }
+
+    onDestroy() {
+        this.eventDispatcher.clear();
     }
 
 }

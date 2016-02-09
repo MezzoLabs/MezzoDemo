@@ -4086,10 +4086,10 @@ var CreateResourceController = function (_ResourceController) {
 
     /*@ngInject*/
 
-    function CreateResourceController($injector) {
+    function CreateResourceController($injector, $scope) {
         _classCallCheck(this, CreateResourceController);
 
-        return _possibleConstructorReturn(this, Object.getPrototypeOf(CreateResourceController).call(this, $injector));
+        return _possibleConstructorReturn(this, Object.getPrototypeOf(CreateResourceController).call(this, $injector, $scope));
     }
 
     _createClass(CreateResourceController, [{
@@ -4125,6 +4125,27 @@ exports.default = CreateResourceController;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+    var _get = function get(object, property, receiver) {
+        if (object === null) object = Function.prototype;
+        var desc = Object.getOwnPropertyDescriptor(object, property);
+        if (desc === undefined) {
+            var parent = Object.getPrototypeOf(object);
+            if (parent === null) {
+                return undefined;
+            } else {
+                return get(parent, property, receiver);
+            }
+        } else if ("value" in desc) {
+            return desc.value;
+        } else {
+            var getter = desc.get;
+            if (getter === undefined) {
+                return undefined;
+            }
+            return getter.call(receiver);
+        }
+    };
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -4153,7 +4174,7 @@ var EditResourceController = function (_ResourceController) {
     function EditResourceController($injector, $scope) {
         _classCallCheck(this, EditResourceController);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EditResourceController).call(this, $injector));
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EditResourceController).call(this, $injector, $scope));
 
         _this.$scope = $scope;
         _this.$stateParams = $injector.get('$stateParams');
@@ -4164,10 +4185,6 @@ var EditResourceController = function (_ResourceController) {
         _this.content = {};
 
         _this.includes = ['content'];
-
-        _this.$scope.$on('$destroy', function () {
-            return _this.onDestroy();
-        });
 
         _this.$scope.$on('$routeChangeStart', function (next, current) {
             alert('route change scope edit resource');
@@ -4283,8 +4300,8 @@ var EditResourceController = function (_ResourceController) {
     }, {
         key: 'onDestroy',
         value: function onDestroy() {
+            _get(Object.getPrototypeOf(EditResourceController.prototype), 'onDestroy', this).call(this);
             this.stopResourceLocking();
-            this.eventDispatcher.clear();
         }
     }, {
         key: 'initLockable',
@@ -4343,6 +4360,8 @@ var IndexResourceController = function () {
     /*@ngInject*/
 
     function IndexResourceController($scope, api, modelStateService, languageService) {
+        var _this = this;
+
         _classCallCheck(this, IndexResourceController);
 
         this.$scope = $scope;
@@ -4370,6 +4389,10 @@ var IndexResourceController = function () {
 
         this.queryObject = _QueryObject2.default.makeFromController(this);
         this.formParameters = {};
+
+        this.$scope.$on('$destroy', function () {
+            return _this.onDestroy();
+        });
     }
 
     _createClass(IndexResourceController, [{
@@ -4397,7 +4420,7 @@ var IndexResourceController = function () {
     }, {
         key: 'loadModels',
         value: function loadModels() {
-            var _this = this;
+            var _this2 = this;
 
             var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
@@ -4409,18 +4432,18 @@ var IndexResourceController = function () {
             params = _.merge(this.queryObject.getParameters(), params);
 
             return this.modelApi.index(params).then(function (data) {
-                var latestResponse = _this.modelApi.latestResponse();
+                var latestResponse = _this2.modelApi.latestResponse();
 
-                _this.loading = false;
-                _this.models = data;
+                _this2.loading = false;
+                _this2.models = data;
 
-                if (_this.options.backendPagination) {
-                    _this.totalCount = latestResponse.headers('X-Total-Count');
+                if (_this2.options.backendPagination) {
+                    _this2.totalCount = latestResponse.headers('X-Total-Count');
                 } else {
-                    _this.totalCount = _.size(_this.models);
+                    _this2.totalCount = _.size(_this2.models);
                 }
 
-                _this.models.forEach(function (model) {
+                _this2.models.forEach(function (model) {
                     return model._meta = {};
                 });
             });
@@ -4549,10 +4572,10 @@ var IndexResourceController = function () {
     }, {
         key: 'search',
         value: function search() {
-            var _this2 = this;
+            var _this3 = this;
 
             var searched = this.models.filter(function (model) {
-                return _this2.modelIsInSearch(model) && _this2.modelIsInFilters(model);
+                return _this3.modelIsInSearch(model) && _this3.modelIsInFilters(model);
             });
 
             return searched;
@@ -4601,12 +4624,12 @@ var IndexResourceController = function () {
     }, {
         key: 'updateSelectAll',
         value: function updateSelectAll() {
-            var _this3 = this;
+            var _this4 = this;
 
             var models = this.getModelsgetModels();
 
             models.forEach(function (model) {
-                return model._meta.selected = _this3.selectAll;
+                return model._meta.selected = _this4.selectAll;
             });
         }
     }, {
@@ -4627,7 +4650,7 @@ var IndexResourceController = function () {
     }, {
         key: 'remove',
         value: function remove() {
-            var _this4 = this;
+            var _this5 = this;
 
             var selected = this.selected();
 
@@ -4644,7 +4667,7 @@ var IndexResourceController = function () {
                 }
 
                 selected.forEach(function (model) {
-                    return _this4.removeModel(model);
+                    return _this5.removeModel(model);
                 });
             });
         }
@@ -4786,16 +4809,16 @@ var IndexResourceController = function () {
     }, {
         key: 'clientSideSort',
         value: function clientSideSort(attribute, order) {
-            var _this5 = this;
+            var _this6 = this;
 
             switch (attribute.order) {
                 case 'desc':
                     return this.models = _.sortBy(this.getModels(), function (model) {
-                        return _this5.sortByFunction(model, attribute);
+                        return _this6.sortByFunction(model, attribute);
                     }).reverse();
                 case 'asc':
                     return this.models = _.sortBy(this.getModels(), function (model) {
-                        return _this5.sortByFunction(model, attribute);
+                        return _this6.sortByFunction(model, attribute);
                     });
                 default:
                     return this.models = _.sortBy(this.getModels(), 'id');
@@ -4863,6 +4886,11 @@ var IndexResourceController = function () {
         key: 'filterChanged',
         value: function filterChanged() {
             console.log('filter changed');
+        }
+    }, {
+        key: 'onDestroy',
+        value: function onDestroy() {
+            this.eventDispatcher.clear();
         }
     }]);
 
@@ -5204,7 +5232,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // Intended for CreateResourceController & EditResourceController
 
 var ResourceController = function () {
-    function ResourceController($injector, api, formDataService, contentBlockFactory, modelStateService, errorHandlerService) {
+    function ResourceController($injector, $scope) {
         var _this = this;
 
         _classCallCheck(this, ResourceController);
@@ -5221,6 +5249,7 @@ var ResourceController = function () {
         this.formSubmitter = new _FormSubmitter2.default(this, $injector);
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
         this.isBusy = false;
+        this.$scope = $scope;
 
         this.form = {}; //name of the main form is vm.form
 
@@ -5228,10 +5257,12 @@ var ResourceController = function () {
             _this.contentBlockService.formController = _this.form;
         }, 1);
 
-        console.log('controller', this.form);
-
         // TODO: Make resource controller ready for multiple forms.
         this.submittingForm = null;
+
+        this.$scope.$on('$destroy', function () {
+            return _this.onDestroy();
+        });
     }
 
     _createClass(ResourceController, [{
@@ -5316,6 +5347,11 @@ var ResourceController = function () {
         value: function formObject(form, formController) {
 
             return new _FormObject2.default(form, formController);
+        }
+    }, {
+        key: 'onDestroy',
+        value: function onDestroy() {
+            this.eventDispatcher.clear();
         }
     }]);
 
@@ -5712,6 +5748,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
          */
 
         function EditRelationsController($injector, $scope) {
+            var _this = this;
+
             _classCallCheck(this, EditRelationsController);
 
             this.$injector = $injector;
@@ -5737,9 +5775,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
             this.formDataReader = new _FormDataReader2.default();
             this.formSubmitter = new _FormSubmitter2.default(this, $injector);
+
+            this.$scope.$on('$destroy', function () {
+                return _this.onDestroy();
+            });
     }
 
         _createClass(EditRelationsController, [{
+            key: 'onDestroy',
+            value: function onDestroy() {
+                this.eventDispatcher.clear();
+            }
+        }, {
             key: 'init',
             value: function init(modelName, relationName) {
                 this.modelName = modelName;
@@ -5754,32 +5801,32 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }, {
             key: 'loadRelationItems',
             value: function loadRelationItems() {
-                var _this = this;
+                var _this2 = this;
 
                 this.relationApi.index(this.modelId).then(function (data) {
-                    _this.relationItemsLoaded(data);
+                    _this2.relationItemsLoaded(data);
                 });
             }
         }, {
             key: 'loadModelItem',
             value: function loadModelItem() {
-                var _this2 = this;
+                var _this3 = this;
 
                 this.modelApi.content(this.modelId).then(function (data) {
-                    _this2.modelItemLoaded(data);
+                    _this3.modelItemLoaded(data);
                 });
             }
         }, {
             key: 'relationItemsLoaded',
             value: function relationItemsLoaded(data) {
-                var _this3 = this;
+                var _this4 = this;
 
                 var cleaned = this.formDataService.transform(data);
 
                 var prefixedAndFlattened = {};
 
                 _.forEach(cleaned.flattened, function (value, key) {
-                    prefixedAndFlattened[_this3.relationName + '.' + key] = value;
+                    prefixedAndFlattened[_this4.relationName + '.' + key] = value;
                 });
 
                 this.inputs = prefixedAndFlattened;
@@ -5806,42 +5853,42 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }, {
             key: 'submitAddRelation',
             value: function submitAddRelation($event) {
-                var _this4 = this;
+                var _this5 = this;
 
                 return this.formSubmitter.run($event.target, this.addRelationForm(), {
                     doSubmit: function doSubmit(formData) {
-                        return _this4.doAddRelation(formData);
+                        return _this5.doAddRelation(formData);
                     }
                 });
         }
         }, {
             key: 'doAddRelation',
             value: function doAddRelation(formData) {
-                var _this5 = this;
+                var _this6 = this;
 
                 return this.modelApi.update(this.modelId, formData, {}).then(function (model) {
-                    toastr.success('Added to ' + _this5.relationName);
-                    _this5.loadRelationItems();
+                    toastr.success('Added to ' + _this6.relationName);
+                    _this6.loadRelationItems();
                 });
             }
         }, {
             key: 'submitEditRelation',
             value: function submitEditRelation($event, formController) {
-                var _this6 = this;
+                var _this7 = this;
 
                 return this.formSubmitter.run($event.target, formController, {
                     doSubmit: function doSubmit(formData) {
-                        return _this6.doEditRelation(formData);
+                        return _this7.doEditRelation(formData);
                 }
             });
         }
         }, {
             key: 'doEditRelation',
             value: function doEditRelation(formData) {
-                var _this7 = this;
+                var _this8 = this;
 
                 return this.modelApi.update(this.modelId, formData, {}).then(function (model) {
-                    toastr.success('Edited ' + _this7.relationName);
+                    toastr.success('Edited ' + _this8.relationName);
                 });
             }
         }, {

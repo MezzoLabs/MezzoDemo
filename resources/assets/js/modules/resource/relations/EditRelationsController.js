@@ -33,6 +33,12 @@ export default class EditRelationsController {
         this.formDataReader = new FormDataReader();
         this.formSubmitter = new FormSubmitter(this, $injector);
 
+
+        this.$scope.$on('$destroy', () => this.onDestroy());
+    }
+
+    onDestroy() {
+        this.eventDispatcher.clear();
     }
 
     init(modelName, relationName) {
