@@ -146,7 +146,10 @@ return [
         'redeemedby' => 'Einlöser',
         'label' => 'Bezeichner',
         'group' => 'Gruppe',
-        'parent' => 'Elternelement'
+        'parent' => 'Elternelement',
+        'images' => 'Bilder',
+        'image' => 'Bild',
+        'text' => 'Text'
 
     ],
 

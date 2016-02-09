@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Modules\Contents\Types\FieldTypes;
 
 
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Helpers\Translator;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput;
 use MezzoLabs\Mezzo\Modules\Contents\Contracts\ContentFieldTypeContract;
@@ -121,6 +122,14 @@ abstract class AbstractContentFieldType implements ContentFieldTypeContract
 
     public function title()
     {
+        $translation = Translator::find([
+            'validation.attributes.' . strtolower($this->name)
+        ]);
+
+        if($translation){
+            return $translation;
+        }
+
         return space_case($this->name);
     }
 

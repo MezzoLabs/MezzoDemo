@@ -767,11 +767,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var EventDispatcherService = function () {
-    function EventDispatcherService() {
+    function EventDispatcherService($rootScope) {
         _classCallCheck(this, EventDispatcherService);
 
         this.listeners = [];
         this.eventHistory = [];
+
+        this.$rootScope = $rootScope;
+
+        console.log('register route change');
+
+        this.$rootScope.$on('$routeChangeStart', function (next, current) {
+            alert('route change');
+        });
     }
 
     /**
@@ -914,6 +922,20 @@ var EventDispatcherService = function () {
         key: 'isInHistory',
         value: function isInHistory(eventKey) {
             return !!this.findInHistory(eventKey);
+        }
+    }, {
+        key: 'clear',
+        value: function clear() {
+            var i = 0;
+            for (i in this.listeners) {
+                delete this.listeners[i];
+            }
+
+            for (i in this.eventHistory) {
+                delete this.eventHistory[i];
+            }
+
+            console.log('listeners and history cleared');
         }
     }]);
 
@@ -1333,7 +1355,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             this.reader = new _FormDataReader2.default();
             this.eventDispatcher = $injector.get('eventDispatcher');
             this.errorHandlerService = $injector.get('errorHandlerService');
-        }
+    }
 
         _createClass(FormSubmitter, [{
             key: 'run',
@@ -2012,10 +2034,11 @@ exports.default = compileContentBlockDirective;
 function compileContentBlockDirective($parse, $compile, formValidationService, eventDispatcher) {
     return {
         restrict: 'A',
+        require: '^form',
         link: link
     };
 
-    function link(scope, element, attributes) {
+    function link(scope, element, attributes, form) {
         var expression = attributes.mezzoCompileContentBlock;
         var getter = $parse(expression);
 
@@ -2064,8 +2087,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /*@ngInject*/
     function registerContentBlockFactory($compile, api, eventDispatcher) {
-    return function contentBlockFactory() {
-        return new ContentBlockService($compile, api, eventDispatcher);
+        return function contentBlockFactory(formController) {
+            console.log('content block factory', formController);
+            return new ContentBlockService($compile, api, eventDispatcher, formController);
     };
 }
 
@@ -2080,6 +2104,7 @@ var ContentBlockService = function () {
         this.modelApi = api.model('ContentBlock');
         this.contentBlocks = [];
         this.templates = {};
+        this.formController = {};
 
         var base = this;
 
@@ -2243,6 +2268,13 @@ var ContentBlockService = function () {
                 return true;
             }
 
+            console.log('on form update', event, this.formController);
+
+            if (event.form != this.formController) {
+                console.log('invalid form event');
+                return;
+            }
+
             var contentBlocksData = data.stripped.content.blocks;
 
             for (var i in this.contentBlocks) {
@@ -2255,6 +2287,7 @@ var ContentBlockService = function () {
 
                         if (contentBlock.id != contentBlockData.id && contentBlock.id != "" && typeof contentBlock.id != "undefined") {
                             alert('Unexpected error with content block id.');
+                            console.log(event, this.formController);
                             console.error(_typeof(contentBlock.id), _typeof(contentBlockData.id), contentBlock.id, contentBlockData.id);
                             console.error('Content block ids wont fit.', contentBlock, contentBlockData);
                         }
@@ -4127,12 +4160,17 @@ var EditResourceController = function (_ResourceController) {
         _this.$rootScope = $injector.get('$rootScope');
         _this.eventDispatcher = $injector.get('eventDispatcher');
         _this.modelId = _this.$stateParams.modelId;
+
         _this.content = {};
 
         _this.includes = ['content'];
 
         _this.$scope.$on('$destroy', function () {
             return _this.onDestroy();
+        });
+
+        _this.$scope.$on('$routeChangeStart', function (next, current) {
+            alert('route change scope edit resource');
         });
         return _this;
     }
@@ -5071,7 +5109,7 @@ exports.default = ModelStateService;
 
                 if (this.searchText != "") {
                     parameters.q = this.searchText;
-                }
+            }
 
                 if (_.size(this.scopes) > 0) {
                     parameters.scopes = this.scopes;
@@ -5166,6 +5204,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var ResourceController = function () {
     function ResourceController($injector, api, formDataService, contentBlockFactory, modelStateService, errorHandlerService) {
+        var _this = this;
+
         _classCallCheck(this, ResourceController);
 
         this.$injector = $injector;
@@ -5182,6 +5222,12 @@ var ResourceController = function () {
         this.isBusy = false;
 
         this.form = {}; //name of the main form is vm.form
+
+        setTimeout(function () {
+            _this.contentBlockService.formController = _this.form;
+        }, 1);
+
+        console.log('controller', this.form);
 
         // TODO: Make resource controller ready for multiple forms.
         this.submittingForm = null;
@@ -5230,12 +5276,12 @@ var ResourceController = function () {
     }, {
         key: 'submit',
         value: function submit($event, formController) {
-            var _this = this;
+            var _this2 = this;
 
             console.log('submit', $event, formController);
             return this.formSubmitter.run($event.target, formController, {
                 doSubmit: function doSubmit(formData) {
-                    return _this.doSubmit(formData);
+                    return _this2.doSubmit(formData);
                 }
             });
         }

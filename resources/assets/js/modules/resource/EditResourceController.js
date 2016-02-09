@@ -12,11 +12,16 @@ export default class EditResourceController extends ResourceController {
         this.$rootScope = $injector.get('$rootScope');
         this.eventDispatcher = $injector.get('eventDispatcher');
         this.modelId = this.$stateParams.modelId;
+
         this.content = {};
 
         this.includes = ['content'];
 
         this.$scope.$on('$destroy', () => this.onDestroy());
+
+        this.$scope.$on('$routeChangeStart', function (next, current) {
+            alert('route change scope edit resource');
+        });
     }
 
     init(modelName, includes = []) {

@@ -3,9 +3,17 @@ import MezzoEvent from './Event';
 
 export default class EventDispatcherService {
 
-    constructor() {
+    constructor($rootScope) {
         this.listeners = [];
         this.eventHistory = [];
+
+        this.$rootScope = $rootScope;
+
+        console.log('register route change');
+
+        this.$rootScope.$on('$routeChangeStart', function (next, current) {
+            alert('route change');
+        });
     }
 
 
@@ -124,6 +132,19 @@ export default class EventDispatcherService {
 
     isInHistory(eventKey) {
         return !!this.findInHistory(eventKey);
+    }
+
+    clear() {
+        var i = 0;
+        for (i in this.listeners) {
+            delete this.listeners[i];
+        }
+
+        for (i in this.eventHistory) {
+            delete this.eventHistory[i];
+        }
+
+        console.log('listeners and history cleared');
     }
 
 

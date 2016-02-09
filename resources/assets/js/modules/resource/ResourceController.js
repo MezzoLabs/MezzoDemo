@@ -21,6 +21,13 @@ export default class ResourceController {
 
         this.form = {}; //name of the main form is vm.form
 
+        setTimeout(() => {
+            this.contentBlockService.formController = this.form;
+        }, 1);
+
+        console.log('controller', this.form);
+
+
         // TODO: Make resource controller ready for multiple forms.
         this.submittingForm = null;
 

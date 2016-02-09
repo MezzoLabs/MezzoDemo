@@ -36,8 +36,11 @@ return [
         'merchant_create' => 'Händler erstellen',
         'merchant_index' => 'Händler',
         'order_index' => 'Alle Bestellungen',
+        'order_create' => 'Bestellung erstellen',
         'category_group' => 'Kategorien gruppieren',
-        'category' => 'Kategorien'
+        'category' => 'Kategorien',
+        'voucher_index' => 'Gutscheine verwalten',
+        'voucher_create' => 'Gutschein generieren',
     ],
     'modules' => [
         'groups' => [
@@ -74,6 +77,13 @@ return [
                 'image_and_text' => 'Text mit Bild',
                 'images' => 'Bilder',
                 'web_video' => 'Web Video'
+            ],
+            'options' => [
+                'image_position' => 'Bild Position',
+                'image_left' => 'Links',
+                'image_right' => 'Rechts',
+                'image_above' => 'Darüber',
+                'image_below' => 'Darunter'
             ]
         ],
         'pages' => 'Seiten'

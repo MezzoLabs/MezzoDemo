@@ -1,7 +1,8 @@
 /*@ngInject*/
 export default function registerContentBlockFactory($compile, api, eventDispatcher) {
-    return function contentBlockFactory() {
-        return new ContentBlockService($compile, api, eventDispatcher);
+    return function contentBlockFactory(formController) {
+        console.log('content block factory', formController);
+        return new ContentBlockService($compile, api, eventDispatcher, formController);
     }
 }
 
@@ -13,6 +14,7 @@ class ContentBlockService {
         this.modelApi = api.model('ContentBlock');
         this.contentBlocks = [];
         this.templates = {};
+        this.formController = {};
 
         var base = this;
 
@@ -170,6 +172,12 @@ class ContentBlockService {
             return true;
         }
 
+        console.log('on form update', event, this.formController);
+
+        if (event.form != this.formController) {
+            console.log('invalid form event');
+            return;
+        }
 
         var contentBlocksData = data.stripped.content.blocks;
 
@@ -183,6 +191,7 @@ class ContentBlockService {
 
                     if (contentBlock.id != contentBlockData.id && contentBlock.id != "" && typeof contentBlock.id != "undefined") {
                         alert('Unexpected error with content block id.');
+                        console.log(event, this.formController);
                         console.error(typeof contentBlock.id, typeof contentBlockData.id, contentBlock.id, contentBlockData.id);
                         console.error('Content block ids wont fit.', contentBlock, contentBlockData);
                     }

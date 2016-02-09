@@ -2,10 +2,11 @@
 export default function compileContentBlockDirective($parse, $compile, formValidationService, eventDispatcher) {
     return {
         restrict: 'A',
+        require: '^form',
         link
     };
 
-    function link(scope, element, attributes) {
+    function link(scope, element, attributes, form) {
         const expression = attributes.mezzoCompileContentBlock;
         const getter = $parse(expression);
 
