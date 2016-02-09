@@ -16,5 +16,10 @@ class Voucher extends ShopModuleVoucher
         return $this->belongsTo(User::class, 'only_for_id', 'id');
     }
 
+    public function redeemedByUsers()
+    {
+        return $this->belongsToMany(\App\User::class, 'redeemed_vouchers');
+    }
+
 
 }

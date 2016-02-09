@@ -2,6 +2,7 @@
 
 namespace App\Mezzo\Generated\ModelParents;
 
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 
@@ -33,6 +34,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  * @property \Carbon\Carbon $updated_at
  * @property \App\User $onlyFor
 * @property \App\User $redeemedBy
+ * @property EloquentCollection $redeemedByUsers
 */
 abstract class MezzoVoucher extends \App\Mezzo\BaseModel
 {
@@ -64,7 +66,7 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
         'voucher_key' => "",
         'type' => "in:default,subscription,coupon",
         'is_global' => "",
-        'active_until' => "",
+        'active_until' => "", 
         'options' => "", 
         'redeemed_at' => ""
     ];
@@ -90,7 +92,7 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
         "active_until",
         "only_for_id",
         "options",
-        "redeemed_at",
+        "redeemed_at", 
         "redeemed_by_id"
     ];
 
@@ -234,11 +236,22 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
     * Relation annotation property for redeemedBy
     * @Mezzo\Relations\OneToMany
     * @Mezzo\Relations\From(table="vouchers", primaryKey="id", naming="redeemedBy")
-     * @Mezzo\Relations\To(table="users", primaryKey="id", naming="redeemedVouchers")
+     * @Mezzo\Relations\To(table="users", primaryKey="id", naming="redeemedPersonalVouchers")
     * @Mezzo\Relations\JoinColumn(table="vouchers", column="redeemed_by_id")
     * @Mezzo\Relations\Scopes("")
     */
     protected $_redeemedBy;
+
+    /**
+     * Relation annotation property for redeemedByUsers
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\ManyToMany
+     * @Mezzo\Relations\From(table="vouchers", primaryKey="id", naming="redeemedByUsers")
+     * @Mezzo\Relations\To(table="users", primaryKey="id", naming="redeemedGlobalVouchers")
+     * @Mezzo\Relations\PivotTable(name="redeemed_vouchers", fromColumn="voucher_id", toColumn="user_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_redeemedByUsers;
 
 
 }

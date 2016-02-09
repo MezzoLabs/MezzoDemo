@@ -47,8 +47,9 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 * @property EloquentCollection $subscriptions
  * @property EloquentCollection $tutorials
  * @property EloquentCollection $roles
- * @property EloquentCollection $redeemedVouchers
+ * @property EloquentCollection $redeemedPersonalVouchers
  * @property EloquentCollection $personalVouchers
+ * @property EloquentCollection $redeemedGlobalVouchers
 */
 abstract class MezzoUser extends \App\Mezzo\BaseModel
 {
@@ -401,15 +402,15 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     protected $_roles;
 
     /**
-     * Relation annotation property for redeemedVouchers
+     * Relation annotation property for redeemedPersonalVouchers
      * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
      * @Mezzo\Relations\OneToMany
      * @Mezzo\Relations\From(table="vouchers", primaryKey="id", naming="redeemedBy")
-     * @Mezzo\Relations\To(table="users", primaryKey="id", naming="redeemedVouchers")
+     * @Mezzo\Relations\To(table="users", primaryKey="id", naming="redeemedPersonalVouchers")
      * @Mezzo\Relations\JoinColumn(table="vouchers", column="redeemed_by_id")
     * @Mezzo\Relations\Scopes("")
     */
-    protected $_redeemedVouchers;
+    protected $_redeemedPersonalVouchers;
 
     /**
      * Relation annotation property for personalVouchers
@@ -421,6 +422,17 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     * @Mezzo\Relations\Scopes("")
     */
     protected $_personalVouchers;
+
+    /**
+     * Relation annotation property for redeemedGlobalVouchers
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Relations\ManyToMany
+     * @Mezzo\Relations\From(table="vouchers", primaryKey="id", naming="redeemedByUsers")
+     * @Mezzo\Relations\To(table="users", primaryKey="id", naming="redeemedGlobalVouchers")
+     * @Mezzo\Relations\PivotTable(name="redeemed_vouchers", fromColumn="voucher_id", toColumn="user_id")
+     * @Mezzo\Relations\Scopes("")
+     */
+    protected $_redeemedGlobalVouchers;
 
 
 }

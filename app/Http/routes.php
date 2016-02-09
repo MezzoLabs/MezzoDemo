@@ -265,3 +265,14 @@ Route::get('test/api/relations', function(){
 });
 
 
+Route::get('test/vouchers', function () {
+
+    $user = \Auth::user();
+
+    $voucher = \App\Voucher::first();
+
+    mezzo_dd($voucher->redeem($user));
+});
+
+
+

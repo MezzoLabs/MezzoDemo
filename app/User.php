@@ -162,9 +162,14 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return $this->hasOne(Merchant::class);
     }
 
-    public function redeemedVouchers()
+    public function redeemedPersonalVouchers()
     {
         return $this->hasMany(Voucher::class, 'redeemed_by_id', 'id');
+    }
+
+    public function redeemedGlobalVouchers()
+    {
+        return $this->belongsToMany(\App\Voucher::class, 'redeemed_vouchers');
     }
 
     public function personalVouchers()

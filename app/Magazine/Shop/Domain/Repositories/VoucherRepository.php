@@ -22,7 +22,26 @@ class VoucherRepository extends ModelRepository
      */
     public function redeem(Voucher $voucher, User $user)
     {
+        if ($voucher->canBeRedeemedBy($user)) {
+            return null;
+        }
 
+        if (!$voucher->is_global) {
+            return $this->redeemPrivateVoucher($voucher, $user);
+        }
+
+        $user->redeemedGlobalVouchers()->attach($voucher->id);
+
+        return $voucher;
+    }
+
+    /**
+     * @param Voucher $voucher
+     * @param User $user
+     * @return Voucher
+     */
+    protected function redeemPrivateVoucher(Voucher $voucher, User $user)
+    {
         $voucher->redeemed_by_id = $user->id;
         $voucher->redeemed_at = Carbon::now();
 
@@ -30,4 +49,6 @@ class VoucherRepository extends ModelRepository
 
         return $voucher;
     }
+
+
 }
