@@ -65,6 +65,7 @@ class MezzoModelsReflector extends ModelsReflector
             $modelSchemas->addSchema($modelReflection->schema());
         });
 
+
         return $modelSchemas;
     }
 

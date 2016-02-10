@@ -125,4 +125,9 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
         return $this->repository()->addScopeBetweenDates($q, $from, $to);
 
     }
+
+    public function images()
+    {
+        return $this->belongsToMany(ImageFile::class, 'event_image_file', 'event_id', 'image_file_id');
+    }
 }

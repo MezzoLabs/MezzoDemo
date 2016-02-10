@@ -3,7 +3,7 @@ import QueryObject from './QueryObject';
 export default class IndexResourceController {
 
     /*@ngInject*/
-    constructor($scope, api, modelStateService, languageService) {
+    constructor($scope, api, modelStateService, languageService, eventDispatcher) {
         this.$scope = $scope;
         this.api = api;
         this.lang = languageService;
@@ -22,6 +22,7 @@ export default class IndexResourceController {
         this.options = {
             backendPagination: false
         };
+        this.eventDispatcher = eventDispatcher;
         this.totalCount = 0;
         this.pagination = {
             size: 10

@@ -130,8 +130,15 @@ class BootManager
     {
         foreach ($bootstrappers as $bootstrapper) {
             event('bootstrapping: ' . $bootstrapper, [$this->app]);
-            
+
+            if ($this->debug)
+                \Debugbar::startMeasure($bootstrapper, $bootstrapper);
+
             $this->app->make($bootstrapper)->bootstrap($this->mezzo);
+
+            if ($this->debug)
+                \Debugbar::stopMeasure($bootstrapper);
+
 
             event('bootstrapped: ' . $bootstrapper, [$this->app]);
         }

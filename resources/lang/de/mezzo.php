@@ -54,7 +54,15 @@ return [
             ]
         ],
         'filemanager' => 'Dateien',
-        'events' => 'Veranstaltungen',
+        'events' => [
+            'title' => 'Veranstaltungen',
+            'tabs' => [
+                'general' => 'Allgemein',
+                'address' => 'Adresse',
+                'days' => 'Zeitraum',
+                'categories' => 'Kategorien'
+            ]
+        ],
         'shop' => [
             'title' => 'Shop',
             'vouchers' => [
@@ -80,11 +88,15 @@ return [
                 'web_video' => 'Web Video'
             ],
             'options' => [
+                'image_display' => 'Darstellungsart',
                 'image_position' => 'Bild Position',
                 'image_left' => 'Links',
                 'image_right' => 'Rechts',
                 'image_above' => 'Darüber',
-                'image_below' => 'Darunter'
+                'image_below' => 'Darunter',
+                'image_grid' => 'Raster',
+                'image_lightbox' => 'Popup',
+                'image_list' => 'Liste'
             ]
         ],
         'pages' => 'Seiten'

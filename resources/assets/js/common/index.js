@@ -19,6 +19,8 @@ import FormValidationService from './forms/FormValidationService';
 import LanguageService from './LanguageService';
 import ErrorHandlerService from './ErrorHandlerService';
 import EventDispatcherService from './events/EventDispatcherService';
+import httpInterceptorFactory from './api/httpInterceptorFactory';
+import HttpRequestTrackerService from './api/HttpRequestTrackerService';
 
 const module = angular.module('MezzoCommon', []);
 
@@ -43,3 +45,7 @@ module.service('formValidationService', FormValidationService);
 module.service('errorHandlerService', ErrorHandlerService);
 module.service('languageService', LanguageService);
 module.service('eventDispatcher', EventDispatcherService);
+module.factory('httpInterceptor', httpInterceptorFactory).config(function ($httpProvider) {
+    $httpProvider.interceptors.push('httpInterceptor');
+});
+module.service('HttpRequestTracker', HttpRequestTrackerService);

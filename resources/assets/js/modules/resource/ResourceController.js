@@ -16,6 +16,7 @@ export default class ResourceController {
         this.eventDispatcher = this.$injector.get('eventDispatcher');
         this.$timeout = this.$injector.get('$timeout');
         this.formSubmitter = new FormSubmitter(this, $injector);
+        this.httpRequestTracker = this.$injector.get('HttpRequestTracker');
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
         this.isBusy = false;
         this.$scope = $scope;
@@ -55,7 +56,7 @@ export default class ResourceController {
     }
 
     submitButtonClass(formController) {
-        if (this.formController && this.formController.$invalid) {
+        if (this.formController && this.formController.$invalid || this.httpRequestTracker.busy) {
             return 'disabled';
         }
 

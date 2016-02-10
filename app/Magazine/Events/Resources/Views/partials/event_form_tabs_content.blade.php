@@ -2,6 +2,7 @@
     <div role="tabpanel" class="tab-pane active" id="general">
         {!! $model_reflection->schema()->attributes('title')->render() !!}
         {!! $model_reflection->schema()->attributes('description')->render() !!}
+        {!! $model_reflection->schema()->attributes('images')->render() !!}
         {!! $model_reflection->schema()->attributes('user_id')->render() !!}
         {!! $model_reflection->schema()->attributes('event_provider_id')->render() !!}
     </div>
