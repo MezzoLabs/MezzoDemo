@@ -107,7 +107,7 @@ class FileUploadManager
 
         $path = StringHelper::path($data->get('folder'), $data->get('filename'));
 
-        $fileSaved = $uploader->upload($path, $file);
+        $fileSaved = $uploader->upload($path, $file, $newFile);
 
         if (!$newFile || !$fileSaved)
             throw new FileUploadException('Unexpected error during file upload.');

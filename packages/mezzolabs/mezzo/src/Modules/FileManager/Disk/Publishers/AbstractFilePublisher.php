@@ -6,9 +6,17 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Disk\Publishers;
 
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Http\Responses\ModuleResponseFactory;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 abstract class AbstractFilePublisher
 {
+    public static $imageSizes = [
+        'thumb' => [75, 75],
+        'small' => [300, 300],
+        'medium' => [750, 750],
+        'large' => [1920, 1080]
+    ];
+
     /**
      * @var \App\File
      */
@@ -53,5 +61,18 @@ abstract class AbstractFilePublisher
     public function response()
     {
         return app(ModuleResponseFactory::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function imageSizes()
+    {
+        $sizeKey = $this->imageSizeKey();
+
+        if (!isset($this->imageSizes[$sizeKey]))
+            throw new BadRequestHttpException('Image size is not supported.');
+
+        return $this->imageSizes[$sizeKey];
     }
 }

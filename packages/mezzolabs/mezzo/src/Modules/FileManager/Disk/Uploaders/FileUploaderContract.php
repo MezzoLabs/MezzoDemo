@@ -25,7 +25,8 @@ interface FileUploaderContract
      *
      * @param $path
      * @param UploadedFile $file
-     * @return mixed
+     * @param \App\File|UploadedFile $file
+     * @return bool|mixed
      */
-    public function upload($path, UploadedFile $file) : bool;
+    public function upload($path, UploadedFile $file, \App\File $databaseFile) : bool;
 }

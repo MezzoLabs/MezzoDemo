@@ -9,9 +9,10 @@ export default class EventDispatcherService {
 
         this.$rootScope = $rootScope;
 
-        this.$rootScope.$on('$routeChangeStart', (next, current) => {
-            this.clear();
-        });
+        this.$rootScope.$on('$stateChangeStart',
+            (event, toState, toParams, fromState, fromParams, options) => {
+                this.clear();
+            });
     }
 
 
@@ -146,8 +147,6 @@ export default class EventDispatcherService {
 
         console.log('listeners and history cleared');
     }
-
-
 
 
 }

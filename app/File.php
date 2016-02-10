@@ -6,6 +6,7 @@ use App\Mezzo\Generated\ModelParents\MezzoFile;
 use MezzoLabs\Mezzo\Core\Files\Types\FileType;
 use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\DisksManager;
+use MezzoLabs\Mezzo\Modules\FileManager\Domain\Scopes\ActiveDriveOnlyScope;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\TypedFileAddon;
 
 class File extends MezzoFile
@@ -19,6 +20,18 @@ class File extends MezzoFile
      * @var TypedFileAddon
      */
     protected $typeAddon = false;
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new ActiveDriveOnlyScope());
+    }
 
 
     /**

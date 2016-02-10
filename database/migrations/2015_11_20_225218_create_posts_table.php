@@ -28,7 +28,7 @@ class CreatePostsTable extends Migration
             $table->foreign('content_id')->references('id')->on('contents');
 
             $table->integer('main_image_id')->unsigned()->index()->nullable();
-            $table->foreign('main_image_id')->references('id')->on('image_files');
+            $table->foreign('main_image_id')->references('id')->on('image_files')->onDelete('set null');
 
             $table->timestamp('published_at')->nullable();
 

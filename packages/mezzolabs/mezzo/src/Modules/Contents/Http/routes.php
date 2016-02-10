@@ -13,18 +13,21 @@ module_route('Contents', [], function (Router $router, ApiRouter $api, CockpitRo
 
     $typeController = '\\' . ContentBlockTypeApiController::class;
     $api->get('content-block-types', $typeController . '@index');
-    $api->get('content-block-types/{hash}',  $typeController . '@show');
+    $api->get('content-block-types/{hash}', $typeController . '@show');
     $cockpit->get('content-block-types/{hash}.html', [
-        'uses' =>  $typeController . '@show',
+        'uses' => $typeController . '@show',
         'as' => 'contents.block-type.html'
     ]);
 
 
 });
 
-function content_block_form($block)
-{
-    return app(BlockFormHelper::class, ['block' => $block]);
+if (!function_exists('content_block_form')) {
+
+    function content_block_form($block)
+    {
+        return app(BlockFormHelper::class, ['block' => $block]);
+    }
 }
 
 

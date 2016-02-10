@@ -38,7 +38,6 @@ export default class EditRelationsController {
     }
 
     onDestroy() {
-        this.eventDispatcher.clear();
     }
 
     init(modelName, relationName) {

@@ -16,11 +16,12 @@
 
 <!-- Order by -->
 <div class="well">
-    <label for="order-by">Order by</label>
+    <label for="order-by">{{ trans('mezzo.modules.filemanager.order_by') }}</label>
     <select id="order-by"
             class="form-control"
             ng-model="vm.orderBy"
-            ng-options="item for item in vm.orderOptions">
+            ng-change="vm.doOrder()"
+            ng-options="key as value for (key , value) in vm.orderOptions">
     </select>
 </div>
 <!-- Order by -->
@@ -33,7 +34,7 @@
             <div class="modal-dialog">
                 <div class="modal-content modal-sm">
                     <div class="modal-header">
-                        <h4 class="modal-title">Move <span ng-bind="vm.selected.title"></span> to...</h4>
+                        <h4 class="modal-title">{{ trans('mezzo.modules.filemanager.move') }} <span ng-bind="vm.selected.title"></span> to...</h4>
                     </div>
                     <div class="modal-body">
                         <script type="text/ng-template" id="node.html">
@@ -54,7 +55,7 @@
         <div class="panel panel-bordered" style="margin-bottom: 0; border-left: 3px solid #eee;">
             <div class="panel-body">
                 <!-- Search -->
-                <input type="search" class="form-control pull-right" style="width: 200px" placeholder="Search"
+                <input type="search" class="form-control pull-right" style="width: 200px" placeholder="{{ trans('mezzo.modules.filemanager.search') }}"
                        ng-model="vm.search">
                 <!-- Search -->
                 <!-- Upload -->
@@ -62,7 +63,7 @@
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-ios-cloud-upload"></span>
                     </span>
-                    <span style="display: inline-block">Upload</span>
+                    <span style="display: inline-block">{{ trans('mezzo.modules.filemanager.upload') }}</span>
                 </button>
                 <!-- Upload -->
                 <!-- Add Folder -->
@@ -70,7 +71,7 @@
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-ios-folder"></span>
                     </span>
-                    <span style="display: inline-block">Add folder</span>
+                    <span style="display: inline-block">{{ trans('mezzo.modules.filemanager.add_folder') }}</span>
                 </button>
                 <!-- Add Folder -->
                 <!-- Refresh -->
@@ -84,7 +85,7 @@
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-arrow-swap"></span>
                     </span>
-                    <span style="display: inline-block">Move</span>
+                    <span style="display: inline-block">{{ trans('mezzo.modules.filemanager.move') }}</span>
                 </button>
                 <!-- Move -->
                 <!-- Delete -->
@@ -93,7 +94,7 @@
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-close"></span>
                     </span>
-                    <span style="display: inline-block">Delete</span>
+                    <span style="display: inline-block">{{ trans('mezzo.modules.filemanager.delete') }}</span>
                 </button>
                 <!-- Delete -->
             </div>
@@ -130,6 +131,9 @@
                     <span ng-bind="file.title" ng-hide="file.isFolder"></span>
                 </td>
                 <td>
+                    <span ng-bind="file.created_at" ng-hide="file.isFolder"></span>
+                </td>
+                <td>
                     <span ng-show="file.isFolder" ng-bind="vm.items(file)"></span>
                 </td>
             </tr>
@@ -141,7 +145,7 @@
 @endsection
 
 @section('quickview_title')
-    File
+    {{ trans('mezzo.modules.filemanager.quickview.title') }}
 @endsection
 
 @section('quickview_content')
@@ -152,15 +156,19 @@
 
     <div class="section section-file-info wrapper">
         <p class="attribute-info">
-            <label>Name</label>
+            <label>{{ trans('mezzo.modules.filemanager.quickview.name') }}</label>
             <input class="form-control" type="text" disabled value="@{{ vm.selected.name }}"/>
         </p>
         <p class="attribute-info">
-            <label>Folder</label>
+            <label>{{ trans('mezzo.modules.filemanager.quickview.created_at') }}</label>
+            <input class="form-control" type="text" disabled value="@{{ vm.selected.created_at }}"/>
+        </p>
+        <p class="attribute-info">
+            <label>{{ trans('mezzo.modules.filemanager.quickview.folder') }}</label>
             <input class="form-control" type="text" disabled value="@{{ vm.selected.displayFolderPath() }}"/>
         </p>
         <p class="attribute-info">
-            <label>Link</label>
+            <label>{{ trans('mezzo.modules.filemanager.quickview.link') }}</label>
         <div class="input-group">
             <input class="form-control" style="height: 38px;" type="text" disabled value="@{{ vm.selected.url }}"/>
             <span class="input-group-btn">

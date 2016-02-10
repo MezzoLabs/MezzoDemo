@@ -1,34 +1,44 @@
 <?php
 use Illuminate\Support\Debug\Dumper;
 
-/**
- * Get the Mezzo core directly
- *
- * @return \MezzoLabs\Mezzo\Core\Mezzo
- */
-function mezzo()
-{
-    return app()->make('mezzo');
+if (!function_exists('mezzo')) {
+
+
+    /**
+     * Get the Mezzo core directly
+     *
+     * @return \MezzoLabs\Mezzo\Core\Mezzo
+     */
+    function mezzo()
+    {
+        return app()->make('mezzo');
+    }
 }
 
-/**
- * The path of the mezzo folder (...vendor/mezzolabs/mezzo)
- *
- * @return string
- */
-function mezzo_path()
-{
-    return realpath(__DIR__ . "/../../");
+if (!function_exists('mezzo_path')) {
+
+    /**
+     * The path of the mezzo folder (...vendor/mezzolabs/mezzo)
+     *
+     * @return string
+     */
+    function mezzo_path()
+    {
+        return realpath(__DIR__ . "/../../");
+    }
 }
 
-/**
- * The path of the mezzo folder (...vendor/mezzolabs/mezzo/src)
- *
- * @return string
- */
-function mezzo_source_path()
-{
-    return mezzo_path() . '/src/';
+if (!function_exists('mezzo_source_path')) {
+
+    /**
+     * The path of the mezzo folder (...vendor/mezzolabs/mezzo/src)
+     *
+     * @return string
+     */
+    function mezzo_source_path()
+    {
+        return mezzo_path() . '/src/';
+    }
 }
 
 if (!function_exists('mezzo_dump')) {
