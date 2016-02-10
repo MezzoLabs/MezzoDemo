@@ -53,7 +53,23 @@ return [
 
             ]
         ],
-        'filemanager' => 'Dateien',
+        'filemanager' => [
+            'title' => 'Dateien',
+            'order_by' => 'Sortieren nach',
+            'add_folder' => 'Neuer Ordner',
+            'upload' => 'Hochladen',
+            'delete' => 'Datei löschen',
+            'move' => 'Verschieben',
+            'search' => 'Suchen',
+            'quickview' => [
+                'title' => 'Informationen',
+                'name' => 'Name',
+                'folder' => 'Ordner',
+                'link' => 'Link',
+                'created_at' => 'Erstellt am',
+                'caption' => 'Bildunterschrift'
+            ]
+        ],
         'events' => [
             'title' => 'Veranstaltungen',
             'tabs' => [

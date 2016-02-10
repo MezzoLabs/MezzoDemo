@@ -7,6 +7,31 @@ export default class LanguageService {
         //TODO MOVE THIS TO CONFIG
         this.lang = {
             de: {
+                general: {
+                    create: 'Erstellen',
+                    delete: 'Löschen',
+                    update: 'Editieren'
+                },
+                filemanager: {
+                    library: 'Bibliothek',
+                    item: 'Datei|Dateien',
+                    order_by: 'Ordnen',
+                    order_options: {
+                        folders: 'Ordner',
+                        title: 'Titel',
+                        last_modified: 'Letzte Änderung'
+                    },
+                    messages: {
+                        enter_folder_name: 'Neuen Ordnernamen eingeben'
+                    },
+                    categories: {
+                        everything: 'Alles',
+                        images: 'Bilder',
+                        videos: 'Videos',
+                        audio: 'Audio',
+                        documents: 'Dokumente'
+                    }
+                },
                 attributes: {
                     gender: {
                         m: 'Herr',
@@ -31,18 +56,34 @@ export default class LanguageService {
     }
 
 
-    get(key, language = 'de') {
+    get(key, count = 1, language = 'de') {
         var cacheKey = this.uniqueCacheKey(key, language);
 
-        if(!this.cache[cacheKey]){
+        if (!this.cache[cacheKey]) {
             this.cache[cacheKey] = this.findInTree(key, language);
         }
 
-        return this.cache[cacheKey];
+        return this.amountSubstring(this.cache[cacheKey], count);
 
     }
 
-    findInTree(key, language){
+    amountSubstring(languageString, amount = 1) {
+        if (languageString.indexOf('|') == -1) {
+            return languageString;
+        }
+
+        const substrings = languageString.split('|');
+
+
+        if (amount != 1 && substrings[1]) {
+            return substrings[1];
+        }
+
+
+        return substrings[0];
+    }
+
+    findInTree(key, language) {
         var keyParts = key.split('.');
 
         var lang = _.clone(this.lang[language]);
@@ -75,10 +116,4 @@ export default class LanguageService {
         return translation != key;
     }
 
-    bla() {
-        this.$translate('ATTRIBUTES.GENDER').then(function (trans) {
-            console.log(trans);
-        });
-
-    }
 }

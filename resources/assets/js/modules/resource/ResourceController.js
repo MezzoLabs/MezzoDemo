@@ -72,7 +72,9 @@ export default class ResourceController {
     submit($event, formController) {
         console.log('submit', $event, formController);
         return this.formSubmitter.run($event.target, formController, {
-            doSubmit: (formData) => { return this.doSubmit(formData); }
+            doSubmit: (formData) => {
+                return this.doSubmit(formData);
+            }
         });
     }
 
@@ -99,13 +101,12 @@ export default class ResourceController {
         return (this.submittingForm) ? this.submittingForm : this.form;
     }
 
-    formObject(form, formController){
+    formObject(form, formController) {
 
         return new FormObject(form, formController);
     }
 
     onDestroy() {
-        this.eventDispatcher.clear();
     }
 
 

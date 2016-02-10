@@ -5,16 +5,17 @@ import categories from './categories';
 export default class FileManagerController {
 
     /*@ngInject*/
-    constructor($scope, api, Upload, quickviewService) {
+    constructor($scope, api, Upload, quickviewService, languageService) {
         this.$scope = $scope;
+        this.lang = languageService;
         this.api = api;
         this.Upload = Upload;
         this.quickviewService = quickviewService;
 
-        this.categories = categories;
+        this.categories = this.translateCategories(categories);
         this.category = this.categories[0];
-        this.orderOptions = ['Title', 'Last modified'];
-        this.orderBy = this.orderOptions[0];
+        this.orderOptions = this.orderOptionsTranslated(['folders', 'title', 'last_modified']);
+        this.orderBy = _.keys(this.orderOptions)[0];
         this.selected = null;
         this.loading = false;
 
@@ -22,13 +23,11 @@ export default class FileManagerController {
     }
 
     initFiles(folder = null) {
-        this.library = new Folder('Library', null, true);
+        this.library = new Folder(this.translate('library'), null, true);
         this.folder = this.library;
         this.files = this.library.files;
         this.loading = true;
         const folders = {};
-
-        console.log('folder', this.folder);
 
         this.api.files().then(apiFiles => {
             this.loading = false;
@@ -52,7 +51,7 @@ export default class FileManagerController {
         });
 
         // Move to the given folder if it is not the Library (Home) folder
-        if(folder && folder.parent){
+        if (folder && folder.parent) {
             var newFolder = this.getFolderByPath(folders, folder.pathArray());
             this.enterFolder(newFolder);
         }
@@ -146,17 +145,25 @@ export default class FileManagerController {
 
         var category = this.category;
 
-        if (category.everything) {
+        if (category.everything && this.orderOption() == 'folders') {
             return this.files;
         }
 
         var filteredFiles = [];
 
         this.allFiles().forEach(file => {
-            if (category.filter(file)) {
+            if (category.filter(file) && (this.orderOption() == 'folders' || !file.isFolder )) {
                 filteredFiles.push(file);
             }
         });
+
+        if (this.orderOption() == 'last_modified') {
+            filteredFiles = _.orderBy(filteredFiles, 'created_at', 'desc');
+        }
+
+        if (this.orderOption() == 'title') {
+            filteredFiles = _.orderBy(filteredFiles, 'title', 'asc');
+        }
 
         return filteredFiles;
     }
@@ -212,7 +219,7 @@ export default class FileManagerController {
             count = file.files.length;
         }
 
-        return count + ' ' + (count === 1 ? 'item' : 'items');
+        return count + ' ' + this.lang.get('filemanager.item', count);
     }
 
     deleteFiles() {
@@ -268,6 +275,11 @@ export default class FileManagerController {
     }
 
     upload(file) {
+
+        if (!file) {
+            return false;
+        }
+
         const folder = this.folder;
 
         this.Upload.upload({
@@ -282,6 +294,11 @@ export default class FileManagerController {
         }).then(response => {
             this.initFiles(folder);
         }).catch(err => {
+
+            if (err.data.message) {
+                toastr.error(err.data.message);
+            }
+
             console.error(err);
         });
     }
@@ -311,9 +328,9 @@ export default class FileManagerController {
 
     addFolderPrompt() {
         swal({
-            title: 'Enter new folder name',
+            title: this.translate('messages.enter_folder_name'),
             html: '<input id="new-folder-name" type="text" class="form-control">',
-            confirmButtonText: 'Create folder'
+            confirmButtonText: this.lang.get('general.create')
         }, () => {
             const newFolderName = $('#new-folder-name').val();
 
@@ -321,6 +338,8 @@ export default class FileManagerController {
             this.$scope.$apply();
         });
     }
+
+
 
     submitAddon() {
         var addon = this.selected.addon;
@@ -343,6 +362,42 @@ export default class FileManagerController {
 
         return this.api.model(addon._model);
 
+    }
+
+    doOrder() {
+        if (this.unordered()) {
+            return;
+        }
+    }
+
+    orderOption() {
+        return _.snakeCase(this.orderBy);
+    }
+
+    unordered() {
+        return this.orderOption() == 'folders';
+    }
+
+    translate(key, count = 1) {
+        return this.lang.get('filemanager.' + key, count);
+    }
+
+    translateCategories(categories) {
+        for (var i in categories) {
+            categories[i].label = this.translate('categories.' + _.snakeCase(categories[i].label));
+        }
+
+        return categories;
+    }
+
+    orderOptionsTranslated(keys){
+        var options = {};
+
+        for(var i in keys){
+            options[keys[i]] = this.translate('order_options.' + keys[i])
+        }
+
+        return options;
     }
 
 }

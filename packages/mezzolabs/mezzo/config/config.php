@@ -33,7 +33,7 @@ return [
     ],
 
     'filemanager' => [
-        'active_disk' => 'local',
+        'active_disk' => 's3',
         'disks' => [
             'local' => [
                 'folder' => 'mezzo/upload'

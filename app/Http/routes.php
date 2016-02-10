@@ -73,6 +73,7 @@ Route::group(['middleware' => ['auth']], function () {
 /**
  * --------------- Mezzo test area
  */
+/**
 
 
 Route::get('/test/during', function () {
@@ -212,9 +213,6 @@ Route::get('debug/generator', function () {
 });
 
 Route::get('debug/commands', function () {
-    /** @var \MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields $generateForeignFields */
-
-
     $generateForeignFields = app()->make(GenerateForeignFields::class);
     $generateForeignFields->setMezzo(mezzo());
 
@@ -222,7 +220,6 @@ Route::get('debug/commands', function () {
 });
 
 Route::get('debug/migrationGenerator', function () {
-    /** @var \MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields $generateForeignFields */
 
     $generateForeignFields = app()->make(GenerateForeignFields::class);
     $generateForeignFields->setMezzo(mezzo());
@@ -273,6 +270,6 @@ Route::get('test/vouchers', function () {
 
     mezzo_dd($voucher->redeem($user));
 });
-
+**/
 
 

@@ -468,7 +468,7 @@ export default class IndexResourceController {
     }
 
     onDestroy() {
-        this.eventDispatcher.clear();
+
     }
 
 }

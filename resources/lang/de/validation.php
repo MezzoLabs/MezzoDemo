@@ -152,8 +152,8 @@ return [
         'text' => 'Text',
         'onlyfor' => 'Nur für',
         'active_until' => 'Gültig bis',
-        'is_global' => 'Global gültig'
-
+        'is_global' => 'Global gültig',
+        'caption' => 'Bildunterschrift'
     ],
 
 ];

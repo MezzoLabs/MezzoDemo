@@ -181,6 +181,13 @@ export default class FilePickerController {
             return this.id(file) == id;
         });
 
+        /**
+         * File got deleted.
+         */
+        if(!file){
+            return;
+        }
+
         file.selected = true;
     }
 

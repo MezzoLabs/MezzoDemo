@@ -29,7 +29,7 @@ class LocalFolderUploader extends AbstractFileUploader
      * @param UploadedFile $file
      * @return bool
      */
-    public function upload($path, UploadedFile $file) : bool
+    public function upload($path, UploadedFile $file, \App\File $databaseFile) : bool
     {
         return $this->moveFile($file, $path);
     }

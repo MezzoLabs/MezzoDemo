@@ -11,13 +11,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class LocalFilePublisher extends AbstractFilePublisher implements FilePublisherContract
 {
-    protected $imageSizes = [
-        'thumb' => [75, 75],
-        'small' => [300, 300],
-        'medium' => [750, 750],
-        'large' => [1920, 1080],
-        'full' => [3500, 3500]
-    ];
+
 
     /**
      * @var ImageManager
@@ -58,8 +52,6 @@ class LocalFilePublisher extends AbstractFilePublisher implements FilePublisherC
      */
     protected function publishImage(\App\File $file)
     {
-
-
         $imageSizes = $this->imageSizes();
 
         $uniqueImageKey = $this->uniqueImageKey($file, $imageSizes[0], $imageSizes[1]);
@@ -102,18 +94,6 @@ class LocalFilePublisher extends AbstractFilePublisher implements FilePublisherC
         return storage_path() . '/mezzo/cache/images';
     }
 
-    /**
-     * @return mixed
-     */
-    protected function imageSizes()
-    {
-        $sizeKey = $this->imageSizeKey();
-
-        if (!isset($this->imageSizes[$sizeKey]))
-            throw new BadRequestHttpException('Image size is not supported.');
-
-        return $this->imageSizes[$sizeKey];
-    }
 
 
     protected function uniqueImageKey(\App\File $file, $width, $height)

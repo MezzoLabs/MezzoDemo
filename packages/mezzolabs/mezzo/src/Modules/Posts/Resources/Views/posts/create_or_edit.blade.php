@@ -13,6 +13,10 @@
                     @else
                         @include('cockpit::partials.pages.edit_heading')
                     @endif
+                    <div class="panel-subtitle">
+                        /@{{ vm.inputs.slug }}
+                    </div>
+
                 </div>
                 <div class="panel-body">
                     @if($module_page->isType('create'))

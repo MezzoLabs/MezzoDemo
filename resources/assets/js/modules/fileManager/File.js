@@ -4,6 +4,7 @@ export default class File {
         this.id = apiFile.id;
         this.title = apiFile.filename;
         this.name = apiFile.filename;
+        this.created_at = apiFile.created_at;
         this.extension = apiFile.extension;
         this.addon = apiFile.addon;
         this.url = apiFile.url;

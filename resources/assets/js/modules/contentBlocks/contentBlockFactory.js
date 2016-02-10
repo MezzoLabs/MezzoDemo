@@ -1,7 +1,6 @@
 /*@ngInject*/
 export default function registerContentBlockFactory($compile, api, eventDispatcher) {
     return function contentBlockFactory(formController) {
-        console.log('content block factory', formController);
         return new ContentBlockService($compile, api, eventDispatcher, formController);
     }
 }
