@@ -133,7 +133,6 @@ Route::get('/test/posts', function () {
 });
 
 
-
 Route::get('/test/reflection', function () {
     $reflectionManager = mezzo()->makeReflectionManager();
     $mezzoReflection = $reflectionManager->mezzoReflection('Event');
@@ -149,7 +148,6 @@ Route::get('/test/events', function () {
     mezzo_dd($event->start());
     mezzo_dd($event->end());
 });
-
 
 
 Route::get('debug/tutorial', function () {
@@ -248,5 +246,33 @@ Route::get('debug/annotations', function () {
 
     mezzo_dd($annotations);
 });
+
+Route::get('seed/posts', function () {
+    $postsTableSeeder = app()->make(PostsTableSeeder::class);
+
+    $postsTableSeeder->run();
+});
+
+Route::get('test/api/relations', function(){
+
+    $users = app()->make(\MezzoLabs\Mezzo\Modules\User\Domain\Repositories\UserRepository::class);
+
+    $attribute = mezzo()->attribute('User', 'subscriptions');
+    $items = $users->relationshipItems(\Auth::user()->subscriptions(), ['*'], new \MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject());
+
+
+    mezzo_dd($items);
+});
+
+
+Route::get('test/vouchers', function () {
+
+    $user = \Auth::user();
+
+    $voucher = \App\Voucher::first();
+
+    mezzo_dd($voucher->redeem($user));
+});
+
 
 

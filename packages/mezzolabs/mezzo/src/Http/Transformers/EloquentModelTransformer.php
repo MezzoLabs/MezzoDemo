@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Modularisation\NamingConvention;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValue;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
+use MezzoLabs\Mezzo\Core\Schema\InputTypes\JsonInput;
 use MezzoLabs\Mezzo\Exceptions\InvalidArgumentException;
 use MezzoLabs\Mezzo\Exceptions\TransformerException;
 
@@ -135,6 +137,10 @@ abstract class EloquentModelTransformer extends ModelTransformer
     protected function transformValue(AttributeValue $attributeValue)
     {
         $value = $attributeValue->value();
+
+        if ($attributeValue->attribute()->type() instanceof JsonInput) {
+            return StringHelper::jsonDecode($value);
+        }
 
         if (!is_object($value))
             return $value;

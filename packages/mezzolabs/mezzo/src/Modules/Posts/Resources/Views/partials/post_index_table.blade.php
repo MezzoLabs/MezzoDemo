@@ -1,8 +1,12 @@
+@if(!empty($module_page->filtersView))
+@include($module_page->filtersView)
+@endif
+
 <!-- Bottom Container -->
 <div class="panel panel-bordered">
 
     <div class="panel-heading">
-        <h3>{{ str_plural($model_reflection->name()) }} (@{{ vm.getModels().length }})</h3>
+        <h3>{{ str_plural($model_reflection->name()) }} (@{{ vm.totalCount }})</h3>
     </div>
     <div class="panel-body panel-body-nopadding">
         <div class="progress" ng-show="vm.loading">

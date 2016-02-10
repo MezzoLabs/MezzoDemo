@@ -18,6 +18,8 @@ class CreateOrderProductPivotTable extends Migration
             $table->integer('product_id')->unsigned()->index();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->primary(['order_id', 'product_id']);
+            $table->integer('amount')->default(1);
+            $table->integer('options')->text()->nullable();
         });
     }
 

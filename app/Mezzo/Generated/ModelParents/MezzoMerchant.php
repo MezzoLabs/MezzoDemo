@@ -2,9 +2,9 @@
 
 namespace App\Mezzo\Generated\ModelParents;
 
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 /**
 *-------------------------------------------------------------------------------------------------------------------
@@ -24,9 +24,10 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
 * @property integer $id
 * @property string $name
 * @property string $email
-* @property float $user_id
+* @property integer $user_id
 * @property \Carbon\Carbon $created_at
 * @property \Carbon\Carbon $updated_at
+* @property \App\User $user
 * @property EloquentCollection $products
 * @property EloquentCollection $orders
 */
@@ -58,8 +59,7 @@ abstract class MezzoMerchant extends \App\Mezzo\BaseModel
     */
     protected $rules = [
         'name' => "required|between:3,255", 
-        'email' => "required|email", 
-        'user_id' => "required"
+        'email' => "required|email"
     ];
 
     /**
@@ -136,8 +136,8 @@ abstract class MezzoMerchant extends \App\Mezzo\BaseModel
     /**
     * Attribute annotation property for user_id
     *
-    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\NumberInput", hidden="")
-    * @var float            
+    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="")
+    * @var integer            
     */
     protected $_user_id;
 
@@ -167,6 +167,16 @@ abstract class MezzoMerchant extends \App\Mezzo\BaseModel
     | the relations of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
+
+    /**
+    * Relation annotation property for user
+    * @Mezzo\Relations\OneToOne
+    * @Mezzo\Relations\From(table="users", primaryKey="id", naming="merchant")
+    * @Mezzo\Relations\To(table="merchants", primaryKey="id", naming="user")
+    * @Mezzo\Relations\JoinColumn(table="merchants", column="user_id")
+    * @Mezzo\Relations\Scopes("")
+    */
+    protected $_user;
 
     /**
     * Relation annotation property for products

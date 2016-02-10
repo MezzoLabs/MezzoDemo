@@ -83,7 +83,7 @@ trait HasModelResource
     public function model()
     {
         if ($this->modelReflection === null) {
-            $modelName = $this->guessModelName();
+            $modelName = (!empty($this->model)) ? $this->model : $this->guessModelName();
             if (!mezzo()->knowsModel($modelName))
                 $this->modelReflection = false;
             else

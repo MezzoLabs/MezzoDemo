@@ -345,6 +345,11 @@ abstract class ModulePage implements ModulePageContract
         return $this->isAllowed() && $this->options('visibleInNavigation');
     }
 
+    /**
+     * Check if the current user is allowed to view this page.
+     *
+     * @return bool
+     */
     public function isAllowed()
     {
         return Auth::user()->hasPermissions($this->permissions());

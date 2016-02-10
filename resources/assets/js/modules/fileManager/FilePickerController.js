@@ -87,21 +87,25 @@ export default class FilePickerController {
     }
 
     selectOldValue() {
-        var value = this.$parent.vm.inputs[this.name];
+        var inputValue = this.$parent.vm.inputs[this.name];
+        var modelValue = this.$parent.vm.content[this.name];
 
+        if(modelValue && typeof modelValue === 'object'){
+            return this.selectValueArray(modelValue);
+        }
 
-        if (!value || value == "")
+        if (!inputValue || inputValue == "")
             return false;
 
-        value = String(value);
+        inputValue = String(inputValue);
 
-        if (value.indexOf(',') == -1) {
-            this.selectId(value);
+        if (inputValue.indexOf(',') == -1) {
+            this.selectId(inputValue);
             this.confirmSelected();
             return true;
         }
 
-        var ids = value.split(',');
+        var ids = inputValue.split(',');
         for (var i in ids) {
             this.selectId(ids[i]);
         }
@@ -109,6 +113,17 @@ export default class FilePickerController {
         this.confirmSelected();
 
         return true;
+    }
+
+    selectValueArray(value){
+        for(var i in value){
+            this.selectId(value[i].id);
+        }
+
+        this.confirmSelected();
+
+        return true;
+
     }
 
     filteredFiles() {

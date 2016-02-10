@@ -61,7 +61,9 @@ abstract class MezzoOrder extends \App\Mezzo\BaseModel
      */
     protected $rules = [
         'info' => "",
-        'status' => ""
+        'status' => "",
+        'merchant_id' => "required|exists:merchants,id",
+        'user_id' => 'required|exists:users,id'
     ];
 
     /**
@@ -79,7 +81,8 @@ abstract class MezzoOrder extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $fillable = [
-
+        'info',
+        'status'
     ];
 
     /**

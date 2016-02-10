@@ -64,8 +64,5 @@ class UserController extends CockpitResourceController
         return $this->page(EditUserPage::class);
     }
 
-    public function subscriptions(EditResourceRequest $request, $id = 0)
-    {
-        return $this->page(UserSubscriptionsPage::class);
-    }
+
 }

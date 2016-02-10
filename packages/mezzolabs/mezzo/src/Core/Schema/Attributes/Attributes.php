@@ -53,7 +53,7 @@ class Attributes extends Collection
      */
     public function visibleOnly()
     {
-        return $this->filter(function(Attribute $attribute){
+        return $this->filter(function (Attribute $attribute) {
             return $attribute->isVisible();
         });
     }
@@ -71,7 +71,7 @@ class Attributes extends Collection
      */
     public function fillableOnly()
     {
-        return $this->filter(function(Attribute $attribute){
+        return $this->filter(function (Attribute $attribute) {
             return $attribute->isFillable();
         });
     }
@@ -107,5 +107,25 @@ class Attributes extends Collection
         });
 
         return $attributes;
+    }
+
+    public function orderByStringArray($array)
+    {
+        $array = array_values($array);
+
+        return $this->sort(function (Attribute $a, Attribute $b) use ($array) {
+            $aPosition = array_search($a->naming(), $array);
+            $bPosition = array_search($b->naming(), $array);
+
+            if (!$aPosition) {
+                $aPosition = array_search($a->name(), $array);
+            }
+
+            if (!$bPosition) {
+                $bPosition = array_search($b->name(), $array);
+            }
+
+            return $aPosition > $bPosition;
+        });
     }
 } 

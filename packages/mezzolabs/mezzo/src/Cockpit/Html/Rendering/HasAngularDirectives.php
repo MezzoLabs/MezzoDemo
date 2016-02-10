@@ -20,7 +20,7 @@ trait HasAngularDirectives
      * @param RelationAttribute $attribute
      * @return string
      */
-    public function relationship(RelationAttribute $attribute, array $htmlAttributes = []) : string
+    public function relationship(RelationAttribute $attribute, array $mergeHtmlAttributes = []) : string
     {
         $htmlAttributes = [
             'data-related' => $attribute->relationSide()->otherModelReflection()->name(),
@@ -34,7 +34,7 @@ trait HasAngularDirectives
 
         $inputHtmlRules = $attribute->type()->htmlAttributes();
 
-        $htmlAttributes = array_merge($htmlAttributes, $validationRules, $inputHtmlRules);
+        $htmlAttributes = array_merge($htmlAttributes, $validationRules, $inputHtmlRules, $mergeHtmlAttributes);
 
         return '<mezzo-relation-input ' . $this->html->attributes($htmlAttributes) . '></mezzo-relation-input>';
     }

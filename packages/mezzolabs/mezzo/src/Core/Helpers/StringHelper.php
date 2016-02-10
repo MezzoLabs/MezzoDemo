@@ -67,7 +67,7 @@ class StringHelper
 
     public static function toDateTimeString($value)
     {
-        if(!$value){
+        if (!$value) {
             return null;
         }
 
@@ -89,12 +89,17 @@ class StringHelper
             return $value;
         }
 
-        if($value instanceof Carbon){
+        if ($value instanceof Carbon) {
             return $value->toDateTimeString();
         }
 
 
         return null;
+    }
+
+    public static function jsonDecode($string)
+    {
+        return json_decode($string);
     }
 
 }

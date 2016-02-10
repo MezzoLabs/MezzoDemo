@@ -1,10 +1,11 @@
 import FormEvent from './../../common/forms/FormEvent';
-import FormDataReader from './../../common/forms/FormDataReader';
+import FormSubmitter from './../../common/forms/FormSubmitter';
+import FormObject from './../../common/forms/FormObject';
 
 // Intended for CreateResourceController & EditResourceController
 export default class ResourceController {
 
-    constructor($injector, api, formDataService, contentBlockFactory, modelStateService, errorHandlerService) {
+    constructor($injector, $scope) {
         this.$injector = $injector;
         this.api = this.$injector.get('api');
         this.formDataService = this.$injector.get('formDataService');
@@ -14,20 +15,27 @@ export default class ResourceController {
         this.errorHandlerService = this.$injector.get('errorHandlerService');
         this.eventDispatcher = this.$injector.get('eventDispatcher');
         this.$timeout = this.$injector.get('$timeout');
-        this.formDataReader = new FormDataReader(this.htmlForm());
+        this.formSubmitter = new FormSubmitter(this, $injector);
+        this.httpRequestTracker = this.$injector.get('HttpRequestTracker');
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
         this.isBusy = false;
+        this.$scope = $scope;
 
         this.form = {}; //name of the main form is vm.form
+
+        setTimeout(() => {
+            this.contentBlockService.formController = this.form;
+        }, 1);
+
 
         // TODO: Make resource controller ready for multiple forms.
         this.submittingForm = null;
 
+        this.$scope.$on('$destroy', () => this.onDestroy());
     }
 
     hasError(inputName) {
-        const form = this.activeForm();
-
+        const form = this.form;
 
         if (!form) {
             return;
@@ -47,138 +55,25 @@ export default class ResourceController {
         }
     }
 
-    catchServerSideErrors(err) {
-        if (!err.data || !err.data.errors) {
-            this.errorHandlerService.showUnexpected(err);
-            return;
-        }
-
-        const errors = err.data.errors;
-        console.error(err);
-        this.handleServerSideErrors(errors);
-    }
-
-    handleServerSideErrors(errors) {
-        this.clearServerSideErrors();
-        this.showServerSideErrors(errors);
-    }
-
-    showServerSideErrors(errors) {
-        _.forOwn(errors, (value, key) => {
-            const formControl = this.activeForm()[key];
-            const errorMessage = value[0];
-
-            if (formControl) {
-                this.attachServerSideError(formControl, errorMessage);
-                return;
-            }
-
-            toastr.error(errorMessage);
-        });
-    }
-
-    clearServerSideErrors() {
-        this.formControls().forEach(formControl => {
-            delete formControl.$error.mezzoServerSide;
-        });
-    }
-
-    attachServerSideError(formControl, errorMessage) {
-        formControl.$error.mezzoServerSide = errorMessage;
-        formControl.$dirty = true;
-    }
-
-    submitButtonClass(form) {
-
-        if (form && form.$invalid) {
+    submitButtonClass(formController) {
+        if (this.formController && this.formController.$invalid || this.httpRequestTracker.busy) {
             return 'disabled';
         }
-    }
 
-    formControls() {
-        return _.filter(this.activeForm(), potentialFormControl => {
-            const isFormControl = potentialFormControl && potentialFormControl.$error;
-
-            return isFormControl;
-        });
-    }
-
-    attemptSubmit() {
-        console.info('attemptSubmit()');
-
-
-        if (this.activeForm().$invalid) {
-            console.warn('attemptSubmit() failed because of an invalid form', this.activeForm());
-            this.dirtyFormControls(); // if a submit attempt failed because of an $invalid form all validation messages should be visible
-
-            return false;
-        }
-
-        return true;
+        return '';
     }
 
     // Override this method in extending class
     doSubmit(formData) {
-        console.warn('doSubmit() should be implemented by the extending class!');
+        console.error('doSubmit() should be implemented by the extending class!');
         return Promise.resolve();
     }
 
-    submit($event, form) {
-        if (this.isBusy) {
-            console.error('Resource controller is still busy. Cannot submit at the moment.');
-            return false;
-        }
-
-        this.submittingForm = form;
-
-        this.isBusy = true;
-
-        console.info('submit()');
-
-        tinyMCE.triggerSave();
-
-        if (!this.attemptSubmit()) {
-            this.isBusy = false;
-            return false;
-        }
-
-        this.loading = true;
-        const formData = this.getFormData($event.target);
-
-        this.fireEvent('form.sending', formData);
-
-
-        this.doSubmit(formData)
-            .then((response) => {
-                console.info('doSubmit().then()');
-
-                this.loading = false;
-            })
-            .catch(err => {
-                console.info('doSubmit().catch()');
-
-                this.loading = false;
-
-                this.catchServerSideErrors(err);
-            })
-            .finally(() => {
-                this.isBusy = false;
-                this.submittingForm = null;
-            });
-    }
-
-    dirtyFormControls() {
-        this.formControls().forEach(formControl => {
-            formControl.$dirty = true;
+    submit($event, formController) {
+        console.log('submit', $event, formController);
+        return this.formSubmitter.run($event.target, formController, {
+            doSubmit: (formData) => { return this.doSubmit(formData); }
         });
-    }
-
-    getFormData(form = null) {
-        return this.formDataReader.read(form);
-    }
-
-    htmlForm() {
-        return $('form[name="vm.form"]');
     }
 
     tinymceOptions() {
@@ -193,7 +88,7 @@ export default class ResourceController {
     };
 
     fireEvent(name, data) {
-        return this.eventDispatcher.fire(new FormEvent(name, data, this.htmlForm()[0]));
+        return this.eventDispatcher.fire(new FormEvent(name, data, this.form));
     }
 
     getInput(name) {
@@ -202,6 +97,15 @@ export default class ResourceController {
 
     activeForm() {
         return (this.submittingForm) ? this.submittingForm : this.form;
+    }
+
+    formObject(form, formController){
+
+        return new FormObject(form, formController);
+    }
+
+    onDestroy() {
+        this.eventDispatcher.clear();
     }
 
 

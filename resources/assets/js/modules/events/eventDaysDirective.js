@@ -8,8 +8,12 @@ export default function eventDaysDirective() {
         scope: {
             naming: '@'
         },
+        require: "^form",
         controller: EventDaysController,
         controllerAs: 'vm',
-        bindToController: true
+        bindToController: true,
+        link: function(scope, element, attrs, ctrls){
+            scope.vm.linked(scope, element, attrs, ctrls);
+        }
     };
 }

@@ -3,7 +3,7 @@
 
 namespace Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers;
 
-use Illuminate\Support\Facades\Lang;
+use MezzoLabs\Mezzo\Core\Helpers\Translator;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\InputType;
 use MezzoLabs\Mezzo\Core\Schema\InputTypes\SelectInput;
 use MezzoLabs\Mezzo\Core\Schema\Rendering\AttributeRenderingHandler;
@@ -43,10 +43,15 @@ class SelectableAttributeRenderer extends AttributeRenderingHandler
         foreach ($this->attribute()->rules()->get('in')->parameters() as $key) {
             $title = ucfirst($key);
 
-            $langKey = 'mezzo.selects.' . $this->name() . '.' . $key;
+            $translatedTitle = Translator::find([
+                'mezzo.selects.' . $this->attribute()->getModel()->shortName() . '.' . $this->name() . '.' . $key,
+                'mezzo.selects.' . $this->name() . '.' . $key,
+            ]);
 
-            if (Lang::has($langKey))
-                $title = Lang::get($langKey);
+
+            if ($translatedTitle) {
+                $title = $translatedTitle;
+            }
 
             $list[$key] = $title;
         }

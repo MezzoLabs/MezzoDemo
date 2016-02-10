@@ -55,7 +55,9 @@ return [
         'development' => 'Development'
     ],
 
-    'google_maps_api' => 'AIzaSyBm2n4bQfABTkiGxQp7e-QvWRPQhvAhjGM'
+    'google_maps_api' => 'AIzaSyBm2n4bQfABTkiGxQp7e-QvWRPQhvAhjGM',
+
+
 
 ];
   

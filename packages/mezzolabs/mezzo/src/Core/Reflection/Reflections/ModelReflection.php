@@ -4,6 +4,7 @@ namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Core\Annotations\Attribute;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Schema\Converters\Eloquent\ModelReflectionConverter;
@@ -101,14 +102,23 @@ abstract class ModelReflection
     }
 
     /**
+     * @param int $amount
      * @return string
      */
-    public function title()
+    public function title($amount = 1)
     {
         if (Lang::has('mezzo.models.' . strtolower($this->name())))
-            return Lang::get('mezzo.models.' . strtolower($this->name()));
+            return Lang::choice('mezzo.models.' . strtolower($this->name()), $amount);
 
         return $this->modelReflectionSet->shortName();
+    }
+
+    public function pluralTitle()
+    {
+        if (Lang::has('mezzo.models.' . strtolower($this->name())))
+            return Lang::choice('mezzo.models.' . strtolower($this->name()), 2);
+
+        return Str::plural($this->title());
     }
 
     public function slug()
@@ -122,8 +132,9 @@ abstract class ModelReflection
      */
     public function attributes(string $name = null)
     {
-        if (!$name)
-            return $this->schema()->attributes();
+        if (!$name) {
+            return $this->schema()->attributes()->orderByStringArray($this->instance(true)->getFillable());
+        }
 
         return $this->schema()->attributes($name);
     }

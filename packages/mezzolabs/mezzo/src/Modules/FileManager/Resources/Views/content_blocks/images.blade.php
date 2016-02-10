@@ -6,11 +6,11 @@
         {!! $formBuilder->filePicker($block->inputName('images'), new \App\ImageFile(), ['multiple' => true, 'attributes'=> ['data-value' => '@{{ block.fields.images }}']]) !!}
     </div>
     <div class="form-group">
-        <label>Display</label>
+        <label>{{ trans('mezzo.modules.contents.options.image_display') }}</label>
         <select class="form-control" name="{{ $block->optionInputName('display') }}">
-            <option ng-selected="block.options.display == 'grid'" value="grid">Grid</option>
-            <option ng-selected="block.options.display == 'list'" value="list">List</option>
-            <option ng-selected="block.options.display == 'lightbox'" value="lightbox">Lightbox</option>
+            <option ng-selected="block.options.display == 'grid'" value="grid">{{ trans('mezzo.modules.contents.options.image_grid') }}</option>
+            <option ng-selected="block.options.display == 'list'" value="list">{{ trans('mezzo.modules.contents.options.image_list') }}</option>
+            <option ng-selected="block.options.display == 'lightbox'" value="lightbox">{{ trans('mezzo.modules.contents.options.image_lightbox') }}</option>
         </select>
     </div>
 @endsection

@@ -8,6 +8,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Lang;
 use MezzoLabs\Mezzo\Core\Permission\HasPermissions;
@@ -154,6 +155,26 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
+    }
+
+    public function merchant() : HasOne
+    {
+        return $this->hasOne(Merchant::class);
+    }
+
+    public function redeemedPersonalVouchers()
+    {
+        return $this->hasMany(Voucher::class, 'redeemed_by_id', 'id');
+    }
+
+    public function redeemedGlobalVouchers()
+    {
+        return $this->belongsToMany(\App\Voucher::class, 'redeemed_vouchers');
+    }
+
+    public function personalVouchers()
+    {
+        return $this->hasMany(Voucher::class, 'only_for_id', 'id');
     }
 
     public function getLabelAttribute()

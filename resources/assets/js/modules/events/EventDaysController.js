@@ -14,25 +14,30 @@ export default class FilePickerController {
 
         this.$element = $element;
         this.$form = $element.parents('form')[0];
+        this.formController = null;
 
         var base = this;
 
-        this.registerListeners();
 
         this.addDay();
+    }
+
+    linked(scope, element, attrs, ctrls){
+        this.formController = ctrls;
+        this.registerListeners();
     }
 
     registerListeners() {
         var receivedListener = new FormEventListener(
             'form.received',
             (event, mass) => this.fill(mass.data.days),
-            this.$form
+            this.formController
         );
 
         var updatedListener = new FormEventListener(
             'form.updated',
             (event, mass) => this.fill(mass.stripped.days),
-            this.$form
+            this.formController
         );
 
 
@@ -60,7 +65,6 @@ export default class FilePickerController {
         }
 
         this.days.splice(index, 1);
-        console.log(this.days, 'removed ' + index);
     }
 
     removeDayFromServer(day) {
@@ -74,6 +78,7 @@ export default class FilePickerController {
     }
 
     fill(days) {
+
         if (_.size(days) == 0) {
             return;
         }
@@ -91,7 +96,6 @@ export default class FilePickerController {
     onSend(data) {
 
     }
-
 
 
     sort() {

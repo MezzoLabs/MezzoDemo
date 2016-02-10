@@ -66,6 +66,21 @@ if (!function_exists('cockpit_view')) {
     }
 }
 
+if (!function_exists('angular_route')) {
+    /**
+     * Generate a URL to a named route.
+     *
+     * @param  string  $name
+     * @param  array   $idParameter
+     */
+    function angular_route($name, $idParameter)
+    {
+        $uri = route($name, '||idParameter||');
+
+        return str_replace('||idParameter||', '{{'. $idParameter .'}}', $uri);
+    }
+}
+
 if (!function_exists('cockpit_form')) {
     /**
      * Retrieve the formbuilder instance.

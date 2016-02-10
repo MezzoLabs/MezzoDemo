@@ -7,10 +7,12 @@ use Illuminate\Contracts\Validation\UnauthorizedException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Str;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 use MezzoLabs\Mezzo\Http\Controllers\Controller;
 use MezzoLabs\Mezzo\Http\Controllers\ResourceControllerContract;
+use MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject;
 use MezzoLabs\Mezzo\Http\Requests\Request;
 use MezzoLabs\Mezzo\Http\Requests\ValidatesApiRequests;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -53,7 +55,7 @@ class ResourceRequest extends Request
      * @return \MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection
      * @throws ModuleControllerException
      */
-    public function modelReflection()
+    public function modelReflection() : MezzoModelReflection
     {
         if (!$this->modelReflection) {
             $this->modelReflection = $this->findModelReflection();
@@ -160,6 +162,11 @@ class ResourceRequest extends Request
             return false;
 
         return Str::endsWith($action['as'], '_html');
+    }
+
+    public function queryObject()
+    {
+        return QueryObject::makeFromResourceRequest($this);
     }
 
 

@@ -307,6 +307,11 @@ abstract class ModuleProvider extends ServiceProvider implements ExtensibleModul
         return $this->pages;
     }
 
+    public function hasVisiblePages()
+    {
+        return $this->pages()->filterVisibleInNavigation()->count() > 0;
+    }
+
     protected function collectPages()
     {
         $pages = new ModulePages();
@@ -419,12 +424,15 @@ abstract class ModuleProvider extends ServiceProvider implements ExtensibleModul
      */
     public function title()
     {
-        if(Lang::has('mezzo.modules.' . strtolower($this->shortName())))
-            return Lang::get('mezzo.modules.' . strtolower($this->shortName()));
+        if (Lang::has('mezzo.modules.' . strtolower($this->shortName()))) {
+            $title = Lang::get('mezzo.modules.' . strtolower($this->shortName()));
+
+            return (!is_array($title)) ? $title : $title['title'];
+
+        }
 
         if ($this->options->get('title'))
             return $this->options->get('title');
-
 
 
         return $this->shortName();
@@ -518,6 +526,9 @@ abstract class ModuleProvider extends ServiceProvider implements ExtensibleModul
     public function isVisible()
     {
         if (!$this->isAllowed())
+            return false;
+
+        if (!$this->hasVisiblePages())
             return false;
 
         return $this->options()->get('visible', true);

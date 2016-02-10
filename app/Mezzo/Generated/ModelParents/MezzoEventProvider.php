@@ -124,7 +124,7 @@ abstract class MezzoEventProvider extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for description
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextArea", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RichTextArea", hidden="")
      * @var string
      */
     protected $_description;

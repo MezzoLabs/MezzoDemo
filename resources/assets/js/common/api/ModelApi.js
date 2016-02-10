@@ -9,7 +9,7 @@ export default class ModelApi {
         this.eventDispatcher = eventDispatcher;
     }
 
-    index(params = {}) {
+    index(params = {}, options = {}) {
         return this.api.get(this.apiUrl, params);
     }
 
@@ -49,6 +49,10 @@ export default class ModelApi {
         }, data);
 
         this.eventDispatcher.makeAndFire('model.' + name, payload);
+    }
+
+    latestResponse(){
+        return this.api.latestResponse;
     }
 
 }

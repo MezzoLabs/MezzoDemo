@@ -112,13 +112,13 @@ class CockpitRouter
         $cockpitAction = ($page->isRenderedByFrontend()) ? mezzo()->makeCockpit()->startAction() : $action;
 
         $this->get($pageUri . $page->options('appendToUri'),
-            ['uses' => $cockpitAction, 'as' => $page->slug()]
+            ['uses' => $cockpitAction, 'as' => $page->slug(), 'where' => ['id' => '[0-9]+']]
         );
 
         /*
          * Send the PAGE_ACTION.html request through the controller action.
          */
-        $this->get($pageUri . '.html',
+        $this->get(str_replace('/{id}', '', $pageUri) . '.html',
             ['uses' => $action, 'as' => $page->slug() . '_html']
         );
     }

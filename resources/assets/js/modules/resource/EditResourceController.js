@@ -5,18 +5,22 @@ export default class EditResourceController extends ResourceController {
 
     /*@ngInject*/
     constructor($injector, $scope) {
-        super($injector);
+        super($injector, $scope);
 
         this.$scope = $scope;
         this.$stateParams = $injector.get('$stateParams');
         this.$rootScope = $injector.get('$rootScope');
         this.eventDispatcher = $injector.get('eventDispatcher');
         this.modelId = this.$stateParams.modelId;
+
         this.content = {};
 
         this.includes = ['content'];
 
-        this.$scope.$on('$destroy', () => this.onDestroy());
+
+        this.$scope.$on('$routeChangeStart', function (next, current) {
+            alert('route change scope edit resource');
+        });
     }
 
     init(modelName, includes = []) {
@@ -62,14 +66,15 @@ export default class EditResourceController extends ResourceController {
 
         this.content = cleaned.stripped;
         this.inputs = cleaned.flattened;
+
         this.loading = false;
 
 
         this.eventDispatcher.fire(new FormEvent('form.received', {
             data: cleaned.stripped,
             flattened: cleaned.flattened,
-            form: this.htmlForm()[0]
-        }, this.htmlForm()[0]));
+            form: this.form
+        }, this.form));
     }
 
     initContentBlocks(model) {
@@ -115,6 +120,7 @@ export default class EditResourceController extends ResourceController {
 
 
     onDestroy() {
+        super.onDestroy();
         this.stopResourceLocking();
     }
 

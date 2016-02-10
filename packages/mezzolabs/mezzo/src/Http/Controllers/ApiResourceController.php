@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Http\Controllers;
 
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
+use Mezzolabs\Mezzo\Http\Responses\ApiResources\ResourceResponseFactory;
 use MezzoLabs\Mezzo\Http\Transformers\EloquentModelTransformer;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -12,6 +13,8 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
     use \MezzoLabs\Mezzo\Http\Controllers\HasModelResource;
 
     protected $allowStaticRepositories = false;
+
+    public $model = "";
 
     /**
      * Find the best model transformer based on the class name and the registered transformers.
@@ -34,9 +37,10 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
      */
     public function assertResourceExists($id)
     {
-
-        if (!$this->repository()->exists($id))
+        if (!$this->repository()->exists($id)) {
             throw new NotFoundHttpException();
+        }
+
         return true;
     }
 
@@ -52,5 +56,13 @@ abstract class ApiResourceController extends ApiController implements ResourceCo
         parent::isValid();
 
         return $this->assertResourceIsReflectedModel();
+    }
+
+    /**
+     * @return ResourceResponseFactory
+     */
+    public function resourceResponse()
+    {
+        return app()->make(ResourceResponseFactory::class);
     }
 }

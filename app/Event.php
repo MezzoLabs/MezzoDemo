@@ -100,6 +100,10 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
 
     public function scopeNearZip(Builder $q, $zip, $km = 10)
     {
+        if(empty($zip)){
+            return;
+        }
+
         $this->repository()->addNearZipScope($q, $zip, $km);
     }
 
@@ -120,5 +124,10 @@ class Event extends MezzoEvent implements SluggableInterface, LockableResource
     {
         return $this->repository()->addScopeBetweenDates($q, $from, $to);
 
+    }
+
+    public function images()
+    {
+        return $this->belongsToMany(ImageFile::class, 'event_image_file', 'event_id', 'image_file_id');
     }
 }

@@ -2,7 +2,7 @@
 <div class="panel panel-bordered">
     <div class="panel-body">
         <!-- Search -->
-        <input type="search" class="form-control pull-right" style="display: inline-block; width: 200px"
+        <input ng-if="vm.useSearch()" type="search" class="form-control pull-right" style="display: inline-block; width: 200px"
                placeholder="Search" ng-model="vm.searchText">
         <!-- Search -->
 

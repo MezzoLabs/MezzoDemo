@@ -18,6 +18,8 @@ class CreateProductShoppingBasketPivotTable extends Migration
             $table->integer('shopping_basket_id')->unsigned()->index();
             $table->foreign('shopping_basket_id')->references('id')->on('shopping_baskets')->onDelete('cascade');
             $table->primary(['product_id', 'shopping_basket_id']);
+            $table->integer('amount')->default(1);
+            $table->integer('options')->text()->nullable();
         });
     }
 

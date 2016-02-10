@@ -11,5 +11,5 @@ class ImageField extends AbstractContentFieldType
 {
     protected $inputType = ImageInput::class;
 
-    protected $rulesString = "required|exists:files,id";
+    protected $rulesString = "required|exists:image_files,id";
 }

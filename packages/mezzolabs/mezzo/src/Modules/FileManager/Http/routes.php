@@ -11,8 +11,8 @@ module_route('FileManager', [], function (Router $router, ApiRouter $api, Cockpi
     $controller = $fileManager->apiResourceController('FileApiController');
     $api->post($api->modelUri($file) . '/upload', $controller->qualifiedActionName('upload'));
 
-    $cockpit->get('upload/{path?}', [
-        'uses' => 'Controllers\PublishFilesController@publish',
+    Route::get('mezzo/upload/{path?}', [
+        'uses' => '\MezzoLabs\Mezzo\Modules\FileManager\Http\Controllers\PublishFilesController@publish',
         'as' => 'publish'
     ])->where('path', '.+');;
 
@@ -21,5 +21,7 @@ module_route('FileManager', [], function (Router $router, ApiRouter $api, Cockpi
     $api->resource('ImageFile');
 
 });
+
+
 
 

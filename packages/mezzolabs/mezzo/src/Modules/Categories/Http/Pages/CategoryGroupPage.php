@@ -15,7 +15,6 @@ class CategoryGroupPage extends IndexResourcePage
 
     protected $model = CategoryGroup::class;
 
-    protected $title = 'Group Categories';
 
 
 }

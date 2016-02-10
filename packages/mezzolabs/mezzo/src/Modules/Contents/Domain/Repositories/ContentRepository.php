@@ -28,7 +28,6 @@ class ContentRepository extends ModelRepository
 
         foreach ($blocksData as &$blockData) {
             if(!$blockData){
-                mezzo_dump('ignored block');
                 continue;
             }
 

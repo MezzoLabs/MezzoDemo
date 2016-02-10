@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
 use Mezzolabs\Mezzo\Cockpit\Http\FormObjects\NestedRelations;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
@@ -21,6 +22,7 @@ use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValues;
 use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 use MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject;
 use MezzoLabs\Mezzo\Http\Requests\Queries\Sorting;
+use MongoDB\Driver\Query;
 
 class ModelRepository extends EloquentRepository
 {
@@ -116,6 +118,11 @@ class ModelRepository extends EloquentRepository
         }
 
         return $this->query()->orderBy('id', 'desc')->get($columns);
+    }
+
+    public function relationshipItems(EloquentRelation $relation, $columns = array('*'), QueryObject $queryObject)
+    {
+        return (new EloquentQueryExecutor($queryObject, $relation->getQuery()))->run()->get($columns);
     }
 
     public function count(QueryObject $queryObject)
@@ -308,6 +315,7 @@ class ModelRepository extends EloquentRepository
 
         $model = $this->findByOrFail($attribute, $id);
 
+
         $result = $this->updateRow($values->inMainTableOnly(), $model);
 
         if (!$result)
@@ -362,11 +370,13 @@ class ModelRepository extends EloquentRepository
 
         $model->fill($values);
 
+
         if (count($model->getDirty()) == 0) {
             return $model;
         }
 
-        $model->save();
+
+        $saved = $model->save();
 
         return $model;
     }

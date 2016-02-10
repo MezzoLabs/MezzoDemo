@@ -4,6 +4,10 @@
 namespace MezzoLabs\Mezzo\Cockpit\Pages\Resources;
 
 
+use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Cockpit\Pages\Forms\IndexTableColumn;
+use MezzoLabs\Mezzo\Cockpit\Pages\Forms\IndexTableColumns;
+use MezzoLabs\Mezzo\Core\Permission\PermissionGuard;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
 
 abstract class IndexResourcePage extends ResourcePage
@@ -12,9 +16,20 @@ abstract class IndexResourcePage extends ResourcePage
 
     protected $view = 'cockpit::pages.resources.index';
 
+    protected $filtersView = false;
+
     protected $options = [
         'visibleInNavigation' => true,
         'appendToUri' => ''
+    ];
+
+    /**
+     * Options that will be passed to the frontend controller in the vm.init function.
+     *
+     * @var array
+     */
+    protected $frontendOptions = [
+        'backendPagination' => false
     ];
 
     /**
@@ -22,18 +37,42 @@ abstract class IndexResourcePage extends ResourcePage
      *
      * @return array
      */
-    public function columns()
+    public function columns() : IndexTableColumns
     {
         $attributes = $this->model()->attributes()->visibleInForm('index');
 
-        $columns = [];
+        $columns = new IndexTableColumns();
         $attributes->each(function (Attribute $attribute) use (&$columns) {
-            $columns[$attribute->naming()] = [
-                'type' => $attribute->type()->doctrineTypeName(),
-                'title' => $attribute->title()
-            ];
+            $columns->put(
+                $attribute->naming(),
+                IndexTableColumn::makeFromAttribute($attribute)
+            );
         });
 
         return $columns;
+    }
+
+    /**
+     *
+     *
+     * @return Collection
+     */
+    public function frontendOptions()
+    {
+        return new Collection($this->frontendOptions);
+    }
+
+    /**
+     * Check if the current user is allowed to view this page.
+     *
+     * @return bool
+     */
+    public function isAllowed()
+    {
+        if (!parent::isAllowed()) {
+            return false;
+        }
+
+        return PermissionGuard::make()->allowsShow($this->model()->instance(true));
     }
 }

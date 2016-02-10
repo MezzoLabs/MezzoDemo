@@ -27,6 +27,8 @@ class UpdatePostRequest extends UpdateResourceRequest
      */
     public function rules()
     {
-        return Arr::dot(parent::rules());
+        $rules = Arr::dot(parent::rules());
+
+        return $rules;
     }
 }

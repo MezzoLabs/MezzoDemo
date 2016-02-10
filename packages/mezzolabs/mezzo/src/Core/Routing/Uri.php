@@ -38,6 +38,12 @@ class Uri
 
     public function toModulePage(ModulePage $page)
     {
+        if(method_exists($page, 'overwriteUri')){
+            return $page->overwriteUri();
+        }
+
         return $this->toModuleAction($page->module(), $page->controller(), $page->action());
     }
+
+
 }

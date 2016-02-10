@@ -3,12 +3,15 @@
 
 namespace App\Magazine\Events\Http\Pages\Events;
 
+use MezzoLabs\Mezzo\Cockpit\Pages\Forms\IndexTableColumn;
+use MezzoLabs\Mezzo\Cockpit\Pages\Forms\IndexTableColumns;
 use MezzoLabs\Mezzo\Cockpit\Pages\Resources\IndexResourcePage;
 
 class IndexEventPage extends IndexResourcePage
 {
     protected $view = 'modules.events::pages.events.index';
 
+    public $filtersView = 'modules.events::partials.event_index_filters';
 
     public function boot()
     {
@@ -16,13 +19,14 @@ class IndexEventPage extends IndexResourcePage
     }
 
 
-    public function columns()
+    public function columns() : IndexTableColumns
     {
         $columns = parent::columns();
 
-        $columns['_start'] = ['type' => \Doctrine\DBAL\Types\Type::DATETIME, 'title' => 'Start'];
-        $columns['_end'] = ['type' => \Doctrine\DBAL\Types\Type::DATETIME, 'title' => 'End'];
-        $columns['_distance'] = ['type' => 'distance', 'title' => 'Distance'];
+        $columns['_start'] = IndexTableColumn::makeFromCalculatedValue('_start', 'Start', \Doctrine\DBAL\Types\Type::DATETIME);
+        $columns['_end'] = IndexTableColumn::makeFromCalculatedValue('_end', 'End', \Doctrine\DBAL\Types\Type::DATETIME);
+        $columns['_distance'] = IndexTableColumn::makeFromCalculatedValue('_distance', 'Distance', 'distance');
+        $columns['_distance']->options->put('column', 'distance');
 
         return $columns;
     }

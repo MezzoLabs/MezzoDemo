@@ -1,7 +1,9 @@
+import QueryObject from './QueryObject';
+
 export default class IndexResourceController {
 
     /*@ngInject*/
-    constructor($scope, api, modelStateService, languageService) {
+    constructor($scope, api, modelStateService, languageService, eventDispatcher) {
         this.$scope = $scope;
         this.api = api;
         this.lang = languageService;
@@ -15,26 +17,34 @@ export default class IndexResourceController {
         this.selectAll = false;
         this.loading = false;
         this.attributes = {};
-        this.perPage = 10;
+        this.perPage = 15;
         this.currentPage = 1;
+        this.options = {
+            backendPagination: false
+        };
+        this.eventDispatcher = eventDispatcher;
+        this.totalCount = 0;
         this.pagination = {
             size: 10
         };
 
+        this.queryObject = QueryObject.makeFromController(this);
+        this.formParameters = {};
 
+        this.$scope.$on('$destroy', () => this.onDestroy());
     }
 
-    init(modelName, defaultIncludes) {
+    init(modelName, defaultIncludes, options) {
         this.modelName = modelName;
         this.modelApi = this.api.model(modelName);
         this.includes = defaultIncludes;
+        this.options = _.merge(this.options, options);
 
         this.loadModels();
     }
 
-    addAttribute(name, type) {
-
-        this.attributes[name] = {name: name, type: type, order: '', filter: ''};
+    addAttribute(name, type, options = {}) {
+        this.attributes[name] = {name: name, type: type, order: '', filter: '', options: options};
     }
 
     attribute(name) {
@@ -45,10 +55,22 @@ export default class IndexResourceController {
         this.loading = true;
         params.include = this.includes.join(',');
 
+        this.queryObject = QueryObject.makeFromController(this);
+
+        params = _.merge(this.queryObject.getParameters(), params);
+
         return this.modelApi.index(params)
             .then(data => {
+                const latestResponse = this.modelApi.latestResponse();
+
                 this.loading = false;
                 this.models = data;
+
+                if (this.options.backendPagination) {
+                    this.totalCount = latestResponse.headers('X-Total-Count');
+                } else {
+                    this.totalCount = _.size(this.models);
+                }
 
                 this.models.forEach(model => model._meta = {});
             });
@@ -72,6 +94,10 @@ export default class IndexResourceController {
 
     getPagedModels() {
         var models = this.getModels();
+
+        if (this.options.backendPagination) {
+            return models;
+        }
 
         var start = (this.currentPage - 1) * this.perPage;
         var end = (this.currentPage) * this.perPage - 1;
@@ -123,9 +149,8 @@ export default class IndexResourceController {
         }
 
         if (value && attribute.type == "distance") {
-            return parseFloat(value);
+            return parseFloat(value) ;
         }
-
 
         if (this.lang.has('attributes.' + attribute.name + '.' + value)) {
             return this.lang.get('attributes.' + attribute.name + '.' + value);
@@ -278,6 +303,12 @@ export default class IndexResourceController {
         return $first && !this.isLocked(model);
     }
 
+    /**
+     *
+     * Apply parameters that were given in the API-Query formular.
+     *
+     * @param $event
+     */
     applyScopes($event) {
         const $formInputs = $($event.target).parents('form').find(':input');
         const params = {};
@@ -294,13 +325,28 @@ export default class IndexResourceController {
             params[inputName] = inputValue;
         });
 
+        this.formParameters = params;
+
         this.loadModels(params);
     }
 
+    /**
+     * Triggered when the user hits a pagination link.
+     */
     pageChanged() {
+        if (!this.options.backendPagination) {
+            return;
+        }
 
+        this.loadModels();
     }
 
+    /**
+     *
+     *
+     * @param name
+     * @returns {string}
+     */
     sortIcon(name) {
         switch (this.attribute(name).order) {
             case 'desc':
@@ -312,6 +358,12 @@ export default class IndexResourceController {
         }
     }
 
+    /**
+     * Move the sorting of a certain column one step further.
+     * (desc -> asc -> none)
+     *
+     * @param name
+     */
     sortBy(name) {
         _.forEach(this.attributes, (attribute) => {
             if (attribute.name != name) {
@@ -323,14 +375,31 @@ export default class IndexResourceController {
         var attribute = this.attribute(name);
         attribute.order = this.nextOrderDirection(attribute.order);
 
+        if (!this.options.backendPagination) {
+            return this.clientSideSort(attribute);
+        }
+
+        this.loadModels();
+    }
+
+    /**
+     *
+     * Perform a client side sorting, this is only possible if we have all the models.
+     * In other words, we can only do this if we dont use the client side pagination.
+     *
+     * @param name
+     * @param order
+     * @returns {*}
+     */
+    clientSideSort(attribute, order) {
         switch (attribute.order) {
             case 'desc':
-                return this.models = _.sortBy(this.getModels(), function (model) {
-                    return base.sortByFunction(model, attribute)
+                return this.models = _.sortBy(this.getModels(),  (model) => {
+                    return this.sortByFunction(model, attribute)
                 }).reverse();
             case 'asc':
-                return this.models = _.sortBy(this.getModels(), function (model) {
-                    return base.sortByFunction(model, attribute)
+                return this.models = _.sortBy(this.getModels(),  (model) => {
+                    return this.sortByFunction(model, attribute)
                 });
             default:
                 return this.models = _.sortBy(this.getModels(), 'id');
@@ -365,6 +434,41 @@ export default class IndexResourceController {
             default:
                 return 'desc';
         }
+    }
+
+    useFilters() {
+        return !this.options.backendPagination;
+    }
+
+    useSortings(column) {
+        var attribute = this.attribute(column);
+
+        if(!attribute){
+            return false;
+        }
+
+        if(!this.options.backendPagination){
+            return true;
+        }
+
+        return attribute.options.column != "";
+    }
+
+    useSearch() {
+        return !this.options.backendPagination;
+
+    }
+
+    buildQuery() {
+
+    }
+
+    filterChanged(){
+        console.log('filter changed');
+    }
+
+    onDestroy() {
+        this.eventDispatcher.clear();
     }
 
 }

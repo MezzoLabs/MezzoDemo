@@ -1,16 +1,14 @@
 export default class FormDataReader{
-    constructor($form){
-        this.$form = $form;
+    constructor(){
+
     }
 
-    read(form = null) {
+    read(form ) {
         const formData = {};
 
-        var $form = this.$form;
+        var $form = $(form);
 
-        if (form) {
-            $form = $(form);
-        }
+        console.log($form.find(':input[name]'));
 
         $form
             .find(':input[name]')

@@ -11,6 +11,7 @@ module_route('Shop', [], function (Router $router, ApiRouter $api, CockpitRouter
     $api->resource('Product');
     $api->resource('ShoppingBasket');
     $api->resource('Order');
+    $api->resource('Voucher');
 
 });
 

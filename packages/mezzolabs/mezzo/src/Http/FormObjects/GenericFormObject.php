@@ -11,7 +11,7 @@ use MezzoLabs\Mezzo\Core\Validation\RulesTransformer;
 
 class GenericFormObject implements FormObject
 {
-    const META_FIELDS = ['_token', '_method'];
+    const META_FIELDS = ['_token', '_method', '_json'];
 
     /**
      * @var string
@@ -47,6 +47,7 @@ class GenericFormObject implements FormObject
 
     protected function processData()
     {
+        $this->convertJsonArrays();
         $this->removeMetaInfo();
         $this->convertCommaSeparatedIds();
         $this->convertCheckboxArrays();
@@ -113,7 +114,7 @@ class GenericFormObject implements FormObject
         $nested = new NestedRelations();
 
         $this->data->each(function ($value, $name) use ($nested) {
-            if (!is_array($value) || $this->isIdsArray($value)) {
+            if (!is_array($value) || $this->isIdsArray($value) || $this->isJsonArray($value)) {
                 return true;
             }
 
@@ -194,6 +195,19 @@ class GenericFormObject implements FormObject
         }
     }
 
+    private function convertJsonArrays()
+    {
+        foreach ($this->data as $key => $value) {
+            if (!$this->isJsonArray($value)) continue;
+
+            unset($value['_json']);
+
+
+            $this->data->offsetSet($key, json_encode($value));
+
+        }
+    }
+
     /**
      * Check if an array is a list of ids
      *
@@ -211,6 +225,11 @@ class GenericFormObject implements FormObject
         }
 
         return true;
+    }
+
+    private function isJsonArray($value)
+    {
+        return is_array($value) && isset($value['_json']) && $value['_json'];
     }
 
     protected function removeMetaInfo()
@@ -263,4 +282,6 @@ class GenericFormObject implements FormObject
     {
         return $this->id;
     }
+
+
 }

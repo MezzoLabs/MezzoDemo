@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Magazine\Shop\Domain\Models\Merchant as ShopModuleMerchant;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Merchant extends ShopModuleMerchant
@@ -15,5 +16,10 @@ class Merchant extends ShopModuleMerchant
     public function orders() : HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function user() : BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

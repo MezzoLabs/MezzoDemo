@@ -26,7 +26,7 @@
             </div>
             <div class="panel panel-bordered">
                 <div class="panel-heading">
-                    <h3>Content</h3>
+                    <h3>{{ Lang::get('validation.attributes.content.blocks') }}</h3>
                 </div>
                 {!! $model_reflection->schema()->attributes('content_id')->render() !!}
             </div>
@@ -34,7 +34,7 @@
         <div class="col-md-3">
             <div class="panel panel-bordered">
                 <div class="panel-heading">
-                    <h3>Publish</h3>
+                    <h3>{{ Lang::get('mezzo.modules.posts.form.publish') }}</h3>
                 </div>
                 <div class="panel-body">
                     {!! $model_reflection->schema()->attributes('user_id')->render() !!}
@@ -55,7 +55,7 @@
             </div>
             <div class="panel categories-panel panel-bordered">
                 <div class="panel-heading">
-                    <h3>Categories</h3>
+                    <h3>{{ Lang::get('validation.attributes.categories') }}</h3>
                 </div>
                 <div class="panel-body">
                     <div class="form-group">

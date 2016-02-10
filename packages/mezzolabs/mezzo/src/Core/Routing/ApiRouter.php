@@ -113,6 +113,26 @@ class ApiRouter
      * @param string $controllerName
      * @throws ModuleControllerException
      */
+    public function relation(string $modelName, string $relationName, string $controllerName)
+    {
+        $controller = $this->module->apiResourceController($controllerName);
+
+        $uri = $this->modelUri($controller->model());
+
+        $this->get($uri . '/{id}/' . camel_to_slug($relationName), [
+            'uses' => $controller->qualifiedActionName('index'),
+            'as' => 'api::' . snake_case($modelName) . '.'. snake_case($relationName) . '.index'
+        ]);
+    }
+
+
+    /**
+     * Creates the restful routes for a certain resource controller.
+     *
+     * @param $modelName
+     * @param string $controllerName
+     * @throws ModuleControllerException
+     */
     public function resource($modelName, $controllerName = "")
     {
         if (empty($controllerName))
@@ -189,17 +209,7 @@ class ApiRouter
         return $this->dingoRouter()->delete($uri, $action);
     }
 
-    public function relation($modelName, $relationName, $controllerName = "")
-    {
-        if (empty($controllerName))
-            $controllerName = $this->controllerName($modelName);
 
-        $controller = $this->module->apiResourceController($controllerName);
-
-        $uri = $this->modelUri($controller->model()) . '/' . $relationName;
-
-        $this->get($uri, $controller->qualifiedActionName($relationName . 'Index'));
-    }
 
     protected function controllerName($modelName)
     {

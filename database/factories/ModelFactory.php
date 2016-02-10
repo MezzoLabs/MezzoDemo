@@ -19,7 +19,7 @@ $factory->define(User::class, function ($faker) {
 
     $date = $faker->dateTimeThisMonth;
 
-    $password  = str_random(10);
+    $password = str_random(10);
 
     return [
         'name' => $faker->name,
@@ -31,13 +31,13 @@ $factory->define(User::class, function ($faker) {
     ];
 });
 
-$factory->define(Tutorial::class, function(Faker\Generator $faker){
+$factory->define(Tutorial::class, function (Faker\Generator $faker) {
     $users = User::all()->lists('id')->keys();
 
     $tutorials = Tutorial::all()->lists('id')->keys();
 
     $parent = NULL;
-    if(rand(0,10) < 6 && $tutorials->count() > 0)
+    if (rand(0, 10) < 6 && $tutorials->count() > 0)
         $parent = $tutorials->random();
 
     $date = $faker->dateTimeThisMonth;

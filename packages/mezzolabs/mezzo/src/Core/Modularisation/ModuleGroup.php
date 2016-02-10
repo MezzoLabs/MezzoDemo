@@ -10,6 +10,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation;
 
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Lang;
 
 class ModuleGroup
 {
@@ -107,7 +108,7 @@ class ModuleGroup
 
         $groups = new Collection();
 
-        foreach($groupConfig as $name => $label){
+        foreach ($groupConfig as $name => $label) {
             $newGroup = new static($name, $label, []);
 
             $groups->put($name, $newGroup);

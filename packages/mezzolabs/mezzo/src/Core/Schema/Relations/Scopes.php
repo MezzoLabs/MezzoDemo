@@ -67,6 +67,9 @@ class Scopes extends StrictCollection
         $scopes = new static();
 
         foreach ($scopesArray as $name => $parameters) {
+            if (empty($parameters))
+                $parameters = [];
+
             $scopes->add(new Scope($name, $parameters));
         }
 

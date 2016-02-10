@@ -1,10 +1,5 @@
 <?php
-/**
- * Project: MezzoDemo | Bootstrapper.php
- * Author: Simon - www.triggerdesign.de
- * Date: 11.07.2015
- * Time: 15:24
- */
+
 
 namespace MezzoLabs\Mezzo\Core\Booting\Bootstrappers;
 
