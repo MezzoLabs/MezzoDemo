@@ -31,9 +31,10 @@
 
     <div class="row">
         <div class="col-md-offset-9 col-md-3 text-right">
-            {{ $basket->itemsPrice() }} €
+            Total ({{ $basket->itemsAmount() }} Articles): <b>{{ $basket->itemsPrice() }} €</b>
         </div>
     </div>
+    <hr/>
     <div class="row">
 
 
