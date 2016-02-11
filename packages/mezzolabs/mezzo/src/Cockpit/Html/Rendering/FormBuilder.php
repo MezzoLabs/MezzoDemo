@@ -46,14 +46,26 @@ class FormBuilder extends CollectiveFormBuilder
     {
         $value = ($value !== false) ? $value : Lang::get('mezzo.general.edit_model', ['name' => $model_reflection->title()]);
 
-        return $this->submit($value);
+        $options = [];
+
+        if (!$model_reflection->canBeEditedBy()) {
+            $options['disabled'] = 'disabled';
+        }
+
+        return $this->submit($value, $options);
     }
 
     public function submitCreate(MezzoModelReflection $model_reflection, $value = false)
     {
         $value = ($value !== false) ? $value : Lang::get('mezzo.general.create_model', ['name' => $model_reflection->title()]);
 
-        return $this->submit($value);
+        $options = [];
+
+        if (!$model_reflection->canBeCreatedBy()) {
+            $options['disabled'] = 'disabled';
+        }
+
+        return $this->submit($value, $options);
     }
 
     /**

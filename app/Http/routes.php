@@ -46,7 +46,12 @@ Route::group(['middleware' => ['mezzo.no_permissions_check', 'mezzo.no_model_val
     Route::get('oauth/redirect/{provider}', 'Auth\AuthController@oauthToProvider');
 
 
+    Route::group(['prefix' => 'shop'], function () {
+        Route::resource('products', 'Shop\ProductController');
+    });
+
 });
+
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('profile',
@@ -67,13 +72,19 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('profile/liked-categories', 'ProfileController@storeLikedCategories');
 
     Route::get('profile/destroy', 'ProfileController@destroy');
+
+    Route::group(['prefix' => 'shop'], function () {
+        Route::post('products/{id}/addToBasket', ['uses' => 'Shop\ProductController@addToBasket', 'as' => 'shop.add_to_basket']);
+        Route::get('basket', ['uses' => 'Shop\ShoppingBasketController@index', 'as' => 'shop.basket']);
+        Route::get('basket/setAmount/{id}', ['uses' => 'Shop\ShoppingBasketController@setAmount', 'as' => 'shop.set_product_amount']);
+        Route::get('checkout', ['uses' => 'Shop\CheckoutController@index', 'as' => 'shop.checkout']);
+    });
 });
 
 
 /**
  * --------------- Mezzo test area
  */
-/**
 
 
 Route::get('/test/during', function () {
@@ -250,7 +261,7 @@ Route::get('seed/posts', function () {
     $postsTableSeeder->run();
 });
 
-Route::get('test/api/relations', function(){
+Route::get('test/api/relations', function () {
 
     $users = app()->make(\MezzoLabs\Mezzo\Modules\User\Domain\Repositories\UserRepository::class);
 
@@ -270,6 +281,6 @@ Route::get('test/vouchers', function () {
 
     mezzo_dd($voucher->redeem($user));
 });
-**/
+
 
 

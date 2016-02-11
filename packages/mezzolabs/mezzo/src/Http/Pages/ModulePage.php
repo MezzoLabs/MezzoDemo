@@ -342,7 +342,15 @@ abstract class ModulePage implements ModulePageContract
      */
     public function isVisibleInNavigation()
     {
-        return $this->isAllowed() && $this->options('visibleInNavigation');
+        return $this->isVisible() && $this->options('visibleInNavigation');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVisible()
+    {
+        return $this->isAllowed();
     }
 
     /**

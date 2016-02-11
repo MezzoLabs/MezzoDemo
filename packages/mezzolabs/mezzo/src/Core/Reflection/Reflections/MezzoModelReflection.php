@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Reflection\Reflections;
 
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Core\Permission\PermissionGuard;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
 use MezzoLabs\Mezzo\Exceptions\ModelIsAlreadyAssociated;
 
@@ -96,6 +97,21 @@ class MezzoModelReflection extends ModelReflection
     public function repository()
     {
         return $this->instance()->repository();
+    }
+
+    public function canBeEditedBy(\App\User $user = null) : bool
+    {
+        return PermissionGuard::make()->allowsEdit($this->instance(), $user);
+    }
+
+    public function canBeCreatedBy(\App\User $user = null) : bool
+    {
+        return PermissionGuard::make()->allowsCreate($this->instance(), $user);
+    }
+
+    public function canBeDeletedBy(\App\User $user = null) : bool
+    {
+        return PermissionGuard::make()->allowsDelete($this->instance(), $user);
     }
 
 

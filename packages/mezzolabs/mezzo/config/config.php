@@ -33,7 +33,7 @@ return [
     ],
 
     'filemanager' => [
-        'active_disk' => 's3',
+        'active_disk' => env('MEZZO_FILEMANAGER_ACTIVE_DISK', 'local'),
         'disks' => [
             'local' => [
                 'folder' => 'mezzo/upload'
