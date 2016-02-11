@@ -27,6 +27,11 @@ class ShoppingBasketRepository extends ModelRepository
             return;
         }
 
+        if ($amount == 0) {
+            $this->removeProduct($basket, $product);
+            return;
+        }
+
         $basket->products()->attach($product->id, ['amount' => $amount]);
     }
 
@@ -37,6 +42,11 @@ class ShoppingBasketRepository extends ModelRepository
      */
     public function setProductAmount(ShoppingBasket $basket, Product $product, int $amount = 1)
     {
+        if ($amount == 0) {
+            $this->removeProduct($basket, $product);
+            return;
+        }
+
         $existingProductEntry = $this->existingProductEntry($basket, $product);
 
         if ($existingProductEntry) {
@@ -45,6 +55,15 @@ class ShoppingBasketRepository extends ModelRepository
         }
 
         $basket->products()->attach($product->id, ['amount' => $amount]);
+    }
+
+    /**
+     * @param ShoppingBasket $basket
+     * @param Product $product
+     */
+    public function removeProduct(ShoppingBasket $basket, Product $product)
+    {
+        $basket->products()->detach($product->id);
     }
 
     /**

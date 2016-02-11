@@ -26,7 +26,7 @@ class SetProductAmountRequest extends FormRequest
     public function rules()
     {
         return [
-            'amount' => 'integer|between:1,20'
+            'amount' => 'integer|between:0,20'
         ];
     }
 }

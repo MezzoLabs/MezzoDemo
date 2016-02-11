@@ -8,6 +8,7 @@
 
             <div class="col-md-6">
                 <a href="{{ route('shop.products.show', $product->id) }}" target="_blank">{{ $product->title }}</a>
+
             </div>
             <div class="col-md-3">
                 <form action="{{ route('shop.set_product_amount', $product->id) }}">
@@ -17,11 +18,13 @@
                             <button class="btn btn-default " type="submit">&nbsp;<span
                                         class="glyphicon glyphicon-refresh" aria-hidden="true"></span>&nbsp;</button>
                         </div>
+                        {!! Form::close() !!}
                     </div>
                 </form>
             </div>
             <div class="col-md-3 text-right">
                 {{ $product->calculatePivotPrice() }} €
+
             </div>
 
         </div>
