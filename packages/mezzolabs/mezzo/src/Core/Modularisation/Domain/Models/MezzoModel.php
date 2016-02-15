@@ -77,6 +77,14 @@ interface MezzoModel extends EloquentInterface
      */
     public function getLabelAttribute();
 
+
+    /**
+     * Get the additional pivot values without the ids.
+     *
+     * @return array
+     */
+    public function getPivotValues();
+
     /**
      * @return ModelRepository
      */

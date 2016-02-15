@@ -4,6 +4,7 @@ namespace App\Magazine\Shop\Domain\Models;
 
 use App\Magazine\Shop\Domain\Repositories\ShoppingBasketRepository;
 use App\Mezzo\Generated\ModelParents\MezzoShoppingBasket;
+use App\Product;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 
@@ -64,6 +65,17 @@ class ShoppingBasket extends MezzoShoppingBasket
         });
 
         return $price;
+    }
+
+    public function productsPivotArray()
+    {
+        $array = [];
+
+        foreach ($this->products as $product) {
+            $array[$product->id] = $product->pivotArray();
+        }
+
+        return $array;
     }
 
 

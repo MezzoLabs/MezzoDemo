@@ -124,7 +124,7 @@ return [
         'categorygroup' => 'Kategoriengruppe|Kategoriengruppen',
         'content' => 'Inhalt|Inhalte',
         'country' => 'Land|Länder',
-        'event' => 'Verantaltung|Veranstaltungen',
+        'event' => 'Veranstaltung|Veranstaltungen',
         'eventday' => 'Veranstaltungs Tag|Veranstaltungs Tage',
         'eventprovider' => 'Verantaltungs Lieferant|Veranstaltungs Lieferanten',
         'eventvenue' => 'Verantaltungs Ort| Veranstaltungs Orte',

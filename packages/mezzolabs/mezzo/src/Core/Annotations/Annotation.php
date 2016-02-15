@@ -13,4 +13,13 @@ abstract class Annotation extends DoctrineAnnotation
 
         return strtolower($parts[count($parts) - 1]);
     }
+
+    public function isType($type)
+    {
+        if (class_exists($type)) {
+            return $this instanceof $type;
+        }
+
+        return strtolower($this->shortName()) == strtolower($type);
+    }
 }

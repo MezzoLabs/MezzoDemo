@@ -338,4 +338,13 @@ class Attribute
         return $this->options()->get('hiddenInForms', $default);
     }
 
+    /**
+     * Find out the input type based on the side of the relation we are on.
+     *
+     * @return RelationInputMultiple|RelationInputSingle
+     */
+    protected function findType()
+    {
+        return $this->options()->get('type');
+    }
 } 

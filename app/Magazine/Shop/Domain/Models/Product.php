@@ -21,4 +21,9 @@ class Product extends MezzoProduct
     {
         return $this->calculatePrice() * $this->getPivotAmount();
     }
+
+    public function pivotArray()
+    {
+        return ['amount' => $this->getPivotAmount()];
+    }
 }

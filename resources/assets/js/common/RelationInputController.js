@@ -17,7 +17,6 @@ export default class RelationInputController {
 
         this.eventDispatcher.on(['form.received', 'relationinput.models_loaded.' + this.uniqueKey], (events, payloads) => {
             this.fill(payloads['form.received'].data, payloads['form.received'].form);
-
         });
 
 
@@ -60,7 +59,7 @@ export default class RelationInputController {
 
 
         this.$timeout(() => {
-            if (htmlValue && _.isArray(htmlValue)) {
+            if (htmlValue && _.isObject(htmlValue) && typeof(htmlValue['id']) == 'undefined') {
                 htmlValue = _.map(htmlValue, 'id');
             }
 

@@ -121,6 +121,9 @@ abstract class EloquentModelTransformer extends ModelTransformer
             $returnCollection->put($attributeValue->name(), $value);
         });
 
+
+        $returnCollection = $returnCollection->merge($model->getPivotValues());
+
         $returnCollection->put('id', $model->id);
 
         $returnCollection = $returnCollection->merge($this->pluginsData($model));

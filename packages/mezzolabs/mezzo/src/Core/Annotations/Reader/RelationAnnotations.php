@@ -4,8 +4,10 @@
 namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 
 
+use MezzoLabs\Mezzo\Core\Annotations\Annotation;
 use MezzoLabs\Mezzo\Core\Annotations\Relations\From;
 use MezzoLabs\Mezzo\Core\Annotations\Relations\JoinColumn as JoinColumnAnnotation;
+use MezzoLabs\Mezzo\Core\Annotations\Relations\PivotColumn;
 use MezzoLabs\Mezzo\Core\Annotations\Relations\PivotTable;
 use MezzoLabs\Mezzo\Core\Annotations\Relations\RelationAnnotation;
 use MezzoLabs\Mezzo\Core\Annotations\Relations\Scopes as ScopesAnnotation;
@@ -73,6 +75,16 @@ class RelationAnnotations extends PropertyAnnotations
     public function pivotTable()
     {
         return $this->get('PivotTable');
+    }
+
+    /**
+     * @return array
+     */
+    public function pivotColumns()
+    {
+        return $this->annotations()->collection()->filter(function (Annotation $annotation) {
+            return $annotation->isType(PivotColumn::class);
+        });
     }
 
     /**

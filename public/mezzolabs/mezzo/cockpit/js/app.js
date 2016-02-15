@@ -342,7 +342,7 @@ var RelationInputController = function () {
             var htmlValue = _.clone(this.selected);
 
             this.$timeout(function () {
-                if (htmlValue && _.isArray(htmlValue)) {
+                if (htmlValue && _.isObject(htmlValue) && typeof htmlValue['id'] == 'undefined') {
                     htmlValue = _.map(htmlValue, 'id');
                 }
 
@@ -511,7 +511,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             key: 'setBusy',
             value: function setBusy(isBusy) {
                 this.busy = isBusy;
-            }
+        }
         }, {
             key: 'isBusy',
             value: function isBusy() {
@@ -738,7 +738,7 @@ Object.defineProperty(exports, "__esModule", {
                 if (--loadingCount === 0) $rootScope.$broadcast('http:loading:finish');
                 return $q.reject(response);
             }
-        };
+    };
     };
 
 }, {}], 12: [function (require, module, exports) {
@@ -1174,8 +1174,6 @@ Object.defineProperty(exports, "__esModule", {
                 var formData = {};
 
                 var $form = $(form);
-
-                console.log($form.find(':input[name]'));
 
                 $form.find(':input[name]').each(function (index, formInput) {
                     //TODO Move to own function (each edge case gets one)

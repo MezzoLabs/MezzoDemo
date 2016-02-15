@@ -70,9 +70,9 @@ abstract class AbstractFilePublisher
     {
         $sizeKey = $this->imageSizeKey();
 
-        if (!isset($this->imageSizes[$sizeKey]))
+        if (!isset(static::$imageSizes[$sizeKey]))
             throw new BadRequestHttpException('Image size is not supported.');
 
-        return $this->imageSizes[$sizeKey];
+        return static::$imageSizes[$sizeKey];
     }
 }

@@ -273,13 +273,12 @@ Route::get('test/api/relations', function () {
 });
 
 
-Route::get('test/vouchers', function () {
+Route::get('test/orders', function () {
+    $cart = \Auth::user()->getOrMakeShoppingBasket();
 
-    $user = \Auth::user();
+    $order = \App\Magazine\Shop\Domain\Repositories\OrderRepository::instance()->makeFromShoppingBasket($cart);
 
-    $voucher = \App\Voucher::first();
-
-    mezzo_dd($voucher->redeem($user));
+    mezzo_dd($order);
 });
 
 

@@ -81,6 +81,8 @@ abstract class MezzoOrder extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $fillable = [
+        'user_id',
+        'products',
         'info',
         'status'
     ];
@@ -209,11 +211,12 @@ abstract class MezzoOrder extends \App\Mezzo\BaseModel
 
     /**
      * Relation annotation property for products
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Attribute(type="\MezzoLabs\Mezzo\Core\Schema\InputTypes\PivotRowsInput", hidden="")
      * @Mezzo\Relations\ManyToMany
      * @Mezzo\Relations\From(table="products", primaryKey="id", naming="orders")
      * @Mezzo\Relations\To(table="orders", primaryKey="id", naming="products")
      * @Mezzo\Relations\PivotTable(name="order_product", fromColumn="product_id", toColumn="order_id")
+     * @Mezzo\Relations\PivotColumn(name="amount", type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", rules="numeric|between:1,50")
      * @Mezzo\Relations\Scopes("")
      */
     protected $_products;

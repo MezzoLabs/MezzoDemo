@@ -4,9 +4,9 @@
 namespace MezzoLabs\Mezzo\Core\Annotations\Reader;
 
 
-use MezzoLabs\Mezzo\Core\Annotations\Attribute as AttributeAnnotation;
 use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Annotations\Annotation as MezzoAnnotation;
+use MezzoLabs\Mezzo\Core\Annotations\Attribute as AttributeAnnotation;
 use MezzoLabs\Mezzo\Core\Annotations\Relations\RelationAnnotation;
 use MezzoLabs\Mezzo\Exceptions\ReflectionException;
 
@@ -27,7 +27,7 @@ class Annotations
         foreach ($annotations as $annotation) {
             if (!($annotation instanceof MezzoAnnotation)) continue;
 
-            $this->collection->put($annotation->shortName(), $annotation);
+            $this->collection->push($annotation);
         }
     }
 
@@ -69,7 +69,16 @@ class Annotations
      */
     public function have($annotationType)
     {
-        return $this->collection()->has(strtolower($annotationType));
+        $has = false;
+
+        $this->collection()->each(function (MezzoAnnotation $annotation) use ($annotationType, &$has) {
+            if ($annotation->isType($annotationType)) {
+                $has = true;
+                return false;
+            }
+        });
+
+        return $has;
     }
 
     /**
@@ -78,6 +87,8 @@ class Annotations
      */
     public function get($annotationType)
     {
-        return $this->collection()->get(strtolower($annotationType), null);
+        return $this->collection()->first(function ($key, MezzoAnnotation $value) use ($annotationType, &$has) {
+            return $value->isType($annotationType);
+        });
     }
 }

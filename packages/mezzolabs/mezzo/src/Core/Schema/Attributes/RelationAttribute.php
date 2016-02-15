@@ -37,7 +37,7 @@ class RelationAttribute extends Attribute
      */
     protected function findType()
     {
-        $annotationsType = $this->options()->get('type');
+        $annotationsType = parent::findType();
 
         if (!empty($annotationsType)) {
             return $this->type = $annotationsType;

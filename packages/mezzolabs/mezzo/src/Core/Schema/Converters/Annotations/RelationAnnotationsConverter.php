@@ -4,7 +4,11 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Converters\Annotations;
 
 
+use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Core\Annotations\Reader\RelationAnnotations;
+use MezzoLabs\Mezzo\Core\Annotations\Relations\PivotColumn;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\PivotAttribute;
 use MezzoLabs\Mezzo\Core\Schema\Converters\Converter;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToMany;
 use MezzoLabs\Mezzo\Core\Schema\Relations\OneToOneOrMany;
@@ -77,10 +81,35 @@ class RelationAnnotationsConverter extends Converter
     {
         $relation = $this->makeRelationBase($relationAnnotations);
 
-        $pivotAnnotation = $relationAnnotations->pivotTable();
+        $pivotTableAnnotation = $relationAnnotations->pivotTable();
+        $pivotColumnAnnotations = $relationAnnotations->pivotColumns();
 
-        $relation->setPivot($pivotAnnotation->name, $pivotAnnotation->fromColumn, $pivotAnnotation->toColumn);
+        $pivotAttributes = $this->makePivotAttributes($pivotColumnAnnotations, $relation);
+
+        $relation->setPivot(
+            $pivotTableAnnotation->name,
+            $pivotTableAnnotation->fromColumn,
+            $pivotTableAnnotation->toColumn,
+            $pivotAttributes);
 
         return $relation;
+    }
+
+    /**
+     * @param Collection $pivotColumns
+     * @param ManyToMany $relation
+     * @return Attributes
+     */
+    protected function makePivotAttributes(Collection $pivotColumns, ManyToMany $relation)
+    {
+        $attributes = new Attributes();
+
+        $pivotColumns->each(function (PivotColumn $column) use ($attributes, $relation) {
+            $attribute = new PivotAttribute($column->name, $relation, [
+                'rules' => $column->rules
+            ]);
+        });
+
+        return $attributes;
     }
 }
