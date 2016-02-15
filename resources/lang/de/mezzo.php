@@ -127,7 +127,7 @@ return [
         'event' => 'Veranstaltung|Veranstaltungen',
         'eventday' => 'Veranstaltungs Tag|Veranstaltungs Tage',
         'eventprovider' => 'Verantaltungs Lieferant|Veranstaltungs Lieferanten',
-        'eventvenue' => 'Verantaltungs Ort| Veranstaltungs Orte',
+        'eventvenue' => 'Verantaltungs Ort|Veranstaltungs Orte',
         'file' => 'Datei|Dateien',
         'imagefile' => 'Bild|Bilder',
         'merchant' => 'Händler',

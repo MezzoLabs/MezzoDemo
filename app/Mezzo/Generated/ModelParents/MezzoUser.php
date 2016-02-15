@@ -106,11 +106,11 @@ abstract class MezzoUser extends \App\Mezzo\BaseModel
     * @var array            
     */
     protected $fillable = [
+        "email",
         "gender", 
         "first_name", 
-        "last_name", 
-        "email", 
-        "password", 
+        "last_name",
+        "password",
         "roles", 
         "confirmation_code", 
         "confirmed", 

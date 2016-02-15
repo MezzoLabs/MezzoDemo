@@ -13,7 +13,8 @@ return [
         \MezzoLabs\Mezzo\Modules\Contents\ContentsModule::class,
         \MezzoLabs\Mezzo\Modules\Posts\PostsModule::class,
         \MezzoLabs\Mezzo\Modules\FileManager\FileManagerModule::class,
-        \MezzoLabs\Mezzo\Modules\Addresses\AddressesModule::class
+        \MezzoLabs\Mezzo\Modules\Addresses\AddressesModule::class,
+        \MezzoLabs\Mezzo\Modules\Setup\SetupModule::class
 
     ],
 

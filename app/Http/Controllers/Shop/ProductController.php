@@ -25,7 +25,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        return view('magazine.shop.index')->with('products', \App\Product::paginate(3));
+        return view('magazine.shop.index')->with('products', \App\Product::paginate(5));
     }
 
     public function show($id)

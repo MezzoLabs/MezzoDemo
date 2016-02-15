@@ -180,6 +180,10 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
 
     public function getLabelAttribute()
     {
+        if (empty(trim($this->fullName()))) {
+            return $this->email;
+        }
+
         return $this->id . ': ' . $this->fullName();
     }
 
