@@ -16,7 +16,7 @@ class SeedPermissions extends MezzoCommand
      *
      * @var string
      */
-    protected $signature = 'mezzo:permissions:seed {admin_user?}';
+    protected $signature = 'mezzo:permissions:seed {email}';
 
     /**
      * The console command description.
@@ -65,12 +65,13 @@ class SeedPermissions extends MezzoCommand
         $admin->givePermissions($allPermissions);
         $this->info('Gave admin ' . $allPermissions->count() . ' permissions.');
 
-        if ($this->argument('admin_user')) {
-            $adminUser = $this->userRepository()->findByOrFail('email', $this->argument('admin_user'));
+        if ($this->argument('email')) {
+
+            $adminUser = $this->userRepository()->findByOrFail('email', $this->argument('email'));
 
             $adminUser->attachRole($admin);
 
-            $this->info('Long live the king! ' . $this->argument('admin_user'));
+            $this->info('Long live the king! ' . $this->argument('email'));
         }
 
         $this->info('--> All default permissions are in the table.');

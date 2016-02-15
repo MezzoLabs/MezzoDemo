@@ -92,12 +92,12 @@ MM    MM  eeeee zzzzz zzzzz  oooo
         $this->info('');
         $this->info('Done.');
         $this->info('');
+
         $this->comment('Your tasks:');
+        $this->comment('- Add the zipcodes.sql');
         $this->comment('- Run "bower update".');
         $this->comment('- Go to /mezzo and login to your admin account. (Psst... the address is ' . $email . ' )');
         $this->comment('- Enjoy yourself :*');
-
-        $this->comment('Handmade in Sasbachwalden 2015');
 
     }
 
@@ -119,7 +119,7 @@ MM    MM  eeeee zzzzz zzzzz  oooo
 
         $password = $this->secret('Enter password');
 
-        $firstName = $this->ask('First Name', 'Administrator');
+        $firstName = $this->ask('First Name', 'Super');
         $lastName = $this->ask('Last Name', 'Administrator');
 
         return $this->users->create([
@@ -140,7 +140,7 @@ MM    MM  eeeee zzzzz zzzzz  oooo
     {
         $this->info('2.) Seed permissions');
 
-        return Artisan::call('mezzo:permissions:seed', [$email]);
+        return Artisan::call('mezzo:permissions:seed', ['email' => $email]);
 
     }
 
