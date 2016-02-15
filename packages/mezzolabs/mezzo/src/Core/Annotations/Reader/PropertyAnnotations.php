@@ -38,6 +38,7 @@ abstract class PropertyAnnotations
         $this->name = $name;
         $this->annotations = $annotations;
 
+
         $this->validate();
         $this->model = $model;
     }

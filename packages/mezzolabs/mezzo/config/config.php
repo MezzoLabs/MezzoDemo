@@ -13,7 +13,8 @@ return [
         \MezzoLabs\Mezzo\Modules\Contents\ContentsModule::class,
         \MezzoLabs\Mezzo\Modules\Posts\PostsModule::class,
         \MezzoLabs\Mezzo\Modules\FileManager\FileManagerModule::class,
-        \MezzoLabs\Mezzo\Modules\Addresses\AddressesModule::class
+        \MezzoLabs\Mezzo\Modules\Addresses\AddressesModule::class,
+        \MezzoLabs\Mezzo\Modules\Setup\SetupModule::class
 
     ],
 
@@ -33,7 +34,7 @@ return [
     ],
 
     'filemanager' => [
-        'active_disk' => 's3',
+        'active_disk' => env('MEZZO_FILEMANAGER_ACTIVE_DISK', 'local'),
         'disks' => [
             'local' => [
                 'folder' => 'mezzo/upload'

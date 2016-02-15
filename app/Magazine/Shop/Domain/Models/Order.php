@@ -6,5 +6,5 @@ use App\Mezzo\Generated\ModelParents\MezzoOrder;
 
 class Order extends MezzoOrder
 {
-    //
+    const STATE_NEW = 'new';
 }

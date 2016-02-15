@@ -5,29 +5,48 @@ namespace MezzoLabs\Mezzo\Core\Schema\Relations;
 
 
 use MezzoLabs\Mezzo\Core\Database\DatabaseColumn;
+use MezzoLabs\Mezzo\Core\Schema\Attributes\Attributes;
 use MezzoLabs\Mezzo\Core\Schema\Columns\Columns;
 
 class ManyToMany extends Relation
 {
 
+    /**
+     * @var string
+     */
     protected $pivotTable;
 
+    /**
+     * @var string
+     */
     protected $pivotColumnFrom;
 
+    /**
+     * @var string
+     */
     protected $pivotColumnTo;
+
+    /**
+     * @var Attributes
+     */
+    protected $pivotAttributes;
 
     /**
      * @param string $tableName
      * @param string $columnFrom
      * @param string $columnTo
+     * @param array $columns
      * @return $this
      */
-    public function setPivot($tableName, $columnFrom, $columnTo)
+    public function setPivot($tableName, $columnFrom, $columnTo, Attributes $pivotAttributes = null)
     {
         $this->pivotTable = $tableName;
 
         $this->pivotColumnFrom = DatabaseColumn::disqualifyName($columnFrom);
         $this->pivotColumnTo = DatabaseColumn::disqualifyName($columnTo);
+
+        $this->pivotAttributes = ($pivotAttributes) ? $pivotAttributes : new Attributes();
+
         return $this;
     }
 

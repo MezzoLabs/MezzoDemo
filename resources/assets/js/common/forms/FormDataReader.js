@@ -8,8 +8,6 @@ export default class FormDataReader{
 
         var $form = $(form);
 
-        console.log($form.find(':input[name]'));
-
         $form
             .find(':input[name]')
             .each((index, formInput) => {

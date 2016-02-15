@@ -21,7 +21,9 @@ export default class CreateResourceController extends ResourceController {
     }
 
     edit(modelId) {
+
         this.modelStateService.name(this.modelName).id(modelId).edit();
+
     }
 
 }

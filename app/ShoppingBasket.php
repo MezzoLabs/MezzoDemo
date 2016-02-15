@@ -15,6 +15,8 @@ class ShoppingBasket extends ShopModuleBasket
 
     public function products() : BelongsToMany
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class)->withPivot('amount');
     }
+
+
 }

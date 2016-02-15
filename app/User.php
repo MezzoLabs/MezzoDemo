@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Magazine\Shop\Domain\Models\HasShoppingBasket;
 use App\Mezzo\Generated\ModelParents\MezzoUser;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -34,7 +35,7 @@ use MezzoLabs\Mezzo\Core\Permission\HasPermissions;
  */
 class User extends MezzoUser implements AuthenticatableContract, CanResetPasswordContract, AuthorizableContract
 {
-    use Authenticatable, CanResetPassword, Authorizable, HasPermissions;
+    use Authenticatable, CanResetPassword, Authorizable, HasPermissions, HasShoppingBasket;
 
     /**
      * The database table used by the model.
@@ -179,6 +180,10 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
 
     public function getLabelAttribute()
     {
+        if (empty(trim($this->fullName()))) {
+            return $this->email;
+        }
+
         return $this->id . ': ' . $this->fullName();
     }
 

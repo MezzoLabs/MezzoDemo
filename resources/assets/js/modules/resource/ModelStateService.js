@@ -38,7 +38,12 @@ export default class ModelStateService {
     /* private */
 
     go(stateName, stateParams = {}) {
-        this.$state.go(stateName, stateParams);
+        this.$state.go(stateName, stateParams)
+            .then(() => {
+
+            }).catch((error) => {
+            console.log(error)
+        });
     }
 
     modelStateName() {

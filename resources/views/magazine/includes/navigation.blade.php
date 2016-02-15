@@ -17,6 +17,7 @@
                 <li class="active"><a href="/">Home</a></li>
                 <li class=""><a href="/events">Events</a></li>
                 <li class=""><a href="/posts">Posts</a></li>
+                <li class=""><a href="{{ route('shop.products.index') }}">Shop</a></li>
                 @if(!Auth::check())
 
                     <li class=""><a href="/auth/register">Register</a></li>
@@ -29,6 +30,15 @@
                     <li class=""><a href="/profile">Hello {{ Auth::user()->name }}</a></li>
                     <li class=""><a href="/auth/logout">Logout</a></li>
                 @endif
+
+                <li class="">
+                    <a href="{{ route('shop.basket') }}"><i
+                                class="glyphicon glyphicon-shopping-cart"></i>
+
+                        @if($auth_shopping_basket)
+                            {{ $auth_shopping_basket->itemsAmount() }}  {{ $auth_shopping_basket->itemsPrice() }} €
+                        @endif
+                    </a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>

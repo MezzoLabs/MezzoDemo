@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CategoriesAttributeRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CheckboxAttributeRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CountryAttributeRenderer;
+use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\PivotRowsRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeMultipleRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeSingleRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\SelectableAttributeRenderer;
@@ -21,6 +22,7 @@ class AttributeRenderEngine extends AbstractAttributeRenderEngine
     public static $handlers = [
         CountryAttributeRenderer::class,
         CategoriesAttributeRenderer::class,
+        PivotRowsRenderer::class,
         RelationAttributeSingleRenderer::class,
         RelationAttributeMultipleRenderer::class,
         SelectableAttributeRenderer::class,

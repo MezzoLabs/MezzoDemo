@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Core\Modularisation\Domain\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany as EloquentBelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany as EloquentHasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
+use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Repositories\ModelRepository;
 use MezzoLabs\Mezzo\Core\Modularisation\NamingConvention;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
@@ -19,6 +20,7 @@ use MezzoLabs\Mezzo\Exceptions\RepositoryException;
  *
  * @property array $rules
  * @property AttributeValues $attributeValues
+ * @method array getOriginal
  */
 trait HasMezzoAnnotations
 {
@@ -175,6 +177,28 @@ trait HasMezzoAnnotations
     {
         return [];
     }
+
+    public function getPivotValues()
+    {
+        $values = [];
+
+        foreach ($this->getOriginal() as $key => $value) {
+            if (!Str::startsWith($key, 'pivot_')) {
+                continue;
+            }
+
+            if (Str::endsWith($key, '_id')) {
+                continue;
+            }
+
+            $values[$key] = $value;
+        }
+
+        return $values;
+
+    }
+
+
 
 
 }

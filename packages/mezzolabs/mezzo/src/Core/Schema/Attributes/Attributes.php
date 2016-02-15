@@ -51,6 +51,17 @@ class Attributes extends Collection
     /**
      * @return static
      */
+    public function pivotAttributes()
+    {
+        return $this->filter(function (Attribute $attribute) {
+            return $attribute instanceof PivotAttribute;
+        });
+    }
+
+
+    /**
+     * @return static
+     */
     public function visibleOnly()
     {
         return $this->filter(function (Attribute $attribute) {

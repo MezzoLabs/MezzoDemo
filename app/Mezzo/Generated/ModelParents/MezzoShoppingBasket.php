@@ -73,7 +73,7 @@ abstract class MezzoShoppingBasket extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $fillable = [
-
+        'user_id'
     ];
 
     /**
