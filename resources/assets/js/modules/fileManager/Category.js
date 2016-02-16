@@ -1,6 +1,7 @@
 export default class Category {
 
-    constructor(label, icon, filter = null, everything = false){
+    constructor(key, label, icon, filter = null, everything = false) {
+        this.key = key;
         this.label = label;
         this.icon = icon;
         this.filter = filter;

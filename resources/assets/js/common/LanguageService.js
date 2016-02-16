@@ -63,6 +63,7 @@ export default class LanguageService {
             this.cache[cacheKey] = this.findInTree(key, language);
         }
 
+
         return this.amountSubstring(this.cache[cacheKey], count);
 
     }

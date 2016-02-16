@@ -1,11 +1,11 @@
 import Category from './Category';
 
 export default [
-    new Category('Everything', 'ion-ios-home', everythingFilter, true),
-    new Category('Images', 'ion-ios-photos', imageFilter),
-    new Category('Videos', 'ion-ios-videocam', videoFilter),
-    new Category('Audio', 'ion-ios-mic', audioFilter),
-    new Category('Documents', 'ion-ios-paper', documentFilter)
+    new Category('everything', 'Everything', 'ion-ios-home', everythingFilter, true),
+    new Category('images', 'Images', 'ion-ios-photos', imageFilter),
+    new Category('videos', 'Videos', 'ion-ios-videocam', videoFilter),
+    new Category('audio', 'Audio', 'ion-ios-mic', audioFilter),
+    new Category('documents', 'Documents', 'ion-ios-paper', documentFilter)
 ];
 
 function everythingFilter(file){

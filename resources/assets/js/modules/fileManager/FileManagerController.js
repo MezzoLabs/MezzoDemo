@@ -384,7 +384,7 @@ export default class FileManagerController {
 
     translateCategories(categories) {
         for (var i in categories) {
-            categories[i].label = this.translate('categories.' + _.snakeCase(categories[i].label));
+            categories[i].label = this.translate('categories.' + _.snakeCase(categories[i].key));
         }
 
         return categories;
