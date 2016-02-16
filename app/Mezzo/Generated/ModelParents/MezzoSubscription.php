@@ -56,7 +56,7 @@ abstract class MezzoSubscription extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $rules = [
-        'plan' => "required|in:premium,trial",
+        'plan' => "required|alpha_num",
         'subscribed_until' => "required",
         'cancelled' => ""
     ];

@@ -1,7 +1,11 @@
-<div class="pivot-rows">
+<div class="pivot-rows form-section">
     <div class="pivot-row row" ng-repeat="pivotRow in vm.content.{{ $renderer->attribute()->name()  }}">
         <div class="col-md-4">
-            {!! cockpit_form()->relationship($renderer->attribute(), ['multiple' => null, 'name' => $renderer->attribute()->name() . '.@{{ $index }}.id']) !!}
+            <div class="form-group">
+                <label>&nbsp;</label>
+                {!! cockpit_form()->relationship($renderer->attribute(), ['multiple' => null, 'name' => $renderer->attribute()->name() . '.@{{ $index }}.id']) !!}
+
+            </div>
         </div>
         @foreach($renderer->attribute()->relation()->pivotAttributes() as $pivotAttribute)
             <div class="col-md-4">

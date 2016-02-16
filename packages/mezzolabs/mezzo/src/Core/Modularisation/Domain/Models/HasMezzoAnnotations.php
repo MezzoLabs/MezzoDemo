@@ -95,7 +95,7 @@ trait HasMezzoAnnotations
      */
     public function tryToFindOwnerId()
     {
-        $ownerColumns = ['user_id', 'owner_id', 'creator_id'];
+        $ownerColumns = ['user_id', 'owner_id', 'creator_id', 'created_by_id', 'created_by'];
 
         foreach ($ownerColumns as $ownerColumn) {
             if ($this->hasAttribute($ownerColumn)) return $this->getAttribute($ownerColumn);
