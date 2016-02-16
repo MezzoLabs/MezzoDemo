@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Core\Schema\Attributes;
 
 
+use MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput;
 use MezzoLabs\Mezzo\Core\Schema\Relations\ManyToMany;
 
 class PivotAttribute extends Attribute
@@ -23,8 +24,24 @@ class PivotAttribute extends Attribute
         $this->name = $name;
 
         $this->setOptions($options);
-        $this->findType();
+        $this->type = $this->findType();
         $this->relation = $relation;
+    }
+
+    /**
+     * Find out the input type based on the side of the relation we are on.
+     *
+     * @return RelationInputMultiple|RelationInputSingle
+     */
+    protected function findType()
+    {
+        $type = parent::findType();
+
+        if ($type) {
+            return $type;
+        }
+
+        return TextInput::class;
     }
 
     /**

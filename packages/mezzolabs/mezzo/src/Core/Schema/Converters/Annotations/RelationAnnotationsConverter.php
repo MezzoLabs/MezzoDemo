@@ -106,8 +106,11 @@ class RelationAnnotationsConverter extends Converter
 
         $pivotColumns->each(function (PivotColumn $column) use ($attributes, $relation) {
             $attribute = new PivotAttribute($column->name, $relation, [
-                'rules' => $column->rules
+                'rules' => $column->rules,
+                'type' => $column->type
             ]);
+
+            $attributes->addAttribute($attribute);
         });
 
         return $attributes;

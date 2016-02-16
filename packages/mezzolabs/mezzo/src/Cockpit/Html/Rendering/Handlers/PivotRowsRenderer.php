@@ -30,7 +30,7 @@ class PivotRowsRenderer extends AttributeRenderingHandler
      */
     public function render(array $options = [])
     {
-        return $this->view('cockpit::rendering.pivot_rows_input');
+        return $this->view('cockpit::rendering.pivot_rows_input')->render();
 
     }
 

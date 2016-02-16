@@ -87,6 +87,14 @@ class ManyToMany extends Relation
         return $this->pivotColumnTo;
     }
 
+    /**
+     * @return Attributes
+     */
+    public function pivotAttributes()
+    {
+        return $this->pivotAttributes;
+    }
+
     protected function makeColumnsCollection()
     {
         $columns = new Columns();

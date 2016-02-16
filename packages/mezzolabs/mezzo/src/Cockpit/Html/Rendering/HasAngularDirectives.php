@@ -18,6 +18,7 @@ trait HasAngularDirectives
 {
     /**
      * @param RelationAttribute $attribute
+     * @param array $mergeHtmlAttributes
      * @return string
      */
     public function relationship(RelationAttribute $attribute, array $mergeHtmlAttributes = []) : string
@@ -28,7 +29,7 @@ trait HasAngularDirectives
             'name' => $attribute->name()
         ];
 
-        if ($attribute->hasMultipleChildren()) $htmlAttributes[] = 'multiple';
+        if ($attribute->hasMultipleChildren() && $mergeHtmlAttributes['multiple'] !== null) $htmlAttributes[] = 'multiple';
 
         $validationRules = (new HtmlRules($attribute->rules()))->attributes()->toArray();
 

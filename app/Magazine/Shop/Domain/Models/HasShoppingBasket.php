@@ -5,12 +5,14 @@ namespace App\Magazine\Shop\Domain\Models;
 
 
 use App\Magazine\Shop\Domain\Repositories\ShoppingBasketRepository;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class HasShoppingBasket
  * @package App\Magazine\Shop\Domain\Models
  *
  * @property \App\ShoppingBasket $shoppingBasket
+ * @method HasOne shoppingBasket
  */
 trait HasShoppingBasket
 {
@@ -26,6 +28,9 @@ trait HasShoppingBasket
             return $this->shoppingBasket;
         }
 
-        return ShoppingBasketRepository::instance()->create(['user_id' => $this->id]);
+
+        $this->shoppingBasket = ShoppingBasketRepository::instance()->create(['user_id' => $this->id]);
+
+        return $this->shoppingBasket;
     }
 }

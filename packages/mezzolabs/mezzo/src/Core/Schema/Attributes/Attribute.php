@@ -245,11 +245,17 @@ class Attribute
     protected function makeTitle() : string
     {
 
-        $translation = Translator::find([
-            'attributes.' . $this->getModel()->shortName() . '.' . $this->naming(),
-            'attributes.' . $this->naming(),
-            'validation.attributes.' . $this->naming()
-        ]);
+        $translationKeys = [];
+
+        if($this->getModel()){
+            $translationKeys[] = 'attributes.' . $this->getModel()->shortName() . '.' . $this->naming();
+        }
+
+        $translationKeys[] = 'attributes.' . $this->naming();
+        $translationKeys[] = 'validation.attributes.' . $this->naming();
+
+
+        $translation = Translator::find($translationKeys);
 
         if(is_array($translation))
             $translation = array_values($translation)[0];
@@ -345,6 +351,16 @@ class Attribute
      */
     protected function findType()
     {
-        return $this->options()->get('type');
+        $type = $this->options()->get('type');
+
+        if(is_object($type)){
+            return $type;
+        }
+
+        if(!class_exists($type)){
+            return null;
+        }
+
+        return app()->make($type);
     }
 } 

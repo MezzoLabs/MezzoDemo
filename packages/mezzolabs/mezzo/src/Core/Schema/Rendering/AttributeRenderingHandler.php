@@ -117,8 +117,10 @@ abstract class AttributeRenderingHandler
      */
     public function name()
     {
-        if (!$this->getOptions()->isNested())
-            return $this->attribute()->name();
+
+        if (!$this->getOptions()->isNested()) {
+            return $this->getOptions()->get('namePrefix', '') . $this->attribute()->name();
+        }
 
         if ($this->getOptions()->parent()->relationSide()->hasOneChild())
             return $this->getOptions()->parentName() . '.' . $this->attribute()->name();

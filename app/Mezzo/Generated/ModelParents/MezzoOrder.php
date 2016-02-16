@@ -216,7 +216,7 @@ abstract class MezzoOrder extends \App\Mezzo\BaseModel
      * @Mezzo\Relations\From(table="products", primaryKey="id", naming="orders")
      * @Mezzo\Relations\To(table="orders", primaryKey="id", naming="products")
      * @Mezzo\Relations\PivotTable(name="order_product", fromColumn="product_id", toColumn="order_id")
-     * @Mezzo\Relations\PivotColumn(name="amount", type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", rules="numeric|between:1,50")
+     * @Mezzo\Relations\PivotColumn(name="amount", type="MezzoLabs\Mezzo\Core\Schema\InputTypes\NumberInput", rules="numeric|between:1,50")
      * @Mezzo\Relations\Scopes("")
      */
     protected $_products;

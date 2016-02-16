@@ -27,7 +27,7 @@ class RelationAttribute extends Attribute
         $this->relationSide = $relationSide;
 
         $this->setOptions($options);
-        $this->findType();
+        $this->type = $this->findType();
     }
 
     /**
@@ -40,14 +40,14 @@ class RelationAttribute extends Attribute
         $annotationsType = parent::findType();
 
         if (!empty($annotationsType)) {
-            return $this->type = $annotationsType;
+            return $annotationsType;
         }
 
         if ($this->hasOneChild()) {
-            return $this->type = new RelationInputSingle();
+            return new RelationInputSingle();
         }
 
-        return $this->type = new RelationInputMultiple();
+        return new RelationInputMultiple();
     }
 
 
