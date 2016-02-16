@@ -19,9 +19,12 @@ export default class FormValidationService {
             .attr('ng-disabled', 'vm.loading');
 
 
-        $formGroup
-            .attr('ng-class', `vm.hasError('${ nameAttribute }')`)
-            .append(validationMessagesTemplate);
+        if ($formGroup.find('mezzo-validation-messages').length == 0) {
+            $formGroup
+                .attr('ng-class', `vm.hasError('${ nameAttribute }')`)
+                .append(validationMessagesTemplate);
+        }
+
 
         const isSelect = $formInput.is('select');
 

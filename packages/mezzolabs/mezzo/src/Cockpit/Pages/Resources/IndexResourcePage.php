@@ -4,7 +4,6 @@
 namespace MezzoLabs\Mezzo\Cockpit\Pages\Resources;
 
 
-use Illuminate\Support\Collection;
 use MezzoLabs\Mezzo\Cockpit\Pages\Forms\IndexTableColumn;
 use MezzoLabs\Mezzo\Cockpit\Pages\Forms\IndexTableColumns;
 use MezzoLabs\Mezzo\Core\Permission\PermissionGuard;
@@ -52,15 +51,6 @@ abstract class IndexResourcePage extends ResourcePage
         return $columns;
     }
 
-    /**
-     *
-     *
-     * @return Collection
-     */
-    public function frontendOptions()
-    {
-        return new Collection($this->frontendOptions);
-    }
 
     /**
      * Check if the current user is allowed to view this page.

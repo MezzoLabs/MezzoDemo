@@ -38,7 +38,7 @@ class PermissionGuard
 
         $authUser = $this->authGuard->user();
 
-        if(!$authUser){
+        if (!$authUser) {
             $this->fail('Only logged in users can perform this task.');
         }
 
@@ -55,32 +55,32 @@ class PermissionGuard
         return $this->user() != null;
     }
 
-    public function allowsCreate(MezzoModel $model, \App\User $user = null) : bool
+    public function allowsCreate(MezzoModel $model, \App\User $user = null, $options = []) : bool
     {
         return $this->allowsModelAccess($model, 'create', $user);
     }
 
-    public function allowsShow(MezzoModel $model, \App\User $user = null) : bool
+    public function allowsShow(MezzoModel $model, \App\User $user = null, $options = []) : bool
     {
         return $this->allowsModelAccess($model, 'show', $user);
     }
 
-    public function allowsEdit(MezzoModel $model, \App\User $user = null) : bool
+    public function allowsEdit(MezzoModel $model, \App\User $user = null, $options = []) : bool
     {
         return $this->allowsModelAccess($model, 'edit', $user);
     }
 
-    public function allowsDelete(MezzoModel $model, \App\User $user = null) : bool
+    public function allowsDelete(MezzoModel $model, \App\User $user = null, $options = []) : bool
     {
         return $this->allowsModelAccess($model, 'delete', $user);
     }
 
-    public function allowsCockpit(\App\User $user = null) : bool
+    public function allowsCockpit(\App\User $user = null, $options = []) : bool
     {
         return $this->hasPermission('cockpit', $user) && $this->user($user)->isBackendUser();
     }
 
-    public function allowsCreateOrEdit(MezzoModel $model)
+    public function allowsCreateOrEdit(MezzoModel $model, $options = [])
     {
         if ($model->exists)
             return $this->allowsEdit($model);
@@ -88,8 +88,10 @@ class PermissionGuard
         return $this->allowsCreate($model);
     }
 
-    protected function allowsModelAccess(MezzoModel $model, $level = 'show', \App\User $user = null)
+    protected function allowsModelAccess(MezzoModel $model, $level = 'show', \App\User $user = null, $options = [])
     {
+        $options['log'] = $options['log'] ?? true;
+
         if (!$this->enabled())
             return true;
 
@@ -106,7 +108,9 @@ class PermissionGuard
 
         static::$lastMissingPermission = $accessOwn;
 
-        mezzo()->logger()->logMissingPermission($accessAll);
+        if ($options['log']) {
+            mezzo()->logger()->logMissingPermission($accessAll);
+        }
 
         return false;
     }

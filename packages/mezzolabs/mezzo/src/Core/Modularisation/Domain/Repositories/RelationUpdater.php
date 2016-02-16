@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
+use Illuminate\Support\Str;
+use MezzoLabs\Mezzo\Core\Helpers\ArrayAnalyser;
 use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\AttributeValue;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\RelationAttribute;
@@ -34,6 +36,11 @@ class RelationUpdater extends EloquentRepository
     protected $eloquentRelation;
 
     /**
+     * @var ArrayAnalyser
+     */
+    protected $arrayAnalyser;
+
+    /**
      * @param MezzoModel $model
      * @param AttributeValue $attributeValue
      */
@@ -44,6 +51,7 @@ class RelationUpdater extends EloquentRepository
 
         $this->eloquentRelation = $model->relation($attributeValue->name());
 
+        $this->arrayAnalyser = app()->make(ArrayAnalyser::class);
 
         $this->validate();
     }
@@ -122,8 +130,46 @@ class RelationUpdater extends EloquentRepository
      */
     protected function updateBelongsToManyRelation(BelongsToMany $relation, array $ids)
     {
+        if ($this->arrayAnalyser->isPivotRowsArray($ids)) {
+            $ids = $this->convertPivotRowsToSyncArray($ids);
+        }
+
         $result = $relation->sync($ids);
         return (is_array($result));
+    }
+
+    /**
+     * Convert a pivot rows array from an HTTP request to an eloquent sync array.
+     *
+     * E.g.:
+     * From
+     * [0 => [id = 6, pivot_amount = 2]*
+     * To
+     * [6 => [amount => 2]
+     *
+     * @param array $pivotRows
+     * @return array
+     */
+    private function convertPivotRowsToSyncArray(array $pivotRows)
+    {
+        $sync = [];
+
+        foreach ($pivotRows as $row) {
+            $sync[$row['id']] = [];
+
+            foreach ($row as $pivot_key => $value) {
+                if (!Str::startsWith($pivot_key, 'pivot_')) {
+                    continue;
+                }
+
+                $key = str_replace('pivot_', '', $pivot_key);
+
+                $sync[$row['id']][$key] = $value;
+            }
+        }
+
+
+        return $sync;
     }
 
     /**
@@ -153,7 +199,7 @@ class RelationUpdater extends EloquentRepository
     {
         $value = $this->attributeValue()->value();
 
-        if(empty($value)){
+        if (empty($value)) {
             return [];
         }
 
@@ -188,10 +234,14 @@ class RelationUpdater extends EloquentRepository
 
     /**
      * @param $id
-     * @return int
+     * @return int|array
      */
-    protected function processId($id) : int
+    protected function processId($id)
     {
+        if ($this->arrayAnalyser->isPivotRowArray($id)) {
+            return $id;
+        }
+
         if (is_array($id)) {
             throw new RepositoryException('Id cannot be an array. ' . var_export($id, true));
         }

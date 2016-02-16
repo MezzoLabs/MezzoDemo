@@ -29,7 +29,8 @@ trait HasAngularDirectives
             'name' => $attribute->name()
         ];
 
-        if ($attribute->hasMultipleChildren() && $mergeHtmlAttributes['multiple'] !== null) $htmlAttributes[] = 'multiple';
+        if ($attribute->hasMultipleChildren() && (!array_key_exists('multiple', $mergeHtmlAttributes) || $mergeHtmlAttributes['multiple'] !== null)
+        ) $htmlAttributes[] = 'multiple';
 
         $validationRules = (new HtmlRules($attribute->rules()))->attributes()->toArray();
 

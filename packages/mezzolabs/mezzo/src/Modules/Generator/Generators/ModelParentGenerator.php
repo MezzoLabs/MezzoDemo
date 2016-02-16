@@ -14,6 +14,7 @@ use MezzoLabs\Mezzo\Modules\Generator\Schema\ModelParentSchemas;
 class ModelParentGenerator extends FileGenerator
 {
 
+
     /**
      * @var ModelSchemas
      */

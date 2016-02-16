@@ -23,8 +23,8 @@ class CreateOrdersTable extends Migration
 
             $table->text('info');
             $table->string('status')->required()->default('open');
-            $table->timestamps();
 
+            $table->timestamps();
             $table->softDeletes();
 
         });

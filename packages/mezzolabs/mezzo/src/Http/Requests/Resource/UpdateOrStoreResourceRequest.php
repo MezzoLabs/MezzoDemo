@@ -24,8 +24,11 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
     public function formObject()
     {
         if (!$this->formObject) {
+
             $this->addDefaultData();
+
             $this->removeEmptyArrayItems();
+
             $this->processData();
             $this->formObject = $this->makeFormObject();
             $this->formObject->setId($this->getId());
@@ -122,6 +125,13 @@ abstract class UpdateOrStoreResourceRequest extends ResourceRequest
             }
         }
 
-        return array_filter($input);
+        return array_filter($input, function ($value) {
+
+            if ($value === 0 || $value === "0") {
+                return true;
+            }
+
+            return !empty($value);
+        });
     }
 }

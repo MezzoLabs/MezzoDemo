@@ -56,7 +56,7 @@ abstract class MezzoSubscription extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $rules = [
-        'plan' => "required|in:premium,trial",
+        'plan' => "required|alpha_num",
         'subscribed_until' => "required",
         'cancelled' => ""
     ];
@@ -128,7 +128,7 @@ abstract class MezzoSubscription extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for plan
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\SelectInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
      * @var string
      */
     protected $_plan;

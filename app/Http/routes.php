@@ -276,7 +276,7 @@ Route::get('test/api/relations', function () {
 Route::get('test/orders', function () {
     $cart = \Auth::user()->getOrMakeShoppingBasket();
 
-    $order = \App\Magazine\Shop\Domain\Repositories\OrderRepository::instance()->makeFromShoppingBasket($cart);
+    $order = \App\Magazine\Shop\Domain\Repositories\OrderRepository::instance()->createFromShoppingBasket($cart);
 
     mezzo_dd($order);
 });

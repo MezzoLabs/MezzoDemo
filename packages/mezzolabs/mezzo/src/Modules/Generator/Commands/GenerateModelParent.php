@@ -8,12 +8,13 @@ use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 
 class GenerateModelParent extends MezzoCommand
 {
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'mezzo:generate:model-parent';
+    protected $signature = 'mezzo:generate:model-parent {model}';
 
     /**
      * The console command description.
@@ -39,10 +40,9 @@ class GenerateModelParent extends MezzoCommand
      */
     public function handle()
     {
-        $modelName = $this->ask('For which model?');
 
         $reflectionManager = mezzo()->makeReflectionManager();
-        $reflection = $reflectionManager->eloquentReflection($modelName);
+        $reflection = $reflectionManager->eloquentReflection($this->argument('model'));
         $schema = $reflection->schema();
 
         $schemas = new \MezzoLabs\Mezzo\Core\Schema\ModelSchemas();

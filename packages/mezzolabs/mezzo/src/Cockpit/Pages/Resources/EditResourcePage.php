@@ -4,7 +4,9 @@
 namespace MezzoLabs\Mezzo\Cockpit\Pages\Resources;
 
 
+use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Core\Permission\PermissionGuard;
+use MezzoLabs\Mezzo\Exceptions\ModulePageException;
 
 class EditResourcePage extends ResourcePage
 {
@@ -14,6 +16,18 @@ class EditResourcePage extends ResourcePage
         'visibleInNavigation' => false,
         'appendToUri' => '/{id}'
     ];
+
+
+    /**
+     * @param ModuleProvider $module
+     * @throws ModulePageException
+     */
+    public function __construct(ModuleProvider $module)
+    {
+        parent::__construct($module);
+
+        //$this->frontendOption('canEdit', PermissionGuard::make()->allowsEdit($this->model()->instance()));
+    }
 
     protected $view = 'cockpit::pages.resources.edit';
 
@@ -30,5 +44,6 @@ class EditResourcePage extends ResourcePage
 
         return PermissionGuard::make()->allowsEdit($this->model()->instance(true));
     }
+
 
 }

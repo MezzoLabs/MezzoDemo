@@ -34,5 +34,17 @@ class PivotRowsRenderer extends AttributeRenderingHandler
 
     }
 
+    public function before() : string
+    {
+        return "<label>" . $this->attribute()->title() . "</label>";
+
+    }
+
+    public function after() : string
+    {
+        return "";
+
+    }
+
 
 }
