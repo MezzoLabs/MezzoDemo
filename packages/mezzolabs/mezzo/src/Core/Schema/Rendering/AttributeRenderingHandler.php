@@ -204,7 +204,6 @@ abstract class AttributeRenderingHandler
             $optionsAttributes['ng-model'] = $this->ngModel();
         }
 
-
         return array_merge($htmlAttributes, $optionsAttributes);
     }
 

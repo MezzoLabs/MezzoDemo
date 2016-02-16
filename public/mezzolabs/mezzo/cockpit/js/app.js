@@ -39,10 +39,10 @@ app.run(_run2.default);
     "./modules/fileManager": 54,
     "./modules/googleMaps": 55,
     "./modules/resource": 68,
-    "./modules/users": 73,
-    "./setup/config": 74,
-    "./setup/jquery": 76,
-    "./setup/run": 78
+    "./modules/users": 74,
+    "./setup/config": 75,
+    "./setup/jquery": 77,
+    "./setup/run": 79
 }], 2: [function (require, module, exports) {
 'use strict';
 
@@ -1655,7 +1655,9 @@ var FormValidationService = function () {
 
             $formInput.not('[readonly],[disabled]').attr('ng-disabled', 'vm.loading');
 
-            $formGroup.attr('ng-class', 'vm.hasError(\'' + nameAttribute + '\')').append(validationMessagesTemplate);
+            if ($formGroup.find('mezzo-validation-messages').length == 0) {
+                $formGroup.attr('ng-class', 'vm.hasError(\'' + nameAttribute + '\')').append(validationMessagesTemplate);
+            }
 
             var isSelect = $formInput.is('select');
 
@@ -1697,14 +1699,25 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formValidationDirective;
 /*@ngInject*/
-function formValidationDirective(formValidationService) {
+    function formValidationDirective(formValidationService, eventDispatcher) {
     return {
         restrict: 'A',
         compile: compile
     };
 
     function compile(element) {
-        $(element).find(':input').each(function (index, formInput) {
+        console.log('set up form vali');
+        eventDispatcher.on('form.received', function (event, payload) {
+            setTimeout(function () {
+                assignTo($(element));
+            }, 1);
+        });
+
+        assignTo($(element));
+    }
+
+        function assignTo(formElement) {
+            $(formElement).find(':input').each(function (index, formInput) {
             formValidationService.assign(formInput);
         });
     }
@@ -3238,6 +3251,12 @@ var FileManagerController = function () {
                     toastr.error(err.data.message);
                 }
 
+                if (err.statusText) {
+                    toastr.error(err.status + ': ' + err.statusText);
+                }
+
+                toastr.error('Oops.. unknown error.');
+
                 console.error(err);
             });
         }
@@ -4455,6 +4474,8 @@ var EditResourceController = function (_ResourceController) {
             var cleaned = this.formDataService.transform(model);
 
             this.content = cleaned.stripped;
+            console.log('content', this.content);
+
             this.inputs = cleaned.flattened;
 
             this.loading = false;
@@ -5796,6 +5817,10 @@ var _ShowResourceController = require('./ShowResourceController');
 
 var _ShowResourceController2 = _interopRequireDefault(_ShowResourceController);
 
+    var _PivotRowsController = require('./relations/PivotRowsController');
+
+    var _PivotRowsController2 = _interopRequireDefault(_PivotRowsController);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _module = angular.module('MezzoResources', []);
@@ -5809,6 +5834,8 @@ _module.controller('CreateResourceController', _CreateResourceController2.defaul
 _module.controller('EditResourceController', _EditResourceController2.default);
 _module.controller('ShowResourceController', _ShowResourceController2.default);
 
+    _module.controller('PivotRowsController', _PivotRowsController2.default);
+
     _module.controller('EditUserSubscriptionsController', _EditUserSubscriptionsController2.default);
 
 }, {
@@ -5820,7 +5847,8 @@ _module.controller('ShowResourceController', _ShowResourceController2.default);
     "./formDataService": 67,
     "./registerStateDirective": 69,
     "./relations/EditUserSubscriptionsController": 71,
-    "./stateProvider": 72
+    "./relations/PivotRowsController": 72,
+    "./stateProvider": 73
 }], 69: [function (require, module, exports) {
 'use strict';
 
@@ -6206,7 +6234,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
             _this.relationModelsApi = _this.api.model('Subscription');
             return _this;
-        }
+    }
 
         _createClass(EditUserSubscriptionsController, [{
             key: 'deleteRelationItem',
@@ -6237,6 +6265,55 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 }, {"./EditRelationsController": 70}], 72: [function (require, module, exports) {
     "use strict";
 
+    var _createClass = function () {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || false;
+                descriptor.configurable = true;
+                if ("value" in descriptor) descriptor.writable = true;
+                Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+            if (protoProps) defineProperties(Constructor.prototype, protoProps);
+            if (staticProps) defineProperties(Constructor, staticProps);
+            return Constructor;
+        };
+    }();
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var PivotRowsController = function () {
+        function PivotRowsController($scope) {
+            _classCallCheck(this, PivotRowsController);
+
+            this.vm = $scope.vm;
+        }
+
+        _createClass(PivotRowsController, [{
+            key: "init",
+            value: function init() {
+            }
+        }]);
+
+        return PivotRowsController;
+    }();
+
+    exports.default = PivotRowsController;
+
+}, {}], 73: [function (require, module, exports) {
+    "use strict";
+
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
@@ -6250,12 +6327,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
 }
 
-}, {}], 73: [function (require, module, exports) {
+}, {}], 74: [function (require, module, exports) {
     'use strict';
 
     var _module = angular.module('MezzoUsers', []);
 
-}, {}], 74: [function (require, module, exports) {
+}, {}], 75: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6283,7 +6360,7 @@ function config($locationProvider, $httpProvider, $stateProvider, $translateProv
     $locationProvider.html5Mode(true);
 }
 
-}, {"./customRoutes": 75, "./lang": 77}], 75: [function (require, module, exports) {
+}, {"./customRoutes": 76, "./lang": 78}], 76: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -6302,7 +6379,7 @@ function customRoutes($stateProvider) {
     });
 }
 
-}, {}], 76: [function (require, module, exports) {
+}, {}], 77: [function (require, module, exports) {
 'use strict';
 
 $(function () {
@@ -6393,7 +6470,7 @@ function quickviewVisible(open) {
     }
 }
 
-}, {}], 77: [function (require, module, exports) {
+}, {}], 78: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -6411,7 +6488,7 @@ function addTranslations($translateProvider, languageService) {
     $translateProvider.preferredLanguage('de');
 }
 
-}, {}], 78: [function (require, module, exports) {
+}, {}], 79: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

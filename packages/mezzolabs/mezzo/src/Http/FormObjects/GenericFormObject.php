@@ -6,6 +6,7 @@ namespace Mezzolabs\Mezzo\Cockpit\Http\FormObjects;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use MezzoLabs\Mezzo\Core\Helpers\ArrayAnalyser;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Validation\RulesTransformer;
 
@@ -34,6 +35,11 @@ class GenericFormObject implements FormObject
     protected $id;
 
     /**
+     * @var ArrayAnalyser
+     */
+    protected $arrayAnalyser;
+
+    /**
      * @param string $model
      * @param $data
      */
@@ -41,6 +47,8 @@ class GenericFormObject implements FormObject
     {
         $this->model = mezzo()->model($model);
         $this->data = new Collection($data);
+
+        $this->arrayAnalyser = app(ArrayAnalyser::class);
 
         $this->processData();
     }
@@ -114,7 +122,7 @@ class GenericFormObject implements FormObject
         $nested = new NestedRelations();
 
         $this->data->each(function ($value, $name) use ($nested) {
-            if (!is_array($value) || $this->isIdsArray($value) || $this->isJsonArray($value)) {
+            if (!$this->isNestedRelation($value)) {
                 return true;
             }
 
@@ -124,6 +132,20 @@ class GenericFormObject implements FormObject
         });
 
         return $nested;
+    }
+
+    public function isNestedRelation($data)
+    {
+        if (!is_array($data)) {
+            return false;
+        }
+
+        if ($this->isIdsArray($data) || $this->isJsonArray($data) || $this->isPivotRowsArray($data)) {
+            return false;
+        }
+
+
+        return true;
     }
 
 
@@ -171,13 +193,13 @@ class GenericFormObject implements FormObject
     protected function convertCommaSeparatedIds()
     {
         foreach ($this->data as $key => $value) {
-            if(! $this->model->schema()->hasAttribute($key))
+            if (!$this->model->schema()->hasAttribute($key))
                 continue;
 
-            if(! $this->model->schema()->attributes($key)->isRelationAttribute() || is_array($value))
+            if (!$this->model->schema()->attributes($key)->isRelationAttribute() || is_array($value))
                 continue;
 
-            if(str_contains($value, ','))
+            if (str_contains($value, ','))
                 $this->data[$key] = explode(',', $value);
         }
     }
@@ -230,6 +252,19 @@ class GenericFormObject implements FormObject
     private function isJsonArray($value)
     {
         return is_array($value) && isset($value['_json']) && $value['_json'];
+    }
+
+    /**
+     * Checks if an array is a pivot.
+     *
+     * E.g.: products[0] => id = 6, pivot_amount = 2
+     *
+     * @param array $array
+     * @return bool
+     */
+    private function isPivotRowsArray(array $array)
+    {
+        return $this->arrayAnalyser->isPivotRowsArray($array);
     }
 
     protected function removeMetaInfo()

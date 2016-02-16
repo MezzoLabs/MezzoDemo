@@ -299,6 +299,12 @@ export default class FileManagerController {
                 toastr.error(err.data.message);
             }
 
+            if (err.statusText) {
+                toastr.error(err.status + ': ' + err.statusText);
+            }
+
+            toastr.error('Oops.. unknown error.');
+
             console.error(err);
         });
     }
