@@ -1,15 +1,17 @@
-@extends('cockpit::layouts.default.content.container')
+@extends('cockpit::pages.layouts.index')
 
 
-@section('content')
+@section('index_table_body_cell')
 
-    @include('cockpit::partials.pages.index_wrapper_open')
 
-    @include('cockpit::partials.pages.index_actions')
+    <span ng-if="$first" style="display: inline-block; width: 35px">
+        <img width="35" ng-if="model.mainImage && $first" ng-src="@{{ model.mainImage.data.url }}?size=thumb"/>
+    </span>
 
-    @include('modules.posts::partials.post_index_table')
+    @parent
 
-    @include('cockpit::partials.pages.index_wrapper_close')
-
+    <b ng-if="$first">
+        @{{ (model._is_published) ? '' : '- Private' }}
+    </b>
 
 @endsection

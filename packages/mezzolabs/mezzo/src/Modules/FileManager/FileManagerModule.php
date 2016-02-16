@@ -16,6 +16,7 @@ use MezzoLabs\Mezzo\Modules\FileManager\Disk\FileUploadManager;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\Observers\FileObserver;
 use MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles\FileTypesMapper;
 use MezzoLabs\Mezzo\Modules\FileManager\Http\Transformers\FileTransFormer;
+use MezzoLabs\Mezzo\Modules\FileManager\Http\Transformers\ImageFileTransformer;
 use MezzoLabs\Mezzo\Modules\FileManager\Schema\Rendering\FileAttributeRenderer;
 use MezzoLabs\Mezzo\Modules\FileManager\Schema\Rendering\FilesAttributeRenderer;
 use MezzoLabs\Mezzo\Modules\FileManager\Schema\Rendering\FileTypes\ImageAttributeRenderer;
@@ -57,7 +58,8 @@ class FileManagerModule extends ModuleProvider
         $this->loadViews();
 
         $this->registerTransformers([
-            File::class => FileTransFormer::class
+            File::class => FileTransFormer::class,
+            ImageFile::class => ImageFileTransformer::class
         ]);
 
         $this->registerContentBlocks([

@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Cockpit\Pages\Resources;
 
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
@@ -29,6 +30,13 @@ abstract class ResourcePage extends ModulePage
      * @var MezzoModelReflection
      */
     private $modelReflection;
+
+    /**
+     * Options that will be passed to the frontend controller in the vm.init function.
+     *
+     * @var array
+     */
+    protected $frontendOptions = [];
 
     /**
      * @param ModuleProvider $module
@@ -181,6 +189,33 @@ abstract class ResourcePage extends ModulePage
             return "index";
 
         return "";
+    }
+
+    /**
+     * @param array $merge
+     * @return Collection
+     */
+    public function defaultIncludes($merge = [])
+    {
+        return $this->model()->defaultIncludes('index', $merge);
+    }
+
+    /**
+     * @return Collection | mixed
+     */
+    public function frontendOption($key = null, $value = null)
+    {
+        if ($key !== null && $value !== null) {
+            $this->frontendOptions[$key] = $value;
+
+            return $value;
+        }
+
+        if ($key !== null) {
+            return $this->frontendOptions[$key];
+        }
+
+        return new Collection($this->frontendOptions);
     }
 
 

@@ -4344,6 +4344,9 @@ var CreateResourceController = function (_ResourceController) {
     _createClass(CreateResourceController, [{
         key: 'init',
         value: function init(modelName) {
+            var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+            this.options = options;
             this.modelName = modelName;
             this.modelApi = this.api.model(this.modelName);
         }
@@ -4353,8 +4356,15 @@ var CreateResourceController = function (_ResourceController) {
             var _this2 = this;
 
             return this.modelApi.create(formData).then(function (model) {
-                _this2.edit(model.id);
                 toastr.success('Success! ' + model._label + ' created');
+
+                if (model._permissions && !model._permissions.edit) {
+                    toastr.warning('No rights to edit.');
+                    _this2.index();
+                    return;
+                }
+
+                _this2.edit(model.id);
             });
         }
     }, {
@@ -4362,6 +4372,11 @@ var CreateResourceController = function (_ResourceController) {
         value: function edit(modelId) {
 
             this.modelStateService.name(this.modelName).id(modelId).edit();
+        }
+    }, {
+        key: 'index',
+        value: function index() {
+            this.modelStateService.name(this.modelName).index();
         }
     }]);
 
@@ -4955,7 +4970,7 @@ var IndexResourceController = function () {
     }, {
         key: 'displayAsLink',
         value: function displayAsLink($first, model) {
-            return $first && !this.isLocked(model);
+            return $first && !this.isLocked(model) && (!model._permissions || model._permissions.edit);
         }
 
         /**
@@ -5506,6 +5521,7 @@ var ResourceController = function () {
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
         this.isBusy = false;
         this.$scope = $scope;
+        this.options = {};
 
         this.form = {}; //name of the main form is vm.form
 

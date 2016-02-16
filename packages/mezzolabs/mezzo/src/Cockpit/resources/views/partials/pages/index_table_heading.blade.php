@@ -4,6 +4,7 @@
     <th>
         <input type="checkbox" ng-model="vm.selectAll" ng-change="vm.updateSelectAll()">
     </th>
+    <th></th>
 
     @foreach($module_page->columns() as $name => $column)
         <th ng-init="vm.addAttribute('{{ $column->name }}', '{{ $column->type }}', {!! str_replace('"', "'", $column->options->toJson()) !!})">
