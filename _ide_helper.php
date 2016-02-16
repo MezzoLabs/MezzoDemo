@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.1.28 (LTS) on 2016-01-24.
+ * Generated for Laravel 5.1.29 (LTS) on 2016-02-16.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -2285,8 +2285,7 @@ namespace {
          * @return \Predis\ClientInterface 
          * @static 
          */
-        public static function connection()
-        {
+        public static function connection(){
             return \Illuminate\Cache\RedisStore::connection();
         }
         
@@ -2297,22 +2296,20 @@ namespace {
          * @return void 
          * @static 
          */
-        public static function setConnection($connection)
-        {
+        public static function setConnection($connection){
             \Illuminate\Cache\RedisStore::setConnection($connection);
         }
         
         /**
          * Get the Redis database instance.
          *
-         * @return \Illuminate\Redis\Database
-         * @static
+         * @return \Illuminate\Redis\Database 
+         * @static 
          */
-        public static function getRedis()
-        {
+        public static function getRedis(){
             return \Illuminate\Cache\RedisStore::getRedis();
         }
-
+        
         /**
          * Get the cache key prefix.
          *
@@ -2322,16 +2319,15 @@ namespace {
         public static function getPrefix(){
             return \Illuminate\Cache\RedisStore::getPrefix();
         }
-
+        
         /**
          * Set the cache key prefix.
          *
          * @param string $prefix
-         * @return void
-         * @static
+         * @return void 
+         * @static 
          */
-        public static function setPrefix($prefix)
-        {
+        public static function setPrefix($prefix){
             \Illuminate\Cache\RedisStore::setPrefix($prefix);
         }
         
@@ -11722,7 +11718,7 @@ namespace {
          * @param string $path
          * @param array $data
          * @param array $mergeData
-         * @return \Illuminate\View\View 
+         * @return \Illuminate\Contracts\View\View 
          * @static 
          */
         public static function file($path, $data = array(), $mergeData = array()){
@@ -11747,7 +11743,7 @@ namespace {
          *
          * @param string $view
          * @param mixed $data
-         * @return \Illuminate\View\View 
+         * @return \Illuminate\Contracts\View\View 
          * @static 
          */
         public static function of($view, $data = array()){
@@ -11866,7 +11862,7 @@ namespace {
         /**
          * Call the composer for a given view.
          *
-         * @param \Illuminate\View\View $view
+         * @param \Illuminate\Contracts\View\View $view
          * @return void 
          * @static 
          */
@@ -11877,7 +11873,7 @@ namespace {
         /**
          * Call the creator for a given view.
          *
-         * @param \Illuminate\View\View $view
+         * @param \Illuminate\Contracts\View\View $view
          * @return void 
          * @static 
          */
@@ -12661,6 +12657,15 @@ namespace {
 
 
     class Form extends \App\Html\FormFacade{
+        
+        /**
+         * 
+         *
+         * @static 
+         */
+        public static function hello(){
+            return \App\Html\FormBuilder::hello();
+        }
         
         /**
          * 
@@ -15165,97 +15170,89 @@ namespace {
 
 
     class Html extends \App\Html\HtmlHelper{
-
+        
     }
 
 
-    class Socialite extends \Laravel\Socialite\Facades\Socialite
-    {
-
+    class Socialite extends \Laravel\Socialite\Facades\Socialite{
+        
         /**
          * Get a driver instance.
          *
          * @param string $driver
-         * @return mixed
-         * @static
+         * @return mixed 
+         * @static 
          */
-        public static function with($driver)
-        {
+        public static function with($driver){
             return \Laravel\Socialite\SocialiteManager::with($driver);
         }
-
+        
         /**
          * Build an OAuth 2 provider instance.
          *
          * @param string $provider
          * @param array $config
-         * @return \Laravel\Socialite\Two\AbstractProvider
-         * @static
+         * @return \Laravel\Socialite\Two\AbstractProvider 
+         * @static 
          */
-        public static function buildProvider($provider, $config)
-        {
+        public static function buildProvider($provider, $config){
             return \Laravel\Socialite\SocialiteManager::buildProvider($provider, $config);
         }
-
+        
         /**
          * Format the server configuration.
          *
          * @param array $config
-         * @return array
-         * @static
+         * @return array 
+         * @static 
          */
-        public static function formatConfig($config)
-        {
+        public static function formatConfig($config){
             return \Laravel\Socialite\SocialiteManager::formatConfig($config);
         }
-
+        
         /**
          * Get the default driver name.
          *
          * @throws \InvalidArgumentException
-         * @return string
-         * @static
+         * @return string 
+         * @static 
          */
-        public static function getDefaultDriver()
-        {
+        public static function getDefaultDriver(){
             return \Laravel\Socialite\SocialiteManager::getDefaultDriver();
         }
-
+        
         /**
          * Get a driver instance.
          *
          * @param string $driver
-         * @return mixed
-         * @static
+         * @return mixed 
+         * @static 
          */
-        public static function driver($driver = null)
-        {
+        public static function driver($driver = null){
             //Method inherited from \Illuminate\Support\Manager            
             return \Laravel\Socialite\SocialiteManager::driver($driver);
         }
-
+        
         /**
          * Register a custom driver creator Closure.
          *
          * @param string $driver
          * @param \Closure $callback
-         * @return $this
-         * @static
+         * @return $this 
+         * @static 
          */
-        public static function extend($driver, $callback)
-        {
+        public static function extend($driver, $callback){
             //Method inherited from \Illuminate\Support\Manager            
             return \Laravel\Socialite\SocialiteManager::extend($driver, $callback);
         }
-
+        
         /**
          * Get all of the created "drivers".
          *
-         * @return array
-         * @static
+         * @return array 
+         * @static 
          */
-        public static function getDrivers()
-        {
+        public static function getDrivers(){
             //Method inherited from \Illuminate\Support\Manager            
             return \Laravel\Socialite\SocialiteManager::getDrivers();
         }

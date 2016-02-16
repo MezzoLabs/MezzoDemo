@@ -15,7 +15,7 @@ export default function hrefReloadDirective() {
         const $element = $(element);
 
         $element.click($event => {
-            $event.preventDefault();
+            $event.stopPropagation();
             onHrefClick($element);
         });
     }
