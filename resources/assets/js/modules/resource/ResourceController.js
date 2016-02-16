@@ -20,6 +20,7 @@ export default class ResourceController {
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
         this.isBusy = false;
         this.$scope = $scope;
+        this.options = {};
 
         this.form = {}; //name of the main form is vm.form
 

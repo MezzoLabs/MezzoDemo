@@ -160,6 +160,14 @@ return [
                 'subscription' => 'Abonement',
                 'coupon' => 'Wertgutschein'
             ]
+        ],
+        'status' => [
+            'new' => 'Neu',
+            'paid' => 'Bezahlt',
+            'in_progress' => 'In Bearbeitung',
+            'delivery' => 'Zulieferung',
+            'finished' => 'Zugestellt',
+            'canceled' => 'Storniert'
         ]
     ]
 ];

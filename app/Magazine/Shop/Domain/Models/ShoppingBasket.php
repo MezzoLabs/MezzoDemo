@@ -2,6 +2,7 @@
 
 namespace App\Magazine\Shop\Domain\Models;
 
+use App\Magazine\Shop\Domain\Repositories\OrderRepository;
 use App\Magazine\Shop\Domain\Repositories\ShoppingBasketRepository;
 use App\Mezzo\Generated\ModelParents\MezzoShoppingBasket;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -34,7 +35,12 @@ class ShoppingBasket extends MezzoShoppingBasket
      */
     public function moveToOrder()
     {
+        return OrderRepository::instance()->createFromShoppingBasket($this);
+    }
 
+    public function isEmpty()
+    {
+        return $this->itemsAmount() == 0;
     }
 
     /**
@@ -76,6 +82,13 @@ class ShoppingBasket extends MezzoShoppingBasket
 
         return $array;
     }
+
+    public function clearProducts()
+    {
+        return $this->products()->sync([]);
+    }
+
+
 
 
 }

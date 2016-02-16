@@ -8959,7 +8959,9 @@ a {
     border: 1px solid #EEEEEE;
     padding-left: 12px; }
   .form-group label + .form-control {
-    padding-top: 3px; }
+    padding-top: 3px;
+    padding-left: 3px;
+  }
   .form-group .form-control:focus {
     box-shadow: 0 2px 0 #666; }
   .form-group.has-error .form-control {
@@ -9032,6 +9034,12 @@ a {
 
 .select2-container--default .select2-results__option[aria-selected=true] {
   display: none; }
+
+.form-section {
+  background: #fafafa;
+  padding: 10px;
+  margin: 10px 0px;
+}
 
 .gridster .panel .ion-close {
   visibility: hidden;

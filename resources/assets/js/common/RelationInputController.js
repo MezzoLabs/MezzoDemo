@@ -15,12 +15,28 @@ export default class RelationInputController {
         this.eventDispatcher = eventDispatcher;
         this.formController = null;
 
-        this.eventDispatcher.on(['form.received', 'relationinput.models_loaded.' + this.uniqueKey], (events, payloads) => {
-            this.fill(payloads['form.received'].data, payloads['form.received'].form);
-        });
+        this.registerListeners();
 
 
         this.loadModels();
+    }
+
+    registerListeners() {
+        const formReceived = this.eventDispatcher.findInHistory('form.received');
+
+        if (formReceived) {
+            this.eventDispatcher.on('relationinput.models_loaded.' + this.uniqueKey, (events, payloads) => {
+                console.log(formReceived);
+
+                this.fill(formReceived.payload.data, formReceived.form);
+            });
+
+            return;
+        }
+
+        this.eventDispatcher.on(['form.received', 'relationinput.models_loaded.' + this.uniqueKey], (events, payloads) => {
+            this.fill(payloads['form.received'].data, payloads['form.received'].form);
+        });
     }
 
     linked(scope, element, attrs, ctrls){
@@ -48,7 +64,6 @@ export default class RelationInputController {
         if (!this.modelsLoaded) {
             console.error('fill without models loaded');
         }
-
 
         if (form != this.formController)
             return false;

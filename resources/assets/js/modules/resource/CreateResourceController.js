@@ -7,7 +7,8 @@ export default class CreateResourceController extends ResourceController {
         super($injector, $scope);
     }
 
-    init(modelName) {
+    init(modelName, options = {}) {
+        this.options = options;
         this.modelName = modelName;
         this.modelApi = this.api.model(this.modelName);
     }
@@ -15,14 +16,26 @@ export default class CreateResourceController extends ResourceController {
     doSubmit(formData) {
         return this.modelApi.create(formData)
             .then(model => {
-                this.edit(model.id);
                 toastr.success('Success! ' + model._label + ' created');
+
+                if (model._permissions && !model._permissions.edit) {
+                    toastr.warning('No rights to edit.');
+                    this.index();
+                    return;
+                }
+
+                this.edit(model.id);
             });
     }
 
     edit(modelId) {
 
         this.modelStateService.name(this.modelName).id(modelId).edit();
+
+    }
+
+    index() {
+        this.modelStateService.name(this.modelName).index();
 
     }
 

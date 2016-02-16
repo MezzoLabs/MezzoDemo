@@ -25,6 +25,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  * @property integer $user_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property string $note
  * @property \App\User $user
  * @property EloquentCollection $products
  */
@@ -55,7 +56,7 @@ abstract class MezzoShoppingBasket extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $rules = [
-
+        'note' => ""
     ];
 
     /**
@@ -73,7 +74,8 @@ abstract class MezzoShoppingBasket extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $fillable = [
-        'user_id'
+        "user_id",
+        "note"
     ];
 
     /**
@@ -135,6 +137,14 @@ abstract class MezzoShoppingBasket extends \App\Mezzo\BaseModel
      */
     protected $_updated_at;
 
+    /**
+     * Attribute annotation property for note
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextArea", hidden="")
+     * @var string
+     */
+    protected $_note;
+
 
     /*
     |-------------------------------------------------------------------------------------------------------------------
@@ -163,6 +173,7 @@ abstract class MezzoShoppingBasket extends \App\Mezzo\BaseModel
      * @Mezzo\Relations\From(table="shopping_baskets", primaryKey="id", naming="products")
      * @Mezzo\Relations\To(table="products", primaryKey="id", naming="shoppingBaskets")
      * @Mezzo\Relations\PivotTable(name="product_shopping_basket", fromColumn="shopping_basket_id", toColumn="product_id")
+     * @Mezzo\Relations\PivotColumn(name="amount", type="MezzoLabs\Mezzo\Core\Schema\InputTypes\NumberInput", rules="required|between:1,50")
      * @Mezzo\Relations\Scopes("")
      */
     protected $_products;

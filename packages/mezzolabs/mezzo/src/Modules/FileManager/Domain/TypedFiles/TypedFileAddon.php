@@ -6,6 +6,12 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles;
 use App\File;
 use MezzoLabs\Mezzo\Core\Files\Types\FileType;
 
+/**
+ * Interface TypedFileAddon
+ * @package MezzoLabs\Mezzo\Modules\FileManager\Domain\TypedFiles
+ *
+ * @property \App\File $file
+ */
 interface TypedFileAddon
 {
     /**

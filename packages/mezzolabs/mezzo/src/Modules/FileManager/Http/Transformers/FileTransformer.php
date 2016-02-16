@@ -45,9 +45,7 @@ class FileTransFormer extends EloquentModelTransformer
         if($typeAddon){
             $typeAddonInfo = $typeAddon->toArray();
             $typeAddonInfo['_model'] = mezzo()->model($typeAddon)->name();
-
         }
-
 
         return [
             'id' => $model->id,

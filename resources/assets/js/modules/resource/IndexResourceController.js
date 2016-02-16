@@ -300,7 +300,7 @@ export default class IndexResourceController {
     }
 
     displayAsLink($first, model) {
-        return $first && !this.isLocked(model);
+        return $first && !this.isLocked(model) && (!model._permissions || model._permissions.edit);
     }
 
     /**
