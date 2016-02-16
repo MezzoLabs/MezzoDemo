@@ -280,8 +280,6 @@ var RelationInputController = function () {
     /*@ngInject*/
 
     function RelationInputController(api, $scope, $element, $timeout, eventDispatcher) {
-        var _this = this;
-
         _classCallCheck(this, RelationInputController);
 
         this.api = api;
@@ -297,14 +295,33 @@ var RelationInputController = function () {
         this.eventDispatcher = eventDispatcher;
         this.formController = null;
 
-        this.eventDispatcher.on(['form.received', 'relationinput.models_loaded.' + this.uniqueKey], function (events, payloads) {
-            _this.fill(payloads['form.received'].data, payloads['form.received'].form);
-        });
+        this.registerListeners();
 
         this.loadModels();
     }
 
     _createClass(RelationInputController, [{
+        key: 'registerListeners',
+        value: function registerListeners() {
+            var _this = this;
+
+            var formReceived = this.eventDispatcher.findInHistory('form.received');
+
+            if (formReceived) {
+                this.eventDispatcher.on('relationinput.models_loaded.' + this.uniqueKey, function (events, payloads) {
+                    console.log(formReceived);
+
+                    _this.fill(formReceived.payload.data, formReceived.form);
+                });
+
+                return;
+            }
+
+            this.eventDispatcher.on(['form.received', 'relationinput.models_loaded.' + this.uniqueKey], function (events, payloads) {
+                _this.fill(payloads['form.received'].data, payloads['form.received'].form);
+            });
+        }
+    }, {
         key: 'linked',
         value: function linked(scope, element, attrs, ctrls) {
             this.formController = ctrls;
@@ -1699,14 +1716,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formValidationDirective;
 /*@ngInject*/
-    function formValidationDirective(formValidationService, eventDispatcher) {
+    function formValidationDirective(formValidationService, eventDispatcher, $compile) {
     return {
         restrict: 'A',
         compile: compile
     };
 
     function compile(element) {
-        console.log('set up form vali');
         eventDispatcher.on('form.received', function (event, payload) {
             setTimeout(function () {
                 assignTo($(element));
@@ -6298,7 +6314,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             _classCallCheck(this, PivotRowsController);
 
             this.vm = $scope.vm;
-        }
+    }
 
         _createClass(PivotRowsController, [{
             key: "init",

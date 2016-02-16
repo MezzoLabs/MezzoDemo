@@ -1,12 +1,11 @@
 /*@ngInject*/
-export default function formValidationDirective(formValidationService, eventDispatcher) {
+export default function formValidationDirective(formValidationService, eventDispatcher, $compile) {
     return {
         restrict: 'A',
         compile
     };
 
     function compile(element) {
-        console.log('set up form vali');
         eventDispatcher.on('form.received', (event, payload) => {
             setTimeout(() => {
                 assignTo($(element));

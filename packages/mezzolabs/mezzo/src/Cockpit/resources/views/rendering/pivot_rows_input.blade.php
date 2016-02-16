@@ -5,7 +5,7 @@
         </div>
         @foreach($renderer->attribute()->relation()->pivotAttributes() as $pivotAttribute)
             <div class="col-md-4">
-                {!! $pivotAttribute->render(['namePrefix' =>  $renderer->attribute()->name() . '.@{{ $index }}.pivot_']) !!}
+                {!! $pivotAttribute->render(['attributes' => ['ng-model' => "vm.inputs['". $renderer->attribute()->name() .".'+" . '$index' . "+'.pivot_". $pivotAttribute->name() ."']"], 'namePrefix' =>  $renderer->attribute()->name() . '.@{{ $index }}.pivot_']) !!}
             </div>
         @endforeach
         <div class="clearfix"></div>
