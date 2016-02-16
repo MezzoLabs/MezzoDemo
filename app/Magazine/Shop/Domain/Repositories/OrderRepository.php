@@ -17,7 +17,7 @@ class OrderRepository extends ModelRepository
      * @return Order
      * @throws NoMerchantFoundException
      */
-    public function makeFromShoppingBasket(ShoppingBasket $basket) : Order
+    public function createFromShoppingBasket(ShoppingBasket $basket) : Order
     {
         $order = new Order();
 

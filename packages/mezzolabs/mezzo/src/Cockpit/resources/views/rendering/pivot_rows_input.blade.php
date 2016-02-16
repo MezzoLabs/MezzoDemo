@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-4">
-        {!! cockpit_form()->relationship($renderer->attribute(), ['multiple' => null]) !!}
+        {!! cockpit_form()->relationship($renderer->attribute(), ['multiple' => null, 'name' => 'hello']) !!}
     </div>
     @foreach($renderer->attribute()->relation()->pivotAttributes() as $pivotAttribute)
         <div class="col-md-4">

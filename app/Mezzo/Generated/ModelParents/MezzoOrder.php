@@ -84,7 +84,8 @@ abstract class MezzoOrder extends \App\Mezzo\BaseModel
         'user_id',
         'products',
         'info',
-        'status'
+        'status',
+        'created_at'
     ];
 
     /**
