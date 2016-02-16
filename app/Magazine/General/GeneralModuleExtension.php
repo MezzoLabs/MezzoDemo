@@ -38,7 +38,7 @@ class GeneralModuleExtension extends ModuleExtension
     {
         parent::boot();
 
-        $this->loadViewsFrom(app_path() . '/Magazine/General/Resources/view', 'modules.general.magazine');
+        $this->loadViewsFrom(app_path() . '/Magazine/General/Resources/Views', 'modules.general.magazine');
 
         \Event::listen('mezzo.cockpit.routes_included', function () {
             require(app_path('Magazine/General/Http/routes.php'));
