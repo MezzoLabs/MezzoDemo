@@ -38,8 +38,8 @@ export default class LanguageService {
                         f: 'Frau'
                     },
                     backend: {
-                        1: 'Backend',
-                        0: 'Frontend'
+                        1: 'Cockpit',
+                        0: 'Website'
                     },
                     confirmed: {
                         1: 'Bestätigt',

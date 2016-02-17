@@ -144,8 +144,6 @@ export default class EventDispatcherService {
 
         this.listeners = [];
         this.eventHistory = [];
-
-        console.log('listeners and history cleared');
     }
 
 

@@ -127,7 +127,8 @@ return [
         'content' => [
             'blocks' => 'Inhaltsblock'
         ],
-        'event_venue_id' => 'Veranstaltungs Ort',
+        'venue' => 'Veranstaltungs Ort',
+        'googlesearch' => 'Addresssuche',
         'gender' => 'Anrede',
         'type' => 'Typ',
         'active' => 'Aktiv',
@@ -153,7 +154,23 @@ return [
         'onlyfor' => 'Nur für',
         'active_until' => 'Gültig bis',
         'is_global' => 'Global gültig',
-        'caption' => 'Bildunterschrift'
+        'caption' => 'Bildunterschrift',
+        'eventprovider' => 'Lieferant',
+        'days' => 'Tage',
+        'premium_only' => 'Premium Produkt',
+        'premium_price' => 'Premium Preis',
+        'price' => 'Preis',
+        'merchant' => 'Händler',
+        'products' => 'Produkte',
+        'tracking_code' => 'Tracking Code',
+        'note' => 'Notiz',
+        'imageurl' => 'Bild Url',
+        'first_name' => 'Vorname',
+        'last_name' => 'Nachname',
+        'roles' => 'Rollen',
+        'confirmed' => 'Bestätigt',
+        'backend' => 'Cockpit',
+
     ],
 
 ];

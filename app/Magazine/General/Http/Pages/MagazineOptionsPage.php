@@ -15,8 +15,6 @@ class MagazineOptionsPage extends OptionsPage
 
     protected $action = "show";
 
-    protected $title = "Options for a magazine";
-
     protected $view = 'modules.general.magazine::options';
 
     protected $optionFields = [

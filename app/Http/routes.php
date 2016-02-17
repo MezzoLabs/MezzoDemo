@@ -281,5 +281,11 @@ Route::get('test/orders', function () {
     mezzo_dd($order);
 });
 
+Route::get('test/imagefiles', function(){
+    $image = \App\ImageFile::first();
+
+    mezzo_dd($image->file);
+});
+
 
 

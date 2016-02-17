@@ -41,6 +41,9 @@ return [
         'category' => 'Kategorien',
         'voucher_index' => 'Gutscheine verwalten',
         'voucher_create' => 'Gutschein generieren',
+        'file_create' => 'Dateimanager',
+        'options_index' => 'Alle Optionen',
+        'magazine_options' => 'Magazin Optionen'
     ],
     'modules' => [
         'groups' => [
