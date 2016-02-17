@@ -27,6 +27,9 @@ export default function searchDirective(mapService) {
             const latitude = place.geometry.location.lat();
             const longitude = place.geometry.location.lng();
             const addressComponents = place.address_components;
+
+            console.log(place);
+
             const componentForm = {
                 street_number: {
                     key: 'short_name',
@@ -45,7 +48,7 @@ export default function searchDirective(mapService) {
                     selector: scope.state
                 },
                 country: {
-                    key: 'long_name',
+                    key: 'short_name',
                     selector: scope.country
                 },
                 postal_code: {

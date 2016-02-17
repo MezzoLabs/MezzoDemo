@@ -3,7 +3,7 @@
 return [
     'germany' => 'Deutschland',
     'austria' => 'Österreich',
-    'france' => 'Baguette-Land'
+    'france' => 'Frankfreich'
 ];
 
 ?>

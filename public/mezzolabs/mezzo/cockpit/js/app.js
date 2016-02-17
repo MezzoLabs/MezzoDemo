@@ -131,8 +131,8 @@ var LanguageService = function () {
                         f: 'Frau'
                     },
                     backend: {
-                        1: 'Backend',
-                        0: 'Frontend'
+                        1: 'Cockpit',
+                        0: 'Website'
                     },
                     confirmed: {
                         1: 'Bestätigt',
@@ -1031,8 +1031,6 @@ var EventDispatcherService = function () {
 
             this.listeners = [];
             this.eventHistory = [];
-
-            console.log('listeners and history cleared');
         }
     }]);
 
@@ -4072,6 +4070,9 @@ function searchDirective(mapService) {
             var latitude = place.geometry.location.lat();
             var longitude = place.geometry.location.lng();
             var addressComponents = place.address_components;
+
+            console.log(place);
+
             var componentForm = {
                 street_number: {
                     key: 'short_name',
@@ -4090,7 +4091,7 @@ function searchDirective(mapService) {
                     selector: scope.state
                 },
                 country: {
-                    key: 'long_name',
+                    key: 'short_name',
                     selector: scope.country
                 },
                 postal_code: {

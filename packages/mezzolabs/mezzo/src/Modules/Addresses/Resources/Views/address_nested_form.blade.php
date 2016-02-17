@@ -6,9 +6,9 @@
             <label>{{ trans('validation.attributes.googlesearch') }}</label>
             <input type="text" class="google_search form-control"
                    data-mezzo-google-maps-search data-street="address.street"
-                   data-street-number="address.street_extra" data-street="address.street"
+                   data-street-number="address.street_extra"
                    data-postal-code="address.zip" data-city="address.city"
-                   data-latitude="address.latitude" data-longitude="address.longitude"/>
+                   data-latitude="address.latitude" data-longitude="address.longitude" data-country="address.country"/>
         </div>
         {!! $renderer->renderNested('latitude', ['attributes' => ['readonly' => 'readonly']]) !!}
         {!! $renderer->renderNested('longitude', ['attributes' => ['readonly' => 'readonly']]) !!}

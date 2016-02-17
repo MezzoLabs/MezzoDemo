@@ -170,6 +170,9 @@ return [
         'roles' => 'Rollen',
         'confirmed' => 'Bestätigt',
         'backend' => 'Cockpit',
+        'subscribed_until' => 'Aboniert bis',
+        'cancelled' => 'Storniert',
+        'plan' => 'Plan'
 
     ],
 

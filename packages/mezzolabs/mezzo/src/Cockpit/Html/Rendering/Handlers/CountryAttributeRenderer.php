@@ -34,11 +34,16 @@ class CountryAttributeRenderer extends SelectableAttributeRenderer
             return in_array($country->name, static::$countries);
         });
 
+        $countries = $countries->sort(function ($country) {
+            return array_search($country->name, static::$countries);
+        });
+
         $countries->map(function (Country $country) {
             $country->name = $country->translatedName();
         });
 
-        return $this->formBuilder()->select($this->name(), $countries->lists('name', 'iso_3166_3')->toArray(), $this->value('DEU'), $this->htmlAttributes());
+
+        return $this->formBuilder()->select($this->name(), $countries->lists('name', 'iso_3166_2')->toArray(), $this->value('DE'), $this->htmlAttributes());
     }
 
 
