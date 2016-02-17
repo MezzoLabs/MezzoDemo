@@ -7,6 +7,7 @@ namespace App\Magazine\Events;
 use App\Event;
 use App\EventDay;
 use App\EventVenue;
+use App\Magazine\Events\Domain\Validators\DaysNotOverlappingValidator;
 use App\Magazine\Events\Http\Transformers\EventTransformerPlugin;
 use App\Magazine\Events\Schema\Rendering\EventDaysRenderer;
 use App\User;
@@ -31,6 +32,18 @@ class EventsModule extends ModuleProvider
     {
         AttributeRenderEngine::registerHandler(EventDaysRenderer::class);
         $this->registerTransformerPlugin();
+    }
+
+    /**
+     * Called when all service pro
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+
+        DaysNotOverlappingValidator::register();
     }
 
     /**

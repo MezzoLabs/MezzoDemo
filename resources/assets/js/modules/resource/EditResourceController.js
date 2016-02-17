@@ -35,11 +35,30 @@ export default class EditResourceController extends ResourceController {
         this.loadContent();
     }
 
+    canEdit() {
+        if (!this.content._permissions) {
+            return true;
+        }
+
+        return this.content._permissions.edit;
+
+    }
+
+    beforeSubmit() {
+        if (!this.canEdit()) {
+            swal('Error', this.language.get('messages.missing_permissions'), 'error');
+            return false;
+        }
+
+        return super.beforeSubmit();
+    }
+
+
     doSubmit(formData) {
         return this.modelApi.update(
             this.modelId,
             formData,
-            { params: {include: this.includes.join(',')}})
+            {params: {include: this.includes.join(',')}})
             .then(model => {
                 this.fireEvent('form.updated', this.formDataService.transform(model));
                 toastr.success('Success! ' + model._label + ' updated');
@@ -55,6 +74,8 @@ export default class EditResourceController extends ResourceController {
         this.modelApi.content(this.modelId, params)
             .then(model => {
                 this.contentLoaded(model);
+
+                this.canEdit();
             });
     }
 

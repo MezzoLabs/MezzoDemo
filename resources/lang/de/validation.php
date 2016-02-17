@@ -76,6 +76,7 @@ return [
     'timezone' => ':attribute muss eine gültige Zeitzone sein.',
     'unique' => ':attribute ist schon vergeben.',
     'url' => 'Das Format von :attribute ist ungültig.',
+    'days_not_overlapping' => 'Tage dürfen sich nicht überlappen.',
 
     /*
     |--------------------------------------------------------------------------

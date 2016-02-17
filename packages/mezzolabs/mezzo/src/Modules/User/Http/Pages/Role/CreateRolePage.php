@@ -9,6 +9,6 @@ class CreateRolePage extends CreateResourcePage
 {
     public function boot()
     {
-        $this->options('visibleInNavigation', false);
+        $this->options('visibleInNavigation', true);
     }
 }

@@ -150,6 +150,9 @@ class AuthController extends Controller
             throw new InvalidConfirmationCodeException;
         }
 
+        $user->confirmed = true;
+        $user->save();
+
         event(new UserWasVerifiedWithEmail($user));
 
         \Session::flash('message', 'You have successfully verified your account.');

@@ -28,7 +28,6 @@ export default function searchDirective(mapService) {
             const longitude = place.geometry.location.lng();
             const addressComponents = place.address_components;
 
-            console.log(place);
 
             const componentForm = {
                 street_number: {
@@ -96,7 +95,6 @@ export default function searchDirective(mapService) {
     }
 
     function setInputValue(name, value) {
-        console.log(name, value);
         $(`[name="${ name }"]`).val(value).trigger('input');
     }
 }

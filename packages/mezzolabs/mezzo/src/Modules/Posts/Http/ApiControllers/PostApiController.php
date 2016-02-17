@@ -50,7 +50,6 @@ class PostApiController extends ApiResourceController
      */
     public function update(UpdatePostRequest $request, $id)
     {
-
         return $this->defaultUpdate($request, $id);
     }
 

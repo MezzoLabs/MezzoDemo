@@ -53,7 +53,7 @@ Route::group(['middleware' => ['mezzo.no_permissions_check', 'mezzo.no_model_val
 });
 
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth', 'mezzo.no_permissions_check']], function () {
     Route::get('profile',
         ['uses' => 'ProfileController@profile', 'as' => 'profile']);
     Route::put('profile',

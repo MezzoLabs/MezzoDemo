@@ -12,6 +12,13 @@ export default class LanguageService {
                     delete: 'Löschen',
                     update: 'Editieren'
                 },
+                messages: {
+                    missing_permissions: 'Sie haben nicht genügend Rechte um diese Aktion auszuführen.',
+                    shure_to_delete_models: {
+                        title: 'Sind sie sich sicher?',
+                        text: '{count} Ressource wird gelöscht.|{count} Ressourcen werden gelöscht.'
+                    }
+                },
                 filemanager: {
                     library: 'Bibliothek',
                     item: 'Datei|Dateien',
@@ -56,15 +63,21 @@ export default class LanguageService {
     }
 
 
-    get(key, count = 1, language = 'de') {
+    get(key, count = 1, vars = {}, language = 'de') {
+
         var cacheKey = this.uniqueCacheKey(key, language);
 
         if (!this.cache[cacheKey]) {
             this.cache[cacheKey] = this.findInTree(key, language);
         }
 
+        var string = this.amountSubstring(this.cache[cacheKey], count);
 
-        return this.amountSubstring(this.cache[cacheKey], count);
+        for (var i in vars) {
+            string = string.replace("{" + i + "}", vars[i]);
+        }
+
+        return string;
 
     }
 

@@ -259,11 +259,11 @@ export default class IndexResourceController {
         var selected = this.selected();
 
         swal({
-            title: 'Are you sure?',
-            text: selected.length + ' models will be deleted!',
+            title: this.language.get('messages.shure_to_delete_models.title'),
+            text: this.language.get('messages.shure_to_delete_models.text', selected.length, {count: selected.length}),
             type: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete them!',
+            confirmButtonText: this.language.get('general.delete'),
             confirmButtonColor: '#fb503b'
         }, confirmed => {
             if (!confirmed) {

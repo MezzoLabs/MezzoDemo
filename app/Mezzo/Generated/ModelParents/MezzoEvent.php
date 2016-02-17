@@ -2,9 +2,9 @@
 
 namespace App\Mezzo\Generated\ModelParents;
 
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use MezzoLabs\Mezzo\Core\Annotations as Mezzo;
 use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 /**
 *-------------------------------------------------------------------------------------------------------------------
@@ -73,9 +73,10 @@ abstract class MezzoEvent extends \App\Mezzo\BaseModel
     protected $rules = [
         'title' => "required|between:3,200", 
         'slug' => "", 
-        'description' => "required|between:3,500", 
-        'clicks' => "", 
-        'locked_until' => ""
+        'description' => "required|between:3,500",
+        'clicks' => "",
+        'locked_until' => "",
+        'days' => "days_not_overlapping"
     ];
 
     /**

@@ -25,7 +25,9 @@
             <a href="#" class="dropdown-toggle" href="#" data-toggle="dropdown"><i
                         class="fa fa-user"></i></a>
             <ul class="dropdown-menu">
-                <li><a data-mezzo-href-reload="1" href="{{ route('cockpit::user.edit', ['id' => Auth::id()]) }}">Profile</a></li>
+                <li><a data-mezzo-href-reload="1"
+                       href="{{ route('cockpit::user.edit', ['id' => Auth::id()]) }}">{{ Auth::user()->fullName() }}</a>
+                </li>
                 <li><a data-mezzo-href-reload="1" href="{{ route('cockpit::logout') }}">Logout</a></li>
             </ul>
         </li>

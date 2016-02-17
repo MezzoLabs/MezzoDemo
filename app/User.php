@@ -187,7 +187,25 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return $this->id . ': ' . $this->fullName();
     }
 
+    /**
+     * Check if a user owns this model.
+     *
+     * @return boolean
+     */
+    public function isOwnedByUser(\App\User $user)
+    {
+        return ($user->id == $this->id);
+    }
+
     public function fullName()
+    {
+        return implode(' ', [
+            $this->first_name,
+            $this->last_name
+        ]);
+    }
+
+    public function fullNameWithSalutation()
     {
         return implode(' ', [
             $this->salutation(),
@@ -203,5 +221,6 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
 
         return Lang::get('mezzo.selects.gender.' . $this->gender);
     }
+
 
 }

@@ -17,6 +17,7 @@ export default class ResourceController {
         this.$timeout = this.$injector.get('$timeout');
         this.formSubmitter = new FormSubmitter(this, $injector);
         this.httpRequestTracker = this.$injector.get('HttpRequestTracker');
+        this.language = this.$injector.get('languageService');
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
         this.isBusy = false;
         this.$scope = $scope;
@@ -71,12 +72,20 @@ export default class ResourceController {
     }
 
     submit($event, formController) {
-        console.log('submit', $event, formController);
+        if (this.beforeSubmit() === false) {
+            return false;
+        }
+
         return this.formSubmitter.run($event.target, formController, {
             doSubmit: (formData) => {
                 return this.doSubmit(formData);
             }
         });
+    }
+
+    beforeSubmit() {
+        //To be overwrite
+        return true;
     }
 
     tinymceOptions() {

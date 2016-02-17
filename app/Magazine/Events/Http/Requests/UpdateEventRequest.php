@@ -31,7 +31,7 @@ class UpdateEventRequest extends UpdateResourceRequest
 
     public function validate()
     {
-        $this->validateDaysNotOverlapping($this->get('days'), []);
+        //$this->validateDaysNotOverlapping($this->get('days'), []);
 
         parent::validate();
     }

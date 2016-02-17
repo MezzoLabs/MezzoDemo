@@ -48,10 +48,6 @@ class FormBuilder extends CollectiveFormBuilder
 
         $options = [];
 
-        if (!$model_reflection->canBeEditedBy()) {
-            $options['disabled'] = 'disabled';
-        }
-
         return $this->submit($value, $options);
     }
 

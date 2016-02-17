@@ -105,6 +105,13 @@ var LanguageService = function () {
                     delete: 'Löschen',
                     update: 'Editieren'
                 },
+                messages: {
+                    missing_permissions: 'Sie haben nicht genügend Rechte um diese Aktion auszuführen.',
+                    shure_to_delete_models: {
+                        title: 'Sind sie sich sicher?',
+                        text: '{count} Ressource wird gelöscht.|{count} Ressourcen werden gelöscht.'
+                    }
+                },
                 filemanager: {
                     library: 'Bibliothek',
                     item: 'Datei|Dateien',
@@ -152,7 +159,8 @@ var LanguageService = function () {
         key: 'get',
         value: function get(key) {
             var count = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
-            var language = arguments.length <= 2 || arguments[2] === undefined ? 'de' : arguments[2];
+            var vars = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+            var language = arguments.length <= 3 || arguments[3] === undefined ? 'de' : arguments[3];
 
             var cacheKey = this.uniqueCacheKey(key, language);
 
@@ -160,7 +168,13 @@ var LanguageService = function () {
                 this.cache[cacheKey] = this.findInTree(key, language);
             }
 
-            return this.amountSubstring(this.cache[cacheKey], count);
+            var string = this.amountSubstring(this.cache[cacheKey], count);
+
+            for (var i in vars) {
+                string = string.replace("{" + i + "}", vars[i]);
+            }
+
+            return string;
         }
     }, {
         key: 'amountSubstring',
@@ -4071,8 +4085,6 @@ function searchDirective(mapService) {
             var longitude = place.geometry.location.lng();
             var addressComponents = place.address_components;
 
-            console.log(place);
-
             var componentForm = {
                 street_number: {
                     key: 'short_name',
@@ -4139,7 +4151,6 @@ function searchDirective(mapService) {
     }
 
     function setInputValue(name, value) {
-        console.log(name, value);
         $('[name="' + name + '"]').val(value).trigger('input');
     }
 }
@@ -4302,6 +4313,25 @@ var EditResourceController = function (_ResourceController) {
             this.loadContent();
         }
     }, {
+        key: 'canEdit',
+        value: function canEdit() {
+            if (!this.content._permissions) {
+                return true;
+            }
+
+            return this.content._permissions.edit;
+        }
+    }, {
+        key: 'beforeSubmit',
+        value: function beforeSubmit() {
+            if (!this.canEdit()) {
+                swal('Error', this.language.get('messages.missing_permissions'), 'error');
+                return false;
+            }
+
+            return _get(Object.getPrototypeOf(EditResourceController.prototype), 'beforeSubmit', this).call(this);
+        }
+    }, {
         key: 'doSubmit',
         value: function doSubmit(formData) {
             var _this2 = this;
@@ -4323,6 +4353,8 @@ var EditResourceController = function (_ResourceController) {
 
             this.modelApi.content(this.modelId, params).then(function (model) {
                 _this3.contentLoaded(model);
+
+                _this3.canEdit();
             });
         }
     }, {
@@ -4750,11 +4782,11 @@ var IndexResourceController = function () {
             var selected = this.selected();
 
             swal({
-                title: 'Are you sure?',
-                text: selected.length + ' models will be deleted!',
+                title: this.language.get('messages.shure_to_delete_models.title'),
+                text: this.language.get('messages.shure_to_delete_models.text', selected.length, { count: selected.length }),
                 type: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Yes, delete them!',
+                confirmButtonText: this.language.get('general.delete'),
                 confirmButtonColor: '#fb503b'
             }, function (confirmed) {
                 if (!confirmed) {
@@ -5320,6 +5352,7 @@ var ResourceController = function () {
         this.$timeout = this.$injector.get('$timeout');
         this.formSubmitter = new _FormSubmitter2.default(this, $injector);
         this.httpRequestTracker = this.$injector.get('HttpRequestTracker');
+        this.language = this.$injector.get('languageService');
         this.inputs = {}; // ng-model Controller of the input fields will bind to this object
         this.isBusy = false;
         this.$scope = $scope;
@@ -5384,12 +5417,21 @@ var ResourceController = function () {
         value: function submit($event, formController) {
             var _this2 = this;
 
-            console.log('submit', $event, formController);
+            if (this.beforeSubmit() === false) {
+                return false;
+            }
+
             return this.formSubmitter.run($event.target, formController, {
                 doSubmit: function doSubmit(formData) {
                     return _this2.doSubmit(formData);
                 }
             });
+        }
+    }, {
+        key: 'beforeSubmit',
+        value: function beforeSubmit() {
+            //To be overwrite
+            return true;
         }
     }, {
         key: 'tinymceOptions',
