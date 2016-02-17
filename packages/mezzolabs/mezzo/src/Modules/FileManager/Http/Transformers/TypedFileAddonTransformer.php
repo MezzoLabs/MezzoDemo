@@ -38,8 +38,9 @@ class TypedFileAddonTransformer extends EloquentModelTransformer
 
         $file = $model->file()->first();
 
-
-        $array['url'] = $file->url();
+        if ($file) {
+            $array['url'] = $file->url();
+        }
 
         return $array;
     }
