@@ -5,6 +5,12 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
+                    <label>Search</label>
+                    <input type="search" name="q" class="form-control"/>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
                     <label>Published</label>
                     <select name="scopes[isPublished][0]" class="form-control">
                         <option value="">Both</option>

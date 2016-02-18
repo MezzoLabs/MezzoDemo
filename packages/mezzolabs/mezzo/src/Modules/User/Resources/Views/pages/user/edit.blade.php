@@ -11,7 +11,7 @@
             <div class="panel">
                 <div class="panel-body">
                     <a href="{!! angular_route('cockpit::user.subscriptions', 'vm.modelId') !!}"
-                       class="btn btn-block btn-default"><i class="ion-bookmark"></i> Subscriptions</a>
+                       class="btn btn-block btn-default"><i class="ion-bookmark"></i> {{ trans_choice('mezzo.models.subscription', 2) }}</a>
                 </div>
             </div>
         </div>

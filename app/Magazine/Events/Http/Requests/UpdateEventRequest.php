@@ -8,8 +8,6 @@ use MezzoLabs\Mezzo\Http\Requests\Resource\UpdateResourceRequest;
 
 class UpdateEventRequest extends UpdateResourceRequest
 {
-    use HandlesEventDays;
-
     /**
      * Get the validation rules that apply to the request.
      *

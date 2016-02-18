@@ -12,7 +12,8 @@ return [
         'pagination' => [
             'first' => 'Erste',
             'last' => 'Letzte'
-        ]
+        ],
+        'for' => 'für'
     ],
     'pages' => [
         'permission_index' => 'Zugriffsrechte',
@@ -144,7 +145,8 @@ return [
         'shoppingbasket' => 'Warenkorb|Warenkörbe',
         'tag' => 'Tag|Tags',
         'user' => 'Nutzer',
-        'voucher' => 'Gutschein|Gutscheine'
+        'voucher' => 'Gutschein|Gutscheine',
+        'subscription' => 'Abonement|Abonements'
     ],
     'selects' => [
         'gender' => [

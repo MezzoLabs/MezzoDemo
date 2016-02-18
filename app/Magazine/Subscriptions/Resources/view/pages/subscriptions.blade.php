@@ -11,7 +11,7 @@
                 <div class="main-panel panel panel-bordered">
                     {!! cockpit_form()->open(['angular' => true]) !!}
                     <div class="panel-heading">
-                        <h3>Add Subscription</h3>
+                        <h3>@lang('mezzo.general.creating') {{ trans_choice('mezzo.models.subscription', 1) }}</h3>
                         <div class="panel-actions">
                             <a class="highlight" href="/mezzo/user/user/edit/@{{ vm.modelId }}"><i
                                         class="ion-arrow-return-left"></i></a>
@@ -21,7 +21,7 @@
                         {!! $model_reflection->schema()->attributes('subscriptions')->render(['index' => 'new']) !!}
                     </div>
                     <div class="panel-footer text-right">
-                        {!! cockpit_form()->submitCreate($model_reflection, null) !!}
+                        {!! cockpit_form()->submitCreate($model_reflection, trans('mezzo.general.creating')) !!}
                     </div>
                     {!! cockpit_form()->close() !!}
 
@@ -30,7 +30,8 @@
             <div class="col-md-8">
                 <div class="main-panel panel panel-bordered">
                     <div class="panel-heading">
-                        <h3>Subscriptions for "@{{ vm.user()._label }}"</h3>
+                        <h3>{{ trans_choice('mezzo.models.subscription', 2) }} {{ trans('mezzo.general.for') }}
+                            "@{{ vm.user()._label }}"</h3>
                     </div>
                     <div class="panel-body">
                         @include('modules.subscriptions::partials.subscriptions_list')

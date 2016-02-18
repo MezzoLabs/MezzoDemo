@@ -13,11 +13,11 @@
         <div class="row">
             <div class="col-md-6">
                 <button type="button" class="btn btn-link" ng-click="vm.deleteRelationItem(subscription)">
-                    Delete
+                    {{ trans('mezzo.general.delete') }}
                 </button>
             </div>
             <div class="col-md-6">
-                {!! cockpit_form()->submitCreate($model_reflection, null) !!}
+                {!! cockpit_form()->submitCreate($model_reflection, trans('mezzo.general.edit')) !!}
             </div>
         </div>
         {!! cockpit_form()->close() !!}

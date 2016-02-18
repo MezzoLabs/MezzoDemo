@@ -10,7 +10,7 @@ use MezzoLabs\Mezzo\Modules\Addresses\Http\Requests\HasNestedAddress;
 
 class StoreEventRequest extends StoreResourceRequest
 {
-    use HasNestedAddress, HandlesEventDays;
+    use HasNestedAddress;
 
     /**
      * Called right after a request is constructed
@@ -42,7 +42,6 @@ class StoreEventRequest extends StoreResourceRequest
      */
     public function validate()
     {
-        $this->validateDaysNotOverlapping($this->get('days', []));
         parent::validate();
     }
 
