@@ -5,7 +5,7 @@
         <div class="col-md-3">
             <div class="panel panel-bordered">
                 <div class="panel-heading">
-                    <h3>Add Category</h3>
+                    <h3>{{ trans('mezzo.general.creating') }} {{ trans_choice('mezzo.models.category', 1) }}</h3>
                 </div>
                 {!! cockpit_form()->open(['route' => 'cockpit::category.store', 'method' => 'POST']) !!}
                 <div class="panel-body">
@@ -18,7 +18,7 @@
         <div class="col-md-9">
             <div class="panel panel-bordered">
                 <div class="panel-heading">
-                    <h3>Manage Categories</h3>
+                    <h3>{{ trans_choice('mezzo.models.category', 2) }}</h3>
 
                     <div class="panel-actions">
                     </div>
@@ -26,18 +26,24 @@
                 <div class="panel-body">
 
                     @foreach($category_groups as $group)
-                        <h3>{{ $group->label }}</h3>
-                        @foreach($group->modelClasses() as $modelClass)
-                            <span class="label label-default">{{ $modelClass }}</span>
-                        @endforeach
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3>{{ $group->label }}</h3>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                @foreach($group->modelClasses() as $modelClass)
+                                    <span class="label label-default">{{ $modelClass }}</span>
+                                @endforeach
+                            </div>
+                        </div>
 
-                        <h4>Categories</h4>
-                        <dib class="list-group">
+                        <div class="list-group">
                             @foreach($group->tree() as $category)
                                 <?php $category->level = 0; ?>
                                 @include('modules.categories::partials.nested_list', ['element' => $category])
                             @endforeach
-                        </dib>
+                        </div>
+                        <br/>
                     @endforeach
                 </div>
             </div>

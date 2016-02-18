@@ -44,7 +44,8 @@ return [
         'voucher_create' => 'Gutschein generieren',
         'file_create' => 'Dateimanager',
         'options_index' => 'Alle Optionen',
-        'magazine_options' => 'Magazin Optionen'
+        'magazine_options' => 'Magazin Optionen',
+        'role_create' => 'Rolle hinzufügen'
     ],
     'modules' => [
         'groups' => [
