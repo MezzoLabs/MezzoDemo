@@ -8332,9 +8332,11 @@ button.close {
 
 .btn {
   text-transform: uppercase;
-  font-weight: 300;
+  font-weight: 400;
   padding: 8px 20px;
   transition: ease background-color 0.25s; }
+  .btn:hover {
+    font-weight: 400; }
 
 .btn-success {
   border-radius: 0px;
@@ -8351,6 +8353,24 @@ button.close {
     .open > .btn-success.dropdown-toggle:focus,
     .open > .btn-success.dropdown-toggle.focus {
       background-color: #88d9aa; }
+
+.btn-secondary {
+  border-radius: 0px;
+  background-color: #26a69a;
+  color: #ffffff; }
+  .btn-secondary:focus, .btn-secondary.focus {
+    background-color: #30d0c1; }
+  .btn-secondary:hover {
+    background-color: #30d0c1;
+    color: #ffffff; }
+  .btn-secondary:active, .btn-secondary.active,
+  .open > .btn-secondary.dropdown-toggle {
+    background-color: #30d0c1; }
+    .btn-secondary:active:hover, .btn-secondary:active:focus, .btn-secondary:active.focus, .btn-secondary.active:hover, .btn-secondary.active:focus, .btn-secondary.active.focus,
+    .open > .btn-secondary.dropdown-toggle:hover,
+    .open > .btn-secondary.dropdown-toggle:focus,
+    .open > .btn-secondary.dropdown-toggle.focus {
+      background-color: #4dd6c9; }
 
 .btn-danger {
   border-radius: 0px;
@@ -8477,6 +8497,21 @@ textarea {
 
 .center-block {
   float: none; }
+
+.label {
+  display: inline-block;
+  height: 32px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 32px;
+  padding: 0 12px;
+  border-radius: 16px; }
+  .label.label-default {
+    background-color: #e4e4e4; }
+
+.label-group {
+  padding-bottom: 5px; }
 
 html, body {
   color: #555555;
@@ -8960,8 +8995,7 @@ a {
     padding-left: 12px; }
   .form-group label + .form-control {
     padding-top: 3px;
-    padding-left: 3px;
-  }
+    padding-left: 3px; }
   .form-group .form-control:focus {
     box-shadow: 0 2px 0 #666; }
   .form-group.has-error .form-control {
@@ -9038,8 +9072,7 @@ a {
 .form-section {
   background: #fafafa;
   padding: 10px;
-  margin: 10px 0px;
-}
+  margin: 10px 0px; }
 
 .gridster .panel .ion-close {
   visibility: hidden;

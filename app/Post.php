@@ -75,7 +75,11 @@ class Post extends ModulePostModel implements LockableResource
     {
 
         if (!$isPublished) {
-            return $q->where('state', '!=', 'published')->orWhere('published_at', '>', Carbon::now());
+            return $q->where(function (Builder $q) {
+                $q->where('state', '!=', 'published');
+                $q->orWhere('published_at', '>', Carbon::now());
+            });
+
         }
 
         return $q->where('state', '=', 'published')->where('published_at', '<=', Carbon::now());

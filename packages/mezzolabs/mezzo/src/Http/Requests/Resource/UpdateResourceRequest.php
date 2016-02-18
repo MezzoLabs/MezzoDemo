@@ -5,6 +5,7 @@ namespace MezzoLabs\Mezzo\Http\Requests\Resource;
 
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UpdateResourceRequest extends UpdateOrStoreResourceRequest
 {
@@ -18,6 +19,10 @@ class UpdateResourceRequest extends UpdateOrStoreResourceRequest
     {
         if ($this->isTemplateRequest()) {
             return true;
+        }
+
+        if (!$this->hasValidModelInstance()) {
+            throw new NotFoundHttpException();
         }
 
         return $this->permissionGuard()->allowsEdit($this->currentModelInstance());

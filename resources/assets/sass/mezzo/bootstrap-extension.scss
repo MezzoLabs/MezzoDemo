@@ -1,25 +1,54 @@
-.btn{
+.btn {
   text-transform: uppercase;
-  font-weight: 300;
+  font-weight: 400;
   padding: 8px 20px;
 
   transition: ease background-color $mezzo-animation-normal;
+
+  &:hover {
+    font-weight: 400;
+  }
 }
 
-.btn-success{  @include light-button-variant($btn-success-bg); }
-.btn-danger {  @include light-button-variant($btn-danger-bg); }
-.btn-warning{  @include light-button-variant($btn-warning-bg); }
-.btn-info   {  @include light-button-variant($btn-info-bg); }
-.btn-primary{  @include light-button-variant($btn-primary-bg); }
-.btn-gray{  @include light-button-variant($btn-gray-bg); }
-.btn-white{ @extend .btn-default; @include light-button-variant(#ffffff); border: 1px solid #ddd; }
+.btn-success {
+  @include light-button-variant($btn-success-bg);
+}
 
+.btn-secondary {
+  @include light-button-variant($brand-secondary, #ffffff);
+}
+
+.btn-danger {
+  @include light-button-variant($btn-danger-bg);
+}
+
+.btn-warning {
+  @include light-button-variant($btn-warning-bg);
+}
+
+.btn-info {
+  @include light-button-variant($btn-info-bg);
+}
+
+.btn-primary {
+  @include light-button-variant($btn-primary-bg);
+}
+
+.btn-gray {
+  @include light-button-variant($btn-gray-bg);
+}
+
+.btn-white {
+  @extend .btn-default;
+  @include light-button-variant(#ffffff);
+  border: 1px solid #ddd;
+}
 
 .btn-sm, .btn-group-sm > .btn {
   padding: 5px 10px;
 }
 
-.btn-xs{
+.btn-xs {
   padding: 1px 5px;
 }
 
@@ -29,15 +58,15 @@
   box-shadow: none;
 }
 
-label{
+label {
   font-weight: 500;
 }
 
-.has-error label{
+.has-error label {
   color: $brand-danger;
 }
 
-.has-success label{
+.has-success label {
   color: $brand-success;
 }
 
@@ -45,8 +74,29 @@ label{
   border-radius: 0;
 }
 
-textarea { resize:vertical; }
+textarea {
+  resize: vertical;
+}
 
 .center-block {
   float: none;
+}
+
+.label {
+  display: inline-block;
+  height: 32px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 32px;
+  padding: 0 12px;
+  border-radius: 16px;
+
+  &.label-default {
+    background-color: #e4e4e4;
+  }
+}
+
+.label-group {
+  padding-bottom: 5px;
 }

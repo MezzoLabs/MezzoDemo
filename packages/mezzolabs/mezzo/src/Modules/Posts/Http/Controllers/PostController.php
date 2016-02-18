@@ -2,6 +2,7 @@
 
 namespace MezzoLabs\Mezzo\Modules\Posts\Http\Controllers;
 
+use App\Repositories\UserRepository;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
 use MezzoLabs\Mezzo\Http\Requests\Resource\CreateResourceRequest;
 use MezzoLabs\Mezzo\Http\Requests\Resource\EditResourceRequest;
@@ -16,6 +17,19 @@ use packages\mezzolabs\mezzo\src\Modules\Posts\Http\Requests\StorePostRequest;
 class PostController extends CockpitResourceController
 {
     /**
+     * @var UserRepository
+     */
+    protected $users;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->users = UserRepository::instance();
+
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @param IndexResourceRequest $request
@@ -23,7 +37,9 @@ class PostController extends CockpitResourceController
      */
     public function index(IndexResourceRequest $request)
     {
-        return $this->page(IndexPostPage::class);
+        return $this->page(IndexPostPage::class, [
+            'backendUsers' => \App\User::backend()->get()
+        ]);
     }
 
 

@@ -5,35 +5,35 @@
   list-style: none;
 }
 
-@mixin layout-heading(){
+@mixin layout-heading() {
   margin: 0;
   display: block;
 }
 
-@mixin overlay(){
+@mixin overlay() {
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   right: 0;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
   transition: ease opacity $mezzo-animation-normal;
   visibility: hidden;
-  
-  &.opened{
+
+  &.opened {
     opacity: 1.0;
     visibility: visible;
   }
 }
 
-@mixin layout-button{
+@mixin layout-button {
   padding: 5px 10px;
   min-width: 50px;
   border: none;
 }
 
-@mixin ion-icon($content){
+@mixin ion-icon($content) {
   content: $content;
   display: inline-block;
   font-family: "Ionicons";
@@ -46,10 +46,13 @@
   -webkit-font-smoothing: antialiased;
 }
 
-
-@mixin light-button-variant($background) {
-  border-radius:0px;
+@mixin light-button-variant($background, $fontColor : false) {
+  border-radius: 0px;
   background-color: $background;
+
+  @if ($fontColor) {
+    color: $fontColor;
+  }
 
   &:focus,
   &.focus {
@@ -57,7 +60,12 @@
   }
   &:hover {
     background-color: lighten($background, 10%);
+
+    @if ($fontColor) {
+      color: $fontColor;
+    }
   }
+
   &:active,
   &.active,
   .open > &.dropdown-toggle {

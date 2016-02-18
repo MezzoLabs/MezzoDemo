@@ -76,7 +76,15 @@ export default class EditResourceController extends ResourceController {
                 this.contentLoaded(model);
 
                 this.canEdit();
-            });
+            }).catch((err) => {
+
+            if (err.data) {
+                swal(err.data.status_code.toString(), err.data.message, 'error');
+            }
+
+            this.redirectToIndex();
+
+        });
     }
 
     contentLoaded(model) {
@@ -155,18 +163,23 @@ export default class EditResourceController extends ResourceController {
         }
 
         if (model._locked_for_user) {
-            return this.redirectToIndex(model._locked_by);
+            return this.redirectToIndexBecauseLocked(model._locked_by);
         }
 
         this.startResourceLocking();
     }
 
-    redirectToIndex(lockedBy) {
+    redirectToIndexBecauseLocked(lockedBy) {
         const title = 'Oops...';
         const message = 'You are not allowed to edit this resource while it is locked by ' + lockedBy + '!';
 
-        this.modelStateService.name(this.modelName).index();
         sweetAlert(title, message, 'error');
+        this.redirectToIndex();
+    }
+
+    redirectToIndex() {
+        this.modelStateService.name(this.modelName).index();
+
     }
 
 }
