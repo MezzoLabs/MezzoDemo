@@ -23,11 +23,12 @@
 <div class="row day" ng-repeat="day in vm.days track by $index">
     <input type="hidden" name="{{ vm.naming }}.{{ $index }}.id" value="{{ vm.days[$index].id }}">
     <div class="col-md-5">
-        <div class="form-group">
+        <div class="form-group" mezzo-has-error="{{ vm.naming }}.{{ $index }}.start">
             <input ng-change="vm.startChanged()" data-before="[name='{{ vm.naming }}.{{ $index }}.end']"
                    required="required" ng-change="vm.startChanged()" type="text" ng-model="vm.days[$index].start"
                    data-mezzo-datetimepicker class="form-control"
                    name="{{ vm.naming }}.{{ $index }}.start">
+            <mezzo-validation-messages data-form-input-name="{{ vm.naming }}.{{ $index }}.start"></mezzo-validation-messages>
         </div>
     </div>
     <div class="col-md-1">
@@ -38,6 +39,7 @@
             <input data-after="[name='{{ vm.naming }}.{{ $index }}.start']" required="required" type="text"
                    ng-model="vm.days[$index].end" data-mezzo-datetimepicker class="form-control"
                    name="{{ vm.naming }}.{{ $index }}.end">
+            <mezzo-validation-messages data-form-input-name="{{ vm.naming }}.{{ $index }}.end"></mezzo-validation-messages>
         </div>
     </div>
     <div class="col-md-1">
