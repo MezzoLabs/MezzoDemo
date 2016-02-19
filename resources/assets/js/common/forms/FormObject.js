@@ -71,4 +71,23 @@ export default class FormObject {
 
         return eventDispatcher.fire(new FormEvent(name, data, angular.element(this.form)[0]));
     }
+
+    focusFirstInvalidInput() {
+        const invalidInput = $(this.form).find(':input[name].ng-invalid').first();
+        const tabPane = invalidInput.parents('div.tab-pane').first();
+
+        if(!tabPane.length) {
+            // Input is not within a tab, we can focus it now!
+            invalidInput.focus();
+            return;
+        }
+
+        const tabId = tabPane.attr('id');
+        const tabLinkSelector = `a[data-target=#${ tabId }]`;
+        const tabLink = $(tabLinkSelector);
+
+        tabLink.tab('show');
+        invalidInput.focus();
+    }
+
 }

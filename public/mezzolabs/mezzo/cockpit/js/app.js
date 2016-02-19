@@ -1424,6 +1424,25 @@ var FormObject = (function () {
 
             return eventDispatcher.fire(new _FormEvent2.default(name, data, angular.element(this.form)[0]));
         }
+    }, {
+        key: 'focusFirstInvalidInput',
+        value: function focusFirstInvalidInput() {
+            var invalidInput = $(this.form).find(':input[name].ng-invalid').first();
+            var tabPane = invalidInput.parents('div.tab-pane').first();
+
+            if (!tabPane.length) {
+                // Input is not within a tab, we can focus it now!
+                invalidInput.focus();
+                return;
+            }
+
+            var tabId = tabPane.attr('id');
+            var tabLinkSelector = 'a[data-target=#' + tabId + ']';
+            var tabLink = $(tabLinkSelector);
+
+            tabLink.tab('show');
+            invalidInput.focus();
+        }
     }]);
 
     return FormObject;
@@ -1487,6 +1506,7 @@ var FormSubmitter = (function () {
             tinyMCE.triggerSave();
 
             if (!this.attemptSubmit()) {
+                this.formObject.focusFirstInvalidInput();
                 this.unsetForm();
                 return false;
             }

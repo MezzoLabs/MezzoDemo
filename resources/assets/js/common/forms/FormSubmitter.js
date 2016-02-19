@@ -32,6 +32,7 @@ export default class FormSubmitter {
         tinyMCE.triggerSave();
 
         if (!this.attemptSubmit()) {
+            this.formObject.focusFirstInvalidInput();
             this.unsetForm();
             return false;
         }
