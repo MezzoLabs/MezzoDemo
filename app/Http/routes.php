@@ -79,6 +79,11 @@ Route::group(['middleware' => ['auth', 'mezzo.no_permissions_check']], function 
         Route::get('basket/setAmount/{id}', ['uses' => 'Shop\ShoppingBasketController@setAmount', 'as' => 'shop.set_product_amount']);
         Route::get('checkout', ['uses' => 'Shop\CheckoutController@index', 'as' => 'shop.checkout']);
     });
+
+    Route::get('posts', [
+        'uses' => 'PostController@getIndex',
+        'as' => 'posts.index'
+    ]);
 });
 
 
@@ -281,7 +286,7 @@ Route::get('test/orders', function () {
     mezzo_dd($order);
 });
 
-Route::get('test/imagefiles', function(){
+Route::get('test/imagefiles', function () {
     $image = \App\ImageFile::first();
 
     mezzo_dd($image->file);
