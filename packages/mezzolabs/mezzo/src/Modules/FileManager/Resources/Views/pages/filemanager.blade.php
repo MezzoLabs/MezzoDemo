@@ -34,7 +34,9 @@
             <div class="modal-dialog">
                 <div class="modal-content modal-sm">
                     <div class="modal-header">
-                        <h4 class="modal-title">{{ trans('mezzo.modules.filemanager.move') }} <span ng-bind="vm.selected.title"></span> to...</h4>
+                        <h4 class="modal-title">{{ trans('mezzo.modules.filemanager.moving') }} "<span
+                                    ng-bind="vm.selected.title"></span>" {{ trans('mezzo.modules.filemanager.to') }}...
+                        </h4>
                     </div>
                     <div class="modal-body">
                         <script type="text/ng-template" id="node.html">

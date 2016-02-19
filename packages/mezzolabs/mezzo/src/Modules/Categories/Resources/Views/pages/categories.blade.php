@@ -30,7 +30,7 @@
                             <div class="col-md-6">
                                 <h3>{{ $group->label }}</h3>
                             </div>
-                            <div class="col-md-6 text-right">
+                            <div class="col-md-6 text-right label-group">
                                 @foreach($group->modelClasses() as $modelClass)
                                     <span class="label label-default">{{ $modelClass }}</span>
                                 @endforeach

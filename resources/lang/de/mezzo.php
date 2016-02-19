@@ -11,9 +11,17 @@ return [
         'create_model' => ':name erstellen',
         'pagination' => [
             'first' => 'Erste',
-            'last' => 'Letzte'
+            'last' => 'Letzte',
         ],
-        'for' => 'für'
+        'for' => 'für',
+        'select' => 'Auswählen',
+        'search' => 'Suche',
+        'do_filter' => 'Filtern',
+        'filter' => 'Filter|Filter',
+
+    ],
+    'messages' => [
+        'resource_not_found' => 'Die angeforderte Ressource konnte nicht gefunden werden.'
     ],
     'pages' => [
         'permission_index' => 'Zugriffsrechte',
@@ -65,6 +73,8 @@ return [
             'upload' => 'Hochladen',
             'delete' => 'Datei löschen',
             'move' => 'Verschieben',
+            'moving' => 'Verschiebe',
+            'to' => 'nach',
             'search' => 'Suchen',
             'quickview' => [
                 'title' => 'Informationen',
@@ -82,7 +92,9 @@ return [
                 'address' => 'Adresse',
                 'days' => 'Zeitraum',
                 'categories' => 'Kategorien'
-            ]
+            ],
+            'starting_at' => 'Beginn',
+            'ending_at' => 'Ende'
         ],
         'shop' => [
             'title' => 'Shop',
@@ -158,7 +170,9 @@ return [
         'state' => [
             'published' => 'Veröffentlicht',
             'draft' => 'In Bearbeitung',
-            'deleted' => 'Gelöscht'
+            'deleted' => 'Gelöscht',
+            'all' => 'Alle',
+            'private' => 'Privat'
         ],
         'voucher' => [
             'type' => [

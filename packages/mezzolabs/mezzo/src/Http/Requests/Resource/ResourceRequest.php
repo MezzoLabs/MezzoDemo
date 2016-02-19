@@ -7,7 +7,6 @@ use Illuminate\Contracts\Validation\UnauthorizedException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Str;
-use MezzoLabs\Mezzo\Core\Modularisation\Domain\Models\MezzoModel;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 use MezzoLabs\Mezzo\Http\Controllers\Controller;
@@ -77,13 +76,35 @@ class ResourceRequest extends Request
         if (!$this->currentModelInstance) {
             $id = $this->getId();
 
-            if (!$id || !is_numeric($id))
+            if (!$this->hasValidID()) {
                 throw new BadRequestHttpException('This request needs an id.');
+            }
 
             $this->currentModelInstance = $this->modelReflection()->instance()->query()->findOrFail(intval($id));
         }
 
         return $this->currentModelInstance;
+    }
+
+    public function hasValidModelInstance()
+    {
+        if (!$this->hasValidID()) {
+            return false;
+        }
+
+
+        if (!$this->modelReflection()->repository()->exists($this->getId())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function hasValidID()
+    {
+        $id = $this->getId();
+
+        return $id && is_numeric($id);
     }
 
     public function getId()

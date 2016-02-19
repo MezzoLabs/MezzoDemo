@@ -122,12 +122,14 @@ return [
         'user_id' => 'Nutzer',
         'merchant_id' => 'Händler',
         'published_at' => 'Veröffentlichen am',
+        'is_published' => 'Veröffentlicht',
         'created_at' => 'Erstellungsdatum',
         'updated_at' => 'Änderungsdatum',
         'categories' => 'Kategorien',
         'content' => [
             'blocks' => 'Inhaltsblock'
         ],
+        'distance' => 'Entfernung',
         'venue' => 'Veranstaltungs Ort',
         'googlesearch' => 'Addresssuche',
         'gender' => 'Anrede',

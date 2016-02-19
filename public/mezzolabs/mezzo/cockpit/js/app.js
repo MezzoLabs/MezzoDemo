@@ -4411,6 +4411,13 @@ var EditResourceController = (function (_ResourceController) {
                 _this3.contentLoaded(model);
 
                 _this3.canEdit();
+            }).catch(function (err) {
+
+                if (err.data) {
+                    swal(err.data.status_code.toString(), err.data.message, 'error');
+                }
+
+                _this3.redirectToIndex();
             });
         }
     }, {
@@ -4497,19 +4504,24 @@ var EditResourceController = (function (_ResourceController) {
             }
 
             if (model._locked_for_user) {
-                return this.redirectToIndex(model._locked_by);
+                return this.redirectToIndexBecauseLocked(model._locked_by);
             }
 
             this.startResourceLocking();
         }
     }, {
-        key: 'redirectToIndex',
-        value: function redirectToIndex(lockedBy) {
+        key: 'redirectToIndexBecauseLocked',
+        value: function redirectToIndexBecauseLocked(lockedBy) {
             var title = 'Oops...';
             var message = 'You are not allowed to edit this resource while it is locked by ' + lockedBy + '!';
 
-            this.modelStateService.name(this.modelName).index();
             sweetAlert(title, message, 'error');
+            this.redirectToIndex();
+        }
+    }, {
+        key: 'redirectToIndex',
+        value: function redirectToIndex() {
+            this.modelStateService.name(this.modelName).index();
         }
     }]);
 

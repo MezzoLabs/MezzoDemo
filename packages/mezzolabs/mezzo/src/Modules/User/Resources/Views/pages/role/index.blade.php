@@ -7,7 +7,7 @@
         <!-- Bottom Container -->
         <div class="panel panel-bordered">
             <div class="panel-heading">
-                <h3>{{ str_plural($model_reflection->name()) }}</h3>
+                <h3>{{ $model_reflection->pluralTitle() }}</h3>
             </div>
             <div class="panel-body">
                 {!! cockpit_form()->open(['method' => 'GET', 'route' => 'cockpit::role.index']) !!}
@@ -16,11 +16,10 @@
                 </div>
                 <input type="submit" class="btn btn-primary"/>
 
-
                 {!! cockpit_form()->close() !!}
             </div>
             <div class="panel-heading">
-                <h3>Permissions</h3>
+                <h3>{{ trans_choice('mezzo.models.permission', 2) }}</h3>
             </div>
             <div class="panel-body">
                 {!! cockpit_form()->open(['method' => 'PUT', 'route' => ['cockpit::role.update', $role->id] ]) !!}
@@ -50,7 +49,7 @@
                 </div>
 
                 <div class="text-right">
-                    <input type="submit" class="btn btn-primary"/>
+                    <input type="submit" value="{{ trans('mezzo.general.edit') }}" class="btn btn-primary"/>
                 </div>
 
                 {!! cockpit_form()->close() !!}
