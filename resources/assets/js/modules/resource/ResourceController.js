@@ -36,27 +36,6 @@ export default class ResourceController {
         this.$scope.$on('$destroy', () => this.onDestroy());
     }
 
-    hasError(inputName) {
-        const form = this.form;
-
-        if (!form) {
-            return;
-        }
-
-        const formControl = form[inputName];
-
-        if (!formControl) {
-            return;
-        }
-
-        const atLeastOneError = Object.keys(formControl.$error).length > 0;
-        const isDirty = formControl.$dirty;
-
-        if (atLeastOneError && isDirty) {
-            return 'has-error';
-        }
-    }
-
     submitButtonClass(formController) {
         if (this.formController && this.formController.$invalid || this.httpRequestTracker.busy) {
             return 'disabled';

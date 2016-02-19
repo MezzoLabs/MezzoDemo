@@ -11,6 +11,7 @@ import quickviewCloseDirective from './quickviewCloseDirective';
 import formValidationDirective from './forms/formValidationDirective';
 import validationMessagesDirective from './validationMessagesDirective';
 import globalSearchDirective from './globalsearch/globalSearchDirective';
+import hasErrorDirective from './forms/hasErrorDirective';
 import uidService from './uidService.js';
 import apiService from './api/apiService';
 import hasControllerService from './hasControllerService';
@@ -21,6 +22,7 @@ import ErrorHandlerService from './ErrorHandlerService';
 import EventDispatcherService from './events/EventDispatcherService';
 import httpInterceptorFactory from './api/httpInterceptorFactory';
 import HttpRequestTrackerService from './api/HttpRequestTrackerService';
+import FormInputService from './forms/FormInputService';
 
 const module = angular.module('MezzoCommon', []);
 
@@ -37,6 +39,7 @@ module.directive('mezzoQuickviewClose', quickviewCloseDirective);
 module.directive('mezzoFormValidation', formValidationDirective);
 module.directive('mezzoValidationMessages', validationMessagesDirective);
 module.directive('mezzoGlobalsearch', globalSearchDirective);
+module.directive('mezzoHasError', hasErrorDirective);
 module.factory('uid', uidService);
 module.factory('api', apiService);
 module.factory('hasController', hasControllerService);
@@ -49,3 +52,4 @@ module.factory('httpInterceptor', httpInterceptorFactory).config(function ($http
     $httpProvider.interceptors.push('httpInterceptor');
 });
 module.service('HttpRequestTracker', HttpRequestTrackerService);
+module.service('formInputService', FormInputService);

@@ -8,7 +8,7 @@ export default function eventDaysDirective() {
         scope: {
             naming: '@'
         },
-        require: "^form",
+        require: '^form',
         controller: EventDaysController,
         controllerAs: 'vm',
         bindToController: true,
