@@ -32,7 +32,7 @@ var app = angular.module('Mezzo', ['ui.router', 'ui.sortable', 'ui.bootstrap', '
 app.config(_config2.default);
 app.run(_run2.default);
 
-},{"./common":30,"./modules/contentBlocks":40,"./modules/events":44,"./modules/fileManager":55,"./modules/googleMaps":56,"./modules/resource":69,"./modules/users":75,"./setup/config":76,"./setup/jquery":78,"./setup/run":80}],2:[function(require,module,exports){
+},{"./common":31,"./modules/contentBlocks":41,"./modules/events":45,"./modules/fileManager":56,"./modules/googleMaps":57,"./modules/resource":70,"./modules/users":76,"./setup/config":77,"./setup/jquery":79,"./setup/run":81}],2:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -1286,6 +1286,52 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var FormInputService = (function () {
+    function FormInputService() {
+        _classCallCheck(this, FormInputService);
+    }
+
+    _createClass(FormInputService, [{
+        key: 'getFormInputByElement',
+
+        // We need to wait until the name of the input name has been interpolated by Sir Angular
+        value: function getFormInputByElement(inputElement, scope, formController) {
+            return new Promise(function (resolve, reject) {
+                var destroyNameWatch = scope.$watch(function () {
+                    return inputElement.attr('name');
+                }, onInputNameChange);
+
+                function onInputNameChange(newName, oldName) {
+                    var formInput = formController[newName];
+
+                    if (!formInput) {
+                        return;
+                    }
+
+                    destroyNameWatch();
+
+                    return resolve(formInput);
+                }
+            });
+        }
+    }]);
+
+    return FormInputService;
+})();
+
+exports.default = FormInputService;
+
+},{}],22:[function(require,module,exports){
+'use strict';
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 var _FormEvent = require('./FormEvent');
 
 var _FormEvent2 = _interopRequireDefault(_FormEvent);
@@ -1385,7 +1431,7 @@ var FormObject = (function () {
 
 exports.default = FormObject;
 
-},{"./FormEvent":19}],22:[function(require,module,exports){
+},{"./FormEvent":19}],23:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -1535,7 +1581,7 @@ var FormSubmitter = (function () {
 
 exports.default = FormSubmitter;
 
-},{"./FormDataReader":18,"./FormObject":21}],23:[function(require,module,exports){
+},{"./FormDataReader":18,"./FormObject":22}],24:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -1562,7 +1608,7 @@ var FormValidationService = (function () {
             }
 
             var $formGroup = $formInput.parents('.form-group');
-            var validationMessagesTemplate = '<mezzo-validation-messages data-form-input="vm.form[\'' + nameAttribute + '\']"></mezzo-validation-messages>';
+            var validationMessagesTemplate = '<mezzo-validation-messages></mezzo-validation-messages>';
             var ngModel = 'vm.inputs[\'' + nameAttribute + '\']';
 
             this.addModelConnection($formInput, ngModel);
@@ -1570,7 +1616,9 @@ var FormValidationService = (function () {
             $formInput.not('[readonly],[disabled]').attr('ng-disabled', 'vm.loading');
 
             if ($formGroup.find('mezzo-validation-messages').length == 0) {
-                $formGroup.attr('ng-class', 'vm.hasError(\'' + nameAttribute + '\')').append(validationMessagesTemplate);
+                $formGroup
+                //.attr('ng-class', `vm.hasError('${ nameAttribute }')`)
+                .attr('mezzo-has-error', '').append(validationMessagesTemplate);
             }
 
             var isSelect = $formInput.is('select');
@@ -1605,7 +1653,7 @@ var FormValidationService = (function () {
 
 exports.default = FormValidationService;
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1636,7 +1684,7 @@ function formValidationDirective(formValidationService, eventDispatcher, $compil
     }
 }
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1644,37 +1692,50 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = hasErrorDirective;
 /*@ngInject*/
-function hasErrorDirective() {
+function hasErrorDirective(formInputService) {
     return {
         restrict: 'A',
         require: '^form',
-        link: function link(scope, element, attributes, formController) {
-            var formInputName = attributes.mezzoHasError;
-            var formInput = formController[formInputName];
+        link: link
+    };
 
+    function link(scope, element, attributes, formController) {
+        var inputElement = findInputWithinElement(element);
+
+        if (!inputElement.length) {
+            console.warn('Mezzo has error directive is unable to find input with a name within its children!', element);
+            return;
+        }
+
+        formInputService.getFormInputByElement(inputElement, scope, formController).then(function (formInput) {
             scope.$watch(function () {
                 return formInput.$valid;
-            }, function (isValid, wasValid) {
-                console.log(isValid, wasValid);
+            }, onFormInputChange);
+            scope.$watch(function () {
+                return formInput.$dirty;
+            }, onFormInputChange);
+
+            function onFormInputChange() {
                 var isDirty = formInput.$dirty;
+                var isValid = formInput.$valid;
 
                 if (!isDirty) {
                     return;
                 }
 
-                if (isValid === wasValid) {
-                    return;
-                }
-
                 $(element).toggleClass('has-error', !isValid);
-            });
+            }
+        }).catch(function (err) {
+            return console.error(err);
+        });
 
-            scope.$watch;
+        function findInputWithinElement(element) {
+            return $(element).children(':input[name]').first();
         }
-    };
+    }
 }
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1723,7 +1784,7 @@ function globalSearchDirective() {
     }
 }
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1745,7 +1806,7 @@ function hasControllerService($controller) {
     }
 }
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1767,7 +1828,7 @@ function hrefPreventDirective() {
     }
 }
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1807,7 +1868,7 @@ function hrefReloadDirective() {
     }
 }
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 var _compileDirective = require('./compileDirective');
@@ -1906,6 +1967,10 @@ var _HttpRequestTrackerService = require('./api/HttpRequestTrackerService');
 
 var _HttpRequestTrackerService2 = _interopRequireDefault(_HttpRequestTrackerService);
 
+var _FormInputService = require('./forms/FormInputService');
+
+var _FormInputService2 = _interopRequireDefault(_FormInputService);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _module = angular.module('MezzoCommon', []);
@@ -1936,8 +2001,9 @@ _module.factory('httpInterceptor', _httpInterceptorFactory2.default).config(func
     $httpProvider.interceptors.push('httpInterceptor');
 });
 _module.service('HttpRequestTracker', _HttpRequestTrackerService2.default);
+_module.service('formInputService', _FormInputService2.default);
 
-},{"./ErrorHandlerService":2,"./LanguageService":3,"./QuickviewService":4,"./api/HttpRequestTrackerService":7,"./api/apiService":10,"./api/httpInterceptorFactory":11,"./compileDirective":12,"./dateTimePickerDirective":13,"./enterDirective.js":14,"./events/EventDispatcherService":16,"./forms/FormValidationService":23,"./forms/formValidationDirective":24,"./forms/hasErrorDirective":25,"./globalsearch/globalSearchDirective":26,"./hasControllerService":27,"./hrefPreventDirective":28,"./hrefReloadDirective":29,"./quickviewCloseDirective":31,"./quickviewDirective":32,"./relationInputDirective":33,"./select2Directive":34,"./tinymceDirective":35,"./uidService.js":36,"./validationMessagesDirective":37}],31:[function(require,module,exports){
+},{"./ErrorHandlerService":2,"./LanguageService":3,"./QuickviewService":4,"./api/HttpRequestTrackerService":7,"./api/apiService":10,"./api/httpInterceptorFactory":11,"./compileDirective":12,"./dateTimePickerDirective":13,"./enterDirective.js":14,"./events/EventDispatcherService":16,"./forms/FormInputService":21,"./forms/FormValidationService":24,"./forms/formValidationDirective":25,"./forms/hasErrorDirective":26,"./globalsearch/globalSearchDirective":27,"./hasControllerService":28,"./hrefPreventDirective":29,"./hrefReloadDirective":30,"./quickviewCloseDirective":32,"./quickviewDirective":33,"./relationInputDirective":34,"./select2Directive":35,"./tinymceDirective":36,"./uidService.js":37,"./validationMessagesDirective":38}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1960,7 +2026,7 @@ function quickviewCloseDirective(quickviewService) {
     }
 }
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1991,7 +2057,7 @@ function quickviewDirective(quickviewService) {
     }
 }
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2025,7 +2091,7 @@ function relationInputDirective() {
     };
 }
 
-},{"./RelationInputController":5}],34:[function(require,module,exports){
+},{"./RelationInputController":5}],35:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2044,7 +2110,7 @@ function select2Directive() {
     }
 }
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2073,7 +2139,7 @@ function tinymceDirective() {
     }
 }
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2091,7 +2157,7 @@ function nextUid() {
     return id++;
 }
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2099,30 +2165,33 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = validationMessagesDirective;
 /*@ngInject*/
-function validationMessagesDirective() {
+function validationMessagesDirective(formInputService) {
     return {
         restrict: 'E',
         require: '^form',
         templateUrl: '/mezzolabs/mezzo/cockpit/templates/validationMessagesDirective.html',
-        scope: {
-            formInput: '=',
-            formInputName: '@'
-        },
-        link: function link(scope, element, attributes, formController) {
-            scope.getFormInput = getFormInput;
-
-            function getFormInput() {
-                if (scope.formInput) {
-                    return scope.formInput;
-                }
-
-                return formController[scope.formInputName];
-            }
-        }
+        scope: true,
+        link: link
     };
+
+    function link(scope, element, attributes, formController) {
+        scope.formInput = undefined;
+        var inputElement = $(element).siblings(':input[name]').first();
+
+        if (!inputElement.length) {
+            console.warn('Mezzo validation messages directive is unable to find its corresponding input element with a name!', element);
+            return;
+        }
+
+        formInputService.getFormInputByElement(inputElement, scope, formController).then(function (formInput) {
+            scope.formInput = formInput;
+        }).catch(function (err) {
+            return console.error(err);
+        });
+    }
 }
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2166,7 +2235,7 @@ function compileContentBlockDirective($parse, $compile, formValidationService, e
     }
 }
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -2398,7 +2467,7 @@ var ContentBlockService = (function () {
     return ContentBlockService;
 })();
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 var _contentBlockFactory = require('./contentBlockFactory');
@@ -2416,7 +2485,7 @@ var _module = angular.module('MezzoContentBlocks', []);
 _module.factory('contentBlockFactory', _contentBlockFactory2.default);
 _module.directive('mezzoCompileContentBlock', _compileContentBlockDirective2.default);
 
-},{"./compileContentBlockDirective":38,"./contentBlockFactory":39}],41:[function(require,module,exports){
+},{"./compileContentBlockDirective":39,"./contentBlockFactory":40}],42:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -2593,7 +2662,7 @@ var FilePickerController = (function () {
 
 exports.default = FilePickerController;
 
-},{"./../../common/forms/FormEventListener":20}],42:[function(require,module,exports){
+},{"./../../common/forms/FormEventListener":20}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2625,7 +2694,7 @@ function eventDaysDirective() {
     };
 }
 
-},{"./EventDaysController":41}],43:[function(require,module,exports){
+},{"./EventDaysController":42}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2669,7 +2738,7 @@ function eventVenueDirective(api) {
     }
 }
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 var _eventDaysDirective = require('./eventDaysDirective');
@@ -2687,7 +2756,7 @@ var _module = angular.module('MezzoEvents', []);
 _module.directive('mezzoEventDays', _eventDaysDirective2.default);
 _module.directive('mezzoEventVenue', _eventVenueDirective2.default);
 
-},{"./eventDaysDirective":42,"./eventVenueDirective":43}],45:[function(require,module,exports){
+},{"./eventDaysDirective":43,"./eventVenueDirective":44}],46:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2711,7 +2780,7 @@ var Category = function Category(key, label, icon) {
 
 exports.default = Category;
 
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -2832,7 +2901,7 @@ var File = (function () {
 
 exports.default = File;
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -3318,7 +3387,7 @@ var FileManagerController = (function () {
 
 exports.default = FileManagerController;
 
-},{"./File":46,"./Folder":49,"./categories":50}],48:[function(require,module,exports){
+},{"./File":47,"./Folder":50,"./categories":51}],49:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -3658,7 +3727,7 @@ var FilePickerController = (function () {
 
 exports.default = FilePickerController;
 
-},{"./File":46}],49:[function(require,module,exports){
+},{"./File":47}],50:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -3744,7 +3813,7 @@ var Folder = (function (_File) {
 
 exports.default = Folder;
 
-},{"./File":46}],50:[function(require,module,exports){
+},{"./File":47}],51:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3779,7 +3848,7 @@ function documentFilter(file) {
     return file.isDocument();
 }
 
-},{"./Category":45}],51:[function(require,module,exports){
+},{"./Category":46}],52:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3808,7 +3877,7 @@ function draggableDirective() {
     }
 }
 
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3840,7 +3909,7 @@ function droppableDirective() {
     }
 }
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3872,7 +3941,7 @@ function filePickerDirective() {
     };
 }
 
-},{"./FilePickerController":48}],54:[function(require,module,exports){
+},{"./FilePickerController":49}],55:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3900,7 +3969,7 @@ function filePickerValueDirective() {
     }
 }
 
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 'use strict';
 
 var _draggableDirective = require('./draggableDirective.js');
@@ -3933,7 +4002,7 @@ _module.directive('mezzoFilePicker', _filePickerDirective2.default);
 //module.directive('mezzoFilePickerValue', filePickerValueDirective);
 _module.controller('CreateFileController', _FileManagerController2.default);
 
-},{"./FileManagerController":47,"./draggableDirective.js":51,"./droppableDirective.js":52,"./filePickerDirective":53,"./filePickerValueDirective":54}],56:[function(require,module,exports){
+},{"./FileManagerController":48,"./draggableDirective.js":52,"./droppableDirective.js":53,"./filePickerDirective":54,"./filePickerValueDirective":55}],57:[function(require,module,exports){
 'use strict';
 
 var _mapService = require('./mapService');
@@ -3956,7 +4025,7 @@ _module.factory('mapService', _mapService2.default);
 _module.directive('mezzoGoogleMap', _mapDirective2.default);
 _module.directive('mezzoGoogleMapsSearch', _searchDirective2.default);
 
-},{"./mapDirective":57,"./mapService":58,"./searchDirective":59}],57:[function(require,module,exports){
+},{"./mapDirective":58,"./mapService":59,"./searchDirective":60}],58:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4090,7 +4159,7 @@ function mapDirective(mapService) {
     }
 }
 
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4104,7 +4173,7 @@ function mapService() {
     };
 }
 
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4211,7 +4280,7 @@ function searchDirective(mapService) {
     }
 }
 
-},{}],60:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4224,7 +4293,7 @@ exports.default = {
     SHOW: 'show'
 };
 
-},{}],61:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -4300,7 +4369,7 @@ var CreateResourceController = (function (_ResourceController) {
 
 exports.default = CreateResourceController;
 
-},{"./ResourceController":66}],62:[function(require,module,exports){
+},{"./ResourceController":67}],63:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -4530,7 +4599,7 @@ var EditResourceController = (function (_ResourceController) {
 
 exports.default = EditResourceController;
 
-},{"./../../common/forms/FormEvent":19,"./ResourceController":66}],63:[function(require,module,exports){
+},{"./../../common/forms/FormEvent":19,"./ResourceController":67}],64:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -5091,7 +5160,7 @@ var IndexResourceController = (function () {
 
 exports.default = IndexResourceController;
 
-},{"./QueryObject":65}],64:[function(require,module,exports){
+},{"./QueryObject":66}],65:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -5171,7 +5240,7 @@ var ModelStateService = (function () {
 
 exports.default = ModelStateService;
 
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -5376,7 +5445,7 @@ var QueryObject = (function () {
 
 exports.default = QueryObject;
 
-},{"./IndexResourceController":63}],66:[function(require,module,exports){
+},{"./IndexResourceController":64}],67:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -5441,28 +5510,6 @@ var ResourceController = (function () {
     }
 
     _createClass(ResourceController, [{
-        key: 'hasError',
-        value: function hasError(inputName) {
-            var form = this.form;
-
-            if (!form) {
-                return;
-            }
-
-            var formControl = form[inputName];
-
-            if (!formControl) {
-                return;
-            }
-
-            var atLeastOneError = Object.keys(formControl.$error).length > 0;
-            var isDirty = formControl.$dirty;
-
-            if (atLeastOneError && isDirty) {
-                return 'has-error';
-            }
-        }
-    }, {
         key: 'submitButtonClass',
         value: function submitButtonClass(formController) {
             if (this.formController && this.formController.$invalid || this.httpRequestTracker.busy) {
@@ -5542,7 +5589,7 @@ var ResourceController = (function () {
 
 exports.default = ResourceController;
 
-},{"./../../common/forms/FormEvent":19,"./../../common/forms/FormObject":21,"./../../common/forms/FormSubmitter":22}],67:[function(require,module,exports){
+},{"./../../common/forms/FormEvent":19,"./../../common/forms/FormObject":22,"./../../common/forms/FormSubmitter":23}],68:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5560,7 +5607,7 @@ function ShowResourceController() {
 
 exports.default = ShowResourceController;
 
-},{}],68:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -5717,7 +5764,7 @@ var FormDataService = (function () {
 
 exports.default = FormDataService;
 
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 'use strict';
 
 var _stateProvider = require('./stateProvider');
@@ -5777,7 +5824,7 @@ _module.controller('PivotRowsController', _PivotRowsController2.default);
 
 _module.controller('EditUserSubscriptionsController', _EditUserSubscriptionsController2.default);
 
-},{"./CreateResourceController":61,"./EditResourceController":62,"./IndexResourceController":63,"./ModelStateService":64,"./ShowResourceController":67,"./formDataService":68,"./registerStateDirective":70,"./relations/EditUserSubscriptionsController":72,"./relations/PivotRowsController":73,"./stateProvider":74}],70:[function(require,module,exports){
+},{"./CreateResourceController":62,"./EditResourceController":63,"./IndexResourceController":64,"./ModelStateService":65,"./ShowResourceController":68,"./formDataService":69,"./registerStateDirective":71,"./relations/EditUserSubscriptionsController":73,"./relations/PivotRowsController":74,"./stateProvider":75}],71:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -5887,7 +5934,7 @@ function registerStateDirective($location, $stateProvider, hasController) {
     }
 }
 
-},{"./Action":60}],71:[function(require,module,exports){
+},{"./Action":61}],72:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -6081,7 +6128,7 @@ var EditRelationsController = (function () {
 
 exports.default = EditRelationsController;
 
-},{"./../../../common/forms/FormDataReader":18,"./../../../common/forms/FormObject":21,"./../../../common/forms/FormSubmitter":22}],72:[function(require,module,exports){
+},{"./../../../common/forms/FormDataReader":18,"./../../../common/forms/FormObject":22,"./../../../common/forms/FormSubmitter":23}],73:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -6142,7 +6189,7 @@ var EditUserSubscriptionsController = (function (_EditRelationsControl) {
 
 exports.default = EditUserSubscriptionsController;
 
-},{"./EditRelationsController":71}],73:[function(require,module,exports){
+},{"./EditRelationsController":72}],74:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -6170,7 +6217,7 @@ var PivotRowsController = (function () {
 
 exports.default = PivotRowsController;
 
-},{}],74:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6186,12 +6233,12 @@ function stateProvider($stateProvider) {
     }
 }
 
-},{}],75:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 'use strict';
 
 var _module = angular.module('MezzoUsers', []);
 
-},{}],76:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6219,7 +6266,7 @@ function config($locationProvider, $httpProvider, $stateProvider, $translateProv
     $locationProvider.html5Mode(true);
 }
 
-},{"./customRoutes":77,"./lang":79}],77:[function(require,module,exports){
+},{"./customRoutes":78,"./lang":80}],78:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -6238,7 +6285,7 @@ function customRoutes($stateProvider) {
     });
 }
 
-},{}],78:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 'use strict';
 
 $(function () {
@@ -6329,7 +6376,7 @@ function quickviewVisible(open) {
     }
 }
 
-},{}],79:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -6347,7 +6394,7 @@ function addTranslations($translateProvider, languageService) {
     $translateProvider.preferredLanguage('de');
 }
 
-},{}],80:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

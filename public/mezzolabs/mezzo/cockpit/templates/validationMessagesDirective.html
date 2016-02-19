@@ -1,5 +1,5 @@
-<div class="help-block" style="color: #d9534f" ng-messages="getFormInput().$error" ng-if="getFormInput().$dirty">
-    <div ng-message="mezzoServerSide">{{ getFormInput().$error.mezzoServerSide }}</div>
+<div class="help-block" style="color: #d9534f" ng-messages="formInput.$error" ng-if="formInput.$dirty">
+    <div ng-message="mezzoServerSide">{{ formInput.$error.mezzoServerSide }}</div>
     <div ng-message="required">Dieses Feld ist erforderlich</div>
     <div ng-message="minlength">Die Eingabe ist zu kurz</div>
     <div ng-message="maxlength">Die Eingabe ist zu lang</div>

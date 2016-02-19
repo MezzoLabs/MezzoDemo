@@ -22,6 +22,7 @@ import ErrorHandlerService from './ErrorHandlerService';
 import EventDispatcherService from './events/EventDispatcherService';
 import httpInterceptorFactory from './api/httpInterceptorFactory';
 import HttpRequestTrackerService from './api/HttpRequestTrackerService';
+import FormInputService from './forms/FormInputService';
 
 const module = angular.module('MezzoCommon', []);
 
@@ -51,3 +52,4 @@ module.factory('httpInterceptor', httpInterceptorFactory).config(function ($http
     $httpProvider.interceptors.push('httpInterceptor');
 });
 module.service('HttpRequestTracker', HttpRequestTrackerService);
+module.service('formInputService', FormInputService);

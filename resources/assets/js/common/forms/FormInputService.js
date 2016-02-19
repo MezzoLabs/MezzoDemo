@@ -1,5 +1,6 @@
-export default class InputHelperService {
+export default class FormInputService {
 
+    // We need to wait until the name of the input name has been interpolated by Sir Angular
     getFormInputByElement(inputElement, scope, formController) {
         return new Promise((resolve, reject) => {
             const destroyNameWatch = scope.$watch(() => inputElement.attr('name'), onInputNameChange);
