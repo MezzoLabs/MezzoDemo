@@ -7,10 +7,25 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Disk\Uploaders;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Filesystem\Filesystem as IlluminateFileSystem;
 use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
+use MezzoLabs\Mezzo\Modules\FileManager\Disk\Systems\LocalDisk;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LocalFolderUploader extends AbstractFileUploader
 {
+
+
+    /**
+     * @var LocalDisk
+     */
+    private $localDisk;
+
+    /**
+     * @param LocalDisk $localDisk
+     */
+    public function __construct(LocalDisk $localDisk)
+    {
+        $this->localDisk = $localDisk;
+    }
 
     /**
      * Returns the default
@@ -43,7 +58,7 @@ class LocalFolderUploader extends AbstractFileUploader
      */
     protected function moveFile(UploadedFile $file, $path) : bool
     {
-        $absolute = StringHelper::path(storage_path('mezzo/upload/'), $path);
+        $absolute = StringHelper::path($this->localDisk->folder(), $path);
 
         $saved = $file->move(dirname($absolute), basename($absolute));
         return $saved == true;

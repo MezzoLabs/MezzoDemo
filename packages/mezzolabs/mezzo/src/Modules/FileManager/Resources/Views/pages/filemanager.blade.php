@@ -56,57 +56,66 @@
 
         <div class="panel panel-bordered" style="margin-bottom: 0; border-left: 3px solid #eee;">
             <div class="panel-body">
-                <!-- Search -->
-                <input type="search" class="form-control pull-right" style="width: 200px" placeholder="{{ trans('mezzo.modules.filemanager.search') }}"
-                       ng-model="vm.search">
-                <!-- Search -->
-                <!-- Upload -->
-                <button type="button" class="btn btn-primary" ngf-select="vm.upload($file)">
+                <div class="pull-right">
+                    <!-- Refresh -->
+                    <button type="button" class="btn btn-secondary pull-left" ng-click="vm.refresh()"
+                            ng-disabled="vm.loading">
+                        <span class="ion-loop"></span>
+                    </button>
+                    <!-- Refresh -->
+                    <!-- Search -->
+                    <input type="search" class="form-control pull-left"
+                           style="margin-left: 10px; width: 200px; height: 38px"
+                           placeholder="{{ trans('mezzo.modules.filemanager.search') }}"
+                           ng-model="vm.search">
+                    <!-- Search -->
+                </div>
+                <div class="btn-group">
+                    <!-- Upload -->
+                    <button type="button" class="btn btn-primary" ngf-select="vm.upload($file)">
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-ios-cloud-upload"></span>
                     </span>
-                    <span style="display: inline-block">{{ trans('mezzo.modules.filemanager.upload') }}</span>
-                </button>
-                <!-- Upload -->
-                <!-- Add Folder -->
-                <button type="button" class="btn btn-primary" ng-click="vm.addFolderPrompt()">
+                        <span style="display: inline-block">{{ trans('mezzo.modules.filemanager.upload') }}</span>
+                    </button>
+                    <!-- Upload -->
+                    <!-- Add Folder -->
+                    <button type="button" class="btn btn-default" ng-click="vm.addFolderPrompt()">
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-ios-folder"></span>
                     </span>
-                    <span style="display: inline-block">{{ trans('mezzo.modules.filemanager.add_folder') }}</span>
-                </button>
-                <!-- Add Folder -->
-                <!-- Refresh -->
-                <button type="button" class="btn btn-default" ng-click="vm.refresh()" ng-disabled="vm.loading">
-                    <span class="ion-loop"></span>
-                </button>
-                <!-- Refresh -->
-                <!-- Move -->
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#move-modal"
-                        ng-disabled="!vm.fileIsSelected()">
+                        <span style="display: inline-block">{{ trans('mezzo.modules.filemanager.add_folder') }}</span>
+                    </button>
+                    <!-- Add Folder -->
+                    <!-- Move -->
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#move-modal"
+                            ng-disabled="!vm.fileIsSelected()">
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-arrow-swap"></span>
                     </span>
-                    <span style="display: inline-block">{{ trans('mezzo.modules.filemanager.move') }}</span>
-                </button>
-                <!-- Move -->
-                <!-- Rename -->
-                <button type="button" class="btn btn-default" ng-disabled="!vm.fileIsSelected()" ng-click="vm.showRenamePrompt()">
+                        <span style="display: inline-block">{{ trans('mezzo.modules.filemanager.move') }}</span>
+                    </button>
+                    <!-- Move -->
+                    <!-- Rename -->
+                    <button type="button" class="btn btn-default" ng-disabled="!vm.fileIsSelected()"
+                            ng-click="vm.showRenamePrompt()">
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-edit"></span>
                     </span>
-                    <span style="display: inline-block">{{ trans('mezzo.general.rename') }}</span>
-                </button>
-                <!-- Rename -->
-                <!-- Delete -->
-                <button type="button" class="btn btn-default" ng-click="vm.deleteFiles()"
-                        ng-disabled="!vm.fileIsSelected()">
+                        <span style="display: inline-block">{{ trans('mezzo.general.rename') }}</span>
+                    </button>
+                    <!-- Rename -->
+                    <!-- Delete -->
+                    <button type="button" class="btn btn-default" ng-click="vm.deleteFiles()"
+                            ng-disabled="!vm.fileIsSelected()">
                     <span style="display: inline-block; width: 20px">
-                        <span class="ion-close"></span>
+                        <span class="ion-trash-a"></span>
                     </span>
-                    <span style="display: inline-block">{{ trans('mezzo.modules.filemanager.delete') }}</span>
-                </button>
-                <!-- Delete -->
+                    </button>
+                    <!-- Delete -->
+                </div>
+
+
             </div>
         </div>
 

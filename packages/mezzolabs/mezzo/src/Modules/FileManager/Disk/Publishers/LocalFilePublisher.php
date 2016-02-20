@@ -3,11 +3,11 @@
 
 namespace MezzoLabs\Mezzo\Modules\FileManager\Disk\Publishers;
 
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Image as InterventionImage;
 use Intervention\Image\ImageManager;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\Systems\DiskSystemContract;
 use MezzoLabs\Mezzo\Modules\FileManager\Disk\Systems\LocalDisk;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class LocalFilePublisher extends AbstractFilePublisher implements FilePublisherContract
 {
@@ -82,7 +82,7 @@ class LocalFilePublisher extends AbstractFilePublisher implements FilePublisherC
             ->resize($width, $height, function ($constraint) {
                 $constraint->aspectRatio();
             });
-     }
+    }
 
     protected function cacheImage($uniqueKey, InterventionImage $file)
     {
@@ -91,13 +91,18 @@ class LocalFilePublisher extends AbstractFilePublisher implements FilePublisherC
 
     protected function imageCacheFolder()
     {
-        return storage_path() . '/mezzo/cache/images';
-    }
+        $folder = storage_path() . '/mezzo/cache/images';
 
+        if (!File::exists($folder)) {
+            File::makeDirectory($folder, 0777, true);
+
+        }
+        return $folder;
+    }
 
 
     protected function uniqueImageKey(\App\File $file, $width, $height)
     {
-        return 'mezzo_image_' . $file->id . '-' . $width . 'x' . $height;
+        return 'mezzo_image_' . $file->id . '-' . $width . 'x' . $height . '.' . $file->extension;
     }
 }

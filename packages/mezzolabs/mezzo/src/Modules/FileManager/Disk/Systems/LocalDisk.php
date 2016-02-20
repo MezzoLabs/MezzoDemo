@@ -6,6 +6,8 @@ namespace MezzoLabs\Mezzo\Modules\FileManager\Disk\Systems;
 
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Filesystem\Filesystem as DefaultFileSystem;
+use Illuminate\Support\Facades\File;
+use MezzoLabs\Mezzo\Core\Configuration\MezzoConfig;
 use MezzoLabs\Mezzo\Core\Helpers\StringHelper;
 
 class LocalDisk implements DiskSystemContract
@@ -14,13 +16,19 @@ class LocalDisk implements DiskSystemContract
      * @var UrlGenerator
      */
     protected $urlGenerator;
+    /**
+     * @var MezzoConfig
+     */
+    private $config;
 
     /**
      * @param UrlGenerator $urlGenerator
+     * @param MezzoConfig $config
      */
-    public function __construct(UrlGenerator $urlGenerator)
+    public function __construct(UrlGenerator $urlGenerator, MezzoConfig $config)
     {
         $this->urlGenerator = $urlGenerator;
+        $this->config = $config;
     }
 
     /**
@@ -76,7 +84,18 @@ class LocalDisk implements DiskSystemContract
      */
     public function absolutePath(string $path) : string
     {
-        return StringHelper::path([storage_path('mezzo/upload/'), $path]);
+        return StringHelper::path([$this->folder(), $path]);
+    }
+
+    public function folder()
+    {
+        $folder = $this->config->get('filemanager.disks.local.folder');
+
+        if (!File::exists($folder)) {
+            File::makeDirectory($folder, 0777, true);
+        }
+
+        return $folder;
     }
 
     /**

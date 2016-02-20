@@ -37,7 +37,7 @@ return [
         'active_disk' => env('MEZZO_FILEMANAGER_ACTIVE_DISK', 'local'),
         'disks' => [
             'local' => [
-                'folder' => 'mezzo/upload'
+                'folder' => env('MEZZO_FILEMANAGER_LOCAL_FOLDER', storage_path('mezzo/upload')),
             ],
             's3' => [
                 'base_url' => 'https://s3.eu-central-1.amazonaws.com/mezzo.test'
