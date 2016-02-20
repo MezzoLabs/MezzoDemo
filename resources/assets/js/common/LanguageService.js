@@ -10,7 +10,8 @@ export default class LanguageService {
                 general: {
                     create: 'Erstellen',
                     delete: 'Löschen',
-                    update: 'Editieren'
+                    update: 'Editieren',
+                    rename: 'Umbenennen'
                 },
                 messages: {
                     missing_permissions: 'Sie haben nicht genügend Rechte um diese Aktion auszuführen.',
@@ -37,7 +38,8 @@ export default class LanguageService {
                         videos: 'Videos',
                         audio: 'Audio',
                         documents: 'Dokumente'
-                    }
+                    },
+                    exists_already: 'exisitiert bereits.'
                 },
                 attributes: {
                     gender: {

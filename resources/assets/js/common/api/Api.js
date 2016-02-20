@@ -66,7 +66,11 @@ export default class Api {
             filename: file.name
         };
 
-        return this.put('/api/files/' + file.id, payload);
+        return this.put('/api/files/' + file.id, payload).catch(err => {
+            if (err.data) {
+                return swal(err.data.status_code.toString(), err.data.message, 'error');
+            }
+        });
     }
 
     deleteFile(file) {

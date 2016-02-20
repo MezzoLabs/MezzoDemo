@@ -11,7 +11,10 @@ trait UpdatesOrUploadsFiles
             $this->offsetSet('folder', str_replace('.', '', trim($this->get('folder'), '/')));
         }
 
-        if ($this->has('filename'))
-            $this->offsetSet('filename', str_replace('.', '', trim($this->get('filename'), '/')));
+        if ($this->has('filename')) {
+            $this->offsetSet('filename', str_replace('..', '', trim($this->get('filename'), '/')));
+
+
+        }
     }
 }

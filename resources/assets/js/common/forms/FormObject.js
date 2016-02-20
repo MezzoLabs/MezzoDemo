@@ -76,6 +76,8 @@ export default class FormObject {
         const invalidInput = $(this.form).find(':input[name].ng-invalid').first();
         const tabPane = invalidInput.parents('div.tab-pane').first();
 
+        console.log('foxus', invalidInput);
+
         if(!tabPane.length) {
             // Input is not within a tab, we can focus it now!
             invalidInput.focus();
@@ -83,7 +85,7 @@ export default class FormObject {
         }
 
         const tabId = tabPane.attr('id');
-        const tabLinkSelector = `a[data-target=#${ tabId }]`;
+        const tabLinkSelector = `a[data-target="#${ tabId }"]`;
         const tabLink = $(tabLinkSelector);
 
         tabLink.tab('show');

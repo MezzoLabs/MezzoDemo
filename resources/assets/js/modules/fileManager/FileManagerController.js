@@ -414,9 +414,9 @@ export default class FileManagerController {
 
     showRenamePrompt() {
         swal({
-            title: this.lang.get('mezzo.general.rename'),
-            html: `<input id="new-file-name" type="text" value="${ this.selected.name }" class="form-control">`,
-            confirmButtonText: this.lang.get('mezzo.general.rename'),
+            title: this.lang.get('general.rename'),
+            html: `<input id="new-file-name" type="text" value="${ this.selected.title }" class="form-control">`,
+            confirmButtonText: this.lang.get('general.rename'),
             closeOnConfirm: false
         }, () => {
             const newFileName = $('#new-file-name').val();
@@ -443,7 +443,7 @@ export default class FileManagerController {
         swal.closeModal();
 
         file.title = name;
-        file.name = name;
+        file.name = name + '.' + file.extension;
 
         this.api.renameFile(file);
     }
