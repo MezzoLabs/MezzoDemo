@@ -133,7 +133,7 @@ export default class FileManagerController {
             return false;
         }
 
-        if(this.fileExists(name)) {
+        if (this.fileExists(name)) {
             swal({
                 title: 'Oops...',
                 text: name + ' ' + this.translate('exists_already') + '!',
@@ -427,11 +427,11 @@ export default class FileManagerController {
     }
 
     rename(file, name) {
-        if(!name || !name.length) {
+        if (!name || !name.length) {
             return;
         }
 
-        if(this.fileExists(name)) {
+        if (this.fileExists(name)) {
             swal({
                 title: 'Oops...',
                 text: name + ' ' + this.translate('exists_already') + '!',
@@ -449,7 +449,7 @@ export default class FileManagerController {
     }
 
     fileExists(name) {
-        return !!_.find(this.folder.files, { name: name });
+        return !!_.find(this.folder.files, {name: name});
     }
 
 }

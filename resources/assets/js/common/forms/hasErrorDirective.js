@@ -9,7 +9,7 @@ export default function hasErrorDirective(formInputService) {
     function link(scope, element, attributes, formController) {
         const inputElement = findInputWithinElement(element);
 
-        if(!inputElement.length) {
+        if (!inputElement.length) {
             console.warn('Mezzo has error directive is unable to find input with a name within its children!', element);
             return;
         }
@@ -23,7 +23,7 @@ export default function hasErrorDirective(formInputService) {
                     const isDirty = formInput.$dirty;
                     const isValid = formInput.$valid;
 
-                    if(!isDirty) {
+                    if (!isDirty) {
                         return;
                     }
 

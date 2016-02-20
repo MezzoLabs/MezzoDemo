@@ -28,7 +28,8 @@
                    required="required" ng-change="vm.startChanged()" type="text" ng-model="vm.days[$index].start"
                    data-mezzo-datetimepicker class="form-control"
                    name="{{ vm.naming }}.{{ $index }}.start">
-            <mezzo-validation-messages data-form-input-name="{{ vm.naming }}.{{ $index }}.start"></mezzo-validation-messages>
+            <mezzo-validation-messages
+                    data-form-input-name="{{ vm.naming }}.{{ $index }}.start"></mezzo-validation-messages>
         </div>
     </div>
     <div class="col-md-1">
@@ -39,7 +40,8 @@
             <input data-after="[name='{{ vm.naming }}.{{ $index }}.start']" required="required" type="text"
                    ng-model="vm.days[$index].end" data-mezzo-datetimepicker class="form-control"
                    name="{{ vm.naming }}.{{ $index }}.end">
-            <mezzo-validation-messages data-form-input-name="{{ vm.naming }}.{{ $index }}.end"></mezzo-validation-messages>
+            <mezzo-validation-messages
+                    data-form-input-name="{{ vm.naming }}.{{ $index }}.end"></mezzo-validation-messages>
         </div>
     </div>
     <div class="col-md-1">

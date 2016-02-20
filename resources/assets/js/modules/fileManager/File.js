@@ -92,7 +92,7 @@ export default class File {
     nameWithoutExtension(name) {
         const lastDotIndex = name.lastIndexOf('.');
 
-        if(lastDotIndex === -1) {
+        if (lastDotIndex === -1) {
             return name;
         }
 

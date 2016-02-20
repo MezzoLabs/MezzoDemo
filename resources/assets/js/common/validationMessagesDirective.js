@@ -12,7 +12,7 @@ export default function validationMessagesDirective(formInputService) {
         scope.formInput = undefined;
         const inputElement = $(element).siblings(':input[name]').first();
 
-        if(!inputElement.length) {
+        if (!inputElement.length) {
             console.warn('Mezzo validation messages directive is unable to find its corresponding input element with a name!', element);
             return;
         }

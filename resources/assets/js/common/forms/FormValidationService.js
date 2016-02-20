@@ -21,7 +21,7 @@ export default class FormValidationService {
 
         if ($formGroup.find('mezzo-validation-messages').length == 0) {
             $formGroup
-                //.attr('ng-class', `vm.hasError('${ nameAttribute }')`)
+            //.attr('ng-class', `vm.hasError('${ nameAttribute }')`)
                 .attr('mezzo-has-error', '')
                 .append(validationMessagesTemplate);
         }
