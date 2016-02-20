@@ -1,0 +1,1 @@
+<h3>{{ $block->getField('title')->value }}</h3>

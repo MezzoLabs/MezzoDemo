@@ -54,5 +54,9 @@ class ImageFile extends MezzoImageFile implements TypedFileAddon
         return $this->belongsToMany(\App\Event::class, 'event_image_file', 'image_file_id', 'event_id');
     }
 
+    public function url($size = "medium")
+    {
+        return $this->file->url() . '?size=' . $size;
+    }
 
 }

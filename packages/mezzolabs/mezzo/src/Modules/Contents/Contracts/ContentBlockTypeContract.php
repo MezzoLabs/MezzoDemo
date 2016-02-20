@@ -86,4 +86,10 @@ interface ContentBlockTypeContract
      * @return array
      */
     public function fieldsRules();
+
+    /**
+     * @return string
+     */
+    public function shortKey();
+
 }

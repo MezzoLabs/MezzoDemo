@@ -32,6 +32,4 @@ class WebVideo extends AbstractContentBlockType
     {
         return $this->makeView('modules.contents::blocks.web_video');
     }
-
-
 }

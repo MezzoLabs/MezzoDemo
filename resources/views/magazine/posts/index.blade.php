@@ -11,6 +11,9 @@
                 <div class="panel-body">
                     {{ $post->teaser }}
                 </div>
+                <div class="panel-footer text-right">
+                    <a href="{{ route('posts.show', $post->id) }}">Show</a>
+                </div>
             </div>
         @endforeach
     </div>

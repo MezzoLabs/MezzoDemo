@@ -80,10 +80,12 @@ Route::group(['middleware' => ['auth', 'mezzo.no_permissions_check']], function 
         Route::get('checkout', ['uses' => 'Shop\CheckoutController@index', 'as' => 'shop.checkout']);
     });
 
-    Route::get('posts', [
-        'uses' => 'PostController@getIndex',
-        'as' => 'posts.index'
-    ]);
+    Route::group(['prefix' => 'posts', 'as' => 'posts.'], function () {
+        Route::get('', ['uses' => 'PostController@getIndex', 'as' => 'index']);
+        Route::get('/{id}', ['uses' => 'PostController@getShow', 'as' => 'show']);
+    });
+
+
 });
 
 

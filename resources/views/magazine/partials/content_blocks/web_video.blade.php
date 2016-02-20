@@ -1,0 +1,1 @@
+{!! Html::embeddedWebVideo($block) !!}
