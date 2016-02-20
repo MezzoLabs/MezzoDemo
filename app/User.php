@@ -65,7 +65,6 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return $this->hasMany(Comment::class);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -156,6 +155,20 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
+    }
+
+    public function isSubscribed()
+    {
+        return !!$this->activeSubscription();
+    }
+
+    public function activeSubscription()
+    {
+        foreach ($this->subscriptions as $subscription) {
+            if ($subscription->isActive()) return $subscription;
+        }
+
+        return null;
     }
 
     public function merchant() : HasOne

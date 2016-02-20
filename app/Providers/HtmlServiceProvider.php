@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Html\HtmlHelper;
 use Illuminate\Support\ServiceProvider;
 
 class HtmlServiceProvider extends ServiceProvider

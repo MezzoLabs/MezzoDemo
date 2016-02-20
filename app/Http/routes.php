@@ -85,6 +85,11 @@ Route::group(['middleware' => ['auth', 'mezzo.no_permissions_check']], function 
         Route::get('/{id}', ['uses' => 'PostController@getShow', 'as' => 'show']);
     });
 
+    Route::group(['prefix' => 'events', 'as' => 'events.'], function () {
+        Route::get('', ['uses' => 'EventController@getIndex', 'as' => 'index']);
+        Route::get('/{id}', ['uses' => 'EventController@getShow', 'as' => 'show']);
+    });
+
 
 });
 

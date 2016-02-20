@@ -222,7 +222,7 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Form' => App\Html\FormFacade::class,
         'Countries' => Webpatser\Countries\CountriesFacade::class,
-        'Html' => App\Html\HtmlHelper::class,
+        'Html' => App\Html\HtmlHelperFacade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class
     ]
 
