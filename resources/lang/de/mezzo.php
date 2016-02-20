@@ -18,7 +18,7 @@ return [
         'search' => 'Suche',
         'do_filter' => 'Filtern',
         'filter' => 'Filter|Filter',
-
+        'rename' => 'Umbenennen'
     ],
     'messages' => [
         'resource_not_found' => 'Die angeforderte Ressource konnte nicht gefunden werden.'
@@ -76,6 +76,7 @@ return [
             'moving' => 'Verschiebe',
             'to' => 'nach',
             'search' => 'Suchen',
+            'exists_already' => 'existiert bereits',
             'quickview' => [
                 'title' => 'Informationen',
                 'name' => 'Name',

@@ -133,6 +133,17 @@ export default class FileManagerController {
             return false;
         }
 
+        if(this.fileExists(name)) {
+            swal({
+                title: 'Oops...',
+                text: name + ' ' + this.translate('exists_already') + '!',
+                type: 'error'
+            });
+            return;
+        }
+
+        swal.closeModal();
+
         const newFolder = new Folder(name, this.folder);
 
         this.folder.files.push(newFolder);
@@ -324,19 +335,16 @@ export default class FileManagerController {
         this.initFiles(this.folder);
     }
 
-    canMoveOrDelete() {
-        if (this.selected && !this.selected.isFolder) {
-            return true;
-        }
-
-        return false;
+    fileIsSelected() {
+        return this.selected && !this.selected.isFolder;
     }
 
     addFolderPrompt() {
         swal({
             title: this.translate('messages.enter_folder_name'),
             html: '<input id="new-folder-name" type="text" class="form-control">',
-            confirmButtonText: this.lang.get('general.create')
+            confirmButtonText: this.lang.get('general.create'),
+            closeOnConfirm: false
         }, () => {
             const newFolderName = $('#new-folder-name').val();
 
@@ -344,8 +352,6 @@ export default class FileManagerController {
             this.$scope.$apply();
         });
     }
-
-
 
     submitAddon() {
         var addon = this.selected.addon;
@@ -404,6 +410,46 @@ export default class FileManagerController {
         }
 
         return options;
+    }
+
+    showRenamePrompt() {
+        swal({
+            title: this.lang.get('mezzo.general.rename'),
+            html: `<input id="new-file-name" type="text" value="${ this.selected.name }" class="form-control">`,
+            confirmButtonText: this.lang.get('mezzo.general.rename'),
+            closeOnConfirm: false
+        }, () => {
+            const newFileName = $('#new-file-name').val();
+
+            this.rename(this.selected, newFileName);
+            this.$scope.$apply();
+        });
+    }
+
+    rename(file, name) {
+        if(!name || !name.length) {
+            return;
+        }
+
+        if(this.fileExists(name)) {
+            swal({
+                title: 'Oops...',
+                text: name + ' ' + this.translate('exists_already') + '!',
+                type: 'error'
+            });
+            return;
+        }
+
+        swal.closeModal();
+
+        file.title = name;
+        file.name = name;
+
+        this.api.renameFile(file);
+    }
+
+    fileExists(name) {
+        return !!_.find(this.folder.files, { name: name });
     }
 
 }

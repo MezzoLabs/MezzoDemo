@@ -479,6 +479,16 @@ var Api = (function () {
             return this.put('/api/files/' + file.id, payload);
         }
     }, {
+        key: 'renameFile',
+        value: function renameFile(file) {
+            var payload = {
+                title: file.title,
+                filename: file.name
+            };
+
+            return this.put('/api/files/' + file.id, payload);
+        }
+    }, {
         key: 'deleteFile',
         value: function deleteFile(file) {
             return this.delete('/api/files/' + file.id);
@@ -2816,8 +2826,8 @@ var File = (function () {
         _classCallCheck(this, File);
 
         this.id = apiFile.id;
-        this.title = apiFile.filename;
-        this.name = apiFile.filename;
+        this.title = this.nameWithoutExtension(apiFile.filename);
+        this.name = this.nameWithoutExtension(apiFile.filename);
         this.created_at = apiFile.created_at;
         this.extension = apiFile.extension;
         this.addon = apiFile.addon;
@@ -2913,6 +2923,17 @@ var File = (function () {
             }
 
             return false;
+        }
+    }, {
+        key: 'nameWithoutExtension',
+        value: function nameWithoutExtension(name) {
+            var lastDotIndex = name.lastIndexOf('.');
+
+            if (lastDotIndex === -1) {
+                return name;
+            }
+
+            name.substr(0, lastDotIndex);
         }
     }]);
 
@@ -3093,6 +3114,17 @@ var FileManagerController = (function () {
             if (!name || !name.length) {
                 return false;
             }
+
+            if (this.fileExists(name)) {
+                swal({
+                    title: 'Oops...',
+                    text: name + ' ' + this.translate('exists_already') + '!',
+                    type: 'error'
+                });
+                return;
+            }
+
+            swal.closeModal();
 
             var newFolder = new _Folder2.default(name, this.folder);
 
@@ -3308,13 +3340,9 @@ var FileManagerController = (function () {
             this.initFiles(this.folder);
         }
     }, {
-        key: 'canMoveOrDelete',
-        value: function canMoveOrDelete() {
-            if (this.selected && !this.selected.isFolder) {
-                return true;
-            }
-
-            return false;
+        key: 'fileIsSelected',
+        value: function fileIsSelected() {
+            return this.selected && !this.selected.isFolder;
         }
     }, {
         key: 'addFolderPrompt',
@@ -3324,7 +3352,8 @@ var FileManagerController = (function () {
             swal({
                 title: this.translate('messages.enter_folder_name'),
                 html: '<input id="new-folder-name" type="text" class="form-control">',
-                confirmButtonText: this.lang.get('general.create')
+                confirmButtonText: this.lang.get('general.create'),
+                closeOnConfirm: false
             }, function () {
                 var newFolderName = $('#new-folder-name').val();
 
@@ -3399,6 +3428,51 @@ var FileManagerController = (function () {
             }
 
             return options;
+        }
+    }, {
+        key: 'showRenamePrompt',
+        value: function showRenamePrompt() {
+            var _this7 = this;
+
+            swal({
+                title: this.lang.get('mezzo.general.rename'),
+                html: '<input id="new-file-name" type="text" value="' + this.selected.name + '" class="form-control">',
+                confirmButtonText: this.lang.get('mezzo.general.rename'),
+                closeOnConfirm: false
+            }, function () {
+                var newFileName = $('#new-file-name').val();
+
+                _this7.rename(_this7.selected, newFileName);
+                _this7.$scope.$apply();
+            });
+        }
+    }, {
+        key: 'rename',
+        value: function rename(file, name) {
+            if (!name || !name.length) {
+                return;
+            }
+
+            if (this.fileExists(name)) {
+                swal({
+                    title: 'Oops...',
+                    text: name + ' ' + this.translate('exists_already') + '!',
+                    type: 'error'
+                });
+                return;
+            }
+
+            swal.closeModal();
+
+            file.title = name;
+            file.name = name;
+
+            this.api.renameFile(file);
+        }
+    }, {
+        key: 'fileExists',
+        value: function fileExists(name) {
+            return !!_.find(this.folder.files, { name: name });
         }
     }]);
 

@@ -2,8 +2,8 @@ export default class File {
 
     constructor(apiFile) {
         this.id = apiFile.id;
-        this.title = apiFile.filename;
-        this.name = apiFile.filename;
+        this.title = this.nameWithoutExtension(apiFile.filename);
+        this.name = this.nameWithoutExtension(apiFile.filename);
         this.created_at = apiFile.created_at;
         this.extension = apiFile.extension;
         this.addon = apiFile.addon;
@@ -87,6 +87,16 @@ export default class File {
         }
 
         return false;
+    }
+
+    nameWithoutExtension(name) {
+        const lastDotIndex = name.lastIndexOf('.');
+
+        if(lastDotIndex === -1) {
+            return name;
+        }
+
+        name.substr(0, lastDotIndex);
     }
 
 }

@@ -83,16 +83,24 @@
                 <!-- Refresh -->
                 <!-- Move -->
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#move-modal"
-                        ng-disabled="!vm.canMoveOrDelete()">
+                        ng-disabled="!vm.fileIsSelected()">
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-arrow-swap"></span>
                     </span>
                     <span style="display: inline-block">{{ trans('mezzo.modules.filemanager.move') }}</span>
                 </button>
                 <!-- Move -->
+                <!-- Rename -->
+                <button type="button" class="btn btn-default" ng-disabled="!vm.fileIsSelected()" ng-click="vm.showRenamePrompt()">
+                    <span style="display: inline-block; width: 20px">
+                        <span class="ion-edit"></span>
+                    </span>
+                    <span style="display: inline-block">{{ trans('mezzo.general.rename') }}</span>
+                </button>
+                <!-- Rename -->
                 <!-- Delete -->
                 <button type="button" class="btn btn-default" ng-click="vm.deleteFiles()"
-                        ng-disabled="!vm.canMoveOrDelete()">
+                        ng-disabled="!vm.fileIsSelected()">
                     <span style="display: inline-block; width: 20px">
                         <span class="ion-close"></span>
                     </span>
@@ -128,7 +136,7 @@
                     <span ng-class="file.icon()" ng-hide="file.isFolder"></span>
                 </td>
                 <td>
-                    <a href="" style="color: #555555" ng-bind="file.title" ng-click="vm.enterFolder(file)"
+                    <a href="" style="color: #555555" ng-bind="file.name" ng-click="vm.enterFolder(file)"
                        ng-show="file.isFolder"></a>
                     <span ng-bind="file.title" ng-hide="file.isFolder"></span>
                 </td>

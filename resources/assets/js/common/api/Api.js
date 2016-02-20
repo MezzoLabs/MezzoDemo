@@ -60,6 +60,15 @@ export default class Api {
         return this.put('/api/files/' + file.id, payload);
     }
 
+    renameFile(file) {
+        const payload = {
+            title: file.title,
+            filename: file.name
+        };
+
+        return this.put('/api/files/' + file.id, payload);
+    }
+
     deleteFile(file) {
         return this.delete('/api/files/' + file.id);
     }
