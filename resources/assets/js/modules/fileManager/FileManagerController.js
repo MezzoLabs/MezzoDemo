@@ -133,6 +133,17 @@ export default class FileManagerController {
             return false;
         }
 
+        if(this.fileExists(name)) {
+            swal({
+                title: 'Oops...',
+                text: name + ' ' + this.translate('exists_already') + '!',
+                type: 'error'
+            });
+            return;
+        }
+
+        swal.closeModal();
+
         const newFolder = new Folder(name, this.folder);
 
         this.folder.files.push(newFolder);
@@ -332,7 +343,8 @@ export default class FileManagerController {
         swal({
             title: this.translate('messages.enter_folder_name'),
             html: '<input id="new-folder-name" type="text" class="form-control">',
-            confirmButtonText: this.lang.get('general.create')
+            confirmButtonText: this.lang.get('general.create'),
+            closeOnConfirm: false
         }, () => {
             const newFolderName = $('#new-folder-name').val();
 
