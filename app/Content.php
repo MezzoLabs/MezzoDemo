@@ -28,5 +28,10 @@ class Content extends ContendsModuleContent
         return $this->hasOne(Post::class);
     }
 
+    public function campaign()
+    {
+        return $this->hasOne(Campaign::class);
+    }
+
 
 }
