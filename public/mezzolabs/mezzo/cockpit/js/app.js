@@ -5134,7 +5134,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     /*@ngInject*/
 
-    function IndexResourceController($scope, api, modelStateService, languageService, eventDispatcher) {
+        function IndexResourceController($scope, api, modelStateService, languageService, eventDispatcher, errorHandlerService) {
         var _this = this;
 
         _classCallCheck(this, IndexResourceController);
@@ -5145,6 +5145,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.modelStateService = modelStateService;
         this.includes = [];
         this.language = languageService;
+            this.errorHandler = errorHandlerService;
         this.models = [];
         this.modelValues = {};
         this.searchText = '';
@@ -5210,7 +5211,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             return this.modelApi.index(params).then(function (data) {
                 var latestResponse = _this2.modelApi.latestResponse();
 
-                _this2.loading = false;
                 _this2.models = data;
 
                 if (_this2.options.backendPagination) {
@@ -5222,6 +5222,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 _this2.models.forEach(function (model) {
                     return model._meta = {};
                 });
+            }).catch(function (err) {
+                return _this2.errorHandler.showUnexpected(err);
+            }).finally(function () {
+                _this2.loading = false;
             });
         }
     }, {

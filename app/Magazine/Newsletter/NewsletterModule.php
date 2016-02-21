@@ -9,7 +9,7 @@ use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 class NewsletterModule extends ModuleProvider
 {
     protected $models = [
-
+        \App\Campaign::class
     ];
 
     protected $options = [
@@ -33,7 +33,33 @@ class NewsletterModule extends ModuleProvider
      */
     public function register()
     {
-
+        $this->optionRegistry()->register([
+            'newsletter::footer:unsubscribe' => [
+                'title' => 'Footer ',
+                'rules' => 'required',
+                'inputType' => RichTextArea::class
+            ],
+            'magazine::social-media_youtube' => [
+                'title' => 'Social media: Youtube',
+                'rules' => 'required|url',
+                'inputType' => UrlInput::class
+            ],
+            'magazine::social-media_facebook' => [
+                'title' => 'Social media: Facebook',
+                'rules' => 'required|url',
+                'inputType' => UrlInput::class
+            ],
+            'magazine::social-media_twitter' => [
+                'title' => 'Social media: Twitter',
+                'rules' => 'required|url',
+                'inputType' => UrlInput::class
+            ],
+            'magazine::social-media_gplus' => [
+                'title' => 'Social media: Google plus',
+                'rules' => 'required|url',
+                'inputType' => UrlInput::class
+            ]
+        ]);
 
     }
 }

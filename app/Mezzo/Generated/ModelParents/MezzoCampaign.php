@@ -75,8 +75,8 @@ abstract class MezzoCampaign extends \App\Mezzo\BaseModel
      */
     protected $fillable = [
         'title',
-        'content_id',
-        'user_id'
+        'user_id',
+        'content_id'
     ];
 
     /**

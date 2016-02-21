@@ -18,7 +18,8 @@ return [
         'search' => 'Suche',
         'do_filter' => 'Filtern',
         'filter' => 'Filter|Filter',
-        'rename' => 'Umbenennen'
+        'rename' => 'Umbenennen',
+        'please_wait' => 'Bitte warten.'
     ],
     'messages' => [
         'resource_not_found' => 'Die angeforderte Ressource konnte nicht gefunden werden.'
@@ -53,7 +54,9 @@ return [
         'file_create' => 'Dateimanager',
         'options_index' => 'Alle Optionen',
         'magazine_options' => 'Magazin Optionen',
-        'role_create' => 'Rolle hinzufügen'
+        'role_create' => 'Rolle hinzufügen',
+        'campaign_create' => 'Kampagne erstellen',
+        'campaign_index' => 'Alle Kampagnen'
     ],
     'modules' => [
         'groups' => [
@@ -160,7 +163,8 @@ return [
         'tag' => 'Tag|Tags',
         'user' => 'Nutzer',
         'voucher' => 'Gutschein|Gutscheine',
-        'subscription' => 'Abonement|Abonements'
+        'subscription' => 'Abonement|Abonements',
+        'campaign' => 'Kampagne|Kampagnen'
     ],
     'selects' => [
         'gender' => [

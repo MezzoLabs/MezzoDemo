@@ -3,13 +3,14 @@ import QueryObject from './QueryObject';
 export default class IndexResourceController {
 
     /*@ngInject*/
-    constructor($scope, api, modelStateService, languageService, eventDispatcher) {
+    constructor($scope, api, modelStateService, languageService, eventDispatcher, errorHandlerService) {
         this.$scope = $scope;
         this.api = api;
         this.lang = languageService;
         this.modelStateService = modelStateService;
         this.includes = [];
         this.language = languageService;
+        this.errorHandler = errorHandlerService;
         this.models = [];
         this.modelValues = {};
         this.searchText = '';
@@ -63,7 +64,6 @@ export default class IndexResourceController {
             .then(data => {
                 const latestResponse = this.modelApi.latestResponse();
 
-                this.loading = false;
                 this.models = data;
 
                 if (this.options.backendPagination) {
@@ -73,6 +73,9 @@ export default class IndexResourceController {
                 }
 
                 this.models.forEach(model => model._meta = {});
+            }).catch(err => this.errorHandler.showUnexpected(err))
+            .finally(() => {
+                this.loading = false;
             });
     }
 
