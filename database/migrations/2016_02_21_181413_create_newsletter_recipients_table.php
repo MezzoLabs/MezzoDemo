@@ -15,9 +15,9 @@ class CreateNewsletterRecipientsTable extends Migration
         Schema::create('newsletter_recipients', function (Blueprint $table) {
             $table->increments('id');
             $table->string('email');
-            $table->string('subscription_code');
-            $table->string('mode');
+            $table->string('state');
             $table->string('ip_address');
+            $table->string('confirmation_code');
             $table->text('confirmation_text');
             $table->timestamp('confirmed_at');
             $table->timestamps();

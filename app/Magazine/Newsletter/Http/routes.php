@@ -8,6 +8,7 @@ mezzo()->module('Newsletter')->generateRoutes();
 
 module_route('Newsletter', [], function (Router $router, ApiRouter $api, CockpitRouter $cockpit) {
     $api->resource('Campaign');
+    $api->resource('NewsletterRecipient');
 
 });
 

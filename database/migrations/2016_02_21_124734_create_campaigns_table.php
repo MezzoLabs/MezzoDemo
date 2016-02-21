@@ -19,6 +19,7 @@ class CreateCampaignsTable extends Migration
             $table->foreign('content_id')->references('id')->on('contents');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->timestamp('sent_at')->nullable();
             $table->timestamps();
         });
     }

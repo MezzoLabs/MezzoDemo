@@ -9,7 +9,8 @@ use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 class NewsletterModule extends ModuleProvider
 {
     protected $models = [
-        \App\Campaign::class
+        \App\Campaign::class,
+        \App\NewsletterRecipient::class
     ];
 
     protected $options = [

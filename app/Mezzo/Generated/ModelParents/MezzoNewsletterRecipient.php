@@ -12,25 +12,25 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  *
  *-------------------------------------------------------------------------------------------------------------------
  *
- * Please do not edit, use "App\Magazine\Newsletter\Domain\Models\Campaign" instead. Thank you.
+ * Please do not edit, use "App\NewsletterRecipient" instead. Thank you.
  *
  *-------------------------------------------------------------------------------------------------------------------
  * Welcome to the model parent. This file is auto generated and tells Mezzo something about
  * your model. If you feel the need to overwrite something use the child class.
  *
- * App\Mezzo\Generated\ModelParents\MezzoCampaign
+ * App\Mezzo\Generated\ModelParents\MezzoNewsletterRecipient
  *
  * @property integer $id
- * @property string $title
- * @property integer $content_id
- * @property integer $user_id
- * @property \Carbon\Carbon $sent_at
+ * @property string $email
+ * @property string $state
+ * @property string $ip_address
+ * @property string $confirmation_code
+ * @property string $confirmation_text
+ * @property \Carbon\Carbon $confirmed_at
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property \App\Content $content
- * @property \App\User $user
  */
-abstract class MezzoCampaign extends \App\Mezzo\BaseModel
+abstract class MezzoNewsletterRecipient extends \App\Mezzo\BaseModel
 {
     use IsMezzoModel;
 
@@ -49,7 +49,7 @@ abstract class MezzoCampaign extends \App\Mezzo\BaseModel
      *
      * @var string
      */
-    protected $table = 'campaigns';
+    protected $table = 'newsletter_recipients';
 
     /**
      * Set of rules that will be validated in resource requests.
@@ -57,8 +57,12 @@ abstract class MezzoCampaign extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $rules = [
-        'title' => "required|between:5,75",
-        'sent_at' => ""
+        'email' => "required|email",
+        'state' => "",
+        'ip_address' => "",
+        'confirmation_code' => "",
+        'confirmation_text' => "",
+        'confirmed_at' => ""
     ];
 
     /**
@@ -76,9 +80,7 @@ abstract class MezzoCampaign extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $fillable = [
-        "title",
-        "user_id",
-        "content_id"
+
     ];
 
     /**
@@ -117,36 +119,52 @@ abstract class MezzoCampaign extends \App\Mezzo\BaseModel
     protected $_id;
 
     /**
-     * Attribute annotation property for title
+     * Attribute annotation property for email
      *
      * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
      * @var string
      */
-    protected $_title;
+    protected $_email;
 
     /**
-     * Attribute annotation property for content_id
+     * Attribute annotation property for state
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Modules\Contents\Schema\InputTypes\ContentInput", hidden="index")
-     * @var integer
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
+     * @var string
      */
-    protected $_content_id;
+    protected $_state;
 
     /**
-     * Attribute annotation property for user_id
+     * Attribute annotation property for ip_address
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="")
-     * @var integer
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
+     * @var string
      */
-    protected $_user_id;
+    protected $_ip_address;
 
     /**
-     * Attribute annotation property for sent_at
+     * Attribute annotation property for confirmation_code
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
+     * @var string
+     */
+    protected $_confirmation_code;
+
+    /**
+     * Attribute annotation property for confirmation_text
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextArea", hidden="")
+     * @var string
+     */
+    protected $_confirmation_text;
+
+    /**
+     * Attribute annotation property for confirmed_at
      *
      * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
      * @var \Carbon\Carbon
      */
-    protected $_sent_at;
+    protected $_confirmed_at;
 
     /**
      * Attribute annotation property for created_at
@@ -174,26 +192,6 @@ abstract class MezzoCampaign extends \App\Mezzo\BaseModel
     | the relations of this model.
     |-------------------------------------------------------------------------------------------------------------------
     */
-
-    /**
-     * Relation annotation property for content
-     * @Mezzo\Relations\OneToOne
-     * @Mezzo\Relations\From(table="contents", primaryKey="id", naming="campaign")
-     * @Mezzo\Relations\To(table="campaigns", primaryKey="id", naming="content")
-     * @Mezzo\Relations\JoinColumn(table="campaigns", column="content_id")
-     * @Mezzo\Relations\Scopes("")
-     */
-    protected $_content;
-
-    /**
-     * Relation annotation property for user
-     * @Mezzo\Relations\OneToMany
-     * @Mezzo\Relations\From(table="users", primaryKey="id", naming="campaigns")
-     * @Mezzo\Relations\To(table="campaigns", primaryKey="id", naming="user")
-     * @Mezzo\Relations\JoinColumn(table="campaigns", column="user_id")
-     * @Mezzo\Relations\Scopes("")
-     */
-    protected $_user;
 
 
 }

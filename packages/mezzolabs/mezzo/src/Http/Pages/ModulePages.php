@@ -25,6 +25,10 @@ class ModulePages extends Collection
 
         $pageClasses = (new ClassFinder())->findClasses($folder);
         foreach ($pageClasses as $pageClass) {
+            if (!class_exists($pageClass)) {
+                throw new ModulePageException($pageClass . ' is not a valid class. Maybe you need a "composer dump-autoload".');
+            }
+
             if (!is_subclass_of($pageClass, ModulePage::class) ){
                 throw new ModulePageException($pageClass . ' is not a valid module page.');
             }
