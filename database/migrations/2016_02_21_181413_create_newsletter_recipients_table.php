@@ -19,7 +19,7 @@ class CreateNewsletterRecipientsTable extends Migration
             $table->string('ip_address');
             $table->string('confirmation_code');
             $table->text('confirmation_text');
-            $table->timestamp('confirmed_at');
+            $table->timestamp('confirmed_at')->nullable();
             $table->timestamps();
         });
     }

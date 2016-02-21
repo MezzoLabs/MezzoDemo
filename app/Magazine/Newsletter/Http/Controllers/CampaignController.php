@@ -3,7 +3,6 @@
 namespace App\Magazine\Newsletter\Http\Controllers;
 
 
-use App\Magazine\Newsletter\Http\Pages\Campaign\CreateCampaignPage;
 use App\Magazine\Newsletter\Http\Pages\Campaign\EditCampaignPage;
 use App\Magazine\Newsletter\Http\Pages\Campaign\IndexCampaignPage;
 use MezzoLabs\Mezzo\Http\Controllers\CockpitResourceController;
@@ -35,7 +34,7 @@ class CampaignController extends CockpitResourceController
      */
     public function create(CreateResourceRequest $request)
     {
-        return $this->page(CreateCampaignPage::class);
+        return "";
     }
 
     /**

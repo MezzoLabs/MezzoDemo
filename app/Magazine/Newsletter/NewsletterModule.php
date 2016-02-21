@@ -63,4 +63,6 @@ class NewsletterModule extends ModuleProvider
         ]);
 
     }
+
+
 }

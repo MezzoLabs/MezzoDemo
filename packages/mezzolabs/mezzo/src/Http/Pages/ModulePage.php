@@ -11,7 +11,14 @@ use MezzoLabs\Mezzo\Core\Cache\Singleton;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 use MezzoLabs\Mezzo\Exceptions\ModulePageException;
 use MezzoLabs\Mezzo\Http\Controllers\Controller;
+use MezzoLabs\Mezzo\Http\Exceptions\NoPermissionsException;
 
+/**
+ * Class ModulePage
+ * @package MezzoLabs\Mezzo\Http\Pages
+ *
+ * @method boot
+ */
 abstract class ModulePage implements ModulePageContract
 {
     use HasModulePageExtensions;
@@ -65,6 +72,7 @@ abstract class ModulePage implements ModulePageContract
      * @var array|Collection
      */
     protected $defaultOptions = [
+        'enabled' => true,
         /*
          * Should this page be display in the sidebar navigation?
          */
@@ -360,6 +368,14 @@ abstract class ModulePage implements ModulePageContract
      */
     public function isAllowed()
     {
+        if (!$this->options('enabled')) {
+            return false;
+        }
+
+        if (!Auth::check()) {
+            throw new NoPermissionsException('You have to be logged in to see ' . get_class($this));
+        }
+
         return Auth::user()->hasPermissions($this->permissions());
     }
 

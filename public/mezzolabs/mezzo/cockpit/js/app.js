@@ -6436,9 +6436,11 @@ function registerStateDirective($location, $stateProvider, hasController) {
 
         registerState(uri, page, action);
 
-        if (action === _Action2.default.CREATE) {
-            registerState(uri.replace('create', 'edit'), page.replace('Create', 'Edit'), _Action2.default.EDIT);
+        /**
+         if(action === Action.CREATE) {
+            registerState(uri.replace('create', 'edit'), page.replace('Create', 'Edit'), Action.EDIT);
         }
+         */
 
         initSidebarBehaviour(element);
     }

@@ -58,9 +58,9 @@ abstract class MezzoNewsletterRecipient extends \App\Mezzo\BaseModel
      */
     protected $rules = [
         'email' => "required|email",
-        'state' => "",
+        'state' => "required|in:confirmation_pending,confirmed,rejected",
         'ip_address' => "",
-        'confirmation_code' => "",
+        'confirmation_code' => "required",
         'confirmation_text' => "",
         'confirmed_at' => ""
     ];
@@ -80,7 +80,12 @@ abstract class MezzoNewsletterRecipient extends \App\Mezzo\BaseModel
      * @var array
      */
     protected $fillable = [
-
+        'email',
+        'state',
+        'ip_address',
+        'confirmation_code',
+        'confirmation_text',
+        'confirmed_at'
     ];
 
     /**
@@ -121,7 +126,7 @@ abstract class MezzoNewsletterRecipient extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for email
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\EmailInput", hidden="")
      * @var string
      */
     protected $_email;
@@ -129,7 +134,7 @@ abstract class MezzoNewsletterRecipient extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for state
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\SelectInput", hidden="")
      * @var string
      */
     protected $_state;

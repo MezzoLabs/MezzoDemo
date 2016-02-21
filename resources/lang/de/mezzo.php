@@ -56,7 +56,8 @@ return [
         'magazine_options' => 'Magazin Optionen',
         'role_create' => 'Rolle hinzufügen',
         'campaign_create' => 'Kampagne erstellen',
-        'campaign_index' => 'Alle Kampagnen'
+        'campaign_index' => 'Alle Kampagnen',
+        'newsletter_recipient_index' => 'Alle Empfänger'
     ],
     'modules' => [
         'groups' => [
@@ -164,7 +165,8 @@ return [
         'user' => 'Nutzer',
         'voucher' => 'Gutschein|Gutscheine',
         'subscription' => 'Abonement|Abonements',
-        'campaign' => 'Kampagne|Kampagnen'
+        'campaign' => 'Kampagne|Kampagnen',
+        'newsletterrecipient' => 'Empfänger|Empfänger'
     ],
     'selects' => [
         'gender' => [
@@ -177,7 +179,11 @@ return [
             'draft' => 'In Bearbeitung',
             'deleted' => 'Gelöscht',
             'all' => 'Alle',
-            'private' => 'Privat'
+            'private' => 'Privat',
+            'confirmed' => 'Bestätigt',
+            'confirmation_pending' => 'Warte auf Bestätigung',
+            'rejected' => 'Abgelehnt',
+
         ],
         'voucher' => [
             'type' => [
