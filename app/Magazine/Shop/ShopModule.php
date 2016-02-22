@@ -11,9 +11,11 @@ use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
 class ShopModule extends ModuleProvider
 {
     protected $models = [
-        /*\App\Product::class,
+        \App\Product::class,
         \App\Order::class,
-        \App\Merchant::class*/
+        \App\Merchant::class,
+        \App\ShoppingBasket::class,
+        \App\Voucher::class
     ];
 
     protected $options = [

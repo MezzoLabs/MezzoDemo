@@ -1670,8 +1670,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             var invalidInput = $(this.form).find(':input[name].ng-invalid').first();
             var tabPane = invalidInput.parents('div.tab-pane').first();
 
-            console.log('foxus', invalidInput);
-
             if (!tabPane.length) {
                 // Input is not within a tab, we can focus it now!
                 invalidInput.focus();

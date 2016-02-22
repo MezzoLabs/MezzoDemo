@@ -134,7 +134,7 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for voucher_key
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="create")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextInput", hidden="")
      * @var string
      */
     protected $_voucher_key;
