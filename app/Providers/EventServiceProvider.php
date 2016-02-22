@@ -13,6 +13,8 @@ use App\Listeners\UserWasRegistered\SendNewsletterConfirmationRequest;
 use App\Listeners\UserWasVerified\EmailSuccessfullyVerifiedInfo;
 use App\Listeners\UserWasVerified\SubscribeToNewsletter;
 use App\Listeners\UserWasVerified\UnlockUser;
+use App\Listeners\VoucherWasRedeemed\AddSubscriptionMonths;
+use App\Magazine\Shop\Domain\Events\VoucherWasRedeemed;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -41,6 +43,9 @@ class EventServiceProvider extends ServiceProvider
         UserWasVerifiedWithSocialAuthentication::class => [
             AddDefaultRole::class,
             SubscribeToNewsletter::class
+        ],
+        VoucherWasRedeemed::class => [
+            AddSubscriptionMonths::class
         ]
     ];
 

@@ -4,36 +4,14 @@
 namespace App\Magazine\Events\Domain\Validators;
 
 
-use Illuminate\Contracts\Validation\Validator as ValidatorContract;
-use Illuminate\Support\Facades\Validator;
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\ValidationRules\AbstractValidationRule;
 
-class DaysNotOverlappingValidator
+class DaysNotOverlappingRule extends AbstractValidationRule
 {
     const KEY = "days_not_overlapping";
 
-    /**
-     * @var string
-     */
-    private $attribute;
-    private $value;
-    /**
-     * @var array
-     */
-    private $parameters;
-    /**
-     * @var ValidatorContract
-     */
-    private $validator;
 
-    public function __construct(string $attribute, $value, array $parameters, ValidatorContract $validator)
-    {
-        $this->attribute = $attribute;
-        $this->value = $value;
-        $this->parameters = $parameters;
-        $this->validator = $validator;
-    }
-
-    public function execute()
+    public function execute() : bool
     {
         return $this->validateDaysNotOverlapping($this->value);
     }
@@ -87,44 +65,7 @@ class DaysNotOverlappingValidator
         return $startIsOverlapping || $endIsOverlapping || $day1IncludesDay2 || $day2IncludesDay1;
     }
 
-    public static function register()
-    {
-        Validator::extend(static::KEY, function ($attribute, $value, $parameters, $validator) {
-            return (new static($attribute, $value, $parameters, $validator))->execute();
-        });
-    }
 
-    /**
-     * @return string
-     */
-    public function attribute()
-    {
-        return $this->attribute;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function value()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @return array
-     */
-    public function parameters()
-    {
-        return $this->parameters;
-    }
-
-    /**
-     * @return ValidatorContract
-     */
-    public function validator()
-    {
-        return $this->validator;
-    }
 
 
 }

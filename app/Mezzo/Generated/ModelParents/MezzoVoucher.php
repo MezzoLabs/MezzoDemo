@@ -63,7 +63,7 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
     * @var array            
     */
     protected $rules = [
-        'voucher_key' => "",
+        'voucher_key' => "alpha_space_dash",
         'type' => "in:default,subscription,coupon",
         'is_global' => "",
         'active_until' => "", 

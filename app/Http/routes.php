@@ -22,7 +22,7 @@ use MezzoLabs\Mezzo\Modules\Generator\Generators\AnnotationGenerator;
 
 Route::get('/', ['uses' => 'StartController@start', 'as' => 'home']);
 
-Route::group(['middleware' => ['mezzo.no_permissions_check', 'mezzo.no_model_validation']], function () {
+Route::group(['middleware' => ['csrf', 'mezzo.no_permissions_check', 'mezzo.no_model_validation']], function () {
     // Authentication routes...
     Route::get('auth/login', 'Auth\AuthController@getLogin');
     Route::post('auth/login', 'Auth\AuthController@postLogin');
@@ -60,7 +60,7 @@ Route::group(['middleware' => ['mezzo.no_permissions_check', 'mezzo.no_model_val
 });
 
 
-Route::group(['middleware' => ['auth', 'mezzo.no_permissions_check']], function () {
+Route::group(['middleware' => ['csrf', 'auth', 'mezzo.no_permissions_check']], function () {
     Route::get('profile',
         ['uses' => 'ProfileController@profile', 'as' => 'profile']);
     Route::put('profile',
@@ -79,6 +79,12 @@ Route::group(['middleware' => ['auth', 'mezzo.no_permissions_check']], function 
     Route::post('profile/liked-categories', 'ProfileController@storeLikedCategories');
 
     Route::get('profile/destroy', 'ProfileController@destroy');
+
+    Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
+        Route::get('profile/subscription', ['uses' => 'Profile\SubscriptionProfileController@getIndex', 'as' => 'subscription']);
+        Route::post('profile/subscription/add-voucher', ['uses' => 'Profile\SubscriptionProfileController@addVoucher', 'as' => 'subscription.add_voucher']);
+    });
+
 
     Route::group(['prefix' => 'shop'], function () {
         Route::post('products/{id}/addToBasket', ['uses' => 'Shop\ProductController@addToBasket', 'as' => 'shop.add_to_basket']);

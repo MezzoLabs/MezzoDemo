@@ -7,6 +7,7 @@
     <ul>
         <li><a href="{{ route('profile.liked-categories') }}">Liked Categories</a></li>
         <li><a href="{{ route('profile.address') }}">Address</a></li>
+        <li><a href="{{ route('profile.subscription') }}">Subscription</a></li>
     </ul>
 
 

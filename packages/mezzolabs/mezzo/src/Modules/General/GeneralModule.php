@@ -4,6 +4,7 @@
 namespace MezzoLabs\Mezzo\Modules\General;
 
 
+use MezzoLabs\Mezzo\Core\Modularisation\Domain\ValidationRules\AlphaSpaceDashRule;
 use MezzoLabs\Mezzo\Core\Modularisation\Generic\AbstractGeneralModule;
 use MezzoLabs\Mezzo\Modules\General\Options\OptionFieldRegistry;
 
@@ -26,6 +27,7 @@ class GeneralModule extends AbstractGeneralModule
     public function register()
     {
         $this->app->singleton('mezzo.options.registry', OptionFieldRegistry::class);
+
     }
 
     /**
@@ -36,6 +38,9 @@ class GeneralModule extends AbstractGeneralModule
     public function ready()
     {
         $this->loadViews();
+
+        AlphaSpaceDashRule::register();
+
     }
 
 

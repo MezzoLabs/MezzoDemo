@@ -70,11 +70,25 @@ class Voucher extends MezzoVoucher
             return false;
         }
 
-        if ($this->active_until->lte(Carbon::now())) {
+        if ($this->active_until && $this->active_until->lte(Carbon::now())) {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * @param null $name
+     * @param null $default
+     * @return \Illuminate\Support\Collection
+     */
+    public function getOption($name = null, $default = null)
+    {
+        if ($name !== null) {
+            return $this->getOption()->get($name, $default);
+        }
+
+        return collect(json_decode($this->options));
     }
 
 
@@ -89,6 +103,11 @@ class Voucher extends MezzoVoucher
         }
 
         return true;
+    }
+
+    public function isType(string $type)
+    {
+        return $this->type == $type;
     }
 
 

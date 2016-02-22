@@ -31,5 +31,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'mezzo.no_permissions_check' => \App\Http\Middleware\MezzoNoPermissionsCheck::class,
         'mezzo.no_model_validation' => \App\Http\Middleware\MezzoNoModelValidation::class,
+        'csrf' => \App\Http\Middleware\VerifyCsrfToken::class,
     ];
 }

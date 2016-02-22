@@ -188,7 +188,7 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
 
     public function redeemedGlobalVouchers()
     {
-        return $this->belongsToMany(\App\Voucher::class, 'redeemed_vouchers');
+        return $this->belongsToMany(\App\Voucher::class, 'redeemed_vouchers')->withTimestamps();
     }
 
     public function personalVouchers()

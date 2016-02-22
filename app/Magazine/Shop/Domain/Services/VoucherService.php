@@ -39,7 +39,6 @@ class VoucherService
 
         $redeemingVoucherChain = event(new RedeemingVoucher($voucher, $user), [], true);
 
-
         if ($redeemingVoucherChain === false) {
             return false;
         }
