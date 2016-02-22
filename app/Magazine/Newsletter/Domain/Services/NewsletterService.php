@@ -49,13 +49,19 @@ class NewsletterService
      */
     public function sendConfirmationMail(NewsletterRecipient $recipient)
     {
-        $mailText = view('modules.newsletter::emails.confirmation', $recipient->getAttributes());
+        if ($recipient->state != NewsletterRecipient::STATE_CONFIRMATION_PENDING) {
+            return $recipient;
+        }
 
-        $result = Mail::raw($mailText, function ($message) use ($recipient) {
+        $mailText = view('modules.newsletter::emails.confirmation', $recipient->getAttributes())->render();
+
+        $result = Mail::send([], [], function ($message) use ($recipient, $mailText) {
             $message
                 ->to($recipient->email)
-                ->subject('Confirm your newsletter');
+                ->subject('Confirm your newsletter')
+                ->setBody($mailText, 'text/html');
         });
+
 
         if (!$result) {
             throw new ConfirmationEmailException();

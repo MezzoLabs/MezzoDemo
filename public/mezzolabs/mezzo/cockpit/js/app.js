@@ -147,13 +147,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     create: 'Erstellen',
                     delete: 'Löschen',
                     update: 'Editieren',
-                    rename: 'Umbenennen'
+                    rename: 'Umbenennen',
+                    yes: 'Ja',
+                    no: 'Nein',
+                    cancel: 'Abbrechen'
                 },
                 messages: {
                     missing_permissions: 'Sie haben nicht genügend Rechte um diese Aktion auszuführen.',
                     shure_to_delete_models: {
-                        title: 'Sind sie sich sicher?',
+                        title: 'Sind Sie sich sicher?',
                         text: '{count} Ressource wird gelöscht.|{count} Ressourcen werden gelöscht.'
+                    },
+                    are_you_sure: {
+                        title: 'Sind Sie sich sicher?',
+                        text: ''
                     }
                 },
                 filemanager: {
@@ -835,23 +842,46 @@ exports.default = ModelApi;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-    exports.default = registerStateDirective;
+    exports.default = apiActionDirective;
     /*@ngInject*/
-    function registerStateDirective(api, errorHandlerService) {
+    function apiActionDirective(api, errorHandlerService, languageService) {
         return {
             restrict: 'A',
             link: link
         };
 
         function link(scope, element, attributes) {
-            var uri = attributes.uri;
-            var parameters = attributes.parameters;
+            var uri = attributes.href;
+            var parameters = JSON.parse(attributes.parameters);
 
-            scope.sendAction = function ($event) {
+            console.log(element);
 
+            //TODO:
+            $(element).click(function ($event) {
                 $event.preventDefault();
-                sendAction(attributes.href, attributes.parameters);
-            };
+
+                if (attributes.needsConfirmation == "1") {
+                    return showConfirmation(function () {
+                        sendAction(uri, parameters);
+                    });
+            }
+
+                sendAction(uri, parameters);
+            });
+        }
+
+        function showConfirmation(callback) {
+            swal({
+                title: languageService.get('messages.are_you_sure.title'),
+                text: '',
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: languageService.get('general.yes'),
+                cancelButtonText: languageService.get('general.cancel'),
+                closeOnConfirm: false
+            }, function () {
+                callback();
+            });
         }
 
         function sendAction(uri, parameters) {
@@ -867,7 +897,7 @@ Object.defineProperty(exports, "__esModule", {
                 console.log('result');
                 swal(result.title, result.message, 'success');
                 return;
-            }
+        }
 
             alert('Unexpected action result!');
         }

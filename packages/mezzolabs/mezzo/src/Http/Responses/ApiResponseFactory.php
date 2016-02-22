@@ -20,7 +20,7 @@ class ApiResponseFactory extends DingoResponseFactory
      */
     public function result($code, $message = "", $title = "Success")
     {
-        if ($code !== 1)
+        if ($code == -1 || $code == false)
             throw new ResourceException('Exit with code:' . $code);
 
         return $this->withArray([

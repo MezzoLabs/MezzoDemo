@@ -14,11 +14,17 @@ class NewsletterRecipientRepository extends ModelRepository
 {
     /**
      * @param $email
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return NewsletterRecipient
      * @throws \MezzoLabs\Mezzo\Exceptions\RepositoryException
      */
     public function registerEmail($email)
     {
+        $existing = $this->findByEmail($email);
+
+        if ($existing) {
+            return $existing;
+        }
+
         return $this->create([
             'email' => $email,
             'state' => NewsletterRecipient::STATE_CONFIRMATION_PENDING,
@@ -64,8 +70,7 @@ class NewsletterRecipientRepository extends ModelRepository
             throw new BlacklistedRecipientException('Cannot reject a blacklisted recipient.');
         }
 
-        $recipient->state = NewsletterRecipient::STATE_BLACKLISTED;
-        $recipient->confirmed_at = null;
+        $recipient->state = NewsletterRecipient::STATE_REJECTED;
 
         $recipient->save();
 
@@ -81,11 +86,34 @@ class NewsletterRecipientRepository extends ModelRepository
         return $this->findByOrFail('confirmation_code', $code);
     }
 
+    /**
+     * @param $email
+     * @return NewsletterRecipient
+     */
+    public function findByEmail($email)
+    {
+        return $this->findBy('email', $email);
+    }
+
     public function updateConfirmationText($id, $emailText)
     {
         return $this->update([
             'confirmation_text' => $emailText
         ], $id);
+    }
+
+    /**
+     * @param \App\User $user
+     * @return NewsletterRecipient
+     */
+    public function createFromUser(\App\User $user)
+    {
+        return $this->registerEmail($user->email);
+    }
+
+    public function confirmedEmails()
+    {
+        return $this->where('state', '=', NewsletterRecipient::STATE_CONFIRMED)->get()->pluck('email');
     }
 
 

@@ -1,20 +1,44 @@
 /*@ngInject*/
-export default function registerStateDirective(api, errorHandlerService) {
+export default function apiActionDirective(api, errorHandlerService, languageService) {
     return {
         restrict: 'A',
         link
     };
 
     function link(scope, element, attributes) {
-        var uri = attributes.uri;
-        var parameters = attributes.parameters;
+        const uri = attributes.href;
+        const parameters = JSON.parse(attributes.parameters);
 
+        console.log(element);
 
-        scope.sendAction = ($event) => {
-
+        //TODO:
+        $(element).click(($event) => {
             $event.preventDefault();
-            sendAction(attributes.href, attributes.parameters);
-        };
+
+            if (attributes.needsConfirmation == "1") {
+                return showConfirmation(function () {
+                    sendAction(uri, parameters);
+                })
+            }
+
+            sendAction(uri, parameters);
+
+        });
+    }
+
+    function showConfirmation(callback) {
+        swal({
+                title: languageService.get('messages.are_you_sure.title'),
+                text: '',
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: languageService.get('general.yes'),
+                cancelButtonText: languageService.get('general.cancel'),
+                closeOnConfirm: false
+            }
+            , function () {
+                callback();
+            });
     }
 
     function sendAction(uri, parameters) {

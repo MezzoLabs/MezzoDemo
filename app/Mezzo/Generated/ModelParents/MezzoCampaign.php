@@ -22,6 +22,7 @@ use MezzoLabs\Mezzo\Core\Traits\IsMezzoModel;
  *
  * @property integer $id
  * @property string $title
+ * @property string $template
  * @property integer $content_id
  * @property integer $user_id
  * @property \Carbon\Carbon $sent_at
@@ -58,6 +59,7 @@ abstract class MezzoCampaign extends \App\Mezzo\BaseModel
      */
     protected $rules = [
         'title' => "required|between:5,75",
+        'template' => "required|in:default",
         'sent_at' => ""
     ];
 
@@ -78,7 +80,8 @@ abstract class MezzoCampaign extends \App\Mezzo\BaseModel
     protected $fillable = [
         "title",
         "user_id",
-        "content_id"
+        "content_id",
+        "template"
     ];
 
     /**
@@ -123,6 +126,14 @@ abstract class MezzoCampaign extends \App\Mezzo\BaseModel
      * @var string
      */
     protected $_title;
+
+    /**
+     * Attribute annotation property for template
+     *
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\SelectInput", hidden="")
+     * @var string
+     */
+    protected $_template;
 
     /**
      * Attribute annotation property for content_id

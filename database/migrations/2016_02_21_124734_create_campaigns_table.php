@@ -15,6 +15,7 @@ class CreateCampaignsTable extends Migration
         Schema::create('campaigns', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
+            $table->string('template')->default('default');
             $table->integer('content_id')->unsigned()->index();
             $table->foreign('content_id')->references('id')->on('contents');
             $table->integer('user_id')->unsigned()->index();

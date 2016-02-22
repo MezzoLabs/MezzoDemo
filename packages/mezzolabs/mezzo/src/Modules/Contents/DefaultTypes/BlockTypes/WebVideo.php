@@ -4,7 +4,7 @@
 namespace MezzoLabs\Mezzo\Modules\Contents\DefaultTypes\BlockTypes;
 
 
-use MezzoLabs\Mezzo\Modules\Contents\DefaultTypes\FieldTypes\TextField;
+use MezzoLabs\Mezzo\Modules\Contents\DefaultTypes\FieldTypes\UrlField;
 use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\AbstractContentBlockType;
 
 class WebVideo extends AbstractContentBlockType
@@ -20,7 +20,7 @@ class WebVideo extends AbstractContentBlockType
      */
     public function boot()
     {
-        $this->addField(new TextField('url'));
+        $this->addField(new UrlField('url'));
     }
 
     /**

@@ -20,7 +20,7 @@ use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 use MezzoLabs\Mezzo\Modules\Generator\Generators\AnnotationGenerator;
 
-Route::get('/', 'StartController@start');
+Route::get('/', ['uses' => 'StartController@start', 'as' => 'home']);
 
 Route::group(['middleware' => ['mezzo.no_permissions_check', 'mezzo.no_model_validation']], function () {
     // Authentication routes...
@@ -48,6 +48,11 @@ Route::group(['middleware' => ['mezzo.no_permissions_check', 'mezzo.no_model_val
 
     Route::group(['prefix' => 'shop'], function () {
         Route::resource('products', 'Shop\ProductController');
+    });
+
+    Route::group(['prefix' => 'newsletter', 'as' => 'newsletter.'], function () {
+        Route::get('confirm/{code}', ['uses' => 'NewsletterController@getConfirm', 'as' => 'confirm']);
+        Route::get('reject/{code}', ['uses' => 'NewsletterController@getReject', 'as' => 'reject']);
     });
 
 });
@@ -293,10 +298,11 @@ Route::get('test/orders', function () {
     mezzo_dd($order);
 });
 
-Route::get('test/imagefiles', function () {
-    $image = \App\ImageFile::first();
+Route::get('test/newsletter', function () {
+    $deliverer = app(\App\Magazine\Newsletter\Domain\Services\CampaignDeliverer::class);
 
-    mezzo_dd($image->file);
+    $deliverer->deliver(\App\Campaign::first(), ['trigger3@hotmail.de']);
+
 });
 
 

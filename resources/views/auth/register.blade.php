@@ -38,6 +38,11 @@
         </div>
 
         <div>
+            Subscribe to Newsletter
+            <input type="checkbox" @if(old('subscribe_to_newsletter')) checked @endif name="subscribe_to_newsletter">
+        </div>
+
+        <div>
             <button type="submit">Register</button>
         </div>
     </form>

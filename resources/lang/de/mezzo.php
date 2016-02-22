@@ -182,6 +182,7 @@ return [
             'private' => 'Privat',
             'confirmed' => 'Bestätigt',
             'confirmation_pending' => 'Warte auf Bestätigung',
+            'confirmation_received' => 'Bestätigt',
             'rejected' => 'Abgelehnt',
 
         ],

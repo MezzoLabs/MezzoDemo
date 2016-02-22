@@ -58,7 +58,7 @@ abstract class MezzoNewsletterRecipient extends \App\Mezzo\BaseModel
      */
     protected $rules = [
         'email' => "required|email",
-        'state' => "required|in:confirmation_pending,confirmed,rejected,blacklisted",
+        'state' => "required|in:confirmation_pending,confirmation_received,rejected,blacklisted",
         'ip_address' => "",
         'confirmation_code' => "required",
         'confirmation_text' => "",
@@ -158,7 +158,7 @@ abstract class MezzoNewsletterRecipient extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for confirmation_text
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextArea", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextArea", hidden="index,create,edit")
      * @var string
      */
     protected $_confirmation_text;

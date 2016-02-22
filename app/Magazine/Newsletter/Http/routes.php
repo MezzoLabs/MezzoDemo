@@ -11,6 +11,7 @@ module_route('Newsletter', [], function (Router $router, ApiRouter $api, Cockpit
     $api->resource('NewsletterRecipient');
 
     $api->action('resendConfirmation', 'NewsletterRecipient', []);
+    $api->action('deliver', 'Campaign', []);
 
 });
 
