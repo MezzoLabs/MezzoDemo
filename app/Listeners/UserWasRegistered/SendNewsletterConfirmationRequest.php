@@ -45,8 +45,6 @@ class SendNewsletterConfirmationRequest
             return;
         }
 
-        $recipient = $this->recipients->createFromUser($event->user);
-
-        $this->newsletterService->sendConfirmationMail($recipient);
+        $this->newsletterService->signupEmail($event->user->email);
     }
 }

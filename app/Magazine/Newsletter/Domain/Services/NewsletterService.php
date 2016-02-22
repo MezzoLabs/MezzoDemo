@@ -72,4 +72,13 @@ class NewsletterService
         return $recipient;
 
     }
+
+    public function signupEmail($email)
+    {
+        $recipient = $this->recipients->registerEmail($email);
+
+        $this->sendConfirmationMail($recipient);
+
+        return $recipient;
+    }
 }

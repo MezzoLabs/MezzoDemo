@@ -6,6 +6,7 @@ namespace App\Magazine\Newsletter\Campaigns;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Support\Collection;
 
 class DeliveryReport
 {
@@ -23,6 +24,16 @@ class DeliveryReport
      * @var Carbon
      */
     public $end;
+
+    /**
+     * @var Collection
+     */
+    public $failedRecipients;
+
+    /**
+     * @var Collection
+     */
+    public $emails = [];
 
     public function __construct()
     {
@@ -102,6 +113,37 @@ class DeliveryReport
     public function stop()
     {
         return $this->setEnd(Carbon::now());
+    }
+
+    /**
+     * @param array $failedRecipients
+     * @return $this
+     */
+    public function setFailedRecipients($failedRecipients)
+    {
+        $this->failedRecipients = new Collection($failedRecipients);
+
+        return $this;
+    }
+
+    /**
+     * @param array $emails
+     * @return $this
+     */
+    public function setEmails($emails)
+    {
+        $this->emails = new Collection($emails);
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function successfulEmails()
+    {
+        return $this->emails->filter(function ($email) {
+            return !$this->failedRecipients->has($email);
+        });
     }
 
 

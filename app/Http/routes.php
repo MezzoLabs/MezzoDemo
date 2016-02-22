@@ -53,6 +53,8 @@ Route::group(['middleware' => ['mezzo.no_permissions_check', 'mezzo.no_model_val
     Route::group(['prefix' => 'newsletter', 'as' => 'newsletter.'], function () {
         Route::get('confirm/{code}', ['uses' => 'NewsletterController@getConfirm', 'as' => 'confirm']);
         Route::get('reject/{code}', ['uses' => 'NewsletterController@getReject', 'as' => 'reject']);
+        Route::get('signup', ['uses' => 'NewsletterController@getSignup', 'as' => 'signup']);
+        Route::post('signup', ['uses' => 'NewsletterController@postSignup', 'as' => 'signup']);
     });
 
 });
@@ -286,7 +288,7 @@ Route::get('test/api/relations', function () {
     $items = $users->relationshipItems(\Auth::user()->subscriptions(), ['*'], new \MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject());
 
 
-    mezzo_dd($items);
+    echo($items);
 });
 
 

@@ -32,11 +32,27 @@ class DefaultTemplate extends CampaignTemplate
         $this->users = $users;
     }
 
-    public function render(Campaign $campaign, $email)
+    /**
+     * @param Campaign $campaign
+     * @param $email
+     * @param array $mergeData
+     * @return string
+     * @throws \Exception
+     */
+    public function render(Campaign $campaign, $email, $mergeData = []) : string
     {
         $user = $this->users->findByEmail($email);
 
-        return view('modules.newsletter.emails.campaigns.default', ['user' => $user, 'campaign' => $campaign, 'featured_posts' => $this->posts->all()])->render();
+        $data = [
+            'user' => $user,
+            'email' => $email,
+            'campaign' => $campaign,
+            'featured_posts' => $this->posts->all()
+        ];
+
+        $data = array_merge($data, $mergeData);
+
+        return view('modules.newsletter::emails.campaigns.default', $data)->render();
 
     }
 }

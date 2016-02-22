@@ -71,12 +71,17 @@ class CampaignApiController extends ApiResourceController
             $mails = ['trigger3@hotmail.de'];
         }
 
-        $delivered = $this->deliverer->deliver($request->currentModelInstance(), $mails);
+        $report = $this->deliverer->deliver($request->currentModelInstance(), $mails);
 
-        if (!$delivered) {
+        if ($report->successfulEmails()->count() == 0) {
             return $this->response()->result(2, "Delivery failed", "Error");
         }
 
-        return $this->response()->result(1, "Campaign delivered to " . $this->deliverer->recipients()->count() . ' users.');
+        if ($request->get('mode') == 'test') {
+            return $this->response()->result(1, "Test campaign delivered to " . $mails[0]);
+        }
+
+        return $this->response()->result(1, "Campaign delivered to " . $report->successfulEmails()->count() .
+            '. Tried ' . $report->emails->count() . '.');
     }
 }
