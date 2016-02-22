@@ -4,55 +4,66 @@
 namespace App\Magazine\Newsletter\Domain\Services;
 
 
-use Mailchimp;
+use App\Magazine\Newsletter\Domain\Repositories\CampaignRepository;
+use App\Magazine\Newsletter\Domain\Repositories\NewsletterRecipientRepository;
+use App\Magazine\Newsletter\Exceptions\ConfirmationEmailException;
+use App\NewsletterRecipient;
+use Illuminate\Support\Facades\Mail;
 
 class NewsletterService
 {
     /**
-     * @var Mailchimp
+     * @var CampaignRepository
      */
-    protected $mailchimp;
-
-
-    /**
-     * @var string
-     */
-    protected $listId;
+    protected $campaigns;
 
     /**
-     * Pull the Mailchimp-instance (including API-key) from the IoC-container.
-     * @param Mailchimp $mailchimp
+     * @var NewsletterRecipientRepository
      */
-    public function __construct(Mailchimp $mailchimp)
+    protected $recipients;
+
+    public function __construct(CampaignRepository $campaigns, NewsletterRecipientRepository $recipients)
     {
-        $this->mailchimp = $mailchimp;
-        $this->listId = env('MAILCHIMP_LIST', '123123');
+        $this->campaigns = $campaigns;
+        $this->recipients = $recipients;
     }
 
     /**
-     * Access the mailchimp lists API
+     * @param $code
+     * @return \App\NewsletterRecipient
      */
-    public function addEmailToList($email, $data = [])
+    public function confirmRecipient($code)
     {
-        $options = new SubscribeOptions($this->listId, $email);
-
-        $options->merge_vars = $data;
-        $options->double_optin = false;
-        $options->update_existing = true;
-        $options->send_welcome = true;
-
-        $this->mailchimp->lists
-            ->subscribe(
-                $options->list,
-                $options->email,
-                $options->merge_vars,
-                $options->email_type,
-                $options->double_optin,
-                $options->update_existing,
-                $options->replace_interests,
-                $options->send_welcome
-
-            );
+        return $this->recipients->confirm($code);
     }
 
+    public function rejectRecipient($code)
+    {
+        return $this->recipients->reject($code);
+    }
+
+    /**
+     * @param NewsletterRecipient $recipient
+     * @return NewsletterRecipient
+     * @throws ConfirmationEmailException
+     */
+    public function sendConfirmationMail(NewsletterRecipient $recipient)
+    {
+        $mailText = view('modules.newsletter::emails.confirmation', $recipient->getAttributes());
+
+        $result = Mail::raw($mailText, function ($message) use ($recipient) {
+            $message
+                ->to($recipient->email)
+                ->subject('Confirm your newsletter');
+        });
+
+        if (!$result) {
+            throw new ConfirmationEmailException();
+        }
+
+        $this->recipients->updateConfirmationText($recipient->id, $mailText);
+
+        return $recipient;
+
+    }
 }

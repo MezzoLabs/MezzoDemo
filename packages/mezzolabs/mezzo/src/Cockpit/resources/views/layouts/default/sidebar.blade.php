@@ -24,7 +24,7 @@
 
                             </a>
                             <ul>
-                                @foreach($module->pages()->sortByOrder() as $page)
+                                @foreach($module->pages()->filterAllowed()->sortByOrder() as $page)
                                     <li>
                                         <a @if(!$page->isVisibleInNavigation())) style="display:none;"
                                            @endif href="mezzo/{{ $page->uri() }}" data-mezzo-register-state

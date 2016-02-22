@@ -1,5 +1,5 @@
 @if($module_page->isType('create'))
-    @include('cockpit::partials.pages.create_heading')
+    {!! cockpit_form()->submitCreate($model_reflection) !!}
 @else
-    @include('cockpit::partials.pages.edit_heading')
+    {!! cockpit_form()->submitEdit($model_reflection) !!}
 @endif

@@ -35,7 +35,7 @@ class FormBuilder extends CollectiveFormBuilder
         $ngFormName = $this->formOptions['name'] ?? 'vm.form';
 
         $options = $this->mergeDefault([
-            'class' => 'btn btn-primary btn-block',
+            'class' => 'btn btn-primary',
             'ng-class' => 'vm.submitButtonClass(' . $ngFormName . ')'
         ], $options);
 

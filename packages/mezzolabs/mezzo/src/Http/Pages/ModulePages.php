@@ -60,6 +60,13 @@ class ModulePages extends Collection
         });
     }
 
+    public function filterAllowed()
+    {
+        return $this->filter(function (ModulePage $page) {
+            return $page->isAllowed();
+        });
+    }
+
     public function sortByOrder()
     {
         return $this->sortBy(function (ModulePage $page) {

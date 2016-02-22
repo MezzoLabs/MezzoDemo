@@ -10,6 +10,8 @@ module_route('Newsletter', [], function (Router $router, ApiRouter $api, Cockpit
     $api->resource('Campaign');
     $api->resource('NewsletterRecipient');
 
+    $api->action('resendConfirmation', 'NewsletterRecipient', []);
+
 });
 
 

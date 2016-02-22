@@ -11,6 +11,7 @@ class NewsletterRecipient extends MezzoNewsletterRecipient
     const STATE_CONFIRMATION_PENDING = "confirmation_pending";
     const STATE_CONFIRMED = "confirmed";
     const STATE_REJECTED = "rejected";
+    const STATE_BLACKLISTED = "blacklisted";
 
 
 }

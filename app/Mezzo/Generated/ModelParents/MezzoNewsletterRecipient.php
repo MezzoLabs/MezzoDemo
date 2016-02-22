@@ -58,7 +58,7 @@ abstract class MezzoNewsletterRecipient extends \App\Mezzo\BaseModel
      */
     protected $rules = [
         'email' => "required|email",
-        'state' => "required|in:confirmation_pending,confirmed,rejected",
+        'state' => "required|in:confirmation_pending,confirmed,rejected,blacklisted",
         'ip_address' => "",
         'confirmation_code' => "required",
         'confirmation_text' => "",
