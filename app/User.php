@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Magazine\Shop\Domain\Models\HasShoppingBasket;
+use App\Magazine\Shop\Domain\Models\HasSubscriptions;
 use App\Mezzo\Generated\ModelParents\MezzoUser;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -35,7 +36,7 @@ use MezzoLabs\Mezzo\Core\Permission\HasPermissions;
  */
 class User extends MezzoUser implements AuthenticatableContract, CanResetPasswordContract, AuthorizableContract
 {
-    use Authenticatable, CanResetPassword, Authorizable, HasPermissions, HasShoppingBasket;
+    use Authenticatable, CanResetPassword, Authorizable, HasPermissions, HasShoppingBasket, HasSubscriptions;
 
     /**
      * The database table used by the model.
@@ -162,19 +163,7 @@ class User extends MezzoUser implements AuthenticatableContract, CanResetPasswor
         return $this->hasMany(Subscription::class);
     }
 
-    public function isSubscribed()
-    {
-        return !!$this->activeSubscription();
-    }
 
-    public function activeSubscription()
-    {
-        foreach ($this->subscriptions as $subscription) {
-            if ($subscription->isActive()) return $subscription;
-        }
-
-        return null;
-    }
 
     public function merchant() : HasOne
     {

@@ -105,6 +105,7 @@ return [
             'title' => 'Shop',
             'vouchers' => [
                 'subscription_months' => 'Abo in Monaten',
+                'subscription_days' => 'Abo in Tagen',
                 'money_coupon' => 'Wertgutschein in Euro',
                 'for_user' => 'Nur für Nutzer',
                 'discount_percent' => 'Rabatt in Prozent'

@@ -44,13 +44,18 @@ class SubscriptionProfileController extends Controller
             return \Redirect::back()->with('error', 'Already used this voucher.');
         }
 
+
+        if (!$voucher->canBeRedeemedBy(\Auth::user())) {
+            return \Redirect::back()->with('error', 'This voucher is not active anymore.');
+        }
+
         if ($voucher->type != \App\Voucher::TYPE_SUBSCRIPTION) {
             return \Redirect::back()->with('error', 'Voucher has wront type.');
         }
 
         $this->voucherService->redeem($voucher, \Auth::user());
 
-        return \Redirect::route('profile.subscription')->withMessage('Voucher redeemed. Added ' . $voucher->getOption('months') . ' months.');
+        return \Redirect::route('profile.subscription')->withMessage('Voucher redeemed. Added ' . $voucher->getOption('days') . ' days.');
 
 
     }

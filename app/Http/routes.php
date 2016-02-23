@@ -81,8 +81,8 @@ Route::group(['middleware' => ['csrf', 'auth', 'mezzo.no_permissions_check']], f
     Route::get('profile/destroy', 'ProfileController@destroy');
 
     Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
-        Route::get('profile/subscription', ['uses' => 'Profile\SubscriptionProfileController@getIndex', 'as' => 'subscription']);
-        Route::post('profile/subscription/add-voucher', ['uses' => 'Profile\SubscriptionProfileController@addVoucher', 'as' => 'subscription.add_voucher']);
+        Route::get('subscription', ['uses' => 'Profile\SubscriptionProfileController@getIndex', 'as' => 'subscription']);
+        Route::post('subscription/add-voucher', ['uses' => 'Profile\SubscriptionProfileController@addVoucher', 'as' => 'subscription.add_voucher']);
     });
 
 

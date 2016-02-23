@@ -1,8 +1,8 @@
 <label ng-if="vm.inputs['type'] != 'default'">Optionen</label>
 <input type="hidden" name="options._json" value="true">
 <div class="form-group" ng-if="vm.inputs['type'] == 'subscription'">
-    <label>{{ trans('mezzo.modules.shop.vouchers.subscription_months') }}</label>
-    <input type="number" name="options.months" class="form-control">
+    <label>{{ trans('mezzo.modules.shop.vouchers.subscription_days') }}</label>
+    <input type="number" name="options.days" class="form-control">
 </div>
 <div class="form-group" ng-if="vm.inputs['type'] == 'coupon'">
     <label>{{ trans('mezzo.modules.shop.vouchers.money_coupon') }}</label>

@@ -43,7 +43,11 @@ class VoucherService
             return false;
         }
 
-        $this->repository()->redeem($voucher, $user);
+        $redeemed = $this->repository()->redeem($voucher, $user);
+
+        if (!$redeemed) {
+            return false;
+        }
 
         event(new VoucherWasRedeemed($voucher));
 

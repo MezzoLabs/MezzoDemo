@@ -8,7 +8,7 @@ use App\Magazine\Shop\Domain\Events\VoucherWasRedeemed;
 use App\Magazine\Subscriptions\Domain\Repositories\SubscriptionRepository;
 use App\Voucher;
 
-class AddSubscriptionMonths
+class AddSubscriptionDays
 {
     /**
      * @var SubscriptionRepository
@@ -39,8 +39,7 @@ class AddSubscriptionMonths
             return true;
         }
 
-
-        $this->subscriptions->addMonthsForUser(intval($voucher->getOption('months', 0)), \Auth::user(), 'voucher');
+        $this->subscriptions->addDaysForUser(intval($voucher->getOption('days', 0)), \Auth::user(), 'voucher');
 
         return true;
     }

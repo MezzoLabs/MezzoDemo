@@ -32,4 +32,9 @@ class HtmlHelper
         return $day1->format('d.m.Y h:i') . ' - ' . $day2->format('d.m.Y h:i');
 
     }
+
+    public function time(Carbon $date)
+    {
+        return $date->format('d.m.Y h:i');
+    }
 }

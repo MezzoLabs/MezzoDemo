@@ -13,6 +13,11 @@ use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 
 class Voucher extends MezzoVoucher
 {
+    protected $dates = [
+        'redeemed_at',
+        'active_until'
+    ];
+
     public function redeem(User $forUser = null)
     {
         return app()->make(VoucherService::class)->redeem($this, $forUser);

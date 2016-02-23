@@ -1,5 +1,1 @@
-@extends(cockpit_content_container())
-
-@section('content')
-        <!-- TODO -->
-@endsection
+@extends('cockpit::pages.layouts.create_or_edit')

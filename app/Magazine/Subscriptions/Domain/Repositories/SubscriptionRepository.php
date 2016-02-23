@@ -16,10 +16,21 @@ class SubscriptionRepository extends \MezzoLabs\Mezzo\Core\Modularisation\Domain
      */
     public function addMonthsForUser(int $months, \App\User $user, string $plan = "default")
     {
+        return $this->subscribeUntil(Carbon::now()->addMonths($months), $user, $plan);
+
+    }
+
+    public function addDaysForUser(int $days, \App\User $user, string $plan = "default")
+    {
+        return $this->subscribeUntil(Carbon::now()->addDays($days), $user, $plan);
+    }
+
+    public function subscribeUntil(Carbon $date, \App\User $user, string $plan = "default")
+    {
         return $this->create([
             'user_id' => $user->id,
             'plan' => $plan,
-            'subscribed_until' => Carbon::now()->addMonths($months),
+            'subscribed_until' => $date,
             'cancelled' => false
         ]);
     }

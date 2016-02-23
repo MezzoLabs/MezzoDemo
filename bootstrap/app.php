@@ -15,6 +15,9 @@ $app = new Illuminate\Foundation\Application(
     realpath(__DIR__.'/../')
 );
 
+setlocale(LC_TIME, 'de_DE');
+\Carbon\Carbon::setLocale('de');
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces
