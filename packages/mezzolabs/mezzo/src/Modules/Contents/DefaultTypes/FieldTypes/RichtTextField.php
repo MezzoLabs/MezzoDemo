@@ -11,6 +11,6 @@ class RichTextField extends AbstractContentFieldType
 {
     protected $inputType = RichTextArea::class;
 
-    protected $rulesString = "required|between:2,255";
+    protected $rulesString = "required|between:2,50000";
 
 }
