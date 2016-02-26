@@ -1,1 +1,1 @@
-@extends('cockpit::pages.layouts.edit')
+@extends('cockpit::pages.layouts.create')

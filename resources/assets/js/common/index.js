@@ -1,6 +1,7 @@
 import compileDirective from './compileDirective';
 import enterDirective from './enterDirective.js';
 import relationInputDirective from './relationInputDirective';
+import relationOutputDirective from './relations/relationOutputDirective';
 import hrefReloadDirective from './hrefReloadDirective';
 import hrefPreventDirective from './hrefPreventDirective';
 import tinymceDirective from './tinymceDirective';
@@ -31,6 +32,7 @@ const module = angular.module('MezzoCommon', []);
 module.directive('mezzoCompile', compileDirective);
 module.directive('mezzoEnter', enterDirective);
 module.directive('mezzoRelationInput', relationInputDirective);
+module.directive('mezzoRelationOutput', relationOutputDirective);
 module.directive('mezzoHrefReload', hrefReloadDirective);
 module.directive('mezzoHrefPrevent', hrefPreventDirective);
 module.directive('mezzoSelect2', select2Directive);

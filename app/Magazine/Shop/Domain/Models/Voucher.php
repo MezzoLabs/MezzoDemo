@@ -115,5 +115,14 @@ class Voucher extends MezzoVoucher
         return $this->type == $type;
     }
 
+    public function redeemersAmount()
+    {
+        if ($this->isPrivate()) {
+            return ($this->redeemed_by_id)? 1 : 0;
+        }
+
+        return $this->redeemedByUsers->count();
+    }
+
 
 }

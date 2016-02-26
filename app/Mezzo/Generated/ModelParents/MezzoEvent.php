@@ -72,8 +72,8 @@ abstract class MezzoEvent extends \App\Mezzo\BaseModel
     */
     protected $rules = [
         'title' => "required|between:3,200", 
-        'slug' => "", 
-        'description' => "required|between:3,500",
+        'slug' => "",
+        'description' => "required|between:3,50000",
         'clicks' => "",
         'locked_until' => "",
         'days' => "days_not_overlapping"
@@ -159,7 +159,7 @@ abstract class MezzoEvent extends \App\Mezzo\BaseModel
     /**
     * Attribute annotation property for description
     *
-    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\TextArea", hidden="index")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RichTextArea", hidden="index")
     * @var string            
     */
     protected $_description;

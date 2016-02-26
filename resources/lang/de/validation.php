@@ -150,6 +150,7 @@ return [
         'code' => 'Code',
         'redeemed_at' => 'Eingelöst am',
         'redeemedby' => 'Einlöser',
+        'redeemedbyusers' => 'Einlöser Liste',
         'label' => 'Bezeichner',
         'group' => 'Gruppe',
         'parent' => 'Elternelement',

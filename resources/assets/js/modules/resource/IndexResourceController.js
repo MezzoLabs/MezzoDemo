@@ -14,7 +14,6 @@ export default class IndexResourceController {
         this.models = [];
         this.modelValues = {};
         this.searchText = '';
-        this.searchText = '';
         this.selectAll = false;
         this.loading = false;
         this.attributes = {};

@@ -92,8 +92,9 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
         "active_until",
         "only_for_id",
         "options",
-        "redeemed_at", 
-        "redeemed_by_id"
+        "redeemed_at",
+        "redeemed_by_id",
+        "redeemedByUsers"
     ];
 
     /**
@@ -182,7 +183,7 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
     /**
      * Attribute annotation property for redeemed_at
      *
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\DateTimeInput", hidden="index")
      * @var \Carbon\Carbon
      */
     protected $_redeemed_at;
@@ -190,7 +191,7 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
     /**
     * Attribute annotation property for redeemed_by_id
     *
-    * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputSingle", hidden="index")
     * @var integer            
     */
     protected $_redeemed_by_id;
@@ -244,7 +245,7 @@ abstract class MezzoVoucher extends \App\Mezzo\BaseModel
 
     /**
      * Relation annotation property for redeemedByUsers
-     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\RelationInputMultiple", hidden="")
+     * @Mezzo\Attribute(type="MezzoLabs\Mezzo\Core\Schema\InputTypes\ReadOnly\RelationInputMultiple", hidden="index,create")
      * @Mezzo\Relations\ManyToMany
      * @Mezzo\Relations\From(table="vouchers", primaryKey="id", naming="redeemedByUsers")
      * @Mezzo\Relations\To(table="users", primaryKey="id", naming="redeemedGlobalVouchers")
