@@ -15,8 +15,9 @@ class ShopModule extends ModuleProvider
     protected $models = [
         \App\Product::class,
         \App\Order::class,
-        \App\Merchant::class,
         \App\Voucher::class
+        \App\Merchant::class,
+        \App\ShoppingBasket::class
     ];
 
     protected $options = [
