@@ -2566,7 +2566,7 @@ function relationInputDirective() {
                 this.eventDispatcher.getOrListenFor('form.received', function (event) {
                     _this.fillItems(event.payload.data[_this.naming]);
                 });
-            }
+        }
         }, {
             key: "fillItems",
             value: function fillItems(items) {
@@ -2586,7 +2586,7 @@ function relationInputDirective() {
             value: function itemIsInSearch(item) {
                 if (this.searchText.length == 0) {
                     return true;
-                }
+            }
 
                 for (var key in item) {
                     if (item.hasOwnProperty(key)) {
@@ -2594,9 +2594,9 @@ function relationInputDirective() {
 
                         if (String(value).toLowerCase().indexOf(this.searchText.toLowerCase()) !== -1) {
                             return true;
-                        }
                     }
                 }
+            }
 
                 return false;
             }
