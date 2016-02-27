@@ -10,6 +10,8 @@ use MezzoLabs\Mezzo\Exceptions\ModulePageException;
 
 class EditResourcePage extends ResourcePage
 {
+    protected $view = 'cockpit::pages.resources.edit';
+
     protected $action = 'edit';
 
     protected $options = [
@@ -29,7 +31,6 @@ class EditResourcePage extends ResourcePage
         //$this->frontendOption('canEdit', PermissionGuard::make()->allowsEdit($this->model()->instance()));
     }
 
-    protected $view = 'cockpit::pages.resources.edit';
 
     /**
      * Check if the current user is allowed to view this page.

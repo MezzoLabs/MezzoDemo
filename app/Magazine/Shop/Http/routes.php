@@ -13,6 +13,9 @@ module_route('Shop', [], function (Router $router, ApiRouter $api, CockpitRouter
     $api->resource('Order');
     $api->resource('Voucher');
 
+
+    $api->relation('Voucher', 'redeemedByUsers', \App\Magazine\Shop\Http\ApiControllers\VoucherRedeemersApiController::class);
+
 });
 
 

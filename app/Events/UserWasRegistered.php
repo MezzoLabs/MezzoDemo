@@ -15,14 +15,20 @@ abstract class UserWasRegistered extends Event
     public $user;
 
     /**
+     * @var bool
+     */
+    public $subscribeToNewsletter;
+
+    /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, $subscribeToNewsletter = false)
     {
         //
         $this->user = $user;
+        $this->subscribeToNewsletter = $subscribeToNewsletter;
     }
 
     /**

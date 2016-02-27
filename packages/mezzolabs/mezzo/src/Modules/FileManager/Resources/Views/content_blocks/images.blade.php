@@ -11,6 +11,8 @@
             <option ng-selected="block.options.display == 'grid'" value="grid">{{ trans('mezzo.modules.contents.options.image_grid') }}</option>
             <option ng-selected="block.options.display == 'list'" value="list">{{ trans('mezzo.modules.contents.options.image_list') }}</option>
             <option ng-selected="block.options.display == 'lightbox'" value="lightbox">{{ trans('mezzo.modules.contents.options.image_lightbox') }}</option>
+            <option ng-selected="block.options.display == 'slider'"
+                    value="slider">{{ trans('mezzo.modules.contents.options.image_slider') }}</option>
         </select>
     </div>
 @endsection

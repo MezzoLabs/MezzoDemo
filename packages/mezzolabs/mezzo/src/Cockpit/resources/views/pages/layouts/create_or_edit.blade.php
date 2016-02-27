@@ -1,9 +1,19 @@
 @extends(cockpit_content_container())
 
+@section('wrapper_open')
+    @include('cockpit::partials.pages.create_or_edit.wrapper_open')
+@endsection
+
+@section('form')
+    @include('cockpit::partials.pages.create_or_edit.form')
+@endsection
+
+@section('wrapper_close')
+    @include('cockpit::partials.pages.create_or_edit.wrapper_close')
+@endsection
+
 @section('content')
-    @include('cockpit::partials.pages.edit_wrapper_open')
-    {!! cockpit_form()->open(['angular' => true]) !!}
-    @yield('wrapper-content')
-    {!! cockpit_form()->close() !!}
-    @include('cockpit::partials.pages.edit_wrapper_close')
+    @yield('wrapper_open')
+    @yield('form')
+    @yield('wrapper_close')
 @endsection

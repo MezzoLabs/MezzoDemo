@@ -241,7 +241,7 @@ class ApiRouter
 
         $this->get($uri, [
             'uses' => $controller->qualifiedActionName($name),
-            'as' => 'api::' . snake_case($modelName) . '.show'
+            'as' => 'api::' . snake_case($modelName) . '.' . snake_case($name)
         ]);
     }
 

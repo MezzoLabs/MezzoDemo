@@ -129,6 +129,15 @@ export default class EventDispatcherService {
         });
     }
 
+    getOrListenFor(eventKey, callback) {
+        const inHistory = this.findInHistory(eventKey);
+        if (inHistory) {
+            return callback(inHistory);
+        }
+
+        this.on(eventKey, callback);
+    }
+
     isInHistory(eventKey) {
         return !!this.findInHistory(eventKey);
     }

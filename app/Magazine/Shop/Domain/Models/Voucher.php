@@ -13,6 +13,11 @@ use MezzoLabs\Mezzo\Exceptions\RepositoryException;
 
 class Voucher extends MezzoVoucher
 {
+    protected $dates = [
+        'redeemed_at',
+        'active_until'
+    ];
+
     public function redeem(User $forUser = null)
     {
         return app()->make(VoucherService::class)->redeem($this, $forUser);
@@ -70,11 +75,25 @@ class Voucher extends MezzoVoucher
             return false;
         }
 
-        if ($this->active_until->lte(Carbon::now())) {
+        if ($this->active_until && $this->active_until->lte(Carbon::now())) {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * @param null $name
+     * @param null $default
+     * @return \Illuminate\Support\Collection
+     */
+    public function getOption($name = null, $default = null)
+    {
+        if ($name !== null) {
+            return $this->getOption()->get($name, $default);
+        }
+
+        return collect(json_decode($this->options));
     }
 
 
@@ -89,6 +108,20 @@ class Voucher extends MezzoVoucher
         }
 
         return true;
+    }
+
+    public function isType(string $type)
+    {
+        return $this->type == $type;
+    }
+
+    public function redeemersAmount()
+    {
+        if ($this->isPrivate()) {
+            return ($this->redeemed_by_id)? 1 : 0;
+        }
+
+        return $this->redeemedByUsers->count();
     }
 
 

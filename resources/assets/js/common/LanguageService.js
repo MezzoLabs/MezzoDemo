@@ -11,13 +11,20 @@ export default class LanguageService {
                     create: 'Erstellen',
                     delete: 'Löschen',
                     update: 'Editieren',
-                    rename: 'Umbenennen'
+                    rename: 'Umbenennen',
+                    yes: 'Ja',
+                    no: 'Nein',
+                    cancel: 'Abbrechen'
                 },
                 messages: {
                     missing_permissions: 'Sie haben nicht genügend Rechte um diese Aktion auszuführen.',
                     shure_to_delete_models: {
-                        title: 'Sind sie sich sicher?',
+                        title: 'Sind Sie sich sicher?',
                         text: '{count} Ressource wird gelöscht.|{count} Ressourcen werden gelöscht.'
+                    },
+                    are_you_sure: {
+                        title: 'Sind Sie sich sicher?',
+                        text: ''
                     }
                 },
                 filemanager: {

@@ -26,8 +26,6 @@ export default class RelationInputController {
 
         if (formReceived) {
             this.eventDispatcher.on('relationinput.models_loaded.' + this.uniqueKey, (events, payloads) => {
-                console.log(formReceived);
-
                 this.fill(formReceived.payload.data, formReceived.form);
             });
 

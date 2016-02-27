@@ -39,12 +39,15 @@ class VoucherService
 
         $redeemingVoucherChain = event(new RedeemingVoucher($voucher, $user), [], true);
 
-
         if ($redeemingVoucherChain === false) {
             return false;
         }
 
-        $this->repository()->redeem($voucher, $user);
+        $redeemed = $this->repository()->redeem($voucher, $user);
+
+        if (!$redeemed) {
+            return false;
+        }
 
         event(new VoucherWasRedeemed($voucher));
 

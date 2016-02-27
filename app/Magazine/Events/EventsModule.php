@@ -7,7 +7,7 @@ namespace App\Magazine\Events;
 use App\Event;
 use App\EventDay;
 use App\EventVenue;
-use App\Magazine\Events\Domain\Validators\DaysNotOverlappingValidator;
+use App\Magazine\Events\Domain\Validators\DaysNotOverlappingRule;
 use App\Magazine\Events\Http\Transformers\EventTransformerPlugin;
 use App\Magazine\Events\Schema\Rendering\EventDaysRenderer;
 use App\User;
@@ -43,7 +43,7 @@ class EventsModule extends ModuleProvider
     {
         parent::boot();
 
-        DaysNotOverlappingValidator::register();
+        DaysNotOverlappingRule::register();
     }
 
     /**

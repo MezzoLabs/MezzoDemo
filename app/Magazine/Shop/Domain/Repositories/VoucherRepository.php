@@ -22,7 +22,7 @@ class VoucherRepository extends ModelRepository
      */
     public function redeem(Voucher $voucher, User $user)
     {
-        if ($voucher->canBeRedeemedBy($user)) {
+        if (!$voucher->canBeRedeemedBy($user)) {
             return null;
         }
 
@@ -48,6 +48,15 @@ class VoucherRepository extends ModelRepository
         $voucher->save();
 
         return $voucher;
+    }
+
+    /**
+     * @param $code
+     * @return Voucher
+     */
+    public function findByKeyOrFail($code)
+    {
+        return $this->findByOrFail('voucher_key', $code);
     }
 
 

@@ -1,6 +1,7 @@
 import compileDirective from './compileDirective';
 import enterDirective from './enterDirective.js';
 import relationInputDirective from './relationInputDirective';
+import relationOutputDirective from './relations/relationOutputDirective';
 import hrefReloadDirective from './hrefReloadDirective';
 import hrefPreventDirective from './hrefPreventDirective';
 import tinymceDirective from './tinymceDirective';
@@ -23,12 +24,15 @@ import EventDispatcherService from './events/EventDispatcherService';
 import httpInterceptorFactory from './api/httpInterceptorFactory';
 import HttpRequestTrackerService from './api/HttpRequestTrackerService';
 import FormInputService from './forms/FormInputService';
+import apiActionDirective from './api/action/apiActionDirective';
+
 
 const module = angular.module('MezzoCommon', []);
 
 module.directive('mezzoCompile', compileDirective);
 module.directive('mezzoEnter', enterDirective);
 module.directive('mezzoRelationInput', relationInputDirective);
+module.directive('mezzoRelationOutput', relationOutputDirective);
 module.directive('mezzoHrefReload', hrefReloadDirective);
 module.directive('mezzoHrefPrevent', hrefPreventDirective);
 module.directive('mezzoSelect2', select2Directive);
@@ -40,6 +44,7 @@ module.directive('mezzoFormValidation', formValidationDirective);
 module.directive('mezzoValidationMessages', validationMessagesDirective);
 module.directive('mezzoGlobalsearch', globalSearchDirective);
 module.directive('mezzoHasError', hasErrorDirective);
+module.directive('mezzoApiAction', apiActionDirective);
 module.factory('uid', uidService);
 module.factory('api', apiService);
 module.factory('hasController', hasControllerService);

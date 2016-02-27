@@ -32,7 +32,18 @@ var app = angular.module('Mezzo', ['ui.router', 'ui.sortable', 'ui.bootstrap', '
 app.config(_config2.default);
 app.run(_run2.default);
 
-},{"./common":31,"./modules/contentBlocks":41,"./modules/events":45,"./modules/fileManager":56,"./modules/googleMaps":57,"./modules/resource":70,"./modules/users":76,"./setup/config":77,"./setup/jquery":79,"./setup/run":81}],2:[function(require,module,exports){
+}, {
+    "./common": 32,
+    "./modules/contentBlocks": 44,
+    "./modules/events": 48,
+    "./modules/fileManager": 59,
+    "./modules/googleMaps": 60,
+    "./modules/resource": 73,
+    "./modules/users": 79,
+    "./setup/config": 80,
+    "./setup/jquery": 82,
+    "./setup/run": 84
+}], 2: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -136,13 +147,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     create: 'Erstellen',
                     delete: 'Löschen',
                     update: 'Editieren',
-                    rename: 'Umbenennen'
+                    rename: 'Umbenennen',
+                    yes: 'Ja',
+                    no: 'Nein',
+                    cancel: 'Abbrechen'
                 },
                 messages: {
                     missing_permissions: 'Sie haben nicht genügend Rechte um diese Aktion auszuführen.',
                     shure_to_delete_models: {
-                        title: 'Sind sie sich sicher?',
+                        title: 'Sind Sie sich sicher?',
                         text: '{count} Ressource wird gelöscht.|{count} Ressourcen werden gelöscht.'
+                    },
+                    are_you_sure: {
+                        title: 'Sind Sie sich sicher?',
+                        text: ''
                     }
                 },
                 filemanager: {
@@ -378,8 +396,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
             if (formReceived) {
                 this.eventDispatcher.on('relationinput.models_loaded.' + this.uniqueKey, function (events, payloads) {
-                    console.log(formReceived);
-
                     _this.fill(formReceived.payload.data, formReceived.form);
                 });
 
@@ -824,6 +840,73 @@ exports.default = ModelApi;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+    exports.default = apiActionDirective;
+    /*@ngInject*/
+    function apiActionDirective(api, errorHandlerService, languageService) {
+        return {
+            restrict: 'A',
+            link: link
+        };
+
+        function link(scope, element, attributes) {
+            var uri = attributes.href;
+            var parameters = JSON.parse(attributes.parameters);
+
+            console.log(element);
+
+            //TODO:
+            $(element).click(function ($event) {
+                $event.preventDefault();
+
+                if (attributes.needsConfirmation == "1") {
+                    return showConfirmation(function () {
+                        sendAction(uri, parameters);
+                    });
+            }
+
+                sendAction(uri, parameters);
+            });
+        }
+
+        function showConfirmation(callback) {
+            swal({
+                title: languageService.get('messages.are_you_sure.title'),
+                text: '',
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: languageService.get('general.yes'),
+                cancelButtonText: languageService.get('general.cancel'),
+                closeOnConfirm: false
+            }, function () {
+                callback();
+            });
+        }
+
+        function sendAction(uri, parameters) {
+            return api.get(uri, parameters).then(function (result) {
+                return showResult(result);
+            }).catch(function (err) {
+                return errorHandlerService.showUnexpected(err);
+            });
+        }
+
+        function showResult(result) {
+            if (result.message && result.title) {
+                console.log('result');
+                swal(result.title, result.message, 'success');
+                return;
+        }
+
+            alert('Unexpected action result!');
+        }
+    };
+
+}, {}], 11: [function (require, module, exports) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
 exports.default = apiService;
 
 var _Api = require('./Api');
@@ -837,7 +920,7 @@ function apiService($http, eventDispatcher) {
     return new _Api2.default($http, eventDispatcher);
 }
 
-},{"./Api":6}],11:[function(require,module,exports){
+}, {"./Api": 6}], 12: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -865,7 +948,7 @@ exports.default = function ($q, $rootScope, $log) {
     };
 };
 
-},{}],12:[function(require,module,exports){
+}, {}], 13: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -891,7 +974,7 @@ function compileDirective() {
     }
 }
 
-},{}],13:[function(require,module,exports){
+}, {}], 14: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -956,7 +1039,7 @@ function dateTimePickerDirective() {
     }
 }
 
-},{}],14:[function(require,module,exports){
+}, {}], 15: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -980,7 +1063,7 @@ function enterDirective() {
     }
 }
 
-},{}],15:[function(require,module,exports){
+}, {}], 16: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -998,7 +1081,7 @@ var Event = function Event(key, payload) {
 
 exports.default = Event;
 
-},{}],16:[function(require,module,exports){
+}, {}], 17: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -1188,6 +1271,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             });
         }
     }, {
+        key: 'getOrListenFor',
+        value: function getOrListenFor(eventKey, callback) {
+            var inHistory = this.findInHistory(eventKey);
+            if (inHistory) {
+                return callback(inHistory);
+            }
+
+            this.on(eventKey, callback);
+        }
+    }, {
         key: 'isInHistory',
         value: function isInHistory(eventKey) {
             return !!this.findInHistory(eventKey);
@@ -1213,7 +1306,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = EventDispatcherService;
 
-},{"./Event":15,"./Listener":17}],17:[function(require,module,exports){
+}, {"./Event": 16, "./Listener": 18}], 18: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -1286,7 +1379,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = Listener;
 
-},{"./Event":15}],18:[function(require,module,exports){
+}, {"./Event": 16}], 19: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -1380,7 +1473,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = FormDataReader;
 
-},{}],19:[function(require,module,exports){
+}, {}], 20: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1416,7 +1509,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 exports.default = FormEvent;
 
-},{"./../events/Event":15}],20:[function(require,module,exports){
+}, {"./../events/Event": 16}], 21: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -1485,7 +1578,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 exports.default = FormEventListener;
 
-},{"./../events/Listener":17}],21:[function(require,module,exports){
+}, {"./../events/Listener": 18}], 22: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -1547,7 +1640,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = FormInputService;
 
-},{}],22:[function(require,module,exports){
+}, {}], 23: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -1690,7 +1783,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = FormObject;
 
-},{"./FormEvent":19}],23:[function(require,module,exports){
+}, {"./FormEvent": 20}], 24: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -1857,7 +1950,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = FormSubmitter;
 
-},{"./FormDataReader":18,"./FormObject":22}],24:[function(require,module,exports){
+}, {"./FormDataReader": 19, "./FormObject": 23}], 25: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -1945,7 +2038,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = FormValidationService;
 
-},{}],25:[function(require,module,exports){
+}, {}], 26: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1976,7 +2069,7 @@ function formValidationDirective(formValidationService, eventDispatcher, $compil
     }
 }
 
-},{}],26:[function(require,module,exports){
+}, {}], 27: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2027,7 +2120,7 @@ function hasErrorDirective(formInputService) {
     }
 }
 
-},{}],27:[function(require,module,exports){
+}, {}], 28: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2076,7 +2169,7 @@ function globalSearchDirective() {
     }
 }
 
-},{}],28:[function(require,module,exports){
+}, {}], 29: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2098,7 +2191,7 @@ function hasControllerService($controller) {
     }
 }
 
-},{}],29:[function(require,module,exports){
+}, {}], 30: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2120,7 +2213,7 @@ function hrefPreventDirective() {
     }
 }
 
-},{}],30:[function(require,module,exports){
+}, {}], 31: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2160,7 +2253,7 @@ function hrefReloadDirective() {
     }
 }
 
-},{}],31:[function(require,module,exports){
+}, {}], 32: [function (require, module, exports) {
 'use strict';
 
 var _compileDirective = require('./compileDirective');
@@ -2174,6 +2267,10 @@ var _enterDirective2 = _interopRequireDefault(_enterDirective);
 var _relationInputDirective = require('./relationInputDirective');
 
 var _relationInputDirective2 = _interopRequireDefault(_relationInputDirective);
+
+    var _relationOutputDirective = require('./relations/relationOutputDirective');
+
+    var _relationOutputDirective2 = _interopRequireDefault(_relationOutputDirective);
 
 var _hrefReloadDirective = require('./hrefReloadDirective');
 
@@ -2263,6 +2360,10 @@ var _FormInputService = require('./forms/FormInputService');
 
 var _FormInputService2 = _interopRequireDefault(_FormInputService);
 
+    var _apiActionDirective = require('./api/action/apiActionDirective');
+
+    var _apiActionDirective2 = _interopRequireDefault(_apiActionDirective);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _module = angular.module('MezzoCommon', []);
@@ -2270,6 +2371,7 @@ var _module = angular.module('MezzoCommon', []);
 _module.directive('mezzoCompile', _compileDirective2.default);
 _module.directive('mezzoEnter', _enterDirective2.default);
 _module.directive('mezzoRelationInput', _relationInputDirective2.default);
+    _module.directive('mezzoRelationOutput', _relationOutputDirective2.default);
 _module.directive('mezzoHrefReload', _hrefReloadDirective2.default);
 _module.directive('mezzoHrefPrevent', _hrefPreventDirective2.default);
 _module.directive('mezzoSelect2', _select2Directive2.default);
@@ -2281,6 +2383,7 @@ _module.directive('mezzoFormValidation', _formValidationDirective2.default);
 _module.directive('mezzoValidationMessages', _validationMessagesDirective2.default);
 _module.directive('mezzoGlobalsearch', _globalSearchDirective2.default);
 _module.directive('mezzoHasError', _hasErrorDirective2.default);
+    _module.directive('mezzoApiAction', _apiActionDirective2.default);
 _module.factory('uid', _uidService2.default);
 _module.factory('api', _apiService2.default);
 _module.factory('hasController', _hasControllerService2.default);
@@ -2295,7 +2398,35 @@ _module.factory('httpInterceptor', _httpInterceptorFactory2.default).config(func
 _module.service('HttpRequestTracker', _HttpRequestTrackerService2.default);
 _module.service('formInputService', _FormInputService2.default);
 
-},{"./ErrorHandlerService":2,"./LanguageService":3,"./QuickviewService":4,"./api/HttpRequestTrackerService":7,"./api/apiService":10,"./api/httpInterceptorFactory":11,"./compileDirective":12,"./dateTimePickerDirective":13,"./enterDirective.js":14,"./events/EventDispatcherService":16,"./forms/FormInputService":21,"./forms/FormValidationService":24,"./forms/formValidationDirective":25,"./forms/hasErrorDirective":26,"./globalsearch/globalSearchDirective":27,"./hasControllerService":28,"./hrefPreventDirective":29,"./hrefReloadDirective":30,"./quickviewCloseDirective":32,"./quickviewDirective":33,"./relationInputDirective":34,"./select2Directive":35,"./tinymceDirective":36,"./uidService.js":37,"./validationMessagesDirective":38}],32:[function(require,module,exports){
+}, {
+    "./ErrorHandlerService": 2,
+    "./LanguageService": 3,
+    "./QuickviewService": 4,
+    "./api/HttpRequestTrackerService": 7,
+    "./api/action/apiActionDirective": 10,
+    "./api/apiService": 11,
+    "./api/httpInterceptorFactory": 12,
+    "./compileDirective": 13,
+    "./dateTimePickerDirective": 14,
+    "./enterDirective.js": 15,
+    "./events/EventDispatcherService": 17,
+    "./forms/FormInputService": 22,
+    "./forms/FormValidationService": 25,
+    "./forms/formValidationDirective": 26,
+    "./forms/hasErrorDirective": 27,
+    "./globalsearch/globalSearchDirective": 28,
+    "./hasControllerService": 29,
+    "./hrefPreventDirective": 30,
+    "./hrefReloadDirective": 31,
+    "./quickviewCloseDirective": 33,
+    "./quickviewDirective": 34,
+    "./relationInputDirective": 35,
+    "./relations/relationOutputDirective": 37,
+    "./select2Directive": 38,
+    "./tinymceDirective": 39,
+    "./uidService.js": 40,
+    "./validationMessagesDirective": 41
+}], 33: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2318,7 +2449,7 @@ function quickviewCloseDirective(quickviewService) {
     }
 }
 
-},{}],33:[function(require,module,exports){
+}, {}], 34: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2349,7 +2480,7 @@ function quickviewDirective(quickviewService) {
     }
 }
 
-},{}],34:[function(require,module,exports){
+}, {}], 35: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2383,12 +2514,140 @@ function relationInputDirective() {
     };
 }
 
-},{"./RelationInputController":5}],35:[function(require,module,exports){
+}, {"./RelationInputController": 5}], 36: [function (require, module, exports) {
+    "use strict";
+
+    var _createClass = function () {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || false;
+                descriptor.configurable = true;
+                if ("value" in descriptor) descriptor.writable = true;
+                Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+            if (protoProps) defineProperties(Constructor.prototype, protoProps);
+            if (staticProps) defineProperties(Constructor, staticProps);
+            return Constructor;
+        };
+    }();
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var RelationOutputController = function () {
+        function RelationOutputController($scope, eventDispatcher) {
+            _classCallCheck(this, RelationOutputController);
+
+            this.$scope = $scope;
+            this.eventDispatcher = eventDispatcher;
+
+            this.items = {};
+            this.searchText = "";
+
+            this.setListeners();
+        }
+
+        _createClass(RelationOutputController, [{
+            key: "setListeners",
+            value: function setListeners() {
+                var _this = this;
+
+                this.eventDispatcher.getOrListenFor('form.received', function (event) {
+                    _this.fillItems(event.payload.data[_this.naming]);
+                });
+        }
+        }, {
+            key: "fillItems",
+            value: function fillItems(items) {
+                this.items = items;
+            }
+        }, {
+            key: "filteredItems",
+            value: function filteredItems() {
+                var _this2 = this;
+
+                return _.filter(this.items, function (item) {
+                    return _this2.itemIsInSearch(item);
+                });
+            }
+        }, {
+            key: "itemIsInSearch",
+            value: function itemIsInSearch(item) {
+                if (this.searchText.length == 0) {
+                    return true;
+            }
+
+                for (var key in item) {
+                    if (item.hasOwnProperty(key)) {
+                        var value = item[key];
+
+                        if (String(value).toLowerCase().indexOf(this.searchText.toLowerCase()) !== -1) {
+                            return true;
+                    }
+                }
+            }
+
+                return false;
+            }
+        }]);
+
+        return RelationOutputController;
+    }();
+
+    exports.default = RelationOutputController;
+
+}, {}], 37: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+    exports.default = relationInputDirective;
+
+    var _RelationOutputController = require('./RelationOutputController');
+
+    var _RelationOutputController2 = _interopRequireDefault(_RelationOutputController);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {default: obj};
+    }
+
+    /*@ngInject*/
+    function relationInputDirective() {
+        return {
+            restrict: 'E',
+            templateUrl: '/mezzolabs/mezzo/cockpit/templates/relationOutputDirective.html',
+            replace: true,
+            scope: {
+                related: '@',
+                scopes: '@',
+                naming: '@',
+                title: '@'
+            },
+            require: "^form",
+            controller: _RelationOutputController2.default,
+            controllerAs: 'vm',
+            bindToController: true
+        };
+    }
+
+}, {"./RelationOutputController": 36}], 38: [function (require, module, exports) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
 exports.default = select2Directive;
 /*@ngInject*/
 function select2Directive() {
@@ -2402,7 +2661,7 @@ function select2Directive() {
     }
 }
 
-},{}],36:[function(require,module,exports){
+}, {}], 39: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2431,7 +2690,7 @@ function tinymceDirective() {
     }
 }
 
-},{}],37:[function(require,module,exports){
+}, {}], 40: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2449,7 +2708,7 @@ function nextUid() {
     return id++;
 }
 
-},{}],38:[function(require,module,exports){
+}, {}], 41: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2483,7 +2742,7 @@ function validationMessagesDirective(formInputService) {
     }
 }
 
-},{}],39:[function(require,module,exports){
+}, {}], 42: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2527,7 +2786,7 @@ function compileContentBlockDirective($parse, $compile, formValidationService, e
     }
 }
 
-},{}],40:[function(require,module,exports){
+}, {}], 43: [function (require, module, exports) {
 'use strict';
 
     var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
@@ -2779,7 +3038,7 @@ function registerContentBlockFactory($compile, api, eventDispatcher) {
     return ContentBlockService;
     }();
 
-},{}],41:[function(require,module,exports){
+}, {}], 44: [function (require, module, exports) {
 'use strict';
 
 var _contentBlockFactory = require('./contentBlockFactory');
@@ -2797,7 +3056,7 @@ var _module = angular.module('MezzoContentBlocks', []);
 _module.factory('contentBlockFactory', _contentBlockFactory2.default);
 _module.directive('mezzoCompileContentBlock', _compileContentBlockDirective2.default);
 
-},{"./compileContentBlockDirective":39,"./contentBlockFactory":40}],42:[function(require,module,exports){
+}, {"./compileContentBlockDirective": 42, "./contentBlockFactory": 43}], 45: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -2990,7 +3249,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = FilePickerController;
 
-},{"./../../common/forms/FormEventListener":20}],43:[function(require,module,exports){
+}, {"./../../common/forms/FormEventListener": 21}], 46: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3022,7 +3281,7 @@ function eventDaysDirective() {
     };
 }
 
-},{"./EventDaysController":42}],44:[function(require,module,exports){
+}, {"./EventDaysController": 45}], 47: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3066,7 +3325,7 @@ function eventVenueDirective(api) {
     }
 }
 
-},{}],45:[function(require,module,exports){
+}, {}], 48: [function (require, module, exports) {
 'use strict';
 
 var _eventDaysDirective = require('./eventDaysDirective');
@@ -3084,7 +3343,7 @@ var _module = angular.module('MezzoEvents', []);
 _module.directive('mezzoEventDays', _eventDaysDirective2.default);
 _module.directive('mezzoEventVenue', _eventVenueDirective2.default);
 
-},{"./eventDaysDirective":43,"./eventVenueDirective":44}],46:[function(require,module,exports){
+}, {"./eventDaysDirective": 46, "./eventVenueDirective": 47}], 49: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3108,7 +3367,7 @@ var Category = function Category(key, label, icon) {
 
 exports.default = Category;
 
-},{}],47:[function(require,module,exports){
+}, {}], 50: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -3256,7 +3515,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = File;
 
-},{}],48:[function(require,module,exports){
+}, {}], 51: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -3811,7 +4070,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = FileManagerController;
 
-},{"./File":47,"./Folder":50,"./categories":51}],49:[function(require,module,exports){
+}, {"./File": 50, "./Folder": 53, "./categories": 54}], 52: [function (require, module, exports) {
 'use strict';
 
     var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
@@ -4171,7 +4430,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = FilePickerController;
 
-},{"./File":47}],50:[function(require,module,exports){
+}, {"./File": 50}], 53: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -4273,7 +4532,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 exports.default = Folder;
 
-},{"./File":47}],51:[function(require,module,exports){
+}, {"./File": 50}], 54: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4308,7 +4567,7 @@ function documentFilter(file) {
     return file.isDocument();
 }
 
-},{"./Category":46}],52:[function(require,module,exports){
+}, {"./Category": 49}], 55: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4337,7 +4596,7 @@ function draggableDirective() {
     }
 }
 
-},{}],53:[function(require,module,exports){
+}, {}], 56: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4369,7 +4628,7 @@ function droppableDirective() {
     }
 }
 
-},{}],54:[function(require,module,exports){
+}, {}], 57: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4401,7 +4660,7 @@ function filePickerDirective() {
     };
 }
 
-},{"./FilePickerController":49}],55:[function(require,module,exports){
+}, {"./FilePickerController": 52}], 58: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4429,7 +4688,7 @@ function filePickerValueDirective() {
     }
 }
 
-},{}],56:[function(require,module,exports){
+}, {}], 59: [function (require, module, exports) {
 'use strict';
 
 var _draggableDirective = require('./draggableDirective.js');
@@ -4462,7 +4721,13 @@ _module.directive('mezzoFilePicker', _filePickerDirective2.default);
 //module.directive('mezzoFilePickerValue', filePickerValueDirective);
 _module.controller('CreateFileController', _FileManagerController2.default);
 
-},{"./FileManagerController":48,"./draggableDirective.js":52,"./droppableDirective.js":53,"./filePickerDirective":54,"./filePickerValueDirective":55}],57:[function(require,module,exports){
+}, {
+    "./FileManagerController": 51,
+    "./draggableDirective.js": 55,
+    "./droppableDirective.js": 56,
+    "./filePickerDirective": 57,
+    "./filePickerValueDirective": 58
+}], 60: [function (require, module, exports) {
 'use strict';
 
 var _mapService = require('./mapService');
@@ -4485,7 +4750,7 @@ _module.factory('mapService', _mapService2.default);
 _module.directive('mezzoGoogleMap', _mapDirective2.default);
 _module.directive('mezzoGoogleMapsSearch', _searchDirective2.default);
 
-},{"./mapDirective":58,"./mapService":59,"./searchDirective":60}],58:[function(require,module,exports){
+}, {"./mapDirective": 61, "./mapService": 62, "./searchDirective": 63}], 61: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4619,7 +4884,7 @@ function mapDirective(mapService) {
     }
 }
 
-},{}],59:[function(require,module,exports){
+}, {}], 62: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4633,7 +4898,7 @@ function mapService() {
     };
 }
 
-},{}],60:[function(require,module,exports){
+}, {}], 63: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4740,7 +5005,7 @@ function searchDirective(mapService) {
     }
 }
 
-},{}],61:[function(require,module,exports){
+}, {}], 64: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4753,7 +5018,7 @@ exports.default = {
     SHOW: 'show'
 };
 
-},{}],62:[function(require,module,exports){
+}, {}], 65: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -4845,7 +5110,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 exports.default = CreateResourceController;
 
-},{"./ResourceController":67}],63:[function(require,module,exports){
+}, {"./ResourceController": 70}], 66: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -4990,7 +5255,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
             var cleaned = this.formDataService.transform(model);
 
             this.content = cleaned.stripped;
-            console.log('content', this.content);
 
             this.inputs = cleaned.flattened;
 
@@ -5091,7 +5355,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 exports.default = EditResourceController;
 
-},{"./../../common/forms/FormEvent":19,"./ResourceController":67}],64:[function(require,module,exports){
+}, {"./../../common/forms/FormEvent": 20, "./ResourceController": 70}], 67: [function (require, module, exports) {
 'use strict';
 
     var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
@@ -5134,7 +5398,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     /*@ngInject*/
 
-    function IndexResourceController($scope, api, modelStateService, languageService, eventDispatcher) {
+        function IndexResourceController($scope, api, modelStateService, languageService, eventDispatcher, errorHandlerService) {
         var _this = this;
 
         _classCallCheck(this, IndexResourceController);
@@ -5145,9 +5409,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.modelStateService = modelStateService;
         this.includes = [];
         this.language = languageService;
+            this.errorHandler = errorHandlerService;
         this.models = [];
         this.modelValues = {};
-        this.searchText = '';
         this.searchText = '';
         this.selectAll = false;
         this.loading = false;
@@ -5210,7 +5474,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             return this.modelApi.index(params).then(function (data) {
                 var latestResponse = _this2.modelApi.latestResponse();
 
-                _this2.loading = false;
                 _this2.models = data;
 
                 if (_this2.options.backendPagination) {
@@ -5222,6 +5485,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 _this2.models.forEach(function (model) {
                     return model._meta = {};
                 });
+            }).catch(function (err) {
+                return _this2.errorHandler.showUnexpected(err);
+            }).finally(function () {
+                _this2.loading = false;
             });
         }
     }, {
@@ -5672,7 +5939,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = IndexResourceController;
 
-},{"./QueryObject":66}],65:[function(require,module,exports){
+}, {"./QueryObject": 69}], 68: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -5768,7 +6035,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = ModelStateService;
 
-},{}],66:[function(require,module,exports){
+}, {}], 69: [function (require, module, exports) {
 "use strict";
 
     var _createClass = function () {
@@ -5989,7 +6256,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = QueryObject;
 
-},{"./IndexResourceController":64}],67:[function(require,module,exports){
+}, {"./IndexResourceController": 67}], 70: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -6149,7 +6416,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = ResourceController;
 
-},{"./../../common/forms/FormEvent":19,"./../../common/forms/FormObject":22,"./../../common/forms/FormSubmitter":23}],68:[function(require,module,exports){
+}, {
+    "./../../common/forms/FormEvent": 20,
+    "./../../common/forms/FormObject": 23,
+    "./../../common/forms/FormSubmitter": 24
+}], 71: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6167,7 +6438,7 @@ function ShowResourceController() {
 
 exports.default = ShowResourceController;
 
-},{}],69:[function(require,module,exports){
+}, {}], 72: [function (require, module, exports) {
 'use strict';
 
     var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
@@ -6344,7 +6615,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = FormDataService;
 
-},{}],70:[function(require,module,exports){
+}, {}], 73: [function (require, module, exports) {
 'use strict';
 
 var _stateProvider = require('./stateProvider');
@@ -6404,7 +6675,18 @@ _module.controller('PivotRowsController', _PivotRowsController2.default);
 
 _module.controller('EditUserSubscriptionsController', _EditUserSubscriptionsController2.default);
 
-},{"./CreateResourceController":62,"./EditResourceController":63,"./IndexResourceController":64,"./ModelStateService":65,"./ShowResourceController":68,"./formDataService":69,"./registerStateDirective":71,"./relations/EditUserSubscriptionsController":73,"./relations/PivotRowsController":74,"./stateProvider":75}],71:[function(require,module,exports){
+}, {
+    "./CreateResourceController": 65,
+    "./EditResourceController": 66,
+    "./IndexResourceController": 67,
+    "./ModelStateService": 68,
+    "./ShowResourceController": 71,
+    "./formDataService": 72,
+    "./registerStateDirective": 74,
+    "./relations/EditUserSubscriptionsController": 76,
+    "./relations/PivotRowsController": 77,
+    "./stateProvider": 78
+}], 74: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -6432,9 +6714,11 @@ function registerStateDirective($location, $stateProvider, hasController) {
 
         registerState(uri, page, action);
 
-        if (action === _Action2.default.CREATE) {
-            registerState(uri.replace('create', 'edit'), page.replace('Create', 'Edit'), _Action2.default.EDIT);
+        /**
+         if(action === Action.CREATE) {
+            registerState(uri.replace('create', 'edit'), page.replace('Create', 'Edit'), Action.EDIT);
         }
+         */
 
         initSidebarBehaviour(element);
     }
@@ -6514,7 +6798,7 @@ function registerStateDirective($location, $stateProvider, hasController) {
     }
 }
 
-},{"./Action":61}],72:[function(require,module,exports){
+}, {"./Action": 64}], 75: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -6724,7 +7008,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = EditRelationsController;
 
-},{"./../../../common/forms/FormDataReader":18,"./../../../common/forms/FormObject":22,"./../../../common/forms/FormSubmitter":23}],73:[function(require,module,exports){
+}, {
+    "./../../../common/forms/FormDataReader": 19,
+    "./../../../common/forms/FormObject": 23,
+    "./../../../common/forms/FormSubmitter": 24
+}], 76: [function (require, module, exports) {
 'use strict';
 
     var _createClass = function () {
@@ -6801,7 +7089,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 exports.default = EditUserSubscriptionsController;
 
-},{"./EditRelationsController":72}],74:[function(require,module,exports){
+}, {"./EditRelationsController": 75}], 77: [function (require, module, exports) {
 "use strict";
 
     var _createClass = function () {
@@ -6845,7 +7133,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 exports.default = PivotRowsController;
 
-},{}],75:[function(require,module,exports){
+}, {}], 78: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6861,12 +7149,12 @@ function stateProvider($stateProvider) {
     }
 }
 
-},{}],76:[function(require,module,exports){
+}, {}], 79: [function (require, module, exports) {
 'use strict';
 
 var _module = angular.module('MezzoUsers', []);
 
-},{}],77:[function(require,module,exports){
+}, {}], 80: [function (require, module, exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6894,7 +7182,7 @@ function config($locationProvider, $httpProvider, $stateProvider, $translateProv
     $locationProvider.html5Mode(true);
 }
 
-},{"./customRoutes":78,"./lang":80}],78:[function(require,module,exports){
+}, {"./customRoutes": 81, "./lang": 83}], 81: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -6913,7 +7201,7 @@ function customRoutes($stateProvider) {
     });
 }
 
-},{}],79:[function(require,module,exports){
+}, {}], 82: [function (require, module, exports) {
 'use strict';
 
 $(function () {
@@ -7004,7 +7292,7 @@ function quickviewVisible(open) {
     }
 }
 
-},{}],80:[function(require,module,exports){
+}, {}], 83: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -7022,7 +7310,7 @@ function addTranslations($translateProvider, languageService) {
     $translateProvider.preferredLanguage('de');
 }
 
-},{}],81:[function(require,module,exports){
+}, {}], 84: [function (require, module, exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

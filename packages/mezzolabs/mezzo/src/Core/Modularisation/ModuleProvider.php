@@ -32,6 +32,7 @@ use MezzoLabs\Mezzo\Http\Pages\ModulePage;
 use MezzoLabs\Mezzo\Http\Pages\ModulePages;
 use MezzoLabs\Mezzo\Http\Transformers\TransformerRegistrar;
 use MezzoLabs\Mezzo\Modules\Contents\Types\BlockTypes\ContentBlockTypeRegistrar;
+use MezzoLabs\Mezzo\Modules\General\Options\OptionFieldRegistry;
 
 abstract class ModuleProvider extends ServiceProvider implements ExtensibleModule
 {
@@ -559,6 +560,14 @@ abstract class ModuleProvider extends ServiceProvider implements ExtensibleModul
         foreach ($rendererClasses as $rendererClass) {
             AttributeRenderEngine::registerHandler($rendererClass);
         }
+    }
+
+    /**
+     * @return OptionFieldRegistry
+     */
+    public function optionRegistry()
+    {
+        return app()->make('mezzo.options.registry');
     }
 
 }

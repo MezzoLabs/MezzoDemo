@@ -10,6 +10,7 @@ use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\CountryAttributeRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\PivotRowsRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeMultipleRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationAttributeSingleRenderer;
+use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\RelationOutputRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\SelectableAttributeRenderer;
 use Mezzolabs\Mezzo\Cockpit\Html\Rendering\Handlers\SimpleAttributeRenderer;
 use MezzoLabs\Mezzo\Core\Schema\Attributes\Attribute;
@@ -23,6 +24,7 @@ class AttributeRenderEngine extends AbstractAttributeRenderEngine
         CountryAttributeRenderer::class,
         CategoriesAttributeRenderer::class,
         PivotRowsRenderer::class,
+        RelationOutputRenderer::class,
         RelationAttributeSingleRenderer::class,
         RelationAttributeMultipleRenderer::class,
         SelectableAttributeRenderer::class,

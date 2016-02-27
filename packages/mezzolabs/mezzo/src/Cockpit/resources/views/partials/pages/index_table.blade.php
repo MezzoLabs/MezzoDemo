@@ -22,8 +22,8 @@
     </div>
     <div class="panel-body">
         <div class="progress" ng-show="vm.loading">
-            <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width: 100%">Please
-                be patient...
+            <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width: 100%">
+                {{ trans('mezzo.general.please_wait') }}..
             </div>
         </div>
 

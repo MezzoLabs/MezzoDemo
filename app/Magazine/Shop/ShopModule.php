@@ -5,17 +5,19 @@ namespace App\Magazine\Shop;
 
 
 use App\Magazine\Shop\Html\Rendering\VoucherOptionsRenderer;
+use App\Magazine\Shop\Http\Transformers\RedeemersTransformerPlugin;
 use MezzoLabs\Mezzo\Cockpit\Html\Rendering\AttributeRenderEngine;
 use MezzoLabs\Mezzo\Core\Modularisation\ModuleProvider;
+use MezzoLabs\Mezzo\Http\Transformers\TransformerRegistrar;
 
 class ShopModule extends ModuleProvider
 {
     protected $models = [
         \App\Product::class,
         \App\Order::class,
-        \App\Merchant::class,
-        \App\ShoppingBasket::class,
         \App\Voucher::class
+        \App\Merchant::class,
+        \App\ShoppingBasket::class
     ];
 
     protected $options = [
@@ -41,6 +43,14 @@ class ShopModule extends ModuleProvider
     {
 
         AttributeRenderEngine::registerHandler(VoucherOptionsRenderer::class);
+        $this->registerTransformerPlugin();
 
+    }
+
+    private function registerTransformerPlugin()
+    {
+        $transformers = TransformerRegistrar::make();
+
+        $transformers->registerPlugin(new RedeemersTransformerPlugin());
     }
 }
