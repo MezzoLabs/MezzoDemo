@@ -14,9 +14,11 @@ export default function registerStateDirective($location, $stateProvider, hasCon
 
         registerState(uri, page, action);
 
+        /**
         if(action === Action.CREATE) {
             registerState(uri.replace('create', 'edit'), page.replace('Create', 'Edit'), Action.EDIT);
         }
+         */
 
         initSidebarBehaviour(element);
     }

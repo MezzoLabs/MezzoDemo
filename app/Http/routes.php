@@ -20,9 +20,9 @@ use MezzoLabs\Mezzo\Modules\Generator\Commands\GenerateForeignFields;
 use MezzoLabs\Mezzo\Modules\Generator\GeneratorModule;
 use MezzoLabs\Mezzo\Modules\Generator\Generators\AnnotationGenerator;
 
-Route::get('/', 'StartController@start');
+Route::get('/', ['uses' => 'StartController@start', 'as' => 'home']);
 
-Route::group(['middleware' => ['mezzo.no_permissions_check', 'mezzo.no_model_validation']], function () {
+Route::group(['middleware' => ['csrf', 'mezzo.no_permissions_check', 'mezzo.no_model_validation']], function () {
     // Authentication routes...
     Route::get('auth/login', 'Auth\AuthController@getLogin');
     Route::post('auth/login', 'Auth\AuthController@postLogin');
@@ -50,10 +50,17 @@ Route::group(['middleware' => ['mezzo.no_permissions_check', 'mezzo.no_model_val
         Route::resource('products', 'Shop\ProductController');
     });
 
+    Route::group(['prefix' => 'newsletter', 'as' => 'newsletter.'], function () {
+        Route::get('confirm/{code}', ['uses' => 'NewsletterController@getConfirm', 'as' => 'confirm']);
+        Route::get('reject/{code}', ['uses' => 'NewsletterController@getReject', 'as' => 'reject']);
+        Route::get('signup', ['uses' => 'NewsletterController@getSignup', 'as' => 'signup']);
+        Route::post('signup', ['uses' => 'NewsletterController@postSignup', 'as' => 'signup']);
+    });
+
 });
 
 
-Route::group(['middleware' => ['auth', 'mezzo.no_permissions_check']], function () {
+Route::group(['middleware' => ['csrf', 'auth', 'mezzo.no_permissions_check']], function () {
     Route::get('profile',
         ['uses' => 'ProfileController@profile', 'as' => 'profile']);
     Route::put('profile',
@@ -72,6 +79,12 @@ Route::group(['middleware' => ['auth', 'mezzo.no_permissions_check']], function 
     Route::post('profile/liked-categories', 'ProfileController@storeLikedCategories');
 
     Route::get('profile/destroy', 'ProfileController@destroy');
+
+    Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
+        Route::get('subscription', ['uses' => 'Profile\SubscriptionProfileController@getIndex', 'as' => 'subscription']);
+        Route::post('subscription/add-voucher', ['uses' => 'Profile\SubscriptionProfileController@addVoucher', 'as' => 'subscription.add_voucher']);
+    });
+
 
     Route::group(['prefix' => 'shop'], function () {
         Route::post('products/{id}/addToBasket', ['uses' => 'Shop\ProductController@addToBasket', 'as' => 'shop.add_to_basket']);
@@ -281,7 +294,7 @@ Route::get('test/api/relations', function () {
     $items = $users->relationshipItems(\Auth::user()->subscriptions(), ['*'], new \MezzoLabs\Mezzo\Http\Requests\Queries\QueryObject());
 
 
-    mezzo_dd($items);
+    echo($items);
 });
 
 
@@ -293,10 +306,11 @@ Route::get('test/orders', function () {
     mezzo_dd($order);
 });
 
-Route::get('test/imagefiles', function () {
-    $image = \App\ImageFile::first();
+Route::get('test/newsletter', function () {
+    $deliverer = app(\App\Magazine\Newsletter\Domain\Services\CampaignDeliverer::class);
 
-    mezzo_dd($image->file);
+    $deliverer->deliver(\App\Campaign::first(), ['trigger3@hotmail.de']);
+
 });
 
 

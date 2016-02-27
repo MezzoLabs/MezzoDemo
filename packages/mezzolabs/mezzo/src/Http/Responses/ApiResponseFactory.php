@@ -14,17 +14,21 @@ class ApiResponseFactory extends DingoResponseFactory
 {
     /**
      * @param $code
+     * @param string $message
+     * @param string $title
      * @return DingoResponse
      */
-    public function result($code)
+    public function result($code, $message = "", $title = "Success")
     {
-        if ($code !== 1)
-            throw new ResourceException();
+        if ($code == -1 || $code == false)
+            throw new ResourceException('Exit with code:' . $code);
 
         return $this->withArray([
             'data' => [
-                'success' => true,
-                'code' => $code
+                'success' => $code == 1,
+                'code' => $code,
+                'message' => $message,
+                'title' => $title
             ]
         ]);
     }

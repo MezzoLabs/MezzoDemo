@@ -26,6 +26,8 @@ trait HasAngularDirectives
         $htmlAttributes = [
             'data-related' => $attribute->relationSide()->otherModelReflection()->name(),
             'data-scopes' => $attribute->relation()->getScopes()->toString(),
+            'data-naming' => $attribute->relationSide()->naming(),
+            'data-title' => $attribute->title(),
             'name' => $attribute->name()
         ];
 
@@ -38,7 +40,21 @@ trait HasAngularDirectives
 
         $htmlAttributes = array_merge($htmlAttributes, $validationRules, $inputHtmlRules, $mergeHtmlAttributes);
 
+        if ($htmlAttributes['readonly'] ?? false) {
+            return $this->relationOutput($attribute, $htmlAttributes);
+        }
+
         return '<mezzo-relation-input ' . $this->html->attributes($htmlAttributes) . '></mezzo-relation-input>';
+    }
+
+    /**
+     * @param RelationAttribute $attribute
+     * @param array $htmlAttributes
+     * @return string
+     */
+    public function relationOutput(RelationAttribute $attribute, array $htmlAttributes = [])
+    {
+        return '<mezzo-relation-output ' . $this->html->attributes($htmlAttributes) . '></mezzo-relation-output>';
     }
 
     /**

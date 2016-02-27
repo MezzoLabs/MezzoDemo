@@ -1,0 +1,28 @@
+<div class="form-panel mezzo__relation_output">
+    <div class="form-panel-heading mezzo__relation_output__heading clearfix">
+        <div class="pull-left">
+            <h4>
+                {{ vm.title }}
+                <span class="label label-default">{{ vm.filteredItems().length }}</span>
+            </h4>
+        </div>
+        <div class="pull-right">
+            <div class="row">
+                <div class="col-md-8">
+                    <input type="search" ng-model="vm.searchText" ng-change="vm.search()"
+                           class="mezzo__relation_output__search form-control"/>
+                </div>
+                <div class="col-md-4">
+                    <a class="highlight light-icon" href="#"><i data-toggle="collapse"
+                                                                data-target="#mezzo__relation_output__items"
+                                                                class="ion-ios-arrow-down"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="mezzo__relation_output__items" class="form-panel-body mezzo__relation_output__items collapse">
+        <div class="mezzo__relation_output__items__item" ng-repeat="item in vm.filteredItems()">
+            {{ item._label }}
+        </div>
+    </div>
+</div>

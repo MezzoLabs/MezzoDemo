@@ -13,6 +13,7 @@ use MezzoLabs\Mezzo\Core\Modularisation\NamingConvention;
 use MezzoLabs\Mezzo\Core\Reflection\Reflections\MezzoModelReflection;
 use MezzoLabs\Mezzo\Core\Validation\ModelValidator;
 use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
+use MezzoLabs\Mezzo\Http\Exceptions\NoPermissionsException;
 use MezzoLabs\Mezzo\Http\Requests\Request;
 
 abstract class Controller extends IlluminateController
@@ -130,6 +131,10 @@ abstract class Controller extends IlluminateController
         $parameters = $this->data()->merge($parameters);
 
         $page = $this->module()->makePage($class);
+
+        if (!$page->isAllowed()) {
+            throw new NoPermissionsException('You are not allowed to view this page: ' . get_class($page));
+        }
 
         return $page->template($parameters);
     }

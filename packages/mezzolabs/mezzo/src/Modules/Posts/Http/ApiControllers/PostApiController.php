@@ -4,7 +4,6 @@ namespace MezzoLabs\Mezzo\Modules\Posts\Http\ApiControllers;
 
 
 use App\LockableResources\HandlesLockableApiResources;
-use MezzoLabs\Mezzo\Exceptions\ModuleControllerException;
 use MezzoLabs\Mezzo\Http\Controllers\ApiResourceController;
 use MezzoLabs\Mezzo\Http\Controllers\HasDefaultApiResourceFunctions;
 use MezzoLabs\Mezzo\Http\Requests\Resource\StoreResourceRequest;
@@ -26,9 +25,8 @@ class PostApiController extends ApiResourceController
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreResourceRequest $request
+     * @param StoreResourceRequest|StorePostRequest $request
      * @return ApiResponseFactory
-     * @throws ModuleControllerException
      */
     public function store(StorePostRequest $request)
     {
@@ -44,7 +42,7 @@ class PostApiController extends ApiResourceController
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateResourceRequest $request
+     * @param UpdateResourceRequest|UpdatePostRequest $request
      * @param  int $id
      * @return ApiResponseFactory
      */

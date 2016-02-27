@@ -5,12 +5,12 @@ namespace App\Listeners\UserWasVerified;
 
 
 use App\Events\UserWasVerified;
-use App\Magazine\Newsletter\Services\NewsletterService;
+use App\Magazine\Newsletter\Domain\Services\MailchimpNewsletterService;
 
 class SubscribeToNewsletter
 {
     /**
-     * @var NewsletterService
+     * @var MailchimpNewsletterService
      */
     protected $service;
 
@@ -19,7 +19,7 @@ class SubscribeToNewsletter
      *
      * @return void
      */
-    public function __construct(NewsletterService $service)
+    public function __construct(MailchimpNewsletterService $service)
     {
         $this->service = $service;
     }

@@ -1,12 +1,12 @@
 <?php
 
 
-namespace App\Magazine\Newsletter\Services;
+namespace App\Magazine\Newsletter\Domain\Services;
 
 
 use Mailchimp;
 
-class NewsletterService
+class MailchimpNewsletterService
 {
     /**
      * @var Mailchimp

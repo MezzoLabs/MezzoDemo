@@ -18,7 +18,8 @@ return [
         'search' => 'Suche',
         'do_filter' => 'Filtern',
         'filter' => 'Filter|Filter',
-        'rename' => 'Umbenennen'
+        'rename' => 'Umbenennen',
+        'please_wait' => 'Bitte warten.'
     ],
     'messages' => [
         'resource_not_found' => 'Die angeforderte Ressource konnte nicht gefunden werden.'
@@ -28,8 +29,8 @@ return [
         'role_index' => 'Alle Rollen',
         'user_index' => 'Alle Nutzer',
         'user_create' => 'Erstellen',
-        'event_provider_create' => 'Lieferant erstellen',
-        'event_provider_index' => 'Alle Lieferanten',
+        'event_provider_create' => 'Veranstalter erstellen',
+        'event_provider_index' => 'Alle Veranstalter',
         'event_create' => 'Erstellen',
         'event_index' => 'Alle Veranstaltungen',
         'event_venue_index' => 'Alle Orte',
@@ -42,8 +43,8 @@ return [
         'page_create' => 'Seite hinzufügen',
         'product_create' => 'Produkt hinzufügen',
         'product_index' => 'Alle Produkte',
-        'merchant_create' => 'Händler erstellen',
-        'merchant_index' => 'Händler',
+        'merchant_create' => 'Logistiker erstellen',
+        'merchant_index' => 'Logistiker',
         'order_index' => 'Alle Bestellungen',
         'order_create' => 'Bestellung erstellen',
         'category_group' => 'Kategorien gruppieren',
@@ -53,7 +54,10 @@ return [
         'file_create' => 'Dateimanager',
         'options_index' => 'Alle Optionen',
         'magazine_options' => 'Magazin Optionen',
-        'role_create' => 'Rolle hinzufügen'
+        'role_create' => 'Rolle hinzufügen',
+        'campaign_create' => 'Kampagne erstellen',
+        'campaign_index' => 'Alle Kampagnen',
+        'newsletter_recipient_index' => 'Alle Empfänger'
     ],
     'modules' => [
         'groups' => [
@@ -101,6 +105,7 @@ return [
             'title' => 'Shop',
             'vouchers' => [
                 'subscription_months' => 'Abo in Monaten',
+                'subscription_days' => 'Abo in Tagen',
                 'money_coupon' => 'Wertgutschein in Euro',
                 'for_user' => 'Nur für Nutzer',
                 'discount_percent' => 'Rabatt in Prozent'
@@ -128,7 +133,8 @@ return [
                 'image_right' => 'Rechts',
                 'image_above' => 'Darüber',
                 'image_below' => 'Darunter',
-                'image_grid' => 'Raster',
+                'image_grid' => 'Gitter',
+                'image_slider' => 'Slider',
                 'image_lightbox' => 'Popup',
                 'image_list' => 'Liste'
             ]
@@ -144,11 +150,11 @@ return [
         'country' => 'Land|Länder',
         'event' => 'Veranstaltung|Veranstaltungen',
         'eventday' => 'Veranstaltungs Tag|Veranstaltungs Tage',
-        'eventprovider' => 'Verantaltungs Lieferant|Veranstaltungs Lieferanten',
-        'eventvenue' => 'Verantaltungs Ort|Veranstaltungs Orte',
+        'eventprovider' => 'Veranstalter|Veranstalter',
+        'eventvenue' => 'Veranstaltungsstätte|Veranstaltungsstätte',
         'file' => 'Datei|Dateien',
         'imagefile' => 'Bild|Bilder',
-        'merchant' => 'Händler',
+        'merchant' => 'Logistiker',
         'option' => 'Option|Optionen',
         'order' => 'Bestellung',
         'page' => 'Seite|Seiten',
@@ -160,7 +166,9 @@ return [
         'tag' => 'Tag|Tags',
         'user' => 'Nutzer',
         'voucher' => 'Gutschein|Gutscheine',
-        'subscription' => 'Abonement|Abonements'
+        'subscription' => 'Abonement|Abonements',
+        'campaign' => 'Kampagne|Kampagnen',
+        'newsletterrecipient' => 'Empfänger|Empfänger'
     ],
     'selects' => [
         'gender' => [
@@ -171,9 +179,14 @@ return [
         'state' => [
             'published' => 'Veröffentlicht',
             'draft' => 'In Bearbeitung',
-            'deleted' => 'Gelöscht',
+            'deleted' => 'Papierkorb',
             'all' => 'Alle',
-            'private' => 'Privat'
+            'private' => 'Privat',
+            'confirmed' => 'Bestätigt',
+            'confirmation_pending' => 'Warte auf Bestätigung',
+            'confirmation_received' => 'Bestätigt',
+            'rejected' => 'Abgelehnt',
+
         ],
         'voucher' => [
             'type' => [

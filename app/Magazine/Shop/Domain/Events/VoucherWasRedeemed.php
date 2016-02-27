@@ -11,7 +11,7 @@ class VoucherWasRedeemed
     /**
      * @var Voucher
      */
-    private $voucher;
+    public $voucher;
 
     /**
      * Create a new event instance.

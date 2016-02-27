@@ -9,6 +9,7 @@ use App\Events\UserWasVerifiedWithEmail;
 use App\Events\UserWasVerifiedWithSocialAuthentication;
 use App\Exceptions\InvalidConfirmationCodeException;
 use App\Http\Controllers\Controller;
+use App\NewsletterRecipient;
 use App\Repositories\UserRepository;
 use App\User;
 use Auth;
@@ -45,6 +46,11 @@ class AuthController extends Controller
      */
     private $users;
 
+    /**
+     * @var NewsletterRecipient
+     */
+    private $recipients;
+
     /*
     |--------------------------------------------------------------------------
     | Registration & Login Controller
@@ -63,14 +69,16 @@ class AuthController extends Controller
      * Create a new authentication controller instance.
      * @param SocialAuthenticator $socialAuthenticator
      * @param UserRepository $users
+     * @param NewsletterRecipient $recipient
      */
-    public function __construct(SocialAuthenticator $socialAuthenticator, UserRepository $users)
+    public function __construct(SocialAuthenticator $socialAuthenticator, UserRepository $users, NewsletterRecipient $recipients)
     {
         $this->middleware('guest', ['except' => 'getLogout']);
         $this->userReflection = mezzo()->model('User');
 
         $this->socialAuthenticator = $socialAuthenticator;
         $this->users = $users;
+        $this->recipients = $recipients;
     }
 
     /**
@@ -132,7 +140,7 @@ class AuthController extends Controller
 
         $user = $this->create($data);
 
-        event(new UserWasRegisteredWithEmail($user));
+        event(new UserWasRegisteredWithEmail($user, $request->get('subscribe_to_newsletter')));
 
         \Session::flash('message', 'Please check your mail.');
         return redirect('/');
@@ -191,7 +199,6 @@ class AuthController extends Controller
             $user->save();
 
             event(new UserWasVerifiedWithSocialAuthentication($user));
-
 
 
             \Session::flash('message', 'New account.');

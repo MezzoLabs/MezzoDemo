@@ -94,7 +94,6 @@ export default class EditResourceController extends ResourceController {
         const cleaned = this.formDataService.transform(model);
 
         this.content = cleaned.stripped;
-        console.log('content', this.content);
 
         this.inputs = cleaned.flattened;
 

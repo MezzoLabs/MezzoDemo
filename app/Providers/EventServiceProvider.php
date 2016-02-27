@@ -2,18 +2,19 @@
 
 namespace App\Providers;
 
-use App\Events\UserWasRegistered;
 use App\Events\UserWasRegisteredWithEmail;
 use App\Events\UserWasRegisteredWithSocialAuthentication;
-use App\Events\UserWasVerified;
 use App\Events\UserWasVerifiedWithEmail;
 use App\Events\UserWasVerifiedWithSocialAuthentication;
 use App\Listeners\AddDefaultRole;
 use App\Listeners\EmailRegisterNotification;
 use App\Listeners\EmailUserVerification;
+use App\Listeners\UserWasRegistered\SendNewsletterConfirmationRequest;
 use App\Listeners\UserWasVerified\EmailSuccessfullyVerifiedInfo;
 use App\Listeners\UserWasVerified\SubscribeToNewsletter;
 use App\Listeners\UserWasVerified\UnlockUser;
+use App\Listeners\VoucherWasRedeemed\AddSubscriptionDays;
+use App\Magazine\Shop\Domain\Events\VoucherWasRedeemed;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -27,7 +28,8 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         UserWasRegisteredWithEmail::class => [
             EmailUserVerification::class,
-            EmailRegisterNotification::class
+            EmailRegisterNotification::class,
+            SendNewsletterConfirmationRequest::class
         ],
         UserWasRegisteredWithSocialAuthentication::class => [
             //EmailRegisterNotification::class
@@ -41,6 +43,9 @@ class EventServiceProvider extends ServiceProvider
         UserWasVerifiedWithSocialAuthentication::class => [
             AddDefaultRole::class,
             SubscribeToNewsletter::class
+        ],
+        VoucherWasRedeemed::class => [
+            AddSubscriptionDays::class
         ]
     ];
 

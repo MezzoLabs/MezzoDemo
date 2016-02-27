@@ -8,6 +8,10 @@ use Carbon\Carbon;
 
 class Subscription extends MezzoSubscription
 {
+    protected $dates = [
+        'subscribed_until'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -28,5 +32,10 @@ class Subscription extends MezzoSubscription
 
     }
 
+
+    public function duration()
+    {
+        return $this->created_at->diff($this->subscribed_until);
+    }
 
 }
